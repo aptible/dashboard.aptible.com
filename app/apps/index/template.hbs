@@ -1,3 +1,5 @@
 {{#each app in model}}
-  <div class="app-row">{{app.handle}}</div>
+  <div class="app-row">
+    {{link-to app.handle 'apps.show' app class="app-link"}}
+  </div>
 {{/each}}

@@ -24,7 +24,24 @@ test('visiting /apps shows list of apps', function() {
   signInAndVisit('/apps');
 
   andThen(function() {
-    var appListingSelector = '.app-row';
-    equal(find(appListingSelector).length, 2, 'shows 2 apps');
+    var row = findWithAssert('.app-row');
+    equal(row.length, 2, 'shows 2 apps');
+  });
+});
+
+test('visiting /apps then clicking on an app visits the app', function() {
+  signInAndVisit('/apps');
+  click('.app-link');
+  andThen(function(){
+    equal(currentPath(), 'apps.show', 'show page is visited');
+  });
+});
+
+test('visiting /apps/my-app shows the app', function() {
+  signInAndVisit('/apps/my-app');
+  andThen(function() {
+    equal(currentPath(), 'apps.show', 'show page is visited');
+    var contentNode = findWithAssert('*:contains(my-app)');
+    ok(contentNode.length > 0, 'my-app is on the page');
   });
 });

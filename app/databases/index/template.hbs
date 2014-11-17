@@ -1,0 +1,5 @@
+{{#each database in model}}
+  <div class="database-row">
+    {{link-to database.handle 'databases.show' database class="database-link"}}
+  </div>
+{{/each}}

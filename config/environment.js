@@ -3,7 +3,6 @@
 module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'diesel',
-    podModulePrefix: 'diesel',
     environment: environment,
     baseURL: '/',
     locationType: 'auto',
