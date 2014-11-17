@@ -13,6 +13,7 @@ Router.map(function() {
   this.route('databases', {}, function(){
     this.route('show', {path: '/:database_id'});
   });
+  this.route('login');
 });
 
 export default Router;
