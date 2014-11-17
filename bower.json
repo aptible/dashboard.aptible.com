@@ -12,6 +12,10 @@
     "ember-load-initializers": "stefanpenner/ember-load-initializers#0.0.2",
     "ember-qunit": "0.1.8",
     "ember-qunit-notifications": "0.0.4",
-    "qunit": "~1.15.0"
+    "qunit": "~1.15.0",
+    "animate": "jackilyn/animate.scss#c03607f922850b5c2d1da1ec45e5d56f4e4403ab",
+    "aptible-sass": "aptible/aptible-sass#01e58a94f02ce8494426059084bda26a4371c893",
+    "nouislider": "~7.0.9",
+    "font-awesome": "~4.2.0"
   }
 }

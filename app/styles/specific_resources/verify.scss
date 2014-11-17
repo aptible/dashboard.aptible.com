@@ -1,0 +1,17 @@
+.verify-email-notification {
+  .verification-instructions {
+    p {
+      color: $color-light;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .cta {
+      margin-top: 20px;
+
+      .btn {
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
