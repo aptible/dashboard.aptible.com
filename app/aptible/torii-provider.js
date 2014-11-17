@@ -1,14 +1,15 @@
 import BaseProvider from "torii/providers/base";
 import ajax from "../utils/ajax";
+import config from "../config/environment";
 
 export default BaseProvider.extend({
   open: function(credentials){
-    return ajax('/api/session', {
+    return ajax(config.authBaseUri+'/tokens', {
       type: 'POST',
       data: credentials
     }).catch(function(jqXHR){
       if (jqXHR.responseJSON) {
-        throw new Error(jqXHR.responseJSON.error.message);
+        throw new Error(jqXHR.responseJSON.message);
       } else if (jqXHR.responseText) {
         throw new Error(jqXHR.responseText);
       } else {

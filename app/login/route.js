@@ -14,13 +14,14 @@ export default Ember.Route.extend({
     login: function(authAttempt){
       var route = this;
       var credentials = {
-        email: authAttempt.email,
+        username: authAttempt.email,
         password: authAttempt.password,
+        grant_type: 'password'
       };
       this.session.open('aptible', credentials).then(function(){
         route.transitionTo('apps');
       }, function(e){
-        route.currentModel.set('error', 'Error authenticating: '+e.message);
+        route.currentModel.set('error', e.message);
       });
     }
 

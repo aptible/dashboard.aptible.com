@@ -12,6 +12,14 @@ module('Acceptance: Apps', {
   }
 });
 
+test('visiting /apps when not signed in', function() {
+  visit('/apps');
+
+  andThen(function() {
+    equal(currentPath(), 'login');
+  });
+});
+
 test('visiting /apps', function() {
   signInAndVisit('/apps');
 

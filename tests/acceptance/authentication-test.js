@@ -29,15 +29,20 @@ test('visiting /login', function() {
 test('logging in with bad credentials', function() {
   var email = 'bad@email.com';
   var password = 'incorrect';
-  var errorMessage = "Bad Password";
+  var errorMessage = 'User not found: '+email;
 
   server = new Pretender(function(){
-    this.post('/api/session', function(request){
+    this.post('/tokens', function(request){
       var params = JSON.parse(request.requestBody);
-      equal(params.email, email, 'correct email is passed');
+      equal(params.username, email, 'correct email is passed');
       equal(params.password, password, 'correct password is passed');
+      equal(params.grant_type, 'password', 'correct grant_type is passed');
 
-      return [500, {}, {error: {message: errorMessage}}];
+      return [401, {}, {
+        code: 401,
+        error: 'invalid_credentials',
+        message: errorMessage
+      }];
     });
   });
 
@@ -48,7 +53,7 @@ test('logging in with bad credentials', function() {
   andThen(function(){
     equal(currentPath(), 'login');
     var error = findWithAssert('.error');
-    equalElementText(error, 'Error authenticating: '+errorMessage);
+    equalElementText(error, errorMessage);
   });
 });
 
@@ -57,12 +62,20 @@ test('logging in with correct credentials', function() {
   var password = 'correct';
 
   server = new Pretender(function(){
-    this.post('/api/session', function(request){
+    this.post('/tokens', function(request){
       var params = JSON.parse(request.requestBody);
-      equal(params.email, email, 'correct email is passed');
+      equal(params.username, email, 'correct email is passed');
       equal(params.password, password, 'correct password is passed');
+      equal(params.grant_type, 'password', 'correct grant_type is passed');
 
-      return [200, {}, {}];
+      return [201, {}, {
+        id: 'my-id',
+        access_token: 'my-token',
+        token_type: 'bearer',
+        expires_in: 2,
+        scope: 'manage',
+        type: 'token'
+      }];
     });
   });
 

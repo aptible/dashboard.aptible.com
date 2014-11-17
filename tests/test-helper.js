@@ -3,6 +3,7 @@ import {
   setResolver
 } from 'ember-qunit';
 import Pretender from "pretender";
+import config from "../config/environment";
 
 setResolver(resolver);
 
@@ -24,3 +25,7 @@ Pretender.prototype.prepareBody = function(body){
     return body;
   }
 };
+
+QUnit.testStart(function(){
+  window.localStorage.setItem(config.authTokenKey, null);
+});

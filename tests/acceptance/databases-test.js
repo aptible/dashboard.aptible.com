@@ -20,6 +20,15 @@ test('visiting /databases', function() {
   });
 });
 
+test('visiting /databases when not signed in', function() {
+  visit('/databases');
+
+  andThen(function() {
+    equal(currentPath(), 'login');
+  });
+});
+
+
 test('visiting /databases shows list of databases', function() {
   signInAndVisit('/databases');
 

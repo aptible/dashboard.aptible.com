@@ -6,6 +6,12 @@ module.exports = function(environment) {
     environment: environment,
     baseURL: '/',
     locationType: 'auto',
+
+    authBaseUri: "http://localhost:4000",
+    apiBaseUri: "http://localhost:4001",
+
+    authTokenKey: '_aptible_authToken',
+
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
@@ -42,6 +48,8 @@ module.exports = function(environment) {
     ENV.APP.LOG_VIEW_LOOKUPS = false;
 
     ENV.APP.rootElement = '#ember-testing';
+
+    ENV.authTokenKey = '_aptible_authToken-test';
   }
 
   if (environment === 'production') {
