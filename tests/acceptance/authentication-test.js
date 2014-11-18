@@ -52,8 +52,8 @@ test('logging in with bad credentials', function() {
   click('button:contains(Log in)');
   andThen(function(){
     equal(currentPath(), 'login');
-    var error = findWithAssert('.error');
-    equalElementText(error, errorMessage);
+    var error = findWithAssert('.alert.alert-warning');
+    elementTextContains(error, errorMessage);
   });
 });
 

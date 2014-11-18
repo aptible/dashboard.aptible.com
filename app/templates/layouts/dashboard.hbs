@@ -1,0 +1,19 @@
+{{partial "status-header"}}
+{{partial "nav-header"}}
+
+<div class="container" id="main-yield-wrapper" style="min-height: 504px;">
+  <div class="alerts-partial-wrapper">
+  </div>
+  {{partial "dashboard-header"}}
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="accounts-container">
+        {{outlet}}
+      </div>
+    </div>
+  </div>
+</div>
+
+{{partial "nav-footer"}}
+
