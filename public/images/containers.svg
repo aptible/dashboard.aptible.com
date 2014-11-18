@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="121px" height="139px" viewBox="0 0 121 139" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.0.4 (8053) - http://www.bohemiancoding.com/sketch -->
+    <title>Lock-in</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="4" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.265927876 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <path id="path-2" d="M-0.198412698,86.3096546 L-0.198412698,28.7702336 L49.8010624,0 L99.8015873,28.7702336 L99.8015873,86.3096546 L49.8010624,115.079365 C24.8013249,100.69451 -0.198412698,86.3096546 -0.198412698,86.3096546 Z"></path>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="2.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.0521908967 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Pricing" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="9-Your-account-is-provisioning" sketch:type="MSArtboardGroup" transform="translate(-661.000000, -413.000000)">
+            <g id="Activate-Email" sketch:type="MSLayerGroup" transform="translate(-81.000000, 40.000000)">
+                <g id="Lock-in" transform="translate(753.000000, 384.000000)">
+                    <g id="Containers-2" transform="translate(0.000000, 0.960317)">
+                        <mask id="mask-3" sketch:name="Fill 2" fill="white">
+                            <use xlink:href="#path-2"></use>
+                        </mask>
+                        <use id="Fill-2" stroke="#F0F0F0" stroke-width="10" fill="#FFFFFF" filter="url(#filter-1)" sketch:type="MSShapeGroup" xlink:href="#path-2"></use>
+                        <g id="Imported-Layers-9" mask="url(#mask-3)" sketch:type="MSShapeGroup">
+                            <g transform="translate(88.180708, 70.128667)">
+                                <path d="M15.2282476,17.4614682 L15.2282476,0.0861736102 L0.180721235,8.77382089 L0.180721235,8.77399464 L15.2282476,17.4614682" id="Fill-2" fill="#4FBBFD"></path>
+                                <path d="M15.2282476,0.0861736102 L15.2282476,17.4614682 L30.2756002,8.77382089 L15.2282476,0.0861736102 Z" id="Fill-3" fill="#38ADF5"></path>
+                                <path id="Fill-4" fill="#00A3DB" d="M15.2282476,17.4616419 L15.2282476,17.4614682 L15.2282476,17.4616419"></path>
+                                <path d="M0.180721235,8.77399464 L0.180721235,26.1491154 L15.2282476,17.4614682 L0.180721235,8.77399464" id="Fill-5" fill="#2BA4EF"></path>
+                                <path d="M15.2282476,17.4614682 L30.2756002,26.1491154 L30.2756002,8.77382089 L15.2282476,17.4614682 Z" id="Fill-6" fill="#2BA4EF"></path>
+                                <path d="M30.2756002,26.1491154 L15.2282476,17.4616419 L15.2282476,34.8367627 L30.2756002,26.1491154 Z" id="Fill-7" fill="#1A8ED6"></path>
+                                <path d="M15.2282476,17.4614682 L0.180721235,26.1491154 L15.2282476,34.8367627 L15.2282476,17.4614682" id="Fill-8" fill="#2397DD"></path>
+                            </g>
+                        </g>
+                        <g id="Imported-Layers-9" mask="url(#mask-3)" sketch:type="MSShapeGroup">
+                            <g transform="translate(52.466422, 69.885523)">
+                                <path d="M15.2282476,17.4614682 L15.2282476,0.0861736102 L0.180721235,8.77382089 L0.180721235,8.77399464 L15.2282476,17.4614682" id="Fill-2" fill="#4FBBFD"></path>
+                                <path d="M15.2282476,0.0861736102 L15.2282476,17.4614682 L30.2756002,8.77382089 L15.2282476,0.0861736102 Z" id="Fill-3" fill="#38ADF5"></path>
+                                <path id="Fill-4" fill="#00A3DB" d="M15.2282476,17.4616419 L15.2282476,17.4614682 L15.2282476,17.4616419"></path>
+                                <path d="M0.180721235,8.77399464 L0.180721235,26.1491154 L15.2282476,17.4614682 L0.180721235,8.77399464" id="Fill-5" fill="#2BA4EF"></path>
+                                <path d="M15.2282476,17.4614682 L30.2756002,26.1491154 L30.2756002,8.77382089 L15.2282476,17.4614682 Z" id="Fill-6" fill="#2BA4EF"></path>
+                                <path d="M30.2756002,26.1491154 L15.2282476,17.4616419 L15.2282476,34.8367627 L30.2756002,26.1491154 Z" id="Fill-7" fill="#1A8ED6"></path>
+                                <path d="M15.2282476,17.4614682 L0.180721235,26.1491154 L15.2282476,34.8367627 L15.2282476,17.4614682" id="Fill-8" fill="#2397DD"></path>
+                            </g>
+                        </g>
+                        <g id="Imported-Layers-9" mask="url(#mask-3)" sketch:type="MSShapeGroup">
+                            <g transform="translate(52.863248, 9.320925)">
+                                <path d="M15.2282476,17.4614682 L15.2282476,0.0861736102 L0.180721235,8.77382089 L0.180721235,8.77399464 L15.2282476,17.4614682" id="Fill-2" fill="#4FBBFD"></path>
+                                <path d="M15.2282476,0.0861736102 L15.2282476,17.4614682 L30.2756002,8.77382089 L15.2282476,0.0861736102 Z" id="Fill-3" fill="#38ADF5"></path>
+                                <path id="Fill-4" fill="#00A3DB" d="M15.2282476,17.4616419 L15.2282476,17.4614682 L15.2282476,17.4616419"></path>
+                                <path d="M0.180721235,8.77399464 L0.180721235,26.1491154 L15.2282476,17.4614682 L0.180721235,8.77399464" id="Fill-5" fill="#2BA4EF"></path>
+                                <path d="M15.2282476,17.4614682 L30.2756002,26.1491154 L30.2756002,8.77382089 L15.2282476,17.4614682 Z" id="Fill-6" fill="#2BA4EF"></path>
+                                <path d="M30.2756002,26.1491154 L15.2282476,17.4616419 L15.2282476,34.8367627 L30.2756002,26.1491154 Z" id="Fill-7" fill="#1A8ED6"></path>
+                                <path d="M15.2282476,17.4614682 L0.180721235,26.1491154 L15.2282476,34.8367627 L15.2282476,17.4614682" id="Fill-8" fill="#2397DD"></path>
+                            </g>
+                        </g>
+                        <g id="Imported-Layers-9" mask="url(#mask-3)" sketch:type="MSShapeGroup">
+                            <g transform="translate(34.574052, -20.389780)">
+                                <path d="M15.2282476,17.4614682 L15.2282476,0.0861736102 L0.180721235,8.77382089 L0.180721235,8.77399464 L15.2282476,17.4614682" id="Fill-2" fill="#4FBBFD"></path>
+                                <path d="M15.2282476,0.0861736102 L15.2282476,17.4614682 L30.2756002,8.77382089 L15.2282476,0.0861736102 Z" id="Fill-3" fill="#38ADF5"></path>
+                                <path id="Fill-4" fill="#00A3DB" d="M15.2282476,17.4616419 L15.2282476,17.4614682 L15.2282476,17.4616419"></path>
+                                <path d="M0.180721235,8.77399464 L0.180721235,26.1491154 L15.2282476,17.4614682 L0.180721235,8.77399464" id="Fill-5" fill="#2BA4EF"></path>
+                                <path d="M15.2282476,17.4614682 L30.2756002,26.1491154 L30.2756002,8.77382089 L15.2282476,17.4614682 Z" id="Fill-6" fill="#2BA4EF"></path>
+                                <path d="M30.2756002,26.1491154 L15.2282476,17.4616419 L15.2282476,34.8367627 L30.2756002,26.1491154 Z" id="Fill-7" fill="#1A8ED6"></path>
+                                <path d="M15.2282476,17.4614682 L0.180721235,26.1491154 L15.2282476,34.8367627 L15.2282476,17.4614682" id="Fill-8" fill="#2397DD"></path>
+                            </g>
+                        </g>
+                        <g id="Imported-Layers-9" mask="url(#mask-3)" sketch:type="MSShapeGroup">
+                            <g transform="translate(34.609279, 100.193941)">
+                                <path d="M15.2282476,17.4614682 L15.2282476,0.0861736102 L0.180721235,8.77382089 L0.180721235,8.77399464 L15.2282476,17.4614682" id="Fill-2" fill="#4FBBFD"></path>
+                                <path d="M15.2282476,0.0861736102 L15.2282476,17.4614682 L30.2756002,8.77382089 L15.2282476,0.0861736102 Z" id="Fill-3" fill="#38ADF5"></path>
+                                <path id="Fill-4" fill="#00A3DB" d="M15.2282476,17.4616419 L15.2282476,17.4614682 L15.2282476,17.4616419"></path>
+                                <path d="M0.180721235,8.77399464 L0.180721235,26.1491154 L15.2282476,17.4614682 L0.180721235,8.77399464" id="Fill-5" fill="#2BA4EF"></path>
+                                <path d="M15.2282476,17.4614682 L30.2756002,26.1491154 L30.2756002,8.77382089 L15.2282476,17.4614682 Z" id="Fill-6" fill="#2BA4EF"></path>
+                                <path d="M30.2756002,26.1491154 L15.2282476,17.4616419 L15.2282476,34.8367627 L30.2756002,26.1491154 Z" id="Fill-7" fill="#1A8ED6"></path>
+                                <path d="M15.2282476,17.4614682 L0.180721235,26.1491154 L15.2282476,34.8367627 L15.2282476,17.4614682" id="Fill-8" fill="#2397DD"></path>
+                            </g>
+                        </g>
+                        <g id="Imported-Layers-9" mask="url(#mask-3)" sketch:type="MSShapeGroup">
+                            <g transform="translate(17.148962, 70.035211)">
+                                <path d="M15.2282476,17.4614682 L15.2282476,0.0861736102 L0.180721235,8.77382089 L0.180721235,8.77399464 L15.2282476,17.4614682" id="Fill-2" fill="#4FBBFD"></path>
+                                <path d="M15.2282476,0.0861736102 L15.2282476,17.4614682 L30.2756002,8.77382089 L15.2282476,0.0861736102 Z" id="Fill-3" fill="#38ADF5"></path>
+                                <path id="Fill-4" fill="#00A3DB" d="M15.2282476,17.4616419 L15.2282476,17.4614682 L15.2282476,17.4616419"></path>
+                                <path d="M0.180721235,8.77399464 L0.180721235,26.1491154 L15.2282476,17.4614682 L0.180721235,8.77399464" id="Fill-5" fill="#2BA4EF"></path>
+                                <path d="M15.2282476,17.4614682 L30.2756002,26.1491154 L30.2756002,8.77382089 L15.2282476,17.4614682 Z" id="Fill-6" fill="#2BA4EF"></path>
+                                <path d="M30.2756002,26.1491154 L15.2282476,17.4616419 L15.2282476,34.8367627 L30.2756002,26.1491154 Z" id="Fill-7" fill="#1A8ED6"></path>
+                                <path d="M15.2282476,17.4614682 L0.180721235,26.1491154 L15.2282476,34.8367627 L15.2282476,17.4614682" id="Fill-8" fill="#2397DD"></path>
+                            </g>
+                        </g>
+                        <g id="Imported-Layers-10" mask="url(#mask-3)" sketch:type="MSShapeGroup">
+                            <g transform="translate(-17.771673, 70.035211)">
+                                <path d="M15.2282476,17.4614682 L15.2282476,0.0861736102 L0.180721235,8.77382089 L0.180721235,8.77399464 L15.2282476,17.4614682" id="Fill-2" fill="#4FBBFD"></path>
+                                <path d="M15.2282476,0.0861736102 L15.2282476,17.4614682 L30.2756002,8.77382089 L15.2282476,0.0861736102 Z" id="Fill-3" fill="#38ADF5"></path>
+                                <path id="Fill-4" fill="#00A3DB" d="M15.2282476,17.4616419 L15.2282476,17.4614682 L15.2282476,17.4616419"></path>
+                                <path d="M0.180721235,8.77399464 L0.180721235,26.1491154 L15.2282476,17.4614682 L0.180721235,8.77399464" id="Fill-5" fill="#2BA4EF"></path>
+                                <path d="M15.2282476,17.4614682 L30.2756002,26.1491154 L30.2756002,8.77382089 L15.2282476,17.4614682 Z" id="Fill-6" fill="#2BA4EF"></path>
+                                <path d="M30.2756002,26.1491154 L15.2282476,17.4616419 L15.2282476,34.8367627 L30.2756002,26.1491154 Z" id="Fill-7" fill="#1A8ED6"></path>
+                                <path d="M15.2282476,17.4614682 L0.180721235,26.1491154 L15.2282476,34.8367627 L15.2282476,17.4614682" id="Fill-8" fill="#2397DD"></path>
+                            </g>
+                        </g>
+                        <g id="Imported-Layers-11" mask="url(#mask-3)" sketch:type="MSShapeGroup">
+                            <g transform="translate(-17.771673, 9.717751)">
+                                <path d="M15.2282476,17.4614682 L15.2282476,0.0861736102 L0.180721235,8.77382089 L0.180721235,8.77399464 L15.2282476,17.4614682" id="Fill-2" fill="#4FBBFD"></path>
+                                <path d="M15.2282476,0.0861736102 L15.2282476,17.4614682 L30.2756002,8.77382089 L15.2282476,0.0861736102 Z" id="Fill-3" fill="#38ADF5"></path>
+                                <path id="Fill-4" fill="#00A3DB" d="M15.2282476,17.4616419 L15.2282476,17.4614682 L15.2282476,17.4616419"></path>
+                                <path d="M0.180721235,8.77399464 L0.180721235,26.1491154 L15.2282476,17.4614682 L0.180721235,8.77399464" id="Fill-5" fill="#2BA4EF"></path>
+                                <path d="M15.2282476,17.4614682 L30.2756002,26.1491154 L30.2756002,8.77382089 L15.2282476,17.4614682 Z" id="Fill-6" fill="#2BA4EF"></path>
+                                <path d="M30.2756002,26.1491154 L15.2282476,17.4616419 L15.2282476,34.8367627 L30.2756002,26.1491154 Z" id="Fill-7" fill="#1A8ED6"></path>
+                                <path d="M15.2282476,17.4614682 L0.180721235,26.1491154 L15.2282476,34.8367627 L15.2282476,17.4614682" id="Fill-8" fill="#2397DD"></path>
+                            </g>
+                        </g>
+                        <g id="Imported-Layers-12" mask="url(#mask-3)" sketch:type="MSShapeGroup">
+                            <g transform="translate(88.180708, 9.717751)">
+                                <path d="M15.2282476,17.4614682 L15.2282476,0.0861736102 L0.180721235,8.77382089 L0.180721235,8.77399464 L15.2282476,17.4614682" id="Fill-2" fill="#4FBBFD"></path>
+                                <path d="M15.2282476,0.0861736102 L15.2282476,17.4614682 L30.2756002,8.77382089 L15.2282476,0.0861736102 Z" id="Fill-3" fill="#38ADF5"></path>
+                                <path id="Fill-4" fill="#00A3DB" d="M15.2282476,17.4616419 L15.2282476,17.4614682 L15.2282476,17.4616419"></path>
+                                <path d="M0.180721235,8.77399464 L0.180721235,26.1491154 L15.2282476,17.4614682 L0.180721235,8.77399464" id="Fill-5" fill="#2BA4EF"></path>
+                                <path d="M15.2282476,17.4614682 L30.2756002,26.1491154 L30.2756002,8.77382089 L15.2282476,17.4614682 Z" id="Fill-6" fill="#2BA4EF"></path>
+                                <path d="M30.2756002,26.1491154 L15.2282476,17.4616419 L15.2282476,34.8367627 L30.2756002,26.1491154 Z" id="Fill-7" fill="#1A8ED6"></path>
+                                <path d="M15.2282476,17.4614682 L0.180721235,26.1491154 L15.2282476,34.8367627 L15.2282476,17.4614682" id="Fill-8" fill="#2397DD"></path>
+                            </g>
+                        </g>
+                        <g id="Imported-Layers-9" mask="url(#mask-3)" sketch:type="MSShapeGroup">
+                            <g transform="translate(34.609279, 39.775996)">
+                                <path d="M15.2282476,17.4614682 L15.2282476,0.0861736102 L0.180721235,8.77382089 L0.180721235,8.77399464 L15.2282476,17.4614682" id="Fill-2" fill="#4FBBFD"></path>
+                                <path d="M15.2282476,0.0861736102 L15.2282476,17.4614682 L30.2756002,8.77382089 L15.2282476,0.0861736102 Z" id="Fill-3" fill="#38ADF5"></path>
+                                <path id="Fill-4" fill="#00A3DB" d="M15.2282476,17.4616419 L15.2282476,17.4614682 L15.2282476,17.4616419"></path>
+                                <path d="M0.180721235,8.77399464 L0.180721235,26.1491154 L15.2282476,17.4614682 L0.180721235,8.77399464" id="Fill-5" fill="#2BA4EF"></path>
+                                <path d="M15.2282476,17.4614682 L30.2756002,26.1491154 L30.2756002,8.77382089 L15.2282476,17.4614682 Z" id="Fill-6" fill="#2BA4EF"></path>
+                                <path d="M30.2756002,26.1491154 L15.2282476,17.4616419 L15.2282476,34.8367627 L30.2756002,26.1491154 Z" id="Fill-7" fill="#1A8ED6"></path>
+                                <path d="M15.2282476,17.4614682 L0.180721235,26.1491154 L15.2282476,34.8367627 L15.2282476,17.4614682" id="Fill-8" fill="#2397DD"></path>
+                            </g>
+                        </g>
+                        <g id="Imported-Layers-9" mask="url(#mask-3)" sketch:type="MSShapeGroup">
+                            <g transform="translate(-0.743408, 39.775996)">
+                                <path d="M15.2282476,17.4614682 L15.2282476,0.0861736102 L0.180721235,8.77382089 L0.180721235,8.77399464 L15.2282476,17.4614682" id="Fill-2" fill="#4FBBFD"></path>
+                                <path d="M15.2282476,0.0861736102 L15.2282476,17.4614682 L30.2756002,8.77382089 L15.2282476,0.0861736102 Z" id="Fill-3" fill="#38ADF5"></path>
+                                <path id="Fill-4" fill="#00A3DB" d="M15.2282476,17.4616419 L15.2282476,17.4614682 L15.2282476,17.4616419"></path>
+                                <path d="M0.180721235,8.77399464 L0.180721235,26.1491154 L15.2282476,17.4614682 L0.180721235,8.77399464" id="Fill-5" fill="#2BA4EF"></path>
+                                <path d="M15.2282476,17.4614682 L30.2756002,26.1491154 L30.2756002,8.77382089 L15.2282476,17.4614682 Z" id="Fill-6" fill="#2BA4EF"></path>
+                                <path d="M30.2756002,26.1491154 L15.2282476,17.4616419 L15.2282476,34.8367627 L30.2756002,26.1491154 Z" id="Fill-7" fill="#1A8ED6"></path>
+                                <path d="M15.2282476,17.4614682 L0.180721235,26.1491154 L15.2282476,34.8367627 L15.2282476,17.4614682" id="Fill-8" fill="#2397DD"></path>
+                            </g>
+                        </g>
+                        <g id="Imported-Layers-9" mask="url(#mask-3)" sketch:type="MSShapeGroup">
+                            <g transform="translate(70.288338, 39.775996)">
+                                <path d="M15.2282476,17.4614682 L15.2282476,0.0861736102 L0.180721235,8.77382089 L0.180721235,8.77399464 L15.2282476,17.4614682" id="Fill-2" fill="#4FBBFD"></path>
+                                <path d="M15.2282476,0.0861736102 L15.2282476,17.4614682 L30.2756002,8.77382089 L15.2282476,0.0861736102 Z" id="Fill-3" fill="#38ADF5"></path>
+                                <path id="Fill-4" fill="#00A3DB" d="M15.2282476,17.4616419 L15.2282476,17.4614682 L15.2282476,17.4616419"></path>
+                                <path d="M0.180721235,8.77399464 L0.180721235,26.1491154 L15.2282476,17.4614682 L0.180721235,8.77399464" id="Fill-5" fill="#2BA4EF"></path>
+                                <path d="M15.2282476,17.4614682 L30.2756002,26.1491154 L30.2756002,8.77382089 L15.2282476,17.4614682 Z" id="Fill-6" fill="#2BA4EF"></path>
+                                <path d="M30.2756002,26.1491154 L15.2282476,17.4616419 L15.2282476,34.8367627 L30.2756002,26.1491154 Z" id="Fill-7" fill="#1A8ED6"></path>
+                                <path d="M15.2282476,17.4614682 L0.180721235,26.1491154 L15.2282476,34.8367627 L15.2282476,17.4614682" id="Fill-8" fill="#2397DD"></path>
+                            </g>
+                        </g>
+                    </g>
+                    <polygon id="Polygon-1" fill="#EBEBEB" filter="url(#filter-4)" sketch:type="MSShapeGroup" points="28.120582 10 43.2760266 18.75 43.2760266 36.25 28.120582 45 12.9651374 36.25 12.9651374 18.75 "></polygon>
+                    <g id="Imported-Layers-8" transform="translate(2.752136, 0.131554)" sketch:type="MSShapeGroup">
+                        <path d="M15.2282476,17.4614682 L15.2282476,0.0861736102 L0.180721235,8.77382089 L0.180721235,8.77399464 L15.2282476,17.4614682" id="Fill-2" fill="#4FBBFD"></path>
+                        <path d="M15.2282476,0.0861736102 L15.2282476,17.4614682 L30.2756002,8.77382089 L15.2282476,0.0861736102 Z" id="Fill-3" fill="#38ADF5"></path>
+                        <path id="Fill-4" fill="#00A3DB" d="M15.2282476,17.4616419 L15.2282476,17.4614682 L15.2282476,17.4616419"></path>
+                        <path d="M0.180721235,8.77399464 L0.180721235,26.1491154 L15.2282476,17.4614682 L0.180721235,8.77399464" id="Fill-5" fill="#2BA4EF"></path>
+                        <path d="M15.2282476,17.4614682 L30.2756002,26.1491154 L30.2756002,8.77382089 L15.2282476,17.4614682 Z" id="Fill-6" fill="#2BA4EF"></path>
+                        <path d="M30.2756002,26.1491154 L15.2282476,17.4616419 L15.2282476,34.8367627 L30.2756002,26.1491154 Z" id="Fill-7" fill="#1A8ED6"></path>
+                        <path d="M15.2282476,17.4614682 L0.180721235,26.1491154 L15.2282476,34.8367627 L15.2282476,17.4614682" id="Fill-8" fill="#2397DD"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

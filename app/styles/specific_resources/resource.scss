@@ -1,0 +1,49 @@
+.account-resource-list {
+  padding: 0;
+  margin: 0;
+
+  .account-resource-item {
+    list-style-type: none;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+
+    &:first-child {
+      padding-top: 0;
+    }
+
+    &:last-child {
+      border: 0;
+      padding-bottom: 0;
+    }
+
+    i.fa-spinner {
+      margin-left: 10px;
+    }
+  }
+
+  .account-resource-link {
+    font-weight: 600;
+  }
+}
+
+.panel-delete-application {
+  .btn-lg-text {
+    margin: 0;
+  }
+}
+
+.resource-header {
+  margin: 0 0 40px;
+
+  .resource-title-status {
+    font-size: 14px;
+    color: #333;
+    display: inline-block;
+    margin-left: 10px;
+  }
+
+  .resource-last-operation {
+    margin: 10px 0 0;
+    font-size: 14px;
+  }
+}

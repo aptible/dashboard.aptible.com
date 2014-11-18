@@ -1,0 +1,73 @@
+.slider-wrapper {
+  width: 100%;
+  height: 12px;
+  padding: 10px 0;
+
+  .slider {
+    height: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 0;
+  }
+
+  .noUi-background {
+    border: 1px solid #b3bdc3;
+    -moz-box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, .08);
+    box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, .08);
+  }
+
+  .noUi-connect {
+    background: $color-bright-blue;
+  }
+
+  .noUi-horizontal .noUi-handle {
+    background-image: -o-linear-gradient(-89deg, #fff 0%, #ebebeb 100%);
+    background-image: -moz-linear-gradient(-89deg, #fff 0%, #ebebeb 100%);
+    background-image: -ms-linear-gradient(-89deg, #fff 0%, #ebebeb 100%);
+    background-image: linear-gradient(-179deg, #fff 0%, #ebebeb 100%);
+    -moz-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .085);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .085);
+    height: 18px;
+    width: 18px;
+    border-radius: 9px;
+    left: -11px;
+    top: -4px;
+    cursor: pointer;
+
+    &:after {
+      display: none;
+    }
+
+    &:before {
+      height: 8px;
+      width: 8px;
+      top: 4px;
+      left: 4px;
+      border-radius: 4px;
+      background: #d8d8d8;
+      -moz-box-shadow: 0 1px 0 0 #fff, inset 0 1px 3px 0 rgba(0, 0, 0, .14);
+      box-shadow: 0 1px 0 0 #fff, inset 0 1px 3px 0 rgba(0, 0, 0, .14);
+    }
+
+    &:hover {
+      &:before {
+        background: #a8a8a8;
+      }
+    }
+  }
+
+  .noUi-origin {
+    border-radius: 6px;
+  }
+
+  button.slider-confirm {
+    background: $color-bright-blue;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bolder;
+    padding: 4px 13px 3px;
+    margin-top: -10px;
+    float: right;
+  }
+
+}

@@ -1,0 +1,48 @@
+.config-form {
+
+  .form-group input {
+    margin-bottom: 0;
+  }
+
+  .config-form-header {
+    margin: 3px 0 20px;
+    font-size: 22px;
+
+    a {
+      font-size: 22px;
+      font-weight: bold;
+    }
+  }
+
+  .config-form-item {
+    @extend %clearfix;
+    border-bottom: 1px solid #f5f5f5;
+    padding: 20px 0;
+
+    &:first-child {
+      padding-top: 0;
+    }
+
+    &:last-child {
+      border: 0;
+      padding-bottom: 0;
+    }
+  }
+
+  .config-form-item-label {
+    font-size: 14px;
+    font-weight: $weight-semibold;
+    width: 140px;
+    float: left;
+  }
+
+  .config-form-item-body {
+    margin-left: 140px;
+    font-size: 13px;
+  }
+
+  .empty-form-field {
+    margin: 5px 0;
+  }
+
+}

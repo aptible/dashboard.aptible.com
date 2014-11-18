@@ -1,0 +1,10 @@
+{{#if model.error}}
+  <div class="error">
+    {{model.error}}
+  </div>
+{{/if}}
+
+{{input type="email" value=model.email}}
+{{input type="password" value=model.password}}
+
+<button {{action "login" model}}>Log in</button>

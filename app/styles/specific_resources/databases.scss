@@ -1,0 +1,85 @@
+
+.new-database {
+  .database-audit-link {
+    float: right;
+
+    .fa-search-plus {
+      font-size: .9em;
+      vertical-align: 10%;
+      margin-right: .1em;
+    }
+  }
+
+  .disk-size-label {
+    width: 9em;
+    margin-right: 1em;
+    display: inline-block;
+
+    span {
+      font-weight: normal;
+    }
+  }
+}
+
+.database-provisioning.busy-page-indicator,
+.database-error.busy-page-indicator {
+  margin: 150px 0 0;
+}
+
+
+.select-options-container {
+  $option-margin: 10px;
+
+  &.row {
+    margin-left: $option-margin / 2 * -1;
+    margin-right: $option-margin / 2  * -1;
+
+    .col-sm-3 {
+      padding-left: $option-margin / 2;
+      padding-right: $option-margin / 2;
+    }
+  }
+
+  .selected-option {
+    .select-option {
+      border: 2px solid $color-bright-blue;
+      padding: 4px;
+    }
+  }
+
+  .select-option {
+    @extend %aptible-panel;
+    border-color: #d9d9d9;
+    cursor: pointer;
+    text-align: center;
+    padding: 5px;
+    height: 60px;
+
+    .select-option-image {
+      margin-top: 11px;
+      max-width: 80%;
+    }
+  }
+
+  .mysql .select-option img {
+    width: 60%;
+    margin-top: 4px;
+  }
+}
+
+#db .select-option .select-option-image {
+  margin-top: 14px;
+}
+
+#db .mysql .select-option .select-option-image {
+  margin-top: 9px;
+}
+
+.disk-size-label-container {
+  background: $color-bg-gray;
+  border-radius: 3px;
+  font-size: 13px;
+  font-weight: $weight-semibold;
+  padding: 10px;
+  text-align: center;
+}

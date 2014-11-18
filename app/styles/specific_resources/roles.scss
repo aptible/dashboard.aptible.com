@@ -1,0 +1,24 @@
+.micro-panel {
+  .checkbox {
+    label {
+      font-size: 14px;
+      font-weight: $weight-semibold;
+    }
+  }
+}
+
+i.fa.privileged {
+  color: $color-bright-orange;
+}
+
+.role-label {
+  small {
+    text-transform: uppercase;
+    color: $color-light;
+    font-size: 11px;
+  }
+
+  i.fa {
+    margin: 0 0 0 8px;
+  }
+}
