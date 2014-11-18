@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { locationHistory } from '../../utils/location';
+import { stubRequest } from "./fake-server";
 
 Ember.Test.registerAsyncHelper('signIn', function(app){
   var session = app.__container__.lookup('torii:session');
@@ -29,9 +30,9 @@ Ember.Test.registerHelper('elementTextContains', function(app, node, expectedTex
       "Element's text did not match expected value, was: '"+nodeText+"'" );
 });
 
-Ember.Test.registerHelper('stubApps', function(app, server){
-  server.get('/apps', function(request){
-    return [200, {}, {
+Ember.Test.registerHelper('stubApps', function(app){
+  stubRequest('get', '/apps', function(request){
+    return this.success({
       _links: {},
       _embedded: {
         apps: [{
@@ -48,6 +49,6 @@ Ember.Test.registerHelper('stubApps', function(app, server){
           handle: 'my-app-2'
         }]
       }
-    }];
+    });
   });
 });

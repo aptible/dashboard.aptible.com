@@ -8,6 +8,7 @@ var Router = Ember.Router.extend({
 Router.map(function() {
   this.route('apps', {}, function(){
     // show an individual app
+    this.route('new');
     this.route('show', {path: '/:app_id'});
   });
   this.route('databases', {}, function(){
