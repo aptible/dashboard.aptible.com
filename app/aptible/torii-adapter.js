@@ -2,6 +2,7 @@ import Ember from "ember";
 import storage from '../utils/storage';
 import config from "../config/environment";
 import ajax from "../utils/ajax";
+import JWT from '../utils/jwt';
 
 export default Ember.Object.extend({
   fetch: function(){
@@ -16,8 +17,8 @@ export default Ember.Object.extend({
         throw new Error('Token not found');
       }
     }).then(function(token){
-      var parts = token.split('.');
-      return JSON.parse(window.atob(parts[1]));
+      var jwt = JWT.create({token:token});
+      return jwt.get('payload');
     }).then(function(payload){
       return ajax(payload.sub, {
         type: 'GET',
@@ -30,6 +31,7 @@ export default Ember.Object.extend({
       throw e;
     });
   },
+
   open: function(tokenResponse){
     return new Ember.RSVP.Promise(function(resolve){
       storage.write(config.authTokenKey, tokenResponse.access_token);
