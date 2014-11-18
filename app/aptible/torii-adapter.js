@@ -3,6 +3,7 @@ import storage from '../utils/storage';
 import config from "../config/environment";
 import ajax from "../utils/ajax";
 import JWT from '../utils/jwt';
+import { auth } from '../application/adapter';
 
 export default Ember.Object.extend({
   fetch: function(){
@@ -17,6 +18,7 @@ export default Ember.Object.extend({
         throw new Error('Token not found');
       }
     }).then(function(token){
+      auth.token = token;
       var jwt = JWT.create({token:token});
       return jwt.get('payload');
     }).then(function(payload){
@@ -27,6 +29,7 @@ export default Ember.Object.extend({
         }
       });
     }).catch(function(e){
+      delete auth.token;
       storage.remove(config.authTokenKey);
       throw e;
     });
@@ -34,6 +37,7 @@ export default Ember.Object.extend({
 
   open: function(tokenResponse){
     return new Ember.RSVP.Promise(function(resolve){
+      auth.token = tokenResponse.access_token;
       storage.write(config.authTokenKey, tokenResponse.access_token);
       resolve();
     });

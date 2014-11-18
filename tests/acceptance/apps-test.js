@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import startApp from '../helpers/start-app';
+import Pretender from 'pretender';
 
-var App;
+var App, server;
 
 module('Acceptance: Apps', {
   setup: function() {
@@ -9,6 +10,9 @@ module('Acceptance: Apps', {
   },
   teardown: function() {
     Ember.run(App, 'destroy');
+    if (server) {
+      server.shutdown();
+    }
   }
 });
 
@@ -21,6 +25,9 @@ test('visiting /apps when not signed in', function() {
 });
 
 test('visiting /apps', function() {
+  server = new Pretender(function(){
+    stubApps(this);
+  });
   signInAndVisit('/apps');
 
   andThen(function() {
@@ -29,6 +36,9 @@ test('visiting /apps', function() {
 });
 
 test('visiting /apps shows list of apps', function() {
+  server = new Pretender(function(){
+    stubApps(this);
+  });
   signInAndVisit('/apps');
 
   andThen(function() {
@@ -38,6 +48,9 @@ test('visiting /apps shows list of apps', function() {
 });
 
 test('visiting /apps then clicking on an app visits the app', function() {
+  server = new Pretender(function(){
+    stubApps(this);
+  });
   signInAndVisit('/apps');
   click('.app-link');
   andThen(function(){
@@ -46,6 +59,9 @@ test('visiting /apps then clicking on an app visits the app', function() {
 });
 
 test('visiting /apps/my-app shows the app', function() {
+  server = new Pretender(function(){
+    stubApps(this);
+  });
   signInAndVisit('/apps/my-app');
   andThen(function() {
     equal(currentPath(), 'apps.show', 'show page is visited');

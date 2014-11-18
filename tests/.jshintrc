@@ -48,7 +48,8 @@
     "signIn",
     "signInAndVisit",
     "equalElementText",
-    "elementTextContains"
+    "elementTextContains",
+    "stubApps"
   ],
   "node": false,
   "browser": false,

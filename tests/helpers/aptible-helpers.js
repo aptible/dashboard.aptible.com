@@ -23,3 +23,26 @@ Ember.Test.registerHelper('elementTextContains', function(app, node, expectedTex
   ok( nodeText.indexOf(expectedText) !== -1,
       "Element's text did not match expected value, was: '"+nodeText+"'" );
 });
+
+Ember.Test.registerHelper('stubApps', function(app, server){
+  server.get('/apps', function(request){
+    return [200, {}, {
+      _links: {},
+      _embedded: {
+        apps: [{
+          _links: {
+            self: { href: '...' }
+          },
+          id: 1,
+          handle: 'my-app'
+        }, {
+          _links: {
+            self: { href: '...' }
+          },
+          id: 2,
+          handle: 'my-app-2'
+        }]
+      }
+    }];
+  });
+});

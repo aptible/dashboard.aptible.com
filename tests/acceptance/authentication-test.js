@@ -62,6 +62,7 @@ test('logging in with correct credentials', function() {
   var password = 'correct';
 
   server = new Pretender(function(){
+    stubApps(this);
     this.post('/tokens', function(request){
       var params = JSON.parse(request.requestBody);
       equal(params.username, email, 'correct email is passed');
