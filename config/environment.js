@@ -55,6 +55,8 @@ module.exports = function(environment) {
     ENV.APP.rootElement = '#ember-testing';
 
     ENV.authTokenKey = '_aptible_authToken-test';
+
+    delete ENV.apiBaseUri;
   }
 
   if (environment === 'production') {
