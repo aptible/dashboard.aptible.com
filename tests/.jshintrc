@@ -47,7 +47,8 @@
     "currentRouteName",
     "signIn",
     "signInAndVisit",
-    "equalElementText"
+    "equalElementText",
+    "elementTextContains"
   ],
   "node": false,
   "browser": false,
