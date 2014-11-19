@@ -48,13 +48,17 @@ function jsonFromRequest(request){
 function stubRequest(verb, path, callback){
   if (!currentServer) { throw "Cannot stubRequest when FakeServer is not running."; }
 
-  callback = callback.bind({
+  var context = {
     json: jsonFromRequest,
     success: successRequest,
     error: errorRequest,
     notFound: notFoundRequest
-  });
-  currentServer[verb](path, callback);
+  };
+  var boundCallback = function(){
+    var args = Array.prototype.slice.call(arguments);
+    return callback.apply(context, args);
+  };
+  currentServer[verb](path, boundCallback);
 }
 
 export { stubRequest };
