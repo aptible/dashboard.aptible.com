@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { locationHistory } from '../../utils/location';
 
 Ember.Test.registerAsyncHelper('signIn', function(app){
   var session = app.__container__.lookup('torii:session');
@@ -12,6 +13,10 @@ Ember.Test.registerAsyncHelper('signIn', function(app){
 Ember.Test.registerAsyncHelper('signInAndVisit', function(app, url){
   signIn();
   visit(url);
+});
+
+Ember.Test.registerAsyncHelper('locationUpdatedTo', function(app, url){
+  equal(locationHistory.last, url, 'window.location updated to expected URL');
 });
 
 Ember.Test.registerHelper('equalElementText', function(app, node, expectedText){

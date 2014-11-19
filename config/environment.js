@@ -12,6 +12,8 @@ module.exports = function(environment) {
 
     authTokenKey: '_aptible_authToken',
 
+    replaceLocation: true,
+
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
@@ -36,7 +38,7 @@ module.exports = function(environment) {
   };
 
   if (environment === 'development') {
-    // ENV.APP.LOG_RESOLVER = true;
+    ENV.APP.LOG_RESOLVER = true;
     ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
@@ -55,6 +57,8 @@ module.exports = function(environment) {
     ENV.APP.rootElement = '#ember-testing';
 
     ENV.authTokenKey = '_aptible_authToken-test';
+
+    ENV.replaceLocation = false;
 
     delete ENV.apiBaseUri;
   }

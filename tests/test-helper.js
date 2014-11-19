@@ -4,6 +4,7 @@ import {
 } from 'ember-qunit';
 import Pretender from "pretender";
 import config from "../config/environment";
+import { locationHistory } from '../utils/location';
 
 setResolver(resolver);
 
@@ -28,4 +29,5 @@ Pretender.prototype.prepareBody = function(body){
 
 QUnit.testStart(function(){
   window.localStorage.setItem(config.authTokenKey, null);
+  delete locationHistory.last;
 });

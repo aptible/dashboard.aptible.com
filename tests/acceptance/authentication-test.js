@@ -88,3 +88,20 @@ test('logging in with correct credentials', function() {
     equal(currentPath(), 'apps.index');
   });
 });
+
+test('logging out redirects to login if not logged in', function() {
+  visit('/logout');
+  andThen(function(){
+    equal(currentPath(), 'login', 'redirected to login');
+  });
+});
+
+test('logging out reloads the page', function() {
+  server = new Pretender(function(){
+    stubApps(this);
+  });
+  signInAndVisit('/apps');
+  click('.current-user .dropdown-toggle');
+  click('a:contains(Logout)');
+  locationUpdatedTo('/');
+});
