@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import startApp from '../helpers/start-app';
-import Pretender from "pretender";
+import { stubRequest } from '../helpers/fake-server';
 
 var App, server;
 
@@ -31,18 +31,16 @@ test('logging in with bad credentials', function() {
   var password = 'incorrect';
   var errorMessage = 'User not found: '+email;
 
-  server = new Pretender(function(){
-    this.post('/tokens', function(request){
-      var params = JSON.parse(request.requestBody);
-      equal(params.username, email, 'correct email is passed');
-      equal(params.password, password, 'correct password is passed');
-      equal(params.grant_type, 'password', 'correct grant_type is passed');
+  stubRequest('post', '/tokens', function(request){
+    var params = JSON.parse(request.requestBody);
+    equal(params.username, email, 'correct email is passed');
+    equal(params.password, password, 'correct password is passed');
+    equal(params.grant_type, 'password', 'correct grant_type is passed');
 
-      return [401, {}, {
-        code: 401,
-        error: 'invalid_credentials',
-        message: errorMessage
-      }];
+    return this.error(401, {
+      code: 401,
+      error: 'invalid_credentials',
+      message: errorMessage
     });
   });
 
@@ -61,22 +59,20 @@ test('logging in with correct credentials', function() {
   var email = 'good@email.com';
   var password = 'correct';
 
-  server = new Pretender(function(){
-    stubApps(this);
-    this.post('/tokens', function(request){
-      var params = JSON.parse(request.requestBody);
-      equal(params.username, email, 'correct email is passed');
-      equal(params.password, password, 'correct password is passed');
-      equal(params.grant_type, 'password', 'correct grant_type is passed');
+  stubApps();
+  stubRequest('post', '/tokens', function(request){
+    var params = JSON.parse(request.requestBody);
+    equal(params.username, email, 'correct email is passed');
+    equal(params.password, password, 'correct password is passed');
+    equal(params.grant_type, 'password', 'correct grant_type is passed');
 
-      return [201, {}, {
-        id: 'my-id',
-        access_token: 'my-token',
-        token_type: 'bearer',
-        expires_in: 2,
-        scope: 'manage',
-        type: 'token'
-      }];
+    return this.success({
+      id: 'my-id',
+      access_token: 'my-token',
+      token_type: 'bearer',
+      expires_in: 2,
+      scope: 'manage',
+      type: 'token'
     });
   });
 
@@ -97,9 +93,7 @@ test('logging out redirects to login if not logged in', function() {
 });
 
 test('logging out reloads the page', function() {
-  server = new Pretender(function(){
-    stubApps(this);
-  });
+  stubApps();
   signInAndVisit('/apps');
   click('.current-user .dropdown-toggle');
   click('a:contains(Logout)');
