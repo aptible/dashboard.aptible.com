@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import startApp from '../helpers/start-app';
-import Pretender from 'pretender';
+import { stubRequest } from '../helpers/fake-server';
 
 var App, server;
 
@@ -25,9 +25,7 @@ test('visiting /apps when not signed in', function() {
 });
 
 test('visiting /apps', function() {
-  server = new Pretender(function(){
-    stubApps(this);
-  });
+  stubApps();
   signInAndVisit('/apps');
 
   andThen(function() {
@@ -36,9 +34,7 @@ test('visiting /apps', function() {
 });
 
 test('visiting /apps shows list of apps', function() {
-  server = new Pretender(function(){
-    stubApps(this);
-  });
+  stubApps(this);
   signInAndVisit('/apps');
 
   andThen(function() {
@@ -48,9 +44,7 @@ test('visiting /apps shows list of apps', function() {
 });
 
 test('visiting /apps then clicking on an app visits the app', function() {
-  server = new Pretender(function(){
-    stubApps(this);
-  });
+  stubApps(this);
   signInAndVisit('/apps');
   click('.app-link');
   andThen(function(){
@@ -59,9 +53,7 @@ test('visiting /apps then clicking on an app visits the app', function() {
 });
 
 test('visiting /apps/my-app shows the app', function() {
-  server = new Pretender(function(){
-    stubApps(this);
-  });
+  stubApps(this);
   signInAndVisit('/apps/my-app');
   andThen(function() {
     equal(currentPath(), 'apps.show', 'show page is visited');
