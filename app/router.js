@@ -14,6 +14,7 @@ Router.map(function() {
     this.route('show', {path: '/:database_id'});
   });
   this.route('login');
+  this.route('logout');
 });
 
 export default Router;

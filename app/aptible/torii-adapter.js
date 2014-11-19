@@ -41,5 +41,13 @@ export default Ember.Object.extend({
       storage.write(config.authTokenKey, tokenResponse.access_token);
       resolve();
     });
+  },
+
+  close: function(){
+    return new Ember.RSVP.Promise(function(resolve){
+      delete auth.token;
+      storage.remove(config.authTokenKey);
+      resolve();
+    });
   }
 });
