@@ -11,10 +11,10 @@ export default ApplicationAdapter.extend({
 
       // if POSTing, should POST to /accounts/1/apps
       // should push 'accounts', account_id to url
-      var account_id = record ? Ember.get(record, 'account.id') : null;
-      if (account_id) {
+      var accountId = record ? Ember.get(record, 'account.id') : null;
+      if (accountId) {
         url.push('accounts');
-        url.push( account_id );
+        url.push( accountId );
       }
 
       // if GETting, should request from /apps/1

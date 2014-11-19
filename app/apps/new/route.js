@@ -13,6 +13,7 @@ export default Ember.Route.extend({
       app.save().then(function(){
         route.transitionTo('apps');
       }).catch(function(e){
+        // TODO show a UI error
         console.error(e);
       });
     }
