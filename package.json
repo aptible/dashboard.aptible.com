@@ -31,7 +31,7 @@
     "ember-cli-pretender": "^0.3.1",
     "ember-cli-qunit": "0.1.0",
     "ember-data": "1.0.0-beta.10",
-    "ember-data-hal-9000": "git://github.com/201-created/ember-data-hal-9000#e6b888129284662ab0de81f19cda87c6552422c7",
+    "ember-data-hal-9000": "git://github.com/201-created/ember-data-hal-9000#8ed5d82a6483ac5f3f6a3af100160435123578cb",
     "ember-export-application-global": "^1.0.0",
     "express": "^4.8.5",
     "glob": "^4.0.5",

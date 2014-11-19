@@ -58,6 +58,7 @@ test('logging in with bad credentials', function() {
 test('logging in with correct credentials', function() {
   var email = 'good@email.com';
   var password = 'correct';
+  var userUrl = '/user-url';
 
   stubApps();
   stubRequest('post', '/tokens', function(request){
@@ -72,7 +73,19 @@ test('logging in with correct credentials', function() {
       token_type: 'bearer',
       expires_in: 2,
       scope: 'manage',
-      type: 'token'
+      type: 'token',
+      _links: {
+        user: {
+          href: userUrl
+        }
+      }
+    });
+  });
+
+  stubRequest('get', userUrl, function(){
+    return this.success({
+      id: 'some-id',
+      username: 'some-email'
     });
   });
 
