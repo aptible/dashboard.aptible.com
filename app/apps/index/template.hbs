@@ -1,5 +1,74 @@
-{{#each app in model}}
-  <div class="app-row">
-    {{link-to app.handle 'apps.show' app class="app-link"}}
-  </div>
-{{/each}}
+<div class="panel panel-default table-panel account-panel" id="account-111">
+  <header>
+  <h4>
+    <span class="account-name">Aptible Helpers</span>
+    <span class="subdued account-handle">aptible-helpers</span>
+    <span class="account-type label label-default">
+      Development Account
+  </span></h4>
+  <ul class="nav nav-pills sub-nav-tabs">
+    <li>
+    <a class="new-app-link" data-account-id="111">Create App</a>
+    </li>
+    <li>
+    <a class="edit-account-link" data-account-id="111" data-placement="bottom" data-toggle="tooltip" title="" data-original-title="Account Settings">
+      <i class="fa fa-cog"></i>
+    </a>
+    </li>
+  </ul>
+  </header>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>App</th>
+        <th>Services</th>
+        <th>Status</th>
+        <th>Last Operation</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each app in model}}
+        <tr class="app-row" id="app-248-row">
+          <td class="primary-cell">
+            {{link-to app.handle 'apps.show' app class="app-link"}}
+          </td>
+          <td class="app-services">web, hubot</td>
+          <td class="app-status">
+            {{status-icon status=app.status}}
+          </td>
+          <td class="app-last-operation last-operation-cell">
+            <div class="gravatar xs">
+              <img src="https://secure.gravatar.com/avatar/f7790b867ae619ae0496460aa28c5861?s=32">
+            </div>
+            <div class="operation-info">Deployed about 2 months ago</div>
+          </td>
+          <td class="app-list-nav-cell">
+            <div class="app-list-nav">
+              <ul class="nav nav-pills sub-nav-tabs">
+                <li class="">
+                <a class="app-services-link" data-placement="bottom" data-toggle="tooltip" href="/apps/248" title="" data-original-title="App Services">
+                  <i class="fa fa-cube"></i>
+                  <span class="button-label">Services</span>
+                </a>
+                </li>
+                <li class="">
+                <a class="app-history-link" data-placement="bottom" data-toggle="tooltip" href="/apps/248/operations" title="" data-original-title="App History">
+                  <i class="fa fa-clock-o"></i>
+                  <span class="button-label">History</span>
+                </a>
+                </li>
+                <li>
+                <a class="destroy-app-link" data-app-id="248" data-placement="bottom" data-toggle="tooltip" href="" title="" data-original-title="Deprovision App">
+                  <i class="fa fa-times-circle-o"></i>
+                  <span class="button-label">Deprovision</span>
+                </a>
+                </li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

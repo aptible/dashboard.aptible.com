@@ -8,5 +8,10 @@ export default Ember.Route.extend({
         route.transitionTo('login');
       });
     }
+  },
+  setupController: function(controller, model){
+    controller.set('model', model);
+    controller.set('sectionTitle', 'Apps');
+    controller.set('sectionPath', 'apps.index');
   }
 });
