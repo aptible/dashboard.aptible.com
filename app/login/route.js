@@ -16,7 +16,8 @@ export default Ember.Route.extend({
       var credentials = {
         username: authAttempt.email,
         password: authAttempt.password,
-        grant_type: 'password'
+        grant_type: 'password',
+        scope: 'manage'
       };
       this.session.open('aptible', credentials).then(function(){
         route.transitionTo('apps');

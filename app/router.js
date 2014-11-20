@@ -16,6 +16,10 @@ Router.map(function() {
   });
   this.route('login');
   this.route('logout');
+  this.route('stack', {path: 'stacks/:stack_id'}, function(){
+    this.route('new-database', {path: 'databases/new'});
+    this.route('new-app', {path: 'apps/new'});
+  });
 });
 
 export default Router;
