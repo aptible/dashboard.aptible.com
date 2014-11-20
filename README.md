@@ -23,6 +23,13 @@ You will need the following things properly installed on your computer.
 * `ember server`
 * Visit your app at http://localhost:4200.
 
+By default, the api.aptible.com and auth.aptible.com servers will be used as
+data sources. For use with diesel they should be given the `.env` values of:
+
+```
+CORS_DOMAIN="http://localhost:4200"
+```
+
 ### Code Generators
 
 Make use of the many generators for code, try `ember help generate` for more details
