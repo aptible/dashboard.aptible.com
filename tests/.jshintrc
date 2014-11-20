@@ -50,6 +50,7 @@
     "equalElementText",
     "elementTextContains",
     "stubApps",
+    "stubDatabases",
     "locationUpdatedTo"
   ],
   "node": false,

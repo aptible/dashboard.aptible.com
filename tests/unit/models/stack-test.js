@@ -3,9 +3,9 @@ import {
   test
 } from 'ember-qunit';
 
-moduleForModel('database', 'Database', {
+moduleForModel('stack', 'Stack', {
   // Specify the other units that are required for this test.
-  needs: ['model:stack','model:app']
+  needs: ['model:database','model:app']
 });
 
 test('it exists', function() {

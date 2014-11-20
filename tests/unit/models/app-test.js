@@ -9,15 +9,17 @@ import Ember from 'ember';
 var server;
 
 moduleForModel('app', 'App', {
-  needs: ['adapter:app', 'serializer:application']
+  needs: ['adapter:app', 'serializer:application', 'model:stack','model:database']
 });
 
 test('creating POSTs to correct url', function(){
   expect(2);
 
   var store = this.store();
-  var app = Ember.run(function(){
-    return store.createRecord('app', {handle:'my-cool-app', account: {id:'1'}});
+  var app, stack;
+  Ember.run(function(){
+    stack = store.createRecord('stack', {id: '1'});
+    app = store.createRecord('app', {handle:'my-cool-app', stack:stack});
   });
 
   stubRequest('post', '/accounts/1/apps', function(request){

@@ -9,5 +9,11 @@ export default HalAdapter.extend({
     return {
       'Authorization': 'Bearer ' + auth.token
     };
-  }.property().volatile()
+  }.property().volatile(),
+  pathForType: function(type){
+    if (type === 'stack') {
+      type = 'account';
+    }
+    return this._super(type);
+  }
 });

@@ -3,9 +3,10 @@ import startApp from '../helpers/start-app';
 
 var App;
 
-module('Acceptance: Apps', {
+module('Acceptance: Databases', {
   setup: function() {
     App = startApp();
+    stubDatabases();
   },
   teardown: function() {
     Ember.run(App, 'destroy');

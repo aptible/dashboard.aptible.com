@@ -52,3 +52,26 @@ Ember.Test.registerHelper('stubApps', function(app){
     });
   });
 });
+
+Ember.Test.registerHelper('stubDatabases', function(app){
+  stubRequest('get', '/databases', function(request){
+    return this.success({
+      _links: {},
+      _embedded: {
+        databases: [{
+          _links: {
+            self: { href: '...' }
+          },
+          id: 1,
+          handle: 'my-db'
+        }, {
+          _links: {
+            self: { href: '...' }
+          },
+          id: 2,
+          handle: 'my-db-2'
+        }]
+      }
+    });
+  });
+});
