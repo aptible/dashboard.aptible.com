@@ -7,6 +7,7 @@ var App, server;
 module('Acceptance: Apps', {
   setup: function() {
     App = startApp();
+    stubStacks({includeApps:true});
   },
   teardown: function() {
     Ember.run(App, 'destroy');
@@ -25,7 +26,6 @@ test('visiting /apps when not signed in', function() {
 });
 
 test('visiting /apps', function() {
-  stubApps();
   signInAndVisit('/apps');
 
   andThen(function() {
@@ -33,18 +33,33 @@ test('visiting /apps', function() {
   });
 });
 
-test('visiting /apps shows list of apps', function() {
-  stubApps(this);
+test('visiting /apps shows list of stacks', function() {
   signInAndVisit('/apps');
 
   andThen(function() {
-    var row = findWithAssert('.app-row');
-    equal(row.length, 2, 'shows 2 apps');
+    App.testHelpers.expectStackHeader('my-stack-1');
+    App.testHelpers.expectStackHeader('my-stack-2');
+  });
+});
+
+test('visiting /apps shows apps in stacks', function() {
+  signInAndVisit('/apps');
+
+  andThen(function() {
+    var stackPanels = find('.account-panel');
+
+    equal(stackPanels.length, 2, '2 stack panels');
+
+    for (var i=0; i < stackPanels.length; i++) {
+      var panel = stackPanels[i];
+
+      var appRows = find('.app-row', panel);
+      equal(appRows.length, '2', '2 app rows');
+    }
   });
 });
 
 test('visiting /apps then clicking on an app visits the app', function() {
-  stubApps(this);
   signInAndVisit('/apps');
   click('.app-link');
   andThen(function(){
@@ -53,7 +68,6 @@ test('visiting /apps then clicking on an app visits the app', function() {
 });
 
 test('visiting /apps/my-app shows the app', function() {
-  stubApps(this);
   signInAndVisit('/apps/my-app');
   andThen(function() {
     equal(currentPath(), 'apps.show', 'show page is visited');

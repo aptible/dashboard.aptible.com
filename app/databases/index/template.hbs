@@ -1,7 +1,36 @@
-{{link-to 'Create Database' 'stack.new-database' model.firstObject.stack}}
+{{#each stack in stacks}}
 
-{{#each database in model}}
-  <div class="database-row">
-    {{link-to database.handle 'databases.show' database class="database-link"}}
+  <div class="panel panel-default table-panel account-panel">
+    <header>
+    <h4>
+      <span class="account-name">{{stack.name}}</span>
+      <span class="subdued account-handle">{{stack.handle}}</span>
+      <span class="account-type label label-default">
+        {{stack.type}}
+      </span>
+    </h4>
+    <ul class="nav nav-pills sub-nav-tabs">
+      <li>
+        {{link-to 'Create Database' 'stack.new-database' stack class="new-database-link"}}
+      </li>
+      <li>
+        <a class="edit-account-link" data-account-id="111" data-placement="bottom" data-toggle="tooltip" title="" data-original-title="Account Settings">
+          <i class="fa fa-cog"></i>
+        </a>
+      </li>
+    </ul>
+    </header>
+
+    <table class="table table-striped">
+      {{partial "stack/database-table-header"}}
+
+      <tbody>
+        {{#each database in stack.databases}}
+          {{partial "stack/database-table-row"}}
+        {{/each}}
+      </tbody>
+    </table>
+
   </div>
+
 {{/each}}

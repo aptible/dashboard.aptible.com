@@ -51,6 +51,7 @@
     "elementTextContains",
     "stubApps",
     "stubDatabases",
+    "stubStacks",
     "locationUpdatedTo"
   ],
   "node": false,

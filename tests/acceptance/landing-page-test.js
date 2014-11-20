@@ -6,6 +6,7 @@ var App;
 module('Acceptance: LandingPage', {
   setup: function() {
     App = startApp();
+    stubStacks();
   },
   teardown: function() {
     Ember.run(App, 'destroy');
@@ -21,7 +22,6 @@ test('visiting / redirects to login page', function() {
 });
 
 test('visiting / when logged in redirects to apps page', function() {
-  stubApps();
   signInAndVisit('/');
 
   andThen(function() {
