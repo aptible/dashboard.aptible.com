@@ -5,7 +5,7 @@ import {
 
 moduleForModel('database', 'Database', {
   // Specify the other units that are required for this test.
-  needs: []
+  needs: ['model:stack','model:app']
 });
 
 test('it exists', function() {

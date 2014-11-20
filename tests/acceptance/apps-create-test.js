@@ -4,7 +4,7 @@ import { stubRequest } from '../helpers/fake-server';
 
 var App, server;
 
-module('Acceptance: apps/new', {
+module('Acceptance: /stacks/:stack_id/apps/new', {
   setup: function() {
     App = startApp();
   },
@@ -16,29 +16,55 @@ module('Acceptance: apps/new', {
   }
 });
 
-test('visit /apps/new and create an app', function(){
-  expect(4);
+test('visit /stacks/1/apps/new', function(){
+  expect(2);
 
   stubApps();
 
-  signInAndVisit('/apps/new');
+  stubRequest('get', '/accounts/1', function(request){
+    var json = JSON.parse(request.requestBody);
+
+    return this.success({
+      id: '1'
+    });
+  });
+
+  signInAndVisit('/stacks/1/apps/new');
+
+  andThen(function(){
+    equal(currentPath(), 'stack.new-app');
+
+    var input = findWithAssert('input.app-handle');
+    ok(input.length, 'has app handle input');
+  });
+});
+
+test('visit /stacks/1/apps/new and create an app', function(){
+  expect(3);
+
+  stubApps();
+
+  stubRequest('get', '/accounts/1', function(request){
+    var json = JSON.parse(request.requestBody);
+
+    return this.success({
+      id: '1'
+    });
+  });
 
   stubRequest('post', '/accounts/1/apps', function(request){
     var json = JSON.parse(request.requestBody);
     equal(json.handle, 'my-new-app', 'posts app handle');
 
-    return [200, {}, {
+    return this.success(201, {
       id: 'my-new-app-id',
       handle: 'my-new-app'
-    }];
+    });
   });
 
-  andThen(function(){
-    equal(currentPath(), 'apps.new');
-
-    fillIn('input.app-name', 'my-new-app');
-    click(':contains(Create app)');
-  });
+  signInAndVisit('/stacks/1/apps/new');
+  fillIn('input.app-handle', 'my-new-app');
+  click(':contains(Create app)');
 
   andThen(function(){
     equal(currentPath(), 'apps.index');
