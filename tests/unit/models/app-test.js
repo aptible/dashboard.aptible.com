@@ -6,10 +6,32 @@ import { stubRequest } from "../../helpers/fake-server";
 
 import Ember from 'ember';
 
-var server;
-
 moduleForModel('app', 'App', {
   needs: ['adapter:app', 'serializer:application', 'model:stack','model:database']
+});
+
+test('finding uses correct url', function(){
+  expect(2);
+
+  stubRequest('get', '/apps/1', function(request){
+    ok(true, 'calls with correct URL');
+
+    return this.success({
+      id: 'my-app-id',
+      handle: 'my-cool-app',
+      _links: {
+        account: { href: '/accounts/1' }
+      }
+    });
+  });
+
+  var store = this.store();
+
+  return Ember.run(function(){
+    return store.find('app', '1').then(function(){
+      ok(true, 'app did find');
+    });
+  });
 });
 
 test('creating POSTs to correct url', function(){

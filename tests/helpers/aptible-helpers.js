@@ -30,49 +30,12 @@ Ember.Test.registerHelper('elementTextContains', function(app, node, expectedTex
       "Element's text did not match expected value, was: '"+nodeText+"'" );
 });
 
-Ember.Test.registerHelper('stubApps', function(app){
-  stubRequest('get', '/apps', function(request){
-    return this.success({
-      _links: {},
-      _embedded: {
-        apps: [{
-          _links: {
-            self: { href: '...' }
-          },
-          id: 1,
-          handle: 'my-app'
-        }, {
-          _links: {
-            self: { href: '...' }
-          },
-          id: 2,
-          handle: 'my-app-2'
-        }]
-      }
-    });
-  });
-});
+Ember.Test.registerHelper('stubStack', function(app, stackData){
+  var id = stackData.id;
+  if (!id) { throw new Error('cannot stub stack without id'); }
 
-Ember.Test.registerHelper('stubDatabases', function(app){
-  stubRequest('get', '/databases', function(request){
-    return this.success({
-      _links: {},
-      _embedded: {
-        databases: [{
-          _links: {
-            self: { href: '...' }
-          },
-          id: 1,
-          handle: 'my-db'
-        }, {
-          _links: {
-            self: { href: '...' }
-          },
-          id: 2,
-          handle: 'my-db-2'
-        }]
-      }
-    });
+  stubRequest('get', '/accounts/' + id, function(request){
+    return this.success(stackData);
   });
 });
 

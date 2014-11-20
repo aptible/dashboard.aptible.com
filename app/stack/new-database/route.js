@@ -12,7 +12,7 @@ export default Ember.Route.extend({
     create: function(){
       var db = this.currentModel;
       var route = this;
-      db.save({ stack: {id: db.get('stack.id')} }).then(function(){
+      db.save().then(function(){
         route.transitionTo('databases.index');
       });
     }
