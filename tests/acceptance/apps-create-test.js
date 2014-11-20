@@ -4,7 +4,7 @@ import { stubRequest } from '../helpers/fake-server';
 
 var App, server;
 
-module('Acceptance: /stacks/:stack_id/apps/new', {
+module('Acceptance: App Create', {
   setup: function() {
     App = startApp();
   },
@@ -42,13 +42,37 @@ test('visit /stacks/1/apps/new', function(){
 test('visit /stacks/1/apps/new and create an app', function(){
   expect(3);
 
-  stubApps();
-
   stubRequest('get', '/accounts/1', function(request){
     var json = JSON.parse(request.requestBody);
 
     return this.success({
-      id: '1'
+      id: '1',
+      handle: 'stack-1'
+    });
+  });
+
+  stubRequest('get', '/accounts', function(request){
+    return this.success({
+      _embedded: {
+        accounts: [{
+          id: '1',
+          handle: 'stack-1',
+          _links: {
+            apps: { href: '/accounts/1/apps' }
+          }
+        }]
+      }
+    });
+  });
+
+  stubRequest('get', '/accounts/1/apps', function(request){
+    return this.success({
+      _embedded: {
+        apps: [{
+          id: 'my-new-app-id',
+          handle: 'my-new-app'
+        }]
+      }
     });
   });
 

@@ -56,11 +56,12 @@ test('logging in with bad credentials', function() {
 });
 
 test('logging in with correct credentials', function() {
+  stubStacks();
+
   var email = 'good@email.com';
   var password = 'correct';
   var userUrl = '/user-url';
 
-  stubApps();
   stubRequest('post', '/tokens', function(request){
     var params = JSON.parse(request.requestBody);
     equal(params.username, email, 'correct email is passed');
@@ -106,7 +107,7 @@ test('logging out redirects to login if not logged in', function() {
 });
 
 test('logging out reloads the page', function() {
-  stubApps();
+  stubStacks();
   signInAndVisit('/apps');
   click('.current-user .dropdown-toggle');
   click('a:contains(Logout)');

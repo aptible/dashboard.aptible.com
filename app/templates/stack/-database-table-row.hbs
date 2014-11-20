@@ -1,0 +1,44 @@
+<tr class="database-row">
+  <td class="primary-cell">
+    {{link-to database.handle 'databases.show' database class="database-link"}}
+  </td>
+  <td class="database-type">
+    {{status-icon status=database.type}}
+  </td>
+  <td class="database-size">
+    10G
+  </td>
+  <td class="database-status">
+    {{status-icon status=database.status}}
+  </td>
+  <td class="database-last-operation last-operation-cell">
+    <div class="gravatar xs">
+      <img src="https://secure.gravatar.com/avatar/f7790b867ae619ae0496460aa28c5861?s=32">
+    </div>
+    <div class="operation-info">Deployed about 2 months ago</div>
+  </td>
+  <td class="database-list-nav-cell">
+    <div class="database-list-nav">
+      <ul class="nav nav-pills sub-nav-tabs">
+        <li class="">
+        <a class="database-services-link" data-placement="bottom">
+          <i class="fa fa-cube"></i>
+          <span class="button-label">Services</span>
+        </a>
+        </li>
+        <li class="">
+        <a class="database-history-link" data-placement="bottom">
+          <i class="fa fa-clock-o"></i>
+          <span class="button-label">History</span>
+        </a>
+        </li>
+        <li>
+        <a class="destroy-database-link" data-placement="bottom">
+          <i class="fa fa-times-circle-o"></i>
+          <span class="button-label">Deprovision</span>
+        </a>
+        </li>
+      </ul>
+    </div>
+  </td>
+</tr>

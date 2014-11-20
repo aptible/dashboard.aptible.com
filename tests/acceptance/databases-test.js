@@ -6,7 +6,7 @@ var App;
 module('Acceptance: Databases', {
   setup: function() {
     App = startApp();
-    stubDatabases();
+    stubStacks({includeDatabases:true});
   },
   teardown: function() {
     Ember.run(App, 'destroy');
@@ -35,7 +35,16 @@ test('visiting /databases shows list of databases', function() {
 
   andThen(function() {
     var row = findWithAssert('.database-row');
-    equal(row.length, 2, 'shows 2 databases');
+    equal(row.length, 4, 'shows 4 databases');
+  });
+});
+
+test('visiting /databases shows list of stacks', function() {
+  signInAndVisit('/databases');
+
+  andThen(function() {
+    var panels = findWithAssert('.panel.account-panel');
+    equal(panels.length, 2, 'shows 2 stacks');
   });
 });
 
@@ -47,11 +56,3 @@ test('visiting /databases then clicking on an database visits the database', fun
   });
 });
 
-test('visiting /databases/my-database shows the database', function() {
-  signInAndVisit('/databases/my-database');
-  andThen(function() {
-    equal(currentPath(), 'databases.show', 'show page is visited');
-    var contentNode = findWithAssert('*:contains(my-database)');
-    ok(contentNode.length > 0, 'my-app is on the page');
-  });
-});
