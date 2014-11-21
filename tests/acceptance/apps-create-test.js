@@ -19,15 +19,7 @@ module('Acceptance: App Create', {
 test('visit /stacks/1/apps/new', function(){
   expect(2);
 
-  stubApps();
-
-  stubRequest('get', '/accounts/1', function(request){
-    var json = JSON.parse(request.requestBody);
-
-    return this.success({
-      id: '1'
-    });
-  });
+  stubStack({id:1});
 
   signInAndVisit('/stacks/1/apps/new');
 

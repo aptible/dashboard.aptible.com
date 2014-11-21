@@ -49,8 +49,7 @@
     "signInAndVisit",
     "equalElementText",
     "elementTextContains",
-    "stubApps",
-    "stubDatabases",
+    "stubStack",
     "stubStacks",
     "locationUpdatedTo"
   ],

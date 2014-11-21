@@ -66,12 +66,3 @@ test('visiting /apps then clicking on an app visits the app', function() {
     equal(currentPath(), 'apps.show', 'show page is visited');
   });
 });
-
-test('visiting /apps/my-app shows the app', function() {
-  signInAndVisit('/apps/my-app');
-  andThen(function() {
-    equal(currentPath(), 'apps.show', 'show page is visited');
-    var contentNode = findWithAssert('*:contains(my-app)');
-    ok(contentNode.length > 0, 'my-app is on the page');
-  });
-});
