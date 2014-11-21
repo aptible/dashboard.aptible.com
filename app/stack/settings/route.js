@@ -5,12 +5,21 @@ export default Ember.Route.extend({
     controller.set('stack', model);
   },
 
+  discardChanges: function(){
+    var stack = this.controller.get('stack');
+    stack.rollback();
+  },
+
   actions: {
     cancel: function(){
-      var stack = this.controller.get('stack');
-      stack.rollback();
+      this.discardChanges();
       this.transitionTo('apps');
     },
+
+    willTransition: function(){
+      this.discardChanges();
+    },
+
     update: function(){
       var stack = this.controller.get('stack');
       var route = this;
