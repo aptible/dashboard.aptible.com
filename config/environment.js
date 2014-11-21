@@ -61,6 +61,7 @@ module.exports = function(environment) {
     ENV.replaceLocation = false;
 
     delete ENV.apiBaseUri;
+    delete ENV.authBaseUri;
   }
 
   if (environment === 'production') {

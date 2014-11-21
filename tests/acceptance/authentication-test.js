@@ -2,7 +2,7 @@ import Ember from 'ember';
 import startApp from '../helpers/start-app';
 import { stubRequest } from '../helpers/fake-server';
 
-var App, server;
+var App;
 
 module('Acceptance: Authentication', {
   setup: function() {
@@ -10,9 +10,6 @@ module('Acceptance: Authentication', {
   },
   teardown: function() {
     Ember.run(App, 'destroy');
-    if (server) {
-      server.shutdown();
-    }
   }
 });
 
@@ -112,4 +109,25 @@ test('logging out reloads the page', function() {
   click('.current-user .dropdown-toggle');
   click('a:contains(Logout)');
   locationUpdatedTo('/');
+});
+
+test('visiting /signup', function() {
+  visit('/signup');
+  andThen(function(){
+    equal(currentPath(), 'signup');
+  });
+});
+
+test('Creating an account directs to login', function() {
+  stubRequest('post', '/users', function(){
+    return this.success({
+      id: 'my-user',
+      email: 'bob@bobo.com'
+    });
+  });
+  visit('/signup');
+  click('button:contains(Create Account)');
+  andThen(function(){
+    equal(currentPath(), 'login');
+  });
 });

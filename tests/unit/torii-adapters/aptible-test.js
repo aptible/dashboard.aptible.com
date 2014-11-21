@@ -3,7 +3,7 @@ import {
   test
 } from 'ember-qunit';
 import config from "../../../config/environment";
-import { auth } from '../../../application/adapter';
+import { auth } from '../../../adapters/application';
 import storage from '../../../utils/storage';
 import { stubRequest } from '../../helpers/fake-server';
 import DS from "ember-data";

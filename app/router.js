@@ -20,6 +20,7 @@ Router.map(function() {
     this.route('new-app', {path: 'apps/new'});
     this.route('settings');
   });
+  this.route('signup');
 });
 
 export default Router;
