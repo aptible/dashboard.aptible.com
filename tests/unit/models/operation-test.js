@@ -3,13 +3,12 @@ import {
   test
 } from 'ember-qunit';
 
-moduleForModel('service', 'Service', {
+moduleForModel('operation', 'Operation', {
   // Specify the other units that are required for this test.
   needs: [
     'model:app',
     'model:stack',
-    'model:vhost',
-    'model:operation'
+    'model:service'
   ]
 });
 

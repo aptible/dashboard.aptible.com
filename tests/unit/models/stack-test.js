@@ -11,6 +11,7 @@ moduleForModel('stack', 'Stack', {
     'model:database',
     'model:app',
     'model:service',
+    'model:operation',
     'adapter:application',
     'serializer:application'
   ]

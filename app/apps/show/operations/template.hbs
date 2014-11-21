@@ -1,0 +1,28 @@
+<div>
+  <h3 class='app-handle'>{{app.handle}}</h3>
+</div>
+
+<h4>
+  App Audit History
+  <span class="badge">{{operations.length}}</span>
+</h4>
+
+<div class="operations">
+  {{#each operation in operations}}
+    <div class="operation">
+      <div class="operation-type">
+        {{capitalize-string operation.type}}
+      </div>
+      <div class="operation-status">
+        {{capitalize-string operation.status}}
+      </div>
+      <div class="operation-created-by">
+        {{gravatar-image email=operation.userEmail}}
+        {{operation.userName}}
+      </div>
+      <div class="operation-created">
+        {{operation.createdAt}}
+      </div>
+    </div>
+  {{/each}}
+</div>

@@ -12,6 +12,7 @@ moduleForModel('database', 'Database', {
     'model:stack',
     'model:app',
     'model:service',
+    'model:operation',
     'adapter:database',
     'serializer:application'
   ]

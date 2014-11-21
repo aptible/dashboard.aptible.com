@@ -12,6 +12,7 @@ var App = DS.Model.extend({
   status: DS.attr('string', {defaultValue: STATUSES.PROVISIONED}),
   stack: DS.belongsTo('stack', {async: true}),
   services: DS.hasMany('service', {async:true}),
+  operations: DS.hasMany('operation', {async:true}),
 
   isDeprovisioned: Ember.computed.equal('status', STATUSES.DEPROVISIONED)
 });

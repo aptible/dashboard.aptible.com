@@ -13,7 +13,7 @@ module('Acceptance: Apps Show', {
   }
 });
 
-test('visiting /apps/my-app-id shows the app handle', function() {
+test('visiting /apps/my-app-id shows basic app info', function() {
   stubRequest('get', '/apps/my-app-id', function(request){
     return this.success({
       id: 'my-app-id',
@@ -24,10 +24,13 @@ test('visiting /apps/my-app-id shows the app handle', function() {
   signInAndVisit('/apps/my-app-id');
 
   andThen(function() {
-    equal(currentPath(), 'apps.show', 'show page is visited');
+    equal(currentPath(), 'apps.show.index', 'show page is visited');
 
     var app = find('.app-handle:contains(my-app)');
     ok(app.length, 'shows app handle');
+
+    var linkToOperations = find('a[href~="/apps/my-app-id/operations"]');
+    ok(linkToOperations.length, 'links to operations');
   });
 });
 

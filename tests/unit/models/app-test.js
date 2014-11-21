@@ -13,7 +13,8 @@ moduleForModel('app', 'App', {
     'model:service',
     'model:stack',
     'model:database',
-    'model:vhost'
+    'model:vhost',
+    'model:operation'
   ]
 });
 

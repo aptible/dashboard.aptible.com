@@ -33,7 +33,7 @@ module.exports = function(environment) {
     contentSecurityPolicy: {
       'connect-src': "'self' http://localhost:4000 http://localhost:4001 ws://localhost:35729 ws://0.0.0.0:35729",
       'style-src': "'self' 'unsafe-inline'",
-      'img-src': "'self' https://secure.gravatar.com"
+      'img-src': "'self' http://www.gravatar.com https://secure.gravatar.com"
     }
 
   };
