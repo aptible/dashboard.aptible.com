@@ -17,7 +17,8 @@
     "aptible-sass": "aptible/aptible-sass#df1618ab37bc17c5199f2fd885e79ed3285a1f7f",
     "nouislider": "~7.0.9",
     "font-awesome": "~4.2.0",
-    "pretender": "0.3.1"
+    "pretender": "0.3.1",
+    "JavaScript-MD5": "~1.1.0"
   },
   "resolutions": {
     "ember-data": "1.0.0-beta.11",

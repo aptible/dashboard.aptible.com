@@ -63,6 +63,6 @@ test('visiting /apps then clicking on an app visits the app', function() {
   signInAndVisit('/apps');
   click('.app-link');
   andThen(function(){
-    equal(currentPath(), 'apps.show', 'show page is visited');
+    equal(currentPath(), 'apps.show.index', 'show page is visited');
   });
 });
