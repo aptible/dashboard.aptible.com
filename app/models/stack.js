@@ -6,5 +6,7 @@ export default DS.Model.extend({
   name: DS.attr('string'),
   handle: DS.attr('string'),
   number: DS.attr('string'),
-  type: DS.attr('string')
+  type: DS.attr('string'),
+  syslogHost: DS.attr('string'),
+  syslogPort: DS.attr('string')
 });

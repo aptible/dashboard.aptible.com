@@ -14,9 +14,9 @@
         {{link-to 'Create App' 'stack.new-app' stack class="new-app-link"}}
       </li>
       <li>
-        <a class="edit-account-link" data-account-id="111" data-placement="bottom" data-toggle="tooltip" title="" data-original-title="Account Settings">
+        {{#link-to 'stack.settings' stack data-placement="bottom" data-toggle="tooltip" data-original-title="Account Settings"}}
           <i class="fa fa-cog"></i>
-        </a>
+        {{/link-to}}
       </li>
     </ul>
     </header>
