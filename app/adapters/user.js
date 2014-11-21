@@ -1,6 +1,3 @@
-import config from "../config/environment";
-import ApplicationAdapter from "../application/adapter";
+import AuthAdapter from "./auth";
 
-export default ApplicationAdapter.extend({
-  host: config.authBaseUri
-});
+export default AuthAdapter.extend();

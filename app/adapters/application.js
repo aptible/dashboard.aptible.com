@@ -1,17 +1,20 @@
-import config from "../config/environment";
 import HalAdapter from "ember-data-hal-9000/adapter";
 import DS from "ember-data";
 import Ember from "ember";
+import config from "../config/environment";
 
 export var auth = {};
 
 export default HalAdapter.extend({
+
   host: config.apiBaseUri,
+
   headers: function(){
     return {
       'Authorization': 'Bearer ' + auth.token
     };
   }.property().volatile(),
+
   pathForType: function(type){
     if (type === 'stack') {
       type = 'account';
@@ -30,4 +33,5 @@ export default HalAdapter.extend({
       return error;
     }
   }
+
 });

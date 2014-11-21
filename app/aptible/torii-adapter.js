@@ -2,7 +2,7 @@ import Ember from "ember";
 import storage from '../utils/storage';
 import config from "../config/environment";
 import JWT from '../utils/jwt';
-import { auth } from '../application/adapter';
+import { auth } from '../adapters/application';
 
 function clearSession(){
   delete auth.token;

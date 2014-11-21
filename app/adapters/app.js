@@ -1,4 +1,4 @@
-import ApplicationAdapter from '../application/adapter';
+import ApplicationAdapter from './application';
 import buildURLWithPrefix from '../utils/build-url-with-prefix';
 
 export default ApplicationAdapter.extend({
