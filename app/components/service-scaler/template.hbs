@@ -1,0 +1,25 @@
+<div class='service-containers-select'>
+  <div class="slider">
+    {{view "select"
+       class="slider-select"
+       content=containerCountOptions
+       value=service.containerCount }}
+  </div>
+
+  {{#if error}}
+    <div class="error">
+      {{error}}
+    </div>
+  {{/if}}
+
+  <button {{action "scale"}}
+          {{bind-attr disabled=isSaving}}
+          class="btn btn-xs slider-confirm">
+
+    {{#if isSaving}}
+      Saving...
+    {{else}}
+      Scale
+    {{/if}}
+  </button>
+</div>

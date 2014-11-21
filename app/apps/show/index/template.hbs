@@ -21,6 +21,9 @@
   <div class="service">
     <div class="service-handle">{{service.handle}}</div>
     <div class="service-containers">{{service.containerCount}} {{plural-string "Container" service.containerCount}}</div>
+
+    {{service-scaler service=service action="saveService"}}
+
     <div class="service-vhosts">
       <div class="vhost-count">
         {{service.vhosts.length}} {{plural-string "Vhost" service.vhosts.length}}
