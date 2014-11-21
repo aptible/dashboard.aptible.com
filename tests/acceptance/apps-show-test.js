@@ -14,10 +14,24 @@ module('Acceptance: Apps Show', {
 });
 
 test('visiting /apps/my-app-id shows basic app info', function() {
-  stubRequest('get', '/apps/my-app-id', function(request){
+  var appId = 'my-app-id';
+  var serviceId = 'service-1';
+
+  stubRequest('get', '/apps/' + appId, function(request){
     return this.success({
-      id: 'my-app-id',
-      handle: 'my-app'
+      id: appId,
+      handle: 'my-app',
+      _links: { services: { href: '/apps/' + appId + '/services' } }
+    });
+  });
+
+  stubRequest('get', '/apps/' + appId + '/services', function(request){
+    return this.success({
+      _embedded: {
+        services: [{
+          id: serviceId
+        }]
+      }
     });
   });
 
@@ -31,6 +45,9 @@ test('visiting /apps/my-app-id shows basic app info', function() {
 
     var linkToOperations = find('a[href~="/apps/my-app-id/operations"]');
     ok(linkToOperations.length, 'links to operations');
+
+    var linkToCreateVhost = find('a[href~="/services/' + serviceId + '/vhosts/new"]');
+    ok(linkToCreateVhost.length, 'links to create vhost');
   });
 });
 

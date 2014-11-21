@@ -34,6 +34,9 @@
           <div class="vhost-external-host">{{vhost.externalHost}}</div>
         </div>
       {{/each}}
+      <div class="create-vhost">
+        {{link-to 'Create Vhost' 'service.new-vhost' service}}
+      </div>
     </div>
   </div>
 {{/each}}
