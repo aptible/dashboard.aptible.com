@@ -1,0 +1,16 @@
+<h4>{{unbound stack.name}} Settings</h4>
+
+Name:
+{{input value=stack.name class="stack-name"}}
+<br>
+
+Host:
+{{input value=stack.syslogHost class="stack-syslog-host"}}
+<br>
+
+Port:
+{{input value=stack.syslogPort class="stack-syslog-port"}}
+<br>
+
+<button {{action 'cancel'}}>Nevermind</button>
+<button {{action 'update'}}>Update account</button>
