@@ -7,7 +7,14 @@ import { stubRequest } from "../../helpers/fake-server";
 import Ember from 'ember';
 
 moduleForModel('app', 'App', {
-  needs: ['adapter:app', 'serializer:application', 'model:stack','model:database']
+  needs: [
+    'adapter:app',
+    'serializer:application',
+    'model:service',
+    'model:stack',
+    'model:database',
+    'model:vhost'
+  ]
 });
 
 test('finding uses correct url', function(){
@@ -58,4 +65,16 @@ test('creating POSTs to correct url', function(){
       ok(true, 'app did save');
     });
   });
+});
+
+test('#isDeprovisioned', function(){
+  var app = this.subject();
+
+  ok(!app.get('isDeprovisioned'));
+
+  Ember.run(function(){
+    app.set('status', 'deprovisioned');
+  });
+
+  ok(app.get('isDeprovisioned'));
 });

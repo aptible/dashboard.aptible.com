@@ -7,7 +7,13 @@ import Ember from 'ember';
 
 moduleForModel('stack', 'Stack', {
   // Specify the other units that are required for this test.
-  needs: ['model:database','model:app','adapter:application','serializer:application']
+  needs: [
+    'model:database',
+    'model:app',
+    'model:service',
+    'adapter:application',
+    'serializer:application'
+  ]
 });
 
 test('findAll works', function(){

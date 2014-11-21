@@ -1,3 +1,27 @@
 <div>
-  <h3>{{model.handle}}</h3>
+  <h3 class='app-handle'>{{app.handle}}</h3>
 </div>
+
+{{#if app.isDeprovisioned}}
+  <h1 class="empty-resource-title">
+    This app has been deprovisioned.
+  </h1>
+{{/if}}
+
+{{#each service in app.services}}
+  <div class="service">
+    <div class="service-handle">{{service.handle}}</div>
+    <div class="service-containers">{{service.containerCount}} {{plural-string "Container" service.containerCount}}</div>
+    <div class="service-vhosts">
+      <div class="vhost-count">
+        {{service.vhosts.length}} {{plural-string "Vhost" service.vhosts.length}}
+      </div>
+      {{#each vhost in service.vhosts}}
+        <div class="vhost">
+          <div class="vhost-virtual-domain">{{vhost.virtualDomain}}</div>
+          <div class="vhost-external-host">{{vhost.externalHost}}</div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+{{/each}}

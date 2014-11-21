@@ -8,7 +8,13 @@ import Ember from 'ember';
 
 moduleForModel('database', 'Database', {
   // Specify the other units that are required for this test.
-  needs: ['model:stack','model:app','adapter:database','serializer:application']
+  needs: [
+    'model:stack',
+    'model:app',
+    'model:service',
+    'adapter:database',
+    'serializer:application'
+  ]
 });
 
 test('finding uses correct url', function(){

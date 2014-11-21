@@ -1,8 +1,19 @@
 import DS from 'ember-data';
+import Ember from 'ember';
 
-export default DS.Model.extend({
+var STATUSES = {
+  DEPROVISIONED: 'deprovisioned',
+  PROVISIONED:   'provisioned'
+};
+
+var App = DS.Model.extend({
   handle: DS.attr('string'),
   gitRepo: DS.attr('string'),
-  status: DS.attr('string'),
-  stack: DS.belongsTo('stack', {async: true})
+  status: DS.attr('string', {defaultValue: STATUSES.PROVISIONED}),
+  stack: DS.belongsTo('stack', {async: true}),
+  services: DS.hasMany('service', {async:true}),
+
+  isDeprovisioned: Ember.computed.equal('status', STATUSES.DEPROVISIONED)
 });
+
+export default App;
