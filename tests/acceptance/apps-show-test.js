@@ -14,10 +14,24 @@ module('Acceptance: Apps Show', {
 });
 
 test('visiting /apps/my-app-id shows basic app info', function() {
-  stubRequest('get', '/apps/my-app-id', function(request){
+  var appId = 'my-app-id';
+  var serviceId = 'service-1';
+
+  stubRequest('get', '/apps/' + appId, function(request){
     return this.success({
-      id: 'my-app-id',
-      handle: 'my-app'
+      id: appId,
+      handle: 'my-app',
+      _links: { services: { href: '/apps/' + appId + '/services' } }
+    });
+  });
+
+  stubRequest('get', '/apps/' + appId + '/services', function(request){
+    return this.success({
+      _embedded: {
+        services: [{
+          id: serviceId
+        }]
+      }
     });
   });
 
@@ -31,6 +45,9 @@ test('visiting /apps/my-app-id shows basic app info', function() {
 
     var linkToOperations = find('a[href~="/apps/my-app-id/operations"]');
     ok(linkToOperations.length, 'links to operations');
+
+    var linkToCreateVhost = find('a[href~="/services/' + serviceId + '/vhosts/new"]');
+    ok(linkToCreateVhost.length, 'links to create vhost');
   });
 });
 
@@ -114,6 +131,7 @@ test('visiting /apps/my-app-id shows services', function() {
     var hubot = findWithAssert('.service:eq(0)');
     var handle = find('.service-handle', hubot);
     var containers = find('.service-containers', hubot);
+    var containersSelect = find('.service-containers-select', hubot);
     var vhostsContainer     = find('.service-vhosts', hubot);
     var vhosts = find('.vhost', vhostsContainer);
     var vhostCount = find('.vhost-count', vhostsContainer);
@@ -122,6 +140,7 @@ test('visiting /apps/my-app-id shows services', function() {
 
     equal(handle.text(), 'hubot-service');
     equal(containers.text(), '1 Container');
+    ok(containersSelect.length, 'has select for container count');
     equal(vhosts.length, 1, 'shows 1 vhost for hubot service');
     equalElementText(vhostCount, '1 Vhost');
     equalElementText(vhostVirtualDomain, 'vhost.vdomain.com');
@@ -130,13 +149,58 @@ test('visiting /apps/my-app-id shows services', function() {
     var slack = findWithAssert('.service:eq(1)');
     handle = find('.service-handle', slack);
     containers = find('.service-containers', slack);
+    containersSelect = find('.service-containers-select', slack);
     vhostsContainer     = find('.service-vhosts', slack);
     vhosts = find('.vhost', vhostsContainer);
     vhostCount = find('.vhost-count', vhostsContainer);
 
     equal(handle.text(), 'slack-service');
     equal(containers.text(), '2 Containers');
+    ok(containersSelect.length, 'shows container count selector');
     equal(vhosts.length, 0, 'shows 0 vhost for slack service');
     equalElementText(vhostCount, '0 Vhosts');
+  });
+});
+
+test('visit /apps/:id and change service container count', function(){
+  var appId = 'my-app-id';
+  var serviceId = 'service-1';
+
+  stubRequest('get', '/apps/' + appId, function(request){
+    return this.success({
+      id: appId,
+      handle: 'my-app',
+      _links: { services: { href: '/apps/' + appId + '/services' } }
+    });
+  });
+
+  stubRequest('get', '/apps/' + appId + '/services', function(request){
+    return this.success({
+      _embedded: {
+        services: [{
+          id: serviceId,
+          handle: 'hubot-service',
+          container_count: 1,
+        }]
+      }
+    });
+  });
+
+  stubRequest('put', '/services/' + serviceId, function(request){
+    var json = this.json(request);
+    equal(json.container_count, 5, 'has correct container count');
+
+    return this.success({
+      id: serviceId,
+      handle: 'hubot-service',
+      container_count: 5
+    });
+  });
+
+  signInAndVisit('/apps/' + appId);
+
+  andThen(function(){
+    fillIn('.slider-select', 5);
+    click('button:contains(Scale)');
   });
 });

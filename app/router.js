@@ -12,6 +12,9 @@ Router.map(function() {
       this.route('operations');
     });
   });
+  this.route('service', {path: 'services/:service_id'}, function(){
+    this.route('new-vhost', {path: 'vhosts/new'});
+  });
   this.route('databases', {}, function(){
     this.route('show', {path: '/:database_id'});
   });
