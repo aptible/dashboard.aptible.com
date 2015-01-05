@@ -130,6 +130,14 @@ test('visiting /signup', function() {
   });
 });
 
+test('visiting /signup when logged in redirects', function() {
+  stubStacks();
+  signInAndVisit('/signup');
+  andThen(function(){
+    equal(currentPath(), 'apps.index');
+  });
+});
+
 test('Creating an account directs to login', function() {
   stubStacks(); // For loading index
 
@@ -161,6 +169,6 @@ test('Creating an account directs to login', function() {
   fillIn('input[type=password]', password);
   click('button:contains(Create Account)');
   andThen(function(){
-    equal(currentPath(), 'apps.index');
+    locationUpdatedTo('http://legacy-dashboard-host.com/organizations/new');
   });
 });

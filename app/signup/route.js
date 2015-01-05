@@ -1,7 +1,15 @@
 import Ember from 'ember';
+import config from "../config/environment";
 import { buildCredentials } from "../login/route";
+import { replaceLocation } from "../utils/location";
 
 export default Ember.Route.extend({
+
+  beforeModel: function(){
+    if (this.session.get('isAuthenticated')) {
+      this.replaceWith('index');
+    }
+  },
 
   model: function() {
     return this.store.createRecord('user');
@@ -11,7 +19,6 @@ export default Ember.Route.extend({
 
     signup: function(){
       var user = this.currentModel;
-      var route = this;
       var session = this.session;
       var email = user.get('email');
       var password = user.get('password');
@@ -20,8 +27,8 @@ export default Ember.Route.extend({
         // TODO: This option causes a user request to fetch data already present in the identity map
         return session.open('aptible', credentials);
       }).then(function(){
-        route.transitionTo('index');
-      });
+        replaceLocation([config.legacyDashboardHost, 'organizations/new'].join('/'));
+      }, function(){});
     }
 
   }
