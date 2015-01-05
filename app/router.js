@@ -16,7 +16,9 @@ Router.map(function() {
     this.route('new-vhost', {path: 'vhosts/new'});
   });
   this.route('databases', {}, function(){
-    this.route('show', {path: '/:database_id'});
+    this.route('show', {path: '/:database_id'}, function(){
+      this.route('operations');
+    });
   });
   this.route('login');
   this.route('logout');

@@ -6,7 +6,7 @@ var STATUSES = {
   PROVISIONED:   'provisioned'
 };
 
-var App = DS.Model.extend({
+export default DS.Model.extend({
   handle: DS.attr('string'),
   gitRepo: DS.attr('string'),
   status: DS.attr('string', {defaultValue: STATUSES.PROVISIONED}),
@@ -16,5 +16,3 @@ var App = DS.Model.extend({
 
   isDeprovisioned: Ember.computed.equal('status', STATUSES.DEPROVISIONED)
 });
-
-export default App;

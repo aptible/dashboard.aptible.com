@@ -23,7 +23,7 @@ test('visiting /databases/my-db-id shows the database', function() {
 
   signInAndVisit('/databases/my-db-id');
   andThen(function() {
-    equal(currentPath(), 'databases.show', 'show page is visited');
+    equal(currentPath(), 'databases.show.index', 'show page is visited');
     var contentNode = findWithAssert('*:contains(my-database)');
     ok(contentNode.length > 0, 'my-database is on the page');
   });

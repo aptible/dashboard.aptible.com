@@ -4,7 +4,7 @@ import { stubRequest } from '../helpers/fake-server';
 
 var App;
 
-module('Acceptance: Apps Operations', {
+module('Acceptance: Databases Operations', {
   setup: function() {
     App = startApp();
   },
@@ -13,20 +13,22 @@ module('Acceptance: Apps Operations', {
   }
 });
 
-test('visit /apps/:id/operations show operations', function(){
-  var appId = 'my-app-id';
+test('visit /databases/:id/operations shows operations', function(){
+  var dbId = 'my-db-id',
+      dbUrl = '/databases/' + dbId,
+      dbOpsUrl = dbUrl + '/operations';
 
-  stubRequest('get', '/apps/' + appId, function(request){
+  stubRequest('get', dbUrl, function(request){
     return this.success({
-      id: appId,
-      handle: 'my-app-handle',
+      id: dbId,
+      handle: 'my-db-handle',
       _links: {
-        operations: { href: '/apps/' + appId + '/operations' }
+        operations: { href: dbOpsUrl }
       }
     });
   });
 
-  stubRequest('get', '/apps/' + appId + '/operations', function(request){
+  stubRequest('get', dbOpsUrl, function(request){
     return this.success({
       _embedded: {
         operations: [{
@@ -55,10 +57,11 @@ test('visit /apps/:id/operations show operations', function(){
     });
   });
 
-  signInAndVisit('/apps/' + appId + '/operations');
+
+  signInAndVisit(dbOpsUrl);
 
   andThen(function(){
-    var header = find('header:contains(App Audit History)');
+    var header = find('header:contains(Database Audit History)');
     ok(header.length, 'has header');
 
     var operationsContainer = find('.operations');

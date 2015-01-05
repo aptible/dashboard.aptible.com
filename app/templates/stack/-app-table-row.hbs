@@ -22,10 +22,10 @@
         </a>
         </li>
         <li class="">
-        <a class="app-history-link" data-placement="bottom">
-          <i class="fa fa-clock-o"></i>
-          <span class="button-label">History</span>
-        </a>
+          {{#link-to 'apps.show.operations' app}}
+            <i class="fa fa-clock-o"></i>
+            <span class="button-label">History</span>
+          {{/link-to}}
         </li>
         <li>
         <a class="destroy-app-link" data-placement="bottom">
