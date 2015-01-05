@@ -1,4 +1,4 @@
-# Diesel
+# Diesel [![Build Status](https://travis-ci.org/aptible/diesel.aptible.com.svg?branch=master)](https://travis-ci.org/aptible/diesel.aptible.com)
 
 This README outlines the details of collaborating on this Ember application.
 
