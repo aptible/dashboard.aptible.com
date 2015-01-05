@@ -96,6 +96,14 @@ test('logging in with correct credentials', function() {
   });
 });
 
+test('/login links to signup', function() {
+  visit('/login');
+  click(':contains(Create Your Aptible Account)');
+  andThen(function(){
+    equal(currentPath(), 'signup', 'linked to signup');
+  });
+});
+
 test('logging out redirects to login if not logged in', function() {
   visit('/logout');
   andThen(function(){
