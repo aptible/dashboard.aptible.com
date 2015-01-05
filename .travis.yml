@@ -7,10 +7,7 @@ cache:
   directories:
     - node_modules
 
-env:
-  SKIP_SASS_BINARY_DOWNLOAD_FOR_CI=true
-
-before_install: # These steps lifted from https://github.com/sass/node-sass/issues/497#issuecomment-62552565
+before_install:
   - "npm config set spin false"
   - "npm install -g npm@^2"
 
