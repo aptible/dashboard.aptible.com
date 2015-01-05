@@ -52,7 +52,23 @@ test('visiting /databases then clicking on an database visits the database', fun
   signInAndVisit('/databases');
   click('.database-link');
   andThen(function(){
-    equal(currentPath(), 'databases.show', 'show page is visited');
+    equal(currentPath(), 'databases.show.index', 'show page is visited');
   });
 });
 
+
+test('visiting /databases shows link to db history for each db', function() {
+  // from stubStacks:
+  var dbIds = ['1','2','3','4'];
+
+  signInAndVisit('/databases');
+
+  andThen(function(){
+    dbIds.forEach(function(dbId){
+      var href = '/databases/' + dbId + '/operations';
+      var linkEl = find('a[href~="' + href + '"]');
+
+      ok(linkEl.length, 'has link to ' + href);
+    });
+  });
+});

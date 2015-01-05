@@ -27,10 +27,10 @@
         </a>
         </li>
         <li class="">
-        <a class="database-history-link" data-placement="bottom">
-          <i class="fa fa-clock-o"></i>
-          <span class="button-label">History</span>
-        </a>
+          {{#link-to 'databases.show.operations' database}}
+            <i class="fa fa-clock-o"></i>
+            <span class="button-label">History</span>
+          {{/link-to}}
         </li>
         <li>
         <a class="destroy-database-link" data-placement="bottom">

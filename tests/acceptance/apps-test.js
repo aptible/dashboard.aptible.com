@@ -66,3 +66,19 @@ test('visiting /apps then clicking on an app visits the app', function() {
     equal(currentPath(), 'apps.show.index', 'show page is visited');
   });
 });
+
+test('visiting /apps shows link to app history for each app', function() {
+  // from stubStacks:
+  var appIds = ['1','2','3','4'];
+
+  signInAndVisit('/apps');
+
+  andThen(function(){
+    appIds.forEach(function(appId){
+      var href = '/apps/' + appId + '/operations';
+      var linkEl = find('a[href~="' + href + '"]');
+
+      ok(linkEl.length, 'has link to ' + href);
+    });
+  });
+});
