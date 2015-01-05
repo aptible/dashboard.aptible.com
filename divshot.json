@@ -1,0 +1,14 @@
+{
+  "name": "diesel",
+  "root": "./dist",
+  "clean_urls": true,
+  "routes": {
+    "/tests": "tests/index.html",
+    "/tests/**": "tests/index.html",
+    "/**": "index.html"
+  },
+  "cache_control": {
+    "/assets/**": 2592000,
+    "/": false
+  }
+}
