@@ -8,5 +8,14 @@ export default Ember.Route.extend({
         route.transitionTo('login');
       });
     }
+  },
+
+  setupController: function(controller, model){
+    controller.set('model', model);
+
+    // for nav dropdown
+    controller.set('sectionTitle', 'Databases');
+    controller.set('sectionPath', 'databases.index');
   }
+
 });

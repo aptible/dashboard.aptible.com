@@ -1,5 +1,59 @@
-<div>
-  Got a handle bud?
-  {{input value=model.handle class='database-handle'}}
+<div class="container">
+  <div class="row">
+    <form class="new-database" role="form">
+      <div class="form-group">
+        <label class="block">
+          Database Handle
+          <span class="label-helper">
+            Lowercase alphanumerics, periods, and dashes only
+          </span>
+        </label>
+        {{input class="database-name form-control sanitize-handler"
+                placeholder="e.g., postgresql-prod"
+                name="handle"
+                value=model.handle
+                }}
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+
+        <div class="select-options-container database-select row">
+          {{#db-selector action="selectDbType" as |dbType selectedDbType selectCallback|}}
+            {{db-selector-option
+                  selectCallback=selectCallback
+                  dbType=dbType
+                  selectedDbType=selectedDbType}}
+          {{/db-selector}}
+        </div>
+      </div>
+      <div class="form-group db-size-component">
+        <div class="disk-size-container">
+          <label class="disk-size-label">
+            Disk Size
+          </label>
+          <div class="row">
+            <div class="col-xs-2">
+              <div class="disk-size-label-container">{{diskSize}} GB</div>
+            </div>
+            <div class="col-xs-10">
+              <div class="slider-wrapper">
+                {{no-ui-slider didSlide="didSlide"
+                               classNames="disk-size"
+                               start=10 rangeMin=10 rangeMax=200 step=10}}
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <button {{action 'cancel'}} class="nevermind btn btn-lg-text btn-default pull-left" type='button'>
+        Nevermind
+      </button>
+
+      <button {{action 'create'}} class="btn btn-lg-text btn-primary confirm-action" type='submit'>
+        Create Database
+      </button>
+    </form>
+  </div>
 </div>
-<button {{action "create"}}>Create database</button>
