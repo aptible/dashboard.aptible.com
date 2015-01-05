@@ -10,6 +10,9 @@ export default HalAdapter.extend({
   host: config.apiBaseUri,
 
   headers: function(){
+    if (!auth.token) {
+      return {};
+    }
     return {
       'Authorization': 'Bearer ' + auth.token
     };

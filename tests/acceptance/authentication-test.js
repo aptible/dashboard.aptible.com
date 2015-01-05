@@ -4,6 +4,22 @@ import { stubRequest } from '../helpers/fake-server';
 
 var App;
 
+function successfulTokenResponse(server, userUrl) {
+  return server.success({
+    id: 'my-id',
+    access_token: 'my-token',
+    token_type: 'bearer',
+    expires_in: 2,
+    scope: 'manage',
+    type: 'token',
+    _links: {
+      user: {
+        href: userUrl
+      }
+    }
+  });
+}
+
 module('Acceptance: Authentication', {
   setup: function() {
     App = startApp();
@@ -65,19 +81,7 @@ test('logging in with correct credentials', function() {
     equal(params.password, password, 'correct password is passed');
     equal(params.grant_type, 'password', 'correct grant_type is passed');
 
-    return this.success({
-      id: 'my-id',
-      access_token: 'my-token',
-      token_type: 'bearer',
-      expires_in: 2,
-      scope: 'manage',
-      type: 'token',
-      _links: {
-        user: {
-          href: userUrl
-        }
-      }
-    });
+    return successfulTokenResponse(this, userUrl);
   });
 
   stubRequest('get', userUrl, function(){
@@ -127,15 +131,36 @@ test('visiting /signup', function() {
 });
 
 test('Creating an account directs to login', function() {
+  stubStacks(); // For loading index
+
+  var email = 'good@email.com';
+  var password = 'correct';
+  var userUrl = '/users/my-user';
+
   stubRequest('post', '/users', function(){
     return this.success({
       id: 'my-user',
-      email: 'bob@bobo.com'
+      email: email
     });
   });
+  stubRequest('post', '/tokens', function(request){
+    var params = JSON.parse(request.requestBody);
+    equal(params.username, email, 'correct email is passed');
+    equal(params.password, password, 'correct password is passed');
+    return successfulTokenResponse(this, userUrl);
+  });
+  stubRequest('get', userUrl, function(){
+    return this.success({
+      id: 'some-id',
+      email: email
+    });
+  });
+
   visit('/signup');
+  fillIn('input[type=email]', email);
+  fillIn('input[type=password]', password);
   click('button:contains(Create Account)');
   andThen(function(){
-    equal(currentPath(), 'login');
+    equal(currentPath(), 'apps.index');
   });
 });

@@ -1,5 +1,14 @@
 import Ember from "ember";
 
+export function buildCredentials(email, password) {
+  return {
+    username: email,
+    password: password,
+    grant_type: 'password',
+    scope: 'manage'
+  };
+}
+
 export default Ember.Route.extend({
 
   model: function() {
@@ -13,12 +22,7 @@ export default Ember.Route.extend({
 
     login: function(authAttempt){
       var route = this;
-      var credentials = {
-        username: authAttempt.email,
-        password: authAttempt.password,
-        grant_type: 'password',
-        scope: 'manage'
-      };
+      var credentials = buildCredentials(authAttempt.email, authAttempt.password);
       this.session.open('aptible', credentials).then(function(){
         route.transitionTo('apps');
       }, function(e){

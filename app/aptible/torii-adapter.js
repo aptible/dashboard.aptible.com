@@ -9,6 +9,11 @@ function clearSession(){
   storage.remove(config.authTokenKey);
 }
 
+function persistSession(accessToken){
+  auth.token = accessToken;
+  storage.write(config.authTokenKey, accessToken);
+}
+
 export default Ember.Object.extend({
   fetch: function(){
     var store = this.store;
@@ -52,8 +57,7 @@ export default Ember.Object.extend({
       }));
     }).then(function(token){
       var accessToken = token.get('accessToken');
-      auth.token = accessToken;
-      storage.write(config.authTokenKey, accessToken);
+      persistSession(accessToken);
 
       return Ember.RSVP.hash({
         currentUser: token.get('user')
