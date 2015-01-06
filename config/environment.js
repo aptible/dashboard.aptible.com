@@ -9,6 +9,7 @@ module.exports = function(environment) {
 
     authBaseUri: "http://localhost:4000",
     apiBaseUri: "http://localhost:4001",
+    legacyDashboardHost: "http://localhost:3000",
 
     authTokenKey: '_aptible_authToken',
 
@@ -63,6 +64,7 @@ module.exports = function(environment) {
 
     delete ENV.apiBaseUri;
     delete ENV.authBaseUri;
+    ENV.legacyDashboardHost = 'http://legacy-dashboard-host.com';
   }
 
   if (environment === 'production') {

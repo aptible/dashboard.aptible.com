@@ -7,14 +7,14 @@
   {{link-to "Log In" "login"}}
 </div>
 <div class="alerts-partial-wrapper">
-  {{#if model.errors.messages.length}}
+  {{#unless model.isValid}}
     <div class="alert alert-warning fade in">
       <a class="close" data-dismiss="alert">×</a>
-      {{#each message in model.errors.message}}
-        <p>{{message.message}}</p> 
+      {{#each message in model.errors.messages}}
+        <p>{{message}}</p>
       {{/each}}
     </div>
-  {{/if}}
+  {{/unless}}
 </div>
 
 <div class="input-group">
