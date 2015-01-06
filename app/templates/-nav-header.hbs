@@ -13,7 +13,7 @@
 
       <li class="dropdown current-user">
       <div class="btn-group">
-        {{#dashboard-dropdown title="Matthew Beale" defaultPath="index"}}
+        {{#dashboard-dropdown title=session.currentUser.name defaultPath="index"}}
           {{#dashboard-dropdown-item}}
             {{link-to "Dashboard" "index"}}
             <a href="https://dashboard.aptible.com/settings">Settings</a>
