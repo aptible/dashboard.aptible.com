@@ -100,6 +100,31 @@ test('logging in with correct credentials', function() {
   });
 });
 
+test('after logging in, nav header shows user name', function(){
+  stubStacks();
+
+  var userUrl = '/user-url',
+      userName = 'Joe Hippa';
+
+  stubRequest('post', '/tokens', function(request){
+    return successfulTokenResponse(this, userUrl);
+  });
+
+  stubRequest('get', userUrl, function(){
+    return this.success({
+      id: 'some-id',
+      name: userName
+    });
+  });
+
+  visit('/login');
+  click('button:contains(Log in)');
+  andThen(function(){
+    var nav = find('header.navbar:contains('+ userName +')');
+    ok(nav.length, 'Has header with user name ' + userName);
+  });
+});
+
 test('/login links to signup', function() {
   visit('/login');
   click(':contains(Create Your Aptible Account)');
