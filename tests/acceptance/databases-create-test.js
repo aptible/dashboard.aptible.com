@@ -13,7 +13,7 @@ module('Acceptance: Database New', {
   }
 });
 
-test('visit /stacks/1/databases/new', function(){
+test('visit /stacks/1/databases/new shows fields for creating a db', function(){
   var stackId = '1';
   stubStack({id:stackId});
 
@@ -48,9 +48,11 @@ test('visit /stacks/1/databases/new', function(){
 });
 
 test('visit /stacks/1/databases/new and create', function(){
-  expect(4);
+  expect(6);
 
-  var dbHandle = 'my-new-db';
+  var dbHandle = 'my-new-db',
+      dbId = 'mydb-id',
+      diskSize = 10;
 
   stubStack({id: 1, handle:'stack-1'});
 
@@ -74,8 +76,8 @@ test('visit /stacks/1/databases/new and create', function(){
     return this.success({
       _embedded: {
         databases: [{
-          id: 'my-new-db-id',
-          handle: 'my-new-db'
+          id: dbId,
+          handle: dbHandle
         }]
       }
     });
@@ -88,8 +90,22 @@ test('visit /stacks/1/databases/new and create', function(){
     equal(json.type, 'redis', 'posts db type of redis');
 
     return this.success(201, {
-      id: 'my-new-db-id',
+      id: dbId,
       handle: dbHandle
+    });
+  });
+
+  // create 'provision' operation with disk size
+  stubRequest('post', '/databases/' + dbId + '/operations', function(request){
+    var json = JSON.parse(request.requestBody);
+    equal(json.type, 'provision', 'posts type of provision');
+    equal(json.disk_size, diskSize, 'posts disk size');
+
+    return this.success(201, {
+      id: 'my-op-id',
+      type: json.type,
+      disk_size: json.disk_size,
+      status: 'queued'
     });
   });
 
@@ -99,6 +115,9 @@ test('visit /stacks/1/databases/new and create', function(){
   fillIn('input[name="handle"]', dbHandle);
   click('.select-option[title="Redis"]');
   click(':contains(Create Database)');
+
+  // the disk size starts at 10GB
+  // TODO test that moving the slider changes the disk size
 
   andThen(function(){
     equal(currentPath(), 'databases.index');

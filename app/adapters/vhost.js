@@ -1,6 +1,8 @@
 import ApplicationAdapter from './application';
-import buildURLWithPrefix from '../utils/build-url-with-prefix';
+import buildURLWithPrefixMap from '../utils/build-url-with-prefix-map';
 
 export default ApplicationAdapter.extend({
-  buildURL: buildURLWithPrefix('service.id', 'services')
+  buildURL: buildURLWithPrefixMap({
+    'services': 'service.id'
+  })
 });
