@@ -1,4 +1,4 @@
-import ApplicationSerializer from '../application/serializer';
+import ApplicationSerializer from './application';
 
 export default ApplicationSerializer.extend({
 
