@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  requireAuthentication: true,
+
   setupController: function(controller, model){
     controller.set('stack', model);
   },

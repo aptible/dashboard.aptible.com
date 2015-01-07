@@ -10,14 +10,16 @@
       </span>
     </h4>
     <ul class="nav nav-pills sub-nav-tabs">
-      <li>
-        {{link-to 'Create Database' 'stack.new-database' stack class="new-database-link"}}
-      </li>
-      <li>
-        <a class="edit-account-link" data-account-id="111" data-placement="bottom" data-toggle="tooltip" title="" data-original-title="Account Settings">
-          <i class="fa fa-cog"></i>
-        </a>
-      </li>
+      {{#aptible-ability user=session.currentUser scope="manage" stack=stack}}
+        <li>
+          {{link-to 'Create Database' 'stack.new-database' stack class="new-database-link"}}
+        </li>
+        <li>
+          <a class="edit-account-link" data-account-id="111" data-placement="bottom" data-toggle="tooltip" title="" data-original-title="Account Settings">
+            <i class="fa fa-cog"></i>
+          </a>
+        </li>
+      {{/aptible-ability}}
     </ul>
     </header>
 

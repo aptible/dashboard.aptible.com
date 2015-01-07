@@ -51,7 +51,8 @@
     "elementTextContains",
     "stubStack",
     "stubStacks",
-    "locationUpdatedTo"
+    "locationUpdatedTo",
+    "expectRequiresAuthentication"
   ],
   "node": false,
   "browser": false,

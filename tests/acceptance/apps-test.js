@@ -17,12 +17,8 @@ module('Acceptance: Apps', {
   }
 });
 
-test('visiting /apps when not signed in', function() {
-  visit('/apps');
-
-  andThen(function() {
-    equal(currentPath(), 'login');
-  });
+test('visiting /apps requires authentication', function() {
+  expectRequiresAuthentication('/apps');
 });
 
 test('visiting /apps', function() {

@@ -7,13 +7,27 @@ Ember.Test.registerAsyncHelper('signIn', function(app){
   var sm = session.get('stateMachine');
 
   Ember.run(function(){
+    var store = app.__container__.lookup('store:main');
+    var user = store.push('user', {
+      id: 'user1',
+      name: 'stubbed user'
+    });
     sm.transitionTo('authenticated');
+    session.set('content.currentUser', user);
   });
 });
 
 Ember.Test.registerAsyncHelper('signInAndVisit', function(app, url){
   signIn();
   visit(url);
+});
+
+Ember.Test.registerAsyncHelper('expectRequiresAuthentication', function(app, url){
+  visit(url);
+
+  andThen(function(){
+    equal(currentPath(), 'login');
+  });
 });
 
 Ember.Test.registerAsyncHelper('locationUpdatedTo', function(app, url){

@@ -13,6 +13,10 @@ module('Acceptance: Databases Operations', {
   }
 });
 
+test('visit /databases/:id/operations requires authentication', function(){
+  expectRequiresAuthentication('/databases/1/operations');
+});
+
 test('visit /databases/:id/operations shows operations', function(){
   var dbId = 'my-db-id',
       dbUrl = '/databases/' + dbId,

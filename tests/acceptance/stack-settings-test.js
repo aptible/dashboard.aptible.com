@@ -14,6 +14,10 @@ module('Acceptance: Stack Settings', {
   }
 });
 
+test('visit /stacks/1/settings requires authentication', function(){
+  expectRequiresAuthentication('/stacks/1/settings');
+});
+
 test('visit /stacks/:id/settings', function(){
   var stackName = 'Cool Stack';
   stubStack({id:1, name:stackName});

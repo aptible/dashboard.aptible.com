@@ -2,11 +2,16 @@ import Ember from 'ember';
 import { buildCredentials } from "../login/route";
 
 export default Ember.Route.extend({
+  requireAuthentication: false,
 
   beforeModel: function(){
-    if (this.session.get('isAuthenticated')) {
-      this.replaceWith('index');
-    }
+    var route = this, session = this.session;
+
+    return this._super().then(function(){
+      if (session.get('isAuthenticated')) {
+        route.replaceWith('index');
+      }
+    });
   },
 
   setupController: function(controller){

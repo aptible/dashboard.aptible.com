@@ -3,9 +3,14 @@ import {
   test
 } from 'ember-qunit';
 
-moduleForModel('user', 'User', {
+moduleForModel('permission', 'Permission', {
   // Specify the other units that are required for this test.
-  needs: ['model:token', 'model:role']
+  needs: [
+    'model:role',
+    'model:stack',
+    'model:app',
+    'model:database'
+  ]
 });
 
 test('it exists', function() {

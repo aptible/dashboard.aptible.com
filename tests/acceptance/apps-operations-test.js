@@ -13,6 +13,10 @@ module('Acceptance: Apps Operations', {
   }
 });
 
+test('visit /apps/:id/operations requires authentication', function(){
+  expectRequiresAuthentication('/apps/1/operations');
+});
+
 test('visit /apps/:id/operations show operations', function(){
   var appId = 'my-app-id';
 

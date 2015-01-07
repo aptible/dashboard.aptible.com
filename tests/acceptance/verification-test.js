@@ -13,11 +13,8 @@ module('Acceptance: Verification', {
   }
 });
 
-test('visiting /verify/some-code requires auth', function() {
-  visit('/verify/some-code');
-  andThen(function(){
-    equal(currentPath(), 'login');
-  });
+test('visiting /verify/some-code requires authentication', function() {
+  expectRequiresAuthentication('/verify/some-code');
 });
 
 test('visiting /verify/some-code creates verification', function() {

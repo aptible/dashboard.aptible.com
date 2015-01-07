@@ -11,6 +11,9 @@ moduleForModel('operation', 'Operation', {
     'model:app',
     'model:stack',
     'model:database',
+    'model:permission',
+    'model:role',
+
     'adapter:operation',
     'serializer:application'
   ]

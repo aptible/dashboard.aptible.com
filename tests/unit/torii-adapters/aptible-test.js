@@ -12,7 +12,13 @@ import Ember from "ember";
 var originalWrite, originalRead;
 
 moduleFor('torii-adapter:aptible', 'Torii Adapter: Aptible', {
-  needs: ['model:token', 'model:user', 'adapter:application', 'serializer:application'],
+  needs: [
+    'model:token',
+    'model:user',
+    'model:role',
+    'adapter:application',
+    'serializer:application'
+  ],
   setup: function(container){
     DS._setupContainer(container);
     originalWrite = storage.write;
@@ -68,7 +74,11 @@ test('adapter stores the auth token in storage', function(){
       equal(wroteKey, config.authTokenKey, 'writes to config.authTokenKey');
       equal(wroteVal, token, 'writes token value');
       equal(auth.token, token, 'sets token on auth');
-      ok(resultForSession.currentUser, 'sets currentUser on session');
+
+      // QUnit will hang forever if we don't explicitly turn this into
+      // a boolean, because the currentUser object (maybe) has some recursive
+      // structure that foils QUnit's eager generation of its failure message
+      ok(!!resultForSession.currentUser, 'sets currentUser on session');
       equal(Ember.get(resultForSession, 'currentUser.username'), userEmail, 'user email is from the API');
     }, function(e){
       ok(false, "Unexpected error: "+e);

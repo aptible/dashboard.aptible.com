@@ -8,13 +8,16 @@ import Ember from 'ember';
 
 moduleForModel('app', 'App', {
   needs: [
-    'adapter:app',
-    'serializer:application',
     'model:service',
     'model:stack',
     'model:database',
     'model:vhost',
-    'model:operation'
+    'model:operation',
+    'model:permission',
+    'model:role',
+
+    'adapter:app',
+    'serializer:application'
   ]
 });
 

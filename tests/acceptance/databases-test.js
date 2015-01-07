@@ -13,6 +13,10 @@ module('Acceptance: Databases', {
   }
 });
 
+test('visiting /databases requires authentication', function(){
+  expectRequiresAuthentication('/databases');
+});
+
 test('visiting /databases', function() {
   signInAndVisit('/databases');
 
