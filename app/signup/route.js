@@ -11,14 +11,16 @@ export default Ember.Route.extend({
     }
   },
 
-  model: function() {
-    return this.store.createRecord('user');
+  setupController: function(controller){
+    var user = this.store.createRecord('user');
+    var organization = this.store.createRecord('organization');
+    controller.set('model', user);
+    controller.set('organization', organization);
   },
 
   actions: {
 
-    signup: function(){
-      var user = this.currentModel;
+    signup: function(user, organization){
       var session = this.session;
       var email = user.get('email');
       var password = user.get('password');
@@ -26,6 +28,8 @@ export default Ember.Route.extend({
         var credentials = buildCredentials(email, password);
         // TODO: This option causes a user request to fetch data already present in the identity map
         return session.open('aptible', credentials);
+      }).then(function(){
+        return organization.save();
       }).then(function(){
         replaceLocation([config.legacyDashboardHost, 'organizations/new'].join('/'));
       }, function(){});

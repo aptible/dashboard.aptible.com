@@ -29,12 +29,31 @@
 </div>
 <div class="input-group">
   <span class="input-group-addon">
-    <i class="fa fa-envelope"></i>
+    <i class="fa fa-user"></i>
   </span>
   {{input type="text"
       value=model.name
       class="form-control"
       placeholder="Full Name"}}
+</div>
+{{#if hasSubmitted}}
+  {{#if errors.organization.name}}
+    <div class="alert alert-warning fade in">
+      {{#each message in errors.organization.name}}
+        <p>Organization name {{message}}</p>
+      {{/each}}
+    </div>
+  {{/if}}
+{{/if}}
+<div class="input-group">
+  <span class="input-group-addon">
+    <i class="fa fa-users"></i>
+  </span>
+  {{input type="text"
+      name="organization"
+      value=organization.name
+      class="form-control"
+      placeholder="Organization"}}
 </div>
 <div class="input-group">
   <span class="input-group-addon">
