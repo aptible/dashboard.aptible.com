@@ -12,7 +12,7 @@ function raiseOnUnhandledRequest(verb, path, request){
   throw "FakeServer received unhandled request for :" + verb + " " + path;
 }
 
-var jsonMimeType = {"Content-Type": "application/json"};
+export var jsonMimeType = {"Content-Type": "application/json"};
 
 function errorRequest(status, errors){
   // if called without `status`
