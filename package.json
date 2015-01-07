@@ -32,6 +32,7 @@
     "ember-data": "1.0.0-beta.12",
     "ember-data-hal-9000": "git://github.com/201-created/ember-data-hal-9000#8ed5d82a6483ac5f3f6a3af100160435123578cb",
     "ember-export-application-global": "^1.0.0",
+    "ember-validations": "^2.0.0-alpha.1",
     "express": "^4.8.5",
     "glob": "^4.0.5",
     "torii": "^0.2.2"

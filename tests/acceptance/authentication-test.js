@@ -169,8 +169,12 @@ test('Creating an account directs to login', function() {
   var email = 'good@email.com';
   var password = 'correct';
   var userUrl = '/users/my-user';
+  var organization = 'Great Co.';
 
-  stubRequest('post', '/users', function(){
+  stubRequest('post', '/users', function(request){
+    var params = JSON.parse(request.requestBody);
+    equal(params.email, email, 'correct email is passed');
+    equal(params.password, password, 'correct password is passed');
     return this.success({
       id: 'my-user',
       email: email
@@ -188,12 +192,37 @@ test('Creating an account directs to login', function() {
       email: email
     });
   });
+  stubRequest('post', '/organizations', function(request){
+    var params = JSON.parse(request.requestBody);
+    equal(params.name, organization, 'correct organization is passed');
+    return this.success({
+      id: 'my-organization',
+      name: organization
+    });
+  });
 
   visit('/signup');
   fillIn('input[type=email]', email);
   fillIn('input[type=password]', password);
+  fillIn('input[name=organization]', organization);
   click('button:contains(Create Account)');
   andThen(function(){
     locationUpdatedTo('http://legacy-dashboard-host.com/organizations/new');
+  });
+});
+
+test('Creating an account waits on a valid organization name', function() {
+  var email = 'good@email.com';
+  var password = 'correct';
+  var userUrl = '/users/my-user';
+  var organization = 'bad';
+
+  visit('/signup');
+  fillIn('input[type=email]', email);
+  fillIn('input[type=password]', password);
+  fillIn('input[name=organization]', organization);
+  click('button:contains(Create Account)');
+  andThen(function(){
+    equal(currentPath(), 'signup', 'path does not change');
   });
 });
