@@ -7,6 +7,7 @@ var app = new EmberApp({
 });
 
 app.import('bower_components/nouislider/src/jquery.nouislider.css');
+app.import('bower_components/nouislider/distribute/jquery.nouislider.js');
 
 app.import("bower_components/font-awesome/css/font-awesome.css");
 app.import("bower_components/font-awesome/fonts/fontawesome-webfont.eot", { destDir: "fonts" });

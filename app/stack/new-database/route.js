@@ -15,6 +15,13 @@ export default Ember.Route.extend({
       db.save().then(function(){
         route.transitionTo('databases.index');
       });
+    },
+
+    cancel: function(){
+      var db = this.currentModel;
+
+      db.rollback();
+      this.transitionTo('databases.index');
     }
   }
 });
