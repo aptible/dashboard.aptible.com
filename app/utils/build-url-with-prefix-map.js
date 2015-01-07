@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default function buildURLWithPrefixMap(prefixPropertyMapping){
+  // From ember-data's buildURL: https://github.com/emberjs/data/blob/9e9a78111825d4154522cba8ddbbe679c56c9e5c/packages/ember-data/lib/adapters/rest_adapter.js#L532-L550
   return function buildURL(type, id, record) {
     var url = [],
         host = Ember.get(this, 'host'),
