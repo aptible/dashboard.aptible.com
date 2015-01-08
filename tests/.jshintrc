@@ -52,7 +52,9 @@
     "stubStack",
     "stubStacks",
     "locationUpdatedTo",
-    "expectRequiresAuthentication"
+    "expectRequiresAuthentication",
+    "stubOrganizations",
+    "locationUpdatedTo"
   ],
   "node": false,
   "browser": false,

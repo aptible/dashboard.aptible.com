@@ -154,3 +154,20 @@ Ember.Test.registerHelper('expectStackHeader', function(app, stackHandle){
   var handle = find('header .account-handle:contains(' + stackHandle + ')');
   ok(handle.length, 'expected stack header with handle: ' + stackHandle);
 });
+
+Ember.Test.registerHelper('stubOrganizations', function(app){
+  stubRequest('get', '/organizations', function(request){
+    return this.success({
+      _links: {},
+      _embedded: {
+        organizations: [{
+          _links: {
+          },
+          id: 1,
+          name: 'Sprocket Co',
+          type: 'organization'
+        }]
+      }
+    });
+  });
+});
