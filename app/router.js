@@ -52,6 +52,10 @@ Router.map(function() {
   this.route("verify", {
     path: "verify/:verification_code"
   });
+
+  this.route("welcome", function() {
+    this.route("first-app");
+  });
 });
 
 export default Router;

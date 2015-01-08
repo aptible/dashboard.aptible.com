@@ -1,0 +1,100 @@
+{{#login-box}}
+
+<h3 class="heading">
+  Step One: Create an Application
+</h3>
+<div class="sub-heading">
+  Or, if you aren't ready for this,
+  <a {{bind-attr href=subscriptionUrl}}>skip ahead</a>.
+</div>
+
+<div class="panel panel-default focus-panel">
+  <div class="panel-body">
+
+    <form class="new-database" role="form">
+      <div class="form-group">
+        <label class="block">
+          App Handle
+        </label>
+        <p>
+          Aptible's platform allows you to deploy applications
+          to a HIPAA-complient cloud. Code is delivered to our
+          servers with a <code>git push</code> command. Configuration
+          happens inside a <code>.aptible</code>
+          file uploaded with your app code.
+        </p>
+        {{input class="app-name form-control sanitize-handler"
+                placeholder="e.g., app-prod"
+                name="app-handle"
+                value=model.appHandle
+                }}
+        <label class="block">
+          <span class="label-helper">
+            Lowercase alphanumerics, periods, and dashes only
+          </span>
+        </label>
+      </div>
+      <br />
+      <div class="form-group">
+        <label class="block">
+          Database Handle
+        </label>
+        <p>
+          Aptible offers data storage options with auditable
+          and encrypted backends. If your application requires
+          an option you don't see here, <a href="mailto:support@aptible.com">send
+          us an email</a>.
+        </p>
+        {{input class="database-name form-control sanitize-handler"
+                placeholder="e.g., postgresql-prod"
+                name="db-handle"
+                value=model.dbHandle
+                }}
+        <label class="block">
+          <span class="label-helper">
+            Lowercase alphanumerics, periods, and dashes only
+          </span>
+        </label>
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+
+        <div class="select-options-container database-select row">
+          {{#db-selector action="selectDbType" as |dbType selectedDbType selectCallback|}}
+            {{db-selector-option
+                  selectCallback=selectCallback
+                  dbType=dbType
+                  selectedDbType=selectedDbType}}
+          {{/db-selector}}
+        </div>
+      </div>
+      <div class="form-group db-size-component">
+        <div class="disk-size-container">
+          <label class="disk-size-label">
+            Disk Size
+          </label>
+          <div class="row">
+            <div class="col-xs-3">
+              <div class="disk-size-label-container">{{model.diskSize}} GB</div>
+            </div>
+            <div class="col-xs-9">
+              <div class="slider-wrapper">
+                {{no-ui-slider didSlide="setDiskSize"
+                               classNames="disk-size"
+                               start=10 rangeMin=10 rangeMax=200 step=10}}
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <button {{action 'create' model}} class="btn btn-lg-text btn-primary confirm-action" type='submit'>
+        Proceed to Subscription Info
+      </button>
+    </form>
+
+  </div>
+</div>
+
+{{/login-box}}
