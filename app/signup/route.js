@@ -1,7 +1,5 @@
 import Ember from 'ember';
-import config from "../config/environment";
 import { buildCredentials } from "../login/route";
-import { replaceLocation } from "../utils/location";
 
 export default Ember.Route.extend({
 
@@ -21,6 +19,7 @@ export default Ember.Route.extend({
   actions: {
 
     signup: function(user, organization){
+      var route = this;
       var session = this.session;
       var email = user.get('email');
       var password = user.get('password');
@@ -31,7 +30,7 @@ export default Ember.Route.extend({
       }).then(function(){
         return organization.save();
       }).then(function(){
-        replaceLocation([config.legacyDashboardHost, 'organizations/new'].join('/'));
+        route.transitionTo('welcome.first-app');
       }, function(){});
     }
 

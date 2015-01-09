@@ -53,10 +53,9 @@
     cursor: pointer;
     text-align: center;
     padding: 5px;
-    height: 60px;
+    display: block;
 
     .select-option-image {
-      margin-top: 11px;
       max-width: 80%;
     }
   }

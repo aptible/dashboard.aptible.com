@@ -207,7 +207,7 @@ test('Creating an account directs to login', function() {
   fillIn('input[name=organization]', organization);
   click('button:contains(Create Account)');
   andThen(function(){
-    locationUpdatedTo('http://legacy-dashboard-host.com/organizations/new');
+    equal(currentPath(), 'welcome.first-app', 'directs to first app');
   });
 });
 
