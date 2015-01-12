@@ -9,11 +9,16 @@ module.exports = function(environment) {
 
     authBaseUri: "http://localhost:4000",
     apiBaseUri: "http://localhost:4001",
-    legacyDashboardHost: "http://localhost:3000",
+    aptibleHosts: {
+      'legacy-dashboard': "http://localhost:3000",
+      support: "https://support.aptible.com"
+    },
 
     authTokenKey: '_aptible_authToken',
     stripePublishableKey: 'pk_test_eiw5HXHTAgTwyNnV9I5ruCrA',
     replaceLocation: true,
+
+    segmentioKey: 'qxwhj8ys4t',
 
     EmberENV: {
       FEATURES: {
@@ -32,10 +37,10 @@ module.exports = function(environment) {
     },
 
     contentSecurityPolicy: {
-      'connect-src': "'self' http://localhost:4000 http://localhost:4001 ws://localhost:35729 ws://0.0.0.0:35729",
+      'connect-src': "'self' http://localhost:4000 http://localhost:4001 ws://localhost:35729 ws://0.0.0.0:35729 http://api.mixpanel.com http://api.segment.io",
       'style-src': "'self' 'unsafe-inline'",
-      'img-src': "'self' http://www.gravatar.com https://secure.gravatar.com",
-      'script-src': "'self' https://js.stripe.com https://api.stripe.com"
+      'img-src': "'self' http://www.gravatar.com https://secure.gravatar.com http://www.google-analytics.com",
+      'script-src': "'self' https://js.stripe.com https://api.stripe.com http://cdn.segment.com http://cdn.mxpnl.com http://www.google-analytics.com"
     }
 
   };
