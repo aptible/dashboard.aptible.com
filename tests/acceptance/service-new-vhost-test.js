@@ -14,6 +14,10 @@ module('Acceptance: Service New Vhost', {
   }
 });
 
+test('visit /services/:id/vhosts/new requires authentication', function(){
+  expectRequiresAuthentication('/services/1/vhosts/new');
+});
+
 test('visit /services/:id/vhosts/new', function(){
   var serviceId = 'service-1';
 

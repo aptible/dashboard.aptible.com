@@ -4,8 +4,11 @@ import loadInitializers from 'ember/load-initializers';
 import config from './config/environment';
 import { getUrlParameter } from './utils/url-parameters';
 import { replaceLocation } from './utils/location';
+import AuthenticatedRouteMixin from './mixins/routes/authenticated';
 
 Ember.MODEL_FACTORY_INJECTIONS = true;
+
+Ember.Route.reopen(AuthenticatedRouteMixin);
 
 var App = Ember.Application.extend({
   modulePrefix: config.modulePrefix,

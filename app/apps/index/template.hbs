@@ -10,14 +10,16 @@
       </span>
     </h4>
     <ul class="nav nav-pills sub-nav-tabs">
-      <li>
-        {{link-to 'Create App' 'stack.new-app' stack class="new-app-link"}}
-      </li>
-      <li>
-        {{#link-to 'stack.settings' stack data-placement="bottom" data-toggle="tooltip" data-original-title="Account Settings"}}
-          <i class="fa fa-cog"></i>
-        {{/link-to}}
-      </li>
+      {{#aptible-ability scope="manage" user=session.currentUser stack=stack}}
+        <li>
+          {{link-to 'Create App' 'stack.new-app' stack class="new-app-link"}}
+        </li>
+        <li>
+          {{#link-to 'stack.settings' stack data-placement="bottom" data-toggle="tooltip" data-original-title="Account Settings"}}
+            <i class="fa fa-cog"></i>
+          {{/link-to}}
+        </li>
+      {{/aptible-ability}}
     </ul>
     </header>
 

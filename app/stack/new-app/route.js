@@ -7,6 +7,7 @@ export default Ember.Route.extend({
       stack: stack
     });
   },
+
   actions: {
     create: function(){
       var app = this.currentModel;

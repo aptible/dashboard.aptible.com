@@ -16,6 +16,10 @@ module('Acceptance: App Create', {
   }
 });
 
+test('/stacks/:id/apps/new requires authentication', function(){
+  expectRequiresAuthentication('/stacks/1/apps/new');
+});
+
 test('visit /stacks/1/apps/new', function(){
   expect(2);
 

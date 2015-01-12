@@ -13,6 +13,10 @@ module('Acceptance: Databases Show', {
   }
 });
 
+test('visiting /databases/:id requires authentication', function(){
+  expectRequiresAuthentication('/databases/1');
+});
+
 test('visiting /databases/my-db-id shows the database', function() {
   stubRequest('get', '/databases/my-db-id', function(request){
     return this.success({

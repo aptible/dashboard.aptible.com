@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  requireAuthentication: false,
+
   redirect: function() {
     var route = this;
 

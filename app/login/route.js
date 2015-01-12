@@ -10,6 +10,7 @@ export function buildCredentials(email, password) {
 }
 
 export default Ember.Route.extend({
+  requireAuthentication: false,
 
   model: function() {
     return Ember.Object.create({

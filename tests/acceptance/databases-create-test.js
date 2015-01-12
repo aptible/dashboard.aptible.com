@@ -13,6 +13,10 @@ module('Acceptance: Database New', {
   }
 });
 
+test('visit /stacks/1/databases/new requires authentication', function(){
+  expectRequiresAuthentication('/stacks/1/databases/new');
+});
+
 test('visit /stacks/1/databases/new shows fields for creating a db', function(){
   var stackId = '1';
   stubStack({id:stackId});

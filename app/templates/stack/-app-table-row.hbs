@@ -27,12 +27,14 @@
             <span class="button-label">History</span>
           {{/link-to}}
         </li>
-        <li>
-        <a class="destroy-app-link" data-placement="bottom">
-          <i class="fa fa-times-circle-o"></i>
-          <span class="button-label">Deprovision</span>
-        </a>
-        </li>
+        {{#aptible-ability scope="manage" user=session.currentUser stack=stack}}
+          <li>
+          <a class="destroy-app-link" data-placement="bottom">
+            <i class="fa fa-times-circle-o"></i>
+            <span class="button-label">Deprovision</span>
+          </a>
+          </li>
+        {{/aptible-ability}}
       </ul>
     </div>
   </td>

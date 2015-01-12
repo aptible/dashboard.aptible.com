@@ -13,6 +13,10 @@ module('Acceptance: Apps Show', {
   }
 });
 
+test('/apps/:id requires authentication', function(){
+  expectRequiresAuthentication('/apps/1');
+});
+
 test('visiting /apps/my-app-id shows basic app info', function() {
   var appId = 'my-app-id';
   var serviceId = 'service-1';
