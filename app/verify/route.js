@@ -1,8 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  requireAuthentication: true,
-
   model: function(params){
     var options = {
       verificationCode: params.verification_code,
