@@ -13,6 +13,8 @@ moduleForModel('operation', 'Operation', {
     'model:database',
     'model:permission',
     'model:role',
+    'model:service',
+    'model:vhost',
 
     'adapter:operation',
     'serializer:application'
@@ -53,6 +55,100 @@ test('when creating an operation for a db, POSTs to /databases/:id/operations', 
   return Ember.run(function(){
     return op.save().then(function(_op){
       ok(true, 'operation saved');
+    });
+  });
+});
+
+test('store.find("operation", {app:app, page:page}) formats the URL correctly"', function(){
+  expect(4);
+
+  var store = this.store();
+  var app;
+  var firstRequest = true;
+
+  stubRequest('get', '/apps/app-id/operations', function(request){
+    if (firstRequest) {
+      firstRequest = false;
+      equal(request.queryParams.page, "1", "first request has page=1 query param");
+
+      return this.success({
+        page: 1,
+        total_pages: 2,
+        _embedded: {
+          operations: [{id:'op-1'}]
+        }
+      });
+    } else {
+      equal(request.queryParams.page, "2", "second request has page=2 query param");
+
+      return this.success({
+        page: 2,
+        total_pages: 2,
+        _embedded: {
+          operations: [{id:'op-2'}]
+        }
+      });
+    }
+  });
+
+  return Ember.run(function(){
+    app = store.push('app', {id: 'app-id'});
+
+    return store.find('operation', {app:app, page:1}).then(function(){
+      deepEqual(store.metadataFor('operation'),
+                {page:1,total_pages:2}, 'store has correct metadata first time');
+
+      return store.find('operation', {app:app, page:2});
+    }).then(function(){
+      deepEqual(store.metadataFor('operation'),
+                {page:2,total_pages:2}, 'store has correct metadata second time');
+    });
+  });
+});
+
+test('store.find("operation", {database:database, page:page}) formats the URL correctly"', function(){
+  expect(4);
+
+  var store = this.store();
+  var db;
+  var firstRequest = true;
+
+  stubRequest('get', '/databases/db-id/operations', function(request){
+    if (firstRequest) {
+      firstRequest = false;
+      equal(request.queryParams.page, "1", "first request has page=1 query param");
+
+      return this.success({
+        page: 1,
+        total_pages: 2,
+        _embedded: {
+          operations: [{id:'op-1'}]
+        }
+      });
+    } else {
+      equal(request.queryParams.page, "2", "second request has page=2 query param");
+
+      return this.success({
+        page: 2,
+        total_pages: 2,
+        _embedded: {
+          operations: [{id:'op-2'}]
+        }
+      });
+    }
+  });
+
+  return Ember.run(function(){
+    db = store.push('database', {id: 'db-id'});
+
+    return store.find('operation', {database:db, page:1}).then(function(){
+      deepEqual(store.metadataFor('operation'),
+                {page:1,total_pages:2}, 'store has correct metadata first time');
+
+      return store.find('operation', {database:db, page:2});
+    }).then(function(){
+      deepEqual(store.metadataFor('operation'),
+                {page:2,total_pages:2}, 'store has correct metadata second time');
     });
   });
 });
