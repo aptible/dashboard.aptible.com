@@ -20,7 +20,7 @@ export default Ember.Component.extend({
      Ember.assert("You must provide a stack to aptible-ability", stack);
 
      can(user, scope, stack).then(function(bool){
-       if (component.get('isDestroyed')) { return; }
+       if (component.isDestroyed) { return; }
 
        component.set('hasAbility', bool);
      });
