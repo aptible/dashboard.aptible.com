@@ -55,6 +55,7 @@ Router.map(function() {
 
   this.route("welcome", function() {
     this.route("first-app");
+    this.route("payment-info");
   });
 });
 

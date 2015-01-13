@@ -5,6 +5,7 @@ import {
 import config from "../config/environment";
 import { locationHistory } from '../utils/location';
 import FakeServer from "./helpers/fake-server";
+import { stubStripe, teardownStripe } from "./helpers/mock-stripe";
 
 setResolver(resolver);
 
@@ -21,8 +22,10 @@ QUnit.testStart(function(){
 
 QUnit.testStart(function(){
   FakeServer.start();
+  stubStripe();
 });
 
 QUnit.testDone(function(){
+  teardownStripe();
   FakeServer.stop();
 });

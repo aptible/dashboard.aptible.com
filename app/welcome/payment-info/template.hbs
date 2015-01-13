@@ -1,0 +1,61 @@
+
+{{outlet}}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+      <h3 class="heading">Payment Information</h3>
+
+      <div class="panel panel-default focus-panel">
+        <div class="panel-body">
+          <form role="form">
+
+            {{#if error}}
+              <div class="alert alert-warning fade in">
+                <p>{{error.message}}</p>
+              </div>
+            {{/if}}
+
+            <div class="form-group">
+              <label>Plan</label>
+              {{input class="form-control" value=model.plan name="plan"}}
+            </div>
+
+            <div class="form-group">
+              <label>Name</label>
+              {{input class="form-control" value=model.name name="name"}}
+            </div>
+
+            <div class="form-group">
+              <label>Card Number</label>
+              {{input class="form-control" value=model.number name="number"}}
+            </div>
+
+            <div class="form-group">
+              <label>Expiration Month</label>
+              {{input class="form-control" value=model.expMonth name="exp-month" maxlength="2"}}
+            </div>
+
+            <div class="form-group">
+              <label>Expiration Year</label>
+              {{input class="form-control" value=model.expYear name="exp-year" maxlength="4"}}
+            </div>
+
+            <div class="form-group">
+              <label>CVC</label>
+              {{input class="form-control" value=model.cvc name="cvc"}}
+            </div>
+
+            <div class="form-group">
+              <label>Zip</label>
+              {{input class="form-control" value=model.zip name="zip"}}
+            </div>
+
+            <div class="form-group">
+              <button class="btn btn-primary" {{action 'create' model}}>Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

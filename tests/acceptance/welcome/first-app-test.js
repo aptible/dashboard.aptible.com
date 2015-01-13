@@ -17,6 +17,14 @@ module('Acceptance: WelcomeFirstApp', {
   }
 });
 
+test('visiting /welcome/first-app when not logged in', function() {
+  visit('/welcome/first-app');
+
+  andThen(function() {
+    equal(currentPath(), 'login');
+  });
+});
+
 test('submitting a first app directs to subscriptions', function() {
   var appHandle = 'my-app';
 
@@ -27,6 +35,6 @@ test('submitting a first app directs to subscriptions', function() {
   andThen(function() {
     var stored = read(firstAppKey);
     equal(stored.appHandle, appHandle, 'app handle is saved in localStorage');
-    locationUpdatedTo('http://legacy-dashboard-host.com/subscriptions/new');
+    equal(currentPath(), 'welcome.payment-info', 'redirected to payment info');
   });
 });
