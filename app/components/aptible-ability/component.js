@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import can from '../../utils/can';
 
 export default Ember.Component.extend({
   hasAbility: false, // cannot use `isVisible` with `tagName: ''`
@@ -19,7 +18,7 @@ export default Ember.Component.extend({
      Ember.assert("You must provide a scope to aptible-ability", !!scope);
      Ember.assert("You must provide a stack to aptible-ability", !!stack);
 
-     can(user, scope, stack).then(function(bool){
+     user.can(scope, stack).then(function(bool){
        if (component.isDestroyed) { return; }
 
        component.set('hasAbility', bool);
