@@ -1,10 +1,6 @@
 import Ember from 'ember';
 import { read, write } from '../../utils/storage';
-import config from "../../config/environment";
-
 export var firstAppKey = '_aptible_firstAppData';
-
-var subscriptionUrl = [config.legacyDashboardHost, 'subscriptions/new'].join('/');
 
 export default Ember.Route.extend({
   model: function(){
@@ -24,7 +20,6 @@ export default Ember.Route.extend({
 
   setupController: function(controller, model) {
     controller.set('model', model);
-    controller.set('subscriptionUrl', subscriptionUrl);
   },
 
   actions: {

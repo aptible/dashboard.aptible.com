@@ -23,6 +23,10 @@ export default Ember.Route.extend({
 
   actions: {
 
+    didTransition: function(){
+      this.analytics.page('Signup');
+    },
+
     signup: function(user, organization){
       var route = this;
       var session = this.session;
