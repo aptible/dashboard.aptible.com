@@ -2,9 +2,9 @@ import Ember from 'ember';
 import Paginated from "diesel/mixins/routes/paginated";
 
 export default Ember.Route.extend(Paginated, {
-  model: function(params, transition){
+  model: function(params){
     var db = this.modelFor('databases.show');
-    var page = parseInt(transition.queryParams.page || 1, 10);
+    var page = params.currentPage || 1;
 
     return this.store.find('operation', {database:db, page:page});
   },
