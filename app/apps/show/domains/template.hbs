@@ -1,0 +1,16 @@
+<div class="container">
+  <div class="service-vhosts">
+    <div class="vhost-count">
+      {{domains.length}} {{plural-string "Domain" domains.length}}
+    </div>
+    {{#each domain in domains}}
+      <div class="vhost">
+        <div class="vhost-virtual-domain">{{domain.virtualDomain}}</div>
+        <div class="vhost-external-host">{{domain.externalHost}}</div>
+      </div>
+    {{/each}}
+    <div class="create-vhost">
+      {{link-to 'Create Domain' 'apps.show.new-domain' class="btn btn-primary"}}
+    </div>
+  </div>
+</div>

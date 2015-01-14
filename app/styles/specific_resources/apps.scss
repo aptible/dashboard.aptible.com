@@ -1,107 +1,28 @@
-.app-list-container {
-  margin: 0;
+.service-badge {
+  display: inline-block;
+  margin: 0 10px 0 0;
+  border-radius: 3px;
+  @include linear-gradient(#fff, #eaeaea);
+  box-shadow: 0 1px 1px 0 rgba(#000, .06);
+  color: $color-subdued;
+  font-weight: $weight-semibold;
+  font-size: 11px;
   padding: 0;
 
-  .app-list-item {
-    @extend %clearfix;
-    padding: 20px;
-
-    .app-info {
-      float: left;
-    }
-
-    .app-handle {
-      font-size: 16px;
-      font-weight: $weight-semibold;
-      margin: 0 0 5px;
-    }
-
-    .app-services {
-      color: $color-light;
-      font-size: 14px;
-      font-weight: $weight-normal;
-      margin: 0;
-    }
-
-    .last-operation {
-      margin: 8px 0 0;
-
-      .gravatar {
-        float: left;
-      }
-
-      .operation-info {
-        color: $color-light;
-        font-size: 11px;
-        font-weight: $weight-normal;
-        float: left;
-      }
-    }
-
-    &:hover {
-      ul {
-        display: block;
-
-        .button-label {
-          display: none;
-        }
-      }
-    }
-
-    &:nth-child(even) {
-      background-color: $color-bg-light-gray;
-    }
-
-    &:last-child {
-      border: 0;
-    }
-  }
-}
-
-.empty-resource-container {
-  margin: 50px 0;
-
-  .empty-resource-icon {
-    height: 120px;
-    width: 120px;
-    border-radius: 60px;
-    background: $color-bg-light-gray;
-    text-align: center;
-    margin: 0 auto 30px;
-    position: relative;
-
-    img {
-      max-width: 70px;
-    }
-
-    .app-icon {
-      margin-top: 22px;
-    }
-
-    .db-icon {
-      margin-top: 30px;
-    }
+  .service-name {
+    border: 1px solid #ccc;
+    border-width: 1px 0 1px 1px;
+    padding: 3px 5px 2px;
+    border-radius: 3px 0 0 3px;
   }
 
-  .empty-resource-title {
-    font-size: 16px;
-    margin: 0 0 15px;
-    text-align: center;
+  .service-container-count {
+    color: #fff;
+    background: $color-bright-blue;
+    border: 1px solid $color-bright-blue;
+    border-width: 1px 1px 1px 0;
+    padding: 3px 5px 2px;
+    border-radius: 0 3px 3px 0;
+    margin-left: -4px;
   }
-
-  .empty-resource-helper {
-    font-weight: $weight-normal;
-    color: $color-light;
-    font-size: 14px;
-    margin: 0;
-    text-align: center;
-  }
-}
-
-.accounts-container.has-startup-guide {
-  display: none;
-}
-
-.dropdown.org-select {
-  margin: -20px 15px 20px 0;
 }

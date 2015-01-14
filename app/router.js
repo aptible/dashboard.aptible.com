@@ -11,6 +11,8 @@ Router.map(function() {
       path: "/:app_id"
     }, function() {
       this.route("operations");
+      this.route("domains");
+      this.route("new-domain");
     });
   });
 
