@@ -1,42 +1,25 @@
-<div>
-  <h3 class='app-handle'>{{app.handle}}</h3>
-</div>
+{{partial 'app/header'}}
 
-<div class="tabs">
-  <div class="services">
-    {{link-to 'Services' 'apps.show' app}}
-  </div>
-  <div class="operations">
-    {{link-to 'History' 'apps.show.operations' app}}
-  </div>
-</div>
+<div class="container">
+  {{partial 'app/nav'}}
 
-{{#if app.isDeprovisioned}}
-  <h1 class="empty-resource-title">
-    This app has been deprovisioned.
-  </h1>
-{{/if}}
-
-{{#each service in app.services}}
-  <div class="service">
-    <div class="service-handle">{{service.handle}}</div>
-    <div class="service-containers">{{service.containerCount}} {{plural-string "Container" service.containerCount}}</div>
-
-    {{service-scaler service=service action="saveService"}}
-
-    <div class="service-vhosts">
-      <div class="vhost-count">
-        {{service.vhosts.length}} {{plural-string "Vhost" service.vhosts.length}}
-      </div>
-      {{#each vhost in service.vhosts}}
-        <div class="vhost">
-          <div class="vhost-virtual-domain">{{vhost.virtualDomain}}</div>
-          <div class="vhost-external-host">{{vhost.externalHost}}</div>
+  <div class="resource-list">
+    {{#each service in app.services}}
+      <div class="panel panel-default panel-subdued">
+        <div class="panel-heading">
+          <h3>{{service.handle}} {{service.command}}</h3>
         </div>
-      {{/each}}
-      <div class="create-vhost">
-        {{link-to 'Create Vhost' 'service.new-vhost' service}}
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-xs-6">
+              {{service-scaler service=service action="saveService"}}
+            </div>
+            <div class="col-xs-6">
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    {{/each}}
   </div>
-{{/each}}
+</div>
+
