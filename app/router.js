@@ -11,14 +11,6 @@ Router.map(function() {
       path: ":organization_id"
     }, function() {
 
-      this.route("service", {
-        path: "services/:service_id"
-      }, function() {
-        this.route("new-vhost", {
-          path: "vhosts/new"
-        });
-      });
-
       this.route("app", {
         path: "apps/:app_id",
         resetNamespace: true
