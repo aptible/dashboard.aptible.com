@@ -1,12 +1,15 @@
-<div class="row">
-{{#each model as |app|}}
-  <div class="col-sm-3">
-    <header>
-      {{app.handle}}
-    </header>
-    <div>
-      Some list of containers
-    </div>
+<div class="resource-list">
+  <div class="row">
+    {{#each model as |database|}}
+      <div class="col-xs-3">
+        {{partial 'stack/db'}}
+      </div>
+    {{/each}}
   </div>
-{{/each}}
+
+  <div class="resource-list-actions">
+    {{#aptible-ability scope="manage" user=session.currentUser stack=stack}}
+      {{link-to 'Create Database' 'databases.new' class="btn btn-primary"}}
+    {{/aptible-ability}}
+  </div>
 </div>

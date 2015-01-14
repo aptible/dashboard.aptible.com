@@ -1,0 +1,7 @@
+{{#each model as |vhost|}}
+  {{vhost.virtualDomain}} {{link-to 'Edit' 'app.vhosts.edit' vhost}}
+{{/each}}
+
+<p>
+  {{link-to 'New vhost' 'app.vhosts.new'}}
+</p>

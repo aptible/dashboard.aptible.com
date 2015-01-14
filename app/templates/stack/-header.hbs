@@ -1,0 +1,53 @@
+<header class="resource-header">
+  <div class="container">
+
+    {{#if hasMultipleStacks}}
+      <button class="btn btn-default stack-select-button dropdown-toggle">
+        <span class="resource-title">{{model.name}}</span>
+        <i class="fa fa-chevron-down"></i>
+      </button>
+    {{else}}
+      <h1 class="resource-title">{{model.name}}</h1>
+    {{/if}}
+
+    <ul class="resource-metadata">
+
+      {{#if model.allowPHI}}
+        <li class="resource-metadata-item">
+          <h5 class="resource-metadata-title">Dedicated Stack</h5>
+          <h3 class="resource-metadata-value"><span class="success">PHI Ready</span></h3>
+        </li>
+      {{else}}
+        <li class="resource-metadata-item">
+          <h5 class="resource-metadata-title">Shared Stack</h5>
+          <h3 class="resource-metadata-value"><span class="danger">Not Ready for PHI</span></h3>
+        </li>
+      {{/if}}
+
+      <li class="resource-metadata-item">
+        <h5 class="resource-metadata-title">Handle</h5>
+        <h3 class="resource-metadata-value">{{model.handle}}</h3>
+      </li>
+
+      <li class="resource-metadata-item">
+        <h5 class="resource-metadata-title">{{model.apps.length}} Apps</h5>
+        <h3 class="resource-metadata-value">Running on 14 containers</h3>
+      </li>
+
+      <li class="resource-metadata-item">
+        <h5 class="resource-metadata-title">{{model.databases.length}} Databases</h5>
+        <h3 class="resource-metadata-value">Using 1.2TB of Disk</h3>
+      </li>
+
+      <li class="resource-metadata-item">
+        <h5 class="resource-metadata-title">Logging</h5>
+        <h3 class="resource-metadata-value">
+          Not configured
+          {{#link-to 'stack.settings' model data-placement="bottom" data-toggle="tooltip" data-original-title="Account Settings"}}
+            <a href="#">Configure</a>
+          {{/link-to}}
+        </h3>
+      </li>
+    </ul>
+  </div>
+</header>

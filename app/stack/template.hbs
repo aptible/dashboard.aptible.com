@@ -1,48 +1,5 @@
-<div class="container" id="main-yield-wrapper" style="min-height: 504px;">
-
-  <div class="row">
-    {{#dashboard-dropdown title=model.name}}
-      {{#each stacks as |stack|}}
-        {{#dashboard-dropdown-item}}
-          {{link-to stack.name 'stack' stack}}
-        {{/dashboard-dropdown-item}}
-      {{/each}}
-    {{/dashboard-dropdown}}
-  </div>
-
-  <div class="row">
-    <div class="col-sm-2">
-      {{model.type}}
-    </div>
-    <div class="col-sm-2">
-      {{model.apps.length}} apps
-    </div>
-    <div class="col-sm-2">
-      {{model.databases.length}} databases
-    </div>
-    <div class="col-sm-2">
-      Logging:
-      {{#if model.syslogHost}}
-        {{model.syslogHost}} {{model.syslogPort}}
-      {{else}}
-        Not configured
-      {{/if}}
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-12">
-      {{link-to "Apps" "apps"}}
-      {{link-to "Databases" "databases"}}
-      {{link-to "Logging" "operations"}}
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="accounts-container">
-        {{outlet}}
-      </div>
-    </div>
-  </div>
+{{partial "stack/header"}}
+<div class="container">
+  {{partial "stack/nav"}}
+  {{outlet}}
 </div>

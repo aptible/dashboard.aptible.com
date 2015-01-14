@@ -19,6 +19,26 @@ Router.map(function() {
         });
       });
 
+      this.route("app", {
+        path: "apps/:app_id",
+        resetNamespace: true
+      }, function() {
+        this.route("services");
+        this.route("vhosts", {}, function(){
+          this.route('new');
+          this.route('edit', {
+            path: ':vhost_id/edit'
+          });
+        });
+        this.route("activity");
+        this.route("deprovision");
+      });
+
+      this.route("database", {
+        path: "databases/:app_id",
+        resetNamespace: true
+      }, function() {});
+
       this.route("stacks", {
         resetNamespace: true
       }, function(){
@@ -26,25 +46,21 @@ Router.map(function() {
           path: ":stack_id",
           resetNamespace: true
         }, function() {
-          this.route("operations", {
-            resetNamespace: true
+          this.route("log-drains", {
+            path: 'logging'
+          }, function(){
+            this.route("new");
           });
 
           this.route("apps", {
             resetNamespace: true
           }, function() {
-            this.route("show", {
-              path: ":app_id"
-            });
             this.route("new");
           });
 
           this.route("databases", {
             resetNamespace: true
           }, function() {
-            this.route("show", {
-              path: ":database_id"
-            });
             this.route("new");
           });
 

@@ -1,3 +1,18 @@
+{{partial "current-user-header"}}
+{{partial "nav-header"}}
+
+<div id="main-yield-wrapper" style="min-height: 504px;">
+  <div class="container">
+    <div class="alerts-partial-wrapper">
+    </div>
+  </div>
+
+  {{outlet}}
+</div>
+
+{{partial "nav-footer"}}
+
+<!--
 <header class="navbar navbar-static-top primary-nav-header">
   <div class="container">
     <div class="navbar-header">
@@ -55,3 +70,4 @@
 {{outlet}}
 
 {{partial "nav-footer"}}
+-->
