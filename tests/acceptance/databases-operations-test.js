@@ -1,8 +1,18 @@
 import Ember from 'ember';
 import startApp from '../helpers/start-app';
 import { stubRequest } from '../helpers/fake-server';
+import {
+  paginatedResourceTest,
+  resourceOperationsTest,
+  paginatedResourceUpdatesQueryParamsTest,
+  paginatedResourceQueryParamsPage2Test
+} from '../helpers/shared-tests';
 
 var App;
+var sharedTestOptions = {
+  resourceType: 'databases'
+};
+
 
 module('Acceptance: Databases Operations', {
   setup: function() {
@@ -17,73 +27,21 @@ test('visit /databases/:id/operations requires authentication', function(){
   expectRequiresAuthentication('/databases/1/operations');
 });
 
-test('visit /databases/:id/operations shows operations', function(){
-  var dbId = 'my-db-id',
-      dbUrl = '/databases/' + dbId,
-      dbOpsUrl = dbUrl + '/operations';
+test('visit /apps/:id/operations shows operations', function(){
+  var options = sharedTestOptions;
+  options.expectedHeader = 'Database Audit History';
 
-  stubRequest('get', dbUrl, function(request){
-    return this.success({
-      id: dbId,
-      handle: 'my-db-handle',
-      _links: {
-        operations: { href: dbOpsUrl }
-      }
-    });
-  });
+  resourceOperationsTest(options);
+});
 
-  stubRequest('get', dbOpsUrl, function(request){
-    return this.success({
-      _embedded: {
-        operations: [{
-          id: 1,
-          type: 'configure',
-          status: 'succeeded',
-          createdAt: '2014-11-19T00:15:33.836Z',
-          userName: 'Frank Macreery',
-          userEmail: 'frank@aptible.com'
-        }, {
-          id: 2,
-          type: 'deploy',
-          status: 'succeeded',
-          createdAt: '2014-11-19T00:15:33.836Z',
-          userName: 'Frank Macreery',
-          userEmail: 'frank@aptible.com'
-        }, {
-          id: 3,
-          type: 'execute',
-          status: 'failed',
-          createdAt: '2014-11-19T00:15:33.836Z',
-          userName: 'Frank Macreery',
-          userEmail: 'frank@aptible.com'
-        }]
-      }
-    });
-  });
+test('visit /apps/:id/operations does pagination', function(){
+  paginatedResourceTest(sharedTestOptions);
+});
 
+test('visit /databases/:id/operations updates query params when changing page', function(){
+  paginatedResourceUpdatesQueryParamsTest(sharedTestOptions);
+});
 
-  signInAndVisit(dbOpsUrl);
-
-  andThen(function(){
-    var header = find('header:contains(Database Audit History)');
-    ok(header.length, 'has header');
-
-    var operationsContainer = find('.operations');
-    var operations = find('.operation', operationsContainer);
-
-    equal(operations.length, 3, 'has 3 operations');
-
-    ['Configure', 'Deploy', 'Execute'].forEach(function(type){
-      ok(find('.operation-type:contains(' + type + ')').length,
-         'has capitalized operation type: ' + type);
-    });
-
-    ['Succeeded', 'Failed'].forEach(function(type){
-      ok(find('.operation-status:contains(' + type + ')').length,
-         'has capitalized operation status: ' + type);
-    });
-
-    var operationCreatedBy = find('.operation-created-by:contains(Frank Macreery)');
-    ok(operationCreatedBy.length, 'has operation created by username');
-  });
+test('visit /databases/:id/operations?page=2 starts at 2nd page', function(){
+  paginatedResourceQueryParamsPage2Test(sharedTestOptions);
 });
