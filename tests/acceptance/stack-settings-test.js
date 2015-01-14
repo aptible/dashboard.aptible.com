@@ -25,14 +25,11 @@ test('visit /stacks/:id/settings', function(){
   signInAndVisit('/stacks/1/settings');
 
   andThen(function(){
-    equal(currentPath(), 'stack.settings');
+    equal(currentPath(), 'stacks.stack.settings');
 
-    var header = findWithAssert('h4:contains(' + stackName + ' Settings)');
-    ok(header.length, 'has header');
-
-    var nameInput       = find('input.stack-name');
-    var syslogHostInput = find('input.stack-syslog-host');
-    var syslogPortInput = find('input.stack-syslog-port');
+    var nameInput       = find('input[name="name"]');
+    var syslogHostInput = find('input[name="syslog-host"]');
+    var syslogPortInput = find('input[name="syslog-port"]');
 
     ok(nameInput.length, 'has input for name');
     ok(syslogHostInput.length, 'has input for syslog host');
@@ -54,9 +51,9 @@ test('visit /stacks/:id/settings and save changes', function(){
   var newName = 'cool stack v2', newHost = 'cool.stack.com', newPort = '199';
 
   signInAndVisit('/stacks/1/settings');
-  fillIn('input.stack-name', newName);
-  fillIn('input.stack-syslog-host', newHost);
-  fillIn('input.stack-syslog-port', newPort);
+  fillIn('input[name="name"]', newName);
+  fillIn('input[name="syslog-host"]', newHost);
+  fillIn('input[name="syslog-port"]', newPort);
 
   stubRequest('put', '/accounts/1', function(request){
     var json = this.json(request);
@@ -71,7 +68,8 @@ test('visit /stacks/:id/settings and save changes', function(){
   click('button:contains(Update account)');
 
   andThen(function(){
-    equal(currentPath(), 'apps.index', 'redirects to apps index after change');
+    equal(currentPath(), 'stacks.stack.apps.index',
+          'redirects to apps index after change');
   });
 });
 
@@ -82,11 +80,11 @@ test('visit /stacks/:id/settings and click cancel', function(){
 
   signInAndVisit('/stacks/1/settings');
 
-  fillIn('input.stack-name', 'incorrect name');
+  fillIn('input[name="name"]', 'incorrect name');
   click('button:contains(Nevermind)');
 
   andThen(function(){
-    equal(currentPath(), 'apps.index');
+    equal(currentPath(), 'stacks.stack.apps.index');
   });
 });
 

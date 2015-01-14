@@ -54,6 +54,7 @@
     "locationUpdatedTo",
     "expectRequiresAuthentication",
     "stubOrganizations",
+    "stubApp",
     "locationUpdatedTo"
   ],
   "node": false,

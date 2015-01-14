@@ -3,7 +3,6 @@
 @import "bower_components/animate/source/animate";
 @import "bower_components/aptible-sass/dist/styles/aptible";
 @import "bower_components/aptible-sass/dist/styles/aptible_dashboard";
-@import "bower_components/aptible-sass/dist/styles/aptible_nav";
 
 @import "specific_resources/apps";
 @import "specific_resources/cards";
@@ -18,6 +17,7 @@
 @import "specific_resources/users";
 @import "specific_resources/verify";
 
+@import "components/resource-header";
 @import "components/clipboard";
 @import "components/config-form";
 @import "components/focus";

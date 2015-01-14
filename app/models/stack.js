@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
@@ -10,5 +11,7 @@ export default DS.Model.extend({
 
   apps: DS.hasMany('apps', {async: true}),
   databases: DS.hasMany('databases', {async: true}),
-  permissions: DS.hasMany('permissions', {async:true})
+  permissions: DS.hasMany('permissions', {async:true}),
+
+  allowPHI: Ember.computed.match('type', /production|platform|pilot/)
 });

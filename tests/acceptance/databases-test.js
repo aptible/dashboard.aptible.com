@@ -13,66 +13,38 @@ module('Acceptance: Databases', {
   }
 });
 
-test('visiting /databases requires authentication', function(){
-  expectRequiresAuthentication('/databases');
+test('visiting /stacks/:stack_id/databases requires authentication', function(){
+  expectRequiresAuthentication('/stacks/1/databases');
 });
 
-test('visiting /databases', function() {
-  signInAndVisit('/databases');
+test('visiting /stacks/:stack_id/databases', function() {
+  signInAndVisit('/stacks/1/databases');
 
   andThen(function() {
-    equal(currentPath(), 'databases.index');
+    equal(currentPath(), 'stacks.stack.databases.index');
   });
 });
 
-test('visiting /databases when not signed in', function() {
-  visit('/databases');
+test('visiting /stacks/1/databases shows list of databases', function() {
+  signInAndVisit('/stacks/1/databases');
 
   andThen(function() {
-    equal(currentPath(), 'login');
+    var row = findWithAssert('.panel.database');
+    equal(row.length, 2, 'shows 2 databases');
   });
 });
 
-
-test('visiting /databases shows list of databases', function() {
-  signInAndVisit('/databases');
-
-  andThen(function() {
-    var row = findWithAssert('.database-row');
-    equal(row.length, 4, 'shows 4 databases');
-  });
-});
-
-test('visiting /databases shows list of stacks', function() {
-  signInAndVisit('/databases');
-
-  andThen(function() {
-    var panels = findWithAssert('.panel.account-panel');
-    equal(panels.length, 2, 'shows 2 stacks');
-  });
-});
-
-test('visiting /databases then clicking on an database visits the database', function() {
-  signInAndVisit('/databases');
-  click('.database-link');
-  andThen(function(){
-    equal(currentPath(), 'databases.show.index', 'show page is visited');
-  });
-});
-
-
-test('visiting /databases shows link to db history for each db', function() {
-  // from stubStacks:
-  var dbIds = ['1','2','3','4'];
-
-  signInAndVisit('/databases');
+test('visiting /stacks/1/databases then clicking on an database visits the database', function() {
+  signInAndVisit('/stacks/1/databases');
 
   andThen(function(){
-    dbIds.forEach(function(dbId){
-      var href = '/databases/' + dbId + '/operations';
-      var linkEl = find('a[href~="' + href + '"]');
+    var dbLink = find('a[href~="/databases/1"]');
+    ok(dbLink.length, 'has link to database');
 
-      ok(linkEl.length, 'has link to ' + href);
-    });
+    click(dbLink);
+  });
+
+  andThen(function(){
+    equal(currentPath(), 'database.index', 'show page is visited');
   });
 });

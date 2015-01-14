@@ -23,12 +23,12 @@ test('/stacks/:id/apps/new requires authentication', function(){
 test('visit /stacks/1/apps/new', function(){
   expect(2);
 
-  stubStack({id:1});
+  stubStacks();
 
   signInAndVisit('/stacks/1/apps/new');
 
   andThen(function(){
-    equal(currentPath(), 'stack.new-app');
+    equal(currentPath(), 'stacks.stack.apps.new');
 
     var input = findWithAssert('input.app-handle');
     ok(input.length, 'has app handle input');
@@ -87,7 +87,7 @@ test('visit /stacks/1/apps/new and create an app', function(){
   click(':contains(Create app)');
 
   andThen(function(){
-    equal(currentPath(), 'apps.index');
+    equal(currentPath(), 'stacks.stack.apps.index');
 
     var appEl = findWithAssert(':contains(my-new-app)');
     ok( appEl.length, 'shows my new app');

@@ -17,64 +17,39 @@ module('Acceptance: Apps', {
   }
 });
 
-test('visiting /apps requires authentication', function() {
-  expectRequiresAuthentication('/apps');
+test('visiting /stacks/1/apps requires authentication', function() {
+  expectRequiresAuthentication('/stacks/1/apps');
 });
 
-test('visiting /apps', function() {
-  signInAndVisit('/apps');
+test('visiting /stacks/1/apps', function() {
+  signInAndVisit('/stacks/1/apps');
 
   andThen(function() {
-    equal(currentPath(), 'apps.index');
+    equal(currentPath(), 'stacks.stack.apps.index');
   });
 });
 
-test('visiting /apps shows list of stacks', function() {
-  signInAndVisit('/apps');
+test('visiting /stacks/1/apps shows list of apps', function() {
+  signInAndVisit('/stacks/1/apps');
 
   andThen(function() {
-    App.testHelpers.expectStackHeader('my-stack-1');
-    App.testHelpers.expectStackHeader('my-stack-2');
+    var appRows = find('.panel.app');
+
+    equal(appRows.length, 2, '2 apps');
   });
 });
 
-test('visiting /apps shows apps in stacks', function() {
-  signInAndVisit('/apps');
-
-  andThen(function() {
-    var stackPanels = find('.account-panel');
-
-    equal(stackPanels.length, 2, '2 stack panels');
-
-    for (var i=0; i < stackPanels.length; i++) {
-      var panel = stackPanels[i];
-
-      var appRows = find('.app-row', panel);
-      equal(appRows.length, '2', '2 app rows');
-    }
-  });
-});
-
-test('visiting /apps then clicking on an app visits the app', function() {
-  signInAndVisit('/apps');
-  click('.app-link');
-  andThen(function(){
-    equal(currentPath(), 'apps.show.index', 'show page is visited');
-  });
-});
-
-test('visiting /apps shows link to app history for each app', function() {
-  // from stubStacks:
-  var appIds = ['1','2','3','4'];
-
-  signInAndVisit('/apps');
+test('visiting /stacks/1/apps then clicking on an app visits the app', function() {
+  signInAndVisit('/stacks/1/apps');
 
   andThen(function(){
-    appIds.forEach(function(appId){
-      var href = '/apps/' + appId + '/operations';
-      var linkEl = find('a[href~="' + href + '"]');
+    var appLink = find('a[href~="/apps/1"]');
+    ok(appLink.length, 'has link to app 1');
 
-      ok(linkEl.length, 'has link to ' + href);
-    });
+    click(appLink);
+  });
+
+  andThen(function(){
+    equal(currentPath(), 'app.index', 'app show page is visited');
   });
 });

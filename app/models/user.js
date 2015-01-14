@@ -10,6 +10,7 @@ export default DS.Model.extend({
   // relationships
   token: DS.belongsTo('token', {async: true}),
   roles: DS.hasMany('role', {async:true}),
+  organizations: DS.hasMany('organizations', {async:true}),
 
   // check ability, returns a promise
   // e.g.: user.can('manage', stack).then(function(boolean){ ... });

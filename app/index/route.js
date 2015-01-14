@@ -7,9 +7,9 @@ export default Ember.Route.extend({
     var route = this;
 
     if (this.session.get('isAuthenticated')) {
-      route.transitionTo('apps');
+      route.replaceWith('stacks');
     } else {
-      route.transitionTo('login');
+      route.replaceWith('login');
     }
   }
 });

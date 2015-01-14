@@ -36,7 +36,7 @@ export default Ember.Route.extend({
         return subscription.save();
       }).then(function(){
         // TODO: Change to verification page when ready
-        route.transitionTo('apps.index');
+        route.transitionTo('index');
       }, function(error) {
         controller.set('error', error);
       });

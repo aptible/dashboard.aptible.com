@@ -14,7 +14,7 @@
     "ember-qunit-notifications": "0.0.4",
     "qunit": "~1.15.0",
     "animate": "jackilyn/animate.scss#c03607f922850b5c2d1da1ec45e5d56f4e4403ab",
-    "aptible-sass": "aptible/aptible-sass#df1618ab37bc17c5199f2fd885e79ed3285a1f7f",
+    "aptible-sass": "aptible/aptible-sass#diesel",
     "nouislider": "~7.0.9",
     "font-awesome": "~4.2.0",
     "pretender": "0.3.1",

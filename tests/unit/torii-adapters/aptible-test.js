@@ -16,6 +16,7 @@ moduleFor('torii-adapter:aptible', 'Torii Adapter: Aptible', {
     'model:token',
     'model:user',
     'model:role',
+    'model:organization',
     'adapter:application',
     'serializer:application'
   ],
