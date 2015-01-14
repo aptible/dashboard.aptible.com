@@ -1,7 +1,39 @@
 {{#each model as |vhost|}}
-  {{vhost.virtualDomain}} {{link-to 'Edit' 'app.vhosts.edit' vhost}}
+  <div class="panel panel-default panel-subdued">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-6">
+          {{vhost.virtualDomain}} Web Service
+        </div>
+        <div class="col-xs-6">
+          <div class='pull-right'>
+            {{link-to 'Edit' 'app.vhosts.edit' vhost class="btn btn-default"}}
+            <a class="btn btn-default" href="#" {{action 'delete' vhost}}>
+              Delete
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-xs-6">
+          <ul class="resource-metadata">
+            <li class="resource-metadata-item">
+              <h5 class="resource-metadata-title">Hostname</h5>
+              <h3 class="resource-metadata-value">
+                {{vhost.externalHost}}
+              </h3>
+            </li>
+          </ul>
+        </div>
+        <div class="col-xs-6">
+        </div>
+      </div>
+    </div>
+  </div>
 {{/each}}
 
 <p>
-  {{link-to 'New vhost' 'app.vhosts.new'}}
+  {{link-to 'Create VHost' 'app.vhosts.new'}}
 </p>
