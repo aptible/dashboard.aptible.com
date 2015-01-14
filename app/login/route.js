@@ -25,7 +25,7 @@ export default Ember.Route.extend({
       var route = this;
       var credentials = buildCredentials(authAttempt.email, authAttempt.password);
       this.session.open('aptible', credentials).then(function(){
-        route.transitionTo('apps');
+        route.transitionTo('index');
       }, function(e){
         route.currentModel.set('error', e.message);
       });

@@ -1,0 +1,57 @@
+<header class="navbar navbar-static-top primary-nav-header">
+  <div class="container">
+    <div class="navbar-header">
+      {{link-to "Aptible" "index" class="navbar-brand"}}
+    </div>
+    <div class="nav">
+      <ol class="breadcrumb pull-right">
+        <li>
+          <div class="dropdown-breadcrumbs">
+            {{#dashboard-dropdown title=session.currentUser.name}}
+              {{#dashboard-dropdown-item}}
+                {{link-to "Apps" "organizations.show.apps" model}}
+              {{/dashboard-dropdown-item}}
+              {{#dashboard-dropdown-item}}
+                {{link-to "Databases" "organizations.show.databases" model}}
+              {{/dashboard-dropdown-item}}
+              {{#dashboard-dropdown-item}}
+                <a href="https://dashboard.aptible.com/compliance">Compliance</a>
+              {{/dashboard-dropdown-item}}
+            {{/dashboard-dropdown}}
+          </div>
+        </li>
+      </ol>
+      <ul class="nav nav-pills navbar-right primary-nav">
+        <li>
+          {{link-to model.name "organizations.show" model}}
+        </li>
+        <li>
+          <a href="#">settings</a>
+        </li>
+        <li>
+          <a href="#">switch</a>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</header>
+
+<header class="navbar navbar-static-top secondary-nav-header">
+  <div class="container">
+    <nav>
+      <ul class="nav nav-tabs">
+        {{#link-to "organizations.show" model tagName="li"}}
+          {{link-to "Apps & Databases" "organizations.show" model}}
+        {{/link-to}}
+        <li>
+          <a href="https://dashboard.aptible.com/compliance">Compliance</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+{{outlet}}
+
+{{partial "nav-footer"}}

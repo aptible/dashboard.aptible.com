@@ -6,47 +6,56 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route("apps", {}, function() {
+  this.route("organizations", {}, function() {
     this.route("show", {
-      path: "/:app_id"
+      path: ":organization_id"
     }, function() {
-      this.route("operations");
-    });
-  });
 
-  this.route("service", {
-    path: "services/:service_id"
-  }, function() {
-    this.route("new-vhost", {
-      path: "vhosts/new"
-    });
-  });
+      this.route("service", {
+        path: "services/:service_id"
+      }, function() {
+        this.route("new-vhost", {
+          path: "vhosts/new"
+        });
+      });
 
-  this.route("databases", {}, function() {
-    this.route("show", {
-      path: "/:database_id"
-    }, function() {
-      this.route("operations");
+      this.route("stacks", {
+        resetNamespace: true
+      }, function(){
+        this.route("stack", {
+          path: ":stack_id",
+          resetNamespace: true
+        }, function() {
+          this.route("operations", {
+            resetNamespace: true
+          });
+
+          this.route("apps", {
+            resetNamespace: true
+          }, function() {
+            this.route("show", {
+              path: ":app_id"
+            });
+            this.route("new");
+          });
+
+          this.route("databases", {
+            resetNamespace: true
+          }, function() {
+            this.route("show", {
+              path: ":database_id"
+            });
+            this.route("new");
+          });
+
+          this.route("settings");
+        });
+      });
     });
   });
 
   this.route("login");
   this.route("logout");
-
-  this.route("stack", {
-    path: "stacks/:stack_id"
-  }, function() {
-    this.route("new-database", {
-      path: "databases/new"
-    });
-
-    this.route("new-app", {
-      path: "apps/new"
-    });
-
-    this.route("settings");
-  });
-
   this.route("signup");
 
   this.route("verify", {

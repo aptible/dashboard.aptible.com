@@ -1,3 +1,28 @@
+<header class="collapse navbar-collapse bs-navbar-collapse">
+  <div class="container">
+    <div class="navbar-header">
+      {{link-to "Aptible" "index" class="navbar-brand"}}
+    </div>
+    <div class="nav">
+      <ul class="nav nav-pills navbar-right user-nav">
+        {{#dashboard-dropdown title=session.currentUser.name defaultPath="index"}}
+          {{#dashboard-dropdown-item}}
+            {{link-to "Dashboard" "index"}}
+            <a href="https://dashboard.aptible.com/settings">Settings</a>
+          {{/dashboard-dropdown-item}}
+          {{dashboard-dropdown-divider}}
+          {{#dashboard-dropdown-item}}
+            {{link-to "Logout" "logout"}}
+          {{/dashboard-dropdown-item}}
+        {{/dashboard-dropdown}}
+      </ul>
+      <ul class="nav nav-pills navbar-right user-nav">
+      </ul>
+
+    </div>
+  </div>
+</header>
+
 <header class="navbar navbar-static-top primary-nav-header">
   <div class="container">
     <div class="navbar-header">
@@ -13,16 +38,6 @@
 
       <li class="dropdown current-user">
       <div class="btn-group">
-        {{#dashboard-dropdown title=session.currentUser.name defaultPath="index"}}
-          {{#dashboard-dropdown-item}}
-            {{link-to "Dashboard" "index"}}
-            <a href="https://dashboard.aptible.com/settings">Settings</a>
-          {{/dashboard-dropdown-item}}
-          {{dashboard-dropdown-divider}}
-          {{#dashboard-dropdown-item}}
-            {{link-to "Logout" "logout"}}
-          {{/dashboard-dropdown-item}}
-        {{/dashboard-dropdown}}
       </div>
       </li>
 
