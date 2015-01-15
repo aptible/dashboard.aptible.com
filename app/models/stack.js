@@ -12,6 +12,7 @@ export default DS.Model.extend({
   apps: DS.hasMany('apps', {async: true}),
   databases: DS.hasMany('databases', {async: true}),
   permissions: DS.hasMany('permissions', {async:true}),
+  organization: DS.belongsTo('organization', {async:true}),
 
   allowPHI: Ember.computed.match('type', /production|platform|pilot/)
 });

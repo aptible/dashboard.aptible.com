@@ -13,6 +13,7 @@ moduleForModel('operation', 'Operation', {
     'model:database',
     'model:permission',
     'model:role',
+    'model:organization',
 
     'adapter:operation',
     'serializer:application'

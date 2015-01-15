@@ -7,9 +7,11 @@
     <nav>
       <ul class="nav nav-pills navbar-right user-nav">
         <li>
-          <a href="https://dashboard.aptible.com/organizations/df0ee681-9e02-4c28-8916-3b215d539b08">
-            Aptible
-          </a>
+          {{#if model.organization}}
+            {{link-to model.organization.name "index"}}
+          {{else}}
+            {{link-to model.stack.organization.name "index"}}
+          {{/if}}
         </li>
 
         <li class="dropdown current-user">
@@ -20,7 +22,7 @@
             {{/dashboard-dropdown-item}}
 
             {{#dashboard-dropdown-item}}
-              <a href="https://dashboard.aptible.com/settings">Settings</a>
+              {{#link-to-aptible app="legacy-dashboard" path="settings"}}Settings{{/link-to-aptible}}
             {{/dashboard-dropdown-item}}
 
             {{dashboard-dropdown-divider}}
