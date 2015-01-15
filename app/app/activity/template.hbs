@@ -26,4 +26,15 @@
       </tr>
     {{/each}}
   </tbody>
+  <tfoot>
+    <tr>
+      <td>
+        {{aptible-pagination currentPage=currentPage
+                             totalCount=totalCount
+                             perPage=perPage
+                             nextPage="nextPage"
+                             prevPage="prevPage"}}
+      </td>
+    </tr>
+  </tfoot>
 </table>

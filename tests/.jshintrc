@@ -55,6 +55,9 @@
     "expectRequiresAuthentication",
     "stubOrganizations",
     "stubApp",
+    "expectPaginationElements",
+    "clickNextPageLink",
+    "clickPrevPageLink",
     "locationUpdatedTo"
   ],
   "node": false,
