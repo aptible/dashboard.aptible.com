@@ -4,7 +4,7 @@ import { stubRequest } from '../helpers/fake-server';
 
 var App;
 
-module('Acceptance: Service New Vhost', {
+module('Acceptance: App New Vhost', {
   setup: function() {
     App = startApp();
     stubStacks();
@@ -14,59 +14,98 @@ module('Acceptance: Service New Vhost', {
   }
 });
 
-test('visit /services/:id/vhosts/new requires authentication', function(){
-  expectRequiresAuthentication('/services/1/vhosts/new');
+test('visit /apps/:id/vhosts/new requires authentication', function(){
+  expectRequiresAuthentication('/apps/1/vhosts/new');
 });
 
-test('visit /services/:id/vhosts/new', function(){
-  var serviceId = 'service-1';
+test('visit /apps/:id/vhosts/new', function(){
+  var appId = 1;
 
-  stubRequest('get', '/services/' + serviceId, function(request){
+  stubApp({
+    id: appId,
+    _links: {
+      services: { href: '/apps/' + appId + '/services' }
+    }
+  });
+
+  stubRequest('get', '/apps/' + appId + '/services', function(){
     return this.success({
-      id: serviceId,
-      handle: 'the-service'
+      _embedded: {
+        services: [{
+          id: 1,
+          _links: {
+            vhosts: { href: '/services/1/vhosts' }
+          }
+        }]
+      }
     });
   });
 
-  signInAndVisit('/services/' + serviceId + '/vhosts/new');
+  stubRequest('get', '/services/1/vhosts', function(){
+    return this.success({
+      _embedded: {
+        vhosts: [{
+          id: 1
+        }]
+      }
+    });
+  });
+
+  signInAndVisit('/apps/' + appId + '/vhosts/new');
 
   andThen(function(){
-    var header = find('h4:contains(Add a Virtual Host)');
+    var header = find('.panel-heading:contains(Create a new VHost)');
     ok(header.length, 'has header');
 
-    var serviceHandle = find(':contains(the-service)');
-    ok(serviceHandle.length, 'shows service name');
+    ['Service', 'Virtual Domain', 'Certificate', 'Private Key'].forEach(function(name){
+      ok( find('.form-group:contains(' + name + ')').length,
+          'has input for ' + name);
+    });
 
-    var virtualDomainInput = find('input.virtual-domain');
-    ok(virtualDomainInput.length, 'has virtual domain input');
+    ok( find('button:contains(Save VHost)').length,
+        'has save button');
 
-    var certificateInput = find('textarea.certificate');
-    ok(certificateInput.length, 'has certificate input');
-
-    var keyInput = find('textarea.private-key');
-    ok(keyInput.length, 'has private-key input');
-
-    var okButton = find('button:contains(Add virtual host)');
-    ok(okButton.length, 'has ok button');
-
-    var cancelButton = find('button:contains(Add virtual host)');
-    ok(cancelButton.length, 'has cancel button');
+    ok( find('button:contains(Cancel)').length,
+        'has Cancel button');
   });
 });
 
 test('visit /services/:id/vhosts/new and create vhost', function(){
-  expect(4);
+  var appId = 1;
 
-  var serviceId = 'service-1';
+  stubApp({
+    id: appId,
+    _links: {
+      services: { href: '/apps/' + appId + '/services' }
+    }
+  });
 
-  stubRequest('get', '/services/' + serviceId, function(request){
+  stubRequest('get', '/apps/' + appId + '/services', function(){
     return this.success({
-      id: serviceId,
-      handle: 'the-service'
+      _embedded: {
+        services: [{
+          id: 1,
+          _links: {
+            vhosts: { href: '/services/1/vhosts' }
+          }
+        }]
+      }
     });
   });
 
-  stubRequest('post', '/services/' + serviceId + '/vhosts', function(request){
+  stubRequest('get', '/services/1/vhosts', function(){
+    return this.success({
+      _embedded: {
+        vhosts: [{
+          id: 1
+        }]
+      }
+    });
+  });
+
+  signInAndVisit('/apps/' + appId + '/vhosts/new');
+
+  stubRequest('post', '/services/1/vhosts', function(request){
     var json = this.json(request);
     equal(json.virtual_domain, 'my.domain.com');
     equal(json.certificate, 'my long cert');
@@ -78,9 +117,10 @@ test('visit /services/:id/vhosts/new and create vhost', function(){
     });
   });
 
-  signInAndVisit('/services/' + serviceId + '/vhosts/new');
-  fillIn('input.virtual-domain', 'my.domain.com');
-  fillIn('textarea.certificate', 'my long cert');
-  fillIn('textarea.private-key', 'my long pk');
-  click('button:contains(Add virtual host)');
+  signInAndVisit('/apps/' + appId + '/vhosts/new');
+  fillIn('input[name="virtual-domain"]', 'my.domain.com');
+  fillIn('textarea[name="certificate"]', 'my long cert');
+  fillIn('textarea[name="private-key"]', 'my long pk');
+
+  click('button:contains(Save VHost)');
 });

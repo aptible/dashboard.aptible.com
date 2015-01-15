@@ -20,6 +20,7 @@ moduleForModel('user', 'Utils - #can', {
     'model:operation',
     'model:stack',
     'model:permission',
+    'model:organization',
     'adapter:application',
     'serializer:application'
   ],
