@@ -35,6 +35,23 @@ test('visit /stacks/1/apps/new', function(){
   });
 });
 
+test('visit /stacks/1/apps/new and cancel', function(){
+  stubStacks();
+  stubStack({id: 1});
+
+  signInAndVisit('/stacks/1/apps/new');
+  fillIn('input.app-handle', 'my-new-app');
+  click(':contains(Cancel)');
+
+  andThen(function(){
+    equal(currentPath(), 'stacks.stack.apps.index');
+
+    var appEl = find(':contains(my-new-app)');
+    ok( !appEl.length, 'does not show cancelled app');
+  });
+
+});
+
 test('visit /stacks/1/apps/new and create an app', function(){
   expect(3);
 
@@ -84,7 +101,7 @@ test('visit /stacks/1/apps/new and create an app', function(){
 
   signInAndVisit('/stacks/1/apps/new');
   fillIn('input.app-handle', 'my-new-app');
-  click(':contains(Create app)');
+  click(':contains(Save App)');
 
   andThen(function(){
     equal(currentPath(), 'stacks.stack.apps.index');

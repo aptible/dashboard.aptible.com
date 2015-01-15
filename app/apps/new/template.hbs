@@ -1,5 +1,34 @@
-<div>
-  Got a handle bud?
-  {{input value=model.handle class='app-handle'}}
+<div class="row">
+  <div class="col-xs-6">
+    <div class="panel panel-default panel-subdued">
+      <div class="panel-heading">
+        Create a new app
+      </div>
+      <div class="panel-body">
+        <form role="form">
+          {{#unless model.isValid}}
+            <div class="alert alert-warning fade in">
+              <a class="close" data-dismiss="alert">×</a>
+              {{#each model.errors.messages as |message|}}
+                <p>{{message}}</p>
+              {{/each}}
+            </div>
+          {{/unless}}
+
+          <div class="form-group">
+            <label>App handle</label>
+            {{input class="form-control app-handle" value=model.handle}}
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
 </div>
-<button {{action "create"}}>Create app</button>
+
+<button class="btn btn-default btn-lg" {{action 'cancel'}}>
+  Cancel
+</button>
+<button class="btn btn-primary btn-sm" {{action 'create'}}>
+  Save App
+</button>
