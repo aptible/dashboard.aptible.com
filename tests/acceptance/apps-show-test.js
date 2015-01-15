@@ -42,16 +42,16 @@ test('visiting /apps/my-app-id shows basic app info', function() {
   signInAndVisit('/apps/my-app-id');
 
   andThen(function() {
-    equal(currentPath(), 'apps.show.index', 'show page is visited');
+    equal(currentPath(), 'app.index', 'show page is visited');
 
-    var app = find('.app-handle:contains(my-app)');
+    var app = find('.resource-title:contains(my-app)');
     ok(app.length, 'shows app handle');
 
-    var linkToOperations = find('a[href~="/apps/my-app-id/operations"]');
-    ok(linkToOperations.length, 'links to operations');
+    var linkToOperations = find('a[href~="/apps/my-app-id/activity"]');
+    ok(linkToOperations.length, 'links to activity');
 
-    var linkToCreateVhost = find('a[href~="/services/' + serviceId + '/vhosts/new"]');
-    ok(linkToCreateVhost.length, 'links to create vhost');
+    var linkToVhosts = find('a[href~="/apps/my-app-id/vhosts"]');
+    ok(linkToVhosts.length, 'links to vhosts');
   });
 });
 
@@ -67,15 +67,12 @@ test('visiting /apps/my-app-id when the app is deprovisioned', function() {
 
   signInAndVisit('/apps/my-app-id');
   andThen(function() {
-    var deprovisionTitle = find('h1.empty-resource-title');
+    var deprovisionTitle = find('.resource-metadata-value:contains(Deprovisioned)');
     ok(deprovisionTitle.length, 'show deprovision title');
-
-    var deprovisionMessage = find(':contains(This app has been deprovisioned.)');
-    ok(deprovisionMessage.length, 'shows deprovision message');
   });
 });
 
-test('visiting /apps/my-app-id shows services', function() {
+test('visiting /apps/my-app-id/services shows services', function() {
   stubRequest('get', '/apps/my-app-id', function(request){
     return this.success({
       id: 'my-app-id',
@@ -108,65 +105,31 @@ test('visiting /apps/my-app-id shows services', function() {
     });
   });
 
-  stubRequest('get', '/services/service-1/vhosts', function(request){
-    return this.success({
-      _embedded: {
-        vhosts: [{
-          id: 'vhost-1',
-          virtual_domain: 'vhost.vdomain.com',
-          external_host: 'vhost.ext-host.amazonaws.com'
-        }]
-      }
-    });
-  });
-
-  stubRequest('get', '/services/service-2/vhosts', function(request){
-    return this.success({
-      _embedded: { vhosts: [] }
-    });
-  });
-
   signInAndVisit('/apps/my-app-id');
 
   andThen(function() {
+    var servicesLink = find('a[href~="/apps/my-app-id/services"]');
+    ok(servicesLink.length, 'has link to services');
+
+    click(servicesLink);
+  });
+
+  andThen(function(){
     var services = find('.service');
     equal(services.length, 2, 'shows 2 services');
 
     var hubot = findWithAssert('.service:eq(0)');
-    var handle = find('.service-handle', hubot);
-    var containers = find('.service-containers', hubot);
-    var containersSelect = find('.service-containers-select', hubot);
-    var vhostsContainer     = find('.service-vhosts', hubot);
-    var vhosts = find('.vhost', vhostsContainer);
-    var vhostCount = find('.vhost-count', vhostsContainer);
-    var vhostVirtualDomain = find('.vhost-virtual-domain', vhostsContainer);
-    var vhostExternalHost  = find('.vhost-external-host', vhostsContainer);
-
-    equal(handle.text(), 'hubot-service');
-    equal(containers.text(), '1 Container');
-    ok(containersSelect.length, 'has select for container count');
-    equal(vhosts.length, 1, 'shows 1 vhost for hubot service');
-    equalElementText(vhostCount, '1 Vhost');
-    equalElementText(vhostVirtualDomain, 'vhost.vdomain.com');
-    equalElementText(vhostExternalHost, 'vhost.ext-host.amazonaws.com');
+    ok( find('h3:contains(hubot-service)', hubot).length,
+        'shows hubot-service handle' );
+    var handle = find('h3:contains(hubot-service)', hubot);
 
     var slack = findWithAssert('.service:eq(1)');
-    handle = find('.service-handle', slack);
-    containers = find('.service-containers', slack);
-    containersSelect = find('.service-containers-select', slack);
-    vhostsContainer     = find('.service-vhosts', slack);
-    vhosts = find('.vhost', vhostsContainer);
-    vhostCount = find('.vhost-count', vhostsContainer);
-
-    equal(handle.text(), 'slack-service');
-    equal(containers.text(), '2 Containers');
-    ok(containersSelect.length, 'shows container count selector');
-    equal(vhosts.length, 0, 'shows 0 vhost for slack service');
-    equalElementText(vhostCount, '0 Vhosts');
+    ok( find('h3:contains(slack-service)', slack).length,
+        'shows slack-service handle' );
   });
 });
 
-test('visit /apps/:id and change service container count', function(){
+test('visit /apps/:id/services and change service container count', function(){
   var appId = 'my-app-id';
   var serviceId = 'service-1';
 
@@ -201,7 +164,7 @@ test('visit /apps/:id and change service container count', function(){
     });
   });
 
-  signInAndVisit('/apps/' + appId);
+  signInAndVisit('/apps/' + appId + '/services');
 
   andThen(function(){
     fillIn('.slider-select', 5);

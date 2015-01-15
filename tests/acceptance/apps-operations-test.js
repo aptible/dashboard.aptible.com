@@ -13,11 +13,11 @@ module('Acceptance: Apps Operations', {
   }
 });
 
-test('visit /apps/:id/operations requires authentication', function(){
-  expectRequiresAuthentication('/apps/1/operations');
+test('visit /apps/:id/activity requires authentication', function(){
+  expectRequiresAuthentication('/apps/1/activity');
 });
 
-test('visit /apps/:id/operations show operations', function(){
+test('visit /apps/:id/activity show operations', function(){
   var appId = 'my-app-id';
 
   stubRequest('get', '/apps/' + appId, function(request){
@@ -59,12 +59,9 @@ test('visit /apps/:id/operations show operations', function(){
     });
   });
 
-  signInAndVisit('/apps/' + appId + '/operations');
+  signInAndVisit('/apps/' + appId + '/activity');
 
   andThen(function(){
-    var header = find('header:contains(App Audit History)');
-    ok(header.length, 'has header');
-
     var operationsContainer = find('.operations');
     var operations = find('.operation', operationsContainer);
 

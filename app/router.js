@@ -22,7 +22,9 @@ Router.map(function() {
 
   this.route("database", {
     path: "databases/:database_id"
-  }, function() {});
+  }, function() {
+    this.route("activity");
+  });
 
   this.route("stacks", {}, function(){
     this.route("stack", {
