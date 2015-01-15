@@ -50,6 +50,6 @@ test('visiting /stacks/1/apps then clicking on an app visits the app', function(
   });
 
   andThen(function(){
-    equal(currentPath(), 'app.index', 'app show page is visited');
+    equal(currentPath(), 'app.services', 'app show page is visited');
   });
 });
