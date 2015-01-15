@@ -19,12 +19,12 @@ test('visit /stacks/1/databases/new requires authentication', function(){
 
 test('visit /stacks/1/databases/new shows fields for creating a db', function(){
   var stackId = '1';
-  stubStack({id:stackId});
+  stubStacks();
 
   signInAndVisit('/stacks/' + stackId + '/databases/new');
 
   andThen(function(){
-    equal(currentPath(), 'stack.new-database');
+    equal(currentPath(), 'stacks.stack.databases.new');
 
     var input = findWithAssert('input[name="handle"]');
     ok(input.length, 'has database handle input');
@@ -124,7 +124,7 @@ test('visit /stacks/1/databases/new and create', function(){
   // TODO test that moving the slider changes the disk size
 
   andThen(function(){
-    equal(currentPath(), 'databases.index');
+    equal(currentPath(), 'stacks.stack.databases.index');
 
     ok(find(':contains(' + dbHandle + ')').length, 'has new db handle');
   });
@@ -169,6 +169,6 @@ test('visit /stacks/1/databases/new and cancel', function(){
   click(':contains(Nevermind)');
 
   andThen(function(){
-    equal(currentPath(), 'databases.index');
+    equal(currentPath(), 'stacks.stack.databases.index');
   });
 });

@@ -1,38 +1,15 @@
-{{#each stack in stacks}}
-
-  <div class="panel panel-default table-panel account-panel">
-    <header>
-    <h4>
-      <span class="account-name">{{stack.name}}</span>
-      <span class="subdued account-handle">{{stack.handle}}</span>
-      <span class="account-type label label-default">
-        {{stack.type}}
-      </span>
-    </h4>
-    <ul class="nav nav-pills sub-nav-tabs">
-      {{#aptible-ability scope="manage" user=session.currentUser stack=stack}}
-        <li>
-          {{link-to 'Create App' 'stack.new-app' stack class="new-app-link"}}
-        </li>
-        <li>
-          {{#link-to 'stack.settings' stack data-placement="bottom" data-toggle="tooltip" data-original-title="Account Settings"}}
-            <i class="fa fa-cog"></i>
-          {{/link-to}}
-        </li>
-      {{/aptible-ability}}
-    </ul>
-    </header>
-
-    <table class="table table-striped">
-      {{partial "stack/app-table-header"}}
-
-      <tbody>
-        {{#each app in stack.apps}}
-          {{partial "stack/app-table-row"}}
-        {{/each}}
-      </tbody>
-    </table>
-
+<div class="resource-list">
+  <div class="row">
+    {{#each model as |app|}}
+      <div class="col-xs-3">
+        {{partial 'stack/app'}}
+      </div>
+    {{/each}}
   </div>
 
-{{/each}}
+  <div class="resource-list-actions">
+    {{#aptible-ability scope="manage" user=session.currentUser stack=stack}}
+      {{link-to 'Create App' 'apps.new' class="btn btn-primary"}}
+    {{/aptible-ability}}
+  </div>
+</div>

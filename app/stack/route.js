@@ -2,11 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   setupController: function(controller, model){
+    var stacks = this.modelFor('stacks');
     controller.set('model', model);
-
-    // for nav dropdown
-    controller.set('sectionTitle', 'Databases');
-    controller.set('sectionPath', 'databases.index');
+    controller.set('stacks', stacks);
   }
-
 });

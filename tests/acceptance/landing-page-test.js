@@ -21,10 +21,10 @@ test('visiting / redirects to login page', function() {
   });
 });
 
-test('visiting / when logged in redirects to apps page', function() {
+test('visiting / when logged in redirects to first stack page', function() {
   signInAndVisit('/');
 
   andThen(function() {
-    equal(currentPath(), 'apps.index');
+    equal(currentPath(), 'stacks.stack.apps.index');
   });
 });

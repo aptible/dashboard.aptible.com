@@ -53,6 +53,15 @@ Ember.Test.registerHelper('stubStack', function(app, stackData){
   });
 });
 
+Ember.Test.registerHelper('stubApp', function(app, appData){
+  var id = appData.id;
+  if (!id) { throw new Error('cannot stub app without id'); }
+
+  stubRequest('get', '/apps/' + id, function(request){
+    return this.success(appData);
+  });
+});
+
 Ember.Test.registerHelper('stubStacks', function(app, options){
   if (!options) { options = {}; }
   if (options.includeApps === undefined) {
@@ -125,10 +134,22 @@ Ember.Test.registerHelper('stubStacks', function(app, options){
         _embedded: {
           apps: [{
             id: 1,
-            handle: 'my-app-1-stack-1'
+            handle: 'my-app-1-stack-1',
+            _embedded: {
+              services: [{
+                id: '1',
+                handle: 'the-service'
+              }]
+            }
           }, {
             id: 2,
-            handle: 'my-app-2-stack-1'
+            handle: 'my-app-2-stack-1',
+            _embedded: {
+              services: [{
+                id: '2',
+                handle: 'the-service-2'
+              }]
+            }
           }]
         }
       });
@@ -139,10 +160,16 @@ Ember.Test.registerHelper('stubStacks', function(app, options){
         _embedded: {
           apps: [{
             id: 3,
-            handle: 'my-app-1-stack-2'
+            handle: 'my-app-1-stack-2',
+            _embedded: {
+              services: []
+            }
           }, {
             id: 4,
-            handle: 'my-app-2-stack-2'
+            handle: 'my-app-2-stack-2',
+            _embedded: {
+              services: []
+            }
           }]
         }
       });

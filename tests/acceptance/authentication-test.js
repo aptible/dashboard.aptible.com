@@ -96,7 +96,7 @@ test('logging in with correct credentials', function() {
   fillIn('input[type=password]', password);
   click('button:contains(Log in)');
   andThen(function(){
-    equal(currentPath(), 'apps.index');
+    equal(currentPath(), 'stacks.stack.apps.index');
   });
 });
 
@@ -142,7 +142,7 @@ test('logging out redirects to login if not logged in', function() {
 
 test('logging out reloads the page', function() {
   stubStacks();
-  signInAndVisit('/apps');
+  signInAndVisit('/');
   click('.current-user .dropdown-toggle');
   click('a:contains(Logout)');
   locationUpdatedTo('/');
@@ -159,7 +159,7 @@ test('visiting /signup when logged in redirects', function() {
   stubStacks();
   signInAndVisit('/signup');
   andThen(function(){
-    equal(currentPath(), 'apps.index');
+    equal(currentPath(), 'stacks.stack.apps.index');
   });
 });
 

@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-xs-6">
+    <div class="panel panel-default panel-subdued">
+      <div class="panel-heading">
+        Create a new VHost
+      </div>
+      <div class="panel-body">
+        <form role="form">
+          {{#unless model.isValid}}
+            <div class="alert alert-warning fade in">
+              <a class="close" data-dismiss="alert">×</a>
+              {{#each message in model.errors.messages}}
+                <p>{{message}}</p>
+              {{/each}}
+            </div>
+          {{/unless}}
+
+          <div class="form-group">
+            <label>Service</label>
+            {{view "select" content=services
+                            selection=vhostService
+                            optionLabelPath="content.handle"}}
+          </div>
+
+          <div class="form-group">
+            <label>Virtual Domain</label>
+            {{input class="form-control" value=model.virtualDomain name="virtual-domain"}}
+          </div>
+
+          <div class="form-group">
+            <label>Certificate</label>
+            {{textarea class="form-control" value=model.certificate name="certificate"}}
+          </div>
+
+          <div class="form-group">
+            <label>Private Key</label>
+            {{textarea class="form-control" value=model.privateKey name="private-key"}}
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="btn btn-default btn-lg" {{action 'cancel'}}>
+  Cancel
+</button>
+<button class="btn btn-primary btn-lg" {{action 'save' model vhostService}}>
+  Save VHost
+</button>

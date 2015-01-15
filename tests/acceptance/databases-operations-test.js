@@ -13,26 +13,27 @@ module('Acceptance: Databases Operations', {
   }
 });
 
-test('visit /databases/:id/operations requires authentication', function(){
-  expectRequiresAuthentication('/databases/1/operations');
+test('visit /databases/:id/activity requires authentication', function(){
+  expectRequiresAuthentication('/databases/1/activity');
 });
 
-test('visit /databases/:id/operations shows operations', function(){
+test('visit /databases/:id/activity shows operations', function(){
   var dbId = 'my-db-id',
       dbUrl = '/databases/' + dbId,
-      dbOpsUrl = dbUrl + '/operations';
+      dbOpsUrl = dbUrl + '/activity',
+      dbOpsApiUrl = dbUrl + '/operations';
 
   stubRequest('get', dbUrl, function(request){
     return this.success({
       id: dbId,
       handle: 'my-db-handle',
       _links: {
-        operations: { href: dbOpsUrl }
+        operations: { href: dbOpsApiUrl }
       }
     });
   });
 
-  stubRequest('get', dbOpsUrl, function(request){
+  stubRequest('get', dbOpsApiUrl, function(request){
     return this.success({
       _embedded: {
         operations: [{
@@ -65,9 +66,6 @@ test('visit /databases/:id/operations shows operations', function(){
   signInAndVisit(dbOpsUrl);
 
   andThen(function(){
-    var header = find('header:contains(Database Audit History)');
-    ok(header.length, 'has header');
-
     var operationsContainer = find('.operations');
     var operations = find('.operation', operationsContainer);
 
