@@ -1,11 +1,11 @@
 <ul class="nav nav-pills resource-navigation">
-  {{#link-to 'apps.index' tagName="li"}}
+  {{#with-active-class route='stacks.stack.apps' tagName='li'}}
     {{link-to 'Apps' 'apps.index'}}
-  {{/link-to}}
-  {{#link-to 'databases.index' tagName="li"}}
+  {{/with-active-class}}
+  {{#with-active-class route='stacks.stack.databases' tagName='li'}}
     {{link-to 'Databases' 'databases.index'}}
-  {{/link-to}}
-  {{#link-to 'stack.log-drains' tagName="li"}}
+  {{/with-active-class}}
+  {{#with-active-class route='stacks.stack.log-drains' tagName='li'}}
     {{link-to 'Logging' 'stack.log-drains'}}
-  {{/link-to}}
+  {{/with-active-class}}
 </ul>
