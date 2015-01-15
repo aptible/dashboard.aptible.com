@@ -2,16 +2,13 @@
   {{#each model as |service|}}
     <div class="panel panel-default panel-subdued service">
       <div class="panel-heading">
-        <h3>{{service.handle}} {{service.command}}</h3>
+        <h3>
+          <span class="handle">{{service.handle}}</span>
+          <span class="command">{{service.command}}</span>
+        </h3>
       </div>
       <div class="panel-body">
-        <div class="row">
-          <div class="col-xs-6">
-            {{service-scaler service=service action="saveService"}}
-          </div>
-          <div class="col-xs-6">
-          </div>
-        </div>
+        {{service-scaler service=service scaleService="scaleService"}}
       </div>
     </div>
   {{/each}}

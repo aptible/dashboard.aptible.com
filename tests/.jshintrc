@@ -58,7 +58,9 @@
     "expectPaginationElements",
     "clickNextPageLink",
     "clickPrevPageLink",
-    "locationUpdatedTo"
+    "locationUpdatedTo",
+    "setNoUISlider",
+    "slideNoUISlider"
   ],
   "node": false,
   "browser": false,

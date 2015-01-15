@@ -231,3 +231,17 @@ Ember.Test.registerHelper('stubOrganizations', function(app){
     });
   });
 });
+
+Ember.Test.registerAsyncHelper('slideNoUISlider', function(app, selector, value){
+  var element = $(selector);
+  if (element && element.length) {
+    element.trigger('slide', value);
+  }
+});
+
+Ember.Test.registerAsyncHelper('setNoUISlider', function(app, selector, value){
+  var element = $(selector);
+  if (element && element.length) {
+    element.trigger('set', value);
+  }
+});

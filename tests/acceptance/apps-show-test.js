@@ -165,9 +165,7 @@ test('visit /apps/:id/services and change service container count', function(){
   });
 
   signInAndVisit('/apps/' + appId + '/services');
-
-  andThen(function(){
-    fillIn('.slider-select', 5);
-    click('button:contains(Scale)');
-  });
+  slideNoUISlider('.slider', 5);
+  setNoUISlider('.slider', 5);
+  click('button:contains(Scale)');
 });

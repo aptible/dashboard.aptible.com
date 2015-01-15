@@ -6,10 +6,7 @@ import {
 import Ember from 'ember';
 
 moduleForComponent('service-scaler', 'ServiceScalerComponent', {
-  setup: function(container){
-    // cannot just do `needs: ['view:select']`, sadly
-    container.register('view:select', Ember.Select);
-  }
+  needs: ['component:no-ui-slider']
 });
 
 test('it renders', function() {
