@@ -88,9 +88,14 @@ header.resource-header {
     }
 
     &.active {
-      > a {
+      > a, > a:link, > a:active, > a:focus {
         color: $color-primary;
         background: $color-bg-gray;
+        outline: 0;
+      }
+      > a:hover {
+        background: #337ab7;
+        color: white;
       }
     }
   }
