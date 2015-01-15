@@ -7,7 +7,7 @@ export default Ember.Route.extend({
     var route = this;
 
     if (this.session.get('isAuthenticated')) {
-      route.replaceWith('organizations');
+      route.replaceWith('stacks');
     } else {
       route.replaceWith('login');
     }

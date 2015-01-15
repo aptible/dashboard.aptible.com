@@ -6,59 +6,48 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route("organizations", {}, function() {
-    this.route("show", {
-      path: ":organization_id"
-    }, function() {
+  this.route("app", {
+    path: "apps/:app_id"
+  }, function() {
+    this.route("services");
+    this.route("vhosts", {}, function(){
+      this.route('new');
+      this.route('edit', {
+        path: ':vhost_id/edit'
+      });
+    });
+    this.route("activity");
+    this.route("deprovision");
+  });
 
-      this.route("app", {
-        path: "apps/:app_id",
+  this.route("database", {
+    path: "databases/:database_id"
+  }, function() {});
+
+  this.route("stacks", {}, function(){
+    this.route("stack", {
+      path: ":stack_id",
+      resetNamespace: true
+    }, function() {
+      this.route("log-drains", {
+        path: 'logging'
+      }, function(){
+        this.route("new");
+      });
+
+      this.route("apps", {
         resetNamespace: true
       }, function() {
-        this.route("services");
-        this.route("vhosts", {}, function(){
-          this.route('new');
-          this.route('edit', {
-            path: ':vhost_id/edit'
-          });
-        });
-        this.route("activity");
-        this.route("deprovision");
+        this.route("new");
       });
 
-      this.route("database", {
-        path: "databases/:app_id",
+      this.route("databases", {
         resetNamespace: true
-      }, function() {});
-
-      this.route("stacks", {
-        resetNamespace: true
-      }, function(){
-        this.route("stack", {
-          path: ":stack_id",
-          resetNamespace: true
-        }, function() {
-          this.route("log-drains", {
-            path: 'logging'
-          }, function(){
-            this.route("new");
-          });
-
-          this.route("apps", {
-            resetNamespace: true
-          }, function() {
-            this.route("new");
-          });
-
-          this.route("databases", {
-            resetNamespace: true
-          }, function() {
-            this.route("new");
-          });
-
-          this.route("settings");
-        });
+      }, function() {
+        this.route("new");
       });
+
+      this.route("settings");
     });
   });
 
