@@ -1,0 +1,24 @@
+<div class="pagination">
+  <div {{bind-attr class=":prev hasPrev::disabled"}}>
+    {{#if hasPrev}}
+      <a {{action 'prevPage' currentPage}}>
+        Prev
+      </a>
+    {{else}}
+      Prev
+    {{/if}}
+  </div>
+  <div class="current">
+    {{currentPage}}
+  </div>
+
+  <div {{bind-attr class=":next hasNext::disabled"}}>
+    {{#if hasNext}}
+      <a {{action 'nextPage' currentPage}}>
+        Next
+      </a>
+    {{else}}
+      Next
+    {{/if}}
+  </div>
+</div>
