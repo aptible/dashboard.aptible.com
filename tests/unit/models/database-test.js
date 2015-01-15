@@ -15,6 +15,7 @@ moduleForModel('database', 'Database', {
     'model:operation',
     'model:permission',
     'model:role',
+    'model:organization',
 
     'adapter:database',
     'serializer:application'

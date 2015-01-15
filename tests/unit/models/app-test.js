@@ -15,6 +15,7 @@ moduleForModel('app', 'App', {
     'model:operation',
     'model:permission',
     'model:role',
+    'model:organization',
 
     'adapter:app',
     'serializer:application'
