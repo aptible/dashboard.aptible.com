@@ -5,9 +5,14 @@ export default Ember.Component.extend({
   isSaving: false,
   containerCount: null,
 
-  isDirty: function(){
-    return this.get('containerCount') !== this.get('service.containerCount');
-  }.property('containerCount', 'service.containerCount'),
+  isSliding: false,
+
+  showActionButtons: function(){
+    if (this.get('isSliding')) { return false; }
+
+    return this.get('containerCount') !==
+      this.get('service.containerCount');
+  }.property('isSliding', 'containerCount', 'service.containerCount'),
 
   initializeContainerCount: function(){
     this.set( 'containerCount', this.get('service.containerCount') );
@@ -15,7 +20,12 @@ export default Ember.Component.extend({
 
   actions: {
     setContainerCount: function(value){
+      this.set('isSliding', true);
       this.set('containerCount', value);
+    },
+
+    finishSliding: function(){
+      this.set('isSliding', false);
     },
 
     cancel: function(){
@@ -27,6 +37,8 @@ export default Ember.Component.extend({
     },
 
     scale: function(){
+      if (this.get('isSaving')) { return; }
+
       var service = this.get('service');
       var component = this;
       var containerCount = this.get('containerCount');

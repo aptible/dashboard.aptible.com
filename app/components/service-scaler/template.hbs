@@ -15,11 +15,14 @@
       {{containerCount}}
     </div>
     <div class='service-containers-select'>
-      {{no-ui-slider didSlide="setContainerCount"
-                     start=containerCount
-                     rangeMin=1
-                     rangeMax=10
-                     step=1}}
+      <div class="slider-wrapper">
+        {{no-ui-slider didSlide="setContainerCount"
+                       didSet="finishSliding"
+                       start=containerCount
+                       rangeMin=1
+                       rangeMax=10
+                       step=1}}
+      </div>
 
       {{#if error}}
         <div class="error">
@@ -27,7 +30,7 @@
         </div>
       {{/if}}
 
-      {{#if isDirty}}
+      {{#if showActionButtons}}
         <button {{action "scale"}} class="btn btn-xs slider-confirm">
           {{#if isSaving}}
             Saving...
