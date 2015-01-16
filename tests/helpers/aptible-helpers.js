@@ -171,7 +171,8 @@ Ember.Test.registerHelper('stubStacks', function(app, options){
             _embedded: {
               services: [{
                 id: '1',
-                handle: 'the-service'
+                handle: 'the-service',
+                container_count: 1
               }]
             }
           }, {
@@ -180,7 +181,8 @@ Ember.Test.registerHelper('stubStacks', function(app, options){
             _embedded: {
               services: [{
                 id: '2',
-                handle: 'the-service-2'
+                handle: 'the-service-2',
+                container_count: 1
               }]
             }
           }]

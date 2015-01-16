@@ -10,6 +10,11 @@ export default Ember.Component.extend({
   rangeMax: 0,
   step: null,
 
+  validateProperties: function(){
+    Ember.assert('no-ui-slider must have a value for `start`',
+                 !Ember.isBlank(this.get('start')));
+  }.on('init'),
+
   initializeSlider: function(){
     var options = {
       start: [this.get('start')],

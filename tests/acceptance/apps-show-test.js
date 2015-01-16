@@ -25,17 +25,7 @@ test('visiting /apps/my-app-id shows basic app info', function() {
     return this.success({
       id: appId,
       handle: 'my-app',
-      _links: { services: { href: '/apps/' + appId + '/services' } }
-    });
-  });
-
-  stubRequest('get', '/apps/' + appId + '/services', function(request){
-    return this.success({
-      _embedded: {
-        services: [{
-          id: serviceId
-        }]
-      }
+      _embedded: { services: [] }
     });
   });
 
