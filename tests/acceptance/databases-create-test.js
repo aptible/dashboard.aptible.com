@@ -29,10 +29,10 @@ test('visit /stacks/1/databases/new shows fields for creating a db', function(){
     var input = findWithAssert('input[name="handle"]');
     ok(input.length, 'has database handle input');
 
-    var button = findWithAssert('button:contains(Create Database)');
+    var button = findWithAssert('button:contains(Save Database)');
     ok(button.length, 'has create button');
 
-    var cancelButton = findWithAssert('button:contains(Nevermind)');
+    var cancelButton = findWithAssert('button:contains(Cancel)');
     ok(cancelButton.length, 'has cancel button');
 
     var dbTypeSelector = findWithAssert('.database-select');
@@ -118,7 +118,7 @@ test('visit /stacks/1/databases/new and create', function(){
   // the existence of these fields/selectors is asserted in a previous test
   fillIn('input[name="handle"]', dbHandle);
   click('.select-option[title="Redis"]');
-  click(':contains(Create Database)');
+  click(':contains(Save Database)');
 
   // the disk size starts at 10GB
   // TODO test that moving the slider changes the disk size
@@ -166,7 +166,7 @@ test('visit /stacks/1/databases/new and cancel', function(){
 
   signInAndVisit('/stacks/1/databases/new');
 
-  click(':contains(Nevermind)');
+  click(':contains(Cancel)');
 
   andThen(function(){
     equal(currentPath(), 'stacks.stack.databases.index');

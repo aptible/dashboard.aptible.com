@@ -42,7 +42,7 @@ test('visiting /apps/my-app-id shows basic app info', function() {
   signInAndVisit('/apps/my-app-id');
 
   andThen(function() {
-    equal(currentPath(), 'app.index', 'show page is visited');
+    equal(currentPath(), 'app.services', 'show page is visited');
 
     var app = find('.resource-title:contains(my-app)');
     ok(app.length, 'shows app handle');

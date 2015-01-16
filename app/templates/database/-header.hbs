@@ -1,0 +1,45 @@
+<header class="resource-header">
+  <div class="container">
+
+    {{#link-to 'databases' model.stack class="resource-breadcrumb"}}
+      <i class="fa fa-chevron-left"></i>
+      {{model.stack.name}}
+    {{/link-to}}
+
+    <h1 class="resource-title">{{model.handle}}</h1>
+
+    <ul class="resource-metadata">
+      {{#if model.isDeprovisioned}}
+        <li class="resource-metadata-item">
+          <h5 class="resource-metadata-title">Status</h5>
+          <h3 class="resource-metadata-value"><span class="danger">Deprovisioned</span></h3>
+        </li>
+      {{else}}
+
+        {{#if model.stack.allowPHI}}
+          <li class="resource-metadata-item">
+            <h5 class="resource-metadata-title">Dedicated Stack</h5>
+            <h3 class="resource-metadata-value"><span class="success">PHI Ready</span></h3>
+          </li>
+        {{else}}
+          <li class="resource-metadata-item">
+            <h5 class="resource-metadata-title">Shared Stack</h5>
+            <h3 class="resource-metadata-value"><span class="danger">Not Ready for PHI</span></h3>
+          </li>
+        {{/if}}
+
+        <li class="resource-metadata-item">
+          <h5 class="resource-metadata-title">Type</h5>
+          <h3 class="resource-metadata-value">{{model.type}}</h3>
+        </li>
+
+
+        <li class="resource-metadata-item">
+          <h5 class="resource-metadata-title">Connection URL</h5>
+          <h3 class="resource-metadata-value">{{model.connectionUrl}}</h3>
+        </li>
+      {{/if}}
+
+    </ul>
+  </div>
+</header>

@@ -24,6 +24,7 @@ Router.map(function() {
     path: "databases/:database_id"
   }, function() {
     this.route("activity");
+    this.route("deprovision");
   });
 
   this.route("stacks", {}, function(){

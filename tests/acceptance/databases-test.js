@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import startApp from '../helpers/start-app';
+import { stubRequest } from '../helpers/fake-server';
 
 var App;
 
@@ -35,6 +36,14 @@ test('visiting /stacks/1/databases shows list of databases', function() {
 });
 
 test('visiting /stacks/1/databases then clicking on an database visits the database', function() {
+  stubRequest('get', '/databases/1/operations', function(request){
+    return this.success({
+      _embedded: {
+        operations: []
+      }
+    });
+  });
+
   signInAndVisit('/stacks/1/databases');
 
   andThen(function(){
@@ -45,6 +54,6 @@ test('visiting /stacks/1/databases then clicking on an database visits the datab
   });
 
   andThen(function(){
-    equal(currentPath(), 'database.index', 'show page is visited');
+    equal(currentPath(), 'database.activity', 'show page is visited');
   });
 });
