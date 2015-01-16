@@ -1,9 +1,11 @@
 {{#each model as |vhost|}}
-  <div class="panel panel-default panel-subdued">
+  <div class="panel panel-default panel-subdued vhost">
     <div class="panel-heading">
       <div class="row">
         <div class="col-xs-6">
-          {{vhost.virtualDomain}}
+          <span class="virtual-domain">
+            {{vhost.virtualDomain}}
+          </span>
         </div>
         <div class="col-xs-6">
           <div class='pull-right'>
@@ -22,7 +24,9 @@
             <li class="resource-metadata-item">
               <h5 class="resource-metadata-title">Hostname</h5>
               <h3 class="resource-metadata-value">
-                {{vhost.externalHost}}
+                <span class="external-host">
+                  {{vhost.externalHost}}
+                </span>
               </h3>
             </li>
           </ul>
