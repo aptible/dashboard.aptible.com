@@ -2,7 +2,7 @@ import Ember from 'ember';
 import startApp from '../helpers/start-app';
 import { stubRequest } from '../helpers/fake-server';
 
-var App, server;
+var App;
 
 module('Acceptance: App Create', {
   setup: function() {
@@ -10,9 +10,6 @@ module('Acceptance: App Create', {
   },
   teardown: function() {
     Ember.run(App, 'destroy');
-    if (server) {
-      server.shutdown();
-    }
   }
 });
 

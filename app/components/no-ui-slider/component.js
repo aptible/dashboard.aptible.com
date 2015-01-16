@@ -34,18 +34,14 @@ export default Ember.Component.extend({
     this.$().on('slide', function(e, value){
       value = parseFloat(value);
 
-      Ember.run(function(){
-        component.sendAction('didSlide', value);
-      });
+      Ember.run(component, 'sendAction', 'didSlide', value);
     });
 
     // `set` event fired once when user stops dragging/sliding
     this.$().on('set', function(e, value){
       value = parseFloat(value);
 
-      Ember.run(function(){
-        component.sendAction('didSet', value);
-      });
+      Ember.run(component, 'sendAction', 'didSet', value);
     });
   },
 

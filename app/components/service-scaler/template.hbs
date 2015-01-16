@@ -1,25 +1,51 @@
-<div class='service-containers-select'>
-  <div class="slider">
-    {{view "select"
-       class="slider-select"
-       content=containerCountOptions
-       value=service.containerCount }}
+<div class="row">
+  <div class="col-xs-6">
+    Containers
   </div>
-
-  {{#if error}}
-    <div class="error">
-      {{error}}
+  <div class="col-xs-6">
+    <div class="pull-right">
+      {{containerCount}} Production App at $ per Hour
     </div>
-  {{/if}}
+  </div>
+</div>
 
-  <button {{action "scale"}}
-          {{bind-attr disabled=isSaving}}
-          class="btn btn-xs slider-confirm">
+<div class="row">
+  <div class="col-xs-6">
+    <div class="container-count">
+      {{containerCount}}
+    </div>
+    <div class='service-containers-select'>
+      <div class="slider-wrapper">
+        {{no-ui-slider didSlide="setContainerCount"
+                       didSet="finishSliding"
+                       start=containerCount
+                       rangeMin=1
+                       rangeMax=10
+                       step=1}}
+      </div>
 
-    {{#if isSaving}}
-      Saving...
-    {{else}}
-      Scale
-    {{/if}}
-  </button>
+      {{#if error}}
+        <div class="error">
+          {{error}}
+        </div>
+      {{/if}}
+
+      {{#if showActionButtons}}
+        <button {{action "scale"}} class="btn btn-xs slider-confirm">
+          {{#if isSaving}}
+            Saving...
+          {{else}}
+            Scale
+          {{/if}}
+        </button>
+
+        <button {{action "cancel"}} class="btn">Cancel</button>
+      {{/if}}
+    </div>
+  </div>
+  <div class="col-xs-6">
+    <div class="pull-right">
+      $438.24/month
+    </div>
+  </div>
 </div>
