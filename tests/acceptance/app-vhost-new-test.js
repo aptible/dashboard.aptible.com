@@ -4,7 +4,15 @@ import { stubRequest } from '../helpers/fake-server';
 
 var App;
 
-module('Acceptance: App New Vhost', {
+var appId = '1';
+var appUrl = '/apps/' + appId;
+var appVhostsUrl = '/apps/' + appId + '/vhosts';
+var appVhostsApiUrl = '/apps/' + appId + '/vhosts';
+var appVhostsNewUrl = '/apps/' + appId + '/vhosts/new';
+
+var formInputNames = ['service', 'virtual-domain', 'certificate', 'private-key'];
+
+module('Acceptance: App Vhost New', {
   setup: function() {
     App = startApp();
     stubStacks();
@@ -14,52 +22,36 @@ module('Acceptance: App New Vhost', {
   }
 });
 
-test('visit /apps/:id/vhosts/new requires authentication', function(){
-  expectRequiresAuthentication('/apps/1/vhosts/new');
+test('visit ' + appVhostsNewUrl + ' requires authentication', function(){
+  expectRequiresAuthentication(appVhostsNewUrl);
 });
 
-test('visit /apps/:id/vhosts/new', function(){
+test('visit ' + appVhostsNewUrl + ' shows creation form', function(){
   var appId = 1;
 
   stubApp({
     id: appId,
+    _embedded: { services: [] },
     _links: {
-      services: { href: '/apps/' + appId + '/services' }
+      vhosts: { href: appVhostsApiUrl }
     }
   });
 
-  stubRequest('get', '/apps/' + appId + '/services', function(){
+  stubRequest('get', appVhostsApiUrl, function(){
     return this.success({
-      _embedded: {
-        services: [{
-          id: 1,
-          _links: {
-            vhosts: { href: '/services/1/vhosts' }
-          }
-        }]
-      }
+      _embedded: { vhosts: [] }
     });
   });
 
-  stubRequest('get', '/services/1/vhosts', function(){
-    return this.success({
-      _embedded: {
-        vhosts: [{
-          id: 1
-        }]
-      }
-    });
-  });
-
-  signInAndVisit('/apps/' + appId + '/vhosts/new');
+  signInAndVisit(appVhostsNewUrl);
 
   andThen(function(){
     var header = find('.panel-heading:contains(Create a new VHost)');
     ok(header.length, 'has header');
 
-    ['Service', 'Virtual Domain', 'Certificate', 'Private Key'].forEach(function(name){
-      ok( find('.form-group:contains(' + name + ')').length,
-          'has input for ' + name);
+    formInputNames.forEach(function(name){
+      ok( find('.form-group *[name~="' + name + '"]').length,
+          'has input with name ' + name);
     });
 
     ok( find('button:contains(Save VHost)').length,
@@ -72,40 +64,30 @@ test('visit /apps/:id/vhosts/new', function(){
 
 test('visit /services/:id/vhosts/new and create vhost', function(){
   var appId = 1;
+  var serviceId = 'the-service-id';
 
   stubApp({
     id: appId,
+    _embedded: {
+      services: [{ // Must have at least 1 service so that there is a service selected in the dropdown
+        id: serviceId,
+        handle: 'the-hubot-service'
+      }]
+    },
     _links: {
-      services: { href: '/apps/' + appId + '/services' }
+      vhosts: { href: appVhostsApiUrl }
     }
   });
 
-  stubRequest('get', '/apps/' + appId + '/services', function(){
+  stubRequest('get', appVhostsApiUrl, function(){
     return this.success({
-      _embedded: {
-        services: [{
-          id: 1,
-          _links: {
-            vhosts: { href: '/services/1/vhosts' }
-          }
-        }]
-      }
-    });
-  });
-
-  stubRequest('get', '/services/1/vhosts', function(){
-    return this.success({
-      _embedded: {
-        vhosts: [{
-          id: 1
-        }]
-      }
+      _embedded: { vhosts: [] }
     });
   });
 
   signInAndVisit('/apps/' + appId + '/vhosts/new');
 
-  stubRequest('post', '/services/1/vhosts', function(request){
+  stubRequest('post', '/services/' + serviceId + '/vhosts', function(request){
     var json = this.json(request);
     equal(json.virtual_domain, 'my.domain.com');
     equal(json.certificate, 'my long cert');

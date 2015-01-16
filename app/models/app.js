@@ -13,6 +13,7 @@ export default DS.Model.extend({
   stack: DS.belongsTo('stack', {async: true}),
   services: DS.hasMany('service', {async:true}),
   operations: DS.hasMany('operation', {async:true}),
+  vhosts: DS.hasMany('vhost', {async:true}),
 
   isDeprovisioned: Ember.computed.equal('status', STATUSES.DEPROVISIONED)
 });
