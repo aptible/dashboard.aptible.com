@@ -21,6 +21,8 @@ moduleForModel('user', 'Utils - #can', {
     'model:stack',
     'model:permission',
     'model:organization',
+    'model:vhost',
+
     'adapter:application',
     'serializer:application'
   ],
