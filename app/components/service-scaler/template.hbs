@@ -1,20 +1,26 @@
 <div class="row">
   <div class="col-xs-6">
-    Containers
-  </div>
-  <div class="col-xs-6">
-    <div class="pull-right">
-      {{containerCount}} Production App at $ per Hour
-    </div>
-  </div>
-</div>
+    <label>Containers</label>
+    <div class="slider-input-wrapper">
+      {{#if error}}
+        <div class="alert alert-danger">
+          {{error}}
+          <button {{action "clearMessages"}} type="button" class="close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {{/if}}
 
-<div class="row">
-  <div class="col-xs-6">
-    <div class="container-count">
-      {{containerCount}}
-    </div>
-    <div class='service-containers-select'>
+      {{#if success}}
+        <div class="alert alert-success">
+          {{success}}
+          <button {{action "clearMessages"}} type="button" class="close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {{/if}}
+
+      <input class="form-control" {{bind-attr value=containerCount}} disabled='disabled' />
       <div class="slider-wrapper">
         {{no-ui-slider didSlide="setContainerCount"
                        didSet="finishSliding"
@@ -22,29 +28,30 @@
                        rangeMin=1
                        rangeMax=10
                        step=1}}
+        <div class="label-wrapper">
+          <div class="label align-left">1</div>
+          <div class="label align-right">10</div>
+        </div>
       </div>
 
-      {{#if error}}
-        <div class="error">
-          {{error}}
+      {{#if showActionButtons}}
+        <div class="slider-actions">
+          <button {{action "cancel"}} class="btn btn-xs btn-default btn-cancel">Cancel</button>
+          <button {{action "scale"}} class="btn btn-xs btn-primary slider-confirm">
+            {{#if isSaving}}
+              Saving...
+            {{else}}
+              Scale
+            {{/if}}
+          </button>
         </div>
       {{/if}}
 
-      {{#if showActionButtons}}
-        <button {{action "scale"}} class="btn btn-xs slider-confirm">
-          {{#if isSaving}}
-            Saving...
-          {{else}}
-            Scale
-          {{/if}}
-        </button>
-
-        <button {{action "cancel"}} class="btn">Cancel</button>
-      {{/if}}
     </div>
   </div>
   <div class="col-xs-6">
     <div class="pull-right">
+      {{containerCount}} Production App at $ per Hour
       $438.24/month
     </div>
   </div>

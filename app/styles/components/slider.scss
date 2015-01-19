@@ -1,7 +1,5 @@
 .slider-wrapper {
-  width: 100%;
   height: 12px;
-  padding: 10px 0;
 
   .slider {
     height: 12px;
@@ -11,7 +9,7 @@
   }
 
   .noUi-background {
-    border: 1px solid #b3bdc3;
+    border: 1px solid #e0e0e0;
     -moz-box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, .08);
     box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, .08);
   }
@@ -58,6 +56,7 @@
 
   .noUi-origin {
     border-radius: 6px;
+    margin-right: -2px;
   }
 
   button.slider-confirm {
@@ -70,4 +69,50 @@
     float: right;
   }
 
+}
+
+
+.slider-input-wrapper {
+  margin: 10px 0 0;
+
+  .slider-actions {
+    margin: 40px 0 0 60px;
+    clear: both;
+
+    .btn {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .btn-cancel {
+      display: none;
+    }
+  }
+
+  .slider-wrapper {
+    display: block;
+    margin-left: 60px;
+  }
+
+  input.form-control {
+    width: 39px;
+    height: 38px;
+    text-align: center;
+    float: left;
+    background: #fff;
+  }
+
+  .label-wrapper {
+    margin-top: 12px;
+    .align-left, .align-right {
+      color: gray;
+      padding: 0px;
+    }
+    .align-left {
+      float: left;
+    }
+    .align-right {
+      float: right;
+    }
+  }
 }

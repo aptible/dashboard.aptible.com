@@ -56,7 +56,14 @@ export default Ember.Component.extend({
         if (component.isDestroyed) { return; }
 
         component.set('isSaving', false);
+        component.set('success', service.get('processType') + ' scaled to ' + containerCount + ' containers');
       });
+    },
+
+    clearMessages: function() {
+      this.set('error', false);
+      this.set('success', false);
     }
+
   }
 });

@@ -5,5 +5,6 @@ export default DS.Model.extend({
   handle: DS.attr('string'),
   command: DS.attr('string'),
   containerCount: DS.attr('number'),
-  vhosts: DS.hasMany('vhost', {async:true})
+  vhosts: DS.hasMany('vhost', {async:true}),
+  processType: DS.attr('string')
 });
