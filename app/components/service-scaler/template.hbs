@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-xs-6">
+  <div class="col-xs-7">
     <label>Containers</label>
     <div class="slider-input-wrapper">
       {{#if error}}
@@ -21,18 +21,6 @@
       {{/if}}
 
       <input class="form-control" {{bind-attr value=containerCount}} disabled='disabled' />
-      <div class="slider-wrapper">
-        {{no-ui-slider didSlide="setContainerCount"
-                       didSet="finishSliding"
-                       start=containerCount
-                       rangeMin=1
-                       rangeMax=10
-                       step=1}}
-        <div class="label-wrapper">
-          <div class="label align-left">1</div>
-          <div class="label align-right">10</div>
-        </div>
-      </div>
 
       {{#if showActionButtons}}
         <div class="slider-actions">
@@ -47,12 +35,23 @@
         </div>
       {{/if}}
 
+      <div class="slider-wrapper">
+        {{no-ui-slider didSlide="setContainerCount"
+                       didSet="finishSliding"
+                       start=containerCount
+                       rangeMin=1
+                       rangeMax=10
+                       step=1}}
+        <div class="label-wrapper">
+          <div class="label pull-left">1</div>
+          <div class="label pull-right">10</div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="col-xs-6">
+  <div class="col-xs-5">
     <div class="pull-right">
-      {{containerCount}} Production App at $ per Hour
-      $438.24/month
+      {{estimated-cost count=containerCount stack=service.stack}}
     </div>
   </div>
 </div>

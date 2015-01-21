@@ -18,6 +18,11 @@ export default Ember.Component.extend({
     this.set( 'containerCount', this.get('service.containerCount') );
   }.on('init').observes('service.containerCount'),
 
+  unitOfMeasure: function() {
+    var type = this.get('service').get('stack').get('type');
+    return type ? type.capitalize() + " App Container" : '';
+  }.property('service.stack.type'),
+
   actions: {
     setContainerCount: function(value){
       this.set('isSliding', true);

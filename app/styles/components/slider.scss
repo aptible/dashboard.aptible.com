@@ -76,12 +76,12 @@
   margin: 10px 0 0;
 
   .slider-actions {
-    margin: 40px 0 0 60px;
-    clear: both;
+    float: right;
+    width: 60px;
 
     .btn {
       display: inline-block;
-      margin-right: 10px;
+      float: right;
     }
 
     .btn-cancel {
@@ -92,6 +92,7 @@
   .slider-wrapper {
     display: block;
     margin-left: 60px;
+    margin-right: 60px;
   }
 
   input.form-control {
@@ -104,15 +105,13 @@
 
   .label-wrapper {
     margin-top: 12px;
-    .align-left, .align-right {
-      color: gray;
-      padding: 0px;
-    }
-    .align-left {
-      float: left;
-    }
-    .align-right {
-      float: right;
+
+    .label {
+      color: $color-light;
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: $weight-semibold;
+      padding: 0;
     }
   }
 }
