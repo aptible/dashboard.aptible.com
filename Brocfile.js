@@ -2,9 +2,23 @@
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
-var app = new EmberApp({
+var options = {
   emberCliFontAwesome: { includeFontAwesomeAssets: false }
-});
+};
+
+if (process.env.EMBER_ENV === 'staging') {
+  options.minifyCSS = {
+    enabled: true
+  };
+  options.minifyJS = {
+    enabled: true
+  };
+  options.fingerprint = {
+    enabled: true
+  };
+}
+
+var app = new EmberApp(options);
 
 app.import('bower_components/nouislider/src/jquery.nouislider.css');
 app.import('bower_components/nouislider/distribute/jquery.nouislider.js');
