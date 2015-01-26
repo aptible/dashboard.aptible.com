@@ -76,6 +76,20 @@ header.resource-header {
   }
 }
 
+.panel-body {
+  .resource-metadata-item {
+  }
+
+  .resource-metadata-title {
+
+  }
+
+  .resource-metadata-value {
+    font-size: 13px;
+    color: $color-light;
+  }
+}
+
 .resource-navigation {
   margin: 30px 0;
 
@@ -88,14 +102,14 @@ header.resource-header {
     }
 
     &.active {
-      > a, > a:link, > a:active, > a:focus {
+      > a, > a:link, > a:active, > a:focus, a:hover {
         color: $color-primary;
         background: $color-bg-gray;
         outline: 0;
       }
-      > a:hover {
-        background: #337ab7;
-        color: white;
+
+      a:hover {
+        cursor: default;
       }
     }
   }

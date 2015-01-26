@@ -79,6 +79,7 @@ test('visiting /apps/my-app-id/services shows services', function() {
         services: [{
           id: 'service-1',
           handle: 'hubot-service',
+          processType: 'web',
           container_count: 1,
           _links: {
             vhosts: { href: '/services/service-1/vhosts' }
@@ -86,6 +87,7 @@ test('visiting /apps/my-app-id/services shows services', function() {
         },{
           id: 'service-2',
           handle: 'slack-service',
+          processType: 'worker',
           container_count: 2,
           _links: {
             vhosts: { href: '/services/service-2/vhosts' }
@@ -109,13 +111,13 @@ test('visiting /apps/my-app-id/services shows services', function() {
     equal(services.length, 2, 'shows 2 services');
 
     var hubot = findWithAssert('.service:eq(0)');
-    ok( find('h3:contains(hubot-service)', hubot).length,
-        'shows hubot-service handle' );
-    var handle = find('h3:contains(hubot-service)', hubot);
+    ok( find('h3:contains(web)', hubot).length,
+        'shows web process type' );
+    var handle = find('h3:contains(Web)', hubot);
 
     var slack = findWithAssert('.service:eq(1)');
-    ok( find('h3:contains(slack-service)', slack).length,
-        'shows slack-service handle' );
+    ok( find('h3:contains(worker)', slack).length,
+        'shows worker process type' );
   });
 });
 

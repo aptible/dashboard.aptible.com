@@ -1,63 +1,38 @@
 {{#each model as |vhost|}}
   <div class="panel panel-default panel-subdued vhost">
-    <div class="panel-heading">
+    <div class="panel-heading with-actions">
       <h3>
         <span class="vhost-virtualdomain">{{vhost.virtualDomain}}</span>
         <i class="fa fa-arrow-right"></i>
-        <span class="vhost-service">{{vhost.service.processType}}</span>
+        <span class="vhost-service">{{vhost.service.processType}} Service</span>
       </h3>
+
+      <div class="panel-heading-actions">
+        {{#if vhost.isDefault}}
+          <span class="label label-default">Default</span>
+        {{else}}
+         {{link-to 'Edit' 'app.vhosts.edit' vhost class="btn btn-default btn-xs"}}
+          <a class="btn btn-default btn-xs" href="#" {{action 'delete' vhost}}>
+            Delete
+          </a>
+        {{/if}}
+      </div>
     </div>
 
     <div class="panel-body">
-      <label>Hostname</label>
-      <span class="external-host">
-        {{vhost.externalHost}}
-      </span>
-    </div>
-  </div>
-{{/each}}
-
-
-{{!--   <div class="panel panel-default panel-subdued vhost">
-    <div class="panel-heading">
-      <div class="row">
-        <div class="col-xs-6">
-          <span class="virtual-domain">
-            {{vhost.virtualDomain}}
-          </span>
-        </div>
-        <div class="col-xs-6">
-          <div class='pull-right'>
-            {{link-to 'Edit' 'app.vhosts.edit' vhost class="btn btn-default"}}
-            <a class="btn btn-default" href="#" {{action 'delete' vhost}}>
-              Delete
-            </a>
+      <div class="resource-metadata-item">
+        <h5 class="resource-metadata-title">Hostname</h5>
+        <h3 class="resource-metadata-value">
+          <div class="external-host">
+            {{vhost.externalHost}}
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="panel-body">
-      <div class="row">
-        <div class="col-xs-6">
-          <ul class="resource-metadata">
-            <li class="resource-metadata-item">
-              <h5 class="resource-metadata-title">Hostname</h5>
-              <h3 class="resource-metadata-value">
-                <span class="external-host">
-                  {{vhost.externalHost}}
-                </span>
-              </h3>
-            </li>
-          </ul>
-        </div>
-        <div class="col-xs-6">
-        </div>
+        </h3>
       </div>
     </div>
   </div>
 {{/each}}
 
-<p>
-  {{link-to 'Create VHost' 'app.vhosts.new' class="btn btn-primary"}}
-</p>
- --}}
+
+<div class="resource-list-actions">
+  {{link-to 'Add Domain' 'app.vhosts.new' class="btn btn-primary"}}
+</div>

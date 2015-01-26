@@ -20,7 +20,9 @@
         </div>
       {{/if}}
 
-      <input class="form-control" {{bind-attr value=containerCount}} disabled='disabled' />
+      <div class="container-count">
+        {{containerCount}}
+      </div>
 
       {{#if showActionButtons}}
         <div class="slider-actions">

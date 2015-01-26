@@ -6,7 +6,7 @@ import {
 import Ember from 'ember';
 
 moduleForComponent('service-scaler', 'ServiceScalerComponent', {
-  needs: ['component:no-ui-slider']
+  needs: ['component:no-ui-slider', 'component:estimated-cost']
 });
 
 test('it renders', function() {

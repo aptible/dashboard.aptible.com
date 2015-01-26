@@ -14,7 +14,10 @@ moduleForModel('vhost', 'Vhost', {
     'model:service',
     'model:app',
     'model:stack',
-    'model:operation'
+    'model:operation',
+    'model:database',
+    'model:permission',
+    'model:organization'
   ]
 });
 

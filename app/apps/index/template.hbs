@@ -1,4 +1,4 @@
-<div class="resource-list">
+<div class="resource-list-grid">
   <div class="row">
     {{#each model as |app|}}
       <div class="col-xs-3">
@@ -7,7 +7,7 @@
     {{/each}}
   </div>
 
-  <div class="resource-list-actions">
+  <div class="resource-actions">
     {{#aptible-ability scope="manage" user=session.currentUser stack=stack}}
       {{link-to 'Create App' 'apps.new' class="btn btn-primary"}}
     {{/aptible-ability}}

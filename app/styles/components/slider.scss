@@ -95,12 +95,18 @@
     margin-right: 60px;
   }
 
-  input.form-control {
+  .container-count {
     width: 39px;
     height: 38px;
+    line-height: 40px;
     text-align: center;
     float: left;
     background: #fff;
+    border: 1px solid #ccc;
+    font-weight: $weight-semibold;
+    border-radius: 4px;
+    @include box-shadow(inset 0 1px 4px rgba(#000, 0.1));
+    font-size: 14px;
   }
 
   .label-wrapper {
