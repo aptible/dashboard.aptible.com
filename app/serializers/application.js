@@ -19,10 +19,6 @@ export default HalSerializer.extend({
   normalize: function(type, hash, property) {
     var payload = this._super(type, hash, property);
 
-    if(payload["default"]) {
-      payload["isDefault"] = payload["default"];
-    }
-
     if (payload.links && payload.links.account) {
       payload.links.stack = payload.links.account;
       delete payload.links.account;

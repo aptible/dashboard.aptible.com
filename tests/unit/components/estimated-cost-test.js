@@ -27,7 +27,7 @@ test('it renders', function() {
 });
 
 test('calculates accurate estimate', function() {
-  expect(4);
+  expect(3);
 
   var component = this.subject({
     count: 5,
@@ -40,5 +40,4 @@ test('calculates accurate estimate', function() {
   equal(component.get('rateInDollars'), '$0.10');
   equal(component.get('unitOfMeasure'), 'Production App Containers');
   equal(component.get('total'), '$365.50');
-  equal(component.centsToDollars(91230), '$912.30');
 });

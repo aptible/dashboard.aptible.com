@@ -19,7 +19,7 @@ export default Ember.Component.extend({
   }.on('init').observes('service.containerCount'),
 
   unitOfMeasure: function() {
-    var type = this.get('service').get('stack').get('type');
+    var type = this.get('service.stack.type');
     return type ? type.capitalize() + " App Container" : '';
   }.property('service.stack.type'),
 
