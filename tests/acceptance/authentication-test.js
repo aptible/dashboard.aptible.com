@@ -205,7 +205,7 @@ test('Creating an account directs to login', function() {
   fillIn('input[type=email]', email);
   fillIn('input[type=password]', password);
   fillIn('input[name=organization]', organization);
-  click('button:contains(Create Account)');
+  click('button:contains(Sign Up)');
   andThen(function(){
     equal(currentPath(), 'welcome.first-app', 'directs to first app');
   });
@@ -221,7 +221,7 @@ test('Creating an account waits on a valid organization name', function() {
   fillIn('input[type=email]', email);
   fillIn('input[type=password]', password);
   fillIn('input[name=organization]', organization);
-  click('button:contains(Create Account)');
+  click('button:contains(Sign Up)');
   andThen(function(){
     equal(currentPath(), 'signup', 'path does not change');
   });
