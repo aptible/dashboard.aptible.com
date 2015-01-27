@@ -73,6 +73,15 @@ module.exports = function(environment) {
     ENV.legacyDashboardHost = 'http://legacy-dashboard-host.com';
   }
 
+  if (environment === 'staging') {
+    ENV.authBaseUri = "http://auth.aptible-staging.com";
+    ENV.apiBaseUri = "http://api.aptible-staging.com";
+    ENV.aptibleHosts = {
+      'legacy-dashboard': "http://dashboard.aptible-staging.com",
+      support: "https://support.aptible-staging.com"
+    };
+  }
+
   if (environment === 'production') {
 
   }

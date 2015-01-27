@@ -16,3 +16,4 @@
 npm-debug.log
 testem.log
 /.divshot-cache
+travis-env.sh

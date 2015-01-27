@@ -48,6 +48,19 @@ Make use of the many generators for code, try `ember help generate` for more det
 
 Specify what it takes to deploy your app.
 
+### Deploying via CI
+
+This repo contains a `.travis.yml` file that will deploy the application
+to staging automatically. To do this, several credentials are encrypted in
+the `travis-env.sh.enc` file. To create a new set of credentials, copy
+`travis-env.sh.example` and add the appropriate keys, then encrypt the
+credentials:
+
+travis encrypt-file travis-env.sh --add --org -r aptible/diesel.aptible.com
+
+The `.travis.yml` file will be updated with a new decryption example. Use
+that example to replace the one at the start of the `after_success` section.
+
 ## Further Reading / Useful Links
 
 * ember: http://emberjs.com/
