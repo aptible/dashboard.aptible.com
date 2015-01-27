@@ -1,11 +1,16 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  classNameBindings: [':col-sm-3', 'isSelected:selected-option'],
+  classNameBindings: [':col-xs-4', 'isSelected:selected-option', 'dbType.value'],
 
   dbType:null,
   selectedDbType: null,
   selectCallback: Ember.K,
+
+  type: function() {
+    if(!this.get('dbType')) { return ''; }
+    return this.get('dbType.value').replace(/ /g,'-').replace(/[^\w-]+/g,'');
+  }.property('dbType'),
 
   isSelected: Ember.computed('dbType', 'selectedDbType', function(){
     return this.get('dbType') === this.get('selectedDbType');
