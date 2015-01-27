@@ -84,7 +84,7 @@ test('visit ' + appVhostsUrl + ' lists vhosts', function(){
     equal( find('.vhost').length, vhosts.length);
 
     vhosts.forEach(function(vhost){
-      ok( find('.vhost .virtual-domain:contains(' + vhost.virtual_domain + ')').length,
+      ok( find('.vhost .vhost-virtualdomain:contains(' + vhost.virtual_domain + ')').length,
           'has virtual domain ' + vhost.virtual_domain );
 
       ok( find('.vhost .external-host:contains(' + vhost.external_host + ')').length,

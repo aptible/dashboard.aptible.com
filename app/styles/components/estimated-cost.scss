@@ -1,0 +1,16 @@
+.cost-estimate {
+  text-align: right;
+
+  .rate {
+    font-size: 12px;
+    color: $color-light;
+    font-weight: $weight-normal;
+    margin: 0;
+  }
+
+  .total {
+    font-size: 18px;
+    margin: 6px 0 0;
+    font-weight: $weight-semibold;
+  }
+}

@@ -14,5 +14,8 @@ export default DS.Model.extend({
   permissions: DS.hasMany('permissions', {async:true}),
   organization: DS.belongsTo('organization', {async:true}),
 
-  allowPHI: Ember.computed.match('type', /production|platform|pilot/)
+  allowPHI: Ember.computed.match('type', /production|platform|pilot/),
+  appContainerCentsPerHour: function() {
+    return this.get('allowPHI') ? 10 : 6;
+  }.property('allowPHI')
 });

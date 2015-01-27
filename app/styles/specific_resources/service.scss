@@ -85,3 +85,14 @@
     }
   }
 }
+
+.process-type {
+  text-transform: capitalize;
+}
+
+.service-command {
+  color: $color-light;
+  font-weight: $weight-normal;
+  display: inline-block;
+  margin: 0 0 0 10px;
+}

@@ -1,7 +1,5 @@
 .slider-wrapper {
-  width: 100%;
   height: 12px;
-  padding: 10px 0;
 
   .slider {
     height: 12px;
@@ -11,7 +9,7 @@
   }
 
   .noUi-background {
-    border: 1px solid #b3bdc3;
+    border: 1px solid #e0e0e0;
     -moz-box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, .08);
     box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, .08);
   }
@@ -58,6 +56,7 @@
 
   .noUi-origin {
     border-radius: 6px;
+    margin-right: -2px;
   }
 
   button.slider-confirm {
@@ -70,4 +69,55 @@
     float: right;
   }
 
+}
+
+
+.slider-input-wrapper {
+  margin: 10px 0 0;
+
+  .slider-actions {
+    float: right;
+    width: 60px;
+
+    .btn {
+      display: inline-block;
+      float: right;
+    }
+
+    .btn-cancel {
+      display: none;
+    }
+  }
+
+  .slider-wrapper {
+    display: block;
+    margin-left: 60px;
+    margin-right: 60px;
+  }
+
+  .container-count {
+    width: 39px;
+    height: 38px;
+    line-height: 40px;
+    text-align: center;
+    float: left;
+    background: #fff;
+    border: 1px solid #ccc;
+    font-weight: $weight-semibold;
+    border-radius: 4px;
+    @include box-shadow(inset 0 1px 4px rgba(#000, 0.1));
+    font-size: 14px;
+  }
+
+  .label-wrapper {
+    margin-top: 12px;
+
+    .label {
+      color: $color-light;
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: $weight-semibold;
+      padding: 0;
+    }
+  }
 }

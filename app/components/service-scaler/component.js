@@ -18,6 +18,11 @@ export default Ember.Component.extend({
     this.set( 'containerCount', this.get('service.containerCount') );
   }.on('init').observes('service.containerCount'),
 
+  unitOfMeasure: function() {
+    var type = this.get('service.stack.type');
+    return type ? type.capitalize() + " App Container" : '';
+  }.property('service.stack.type'),
+
   actions: {
     setContainerCount: function(value){
       this.set('isSliding', true);
@@ -56,7 +61,14 @@ export default Ember.Component.extend({
         if (component.isDestroyed) { return; }
 
         component.set('isSaving', false);
+        component.set('success', service.get('processType') + ' scaled to ' + containerCount + ' containers');
       });
+    },
+
+    clearMessages: function() {
+      this.set('error', false);
+      this.set('success', false);
     }
+
   }
 });

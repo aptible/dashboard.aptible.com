@@ -7,6 +7,6 @@ export default DS.Model.extend({
   privateKey: DS.attr('string'),
   certificate: DS.attr('string'),
   type: DS.attr('string', {defaultValue:'http'}),
-
+  isDefault: DS.attr('boolean'),
   service: DS.belongsTo('service', {async:true})
 });

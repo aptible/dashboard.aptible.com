@@ -6,7 +6,7 @@
     <div class="panel-body">
       {{#each app.services as |service|}}
         <span class="service-badge">
-          <span class="service-name">{{service.handle}}</span>
+          <span class="service-name">{{service.processType}}</span>
           <span class="service-container-count">{{service.containerCount}}</span>
         </span>
       {{/each}}

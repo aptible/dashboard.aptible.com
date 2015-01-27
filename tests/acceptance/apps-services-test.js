@@ -39,11 +39,13 @@ test('visit ' + appServicesUrl + ' lists services', function(){
     id: 1,
     handle: 'hubot',
     command: 'bin/exec hubot',
+    processType: 'web',
     container_count: 1
   },{
     id: 2,
     handle: 'web',
     command: 'bundle exec rails s -e $PORT',
+    processType: 'worker',
     container_count: 2
   }];
 
@@ -60,10 +62,10 @@ test('visit ' + appServicesUrl + ' lists services', function(){
     equal( find('.service').length, services.length);
 
     services.forEach(function(service){
-      ok( find('.service .handle:contains(' + service.handle + ')').length,
-          'has handle ' + service.handle );
+      ok( find('.service .process-type:contains(' + service.processType + ')').length,
+          'has process type ' + service.processType );
 
-      ok( find('.service .command:contains(' + service.command + ')').length,
+      ok( find('.service .service-command:contains(' + service.command + ')').length,
           'has command ' + service.command );
 
       ok( find('.service .container-count:contains(' + service.container_count + ')').length,

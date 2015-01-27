@@ -9,7 +9,10 @@ moduleForModel('service', 'Service', {
     'model:app',
     'model:stack',
     'model:vhost',
-    'model:operation'
+    'model:operation',
+    'model:database',
+    'model:permission',
+    'model:organization'
   ]
 });
 
