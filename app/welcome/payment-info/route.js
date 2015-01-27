@@ -2,9 +2,6 @@ import Ember from 'ember';
 import { createStripeToken } from '../../utils/stripe';
 
 export default Ember.Route.extend({
-  model: function() {
-    return {};
-  },
 
   actions: {
     create: function(model) {

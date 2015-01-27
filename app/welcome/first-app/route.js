@@ -1,23 +1,8 @@
 import Ember from 'ember';
-import { read, write } from '../../utils/storage';
+import { write } from '../utils/storage';
 export var firstAppKey = '_aptible_firstAppData';
 
 export default Ember.Route.extend({
-  model: function(){
-    var firstApp = read(firstAppKey);
-
-    if (firstApp) {
-      return firstApp;
-    } else {
-      return {
-        appHandle: '',
-        dbHandle: '',
-        diskSize: 10,
-        dbType: null
-      };
-    }
-  },
-
   setupController: function(controller, model) {
     controller.set('model', model);
   },
