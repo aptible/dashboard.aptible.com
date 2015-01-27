@@ -63,7 +63,7 @@ test('logging in with bad credentials', function() {
   click('button:contains(Log in)');
   andThen(function(){
     equal(currentPath(), 'login');
-    var error = findWithAssert('.alert.alert-warning');
+    var error = findWithAssert('.alert.alert-danger');
     elementTextContains(error, errorMessage);
   });
 });
@@ -127,7 +127,7 @@ test('after logging in, nav header shows user name', function(){
 
 test('/login links to signup', function() {
   visit('/login');
-  click(':contains(Create Your Aptible Account)');
+  click(':contains(Create an account)');
   andThen(function(){
     equal(currentPath(), 'signup', 'linked to signup');
   });

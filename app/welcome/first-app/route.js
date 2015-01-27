@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { write } from '../utils/storage';
+import { write } from '../../utils/storage';
 export var firstAppKey = '_aptible_firstAppData';
 
 export default Ember.Route.extend({
