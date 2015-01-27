@@ -74,8 +74,8 @@ module.exports = function(environment) {
   }
 
   if (environment === 'staging') {
-    ENV.authBaseUri = "http://auth.aptible-staging.com";
-    ENV.apiBaseUri = "http://api.aptible-staging.com";
+    ENV.authBaseUri = "https://auth.aptible-staging.com";
+    ENV.apiBaseUri = "https://api.aptible-staging.com";
     ENV.aptibleHosts = {
       'legacy-dashboard': "http://dashboard.aptible-staging.com",
       support: "https://support.aptible-staging.com"
