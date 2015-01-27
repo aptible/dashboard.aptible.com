@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-4">
+      <ul class="nav sidebar-nav">
+        <li class='title'>Profile Settings</li>
+
+        {{#link-to 'settings.profile' tagName='li'}}
+          {{link-to 'Profile' 'settings.profile'}}
+        {{/link-to}}
+
+        {{#link-to 'settings.admin' tagName='li'}}
+          {{link-to 'Account Settings' 'settings.admin'}}
+        {{/link-to}}
+
+        {{#link-to 'settings.ssh' tagName='li'}}
+          {{link-to 'SSH Keys' 'settings.ssh'}}
+        {{/link-to}}
+      </ul>
+    </div>
+    <div class="col-xs-8">
+      {{outlet}}
+    </div>
+  </div>
+</div>
