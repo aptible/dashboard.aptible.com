@@ -1,0 +1,84 @@
+<div class="panel-group">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h3>Change Your Password</h3></div>
+    <div class="panel-body">
+      {{#if passwordError}}
+        <div class="alert alert-warning">
+          {{passwordError}}
+        </div>
+      {{/if}}
+      <form action="">
+        <div class="form-group">
+          <label for="password">New password</label>
+          {{input type="password"
+                  class="form-control" placholder="New password"
+                  value=model.password name="password"}}
+        </div>
+        <div class="form-group">
+          <label for="confirm-password">Confirm new password</label>
+          {{input type="password"
+                  class="form-control" placholder="New password"
+                  value=model.passwordConfirmation
+                  name="confirm-password"}}
+        </div>
+        {{#if changingPassword}}
+          <div class="form-group">
+            <label for="current-password">Current password</label>
+            {{input type="password"
+                    class="form-control" placholder="Current password"
+                    value=model.currentPassword
+                    name="current-password"}}
+          </div>
+        {{/if}}
+        <div class="form-group">
+          <button {{action 'changePassword'}}
+            {{bind-attr disabled=model.isSaving}}
+            class="btn btn-primary" type="submit">
+
+            {{#if isSavingPassword}}
+              Saving
+            {{else}}
+              Change password
+            {{/if}}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading"><h3>Change Your Email</h3></div>
+    <div class="panel-body">
+      {{#if emailError}}
+        <div class="alert alert-warning">
+          {{emailError}}
+        </div>
+      {{/if}}
+      <form>
+        <div class="form-group">
+          <label for="email">Email</label>
+          {{input type="email"
+                  class="form-control" placeholder="Email"
+                  value=model.email name="email"}}
+        </div>
+        {{#if changingEmail}}
+          <div class="form-group">
+            <label for="password">Please enter your current password</label>
+            {{input type="password"
+                    class="form-control" placeholder="Current password"
+                    value=model.currentPassword
+                    name="current-password"}}
+          </div>
+        {{/if}}
+        <div class="form-group">
+          <button {{action 'changeEmail'}} class="btn btn-primary" type="submit">
+            {{#if isSavingEmail}}
+              Saving
+            {{else}}
+              Change email
+            {{/if}}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
