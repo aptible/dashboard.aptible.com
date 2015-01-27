@@ -25,11 +25,13 @@ moduleForModel('app', 'App', {
 test('finding uses correct url', function(){
   expect(2);
 
-  stubRequest('get', '/apps/1', function(request){
+  var appId = 'my-app-id';
+
+  stubRequest('get', '/apps/' + appId, function(request){
     ok(true, 'calls with correct URL');
 
     return this.success({
-      id: 'my-app-id',
+      id: appId,
       handle: 'my-cool-app',
       _links: {
         account: { href: '/accounts/1' }
@@ -40,7 +42,7 @@ test('finding uses correct url', function(){
   var store = this.store();
 
   return Ember.run(function(){
-    return store.find('app', '1').then(function(){
+    return store.find('app', appId).then(function(){
       ok(true, 'app did find');
     });
   });

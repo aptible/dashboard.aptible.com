@@ -29,7 +29,7 @@ test('visiting /apps/my-app-id shows basic app info', function() {
     });
   });
 
-  signInAndVisit('/apps/my-app-id');
+  signInAndVisit('/apps/' + appId);
 
   andThen(function() {
     equal(currentPath(), 'app.services', 'show page is visited');
@@ -46,16 +46,18 @@ test('visiting /apps/my-app-id shows basic app info', function() {
 });
 
 test('visiting /apps/my-app-id when the app is deprovisioned', function() {
-  stubRequest('get', '/apps/my-app-id', function(request){
+  var appId = 'my-app-id';
+
+  stubRequest('get', '/apps/' + appId, function(request){
     ok(true, 'loads app');
     return this.success({
-      id: 'my-app',
+      id: appId,
       handle: 'my-app',
       status: 'deprovisioned'
     });
   });
 
-  signInAndVisit('/apps/my-app-id');
+  signInAndVisit('/apps/' + appId);
   andThen(function() {
     var deprovisionTitle = find('.resource-metadata-value:contains(Deprovisioned)');
     ok(deprovisionTitle.length, 'show deprovision title');
@@ -63,9 +65,11 @@ test('visiting /apps/my-app-id when the app is deprovisioned', function() {
 });
 
 test('visiting /apps/my-app-id/services shows services', function() {
-  stubRequest('get', '/apps/my-app-id', function(request){
+  var appId = 'my-app-id';
+
+  stubRequest('get', '/apps/' + appId, function(request){
     return this.success({
-      id: 'my-app-id',
+      id: appId,
       handle: 'my-app',
       _links: {
         services: { href: '/apps/my-app-id/services' }
@@ -97,7 +101,7 @@ test('visiting /apps/my-app-id/services shows services', function() {
     });
   });
 
-  signInAndVisit('/apps/my-app-id');
+  signInAndVisit('/apps/' + appId);
 
   andThen(function() {
     var servicesLink = find('a[href~="/apps/my-app-id/services"]');
