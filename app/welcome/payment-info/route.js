@@ -1,18 +1,15 @@
 import Ember from 'ember';
 import { createStripeToken } from '../../utils/stripe';
-import { read } from '../../utils/storage';
-export var firstAppKey = '_aptible_firstAppData';
 
 export default Ember.Route.extend({
   model: function() {
-    var firstApp = read(firstAppKey);
-    var model = {};
+    return {};
+  },
 
-    if(firstApp) {
-      model.appHandle = firstApp.appHandle;
-    }
-
-    return model;
+  setupController: function(controller, model) {
+    controller.set('model', model);
+    var firstApp = this.modelFor('welcome');
+    controller.set('firstApp', firstApp);
   },
 
   actions: {
