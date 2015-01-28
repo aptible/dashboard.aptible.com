@@ -15,7 +15,7 @@
             {{/if}}
 
             <div class="form-group">
-              {{view "select" content=plans value=model.plan class="form-control" prompt="Select a plan"}}
+              {{select-plan value=model.plan name="plan"}}
             </div>
 
             <div class="form-group">
@@ -23,20 +23,20 @@
             </div>
 
             <div class="form-group">
-              {{input class="form-control" value=model.number name="number" placeholder="Card Month"}}
+              {{input class="form-control" value=model.number name="number" placeholder="Card Number"}}
             </div>
 
             <div class="row">
               <div class="col-xs-6">
                 <div class="expiration-month">
                   <div class="form-group">
-                    {{view "select" content=months value=model.expMonth class="form-control" name="exp-month"}}
+                    {{select-month value=model.expMonth name="exp-month"}}
                   </div>
                 </div>
 
                 <div class="expiration-year">
                   <div class="form-group">
-                    {{view "select" content=years value=model.expYear class="form-control" name="exp-year"}}
+                    {{select-year value=model.expYear name="exp-year"}}
                   </div>
                 </div>
               </div>
