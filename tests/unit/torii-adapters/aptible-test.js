@@ -17,6 +17,7 @@ moduleFor('torii-adapter:aptible', 'Torii Adapter: Aptible', {
     'model:user',
     'model:role',
     'model:organization',
+    'model:ssh-key',
     'adapter:application',
     'serializer:application'
   ],

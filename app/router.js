@@ -58,6 +58,12 @@ Router.map(function() {
   this.route("logout");
   this.route("signup");
 
+  this.route('settings', {}, function(){
+    this.route('admin');
+    this.route('profile');
+    this.route('ssh');
+  });
+
   this.route("verify", {
     path: "verify/:verification_code"
   });

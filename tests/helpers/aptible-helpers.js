@@ -10,7 +10,9 @@ Ember.Test.registerAsyncHelper('signIn', function(app){
     var store = app.__container__.lookup('store:main');
     var user = store.push('user', {
       id: 'user1',
-      name: 'stubbed user'
+      name: 'stubbed user',
+      email: 'stubbed-user@gmail.com',
+      links: { sshKeys: '/users/user1/ssh_keys' }
     });
     sm.transitionTo('authenticated');
     session.set('content.currentUser', user);
