@@ -2,8 +2,9 @@ import DS from 'ember-data';
 import Ember from 'ember';
 
 var STATUSES = {
-  DEPROVISIONED: 'deprovisioned',
-  PROVISIONED:   'provisioned'
+  DEPROVISIONED:  'deprovisioned',
+  PROVISIONED:    'provisioned',
+  DEPROVISIONING: 'deprovisioning'
 };
 
 export default DS.Model.extend({

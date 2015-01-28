@@ -1,0 +1,2 @@
+{{input classNameBindings=":form-control isConfirmed:confirmed:unconfirmed" value=enteredValue name="virtual-domain"}}
+<button {{bind-attr disabled=isUnconfirmed}} class="btn btn-danger" {{action 'submit'}}>{{yield}}</button>

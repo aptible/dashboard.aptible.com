@@ -6,5 +6,11 @@ export default DS.Model.extend({
   createdAt: DS.attr('string'),
   userName: DS.attr('string'),
   userEmail: DS.attr('string'),
-  diskSize: DS.attr('number')
+  diskSize: DS.attr('number'),
+
+  // append these values for a nested url. They are
+  // not actual attributes in the server payload, and
+  // as such ember-data `attrs`.
+  database: null,
+  app: null
 });

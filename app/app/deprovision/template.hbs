@@ -1,1 +1,35 @@
-Deprovision {{model.handle}}
+<div class="row">
+  <div class="col-xs-12">
+    <div class="panel panel-default panel-subdued">
+      <div class="panel-heading">
+        <h3>Permanently deprovision {{model.handle}} </h3>
+      </div>
+      <div class="panel-body">
+        <form role="form">
+          {{#if error}}
+            <div class="alert alert-warning fade in">
+              <a class="close" data-dismiss="alert">×</a>
+              <p>
+                There was a problem deprovisioning your application: {{error.responseJSON.message}}
+              </p>
+            </div>
+          {{/if}}
+
+          <p>
+            This action CANNOT be undone. This will permanently deprovision
+            <strong>{{model.handle}}</strong>
+          </p>
+          <p>
+            <strong>Type the name of the app to permanently deprovision.</strong>
+          </p>
+          <div class="form-group">
+            {{#button-with-confirmation confirmValue=model.handle action='deprovision'}}
+              Deprovision Permanently
+            {{/button-with-confirmation}}
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
