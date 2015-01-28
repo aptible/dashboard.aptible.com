@@ -1,12 +1,18 @@
 {{#link-to 'database' database class="panel-link"}}
-  <div class="panel panel-default panel-subdued database">
+  <div class="panel panel-default panel-subdued resource-list-item">
     <div class="panel-heading">
       <h5>{{database.handle}}</h5>
     </div>
     <div class="panel-body">
       <span class="service-badge">
         <span class="service-name">{{database.type}}</span>
-        <span class="service-container-count">&nbsp;</span>
+        {{#if database.disk}}
+          <span class="service-container-count">{{database.disk.size}}</span>
+        {{else}}
+          <span class="service-container-count">
+            <i class="fa fa-spinner fa-spin"></i>
+          </span>
+        {{/if}}
       </span>
     </div>
   </div>

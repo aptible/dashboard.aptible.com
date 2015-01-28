@@ -1,5 +1,5 @@
 {{#link-to 'app' app class="panel-link"}}
-  <div class="panel panel-default panel-subdued app">
+  <div class="panel panel-default panel-subdued resource-list-item">
     <div class="panel-heading">
       <h5>{{app.handle}}</h5>
     </div>
@@ -9,6 +9,8 @@
           <span class="service-name">{{service.processType}}</span>
           <span class="service-container-count">{{service.containerCount}}</span>
         </span>
+      {{else}}
+        <span class="empty-service">No Services Configured</span>
       {{/each}}
     </div>
   </div>
