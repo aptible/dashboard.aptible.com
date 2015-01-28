@@ -25,12 +25,13 @@ moduleForModel('database', 'Database', {
 
 test('finding uses correct url', function(){
   expect(2);
+  var dbId = 'my-db-id';
 
-  stubRequest('get', '/databases/1', function(request){
+  stubRequest('get', '/databases/' + dbId, function(request){
     ok(true, 'calls with correct URL');
 
     return this.success({
-      id: 'my-database-id',
+      id: dbId,
       handle: 'my-cool-database',
       _links: {
         account: { href: '/accounts/1' }
@@ -41,7 +42,7 @@ test('finding uses correct url', function(){
   var store = this.store();
 
   return Ember.run(function(){
-    return store.find('database', '1').then(function(){
+    return store.find('database', dbId).then(function(){
       ok(true, 'database did find');
     });
   });
