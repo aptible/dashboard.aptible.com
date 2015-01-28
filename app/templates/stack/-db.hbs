@@ -1,5 +1,5 @@
 {{#link-to 'database' database class="panel-link"}}
-  <div class="panel panel-default panel-subdued resource-list-item">
+  <div class="panel panel-default panel-subdued resource-list-item database">
     <div class="panel-heading">
       <h5>{{database.handle}}</h5>
     </div>
@@ -9,7 +9,7 @@
         {{#if database.disk}}
           <span class="service-container-count">{{database.disk.size}}</span>
         {{else}}
-          <span class="service-container-count">
+          <span class="service-container-count pending">
             <i class="fa fa-spinner fa-spin"></i>
           </span>
         {{/if}}
