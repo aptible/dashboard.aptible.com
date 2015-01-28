@@ -6,6 +6,12 @@ export default Ember.Route.extend({
     return {};
   },
 
+  setupController: function(controller, model) {
+    controller.set('model', model);
+    var firstApp = this.modelFor('welcome');
+    controller.set('firstApp', firstApp);
+  },
+
   actions: {
     create: function(model) {
       var route = this;

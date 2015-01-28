@@ -63,7 +63,7 @@ test('logging in with bad credentials', function() {
   click('button:contains(Log in)');
   andThen(function(){
     equal(currentPath(), 'login');
-    var error = findWithAssert('.alert.alert-warning');
+    var error = findWithAssert('.alert.alert-danger');
     elementTextContains(error, errorMessage);
   });
 });
@@ -127,7 +127,7 @@ test('after logging in, nav header shows user name', function(){
 
 test('/login links to signup', function() {
   visit('/login');
-  click(':contains(Create Your Aptible Account)');
+  click(':contains(Create an account)');
   andThen(function(){
     equal(currentPath(), 'signup', 'linked to signup');
   });
@@ -205,7 +205,7 @@ test('Creating an account directs to login', function() {
   fillIn('input[type=email]', email);
   fillIn('input[type=password]', password);
   fillIn('input[name=organization]', organization);
-  click('button:contains(Create Account)');
+  click('button:contains(Sign Up)');
   andThen(function(){
     equal(currentPath(), 'welcome.first-app', 'directs to first app');
   });
@@ -221,7 +221,7 @@ test('Creating an account waits on a valid organization name', function() {
   fillIn('input[type=email]', email);
   fillIn('input[type=password]', password);
   fillIn('input[name=organization]', organization);
-  click('button:contains(Create Account)');
+  click('button:contains(Sign Up)');
   andThen(function(){
     equal(currentPath(), 'signup', 'path does not change');
   });

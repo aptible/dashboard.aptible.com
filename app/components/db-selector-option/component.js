@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  classNameBindings: [':col-sm-3', 'isSelected:selected-option'],
+  classNameBindings: [':col-xs-4', 'isSelected:selected-option', 'dbType.value'],
 
   dbType:null,
   selectedDbType: null,

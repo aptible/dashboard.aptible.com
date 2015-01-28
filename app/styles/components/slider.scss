@@ -73,7 +73,21 @@
 
 
 .slider-input-wrapper {
+  @extend %clearfix;
   margin: 10px 0 0;
+
+  &.disk-size-slider {
+    margin-top: 0;
+
+    .slider-wrapper {
+      margin-right: 0;
+      margin-left: 100px;
+    }
+
+    .container-count {
+      width: 69px;
+    }
+  }
 
   .slider-actions {
     float: right;

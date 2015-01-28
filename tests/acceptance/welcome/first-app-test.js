@@ -31,7 +31,7 @@ test('submitting a first app directs to subscriptions', function() {
   signInAndVisit('/welcome/first-app');
 
   fillIn('input[name="app-handle"]', appHandle);
-  click('button:contains(Proceed to Subscription Info)');
+  click('button:contains(Get Started)');
   andThen(function() {
     var stored = read(firstAppKey);
     equal(stored.appHandle, appHandle, 'app handle is saved in localStorage');

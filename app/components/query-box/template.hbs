@@ -1,14 +1,16 @@
 <form {{action "submit" email on="submit"}}>
   {{#unless analytics.hasEmail}}
-    <div class="input-group">
-      <span class="input-group-addon">
-        <i class="fa fa-envelope"></i>
-      </span>
-      {{input type="email"
-          value=email
-          autofocus=true
-          class="form-control"
-          placeholder="Email"}}
+    <div class="form-group">
+      <div class="input-group">
+        <span class="input-group-addon">
+          <i class="fa fa-envelope"></i>
+        </span>
+        {{input type="email"
+            value=email
+            autofocus=true
+            class="form-control"
+            placeholder="Email"}}
+      </div>
     </div>
   {{/unless}}
   <div class="form-group">

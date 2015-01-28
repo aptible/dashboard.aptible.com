@@ -1,95 +1,79 @@
 {{#login-box}}
-<div class="col-xs-6">
-  <h3 class="heading">
-    Create Your Aptible Account
-  </h3>
-  <div class="sub-heading">
-    Already have an Aptible account?
-    {{link-to "Log In" "login"}}
-  </div>
-  <div class="alerts-partial-wrapper">
-    {{#unless model.isValid}}
-      <div class="alert alert-warning fade in">
-        <a class="close" data-dismiss="alert">×</a>
-        {{#each message in model.errors.messages}}
-          <p>{{message}}</p>
-        {{/each}}
+  <div class="row">
+    <div class="col-xs-5 col-xs-offset-1">
+
+      {{#unless model.isValid}}
+        <div class="alert alert-danger fade in">
+          <a class="close" data-dismiss="alert">×</a>
+          {{#each message in model.errors.messages}}
+            <p>{{message}}</p>
+          {{/each}}
+        </div>
+      {{/unless}}
+
+      <div class="panel panel-default panel-subdued panel-focused">
+        <div class="panel-heading">
+          <div class="panel-heading-link">
+            {{link-to "Sign in instead" "login"}}
+          </div>
+          <h3>Create Your Aptible Account</h3>
+        </div>
+
+        <div class="panel-body">
+          <div class="form-group">
+            {{input type="text"
+              value=model.name
+              autofocus=true
+              class="form-control"
+              placeholder="Your Full Name"}}
+          </div>
+
+          <div class="form-group">
+            {{input type="text"
+              name="organization"
+              value=organization.name
+              class="form-control"
+              placeholder="Organization"}}
+          </div>
+
+          <div class="form-group">
+            {{input type="email"
+              value=model.email
+              class="form-control"
+              placeholder="Email"}}
+          </div>
+
+          <div class="form-group">
+            {{input type="password"
+              value=model.password
+              class="form-control"
+              placeholder="Password"}}
+          </div>
+
+          <div class="panel-submit">
+            <button class="btn btn-primary btn-block btn-lg" {{action "signup" model}}>Sign Up</button>
+          </div>
+        </div>
       </div>
-    {{/unless}}
-  </div>
+    </div>
 
-  <div class="input-group">
-    <span class="input-group-addon">
-      <i class="fa fa-envelope"></i>
-    </span>
-    {{input type="email"
-        value=model.email
-        autofocus=true
-        class="form-control"
-        placeholder="Email"}}
-  </div>
-  <div class="input-group">
-    <span class="input-group-addon">
-      <i class="fa fa-user"></i>
-    </span>
-    {{input type="text"
-        value=model.name
-        class="form-control"
-        placeholder="Full Name"}}
-  </div>
-  {{#if hasSubmitted}}
-    {{#if errors.organization.name}}
-      <div class="alert alert-warning fade in">
-        {{#each message in errors.organization.name}}
-          <p>Organization name {{message}}</p>
-        {{/each}}
+    <div class="col-xs-5">
+      <div class="welcome-info">
+        <h2>
+          Aptible is a deployment platform built to automate HIPAA compliance
+        </h2>
+
+        <p>
+          Run the applications and databases of your choice. Let us manage servers, network topology, security, backups, encryption,
+        </p>
+
+        <p>
+          Aptible will work great with your app’s language or framework.  Check out our getting started guides for help deploying your app.
+        </p>
+
+        {{query-box}}
       </div>
-    {{/if}}
-  {{/if}}
-  <div class="input-group">
-    <span class="input-group-addon">
-      <i class="fa fa-users"></i>
-    </span>
-    {{input type="text"
-        name="organization"
-        value=organization.name
-        class="form-control"
-        placeholder="Organization"}}
-  </div>
-  <div class="input-group">
-    <span class="input-group-addon">
-      <i class="fa fa-lock"></i>
-    </span>
-    {{input type="password"
-        value=model.password
-        class="form-control"
-        placeholder="Password"}}
-  </div>
-  <div class="form-group">
-    <button class="btn btn-primary" {{action "signup" model}}>Create Account</button>
-  </div>
-</div>
+    </div>
 
-<div class="col-xs-6">
-  <h2 class="heading">
-    Aptible is a deployment platform built to
-    automate HIPAA compliance
-  </h2>
-  <p>
-    Run the applications and database of your choice.
-    Let us manage the servers, network topology,
-    security, backups, and encryption.
-  </p>
-
-  {{query-box}}
-
-  <p>
-    Aptible will work great with your app's language
-    or framework. Check out our
-    {{#link-to-aptible app="support" path="hc/en-us/articles/202638630-Deploying-your-first-app"}}
-    getting started guides
-    {{/link-to-aptible}}
-    for help deploying your app.
-  </p>
-</div>
+  </div>
 {{/login-box}}
