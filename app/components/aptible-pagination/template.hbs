@@ -1,24 +1,18 @@
-<div class="pagination">
-  <div {{bind-attr class=":prev hasPrev::disabled"}}>
+<nav>
+  <ul class="pager">
     {{#if hasPrev}}
-      <a {{action 'prevPage' currentPage}}>
-        Prev
-      </a>
-    {{else}}
-      Prev
+      <li class="previous">
+        <a href="#" {{action 'prevPage' currentPage}}>
+          <span aria-hidden="true">&larr;</span> Newer items
+        </a>
+      </li>
     {{/if}}
-  </div>
-  <div class="current">
-    {{currentPage}}
-  </div>
 
-  <div {{bind-attr class=":next hasNext::disabled"}}>
     {{#if hasNext}}
-      <a {{action 'nextPage' currentPage}}>
-        Next
-      </a>
-    {{else}}
-      Next
+      <li class="next">
+        <a href="#" {{action 'nextPage' currentPage}}>Older items
+          <span aria-hidden="true">&rarr;</span></a>
+      </li>
     {{/if}}
-  </div>
-</div>
+  </ul>
+</nav>

@@ -10,38 +10,34 @@ moduleForComponent('aptible-pagination', 'AptiblePaginationComponent', {
   // needs: ['component:foo', 'helper:bar']
 });
 
-test('next page div is disabled when there is no next page', function() {
+test('next page div is hidden when there is no next page', function() {
   var component = this.subject({
     hasNext: true
   });
 
   var element = this.append();
 
-  var next = element.find('.pagination .next');
+  var next = element.find('.pager .next');
   ok(next.length, 'has .next div');
-
-  ok(!next.hasClass('disabled'), 'next is not disabled');
 
   Ember.run(component, 'set', 'hasNext', false);
 
-  ok(next.hasClass('disabled'), 'next is disabled');
+  ok(element.find('.pager .next').length === 0, 'next is hidden');
 });
 
-test('prev page div is disabled when there is no prev page', function() {
+test('prev page div is hidden when there is no prev page', function() {
   var component = this.subject({
     hasPrev: false
   });
 
   var element = this.append();
+  var prev = element.find('.pager .previous');
 
-  var prev = element.find('.pagination .prev');
-  ok(prev.length, 'has .prev div');
-
-  ok(prev.hasClass('disabled'), 'prev is disabled');
+  ok(prev.length === 0, 'previous is hidden');
 
   Ember.run(component, 'set', 'hasPrev', true);
 
-  ok(!prev.hasClass('disabled'), 'prev is not disabled');
+  ok(element.find('.pager .previous').length, 'has .previous div');
 });
 
 test('hasNext is calculated from currentPage, totalCount and perPage', function(){

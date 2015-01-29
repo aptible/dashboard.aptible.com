@@ -1,0 +1,52 @@
+.operation-items {
+  border-top: 1px solid #f0f0f0;
+}
+
+.operation-item {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 20px 0;
+  @extend %clearfix;
+
+  .operation-icon {
+    width: 35px;
+    float: left;
+  }
+
+  .operation-author,
+  .operation-type {
+    float: left;
+    font-size: 14px;
+    font-weight: $weight-semibold;
+    margin-right: 4px;
+    text-transform: capitalize;
+  }
+
+  .operation-type {
+    text-transform: none;
+    margin-right: 4px;
+  }
+
+  .operation-date {
+    float: left;
+    font-size: 13px;
+    color: $color-light;
+  }
+
+  .fa {
+    &.status-succeeded {
+      color: #73b473
+    }
+
+    &.status-failed {
+      color: #da6464
+    }
+
+    &.status-queued {
+      color: $color-light;
+    }
+
+    &.status-running {
+      color: $color-primary;
+    }
+  }
+}
