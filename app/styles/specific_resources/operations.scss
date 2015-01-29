@@ -1,15 +1,16 @@
-.operation-items {
+.operations-list {
   border-top: 1px solid #f0f0f0;
 }
 
 .operation-item {
   border-bottom: 1px solid #f0f0f0;
-  padding: 20px 0;
+  padding: 20px 0 18px 10px;
   @extend %clearfix;
 
   .operation-icon {
     width: 35px;
     float: left;
+    font-size: 16px;
   }
 
   .operation-author,
@@ -33,6 +34,8 @@
   }
 
   .fa {
+    vertical-align: 0;
+
     &.status-succeeded {
       color: #73b473
     }

@@ -2,7 +2,7 @@
   <div class="col-xs-6">
     <div class="panel panel-default panel-subdued">
       <div class="panel-heading">
-        Create a new app
+        <h3>Create a new app</h3>
       </div>
       <div class="panel-body">
         <form role="form">
@@ -15,8 +15,11 @@
             </div>
           {{/unless}}
 
-          <div class="form-group">
-            <label>App handle</label>
+          <div class="form-group-last">
+            <label class="block">
+              App handle
+              <span class="label-helper">Lowercase alphanumerics, periods, and dashes only</span>
+            </label>
             {{input class="form-control app-handle" value=model.handle}}
           </div>
         </form>
@@ -26,9 +29,11 @@
   </div>
 </div>
 
-<button class="btn btn-default btn-lg" {{action 'cancel'}}>
-  Cancel
-</button>
-<button class="btn btn-primary btn-sm" {{action 'create'}}>
-  Save App
-</button>
+<div class="resource-actions">
+    <button class="btn btn-default" {{action 'cancel'}}>
+      Cancel
+    </button>
+    <button class="btn btn-primary" {{action 'create'}}>
+      Save App
+    </button>
+</div>

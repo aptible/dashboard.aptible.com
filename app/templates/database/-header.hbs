@@ -16,29 +16,40 @@
         </li>
       {{else}}
 
-        {{#if model.stack.allowPHI}}
-          <li class="resource-metadata-item">
-            <h5 class="resource-metadata-title">Dedicated Stack</h5>
-            <h3 class="resource-metadata-value"><span class="success">PHI Ready</span></h3>
-          </li>
-        {{else}}
-          <li class="resource-metadata-item">
-            <h5 class="resource-metadata-title">Shared Stack</h5>
-            <h3 class="resource-metadata-value"><span class="danger">Not Ready for PHI</span></h3>
-          </li>
-        {{/if}}
-
+      {{#if model.stack.allowPHI}}
         <li class="resource-metadata-item">
-          <h5 class="resource-metadata-title">Type</h5>
-          <h3 class="resource-metadata-value">{{model.type}}</h3>
+          <h5 class="resource-metadata-title">Dedicated Stack</h5>
+          <h3 class="resource-metadata-value"><span class="success">PHI Ready</span></h3>
         </li>
-
-
+      {{else}}
         <li class="resource-metadata-item">
-          <h5 class="resource-metadata-title">Connection URL</h5>
-          <h3 class="resource-metadata-value">{{model.connectionUrl}}</h3>
+          <h5 class="resource-metadata-title">Shared Stack</h5>
+          <h3 class="resource-metadata-value"><span class="danger">Not Ready for PHI</span></h3>
         </li>
       {{/if}}
+
+      <li class="resource-metadata-item">
+        <h5 class="resource-metadata-title">Type</h5>
+        <h3 class="resource-metadata-value">{{model.type}}</h3>
+      </li>
+
+      {{#if model.disk}}
+        <li class="resource-metadata-item">
+          <h5 class="resource-metadata-title">Size</h5>
+          <h3 class="resource-metadata-value">{{model.disk.size}} GB</h3>
+        </li>
+      {{else}}
+        <li class="resource-metadata-item">
+          <h5 class="resource-metadata-title">Size</h5>
+          <h3 class="resource-metadata-value"><i class="fa fa-spin fa-spinner"></i></h3>
+        </li>
+      {{/if}}
+
+      <li class="resource-metadata-item">
+        <h5 class="resource-metadata-title">Connection URL</h5>
+        <h3 class="resource-metadata-value">{{model.connectionUrl}}</h3>
+      </li>
+    {{/if}}
 
     </ul>
   </div>
