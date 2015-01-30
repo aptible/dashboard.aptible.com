@@ -35,35 +35,35 @@ Ember.Test.registerAsyncHelper('locationUpdatedTo', function(app, url){
 });
 
 Ember.Test.registerAsyncHelper('clickNextPageLink', function(app){
-  click('.pagination .next a');
+  click('.pager .next a');
 });
 
 Ember.Test.registerAsyncHelper('clickPrevPageLink', function(app){
-  click('.pagination .prev a');
+  click('.pager .previous a');
 });
 
 Ember.Test.registerHelper('expectPaginationElements', function(app, options){
   options = options || {};
 
-  var pagination = find('.pagination');
+  var pagination = find('.pager');
   ok(pagination.length, 'has pagination');
 
-  var currentPage = options.currentPage || 1;
-  var currentPageEl = find('.current:contains('+currentPage+')', pagination);
-  ok(currentPageEl.length, 'has current page: '+currentPage);
+  // var currentPage = options.currentPage || 1;
+  // var currentPageEl = find('.current:contains('+currentPage+')', pagination);
+  // ok(currentPageEl.length, 'has current page: '+currentPage);
 
-  var prevPage = find('.prev', pagination);
+  var prevPage = find('.previous', pagination);
   if (options.prevEnabled){
-    ok(prevPage.length && !prevPage.hasClass('disabled'), 'enabled prev div');
+    ok(prevPage.length, 'visible previous div');
   } else {
-    ok(prevPage.length && prevPage.hasClass('disabled'), 'disabled prev div');
+    ok(prevPage.length === 0, 'hidden previous div');
   }
 
   var nextPage = find('.next', pagination);
   if (options.nextDisabled){
-    ok(nextPage.length && nextPage.hasClass('disabled'), 'disabled nextPage page div');
+    ok(nextPage.length === 0, 'hidden next page div');
   } else {
-    ok(nextPage.length && !nextPage.hasClass('disabled'), 'enabled nextPage page div');
+    ok(nextPage.length, 'visible next page div');
   }
 });
 

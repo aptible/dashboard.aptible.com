@@ -1,40 +1,11 @@
-<table class="table table-striped operations">
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Status</th>
-      <th>Created By</th>
-      <th class='align-right'>Created On</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each model as |operation|}}
-      <tr class='operation'>
-        <td class='operation-type'>
-          {{capitalize-string operation.type}}
-        </td>
-        <td class='operation-status'>
-          {{capitalize-string operation.status}}
-        </td>
-        <td class='operation-created-by user-cell'>
-          {{gravatar-image email=operation.userEmail class='gravatar xs'}}
-          {{operation.userName}}
-        </td>
-        <td class='operation-created'>
-          {{operation.createdAt}}
-        </td>
-      </tr>
-    {{/each}}
-  </tbody>
-  <tfoot>
-    <tr>
-      <td>
-        {{aptible-pagination currentPage=currentPage
-                             totalCount=totalCount
-                             perPage=perPage
-                             nextPage="nextPage"
-                             prevPage="prevPage"}}
-      </td>
-    </tr>
-  </tfoot>
-</table>
+<div class="operations-list">
+  {{#each model as |operation|}}
+    {{operation-item operation=operation}}
+  {{/each}}
+</div>
+
+{{aptible-pagination currentPage=currentPage
+                     totalCount=totalCount
+                     perPage=perPage
+                     nextPage="nextPage"
+                     prevPage="prevPage"}}

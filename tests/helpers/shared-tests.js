@@ -123,22 +123,22 @@ export function resourceOperationsTest(options){
   signInAndVisit(paginatedResourceUrl);
 
   andThen(function(){
-    var operationsContainer = find('.operations');
-    var operations = find('.operation', operationsContainer);
+    var operationsContainer = find('.operations-list');
+    var operations = find('.operation-item', operationsContainer);
 
     equal(operations.length, 3, 'has 3 operations');
 
-    ['Configure', 'Deploy', 'Execute'].forEach(function(type){
-      ok(find('.operation-type:contains(' + type + ')').length,
+    ['configure', 'deploy', 'execute'].forEach(function(type){
+      ok(find('.operation-type:contains(' + type + 'ed)').length,
          'has capitalized operation type: ' + type);
     });
 
-    ['Succeeded', 'Failed'].forEach(function(type){
-      ok(find('.operation-status:contains(' + type + ')').length,
-         'has capitalized operation status: ' + type);
+    ['succeeded', 'failed'].forEach(function(type){
+      ok(find('.operation-icon .status-'+ type).length,
+         'has colorized status icon: status-' + type);
     });
 
-    var operationCreatedBy = find('.operation-created-by:contains(Frank Macreery)');
+    var operationCreatedBy = find('.operation-author:contains(Frank Macreery)');
     ok(operationCreatedBy.length, 'has operation created by username');
 
     expectPaginationElements();
@@ -198,27 +198,27 @@ export function paginatedResourceTest(options){
   signInAndVisit(paginatedResourceUrl);
 
   andThen(function(){
-    ok(find('.operation-type:contains(' + capitalize(ops[0].type) + ')').length,
+    ok(find('.operation-type:contains(' + ops[0].type + ')').length,
        'has operation from page 1');
-    ok(!find('.operation-type:contains(' + capitalize(ops[1].type) + ')').length,
+    ok(!find('.operation-type:contains(' + ops[1].type + ')').length,
        'has no operation from page 2');
   });
 
   clickNextPageLink();
 
   andThen(function(){
-    ok(find('.operation-type:contains(' + capitalize(ops[1].type) + ')').length,
+    ok(find('.operation-type:contains(' + ops[1].type + ')').length,
        'has operation from page 2');
-    ok(!find('.operation-type:contains(' + capitalize(ops[0].type) + ')').length,
+    ok(!find('.operation-type:contains(' + ops[0].type + ')').length,
        'has no operation from page 1');
   });
 
   clickPrevPageLink();
 
   andThen(function(){
-    ok(find('.operation-type:contains(' + capitalize(ops[0].type) + ')').length,
+    ok(find('.operation-type:contains(' + ops[0].type + ')').length,
        'has operation from page 1');
-    ok(!find('.operation-type:contains(' + capitalize(ops[1].type) + ')').length,
+    ok(!find('.operation-type:contains(' + ops[1].type + ')').length,
        'has no operation from page 2');
   });
 }
