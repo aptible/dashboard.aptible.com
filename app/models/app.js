@@ -15,5 +15,8 @@ export default DS.Model.extend({
   operations: DS.hasMany('operation', {async:true}),
   vhosts: DS.hasMany('vhost', {async:true}),
 
+  lastOperation: DS.belongsTo('operation', {async:true}),
+  lastDeployOperation: DS.belongsTo('operation', {async:true}),
+
   isDeprovisioned: Ember.computed.equal('status', STATUSES.DEPROVISIONED)
 });
