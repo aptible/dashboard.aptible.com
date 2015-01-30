@@ -32,6 +32,13 @@ function successRequest(status, json){
   return [status, jsonMimeType, json];
 }
 
+function noContentRequest(status){
+  // if called without `status`
+  if (!status) { status = 204; }
+
+  return [status, jsonMimeType, ''];
+}
+
 function logHandledRequest(verb, path, request){
   console.log('[FakeServer] handled: ' + verb + ' ' + path, request);
 }
@@ -51,6 +58,7 @@ function stubRequest(verb, path, callback){
   var context = {
     json: jsonFromRequest,
     success: successRequest,
+    noContent: noContentRequest,
     error: errorRequest,
     notFound: notFoundRequest
   };

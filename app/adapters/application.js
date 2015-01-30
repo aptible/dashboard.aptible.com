@@ -35,6 +35,16 @@ export default HalAdapter.extend({
     } else {
       return error;
     }
+  },
+
+  deleteRecord: function(store, type, record){
+    var id = Ember.get(record, 'id');
+    var url = this.buildURL(type.typeKey, id);
+    return this.ajax(url, "DELETE");
+  },
+
+  find: function(store, type, id /*, record */) {
+    return this.ajax(this.buildURL(type.typeKey, id), 'GET');
   }
 
 });
