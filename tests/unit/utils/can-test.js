@@ -22,6 +22,7 @@ moduleForModel('user', 'Utils - #can', {
     'model:permission',
     'model:organization',
     'model:vhost',
+    'model:ssh-key',
 
     'adapter:application',
     'serializer:application'
