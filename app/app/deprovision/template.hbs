@@ -1,6 +1,6 @@
 <div class="row">
-  <div class="col-xs-12">
-    <div class="panel panel-default panel-subdued">
+  <div class="col-xs-9">
+    <div class="panel panel-default panel-subdued panel-danger">
       <div class="panel-heading">
         <h3>Permanently deprovision {{model.handle}} </h3>
       </div>
@@ -17,12 +17,12 @@
 
           <p>
             This action CANNOT be undone. This will permanently deprovision
-            <strong>{{model.handle}}</strong>
+            <strong>{{model.handle}}</strong>.
           </p>
-          <p>
-            <strong>Type the name of the app to permanently deprovision.</strong>
-          </p>
+
           <div class="form-group">
+            <label>Type the name of the app to permanently deprovision.</label>
+
             {{#button-with-confirmation confirmValue=model.handle action='deprovision'}}
               Deprovision Permanently
             {{/button-with-confirmation}}
