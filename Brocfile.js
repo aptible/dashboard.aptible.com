@@ -33,6 +33,11 @@ app.import("bower_components/font-awesome/fonts/fontawesome-webfont.ttf", { dest
 app.import("bower_components/font-awesome/fonts/fontawesome-webfont.woff", { destDir: "fonts" });
 app.import("bower_components/font-awesome/fonts/FontAwesome.otf", { destDir: "fonts" });
 
+app.import("bower_components/zeroclipboard/dist/ZeroClipboard.js");
+app.import("bower_components/zeroclipboard/dist/ZeroClipboard.swf", {
+  destDir: "assets"
+});
+
 // Should become and addon or use a tree
 app.import('bower_components/aptible-sass/dist/images/aptible-circle-logo.png', { destDir: "/" });
 app.import('bower_components/aptible-sass/dist/images/aptible-mark.png', { destDir: "/" });
