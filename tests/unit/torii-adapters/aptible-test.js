@@ -21,7 +21,8 @@ moduleFor('torii-adapter:aptible', 'Torii Adapter: Aptible', {
     'adapter:application',
     'serializer:application'
   ],
-  setup: function(container){
+  setup: function(){
+    var container = this.container;
     DS._setupContainer(container);
     originalWrite = storage.write;
     originalRead = storage.read;
@@ -30,8 +31,9 @@ moduleFor('torii-adapter:aptible', 'Torii Adapter: Aptible', {
     storage.write = originalWrite;
     storage.read = originalRead;
   },
-  subject: function(options, klass, container) {
-    var store = container.lookup('store:main');
+  subject: function() {
+    var store = this.container.lookup('store:main');
+    var klass = this.container.lookupFactory(this.subjectName);
     return klass.create({
       store: store
     });

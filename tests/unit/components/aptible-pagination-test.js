@@ -15,7 +15,7 @@ test('next page div is hidden when there is no next page', function() {
     hasNext: true
   });
 
-  var element = this.append();
+  var element = this.render();
 
   var next = element.find('.pager .next');
   ok(next.length, 'has .next div');
@@ -30,7 +30,7 @@ test('prev page div is hidden when there is no prev page', function() {
     hasPrev: false
   });
 
-  var element = this.append();
+  var element = this.render();
   var prev = element.find('.pager .previous');
 
   ok(prev.length === 0, 'previous is hidden');

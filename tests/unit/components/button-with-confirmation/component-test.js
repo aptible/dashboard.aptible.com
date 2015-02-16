@@ -32,7 +32,7 @@ test('input makes it confirmed', function() {
     confirmValue: 'boo'
   });
 
-  this.append();
+  this.render();
 
   var input = component.$('input').val('boo');
 

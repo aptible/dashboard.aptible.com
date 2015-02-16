@@ -11,7 +11,7 @@ moduleForComponent('dashboard-dropdown', 'DashboardDropdownComponent', {
 
 test('it opens, closes', function() {
   var component = this.subject();
-  this.append();
+  this.render();
 
   var menu = component.$('.dropdown-menu');
   equal(menu.length, 0, 'precond - dropdown is not present');
@@ -29,7 +29,7 @@ test('it opens, closes', function() {
 
 test('it opens, closes when document clicked', function() {
   var component = this.subject();
-  this.append();
+  this.render();
 
   var menu = component.$('.dropdown-menu');
   equal(menu.length, 0, 'precond - dropdown is not present');
