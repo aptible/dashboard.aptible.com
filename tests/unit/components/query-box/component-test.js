@@ -20,14 +20,14 @@ moduleForComponent('query-box', 'QueryBoxComponent', {
 
 test('it renders email input', function() {
   mockAnalytics.set('hasEmail', false);
-  var element = this.append();
+  var element = this.render();
   ok(element.find('input[type=email]').length === 1, 'has email field');
   ok(element.find('button').length === 1, 'has button');
 });
 
 test('when email is know, skips input', function() {
   mockAnalytics.set('hasEmail', true);
-  var element = this.append();
+  var element = this.render();
   ok(element.find('input[type=email]').length === 0, 'no email field');
   ok(element.find('button').length === 1, 'has button');
 });

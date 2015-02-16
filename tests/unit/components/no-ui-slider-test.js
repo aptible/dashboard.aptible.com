@@ -18,7 +18,7 @@ test('it renders', function() {
   equal(component._state, 'preRender');
 
   // appends the component to the page
-  this.append();
+  this.render();
   equal(component._state, 'inDOM');
 });
 
@@ -45,7 +45,7 @@ test('sliding sends action didSlide with the value', function(){
     didSlide: 'mySlideAction'
   });
 
-  var element = this.append();
+  var element = this.render();
 
   Ember.$(element).trigger('slide', 4);
 

@@ -25,6 +25,6 @@ test('it renders', function() {
   equal(component._state, 'preRender');
 
   // appends the component to the page
-  this.append();
+  this.render();
   equal(component._state, 'inDOM');
 });
