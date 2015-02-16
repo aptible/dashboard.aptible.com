@@ -1,9 +1,12 @@
-/* global require, module */
+/* global require, module, process */
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 var options = {
-  emberCliFontAwesome: { includeFontAwesomeAssets: false }
+  emberCliFontAwesome: { includeFontAwesomeAssets: false },
+  vendorFiles: {
+    'handlebars.js': null
+  }
 };
 
 if (process.env.EMBER_ENV === 'staging') {
