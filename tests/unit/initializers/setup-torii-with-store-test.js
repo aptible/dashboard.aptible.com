@@ -6,7 +6,7 @@ var container, application;
 module('SetupToriiWithStoreInitializer', {
   setup: function() {
     Ember.run(function() {
-      container = new Ember.Container();
+      container = new Ember.Container(new Ember.Registry());
       application = Ember.Application.create();
       application.deferReadiness();
     });
