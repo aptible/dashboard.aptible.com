@@ -11,5 +11,7 @@ export default [
   'model:image',
 
   'adapter:application',
-  'serializer:application'
+  'serializer:application',
+
+  'transform:iso-8601-timestamp'
 ];

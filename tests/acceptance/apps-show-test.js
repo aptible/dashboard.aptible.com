@@ -21,11 +21,26 @@ test('visiting /apps/my-app-id shows basic app info', function() {
   var appId = 'my-app-id';
   var serviceId = 'service-1';
 
+  let deployUserName = 'Skylar Anderson';
+  let currentGitRef = 'b2bac0d8f9d5ab83ae2cc879b05cb8b61ca628ce';
+
   stubRequest('get', '/apps/' + appId, function(request){
     return this.success({
       id: appId,
       handle: 'my-app',
-      _embedded: { services: [] }
+      _embedded: {
+        services: [],
+        lastDeployOperation: {
+          id: 'op-1',
+          user_name: deployUserName,
+          git_ref: 'not-the-current-git-ref',
+          created_at: '2015-02-15T19:39:11Z' // iso8601
+        },
+        current_image: {
+          id: 'image-id',
+          git_ref: currentGitRef
+        }
+      }
     });
   });
 
@@ -34,14 +49,27 @@ test('visiting /apps/my-app-id shows basic app info', function() {
   andThen(function() {
     equal(currentPath(), 'app.services', 'show page is visited');
 
-    var app = find('.resource-title:contains(my-app)');
+    let app = find('.resource-title:contains(my-app)');
     ok(app.length, 'shows app handle');
 
-    var linkToOperations = find('a[href~="/apps/my-app-id/activity"]');
+    let linkToOperations = find('a[href~="/apps/my-app-id/activity"]');
     ok(linkToOperations.length, 'links to activity');
 
-    var linkToVhosts = find('a[href~="/apps/my-app-id/vhosts"]');
+    let linkToVhosts = find('a[href~="/apps/my-app-id/vhosts"]');
     ok(linkToVhosts.length, 'links to vhosts');
+
+    let lastDeployedBy = findWithAssert('.last-deployed-by');
+    let expectedDate = 'February 15, 2015';
+
+    ok( lastDeployedBy.text().indexOf(deployUserName) > -1,
+        `shows last deploy user name "${deployUserName}"`);
+    ok( lastDeployedBy.text().indexOf(expectedDate) > -1,
+        `shows last deploy expectedDate "${expectedDate}"`);
+
+    let currentGitRefEl = findWithAssert('.current-git-ref');
+    ok( currentGitRefEl.text().indexOf(currentGitRef) > -1,
+        `shows currentGitRef "${currentGitRef}"`);
+
   });
 });
 
