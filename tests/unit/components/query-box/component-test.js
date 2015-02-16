@@ -10,10 +10,10 @@ moduleForComponent('query-box', 'QueryBoxComponent', {
   setup: function() {
     mockAnalytics = Ember.Object.create();
   },
-  subject: function(container, klass, options) {
-    var createOptions = Ember.merge(options, {
-      analytics: mockAnalytics
-    });
+  subject: function() {
+    var container = this.container;
+    var klass = this.container.lookupFactory(this.subjectName);
+    var createOptions = {analytics: mockAnalytics};
     return klass.create(createOptions);
   }
 });

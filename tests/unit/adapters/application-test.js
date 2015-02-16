@@ -13,7 +13,8 @@ var container, store;
 moduleFor('adapter:application', 'ApplicationAdapter', {
   needs: ['store:application', 'serializer:application'],
 
-  setup: function(container){
+  setup: function(){
+    var container = this.container;
     DS._setupContainer(container);
     container.register('model:moose', Moose);
     store = container.lookup('store:application');

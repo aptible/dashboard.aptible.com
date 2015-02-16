@@ -27,8 +27,8 @@ moduleForModel('user', 'Utils - #can', {
     'adapter:application',
     'serializer:application'
   ],
-  setup: function(container){
-    store = container.lookup('store:main');
+  setup: function(){
+    store = this.container.lookup('store:main');
   },
   teardown: function(){
     Ember.run(store, 'destroy');
