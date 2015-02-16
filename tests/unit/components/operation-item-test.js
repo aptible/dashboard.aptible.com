@@ -6,7 +6,10 @@ import {
 import Ember from 'ember';
 
 moduleForComponent('operation-item', 'OperationItemComponent', {
-  needs: ['component:operation-icon']
+  needs: [
+    'component:operation-icon',
+    'helper:format-utc-timestamp'
+  ]
 });
 
 test('it renders', function() {

@@ -1,19 +1,5 @@
 import Ember from 'ember';
-
-var months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December'
-];
+import { monthNames } from 'diesel/utils/dates';
 
 export function formatDate(date) {
   if (!date) { return; }
@@ -21,7 +7,7 @@ export function formatDate(date) {
   Ember.assert('format-date must be called with an instanceof Date',
                date instanceof Date);
 
-  let monthName = months[ date.getMonth() ];
+  let monthName = monthNames[ date.getMonth() ];
   return `${monthName} ${date.getDate()}, ${date.getFullYear()}`;
 }
 

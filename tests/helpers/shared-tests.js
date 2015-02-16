@@ -79,6 +79,9 @@ export function resourceOperationsTest(options){
   var paginatedResourceUrl = resourceUrl + '/activity';
   var paginatedResourceApiUrl = resourceUrl + '/operations';
 
+  let isoCreatedAt = '2014-11-19T19:15:33.836Z';
+  let utcTimeStamp = 'November 19, 2014 7:15PM UTC';
+
   stubRequest('get', resourceUrl, function(){
     return this.success({
       id: resourceId,
@@ -98,21 +101,21 @@ export function resourceOperationsTest(options){
           id: 1,
           type: 'configure',
           status: 'succeeded',
-          createdAt: '2014-11-19T00:15:33.836Z',
+          createdAt: isoCreatedAt,
           userName: 'Frank Macreery',
           userEmail: 'frank@aptible.com'
         }, {
           id: 2,
           type: 'deploy',
           status: 'succeeded',
-          createdAt: '2014-11-19T00:15:33.836Z',
+          createdAt: isoCreatedAt,
           userName: 'Frank Macreery',
           userEmail: 'frank@aptible.com'
         }, {
           id: 3,
           type: 'execute',
           status: 'failed',
-          createdAt: '2014-11-19T00:15:33.836Z',
+          createdAt: isoCreatedAt,
           userName: 'Frank Macreery',
           userEmail: 'frank@aptible.com'
         }]
@@ -140,6 +143,9 @@ export function resourceOperationsTest(options){
 
     var operationCreatedBy = find('.operation-author:contains(Frank Macreery)');
     ok(operationCreatedBy.length, 'has operation created by username');
+
+    var operationCreatedAt = find(`.operation-date:contains(${utcTimeStamp})`);
+    ok( operationCreatedAt.length, 'displays UTC formatted timestamp' );
 
     expectPaginationElements();
   });
