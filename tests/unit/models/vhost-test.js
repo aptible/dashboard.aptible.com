@@ -3,22 +3,15 @@ import {
   test
 } from 'ember-qunit';
 import { stubRequest } from "../../helpers/fake-server";
+import modelDeps from '../../support/common-model-dependencies';
 
 import Ember from 'ember';
 
 moduleForModel('vhost', 'Vhost', {
   // Specify the other units that are required for this test.
-  needs: [
-    'adapter:vhost',
-    'serializer:application',
-    'model:service',
-    'model:app',
-    'model:stack',
-    'model:operation',
-    'model:database',
-    'model:permission',
-    'model:organization'
-  ]
+  needs: modelDeps.concat([
+    'adapter:vhost'
+  ])
 });
 
 test('creating POSTs to correct url', function() {

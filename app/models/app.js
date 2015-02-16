@@ -19,6 +19,8 @@ export default DS.Model.extend({
   lastOperation: DS.belongsTo('operation', {async:true}),
   lastDeployOperation: DS.belongsTo('operation', {async:true}),
 
+  currentImage: DS.belongsTo('image', {async:true}),
+
   isDeprovisioned: Ember.computed.equal('status', STATUSES.DEPROVISIONED),
   isDeprovisioning: Ember.computed.equal('status', STATUSES.DEPROVISIONING),
   isRunning: Ember.computed.equal('status', STATUSES.PROVISIONED)

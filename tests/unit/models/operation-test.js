@@ -4,22 +4,13 @@ import {
 } from 'ember-qunit';
 import { stubRequest } from "../../helpers/fake-server";
 import Ember from 'ember';
+import modelDeps from '../../support/common-model-dependencies';
 
 moduleForModel('operation', 'Operation', {
   // Specify the other units that are required for this test.
-  needs: [
-    'model:app',
-    'model:stack',
-    'model:database',
-    'model:permission',
-    'model:role',
-    'model:organization',
-    'model:service',
-    'model:vhost',
-
-    'adapter:operation',
-    'serializer:application'
-  ]
+  needs: modelDeps.concat([
+    'adapter:operation'
+  ])
 });
 
 test('it exists', function() {

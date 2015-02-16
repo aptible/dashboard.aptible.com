@@ -4,22 +4,11 @@ import {
 } from 'ember-qunit';
 import { stubRequest } from "../../helpers/fake-server";
 import Ember from 'ember';
+import modelDeps from '../../support/common-model-dependencies';
 
 moduleForModel('stack', 'Stack', {
   // Specify the other units that are required for this test.
-  needs: [
-    'model:database',
-    'model:app',
-    'model:service',
-    'model:operation',
-    'model:permission',
-    'model:role',
-    'model:organization',
-    'model:vhost',
-
-    'adapter:application',
-    'serializer:application'
-  ]
+  needs: modelDeps
 });
 
 test('findAll works', function(){
