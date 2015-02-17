@@ -15,6 +15,10 @@ module('Acceptance: Log Drains Show', {
   }
 });
 
+test(`visit ${url} requires authentication`, function(assert){
+  expectRequiresAuthentication(url);
+});
+
 test(`visit ${url} shows basic info`, function(assert){
   let logDrains = [{
     id: 'drain-1',

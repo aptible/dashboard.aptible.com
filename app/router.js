@@ -50,8 +50,6 @@ Router.map(function() {
       }, function() {
         this.route("new");
       });
-
-      this.route("settings");
     });
   });
 
