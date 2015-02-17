@@ -53,11 +53,8 @@ test('visiting /apps/my-app-id shows basic app info', function() {
     let app = find('.resource-title:contains(my-app)');
     ok(app.length, 'shows app handle');
 
-    let linkToOperations = find('a[href~="/apps/my-app-id/activity"]');
-    ok(linkToOperations.length, 'links to activity');
-
-    let linkToVhosts = find('a[href~="/apps/my-app-id/vhosts"]');
-    ok(linkToVhosts.length, 'links to vhosts');
+    expectLink("/apps/my-app-id/activity");
+    expectLink("/apps/my-app-id/vhosts");
 
     let lastDeployedBy = findWithAssert('.last-deployed-by');
     let expectedDate = 'February 15, 2015';
@@ -134,9 +131,7 @@ test('visiting /apps/my-app-id/services shows services', function() {
   signInAndVisit('/apps/' + appId);
 
   andThen(function() {
-    var servicesLink = find('a[href~="/apps/my-app-id/services"]');
-    ok(servicesLink.length, 'has link to services');
-
+    let servicesLink = expectLink("/apps/my-app-id/services");
     click(servicesLink);
   });
 

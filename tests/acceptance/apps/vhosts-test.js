@@ -32,8 +32,7 @@ test('app show page includes link to vhosts url', function(){
   signInAndVisit(appUrl);
 
   andThen(function(){
-    ok(find('a[href~="' + appVhostsUrl + '"]').length,
-       'has link to ' + appVhostsUrl);
+    expectLink(appVhostsUrl);
   });
 });
 

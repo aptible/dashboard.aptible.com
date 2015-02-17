@@ -30,8 +30,7 @@ test('app show page includes link to services url', function(){
   signInAndVisit(appUrl);
 
   andThen(function(){
-    ok(find('a[href~="' + appServicesUrl + '"]').length,
-       'has link to ' + appServicesUrl);
+    expectLink(appServicesUrl);
   });
 });
 

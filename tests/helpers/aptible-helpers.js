@@ -257,7 +257,7 @@ Ember.Test.registerAsyncHelper('setNoUISlider', function(app, selector, value){
 });
 
 Ember.Test.registerHelper('expectLink', function(app, link, options) {
-  let contextEl = options.context;
+  let contextEl = (options || {}).context;
   let selector = `*[href*="${link}"]`;
   let linkEl;
   if (contextEl) {
@@ -268,13 +268,14 @@ Ember.Test.registerHelper('expectLink', function(app, link, options) {
 
   if (linkEl.length) {
     ok(true, `Found link "${link}"`);
+    return linkEl;
   } else {
     ok(false, `Did not find link "${link}"`);
   }
 });
 
 Ember.Test.registerHelper('expectNoLink', function(app, link, options) {
-  let contextEl = options.context;
+  let contextEl = (options || {}).context;
   let selector = `*[href*="${link}"]`;
   let linkEl;
   if (contextEl) {

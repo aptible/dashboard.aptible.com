@@ -45,9 +45,7 @@ test('visiting /stacks/1/apps then clicking on an app visits the app', function(
   signInAndVisit('/stacks/1/apps');
 
   andThen(function(){
-    var appLink = find('a[href~="/apps/1"]');
-    ok(appLink.length, 'has link to app 1');
-
+    let appLink = expectLink("/apps/1");
     click(appLink);
   });
 
