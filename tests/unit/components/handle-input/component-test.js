@@ -13,7 +13,7 @@ test('entering value with spaces adds dashes', function(assert) {
   assert.expect(2);
 
   var component = this.subject();
-  var element = this.append();
+  var element = this.render();
 
   var input = Ember.$(element, 'input');
 
@@ -28,7 +28,7 @@ test('setting value with spaces adds dashes', function(assert) {
   assert.expect(2);
 
   var component = this.subject();
-  var element = this.append();
+  var element = this.render();
 
   var input = Ember.$(element, 'input');
 
