@@ -20,7 +20,7 @@
               App handle
               <span class="label-helper">Lowercase alphanumerics, periods, and dashes only</span>
             </label>
-            {{input class="form-control app-handle" value=model.handle}}
+            {{handle-input class="form-control app-handle" value=model.handle}}
           </div>
         </form>
 
@@ -30,10 +30,10 @@
 </div>
 
 <div class="resource-actions">
-    <button class="btn btn-default" {{action 'cancel'}}>
-      Cancel
-    </button>
-    <button class="btn btn-primary" {{action 'create'}}>
-      Save App
-    </button>
+  <button class="btn btn-default" {{action 'cancel'}}>
+    Cancel
+  </button>
+  <button class="btn btn-primary" {{action 'create'}}>
+    Save App
+  </button>
 </div>

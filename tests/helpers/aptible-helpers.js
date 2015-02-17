@@ -97,7 +97,7 @@ Ember.Test.registerHelper('stubApp', function(app, appData){
   });
 });
 
-Ember.Test.registerHelper('stubStacks', function(app, options){
+Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
   if (!options) { options = {}; }
   if (options.includeApps === undefined) {
     options.includeApps = true;
@@ -106,27 +106,29 @@ Ember.Test.registerHelper('stubStacks', function(app, options){
     options.includeDatabases = true;
   }
 
+  stacks = stacks || [{
+    _links: {
+      self: { href: '...' },
+      apps: { href: '/accounts/my-stack-1/apps' },
+      databases: { href: '/accounts/my-stack-1/databases' }
+    },
+    id: 1,
+    handle: 'my-stack-1'
+  }, {
+    _links: {
+      self: { href: '...' },
+      apps: { href: '/accounts/my-stack-2/apps' },
+      databases: { href: '/accounts/my-stack-2/databases' }
+    },
+    id: 2,
+    handle: 'my-stack-2'
+  }];
+
   stubRequest('get', '/accounts', function(request){
     return this.success({
       _links: {},
       _embedded: {
-        accounts: [{
-          _links: {
-            self: { href: '...' },
-            apps: { href: '/accounts/my-stack-1/apps' },
-            databases: { href: '/accounts/my-stack-1/databases' }
-          },
-          id: 1,
-          handle: 'my-stack-1'
-        }, {
-          _links: {
-            self: { href: '...' },
-            apps: { href: '/accounts/my-stack-2/apps' },
-            databases: { href: '/accounts/my-stack-2/databases' }
-          },
-          id: 2,
-          handle: 'my-stack-2'
-        }]
+        accounts: stacks
       }
     });
   });

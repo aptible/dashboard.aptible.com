@@ -16,7 +16,7 @@
                 Lowercase alphanumerics only
               </span>
             </label>
-            {{input class="app-name form-control sanitize-handler"
+            {{handle-input class="app-name form-control sanitize-handler"
               placeholder="e.g., app-prod"
               name="app-handle"
               value=model.appHandle
@@ -42,7 +42,7 @@
                   Lowercase alphanumerics only
                 </span>
               </label>
-              {{input class="database-name form-control sanitize-handler"
+              {{handle-input class="database-name form-control sanitize-handler"
                     placeholder="e.g., postgresql-prod"
                     name="db-handle"
                     value=model.dbHandle
