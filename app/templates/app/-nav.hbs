@@ -1,10 +1,18 @@
 <ul class="nav nav-pills resource-navigation">
-  {{#link-to "app.services" tagName="li"}}
-    {{link-to "Services" "app.services"}}
-  {{/link-to}}
-  {{#link-to "app.vhosts" tagName="li"}}
-    {{link-to "Domains" "app.vhosts"}}
-  {{/link-to}}
+  {{#if model.hasBeenDeployed}}
+    {{#link-to "app.services" tagName="li"}}
+      {{link-to "Services" "app.services"}}
+    {{/link-to}}
+
+    {{#link-to "app.vhosts" tagName="li"}}
+      {{link-to "Domains" "app.vhosts"}}
+    {{/link-to}}
+  {{else}}
+    {{#link-to "app.deploy" tagName="li"}}
+      {{link-to "Deploy" "app.deploy"}}
+    {{/link-to}}
+  {{/if}}
+
   {{#link-to "app.activity" tagName="li"}}
     {{link-to "Activity" "app.activity"}}
   {{/link-to}}

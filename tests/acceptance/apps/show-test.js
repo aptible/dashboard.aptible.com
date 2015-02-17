@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import startApp from '../helpers/start-app';
-import { stubRequest } from '../helpers/fake-server';
+import startApp from '../../helpers/start-app';
+import { stubRequest } from '../../helpers/fake-server';
 
 var App;
 
@@ -28,6 +28,7 @@ test('visiting /apps/my-app-id shows basic app info', function() {
     return this.success({
       id: appId,
       handle: 'my-app',
+      status: 'provisioned',
       _embedded: {
         services: [],
         lastDeployOperation: {
@@ -99,6 +100,7 @@ test('visiting /apps/my-app-id/services shows services', function() {
     return this.success({
       id: appId,
       handle: 'my-app',
+      status: 'provisioned',
       _links: {
         services: { href: '/apps/my-app-id/services' }
       }

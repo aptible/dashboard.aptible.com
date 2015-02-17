@@ -58,7 +58,9 @@
     "clickPrevPageLink",
     "locationUpdatedTo",
     "setNoUISlider",
-    "slideNoUISlider"
+    "slideNoUISlider",
+    "expectLink",
+    "expectNoLink"
   ],
   "node": false,
   "browser": false,

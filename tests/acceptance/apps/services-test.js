@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import startApp from '../helpers/start-app';
-import { stubRequest } from '../helpers/fake-server';
+import startApp from '../../helpers/start-app';
+import { stubRequest } from '../../helpers/fake-server';
 
 var App;
 
@@ -23,7 +23,8 @@ test(appServicesUrl + ' requires authentication', function(){
 
 test('app show page includes link to services url', function(){
   stubApp({
-    id: appId
+    id: appId,
+    status: 'provisioned'
   });
 
   signInAndVisit(appUrl);
