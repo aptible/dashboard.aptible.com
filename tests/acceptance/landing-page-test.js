@@ -22,11 +22,18 @@ test('visiting / redirects to login page', function() {
 });
 
 test('visiting / when logged in redirects to first stack page', function() {
+  let stackId = '1';
   stubStacks();
   signInAndVisit('/');
 
   andThen(function() {
+    equal(currentURL(), `/stacks/${stackId}/apps`);
     equal(currentPath(), 'stacks.stack.apps.index');
+
+    ok( find(`a[href*="stacks/${stackId}/databases"]`).length,
+        'has link to databases');
+    ok( find(`a[href*="stacks/${stackId}/logging"]`).length,
+        'has link to databases');
   });
 });
 
