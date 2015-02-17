@@ -28,15 +28,23 @@
           </li>
         {{/if}}
 
-        <li class="resource-metadata-item">
-          <h5 class="resource-metadata-title">Last Deployed By</h5>
-          <h3 class="resource-metadata-value">Skylar Anderson on January 4, 2014</h3>
-        </li>
+        {{#if model.lastDeployOperation}}
+          <li class="resource-metadata-item last-deployed-by">
+            <h5 class="resource-metadata-title">Last Deployed By</h5>
+            <h3 class="resource-metadata-value">
+              {{model.lastDeployOperation.userName}}
+              on
+              {{format-date model.lastDeployOperation.createdAt}}
+            </h3>
+          </li>
+        {{/if}}
 
-        <li class="resource-metadata-item">
-          <h5 class="resource-metadata-title">Current Git Ref</h5>
-          <h3 class="resource-metadata-value">47c074920567b08e6c39198331a21c433ff4da39</h3>
-        </li>
+        {{#if model.currentImage}}
+          <li class="resource-metadata-item current-git-ref">
+            <h5 class="resource-metadata-title">Current Git Ref</h5>
+            <h3 class="resource-metadata-value">{{model.currentImage.gitRef}}</h3>
+          </li>
+        {{/if}}
       {{/if}}
 
     </ul>

@@ -25,6 +25,13 @@
         <h3 class="resource-metadata-value">
           <div class="external-host">
             {{vhost.externalHost}}
+            {{#click-to-copy text=vhost.externalHost as |copied|}}
+              {{#if copied}}
+                Copied.
+              {{else}}
+                <a href='#'>Copy</a>
+              {{/if}}
+            {{/click-to-copy}}
           </div>
         </h3>
       </div>

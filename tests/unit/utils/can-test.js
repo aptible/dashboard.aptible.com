@@ -7,26 +7,15 @@ import { stubRequest } from '../../helpers/fake-server';
 import DS from "ember-data";
 import Ember from "ember";
 import can from "../../../utils/can";
+import modelDeps from '../../support/common-model-dependencies';
 
 var store;
 
 moduleForModel('user', 'Utils - #can', {
-  needs: [
-    'model:role',
+  needs: modelDeps.concat([
     'model:token',
-    'model:app',
-    'model:database',
-    'model:service',
-    'model:operation',
-    'model:stack',
-    'model:permission',
-    'model:organization',
-    'model:vhost',
     'model:ssh-key',
-
-    'adapter:application',
-    'serializer:application'
-  ],
+  ]),
   setup: function(){
     store = this.container.lookup('store:main');
   },

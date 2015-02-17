@@ -3,24 +3,15 @@ import {
   test
 } from 'ember-qunit';
 import { stubRequest } from "../../helpers/fake-server";
+import modelDeps from '../../support/common-model-dependencies';
 
 import Ember from 'ember';
 
 moduleForModel('database', 'Database', {
   // Specify the other units that are required for this test.
-  needs: [
-    'model:stack',
-    'model:app',
-    'model:service',
-    'model:operation',
-    'model:permission',
-    'model:role',
-    'model:organization',
-    'model:vhost',
-
-    'adapter:database',
-    'serializer:application'
-  ]
+  needs: modelDeps.concat([
+    'adapter:database'
+  ])
 });
 
 test('finding uses correct url', function(){
