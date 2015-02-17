@@ -2,10 +2,8 @@
   <div class="log-drain panel panel-default panel-subdued">
     <div class="panel-heading with-actions">
       <h3>{{logDrain.drainHost}}:{{logDrain.drainPort}}</h3>
-
-      <div class="panel-heading-actions">
-        <a class="btn btn-default btn-xs">Delete</a>
-      </div>
     </div>
   </div>
 {{/each}}
+
+{{link-to 'Add Log' 'stack.log-drains.new' class="btn btn-primary"}}

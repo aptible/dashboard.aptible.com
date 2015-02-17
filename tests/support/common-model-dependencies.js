@@ -9,6 +9,7 @@ export default [
   'model:role',
   'model:organization',
   'model:image',
+  'model:log-drain',
 
   'adapter:application',
   'serializer:application',
