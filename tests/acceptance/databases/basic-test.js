@@ -8,6 +8,7 @@ module('Acceptance: Databases', {
   setup: function() {
     App = startApp();
     stubStacks({includeDatabases:true});
+    stubStack({ id: 'my-stack-1', _links: { databases: { href: '/accounts/my-stack-1/databases' }  }});
   },
   teardown: function() {
     Ember.run(App, 'destroy');
@@ -15,19 +16,19 @@ module('Acceptance: Databases', {
 });
 
 test('visiting /stacks/:stack_id/databases requires authentication', function(){
-  expectRequiresAuthentication('/stacks/1/databases');
+  expectRequiresAuthentication('/stacks/my-stack-1/databases');
 });
 
 test('visiting /stacks/:stack_id/databases', function() {
-  signInAndVisit('/stacks/1/databases');
+  signInAndVisit('/stacks/my-stack-1/databases');
 
   andThen(function() {
-    equal(currentPath(), 'stacks.stack.databases.index');
+    equal(currentPath(), 'stack.databases.index');
   });
 });
 
-test('visiting /stacks/1/databases shows list of databases', function() {
-  signInAndVisit('/stacks/1/databases');
+test('visiting /stacks/my-stack-1/databases shows list of databases', function() {
+  signInAndVisit('/stacks/my-stack-1/databases');
 
   andThen(function() {
     var row = findWithAssert('.panel.database');
@@ -35,7 +36,7 @@ test('visiting /stacks/1/databases shows list of databases', function() {
   });
 });
 
-test('visiting /stacks/1/databases then clicking on an database visits the database', function() {
+test('visiting /stacks/my-stack-1/databases then clicking on an database visits the database', function() {
   stubRequest('get', '/databases/1/operations', function(request){
     return this.success({
       _embedded: {
@@ -44,7 +45,7 @@ test('visiting /stacks/1/databases then clicking on an database visits the datab
     });
   });
 
-  signInAndVisit('/stacks/1/databases');
+  signInAndVisit('/stacks/my-stack-1/databases');
 
   andThen(function(){
     var dbLink = find('a[href~="/databases/1"]');

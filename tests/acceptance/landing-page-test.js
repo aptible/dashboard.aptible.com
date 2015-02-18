@@ -21,27 +21,28 @@ test('visiting / redirects to login page', function() {
   });
 });
 
-test('visiting / when logged in redirects to first stack page', function() {
+
+test('visiting / when logged in with more than one stacks redirects to stacks index page', function() {
+  stubStacks();
+  signInAndVisit('/');
+
+  andThen(function() {
+    equal(currentPath(), 'stacks.index');
+  });
+});
+
+test('visiting / when logged in with only one stack redirects to first stack page', function() {
   let stackId = '1';
   stubStacks();
   signInAndVisit('/');
 
   andThen(function() {
     equal(currentURL(), `/stacks/${stackId}/apps`);
-    equal(currentPath(), 'stacks.stack.apps.index');
+    equal(currentPath(), 'stack.apps.index');
 
     ok( find(`a[href*="stacks/${stackId}/databases"]`).length,
         'has link to databases');
     ok( find(`a[href*="stacks/${stackId}/logging"]`).length,
         'has link to databases');
-  });
-});
-
-test('visiting / signed in with no account directs to welcome', function() {
-  stubStacks({}, []);
-  signInAndVisit('/');
-
-  andThen(function() {
-    equal(currentPath(), 'welcome.first-app');
   });
 });

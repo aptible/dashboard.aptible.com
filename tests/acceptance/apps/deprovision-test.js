@@ -67,7 +67,7 @@ test('/apps/:id/deprovision will deprovision with confirmation', function(){
   click('button:contains(Deprovision)');
   andThen(function(){
     ok(didDeprovision, 'deprovisioned');
-    equal(currentPath(), 'stacks.stack.apps.index');
+    equal(currentPath(), 'stack.apps.index');
   });
 });
 

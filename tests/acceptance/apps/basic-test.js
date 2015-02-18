@@ -20,18 +20,20 @@ test('visiting /stacks/1/apps requires authentication', function() {
   expectRequiresAuthentication('/stacks/1/apps');
 });
 
-test('visiting /stacks/1/apps', function() {
-  stubStacks();
-  signInAndVisit('/stacks/1/apps');
+test('visiting /stacks/my-stack-1/apps', function() {
+  stubStacks({ includeApps: true });
+  stubStack({ id: 'my-stack-1', _links: { apps: { href: '/accounts/my-stack-1/apps' } }});
+  signInAndVisit('/stacks/my-stack-1/apps');
 
   andThen(function() {
-    equal(currentPath(), 'stacks.stack.apps.index');
+    equal(currentPath(), 'stack.apps.index');
   });
 });
 
-test('visiting /stacks/1/apps shows list of apps', function() {
-  stubStacks({includeApps:true});
-  signInAndVisit('/stacks/1/apps');
+test('visiting /stacks/my-stack-1/apps shows list of apps', function() {
+  stubStacks({ includeApps: true });
+  stubStack({ id: 'my-stack-1', _links: { apps: { href: '/accounts/my-stack-1/apps' } }});
+  signInAndVisit('/stacks/my-stack-1/apps');
 
   andThen(function() {
     var appRows = find('.panel.app');
@@ -40,9 +42,10 @@ test('visiting /stacks/1/apps shows list of apps', function() {
   });
 });
 
-test('visiting /stacks/1/apps then clicking on an app visits the app', function() {
-  stubStacks({includeApps:true});
-  signInAndVisit('/stacks/1/apps');
+test('visiting /stacks/my-stack-1/apps then clicking on an app visits the app', function() {
+  stubStacks({ includeApps: true });
+  stubStack({ id: 'my-stack-1', _links: { apps: { href: '/accounts/my-stack-1/apps' } }});
+  signInAndVisit('/stacks/my-stack-1/apps');
 
   andThen(function(){
     let appLink = expectLink("/apps/1");

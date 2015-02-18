@@ -21,11 +21,12 @@ test('visit /stacks/1/apps/new', function(){
   expect(2);
 
   stubStacks();
+  stubStack({id: 1});
 
   signInAndVisit('/stacks/1/apps/new');
 
   andThen(function(){
-    equal(currentPath(), 'stacks.stack.apps.new');
+    equal(currentPath(), 'stack.apps.new');
 
     var input = findWithAssert('input.app-handle');
     ok(input.length, 'has app handle input');
@@ -41,7 +42,7 @@ test('visit /stacks/1/apps/new and cancel', function(){
   click(':contains(Cancel)');
 
   andThen(function(){
-    equal(currentPath(), 'stacks.stack.apps.index');
+    equal(currentPath(), 'stack.apps.index');
 
     var appEl = find(':contains(my-new-app)');
     ok( !appEl.length, 'does not show cancelled app');
@@ -101,7 +102,7 @@ test('visit /stacks/1/apps/new and create an app', function(){
   click(':contains(Save App)');
 
   andThen(function(){
-    equal(currentPath(), 'stacks.stack.apps.index');
+    equal(currentPath(), 'stack.apps.index');
 
     var appEl = findWithAssert(':contains(my-new-app)');
     ok( appEl.length, 'shows my new app');

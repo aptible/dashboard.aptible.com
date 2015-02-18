@@ -1,12 +1,12 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-
+  afterModel: function(stacks) {
+    if(stacks.get('length') === 1) {
+      this.transitionTo('stack.apps.index', stacks.get('firstObject'));
+    }
+  },
   model: function(){
-    // TODO: This is incorrect. This should only be the stacks
-    // on the current organization. Needs to be added to
-    // the API.
     return this.store.find('stack');
   }
-
 });

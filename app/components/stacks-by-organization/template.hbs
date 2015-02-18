@@ -1,0 +1,19 @@
+{{#each organizationGroup in organizationGroups}}
+  <header class="resource-header">
+    <div class="container">
+      <h1 class="resource-title">{{organizationGroup.organization.name}}</h1>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="resource-list-grid">
+      <div class="row">
+        {{#each stack in organizationGroup.stacks}}
+          <div class="col-xs-4">
+            {{partial 'stack/link'}}
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+{{/each}}
