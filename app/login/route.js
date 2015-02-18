@@ -19,6 +19,12 @@ export default Ember.Route.extend({
     });
   },
 
+  redirect: function(){
+    if (this.session.get('isAuthenticated')) {
+      this.transitionTo('index');
+    }
+  },
+
   actions: {
 
     login: function(authAttempt){

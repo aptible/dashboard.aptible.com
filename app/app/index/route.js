@@ -5,9 +5,9 @@ export default Ember.Route.extend({
     let app = this.modelFor('app');
 
     if (app.get('hasBeenDeployed')) {
-      this.replaceWith('app.services');
+      this.transitionTo('app.services');
     } else {
-      this.replaceWith('app.deploy');
+      this.transitionTo('app.deploy');
     }
   }
 });

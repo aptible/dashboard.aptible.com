@@ -133,6 +133,15 @@ test('/login links to signup', function() {
   });
 });
 
+test('visit /login while already logged in redirects to stack', function(){
+  stubStacks();
+  signInAndVisit('/login');
+
+  andThen(function(){
+    equal(currentPath(), 'stacks.index');
+  });
+});
+
 test('logging out redirects to login if not logged in', function() {
   visit('/logout');
   andThen(function(){
