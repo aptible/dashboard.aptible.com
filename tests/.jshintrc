@@ -53,6 +53,7 @@
     "expectRequiresAuthentication",
     "stubOrganizations",
     "stubApp",
+    "stubDatabase",
     "expectPaginationElements",
     "clickNextPageLink",
     "clickPrevPageLink",

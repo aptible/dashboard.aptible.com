@@ -97,6 +97,15 @@ Ember.Test.registerHelper('stubApp', function(app, appData){
   });
 });
 
+Ember.Test.registerHelper('stubDatabase', function(app, databaseData){
+  var id = databaseData.id;
+  if (!id) { throw new Error('cannot stub database without id'); }
+
+  stubRequest('get', '/databases/' + id, function(request){
+    return this.success(databaseData);
+  });
+});
+
 Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
   if (!options) { options = {}; }
   if (options.includeApps === undefined) {
