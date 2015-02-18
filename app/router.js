@@ -18,6 +18,7 @@ Router.map(function() {
     });
     this.route("activity");
     this.route("deprovision");
+    this.route("deploy");
   });
 
   this.route("database", {

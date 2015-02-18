@@ -172,6 +172,7 @@ Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
           apps: [{
             id: 1,
             handle: 'my-app-1-stack-1',
+            status: 'provisioned',
             _embedded: {
               services: [{
                 id: '1',
@@ -182,6 +183,7 @@ Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
           }, {
             id: 2,
             handle: 'my-app-2-stack-1',
+            status: 'provisioned',
             _embedded: {
               services: [{
                 id: '2',
@@ -200,12 +202,14 @@ Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
           apps: [{
             id: 3,
             handle: 'my-app-1-stack-2',
+            status: 'provisioned',
             _embedded: {
               services: []
             }
           }, {
             id: 4,
             handle: 'my-app-2-stack-2',
+            status: 'provisioned',
             _embedded: {
               services: []
             }
@@ -249,5 +253,40 @@ Ember.Test.registerAsyncHelper('setNoUISlider', function(app, selector, value){
   var element = $(selector);
   if (element && element.length) {
     element.trigger('set', value);
+  }
+});
+
+Ember.Test.registerHelper('expectLink', function(app, link, options) {
+  let contextEl = (options || {}).context;
+  let selector = `*[href*="${link}"]`;
+  let linkEl;
+  if (contextEl) {
+    linkEl = contextEl.find(selector);
+  } else {
+    linkEl = find(selector);
+  }
+
+  if (linkEl.length) {
+    ok(true, `Found link "${link}"`);
+    return linkEl;
+  } else {
+    ok(false, `Did not find link "${link}"`);
+  }
+});
+
+Ember.Test.registerHelper('expectNoLink', function(app, link, options) {
+  let contextEl = (options || {}).context;
+  let selector = `*[href*="${link}"]`;
+  let linkEl;
+  if (contextEl) {
+    linkEl = contextEl.find(selector);
+  } else {
+    linkEl = find(selector);
+  }
+
+  if (linkEl.length) {
+    ok(false, `Expected not to find link "${link}"`);
+  } else {
+    ok(true, `Did not find link "${link}"`);
   }
 });

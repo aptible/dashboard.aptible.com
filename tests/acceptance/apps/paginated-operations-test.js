@@ -1,13 +1,13 @@
-import { stubRequest } from '../helpers/fake-server';
+import { stubRequest } from '../../helpers/fake-server';
 import {
   paginatedResourceQueryParamsPage2Test,
   paginatedResourceUpdatesQueryParamsTest,
   resourceOperationsTest,
   paginatedResourceTest
-} from '../helpers/shared-tests';
+} from '../../helpers/shared-tests';
 
 import Ember from 'ember';
-import startApp from '../helpers/start-app';
+import startApp from '../../helpers/start-app';
 
 var App;
 

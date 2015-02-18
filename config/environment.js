@@ -20,6 +20,10 @@ module.exports = function(environment) {
 
     segmentioKey: 'qxwhj8ys4t',
 
+    externalUrls: {
+      gettingStartedDocs: 'https://support.aptible.com/hc/en-us/articles/202638630-Deploying-your-first-app'
+    },
+
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build

@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import startApp from '../helpers/start-app';
-import { stubRequest } from '../helpers/fake-server';
+import startApp from '../../helpers/start-app';
+import { stubRequest } from '../../helpers/fake-server';
 
 var App;
 
@@ -25,14 +25,14 @@ test(appVhostsUrl + ' requires authentication', function(){
 
 test('app show page includes link to vhosts url', function(){
   stubApp({
-    id: appId
+    id: appId,
+    status: 'provisioned'
   });
 
   signInAndVisit(appUrl);
 
   andThen(function(){
-    ok(find('a[href~="' + appVhostsUrl + '"]').length,
-       'has link to ' + appVhostsUrl);
+    expectLink(appVhostsUrl);
   });
 });
 

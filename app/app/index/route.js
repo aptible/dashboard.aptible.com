@@ -2,6 +2,12 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   redirect: function(){
-    this.replaceWith('app.services');
+    let app = this.modelFor('app');
+
+    if (app.get('hasBeenDeployed')) {
+      this.replaceWith('app.services');
+    } else {
+      this.replaceWith('app.deploy');
+    }
   }
 });
