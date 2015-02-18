@@ -13,6 +13,19 @@
       {{/if}}
 
       <div class="form-group">
+        <label class="block" for="drain-handle">Handle</label>
+        {{handle-input class="form-control" value=model.handle name='handle'}}
+      </div>
+      <div class="form-group">
+        <label class="block" for="drain-type">Type</label>
+        {{#radio-button value="syslog_tls_tcp" groupValue=model.drainType name="drain-type"}}
+          Syslog TLS TCP
+        {{/radio-button}}
+        {{#radio-button value="elasticsearch" groupValue=model.drainType name="drain-type"}}
+          Elasticsearch
+        {{/radio-button}}
+      </div>
+      <div class="form-group">
         <label class="block" for="drain-host">Syslog Host</label>
         {{input name='drain-host' value=model.drainHost class="form-control"}}
       </div>

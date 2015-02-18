@@ -11,6 +11,15 @@ function findLogDrains(){
   return find('.log-drain');
 }
 
+function expectInput(inputName, context){
+  let el = findInput(inputName, context);
+  ok(el.length, `found input named ${inputName}`);
+}
+
+function findInput(inputName, context){
+  return context.find(`input[name="${inputName}"]`);
+}
+
 module('Acceptance: Log Drains Show', {
   setup: function() {
     App = startApp();
@@ -74,17 +83,10 @@ test(`visit ${url} and click add log shows form`, function(assert){
     let formEl = find('form.create-log');
     ok( formEl.length, 'has form');
 
-    ok( formEl.find('input[name="drain-host"]').length,
-        'has input for drain host' );
-
-    ok( formEl.find('input[name="drain-port"]').length,
-        'has input for drain port' );
-
-    ok( formEl.find('.btn:contains(Cancel)').length,
-        'has cancel button');
-
-    ok( formEl.find('.btn:contains(Save Log)').length,
-        'has save button');
+    expectInput('drain-host', formEl);
+    expectInput('drain-port', formEl);
+    expectInput('handle', formEl);
+    expectInput('drain-type', formEl);
   });
 });
 
@@ -104,17 +106,23 @@ test(`visit ${addLogUrl} and cancel`, function(assert){
 });
 
 test(`visit ${addLogUrl} and create log success`, function(assert){
+  expect(6);
+
   let drainHost = 'abc-host.com',
-      drainPort = '1234';
+      drainPort = '1234',
+      handle = 'my-log-name',
+      drainType = 'elasticsearch';
 
   stubStacks();
 
-  stubRequest('post', '/log_drains', function(request){
+  stubRequest('post', '/accounts/:stack_id/log_drains', function(request){
     ok(true, 'posts to log_drains');
 
     let json = this.json(request);
     equal(json.drain_host, drainHost);
     equal(json.drain_port, drainPort);
+    equal(json.drain_type, drainType);
+    equal(json.handle, handle);
 
     json.id = 'new-log';
     return this.success(json);
@@ -123,11 +131,14 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
   signInAndVisit(addLogUrl);
   andThen(function(){
     let formEl = find('form.create-log');
-    fillIn( formEl.find('input[name="drain-host"]'), drainHost );
-    fillIn( formEl.find('input[name="drain-port"]'), drainPort );
 
+    fillIn( findInput('drain-host', formEl), drainHost);
+    fillIn( findInput('drain-port', formEl), drainPort);
+    click( findInput('drain-type', formEl) ); // click radio button
+    fillIn( findInput('handle', formEl), handle);
     click( formEl.find('.btn:contains(Save Log)') );
   });
+
   andThen(function(){
     equal(currentPath(), 'stacks.stack.log-drains.index');
   });
@@ -138,7 +149,7 @@ test(`visit ${addLogUrl} and create log failure`, function(assert){
 
   stubStacks();
 
-  stubRequest('post', '/log_drains', function(request){
+  stubRequest('post', '/accounts/:stack_id/log_drains', function(request){
     ok(true, 'posts to log_drains');
 
     return this.error({ message: errorMessage });
