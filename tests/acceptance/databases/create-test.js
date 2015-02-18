@@ -3,8 +3,11 @@ import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
 var App;
+let url = '/stacks/1/databases/new';
+let dbIndexUrl = '/stacks/1/databases';
+let stackId = 1;
 
-module('Acceptance: Database New', {
+module('Acceptance: Database Create', {
   setup: function() {
     App = startApp();
   },
@@ -13,37 +16,27 @@ module('Acceptance: Database New', {
   }
 });
 
-test('visit /stacks/1/databases/new requires authentication', function(){
-  expectRequiresAuthentication('/stacks/1/databases/new');
+function findDatabase(dbName){
+  return find(`.database-handle:contains(${dbName})`);
+}
+
+test(`visit ${url} requires authentication`, function(){
+  expectRequiresAuthentication(url);
 });
 
-test('visit /stacks/my-stack-1/databases/new shows fields for creating a db', function(){
-  var stackId = 'my-stack-1';
-  // Just needed to stub /stack/my-stack-1/databases
-  stubStacks({ includeDatabases: true });
-  stubStack({
-    id: stackId,
-    handle: stackId,
-    _links: {
-      databases: { href: '/accounts/my-stack-1/databases' },
-      organization: { href: '/organizations/1' }
-    }
-  });
+test(`visit ${url} shows fields for creating a db`, function(){
+  let stackHandle = 'my-cool-handle';
+  stubStack({id: stackId, handle: stackHandle});
   stubOrganization();
 
-  signInAndVisit('/stacks/' + stackId + '/databases/new');
+  signInAndVisit(url);
 
   andThen(function(){
     equal(currentPath(), 'stack.databases.new');
 
-    var input = findWithAssert('input[name="handle"]');
-    ok(input.length, 'has database handle input');
-
-    var button = findWithAssert('button:contains(Save Database)');
-    ok(button.length, 'has create button');
-
-    var cancelButton = findWithAssert('button:contains(Cancel)');
-    ok(cancelButton.length, 'has cancel button');
+    expectInput('handle');
+    expectButton('Save Database');
+    expectButton('Cancel');
 
     var dbTypeSelector = findWithAssert('.database-select');
     ok(dbTypeSelector.length, 'has db type selector');
@@ -58,12 +51,12 @@ test('visit /stacks/my-stack-1/databases/new shows fields for creating a db', fu
 
     var diskSizeSlider = findWithAssert('.slider.disk-size');
     ok(diskSizeSlider.length, 'has disk size slider');
-  });
 
-  titleUpdatedTo('Create a Database - my-stack-1');
+    titleUpdatedTo(`Create a Database - ${stackHandle}`);
+  });
 });
 
-test('visit /stacks/my-stack-1/databases/new and create', function(){
+test(`visit ${url} and create`, function(){
   expect(6);
 
   var dbHandle = 'my-new-db',
@@ -72,7 +65,7 @@ test('visit /stacks/my-stack-1/databases/new and create', function(){
 
   // Just needed to stub /stack/my-stack-1/databases
   stubStacks({ includeDatabases: true });
-  stubStack({ id: 'my-stack-1', handle: 'stack-1'});
+  stubStack({ id: stackId, handle: 'stack-1'});
 
   // get account (aka stack)
   stubRequest('get', '/accounts', function(request){
@@ -90,7 +83,7 @@ test('visit /stacks/my-stack-1/databases/new and create', function(){
   });
 
   // get DB
-  stubRequest('get', '/accounts/my-stack-1/databases', function(request){
+  stubRequest('get', '/accounts/1/databases', function(request){
     return this.success({
       _embedded: {
         databases: [{
@@ -102,7 +95,7 @@ test('visit /stacks/my-stack-1/databases/new and create', function(){
   });
 
   // create DB
-  stubRequest('post', '/accounts/my-stack-1/databases', function(request){
+  stubRequest('post', '/accounts/1/databases', function(request){
     var json = JSON.parse(request.requestBody);
     equal(json.handle, dbHandle, 'posts db handle');
     equal(json.type, 'redis', 'posts db type of redis');
@@ -127,12 +120,13 @@ test('visit /stacks/my-stack-1/databases/new and create', function(){
     });
   });
 
-  signInAndVisit('/stacks/my-stack-1/databases/new');
+  signInAndVisit(url);
 
-  // the existence of these fields/selectors is asserted in a previous test
-  fillIn('input[name="handle"]', dbHandle);
-  click('.select-option[title="Redis"]');
-  click(':contains(Save Database)');
+  andThen(function(){
+    fillIn( findInput('handle'), dbHandle );
+    click('.select-option[title="Redis"]');
+    click( findButton('Save Database') );
+  });
 
   // the disk size starts at 10GB
   // TODO test that moving the slider changes the disk size
@@ -140,18 +134,18 @@ test('visit /stacks/my-stack-1/databases/new and create', function(){
   andThen(function(){
     equal(currentPath(), 'stack.databases.index');
 
-    ok(find(':contains(' + dbHandle + ')').length, 'has new db handle');
+    ok( findDatabase(dbHandle).length,
+        'db list shows new db' );
   });
 });
 
-test('visit /stacks/1/databases/new and cancel', function(){
-  expect(1);
+test(`visit ${url} and click cancel button`, function(){
+  expect(2);
 
   var dbHandle = 'my-new-db';
 
   stubStack({id: 1, handle:'stack-1'});
 
-  // get account (aka stack)
   stubRequest('get', '/accounts', function(request){
     return this.success({
       _embedded: {
@@ -166,23 +160,63 @@ test('visit /stacks/1/databases/new and cancel', function(){
     });
   });
 
-  // get DB
   stubRequest('get', '/accounts/1/databases', function(request){
     return this.success({
       _embedded: {
-        databases: [{
-          id: 'my-new-db-id',
-          handle: 'my-new-db'
+        databases: []
+      }
+    });
+  });
+
+  signInAndVisit(url);
+  andThen(function(){
+    fillIn( findInput('handle'), dbHandle );
+    click( findButton('Cancel') );
+  });
+  andThen(function(){
+    equal(currentPath(), 'stack.databases.index');
+
+    ok( !findDatabase(dbHandle).length,
+        'does not show database in list' );
+  });
+});
+
+test(`visit ${url} and transition away`, function(){
+  expect(2);
+
+  var dbHandle = 'a-new-db-handle';
+
+  stubStack({id: 1, handle:'stack-1'});
+
+  stubRequest('get', '/accounts', function(request){
+    return this.success({
+      _embedded: {
+        accounts: [{
+          id: '1',
+          handle: 'stack-1',
+          _links: {
+            databases: { href: '/accounts/1/databases' }
+          }
         }]
       }
     });
   });
 
-  signInAndVisit('/stacks/1/databases/new');
+  stubRequest('get', '/accounts/1/databases', function(request){
+    return this.success({
+      _embedded: { databases: [] }
+    });
+  });
 
-  click(':contains(Cancel)');
-
+  signInAndVisit(url);
+  andThen(function(){
+    fillIn( findInput('handle'), dbHandle );
+    visit(dbIndexUrl);
+  });
   andThen(function(){
     equal(currentPath(), 'stack.databases.index');
+
+    ok( !findDatabase(dbHandle).length,
+        'does not show database in list' );
   });
 });

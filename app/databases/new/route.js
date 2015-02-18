@@ -14,6 +14,10 @@ export default Ember.Route.extend({
   },
 
   actions: {
+    willTransition: function(){
+      this.currentModel.rollback();
+    },
+
     create: function(){
       var db = this.currentModel,
           route = this,
@@ -37,9 +41,6 @@ export default Ember.Route.extend({
     },
 
     cancel: function(){
-      var db = this.currentModel;
-
-      db.rollback();
       this.transitionTo('databases.index');
     }
   }

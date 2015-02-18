@@ -325,3 +325,39 @@ Ember.Test.registerHelper('expectNoLink', function(app, link, options) {
     ok(true, `Did not find link "${link}"`);
   }
 });
+
+Ember.Test.registerHelper('findButton', function(app, buttonName, options) {
+  let context = (options || {}).context;
+
+  let selector = `button:contains(${buttonName})`;
+  let el = context ? context.find(selector) : find(selector);
+
+  return el;
+});
+
+Ember.Test.registerHelper('expectButton', function(app, buttonName, options) {
+  let el = findButton(buttonName, options);
+  if (el.length) {
+    ok(true, `Found ${el.length} of button "${buttonName}"`);
+  } else {
+    ok(false, `Found 0 of button "${buttonName}"`);
+  }
+});
+
+Ember.Test.registerHelper('findInput', function(app, inputName, options) {
+  let context = (options || {}).context;
+
+  let selector = `input[name="${inputName}"]`;
+  let el = context ? context.find(selector) : find(selector);
+
+  return el;
+});
+
+Ember.Test.registerHelper('expectInput', function(app, inputName, options) {
+  let el = findInput(inputName, options);
+  if (el.length) {
+    ok(true, `Found ${el.length} of input "${inputName}"`);
+  } else {
+    ok(false, `Found 0 of input "${inputName}"`);
+  }
+});
