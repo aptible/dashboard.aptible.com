@@ -20,8 +20,10 @@ export default Ember.Route.extend({
       log.save().then(function(){
         route.transitionTo('stack.log-drains.index');
       }).catch(function(e){
-        if (!(e instanceof DS.InvalidError)) {
-          return e;
+        if (e instanceof DS.InvalidError) {
+          // no-op, this will populate model.errors
+        } else {
+          throw e; // re-raise
         }
       });
     }
