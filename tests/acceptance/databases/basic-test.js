@@ -7,8 +7,17 @@ var App;
 module('Acceptance: Databases', {
   setup: function() {
     App = startApp();
+    // Just needed to stub /stack/my-stack-1/databases
     stubStacks({includeDatabases:true});
-    stubStack({ id: 'my-stack-1', _links: { databases: { href: '/accounts/my-stack-1/databases' }  }});
+    stubStack({
+      id: 'my-stack-1',
+      handle: 'my-stack-1',
+      _links: {
+        databases: { href: '/accounts/my-stack-1/databases' },
+        organization: { href: '/organizations/1' },
+      }
+    });
+    stubOrganization();
   },
   teardown: function() {
     Ember.run(App, 'destroy');
@@ -25,6 +34,7 @@ test('visiting /stacks/:stack_id/databases', function() {
   andThen(function() {
     equal(currentPath(), 'stack.databases.index');
   });
+  titleUpdatedTo('my-stack-1 Databases - Sprocket Co');
 });
 
 test('visiting /stacks/my-stack-1/databases shows list of databases', function() {

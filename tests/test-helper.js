@@ -4,6 +4,7 @@ import {
 } from 'ember-qunit';
 import config from "../config/environment";
 import { locationHistory } from '../utils/location';
+import { titleHistory } from '../utils/title-route-extensions';
 import FakeServer from "./helpers/fake-server";
 import { stubStripe, teardownStripe } from "./helpers/mock-stripe";
 import {stubAnalytics, teardownAnalytics} from './helpers/mock-analytics';
@@ -13,6 +14,7 @@ setResolver(resolver);
 QUnit.testStart(function(){
   window.localStorage.setItem(config.authTokenKey, null);
   delete locationHistory.last;
+  delete titleHistory.last;
 });
 
 QUnit.testStart(function(){

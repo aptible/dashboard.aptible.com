@@ -37,8 +37,20 @@ test('app show page includes link to vhosts url', function(){
 });
 
 test('visit ' + appVhostsUrl + ' has link to ' + appVhostsNewUrl, function(){
+  var appHandle = 'handle-app';
+  var stackHandle = 'handle-stack';
+
+  stubStack({
+    id: stackHandle,
+    handle: stackHandle
+  });
+
   stubApp({
-    id: appId
+    id: appId,
+    handle: appHandle,
+    _links: {
+      account: {href: '/accounts/'+stackHandle}
+    }
   });
 
   signInAndVisit(appVhostsUrl);
@@ -47,6 +59,7 @@ test('visit ' + appVhostsUrl + ' has link to ' + appVhostsNewUrl, function(){
     ok(find('a[href~="' + appVhostsNewUrl + '"]').length,
        'has link to ' + appVhostsNewUrl);
   });
+  titleUpdatedTo(appHandle+' Domains - '+stackHandle);
 });
 
 test('visit ' + appVhostsUrl + ' lists vhosts', function(){

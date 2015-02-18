@@ -70,6 +70,7 @@ test('logging in with bad credentials', function() {
 
 test('logging in with correct credentials', function() {
   stubStacks();
+  stubOrganization();
 
   var email = 'good@email.com';
   var password = 'correct';
@@ -102,6 +103,7 @@ test('logging in with correct credentials', function() {
 
 test('after logging in, nav header shows user name', function(){
   stubStacks();
+  stubOrganization();
 
   var userUrl = '/user-url',
       userName = 'Joe Hippa';
@@ -142,6 +144,7 @@ test('logging out redirects to login if not logged in', function() {
 
 test('logging out reloads the page', function() {
   stubStacks();
+  stubOrganization();
   signInAndVisit('/');
   click('.current-user .dropdown-toggle');
   click('a:contains(Logout)');
@@ -157,6 +160,7 @@ test('visiting /signup', function() {
 
 test('visiting /signup when logged in redirects', function() {
   stubStacks();
+  stubOrganization();
   signInAndVisit('/signup');
   andThen(function(){
     equal(currentPath(), 'stacks.index');
@@ -165,6 +169,7 @@ test('visiting /signup when logged in redirects', function() {
 
 test('Creating an account directs to login', function() {
   stubStacks(); // For loading index
+  stubOrganization();
 
   var email = 'good@email.com';
   var password = 'correct';

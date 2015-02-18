@@ -24,11 +24,19 @@ test('visiting /apps/my-app-id shows basic app info', function() {
   let deployUserName = 'Skylar Anderson';
   let currentGitRef = 'b2bac0d8f9d5ab83ae2cc879b05cb8b61ca628ce';
 
+  stubStack({
+    id: 'my-stack-1',
+    handle: 'my-stack-1'
+  });
+
   stubRequest('get', '/apps/' + appId, function(request){
     return this.success({
       id: appId,
       handle: 'my-app',
       status: 'provisioned',
+      _links: {
+        account: {href: '/accounts/my-stack-1'}
+      },
       _embedded: {
         services: [],
         lastDeployOperation: {
@@ -69,6 +77,8 @@ test('visiting /apps/my-app-id shows basic app info', function() {
         `shows currentGitRef "${currentGitRef}"`);
 
   });
+
+  titleUpdatedTo('my-app - my-stack-1');
 });
 
 test('visiting /apps/my-app-id when the app is deprovisioned', function() {

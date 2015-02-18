@@ -44,6 +44,7 @@ test('submitting valid payment info should be successful', function() {
   expect(8);
   // This is to load apps.index
   stubStacks();
+  stubOrganization();
   var name = 'Bob Boberson';
   var cardNumber = '4242424242424242';
   var cvc = '123';

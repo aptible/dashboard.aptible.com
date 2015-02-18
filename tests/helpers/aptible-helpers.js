@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { locationHistory } from '../../utils/location';
+import { titleHistory } from '../../utils/title-route-extensions';
 import { stubRequest } from "./fake-server";
 
 Ember.Test.registerAsyncHelper('signIn', function(app){
@@ -34,6 +35,10 @@ Ember.Test.registerAsyncHelper('expectRequiresAuthentication', function(app, url
 
 Ember.Test.registerAsyncHelper('locationUpdatedTo', function(app, url){
   equal(locationHistory.last, url, 'window.location updated to expected URL');
+});
+
+Ember.Test.registerAsyncHelper('titleUpdatedTo', function(app, title){
+  equal(titleHistory.last, title, 'window.document.title updated to expected title');
 });
 
 Ember.Test.registerAsyncHelper('clickNextPageLink', function(app){
@@ -119,7 +124,8 @@ Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
     _links: {
       self: { href: '...' },
       apps: { href: '/accounts/my-stack-1/apps' },
-      databases: { href: '/accounts/my-stack-1/databases' }
+      databases: { href: '/accounts/my-stack-1/databases' },
+      organization: { href: '/organizations/1' }
     },
     _embedded: {},
     id: 'my-stack-1',
@@ -128,7 +134,8 @@ Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
     _links: {
       self: { href: '...' },
       apps: { href: '/accounts/my-stack-2/apps' },
-      databases: { href: '/accounts/my-stack-2/databases' }
+      databases: { href: '/accounts/my-stack-2/databases' },
+      organization: { href: '/organizations/1' }
     },
     _embedded: {},
     id: 'my-stack-2',
@@ -253,6 +260,19 @@ Ember.Test.registerHelper('stubOrganizations', function(app){
           type: 'organization'
         }]
       }
+    });
+  });
+});
+
+Ember.Test.registerHelper('stubOrganization', function(app, id){
+  id = id || 1;
+  stubRequest('get', '/organizations/'+id, function(request){
+    return this.success({
+      _links: {
+      },
+      id: id,
+      name: 'Sprocket Co',
+      type: 'organization'
     });
   });
 });

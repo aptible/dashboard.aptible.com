@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import startApp from '../helpers/start-app';
-import { stubRequest } from "./fake-server";
+import { stubRequest } from "../helpers/fake-server";
 
 var App;
 
@@ -15,6 +15,7 @@ module('Acceptance: LandingPage', {
 
 test('visiting / redirects to login page', function() {
   stubStacks();
+  stubOrganization();
   visit('/');
 
   andThen(function() {
@@ -25,6 +26,7 @@ test('visiting / redirects to login page', function() {
 
 test('visiting / when logged in with more than one stacks redirects to stacks index page', function() {
   stubStacks();
+  stubOrganization();
   signInAndVisit('/');
 
   andThen(function() {
@@ -34,16 +36,19 @@ test('visiting / when logged in with more than one stacks redirects to stacks in
 
 test('visiting / when logged in with only one stack redirects to first stack page', function() {
   let stackId = 'my-stack-1';
-  stubStacks();
+  stubStacks({ includeApps: true });
   stubRequest('get', '/accounts', function(request){
     return this.success({
+      id: stackId,
+      handle: stackId,
       _links: {},
       _embedded: {
         accounts: [{
           _links: {
             self: { href: '...' },
             apps: { href: '/accounts/my-stack-1/apps' },
-            databases: { href: '/accounts/my-stack-1/databases' }
+            databases: { href: '/accounts/my-stack-1/databases' },
+            organization: { href: '/organizations/1' }
           },
           id: 'my-stack-1',
           handle: 'my-stack-1'
@@ -51,6 +56,7 @@ test('visiting / when logged in with only one stack redirects to first stack pag
       }
     });
   });
+  stubOrganization();
   signInAndVisit('/');
 
   andThen(function() {

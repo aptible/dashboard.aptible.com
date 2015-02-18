@@ -1,6 +1,10 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  titleToken: function(){
+    var app = this.modelFor('app');
+    return `Add a domain - ${app.get('handle')}`;
+  },
   model: function(){
     var app = this.modelFor('app');
 

@@ -20,10 +20,19 @@ test('/apps/:id/deprovision requires authentication', function(){
 test('/apps/:id/deprovision will not deprovision without confirmation', function(){
   var appId = 1;
   var appName = 'foo-bar';
+  var stackHandle = 'krwee-zing';
 
   stubApp({
     id: appId,
-    handle: appName
+    handle: appName,
+    _links: {
+      stack: { href: `/accounts/${stackHandle}` }
+    }
+  });
+
+  stubStack({
+    id: stackHandle,
+    handle: stackHandle
   });
 
   signInAndVisit('/apps/'+appId+'/deprovision');
@@ -31,6 +40,7 @@ test('/apps/:id/deprovision will not deprovision without confirmation', function
     var button = findWithAssert('button:contains(Deprovision)');
     ok(button.is(':disabled'), 'deprovision button is disabled');
   });
+  titleUpdatedTo(`Deprovision ${appName} - ${stackHandle}`);
 });
 
 test('/apps/:id/deprovision will deprovision with confirmation', function(){
@@ -58,6 +68,7 @@ test('/apps/:id/deprovision will deprovision with confirmation', function(){
   });
 
   stubStacks();
+  stubOrganization();
 
   signInAndVisit('/apps/'+appId+'/deprovision');
   fillIn('input[type=text]', appName);

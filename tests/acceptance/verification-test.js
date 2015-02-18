@@ -19,6 +19,7 @@ test('visiting /verify/some-code requires authentication', function() {
 
 test('visiting /verify/some-code creates verification', function() {
   stubStacks(); // For loading index
+  stubOrganization();
 
   var verificationCode = 'some-code';
 

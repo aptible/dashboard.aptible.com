@@ -19,8 +19,17 @@ test('visit /stacks/1/databases/new requires authentication', function(){
 
 test('visit /stacks/my-stack-1/databases/new shows fields for creating a db', function(){
   var stackId = 'my-stack-1';
+  // Just needed to stub /stack/my-stack-1/databases
   stubStacks({ includeDatabases: true });
-  stubStack({ id: 'my-stack-1', _links: { databases: { href: '/accounts/my-stack-1/databases' } }});
+  stubStack({
+    id: stackId,
+    handle: stackId,
+    _links: {
+      databases: { href: '/accounts/my-stack-1/databases' },
+      organization: { href: '/organizations/1' }
+    }
+  });
+  stubOrganization();
 
   signInAndVisit('/stacks/' + stackId + '/databases/new');
 
@@ -50,6 +59,8 @@ test('visit /stacks/my-stack-1/databases/new shows fields for creating a db', fu
     var diskSizeSlider = findWithAssert('.slider.disk-size');
     ok(diskSizeSlider.length, 'has disk size slider');
   });
+
+  titleUpdatedTo('Create a Database - my-stack-1');
 });
 
 test('visit /stacks/my-stack-1/databases/new and create', function(){
@@ -59,8 +70,9 @@ test('visit /stacks/my-stack-1/databases/new and create', function(){
       dbId = 'mydb-id',
       diskSize = 10;
 
+  // Just needed to stub /stack/my-stack-1/databases
   stubStacks({ includeDatabases: true });
-  stubStack({ id: 'my-stack-1', handle:'stack-1'});
+  stubStack({ id: 'my-stack-1', handle: 'stack-1'});
 
   // get account (aka stack)
   stubRequest('get', '/accounts', function(request){

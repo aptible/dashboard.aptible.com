@@ -47,6 +47,7 @@ test(`visit ${url} shows basic info`, function(assert){
   }];
 
   stubStack({ id: 'my-stack-1', _embedded: { log_drains: logDrains }});
+  stubOrganization();
   stubStacks({logDrains: logDrains});
   signInAndVisit(url);
 
@@ -70,6 +71,7 @@ test(`visit ${url} shows basic info`, function(assert){
 });
 
 test(`visit ${url} and click add log shows form`, function(assert){
+  stubOrganization();
   stubStacks();
   stubStack({ id: 'my-stack-1'});
   signInAndVisit(url);
@@ -93,6 +95,7 @@ test(`visit ${url} and click add log shows form`, function(assert){
 });
 
 test(`visit ${addLogUrl} and cancel`, function(assert){
+  stubOrganization();
   stubStacks();
   stubStack({ id: 'my-stack-1'});
   signInAndVisit(addLogUrl);
@@ -115,6 +118,7 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
       handle = 'my-log-name',
       drainType = 'elasticsearch';
 
+  stubOrganization();
   stubStacks();
   stubStack({ id: 'my-stack-1'});
   stubRequest('post', '/accounts/:stack_id/log_drains', function(request){
@@ -149,6 +153,7 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
 test(`visit ${addLogUrl} and create log failure`, function(assert){
   let errorMessage = 'The log drain is invalid';
 
+  stubOrganization();
   stubStacks();
   stubStack({ id: 'my-stack-1'});
 
