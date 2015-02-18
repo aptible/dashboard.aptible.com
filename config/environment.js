@@ -45,7 +45,7 @@ module.exports = function(environment) {
       'style-src': "'self' 'unsafe-inline' http://use.typekit.net",
       'img-src': "'self' http://www.gravatar.com https://secure.gravatar.com http://www.google-analytics.com http://p.typekit.net https://track.customer.io",
       'script-src': "'self' 'unsafe-inline' https://js.stripe.com https://api.stripe.com http://use.typekit.net http://cdn.segment.com https://assets.customer.io http://www.google-analytics.com http://cdn.mxpnl.com",
-      'font-src': "'self' 'unsafe-inline'",
+      'font-src': "'self' data:",
       'object-src': "http://localhost:4200"
     }
 
