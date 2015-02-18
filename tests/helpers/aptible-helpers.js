@@ -121,6 +121,7 @@ Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
       apps: { href: '/accounts/my-stack-1/apps' },
       databases: { href: '/accounts/my-stack-1/databases' }
     },
+    _embedded: {},
     id: 1,
     handle: 'my-stack-1'
   }, {
@@ -129,9 +130,14 @@ Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
       apps: { href: '/accounts/my-stack-2/apps' },
       databases: { href: '/accounts/my-stack-2/databases' }
     },
+    _embedded: {},
     id: 2,
     handle: 'my-stack-2'
   }];
+
+  if (options.logDrains) {
+    stacks[0]._embedded.log_drains = options.logDrains;
+  }
 
   stubRequest('get', '/accounts', function(request){
     return this.success({
