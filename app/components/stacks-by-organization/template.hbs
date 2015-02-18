@@ -1,7 +1,15 @@
 {{#each organizationGroup in organizationGroups}}
   <header class="resource-header">
     <div class="container">
-      <h1 class="resource-title">{{organizationGroup.organization.name}}</h1>
+      <h1 class="resource-title">
+        {{organizationGroup.organization.name}}
+        <span class="resource-title-link">
+          {{#link-to-legacy-organization organization=organizationGroup.organization}}
+            <i class="fa fa-cog"></i>
+            Settings
+          {{/link-to-legacy-organization}}
+        </span>
+      </h1>
     </div>
   </header>
 
