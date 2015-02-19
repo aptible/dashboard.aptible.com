@@ -29,6 +29,13 @@
           </div>
 
           <div class="form-group">
+            {{#if hasSubmitted}}
+              {{#if errors.organization.name}}
+                <div class="alert alert-warning">
+                  Organization name {{errors.organization.name}}
+                </div>
+              {{/if}}
+            {{/if}}
             {{input type="text"
               name="organization"
               value=organization.name

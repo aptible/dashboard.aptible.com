@@ -245,5 +245,7 @@ test('Creating an account waits on a valid organization name', function() {
   click('button:contains(Sign Up)');
   andThen(function(){
     equal(currentPath(), 'signup', 'path does not change');
+    var error = find(':contains(minimum is 5 characters)');
+    ok(error.length, 'has error on the screen');
   });
 });
