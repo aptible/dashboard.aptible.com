@@ -28,31 +28,29 @@ Router.map(function() {
     this.route("deprovision");
   });
 
-  this.route("stacks", {}, function(){
-    this.route("stack", {
-      path: ":stack_id",
+
+  this.route("stack", { path: "stacks/:stack_id" }, function() {
+    this.route("log-drains", {
+      path: 'logging'
+    }, function(){
+      this.route("new");
+    });
+
+    this.route("apps", {
       resetNamespace: true
     }, function() {
-      this.route("log-drains", {
-        path: 'logging'
-      }, function(){
-        this.route("new");
-      });
+      this.route("new");
+    });
 
-      this.route("apps", {
-        resetNamespace: true
-      }, function() {
-        this.route("new");
-      });
-
-      this.route("databases", {
-        resetNamespace: true
-      }, function() {
-        this.route("new");
-      });
+    this.route("databases", {
+      resetNamespace: true
+    }, function() {
+      this.route("new");
     });
   });
 
+
+  this.route("stacks", { path: "stacks" }, function() {});
   this.route("login");
   this.route("logout");
   this.route("signup");

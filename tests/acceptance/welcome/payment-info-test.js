@@ -82,6 +82,6 @@ test('submitting valid payment info should be successful', function() {
   click('button:contains(Save)');
 
   andThen(function() {
-    equal(currentPath(), 'stacks.stack.apps.index');
+    equal(currentPath(), 'stacks.index');
   });
 });

@@ -33,7 +33,7 @@ test('visiting /verify/some-code creates verification', function() {
 
   signInAndVisit('/verify/'+verificationCode);
   andThen(function(){
-    equal(currentPath(), 'stacks.stack.apps.index');
+    equal(currentPath(), 'stacks.index');
   });
 });
 

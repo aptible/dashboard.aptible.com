@@ -39,6 +39,13 @@
     }
   }
 
+  .panel-body {
+    .success,
+    .danger {
+      font-size: 11px;
+    }
+  }
+
   .empty-service {
     color: $color-light;
     font-size: 11px;

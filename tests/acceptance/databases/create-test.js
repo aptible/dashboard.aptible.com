@@ -17,14 +17,15 @@ test('visit /stacks/1/databases/new requires authentication', function(){
   expectRequiresAuthentication('/stacks/1/databases/new');
 });
 
-test('visit /stacks/1/databases/new shows fields for creating a db', function(){
-  var stackId = '1';
-  stubStacks();
+test('visit /stacks/my-stack-1/databases/new shows fields for creating a db', function(){
+  var stackId = 'my-stack-1';
+  stubStacks({ includeDatabases: true });
+  stubStack({ id: 'my-stack-1', _links: { databases: { href: '/accounts/my-stack-1/databases' } }});
 
   signInAndVisit('/stacks/' + stackId + '/databases/new');
 
   andThen(function(){
-    equal(currentPath(), 'stacks.stack.databases.new');
+    equal(currentPath(), 'stack.databases.new');
 
     var input = findWithAssert('input[name="handle"]');
     ok(input.length, 'has database handle input');
@@ -51,21 +52,22 @@ test('visit /stacks/1/databases/new shows fields for creating a db', function(){
   });
 });
 
-test('visit /stacks/1/databases/new and create', function(){
+test('visit /stacks/my-stack-1/databases/new and create', function(){
   expect(6);
 
   var dbHandle = 'my-new-db',
       dbId = 'mydb-id',
       diskSize = 10;
 
-  stubStack({id: 1, handle:'stack-1'});
+  stubStacks({ includeDatabases: true });
+  stubStack({ id: 'my-stack-1', handle:'stack-1'});
 
   // get account (aka stack)
   stubRequest('get', '/accounts', function(request){
     return this.success({
       _embedded: {
         accounts: [{
-          id: '1',
+          id: 'my-stack-1',
           handle: 'stack-1',
           _links: {
             databases: { href: '/accounts/1/databases' }
@@ -76,7 +78,7 @@ test('visit /stacks/1/databases/new and create', function(){
   });
 
   // get DB
-  stubRequest('get', '/accounts/1/databases', function(request){
+  stubRequest('get', '/accounts/my-stack-1/databases', function(request){
     return this.success({
       _embedded: {
         databases: [{
@@ -88,7 +90,7 @@ test('visit /stacks/1/databases/new and create', function(){
   });
 
   // create DB
-  stubRequest('post', '/accounts/1/databases', function(request){
+  stubRequest('post', '/accounts/my-stack-1/databases', function(request){
     var json = JSON.parse(request.requestBody);
     equal(json.handle, dbHandle, 'posts db handle');
     equal(json.type, 'redis', 'posts db type of redis');
@@ -113,7 +115,7 @@ test('visit /stacks/1/databases/new and create', function(){
     });
   });
 
-  signInAndVisit('/stacks/1/databases/new');
+  signInAndVisit('/stacks/my-stack-1/databases/new');
 
   // the existence of these fields/selectors is asserted in a previous test
   fillIn('input[name="handle"]', dbHandle);
@@ -124,7 +126,7 @@ test('visit /stacks/1/databases/new and create', function(){
   // TODO test that moving the slider changes the disk size
 
   andThen(function(){
-    equal(currentPath(), 'stacks.stack.databases.index');
+    equal(currentPath(), 'stack.databases.index');
 
     ok(find(':contains(' + dbHandle + ')').length, 'has new db handle');
   });
@@ -169,6 +171,6 @@ test('visit /stacks/1/databases/new and cancel', function(){
   click(':contains(Cancel)');
 
   andThen(function(){
-    equal(currentPath(), 'stacks.stack.databases.index');
+    equal(currentPath(), 'stack.databases.index');
   });
 });

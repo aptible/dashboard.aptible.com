@@ -1,0 +1,14 @@
+{{#link-to 'stack' stack class="panel-link"}}
+  <div class="panel panel-default panel-subdued stack resource-list-item">
+    <div class="panel-heading">
+      <h5>{{stack.name}}</h5>
+    </div>
+    <div class="panel-body">
+      {{#if stack.allowPHI}}
+        <span class="success">PHI Ready</span>
+      {{else}}
+        <span class="danger">Not PHI Ready</span>
+      {{/if}}
+    </div>
+  </div>
+{{/link-to}}

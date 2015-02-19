@@ -3,7 +3,7 @@ import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
 let App;
-let stackId = 1;
+let stackId = 'my-stack-1';
 let url = `/stacks/${stackId}/logging`;
 let addLogUrl = `/stacks/${stackId}/logging/new`;
 
@@ -46,11 +46,12 @@ test(`visit ${url} shows basic info`, function(assert){
     drain_port: 456
   }];
 
+  stubStack({ id: 'my-stack-1', _embedded: { log_drains: logDrains }});
   stubStacks({logDrains: logDrains});
-
   signInAndVisit(url);
+
   andThen(function(){
-    equal(currentPath(), 'stacks.stack.log-drains.index');
+    equal(currentPath(), 'stack.log-drains.index');
 
     ok( find('.btn:contains(Add Log)').length,
         'button to add log');
@@ -70,6 +71,7 @@ test(`visit ${url} shows basic info`, function(assert){
 
 test(`visit ${url} and click add log shows form`, function(assert){
   stubStacks();
+  stubStack({ id: 'my-stack-1'});
   signInAndVisit(url);
 
   andThen(function(){
@@ -77,7 +79,7 @@ test(`visit ${url} and click add log shows form`, function(assert){
   });
 
   andThen(function(){
-    equal(currentPath(), 'stacks.stack.log-drains.new');
+    equal(currentPath(), 'stack.log-drains.new');
     equal(currentURL(), addLogUrl);
 
     let formEl = find('form.create-log');
@@ -92,16 +94,16 @@ test(`visit ${url} and click add log shows form`, function(assert){
 
 test(`visit ${addLogUrl} and cancel`, function(assert){
   stubStacks();
-
+  stubStack({ id: 'my-stack-1'});
   signInAndVisit(addLogUrl);
 
   andThen(function(){
-    equal(currentPath(), 'stacks.stack.log-drains.new');
+    equal(currentPath(), 'stack.log-drains.new');
     click('.btn:contains(Cancel)');
   });
 
   andThen(function(){
-    equal(currentPath(), 'stacks.stack.log-drains.index');
+    equal(currentPath(), 'stack.log-drains.index');
   });
 });
 
@@ -114,7 +116,7 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
       drainType = 'elasticsearch';
 
   stubStacks();
-
+  stubStack({ id: 'my-stack-1'});
   stubRequest('post', '/accounts/:stack_id/log_drains', function(request){
     ok(true, 'posts to log_drains');
 
@@ -140,7 +142,7 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
   });
 
   andThen(function(){
-    equal(currentPath(), 'stacks.stack.log-drains.index');
+    equal(currentPath(), 'stack.log-drains.index');
   });
 });
 
@@ -148,6 +150,7 @@ test(`visit ${addLogUrl} and create log failure`, function(assert){
   let errorMessage = 'The log drain is invalid';
 
   stubStacks();
+  stubStack({ id: 'my-stack-1'});
 
   stubRequest('post', '/accounts/:stack_id/log_drains', function(request){
     ok(true, 'posts to log_drains');
@@ -161,7 +164,7 @@ test(`visit ${addLogUrl} and create log failure`, function(assert){
     click( formEl.find('.btn:contains(Save Log)') );
   });
   andThen(function(){
-    equal(currentPath(), 'stacks.stack.log-drains.new');
+    equal(currentPath(), 'stack.log-drains.new');
     let errorDiv = find('.alert');
     ok( errorDiv.length, 'error div is shown');
     ok( errorDiv.text().indexOf(errorMessage) > -1,

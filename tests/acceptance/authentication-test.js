@@ -96,7 +96,7 @@ test('logging in with correct credentials', function() {
   fillIn('input[type=password]', password);
   click('button:contains(Log in)');
   andThen(function(){
-    equal(currentPath(), 'stacks.stack.apps.index');
+    equal(currentPath(), 'stacks.index');
   });
 });
 
@@ -159,7 +159,7 @@ test('visiting /signup when logged in redirects', function() {
   stubStacks();
   signInAndVisit('/signup');
   andThen(function(){
-    equal(currentPath(), 'stacks.stack.apps.index');
+    equal(currentPath(), 'stacks.index');
   });
 });
 

@@ -122,7 +122,7 @@ Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
       databases: { href: '/accounts/my-stack-1/databases' }
     },
     _embedded: {},
-    id: 1,
+    id: 'my-stack-1',
     handle: 'my-stack-1'
   }, {
     _links: {
@@ -131,7 +131,7 @@ Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
       databases: { href: '/accounts/my-stack-2/databases' }
     },
     _embedded: {},
-    id: 2,
+    id: 'my-stack-2',
     handle: 'my-stack-2'
   }];
 

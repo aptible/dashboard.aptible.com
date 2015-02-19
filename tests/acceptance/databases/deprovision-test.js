@@ -67,7 +67,7 @@ test('/databases/:id/deprovision will deprovision with confirmation', function()
   click('button:contains(Deprovision)');
   andThen(function(){
     ok(didDeprovision, 'deprovisioned');
-    equal(currentPath(), 'stacks.stack.databases.index');
+    equal(currentPath(), 'stack.databases.index');
   });
 });
 

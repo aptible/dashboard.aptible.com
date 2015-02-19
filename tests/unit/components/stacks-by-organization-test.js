@@ -5,18 +5,19 @@ import {
 
 import Ember from 'ember';
 
-moduleForComponent('select-year', 'SelectYearComponent', {
-  needs: ['template:stack/-link'],
-  setup: function() {
-    this.container.register('view:select', Ember.Select);
-  }
+moduleForComponent('stacks-by-organization', 'StacksByOrganizationComponent', {
+  needs: [],
+  setup: function() {}
 });
 
 test('it renders', function() {
   expect(2);
 
   // creates the component instance
-  var component = this.subject({});
+  var component = this.subject({
+    stacks: Ember.A([])
+  });
+
   equal(component._state, 'preRender');
 
   // appends the component to the page
