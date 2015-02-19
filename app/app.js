@@ -6,6 +6,9 @@ import { getUrlParameter } from './utils/url-parameters';
 import { replaceLocation } from './utils/location';
 import AuthenticatedRouteMixin from './mixins/routes/authenticated';
 
+// Calls reopen on route and router
+import './utils/title-route-extensions';
+
 Ember.MODEL_FACTORY_INJECTIONS = true;
 
 Ember.Route.reopen(AuthenticatedRouteMixin);

@@ -20,10 +20,19 @@ test('/databases/:id/deprovision requires authentication', function(){
 test('/databases/:id/deprovision will not deprovision without confirmation', function(){
   var databaseId = 1;
   var databaseName = 'foo-bar';
+  var stackHandle = 'rrriggi';
 
   stubDatabase({
     id: databaseId,
-    handle: databaseName
+    handle: databaseName,
+    _links: {
+      stack: { href: `/accounts/${stackHandle}` }
+    }
+  });
+
+  stubStack({
+    id: stackHandle,
+    handle: stackHandle
   });
 
   signInAndVisit('/databases/'+databaseId+'/deprovision');
@@ -31,6 +40,7 @@ test('/databases/:id/deprovision will not deprovision without confirmation', fun
     var button = findWithAssert('button:contains(Deprovision)');
     ok(button.is(':disabled'), 'deprovision button is disabled');
   });
+  titleUpdatedTo(`Deprovision ${databaseName} - ${stackHandle}`);
 });
 
 test('/databases/:id/deprovision will deprovision with confirmation', function(){
@@ -58,6 +68,7 @@ test('/databases/:id/deprovision will deprovision with confirmation', function()
   });
 
   stubStacks();
+  stubOrganization();
 
   signInAndVisit('/databases/'+databaseId+'/deprovision');
   fillIn('input[type=text]', databaseName);

@@ -1,6 +1,10 @@
 import Ember from "ember";
 
 export default Ember.Route.extend({
+  titleToken: function(){
+    var app = this.modelFor('app');
+    return `Deprovision ${app.get('handle')}`;
+  },
 
   actions: {
     deprovision: function(){

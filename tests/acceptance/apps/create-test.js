@@ -18,10 +18,16 @@ test('/stacks/:id/apps/new requires authentication', function(){
 });
 
 test('visit /stacks/1/apps/new', function(){
-  expect(2);
-
-  stubStacks();
-  stubStack({id: 1});
+  // Just needed to stub /stack/my-stack-1/apps
+  stubStacks({ includeApps: true });
+  stubStack({
+    id: '1',
+    handle: 'my-stack-1',
+    _links: {
+      databases: {href: '/accounts/my-stack-1/databases'},
+      apps: {href: '/accounts/my-stack-1/apps'}
+    }
+  });
 
   signInAndVisit('/stacks/1/apps/new');
 
@@ -31,10 +37,12 @@ test('visit /stacks/1/apps/new', function(){
     var input = findWithAssert('input.app-handle');
     ok(input.length, 'has app handle input');
   });
+  titleUpdatedTo('Create an App - my-stack-1');
 });
 
 test('visit /stacks/1/apps/new and cancel', function(){
   stubStacks();
+  stubOrganization();
   stubStack({id: 1});
 
   signInAndVisit('/stacks/1/apps/new');

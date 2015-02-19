@@ -17,6 +17,7 @@ module.exports = function(environment) {
     authTokenKey: '_aptible_authToken',
     stripePublishableKey: 'pk_test_eiw5HXHTAgTwyNnV9I5ruCrA',
     replaceLocation: true,
+    replaceTitle: true,
 
     segmentioKey: 'qxwhj8ys4t',
 
@@ -73,6 +74,7 @@ module.exports = function(environment) {
     ENV.authTokenKey = '_aptible_authToken-test';
 
     ENV.replaceLocation = false;
+    ENV.replaceTitle = false;
 
     delete ENV.apiBaseUri;
     delete ENV.authBaseUri;

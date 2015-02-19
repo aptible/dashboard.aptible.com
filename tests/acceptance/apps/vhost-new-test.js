@@ -16,6 +16,7 @@ module('Acceptance: App Vhost New', {
   setup: function() {
     App = startApp();
     stubStacks();
+    stubOrganization();
   },
   teardown: function() {
     Ember.run(App, 'destroy');
@@ -28,12 +29,16 @@ test('visit ' + appVhostsNewUrl + ' requires authentication', function(){
 
 test('visit ' + appVhostsNewUrl + ' shows creation form', function(){
   var appId = 1;
+  var appHandle = 'whammo-com';
+  var stackHandle = 'moop-com';
 
   stubApp({
     id: appId,
+    handle: appHandle,
     _embedded: { services: [] },
     _links: {
-      vhosts: { href: appVhostsApiUrl }
+      vhosts: { href: appVhostsApiUrl },
+      stack: { href: `/accounts/${stackHandle}` }
     }
   });
 
@@ -41,6 +46,11 @@ test('visit ' + appVhostsNewUrl + ' shows creation form', function(){
     return this.success({
       _embedded: { vhosts: [] }
     });
+  });
+
+  stubStack({
+    id: stackHandle,
+    handle: stackHandle
   });
 
   signInAndVisit(appVhostsNewUrl);
@@ -60,6 +70,7 @@ test('visit ' + appVhostsNewUrl + ' shows creation form', function(){
     ok( find('button:contains(Cancel)').length,
         'has Cancel button');
   });
+  titleUpdatedTo(`Add a domain - ${appHandle} - ${stackHandle}`);
 });
 
 test('visit /services/:id/vhosts/new and create vhost', function(){

@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   requireAuthentication: false,
+  title: 'Aptible Dashboard',
 
   afterModel: function(){
     this.analytics.identify();

@@ -21,18 +21,37 @@ test('visiting /stacks/1/apps requires authentication', function() {
 });
 
 test('visiting /stacks/my-stack-1/apps', function() {
+  // Just needed to stub /stack/my-stack-1/apps
   stubStacks({ includeApps: true });
-  stubStack({ id: 'my-stack-1', _links: { apps: { href: '/accounts/my-stack-1/apps' } }});
+  stubStack({
+    id: 'my-stack-1',
+    handle: 'my-stack-1',
+    _links: {
+      apps: { href: '/accounts/my-stack-1/apps' },
+      organization: { href: '/organizations/1' }
+    }
+  });
+  stubOrganization();
   signInAndVisit('/stacks/my-stack-1/apps');
 
   andThen(function() {
     equal(currentPath(), 'stack.apps.index');
   });
+  titleUpdatedTo('my-stack-1 Apps - Sprocket Co');
 });
 
 test('visiting /stacks/my-stack-1/apps shows list of apps', function() {
+  // Just needed to stub /stack/my-stack-1/apps
   stubStacks({ includeApps: true });
-  stubStack({ id: 'my-stack-1', _links: { apps: { href: '/accounts/my-stack-1/apps' } }});
+  stubStack({
+    id: 'my-stack-1',
+    handle: 'my-stack-1',
+    _links: {
+      apps: { href: '/accounts/my-stack-1/apps' },
+      organization: { href: '/organizations/1' }
+    }
+  });
+  stubOrganization();
   signInAndVisit('/stacks/my-stack-1/apps');
 
   andThen(function() {
@@ -43,8 +62,15 @@ test('visiting /stacks/my-stack-1/apps shows list of apps', function() {
 });
 
 test('visiting /stacks/my-stack-1/apps then clicking on an app visits the app', function() {
+  // Just needed to stub /stack/my-stack-1/apps
   stubStacks({ includeApps: true });
-  stubStack({ id: 'my-stack-1', _links: { apps: { href: '/accounts/my-stack-1/apps' } }});
+  stubStack({
+    id: 'my-stack-1',
+    handle: 'my-stack-1',
+    _links: {
+      apps: { href: '/accounts/my-stack-1/apps' }
+    }
+  });
   signInAndVisit('/stacks/my-stack-1/apps');
 
   andThen(function(){
@@ -60,13 +86,12 @@ test('visiting /stacks/my-stack-1/apps then clicking on an app visits the app', 
 test('/stacks/my-stack-1/apps requests apps, databases on each visit', function() {
   var appRequestCount = 0;
   var databaseRequestCount = 0;
-  stubStacks();
   stubStack({
     id: 'my-stack-1',
     _links: {
       databases: {href: '/accounts/my-stack-1/databases'},
       apps: {href: '/accounts/my-stack-1/apps'}
-    },
+    }
   });
   stubRequest('get', '/accounts/my-stack-1/databases', function(request){
     databaseRequestCount++;
