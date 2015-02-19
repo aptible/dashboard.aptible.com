@@ -63,7 +63,11 @@
     "setNoUISlider",
     "slideNoUISlider",
     "expectLink",
-    "expectNoLink"
+    "expectNoLink",
+    "findInput",
+    "expectInput",
+    "findButton",
+    "expectButton"
   ],
   "node": false,
   "browser": false,

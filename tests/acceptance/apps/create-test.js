@@ -3,6 +3,9 @@ import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
 var App;
+let url = '/stacks/1/apps/new';
+let appIndexUrl = '/stacks/1/apps';
+let stackId = 1;
 
 module('Acceptance: App Create', {
   setup: function() {
@@ -13,53 +16,69 @@ module('Acceptance: App Create', {
   }
 });
 
-test('/stacks/:id/apps/new requires authentication', function(){
-  expectRequiresAuthentication('/stacks/1/apps/new');
+function findApp(appHandle){
+  return find(`.app-handle:contains(${appHandle})`);
+}
+
+test(`${url} requires authentication`, function(){
+  expectRequiresAuthentication(url);
 });
 
-test('visit /stacks/1/apps/new', function(){
-  // Just needed to stub /stack/my-stack-1/apps
-  stubStacks({ includeApps: true });
-  stubStack({
-    id: '1',
-    handle: 'my-stack-1',
-    _links: {
-      databases: {href: '/accounts/my-stack-1/databases'},
-      apps: {href: '/accounts/my-stack-1/apps'}
-    }
-  });
+test(`visit ${url}`, function(){
+  expect(3);
+  let stackHandle = 'my-new-stack';
+  stubStack({id:stackId, handle: stackHandle});
 
-  signInAndVisit('/stacks/1/apps/new');
-
+  signInAndVisit(url);
   andThen(function(){
     equal(currentPath(), 'stack.apps.new');
-
-    var input = findWithAssert('input.app-handle');
-    ok(input.length, 'has app handle input');
+    expectInput('handle');
+    titleUpdatedTo(`Create an App - ${stackHandle}`);
   });
-  titleUpdatedTo('Create an App - my-stack-1');
 });
 
-test('visit /stacks/1/apps/new and cancel', function(){
+test(`visit ${url} and cancel`, function(){
+  let appHandle = 'abc-my-app-handle';
   stubStacks();
   stubOrganization();
-  stubStack({id: 1});
+  stubStack({id: stackId});
 
-  signInAndVisit('/stacks/1/apps/new');
-  fillIn('input.app-handle', 'my-new-app');
-  click(':contains(Cancel)');
+  signInAndVisit(url);
+  andThen(function(){
+    fillIn( findInput('handle'), appHandle);
+    click( findButton('Cancel') );
+  });
 
   andThen(function(){
     equal(currentPath(), 'stack.apps.index');
 
-    var appEl = find(':contains(my-new-app)');
-    ok( !appEl.length, 'does not show cancelled app');
+    ok( !findApp(appHandle).length,
+        'does not show app');
   });
-
 });
 
-test('visit /stacks/1/apps/new and create an app', function(){
+test(`visit ${url} and transition away`, function(){
+  let appHandle = 'abc-my-app-handle';
+  stubStacks();
+  stubStack({id: 1});
+
+  signInAndVisit(url);
+  andThen(function(){
+    fillIn( findInput('handle'), appHandle);
+    visit( appIndexUrl );
+  });
+
+  andThen(function(){
+    equal(currentPath(), 'stack.apps.index');
+
+    ok( !findApp(appHandle).length,
+        'does not show app');
+  });
+});
+
+test(`visit ${url} and create an app`, function(){
   expect(3);
+  let appHandle = 'abc-my-app-handle';
 
   stubRequest('get', '/accounts/1', function(request){
     var json = JSON.parse(request.requestBody);
@@ -76,9 +95,7 @@ test('visit /stacks/1/apps/new and create an app', function(){
         accounts: [{
           id: '1',
           handle: 'stack-1',
-          _links: {
-            apps: { href: '/accounts/1/apps' }
-          }
+          _links: { apps: { href: '/accounts/1/apps' } }
         }]
       }
     });
@@ -86,33 +103,29 @@ test('visit /stacks/1/apps/new and create an app', function(){
 
   stubRequest('get', '/accounts/1/apps', function(request){
     return this.success({
-      _embedded: {
-        apps: [{
-          id: 'my-new-app-id',
-          handle: 'my-new-app'
-        }]
-      }
+      _embedded: { apps: [] }
     });
   });
 
   stubRequest('post', '/accounts/1/apps', function(request){
     var json = JSON.parse(request.requestBody);
-    equal(json.handle, 'my-new-app', 'posts app handle');
+    equal(json.handle, appHandle, 'posts app handle');
 
     return this.success(201, {
       id: 'my-new-app-id',
-      handle: 'my-new-app'
+      handle: appHandle
     });
   });
 
-  signInAndVisit('/stacks/1/apps/new');
-  fillIn('input.app-handle', 'my-new-app');
-  click(':contains(Save App)');
-
+  signInAndVisit(url);
+  andThen(function(){
+    fillIn( findInput('handle'), appHandle);
+    click( findButton('Save App') );
+  });
   andThen(function(){
     equal(currentPath(), 'stack.apps.index');
 
-    var appEl = findWithAssert(':contains(my-new-app)');
-    ok( appEl.length, 'shows my new app');
+    ok( findApp(appHandle).length === 1,
+        'lists new app on index' );
   });
 });
