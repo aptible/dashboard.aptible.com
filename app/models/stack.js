@@ -9,6 +9,7 @@ export default DS.Model.extend({
   type: DS.attr('string'),
   syslogHost: DS.attr('string'),
   syslogPort: DS.attr('string'),
+  organizationUrl: DS.attr('string'),
 
   // relationships
   apps: DS.hasMany('app', {async: true}),
@@ -18,7 +19,7 @@ export default DS.Model.extend({
   logDrains: DS.hasMany('log-drain', {async:true}),
 
   // computed properties
-  allowPHI: Ember.computed.match('type', /production|platform|pilot/),
+  allowPHI: Ember.computed.match('type', /production/),
   appContainerCentsPerHour: function() {
     return this.get('allowPHI') ? 10 : 6;
   }.property('allowPHI')

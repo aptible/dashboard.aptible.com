@@ -40,7 +40,8 @@ export default Ember.Route.extend({
         return organization.save();
       }).then(function(){
         route.transitionTo('welcome.first-app');
-      }, function(){});
+      }, function(){
+      });
     }
 
   }

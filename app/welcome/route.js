@@ -1,21 +1,16 @@
 import Ember from 'ember';
-import { read } from '../utils/storage';
-export var firstAppKey = '_aptible_firstAppData';
 
 export default Ember.Route.extend({
   model: function(){
-    var firstApp = read(firstAppKey);
-
-    if (firstApp) {
-      return firstApp;
-    } else {
+    return this.store.find('organization').then(function(organizations){
       return {
+        stackHandle: organizations.objectAt(0).get('name').dasherize(),
         appHandle: '',
         dbHandle: '',
         diskSize: 10,
         dbType: null
       };
-    }
+    });
   },
 
   beforeModel: function() {

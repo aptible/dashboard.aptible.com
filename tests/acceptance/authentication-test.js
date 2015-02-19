@@ -184,7 +184,6 @@ test('visiting /signup when logged in redirects', function() {
 
 test('Creating an account directs to login', function() {
   stubStacks(); // For loading index
-  stubOrganization();
   stubOrganizations();
 
   var email = 'good@email.com';

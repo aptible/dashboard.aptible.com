@@ -254,6 +254,7 @@ Ember.Test.registerHelper('stubOrganizations', function(app){
       _embedded: {
         organizations: [{
           _links: {
+            self: { href: '/organizations/1' }
           },
           id: 1,
           name: 'Sprocket Co',
@@ -269,6 +270,7 @@ Ember.Test.registerHelper('stubOrganization', function(app, id){
   stubRequest('get', '/organizations/'+id, function(request){
     return this.success({
       _links: {
+        self: { href: `/organizations/${id}` }
       },
       id: id,
       name: 'Sprocket Co',
