@@ -1,0 +1,29 @@
+.nav.user-nav {
+  .dropdown.current-user {
+    .dropdown-menu {
+      width: 225px;
+    }
+
+    li.title {
+      font-size: 13px;
+      font-weight: $weight-semibold;
+      color: $color-primary;
+      padding: 10px;
+    }
+
+    li a, li > a {
+      display: block;
+      margin: 0;
+      font-size: 13px;
+      padding: 5px 10px;
+      font-weight: $weight-normal;
+      color: $color-light;
+
+      &:hover {
+        background: #fafafa;
+        color: $color-primary;
+        text-decoration: none;
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{{#dashboard-dropdown-item classNames='title'}}
+  {{organization.name}}
+{{/dashboard-dropdown-item}}
+
+{{#dashboard-dropdown-item}}
+  {{#link-to-legacy-organization organization=organization}}
+    Settings
+  {{/link-to-legacy-organization}}
+{{/dashboard-dropdown-item}}
