@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import startApp from '../helpers/start-app';
+import { stubRequest } from "./fake-server";
 
 var App;
 
@@ -32,8 +33,24 @@ test('visiting / when logged in with more than one stacks redirects to stacks in
 });
 
 test('visiting / when logged in with only one stack redirects to first stack page', function() {
-  let stackId = '1';
+  let stackId = 'my-stack-1';
   stubStacks();
+  stubRequest('get', '/accounts', function(request){
+    return this.success({
+      _links: {},
+      _embedded: {
+        accounts: [{
+          _links: {
+            self: { href: '...' },
+            apps: { href: '/accounts/my-stack-1/apps' },
+            databases: { href: '/accounts/my-stack-1/databases' }
+          },
+          id: 'my-stack-1',
+          handle: 'my-stack-1'
+        }]
+      }
+    });
+  });
   signInAndVisit('/');
 
   andThen(function() {
@@ -46,3 +63,4 @@ test('visiting / when logged in with only one stack redirects to first stack pag
         'has link to databases');
   });
 });
+
