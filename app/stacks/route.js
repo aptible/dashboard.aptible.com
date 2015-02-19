@@ -8,9 +8,9 @@ export default Ember.Route.extend({
     var stack = stacks.objectAt(0);
 
     if(stacks.get('length') === 0) {
-      this.replaceWith('welcome.first-app');
+      this.transitionTo('welcome.first-app');
     } else if(stacks.get('length') === 1) {
-      this.replaceWith('apps', stack);
+      this.transitionTo('apps', stack);
     }
   }
 });

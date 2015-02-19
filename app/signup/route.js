@@ -9,7 +9,7 @@ export default Ember.Route.extend({
 
     return this._super().then(function(){
       if (session.get('isAuthenticated')) {
-        route.replaceWith('index');
+        route.transitionTo('index');
       }
     });
   },
