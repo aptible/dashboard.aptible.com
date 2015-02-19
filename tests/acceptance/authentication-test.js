@@ -137,6 +137,7 @@ test('/login links to signup', function() {
 
 test('visit /login while already logged in redirects to stack', function(){
   stubStacks();
+  stubOrganization();
   signInAndVisit('/login');
 
   andThen(function(){
