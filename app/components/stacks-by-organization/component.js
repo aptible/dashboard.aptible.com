@@ -2,23 +2,25 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   organizationGroups: function() {
-    var groups = Ember.A([]);
+    var groups = [];
 
     this.get('stacks').forEach(function(stack) {
       var currentOrganizationId = stack.get('_data.links.organization');
       var currentOrganization = stack.get('organization');
+      var group = groups.findBy('organizationId', currentOrganizationId);
 
-      if(!groups.findBy('organizationId', currentOrganizationId)) {
-        groups.addObject(Ember.Object.create({
+      if (!group) {
+        group = {
           organizationId: currentOrganizationId,
           organization: currentOrganization,
-          stacks: Ember.A([])
-        }));
+          stacks: []
+        };
+        groups.push(group);
       }
 
-      groups.findBy('organizationId', currentOrganizationId).get('stacks').addObject(stack);
+      group.stacks.push(stack);
     });
 
     return groups;
-  }.property('stacks')
+  }.property('stacks.[]')
 });
