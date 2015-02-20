@@ -5,13 +5,22 @@ export function paginatedResourceQueryParamsPage2Test(options){
   var resourceId = '1';
   var resourceUrl = '/' + options.resourceType + '/' + resourceId;
   var expectedHeader = options.expectedHeader;
+  let stackId = 'stack-id';
+  let stackHandle = 'stack-handle';
+  let resourceHandle = 'resource-handle';
 
   var paginatedResourceUrl = resourceUrl + '/activity';
   var paginatedResourceApiUrl = resourceUrl + '/operations';
 
   stubRequest('get', resourceUrl, function(request){
-    return this.success({ id: resourceId });
+    return this.success({
+      id: resourceId,
+      handle: resourceHandle,
+      _links: { account: { href: `/accounts/${stackId}` } }
+    });
   });
+
+  stubStack({id: stackId, handle: stackHandle});
 
   stubRequest('get', paginatedResourceApiUrl, function(request){
     equal(request.queryParams.page, 2);
@@ -37,13 +46,22 @@ export function paginatedResourceUpdatesQueryParamsTest(options){
   var resourceId = '1';
   var resourceUrl = '/' + options.resourceType + '/' + resourceId;
   var expectedHeader = options.expectedHeader;
+  let stackHandle = 'stack-handle';
+  let resourceHandle = 'resource-handle';
 
   var paginatedResourceUrl = resourceUrl + '/activity';
   var paginatedResourceApiUrl = resourceUrl + '/operations';
+  let stackId = 'stack-id';
 
   stubRequest('get', resourceUrl, function(request){
-    return this.success({ id: resourceId });
+    return this.success({
+      id: resourceId,
+      handle: resourceHandle,
+      _links: { account: { href: `/accounts/${stackId}` } }
+    });
   });
+
+  stubStack({id: stackId, handle: stackHandle});
 
   stubRequest('get', paginatedResourceApiUrl, function(request){
     var page = parseInt(request.queryParams.page, 10);
@@ -75,9 +93,12 @@ export function resourceOperationsTest(options){
   var resourceId = '1';
   var resourceUrl = '/' + options.resourceType + '/' + resourceId;
   var expectedHeader = options.expectedHeader;
+  let stackHandle = 'stack-handle';
+  let resourceHandle = 'resource-handle';
 
   var paginatedResourceUrl = resourceUrl + '/activity';
   var paginatedResourceApiUrl = resourceUrl + '/operations';
+  let stackId = 'stack-id';
 
   let isoCreatedAt = '2014-11-19T19:15:33.836Z';
   let utcTimeStamp = 'November 19, 2014 7:15PM UTC';
@@ -85,11 +106,15 @@ export function resourceOperationsTest(options){
   stubRequest('get', resourceUrl, function(){
     return this.success({
       id: resourceId,
+      handle: resourceHandle,
       _links: {
-        operations: { href: paginatedResourceApiUrl }
+        operations: { href: paginatedResourceApiUrl },
+        account: { href: `/accounts/${stackId}` }
       }
     });
   });
+
+  stubStack({id: stackId, handle: stackHandle});
 
   stubRequest('get', paginatedResourceApiUrl, function(request){
     return this.success({
@@ -148,6 +173,7 @@ export function resourceOperationsTest(options){
     ok( operationCreatedAt.length, 'displays UTC formatted timestamp' );
 
     expectPaginationElements();
+    titleUpdatedTo(`${resourceHandle} Activity - ${stackHandle}`);
   });
 }
 
@@ -155,6 +181,9 @@ export function paginatedResourceTest(options){
   var resourceId = '1';
   var resourceUrl = '/' + options.resourceType + '/' + resourceId;
   var expectedHeader = options.expectedHeader;
+  let stackId = 'stack-id';
+  let stackHandle = 'stack-handle';
+  let resourceHandle = 'resource-handle';
 
   var paginatedResourceUrl = resourceUrl + '/activity';
   var paginatedResourceApiUrl = resourceUrl + '/operations';
@@ -175,9 +204,13 @@ export function paginatedResourceTest(options){
 
   stubRequest('get', resourceUrl, function(request){
     return this.success({
-      id: resourceId
+      id: resourceId,
+      handle: resourceHandle,
+      _links: { account: { href: `/accounts/${stackId}` } }
     });
   });
+
+  stubStack({id: stackId, handle: stackHandle});
 
   stubRequest('get', paginatedResourceApiUrl, function(request){
     requestNum++;

@@ -38,7 +38,8 @@ Ember.Test.registerAsyncHelper('locationUpdatedTo', function(app, url){
 });
 
 Ember.Test.registerAsyncHelper('titleUpdatedTo', function(app, title){
-  equal(titleHistory.last, title, 'window.document.title updated to expected title');
+  equal(titleHistory.last, title,
+        `window.document.title updated to "${title}"`);
 });
 
 Ember.Test.registerAsyncHelper('clickNextPageLink', function(app){
@@ -94,12 +95,24 @@ Ember.Test.registerHelper('stubStack', function(app, stackData){
 });
 
 Ember.Test.registerHelper('stubApp', function(app, appData){
-  var id = appData.id;
-  if (!id) { throw new Error('cannot stub app without id'); }
+  let defaultAppData = {
+    id: 'app-id',
+    _links: { account: { href: '/accounts/stubbed-stack' } }
+  };
+  if (Ember.get(appData, '_links.stack')) {
+    Ember.warn('App _link for stack must be called `account`');
+  }
+  appData = appData || {};
 
-  stubRequest('get', '/apps/' + id, function(request){
+  // deep merge
+  appData = Ember.$.extend(true, defaultAppData, appData || {});
+
+  stubRequest('get', '/apps/:app_id', function(request){
+    appData.id = request.params.app_id;
     return this.success(appData);
   });
+
+  stubStack({id: 'stubbed-stack'});
 });
 
 Ember.Test.registerHelper('stubDatabase', function(app, databaseData){
@@ -265,17 +278,17 @@ Ember.Test.registerHelper('stubOrganizations', function(app){
   });
 });
 
-Ember.Test.registerHelper('stubOrganization', function(app, id){
-  id = id || 1;
-  stubRequest('get', '/organizations/'+id, function(request){
-    return this.success({
-      _links: {
-        self: { href: `/organizations/${id}` }
-      },
-      id: id,
-      name: 'Sprocket Co',
-      type: 'organization'
-    });
+Ember.Test.registerHelper('stubOrganization', function(app, orgData){
+  let defaultData = {
+    _links: { self: { href: '' } },
+    id: 1, name: 'Sprocket Co', handle:'sprocket-co', type: 'organization'
+  };
+
+  orgData = Ember.$.extend(true, defaultData, orgData || {});
+  stubRequest('get', '/organizations/:org_id', function(request){
+    orgData.id = request.params.org_id;
+    orgData._links.self.href = `/organizations/${orgData.id}`;
+    return this.success( orgData );
   });
 });
 

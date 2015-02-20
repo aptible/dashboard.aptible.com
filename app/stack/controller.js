@@ -5,5 +5,4 @@ export default Ember.Controller.extend({
 
   persistedApps: Ember.computed.filterBy('model.apps', 'isNew', false),
   persistedDatabases: Ember.computed.filterBy('model.databases', 'isNew', false)
-
 });
