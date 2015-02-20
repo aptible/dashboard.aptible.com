@@ -55,6 +55,8 @@
     "stubOrganization",
     "stubApp",
     "stubDatabase",
+    "stubDatabases",
+    "stubUser",
     "expectPaginationElements",
     "clickNextPageLink",
     "clickPrevPageLink",

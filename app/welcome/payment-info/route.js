@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { createStripeToken } from '../../utils/stripe';
+import { provisionDatabases } from '../../models/database';
 
 export default Ember.Route.extend({
   model: function() {
@@ -37,7 +38,7 @@ export default Ember.Route.extend({
 
       Ember.RSVP.hash({
         stripeResponse: createStripeToken(options),
-        // TODO: the organization should probabaly be loaded
+        // TODO: the organization should probably be loaded
         // when the route is entered and the name displayed when
         // entering payment information
         organizations: store.find('organization')
@@ -92,6 +93,10 @@ export default Ember.Route.extend({
         }
 
         return Ember.RSVP.all(promises);
+      }).then(function(){
+        let currentUser = route.session.get('currentUser');
+
+        return provisionDatabases(currentUser, route.store);
       }).then(function(){
         route.transitionTo('index');
       }, function(error) {
