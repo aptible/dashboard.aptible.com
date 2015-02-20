@@ -1,6 +1,15 @@
 import Ember from 'ember';
 import { monthNames } from 'diesel/utils/dates';
 
+function padLeft(str, len=2, filler="0"){
+  str = '' + str; // coerce
+  while (str.length < len) {
+    str = filler + str;
+  }
+
+  return str;
+}
+
 export function formatUtcTimestamp(date) {
   if (!date) { return; }
 
@@ -13,7 +22,7 @@ export function formatUtcTimestamp(date) {
   let hours = date.getUTCHours();
   let period = hours >= 12 ? 'PM' : 'AM';
   hours = hours > 12 ? (hours-12) : hours;
-  let minutes = date.getUTCMinutes();
+  let minutes = padLeft(date.getUTCMinutes(), 2, '0');
 
   return `${month} ${day}, ${year} ${hours}:${minutes}${period} UTC`;
 }
