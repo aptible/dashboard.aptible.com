@@ -3,13 +3,23 @@ import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
 var App;
-let url = '/stacks/1/apps/new';
-let appIndexUrl = '/stacks/1/apps';
-let stackId = 1;
+let url = '/stacks/my-stack-1/apps/new';
+let appIndexUrl = '/stacks/my-stack-1/apps';
+let stackId = 'my-stack-1';
 
 module('Acceptance: App Create', {
   setup: function() {
     App = startApp();
+    stubStacks({ includeApps: true });
+    stubStack({
+      id: 'my-stack-1',
+      handle: 'my-stack-1',
+      _links: {
+        apps: { href: '/accounts/my-stack-1/apps' },
+        organization: { href: '/organizations/1' }
+      }
+    });
+    stubOrganization();
   },
   teardown: function() {
     Ember.run(App, 'destroy');
@@ -39,11 +49,8 @@ test(`visit ${url}`, function(){
 
 test(`visit ${url} and cancel`, function(){
   let appHandle = 'abc-my-app-handle';
-  stubStacks();
-  stubOrganization();
-  stubStack({id: stackId});
-
   signInAndVisit(url);
+
   andThen(function(){
     fillIn( findInput('handle'), appHandle);
     click( findButton('Cancel') );
@@ -59,10 +66,8 @@ test(`visit ${url} and cancel`, function(){
 
 test(`visit ${url} and transition away`, function(){
   let appHandle = 'abc-my-app-handle';
-  stubStacks();
-  stubStack({id: 1});
-
   signInAndVisit(url);
+
   andThen(function(){
     fillIn( findInput('handle'), appHandle);
     visit( appIndexUrl );
@@ -80,34 +85,7 @@ test(`visit ${url} and create an app`, function(){
   expect(3);
   let appHandle = 'abc-my-app-handle';
 
-  stubRequest('get', '/accounts/1', function(request){
-    var json = JSON.parse(request.requestBody);
-
-    return this.success({
-      id: '1',
-      handle: 'stack-1'
-    });
-  });
-
-  stubRequest('get', '/accounts', function(request){
-    return this.success({
-      _embedded: {
-        accounts: [{
-          id: '1',
-          handle: 'stack-1',
-          _links: { apps: { href: '/accounts/1/apps' } }
-        }]
-      }
-    });
-  });
-
-  stubRequest('get', '/accounts/1/apps', function(request){
-    return this.success({
-      _embedded: { apps: [] }
-    });
-  });
-
-  stubRequest('post', '/accounts/1/apps', function(request){
+  stubRequest('post', '/accounts/my-stack-1/apps', function(request){
     var json = JSON.parse(request.requestBody);
     equal(json.handle, appHandle, 'posts app handle');
 

@@ -70,10 +70,33 @@ test(`visit ${url} shows basic info`, function(assert){
   });
 });
 
-test(`visit ${url} and click add log shows form`, function(assert){
+test(`visit ${url} with no log drains will redirect to new log drains`, function() {
   stubOrganization();
   stubStacks();
-  stubStack({ id: 'my-stack-1'});
+  stubStack({ id: 'my-stack-1', _embedded: { log_drains: [] }});
+  signInAndVisit(url);
+
+  andThen(function() {
+    equal(currentPath(), 'stack.log-drains.new');
+  });
+});
+
+test(`visit ${url} with log drains and click add log shows form`, function(assert){
+  stubOrganization();
+  stubStacks();
+  let logDrains = [{
+    id: 'drain-1',
+    handle: 'first-drain',
+    drain_host: 'abcdef.com',
+    drain_port: 123
+  }, {
+    id: 'drain-2',
+    handle: 'second-drain',
+    drain_host: 'second.com',
+    drain_port: 456
+  }];
+
+  stubStack({ id: 'my-stack-1', _embedded: { log_drains: logDrains }});
   signInAndVisit(url);
 
   andThen(function(){

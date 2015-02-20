@@ -5,5 +5,10 @@ export default Ember.Route.extend({
     var stack = this.modelFor('stack');
     controller.set('model', model);
     controller.set('stack', stack);
+  },
+  redirect: function(model) {
+    if(model.get('length') === 0) {
+      this.transitionTo('apps.new', this.modelFor('stack'));
+    }
   }
 });

@@ -33,15 +33,13 @@
       </li>
 
       <li class="resource-metadata-item">
-        <h5 class="resource-metadata-title">Logging</h5>
+        <h5 class="resource-metadata-title">Log Drains</h5>
         <h3 class="resource-metadata-value">
           {{#with model.logDrains.firstObject as |logDrain|}}
             {{logDrain.drainHost}}:{{logDrain.drainPort}}
           {{else}}
             None configured.
           {{/with}}
-
-          {{link-to 'Configure' 'stack.log-drains' model}}
         </h3>
       </li>
     </ul>

@@ -3,13 +3,23 @@ import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
 var App;
-let url = '/stacks/1/databases/new';
-let dbIndexUrl = '/stacks/1/databases';
-let stackId = 1;
+let url = '/stacks/my-stack-1/databases/new';
+let dbIndexUrl = '/stacks/my-stack-1/databases';
+let stackId = 'my-stack-1';
 
 module('Acceptance: Database Create', {
   setup: function() {
     App = startApp();
+    stubStacks({ includeDatabases: true });
+    stubStack({
+      id: 'my-stack-1',
+      handle: 'my-stack-1',
+      _links: {
+        databases: { href: '/accounts/my-stack-1/databases' },
+        organization: { href: '/organizations/1' }
+      }
+    });
+    stubOrganization();
   },
   teardown: function() {
     Ember.run(App, 'destroy');
@@ -22,6 +32,16 @@ function findDatabase(dbName){
 
 test(`visit ${url} requires authentication`, function(){
   expectRequiresAuthentication(url);
+});
+
+test(`visiting /stacks/:stack_id/databases without any databases redirects to ${url}`, function() {
+  stubStack({ id: stackId });
+  stubOrganization();
+  signInAndVisit(`/stacks/${stackId}/databases`);
+
+  andThen(function() {
+    equal(currentPath(), 'stack.databases.new');
+  });
 });
 
 test(`visit ${url} shows fields for creating a db`, function(){
@@ -75,7 +95,7 @@ test(`visit ${url} and create`, function(){
           id: 'my-stack-1',
           handle: 'stack-1',
           _links: {
-            databases: { href: '/accounts/1/databases' }
+            databases: { href: '/accounts/my-stack-1/databases' }
           }
         }]
       }
@@ -83,7 +103,7 @@ test(`visit ${url} and create`, function(){
   });
 
   // get DB
-  stubRequest('get', '/accounts/1/databases', function(request){
+  stubRequest('get', '/accounts/my-stack-1/databases', function(request){
     return this.success({
       _embedded: {
         databases: [{
@@ -95,7 +115,7 @@ test(`visit ${url} and create`, function(){
   });
 
   // create DB
-  stubRequest('post', '/accounts/1/databases', function(request){
+  stubRequest('post', '/accounts/my-stack-1/databases', function(request){
     var json = JSON.parse(request.requestBody);
     equal(json.handle, dbHandle, 'posts db handle');
     equal(json.type, 'redis', 'posts db type of redis');
@@ -144,30 +164,6 @@ test(`visit ${url} and click cancel button`, function(){
 
   var dbHandle = 'my-new-db';
 
-  stubStack({id: 1, handle:'stack-1'});
-
-  stubRequest('get', '/accounts', function(request){
-    return this.success({
-      _embedded: {
-        accounts: [{
-          id: '1',
-          handle: 'stack-1',
-          _links: {
-            databases: { href: '/accounts/1/databases' }
-          }
-        }]
-      }
-    });
-  });
-
-  stubRequest('get', '/accounts/1/databases', function(request){
-    return this.success({
-      _embedded: {
-        databases: []
-      }
-    });
-  });
-
   signInAndVisit(url);
   andThen(function(){
     fillIn( findInput('handle'), dbHandle );
@@ -185,28 +181,6 @@ test(`visit ${url} and transition away`, function(){
   expect(2);
 
   var dbHandle = 'a-new-db-handle';
-
-  stubStack({id: 1, handle:'stack-1'});
-
-  stubRequest('get', '/accounts', function(request){
-    return this.success({
-      _embedded: {
-        accounts: [{
-          id: '1',
-          handle: 'stack-1',
-          _links: {
-            databases: { href: '/accounts/1/databases' }
-          }
-        }]
-      }
-    });
-  });
-
-  stubRequest('get', '/accounts/1/databases', function(request){
-    return this.success({
-      _embedded: { databases: [] }
-    });
-  });
 
   signInAndVisit(url);
   andThen(function(){

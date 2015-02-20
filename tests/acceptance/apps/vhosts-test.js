@@ -45,12 +45,34 @@ test('visit ' + appVhostsUrl + ' has link to ' + appVhostsNewUrl, function(){
     handle: stackHandle
   });
 
+  var vhosts = [{
+    id: 1,
+    virtual_domain: 'www.health1.io',
+    external_host: 'www.host1.com'
+  },{
+    id: 2,
+    virtual_domain: 'www.health2.io',
+    external_host: 'www.host2.com'
+  }];
+
   stubApp({
     id: appId,
     handle: appHandle,
+    _embedded: {
+      services: []
+    },
     _links: {
+      vhosts: { href: appVhostsApiUrl },
       account: {href: '/accounts/'+stackHandle}
     }
+  });
+
+  stubRequest('get', appVhostsApiUrl, function(){
+    return this.success({
+      _embedded: {
+        vhosts: vhosts
+      }
+    });
   });
 
   signInAndVisit(appVhostsUrl);
