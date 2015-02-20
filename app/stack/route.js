@@ -2,9 +2,18 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   title: function(tokens) {
-    tokens.push(this.currentModel.get('handle'));
+    if (tokens.length === 0) {
+      tokens.push(this.currentModel.get('handle'));
+    }
+
+    // org is a PromiseProxy, pre-populated because it was
+    // fetched in `afterModel`
+    let organization = this.currentModel.get('organization');
+    tokens.push( organization.get('name') );
+
     return tokens.join(' - ');
   },
+
   afterModel: function(model){
     return Ember.RSVP.hash({
       apps: model.get('apps'),
@@ -12,6 +21,7 @@ export default Ember.Route.extend({
       organization: model.get('organization')
     });
   },
+
   setupController: function(controller, model){
     var stacks = this.modelFor('stacks');
     controller.set('model', model);

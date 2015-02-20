@@ -37,13 +37,8 @@ test('app show page includes link to vhosts url', function(){
 });
 
 test('visit ' + appVhostsUrl + ' has link to ' + appVhostsNewUrl, function(){
-  var appHandle = 'handle-app';
-  var stackHandle = 'handle-stack';
-
-  stubStack({
-    id: stackHandle,
-    handle: stackHandle
-  });
+  let appHandle = 'handle-app';
+  let stackHandle = 'handle-stack';
 
   var vhosts = [{
     id: 1,
@@ -73,6 +68,11 @@ test('visit ' + appVhostsUrl + ' has link to ' + appVhostsNewUrl, function(){
         vhosts: vhosts
       }
     });
+  });
+
+  stubStack({
+    id: stackHandle,
+    handle: stackHandle
   });
 
   signInAndVisit(appVhostsUrl);

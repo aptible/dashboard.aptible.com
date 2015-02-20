@@ -48,7 +48,7 @@ test('visit ' + appVhostsNewUrl + ' shows creation form', function(){
     _embedded: { services: [] },
     _links: {
       vhosts: { href: appVhostsApiUrl },
-      stack: { href: `/accounts/${stackHandle}` }
+      account: { href: `/accounts/${stackHandle}` }
     }
   });
 

@@ -1,6 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
+  titleToken: function(){
+    let resource = this.modelFor( this.get('paginatedResourceOwnerType') );
+    return `${resource.get('handle')} Activity`;
+  },
+
   setPaginationMeta: function(typeName, store, controller){
     var pagination = store.metadataFor(typeName);
     controller.set('currentPage', pagination.current_page);

@@ -2,11 +2,15 @@ import Ember from 'ember';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
-var App;
+let App;
 
-var appId = '1';
-var appUrl = '/apps/' + appId;
-var appServicesUrl = '/apps/' + appId + '/services';
+let appId = '1';
+let appUrl = '/apps/' + appId;
+let appHandle = 'my-app-handle',
+    stackHandle = 'my-stack-handle',
+    stackId = 'my-stack-id';
+let appServicesUrl = '/apps/' + appId + '/services';
+let url = appServicesUrl;
 
 module('Acceptance: App Services', {
   setup: function() {
@@ -17,8 +21,8 @@ module('Acceptance: App Services', {
   }
 });
 
-test(appServicesUrl + ' requires authentication', function(){
-  expectRequiresAuthentication(appServicesUrl);
+test(`${url} requires authentication`, function(){
+  expectRequiresAuthentication(url);
 });
 
 test('app show page includes link to services url', function(){
@@ -34,7 +38,7 @@ test('app show page includes link to services url', function(){
   });
 });
 
-test('visit ' + appServicesUrl + ' lists services', function(){
+test(`visit ${url} lists services`, function(){
   var services = [{
     id: 1,
     handle: 'hubot',
@@ -51,12 +55,17 @@ test('visit ' + appServicesUrl + ' lists services', function(){
 
   stubApp({
     id: appId,
-    _embedded: {
-      services: services
-    }
+    handle: appHandle,
+    _embedded: { services: services },
+    _links: { account: { href: `/accounts/${stackId}` } }
   });
 
-  signInAndVisit(appServicesUrl);
+  stubStack({
+    id: stackId,
+    handle: stackHandle
+  });
+
+  signInAndVisit(url);
 
   andThen(function(){
     equal( find('.service').length, services.length);
@@ -71,5 +80,7 @@ test('visit ' + appServicesUrl + ' lists services', function(){
       ok( find('.service .container-count:contains(' + service.container_count + ')').length,
           'has container count ' + service.container_count );
     });
+
+    titleUpdatedTo(`${appHandle} Services - ${stackHandle}`);
   });
 });

@@ -32,7 +32,7 @@ test('visiting /stacks/my-stack-1/apps with no apps redirects to apps new', func
 });
 
 test('visiting /stacks/my-stack-1/apps', function() {
-  // Just needed to stub /stack/my-stack-1/apps
+  // This is needed to stub /stack/my-stack-1/apps
   stubStacks({ includeApps: true });
   stubStack({
     id: 'my-stack-1',

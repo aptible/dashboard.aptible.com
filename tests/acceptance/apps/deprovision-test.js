@@ -26,7 +26,7 @@ test('/apps/:id/deprovision will not deprovision without confirmation', function
     id: appId,
     handle: appName,
     _links: {
-      stack: { href: `/accounts/${stackHandle}` }
+      account: { href: `/accounts/${stackHandle}` }
     }
   });
 

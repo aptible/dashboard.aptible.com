@@ -77,21 +77,12 @@ test('visiting /apps/my-app-id shows basic app info', function() {
         `shows currentGitRef "${currentGitRef}"`);
 
   });
-
-  titleUpdatedTo('my-app - my-stack-1');
 });
 
 test('visiting /apps/my-app-id when the app is deprovisioned', function() {
   var appId = 'my-app-id';
 
-  stubRequest('get', '/apps/' + appId, function(request){
-    ok(true, 'loads app');
-    return this.success({
-      id: appId,
-      handle: 'my-app',
-      status: 'deprovisioned'
-    });
-  });
+  stubApp({id: appId, status: 'deprovisioned'});
 
   signInAndVisit('/apps/' + appId);
   andThen(function() {
@@ -103,15 +94,11 @@ test('visiting /apps/my-app-id when the app is deprovisioned', function() {
 test('visiting /apps/my-app-id/services shows services', function() {
   var appId = 'my-app-id';
 
-  stubRequest('get', '/apps/' + appId, function(request){
-    return this.success({
-      id: appId,
-      handle: 'my-app',
-      status: 'provisioned',
-      _links: {
-        services: { href: '/apps/my-app-id/services' }
-      }
-    });
+  stubApp({
+    id: appId,
+    handle: 'my-app',
+    status: 'provisioned',
+    _links: { services: { href: '/apps/my-app-id/services' } }
   });
 
   stubRequest('get', '/apps/my-app-id/services', function(request){
@@ -161,15 +148,15 @@ test('visiting /apps/my-app-id/services shows services', function() {
 });
 
 test('visit /apps/:id/services and change service container count', function(){
-  var appId = 'my-app-id';
-  var serviceId = 'service-1';
+  let appId = 'my-app-id';
+  let serviceId = 'service-1';
 
-  stubRequest('get', '/apps/' + appId, function(request){
-    return this.success({
-      id: appId,
-      handle: 'my-app',
-      _links: { services: { href: '/apps/' + appId + '/services' } }
-    });
+  stubApp({
+    id: appId,
+    handle: 'my-app',
+    _links: {
+      services: { href: `/apps/${appId}/services` }
+    }
   });
 
   stubRequest('get', '/apps/' + appId + '/services', function(request){
