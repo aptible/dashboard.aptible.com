@@ -5,6 +5,7 @@ import config from 'diesel/config/environment';
 
 let App;
 let appId = 'app-id';
+let appHandle = 'my-app-handle';
 let url =`/apps/${appId}`;
 let gitRepo = 'git@aptible.com:my-app.git';
 let gettingStartedLink = config.externalUrls.gettingStartedDocs;
@@ -19,12 +20,11 @@ module('Acceptance: Apps Show - Never deployed (app.status === "pending")', {
 });
 
 function setupAjaxStubs(sshKeys){
-  stubRequest('get', '/apps/:app_id', function(request){
-    return this.success({
-      id: request.params.app_id,
-      status: 'pending',
-      git_repo: gitRepo
-    });
+  stubApp({
+    id: appId,
+    handle: appHandle,
+    status: 'pending',
+    git_repo: gitRepo
   });
 
   stubRequest('get', '/users/:user_id/ssh_keys', function(request){
@@ -63,6 +63,9 @@ test(`visit ${url} when app has not been deployed`, function(assert){
   signInAndVisit(url);
   andThen(function(){
     equal(currentPath(), 'app.deploy');
+
+    ok( find(`.first-time-app-deploy h2:contains(${appHandle})`).length,
+        'display app handle');
 
     // displayed tabs
     expectTab('Deploy');
