@@ -1,5 +1,6 @@
 import DS from 'ember-data';
 import can from "../utils/can";
+import Ember from 'ember';
 
 export default DS.Model.extend({
   email: DS.attr('string'),
@@ -17,7 +18,6 @@ export default DS.Model.extend({
   // relationships
   token: DS.belongsTo('token', {async: true}),
   roles: DS.hasMany('role', {async:true}),
-  //organizations: DS.hasMany('organization', {async:true}),
   sshKeys: DS.hasMany('ssh-key', {async:true}),
 
   // check ability, returns a promise
@@ -27,25 +27,17 @@ export default DS.Model.extend({
   },
 
   organizations: function() {
-    var organizations = [];
+    var organizations = {};
 
     this.get('roles').forEach(function(role) {
-      var organizationId = role.get('_data.links.organization');
-      var organization = organizations.findBy('organizationId', organizationId);
-
-      if(!organization) {
-        organization = {
-          organizationId: organizationId,
-          organization: role.get('organization')
-        };
-        organizations.push(organization);
-      }
+      var organization = role.get('organization');
+      var organizationId = organization.get('id');
+      organizations[organizationId] = organization;
     });
 
-    return organizations.map(function(organization) {
-      return organization.organization;
+    return Ember.keys(organizations).map(function(organizationId) {
+      return organizations[organizationId];
     });
 
-  }.property('roles.[]')
-
+  }.property('roles.@each.organization')
 });

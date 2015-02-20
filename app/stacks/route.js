@@ -2,9 +2,13 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function() {
-    return this.store.find('stack');
+    return Ember.RSVP.hash({
+      stacks: this.store.find('stack'),
+      organizations: this.store.find('organization')
+    });
   },
-  afterModel: function(stacks){
+  afterModel: function(model){
+    var stacks = model.stacks;
     var stack = stacks.objectAt(0);
 
     if(stacks.get('length') === 0) {

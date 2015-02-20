@@ -1,27 +1,10 @@
-{{#each organizationGroup in organizationGroups}}
-  <header class="resource-header">
-    <div class="container">
-      <h1 class="resource-title">
-        {{organizationGroup.organization.name}}
-        <span class="resource-title-link">
-          {{#link-to-legacy-organization organization=organizationGroup.organization}}
-            <i class="fa fa-cog"></i>
-            Settings
-          {{/link-to-legacy-organization}}
-        </span>
-      </h1>
-    </div>
-  </header>
-
-  <div class="container">
-    <div class="resource-list-grid">
-      <div class="row">
-        {{#each stack in organizationGroup.stacks}}
-          <div class="col-xs-4">
-            {{partial 'stack/link'}}
-          </div>
-        {{/each}}
-      </div>
-    </div>
+{{#each organizationStacks as |stack|}}
+  <div class="col-xs-4">
+    {{partial 'stack/link'}}
   </div>
+{{else}}
+  <h4>{{organization.name}} has no stacks configured.</h4>
+  {{#link-to-legacy-organization organization=organization}}
+    Configure {{organization.name}} stacks.
+  {{/link-to-legacy-organization}}
 {{/each}}

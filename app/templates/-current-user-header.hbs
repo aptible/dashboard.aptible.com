@@ -9,7 +9,7 @@
         <li class="dropdown current-user">
           {{#dashboard-dropdown title=session.currentUser.name defaultPath="index"}}
 
-            {{#each organization in session.currentUser.organizations}}
+            {{#each session.currentUser.organizations as |organization|}}
               {{dashboard-dropdown-organization-menu organization=organization}}
               {{dashboard-dropdown-divider}}
             {{/each}}

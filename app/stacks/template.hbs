@@ -1,1 +1,22 @@
-{{stacks-by-organization stacks=model}}
+{{#each model.organizations as |organization|}}
+  <header class="resource-header">
+    <div class="container">
+      <h1 class="resource-title">
+        {{organization.name}}
+        <span class="resource-title-link">
+          {{#link-to-legacy-organization organization=organization}}
+            <i class="fa fa-cog"></i>
+            Settings
+          {{/link-to-legacy-organization}}
+        </span>
+      </h1>
+    </div>
+  </header>
+  <div class="container">
+    <div class="resource-list-grid">
+      <div class="row">
+        {{stacks-by-organization organization=organization stacks=model.stacks}}
+      </div>
+    </div>
+  </div>
+{{/each}}
