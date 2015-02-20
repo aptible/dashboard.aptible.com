@@ -13,10 +13,5 @@ export default Ember.Route.extend({
     } else {
       return apps;
     }
-  },
-  redirect: function(model) {
-    if(model.get('length') === 0) {
-      this.replaceWith('apps.new', this.modelFor('stack'));
-    }
   }
 });
