@@ -14,9 +14,8 @@ export default Ember.Route.extend({
       return apps;
     }
   },
-  redirect: function() {
-    var stack = this.modelFor('stack');
-    if(stack.get('apps.length') === 0) {
+  redirect: function(model) {
+    if(model.get('length') === 0) {
       this.replaceWith('apps.new', this.modelFor('stack'));
     }
   }

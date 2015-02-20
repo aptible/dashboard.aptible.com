@@ -14,9 +14,8 @@ export default Ember.Route.extend({
       return databases;
     }
   },
-  redirect: function() {
-    var stack = this.modelFor('stack');
-    if(stack.get('databases.length') === 0) {
+  redirect: function(model) {
+    if(model.get('length') === 0) {
       this.replaceWith('databases.new', this.modelFor('stack'));
     }
   }
