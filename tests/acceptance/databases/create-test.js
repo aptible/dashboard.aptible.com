@@ -24,6 +24,16 @@ test(`visit ${url} requires authentication`, function(){
   expectRequiresAuthentication(url);
 });
 
+test(`visiting /stacks/:stack_id/databases without any databases redirects to ${url}`, function() {
+  stubStack({ id: stackId });
+  stubOrganization();
+  signInAndVisit(`/stacks/${stackId}/databases`);
+
+  andThen(function() {
+    equal(currentPath(), 'stack.databases.new');
+  });
+});
+
 test(`visit ${url} shows fields for creating a db`, function(){
   let stackHandle = 'my-cool-handle';
   stubStack({id: stackId, handle: stackHandle});

@@ -27,6 +27,16 @@ test('visit ' + appVhostsNewUrl + ' requires authentication', function(){
   expectRequiresAuthentication(appVhostsNewUrl);
 });
 
+test(`visiting ${appVhostsUrl} without any Vhosts redirects to ${appVhostsNewUrl}`, function() {
+  stubStacks();
+  stubApp({ id: appId });
+  signInAndVisit(appVhostsUrl);
+
+  andThen(function() {
+    equal(currentPath(), 'app.vhosts.new');
+  });
+});
+
 test('visit ' + appVhostsNewUrl + ' shows creation form', function(){
   var appId = 1;
   var appHandle = 'whammo-com';

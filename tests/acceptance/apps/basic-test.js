@@ -20,6 +20,17 @@ test('visiting /stacks/1/apps requires authentication', function() {
   expectRequiresAuthentication('/stacks/1/apps');
 });
 
+test('visiting /stacks/my-stack-1/apps with no apps redirects to apps new', function() {
+  stubStacks({ includeApps: false });
+  stubStack({ id: 'my-stack-1' });
+  stubOrganization();
+
+  signInAndVisit('/stacks/my-stack-1/apps');
+  andThen(function(){
+    equal(currentPath(), 'stack.apps.new');
+  });
+});
+
 test('visiting /stacks/my-stack-1/apps', function() {
   // Just needed to stub /stack/my-stack-1/apps
   stubStacks({ includeApps: true });

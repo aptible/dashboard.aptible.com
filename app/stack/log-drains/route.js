@@ -5,5 +5,11 @@ export default Ember.Route.extend({
     let stack = this.modelFor('stack');
 
     return stack.get('logDrains');
-  }
+  },
+  redirect: function() {
+    var stack = this.modelFor('stack');
+    if(stack.get('logDrains.length') === 0) {
+      this.replaceWith('stack.log-drains.new', this.modelFor('stack'));
+    }
+  },
 });
