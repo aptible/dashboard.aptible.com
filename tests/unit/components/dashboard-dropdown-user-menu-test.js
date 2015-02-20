@@ -5,19 +5,15 @@ import {
 
 import Ember from 'ember';
 
-moduleForComponent('stacks-by-organization', 'StacksByOrganizationComponent', {
-  needs: ['component:link-to-legacy-organization'],
-  setup: function() {}
+moduleForComponent('dashboard-dropdown-user-menu', 'DashboardDropdownUserMenuComponent', {
+  needs: ['component:dashboard-dropdown-item', 'helper:link-to']
 });
 
 test('it renders', function() {
-  expect(2);
-
   // creates the component instance
   var component = this.subject({
-    stacks: Ember.A([])
+    user: Ember.Object.create({ name: 'Test User' })
   });
-
   equal(component._state, 'preRender');
 
   // appends the component to the page

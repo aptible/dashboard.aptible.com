@@ -1,5 +1,6 @@
 import DS from 'ember-data';
 import can from "../utils/can";
+import Ember from 'ember';
 
 export default DS.Model.extend({
   email: DS.attr('string'),
@@ -17,12 +18,26 @@ export default DS.Model.extend({
   // relationships
   token: DS.belongsTo('token', {async: true}),
   roles: DS.hasMany('role', {async:true}),
-  organizations: DS.hasMany('organization', {async:true}),
   sshKeys: DS.hasMany('ssh-key', {async:true}),
 
   // check ability, returns a promise
   // e.g.: user.can('manage', stack).then(function(boolean){ ... });
   can: function(scope, stack){
     return can(this, scope, stack);
-  }
+  },
+
+  organizations: function() {
+    var organizations = {};
+
+    this.get('roles').forEach(function(role) {
+      var organization = role.get('organization');
+      var organizationId = organization.get('id');
+      organizations[organizationId] = organization;
+    });
+
+    return Ember.keys(organizations).map(function(organizationId) {
+      return organizations[organizationId];
+    });
+
+  }.property('roles.@each.organization')
 });

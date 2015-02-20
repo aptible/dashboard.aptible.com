@@ -27,6 +27,7 @@ test('visiting / redirects to login page', function() {
 test('visiting / when logged in with more than one stacks redirects to stacks index page', function() {
   stubStacks();
   stubOrganization();
+  stubOrganizations();
   signInAndVisit('/');
 
   andThen(function() {
@@ -37,6 +38,7 @@ test('visiting / when logged in with more than one stacks redirects to stacks in
 test('visiting / when logged in with only one stack redirects to first stack page', function() {
   let stackId = 'my-stack-1';
   stubStacks({ includeApps: true });
+  stubOrganizations();
   stubRequest('get', '/accounts', function(request){
     return this.success({
       id: stackId,

@@ -6,34 +6,18 @@
 
     <nav>
       <ul class="nav nav-pills navbar-right user-nav">
-        <li>
-          {{#if model.organization}}
-            {{link-to model.organization.name "index"}}
-          {{else}}
-            {{link-to model.stack.organization.name "index"}}
-          {{/if}}
-        </li>
-
         <li class="dropdown current-user">
           {{#dashboard-dropdown title=session.currentUser.name defaultPath="index"}}
 
-            {{#dashboard-dropdown-item}}
-              {{link-to "Dashboard" "index"}}
-            {{/dashboard-dropdown-item}}
+            {{#each session.currentUser.organizations as |organization|}}
+              {{dashboard-dropdown-organization-menu organization=organization}}
+              {{dashboard-dropdown-divider}}
+            {{/each}}
 
-            {{#dashboard-dropdown-item}}
-              {{#link-to "settings"}}Settings{{/link-to}}
-            {{/dashboard-dropdown-item}}
-
-            {{dashboard-dropdown-divider}}
-
-            {{#dashboard-dropdown-item}}
-              {{link-to "Logout" "logout"}}
-            {{/dashboard-dropdown-item}}
+            {{dashboard-dropdown-user-menu user=session.currentUser}}
 
           {{/dashboard-dropdown}}
         </li>
-
       </ul>
     </nav>
   </div>

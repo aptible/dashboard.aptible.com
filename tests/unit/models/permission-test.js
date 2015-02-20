@@ -9,7 +9,8 @@ moduleForModel('permission', 'Permission', {
     'model:role',
     'model:stack',
     'model:app',
-    'model:database'
+    'model:database',
+    'model:organization'
   ]
 });
 
