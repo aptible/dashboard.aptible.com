@@ -3,25 +3,29 @@ import { locationHistory } from '../../utils/location';
 import { titleHistory } from '../../utils/title-route-extensions';
 import { stubRequest } from "./fake-server";
 
-Ember.Test.registerAsyncHelper('signIn', function(app){
+Ember.Test.registerAsyncHelper('signIn', function(app, userData){
+  let defaultUserData = {
+    id: 'user1',
+    name: 'stubbed user',
+    email: 'stubbed-user@gmail.com',
+    links: { sshKeys: '/users/user1/ssh_keys' }
+  };
+
+  userData = userData || defaultUserData;
+
   var session = app.__container__.lookup('torii:session');
   var sm = session.get('stateMachine');
 
   Ember.run(function(){
     var store = app.__container__.lookup('store:main');
-    var user = store.push('user', {
-      id: 'user1',
-      name: 'stubbed user',
-      email: 'stubbed-user@gmail.com',
-      links: { sshKeys: '/users/user1/ssh_keys' }
-    });
+    var user = store.push('user', userData);
     sm.transitionTo('authenticated');
     session.set('content.currentUser', user);
   });
 });
 
-Ember.Test.registerAsyncHelper('signInAndVisit', function(app, url){
-  signIn();
+Ember.Test.registerAsyncHelper('signInAndVisit', function(app, url, userData){
+  signIn(userData);
   visit(url);
 });
 
@@ -375,4 +379,21 @@ Ember.Test.registerHelper('expectInput', function(app, inputName, options) {
   } else {
     ok(false, `Found 0 of input "${inputName}"`);
   }
+});
+
+Ember.Test.registerHelper('stubDatabases', function(app, dbData){
+  stubRequest('get', '/databases', function(request){
+    return this.success({
+      _embedded: {
+        databases: dbData
+      }
+    });
+  });
+});
+
+Ember.Test.registerHelper('stubUser', function(app, userData={}){
+  stubRequest('get', '/users/:user_id', function(request){
+    userData.id = request.params.user_id;
+    return this.success(userData);
+  });
 });

@@ -21,6 +21,7 @@ test('visiting /verify/some-code creates verification', function() {
   stubStacks(); // For loading index
   stubOrganization();
   stubOrganizations();
+  stubUser();
   var verificationCode = 'some-code';
 
   stubRequest('post', '/verifications', function(request){
@@ -29,6 +30,45 @@ test('visiting /verify/some-code creates verification', function() {
     return this.success({
       id: 'this-id',
       verification_code: verificationCode
+    });
+  });
+
+  signInAndVisit('/verify/'+verificationCode);
+  andThen(function(){
+    equal(currentPath(), 'stacks.index');
+  });
+});
+
+test('after verification, pending databases are provisioned', function(){
+  expect(4);
+  stubStacks(); // For loading index
+  stubOrganization();
+  stubOrganizations();
+  var verificationCode = 'some-code';
+  let dbId = 'db-id';
+
+  let dbData = [{id: dbId}];
+  stubDatabases(dbData);
+
+  stubRequest('post', '/verifications', function(request){
+    var params = JSON.parse(request.requestBody);
+    equal(params.verification_code, verificationCode, 'correct code is passed');
+    return this.success({
+      id: 'this-id',
+      verification_code: verificationCode
+    });
+  });
+
+  stubUser({id:'user-id', verified:true});
+
+  stubRequest('post', `/databases/${dbId}/operations`, function(request){
+    ok(true, 'posts to create db provision op');
+    let json = this.json(request);
+    equal(json.type, 'provision');
+
+    return this.success({
+      id: 'op-id',
+      type: json.type
     });
   });
 
