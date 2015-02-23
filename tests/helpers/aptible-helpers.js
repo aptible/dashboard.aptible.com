@@ -364,9 +364,11 @@ Ember.Test.registerHelper('expectButton', function(app, buttonName, options) {
 });
 
 Ember.Test.registerHelper('findInput', function(app, inputName, options) {
-  let context = (options || {}).context;
+  options = options || {};
+  let context = options.context;
+  let inputType = options.input || 'input';
 
-  let selector = `input[name="${inputName}"]`;
+  let selector = `${inputType}[name="${inputName}"]`;
   let el = context ? context.find(selector) : find(selector);
 
   return el;

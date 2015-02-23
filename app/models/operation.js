@@ -11,7 +11,8 @@ export default DS.Model.extend({
 
   // append these values for a nested url. They are
   // not actual attributes in the server payload, and
-  // as such ember-data `attrs`.
+  // as such not ember-data `attrs`.
   database: null,
-  app: null
+  app: null,
+  vhost: null
 });

@@ -7,7 +7,7 @@ export default Ember.Route.extend({
   },
   redirect: function(model) {
     if(model.get('length') === 0) {
-      return this.replaceWith('app.vhosts.new', this.modelFor('app'));
+      return this.transitionTo('app.vhosts.new', this.modelFor('app'));
     }
   }
 });
