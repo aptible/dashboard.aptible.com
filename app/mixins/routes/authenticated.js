@@ -10,23 +10,25 @@ function loadUserRoles(route){
 
 export default Ember.Mixin.create({
   requireAuthentication: true, // default to requiring authentication
+  unauthenticatedRedirect: 'login',
 
-  beforeModel: function(){
+  beforeModel: function(transition){
     if (this.get('requireAuthentication')) {
-      return this._requireAuthentication();
+      return this._requireAuthentication(transition);
     } else {
       return this._checkLogin();
     }
   },
 
-  // redirect to 'login' if the user is not signed in
-  _requireAuthentication: function(){
+  // redirect if the user is not signed in
+  _requireAuthentication: function(transition){
     var route = this;
     if (!this.session.get('isAuthenticated')) {
+      this.session.attemptedTransition = transition;
       return this.session.fetch('aptible').then(function(){
         return loadUserRoles(route);
-      }).catch(function(){
-        route.transitionTo('login');
+      }).catch( () => {
+        route.transitionTo(Ember.get(this, 'unauthenticatedRedirect'));
       });
     } else {
       return loadUserRoles(route);

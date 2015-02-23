@@ -28,12 +28,16 @@ export default Ember.Route.extend({
   actions: {
 
     login: function(authAttempt){
-      var route = this;
       var credentials = buildCredentials(authAttempt.email, authAttempt.password);
-      this.session.open('aptible', credentials).then(function(){
-        route.transitionTo('index');
-      }, function(e){
-        route.currentModel.set('error', e.message);
+      this.session.open('aptible', credentials).then(() => {
+        if (this.session.attemptedTransition) {
+          this.session.attemptedTransition.retry();
+          this.session.attemptedTransition = null;
+        } else {
+          this.transitionTo('index');
+        }
+      }, (e) => {
+        this.currentModel.set('error', e.message);
       });
     }
 

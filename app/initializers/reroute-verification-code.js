@@ -5,8 +5,13 @@ export function initialize(container, application) {
   application.deferReadiness();
 
   var verificationCode = getUrlParameter(window.location, 'verification_code');
+  var invitationId = getUrlParameter(window.location, 'invitation_id');
   if (verificationCode) {
-    replaceLocation('/verify/'+verificationCode);
+    if (invitationId) {
+      replaceLocation(`/claim/${invitationId}/${verificationCode}`);
+    } else {
+      replaceLocation(`/verify/${verificationCode}`);
+    }
   } else {
     application.advanceReadiness();
   }

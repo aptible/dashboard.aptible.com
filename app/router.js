@@ -65,6 +65,10 @@ Router.map(function() {
     path: "verify/:verification_code"
   });
 
+  this.route("claim", {
+    path: "claim/:invitation_id/:verification_code"
+  });
+
   this.route("welcome", function() {
     this.route("first-app");
     this.route("payment-info");
