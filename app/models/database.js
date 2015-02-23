@@ -10,7 +10,8 @@ export default DS.Model.extend({
 
   // relationships
   stack: DS.belongsTo('stack', {async: true}),
-  operations: DS.hasMany('operation', {async:true})
+  operations: DS.hasMany('operation', {async:true}),
+  disk: DS.belongsTo('disk', {async:true})
 });
 
 export function provisionDatabases(user, store){
