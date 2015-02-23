@@ -36,7 +36,7 @@ test('app show page includes link to vhosts url', function(){
   });
 });
 
-test('visit ' + appVhostsUrl + ' has link to ' + appVhostsNewUrl, function(){
+test(`visit ${appVhostsUrl} has link to ${appVhostsNewUrl}`, function(){
   let appHandle = 'handle-app';
   let stackHandle = 'handle-stack';
 
@@ -84,7 +84,7 @@ test('visit ' + appVhostsUrl + ' has link to ' + appVhostsNewUrl, function(){
   titleUpdatedTo(appHandle+' Domains - '+stackHandle);
 });
 
-test('visit ' + appVhostsUrl + ' lists vhosts', function(){
+test(`visit ${appVhostsUrl} lists vhosts`, function(){
   var vhosts = [{
     id: 1,
     virtual_domain: 'www.health1.io',

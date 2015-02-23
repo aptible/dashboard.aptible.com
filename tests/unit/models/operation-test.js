@@ -144,3 +144,36 @@ test('store.find("operation", {database:database, page:page}) formats the URL co
     });
   });
 });
+
+let vhostId = 'vhost-id';
+let vhostOperationURL = `/vhosts/${vhostId}/operations`;
+test(`when creating an operation for a vhost, POSTs to ${vhostOperationURL}`, function(){
+  expect(2);
+
+  var store = this.store();
+  var vhost, op;
+
+  Ember.run(function(){
+    vhost = store.createRecord('vhost', {id: vhostId});
+    op = store.createRecord('operation', {
+      type: 'provision',
+      vhost: vhost
+    });
+  });
+
+  stubRequest('post', vhostOperationURL, function(){
+    ok(true, 'posts to correct url');
+
+    return this.success({
+      id: 'op-id',
+      type: 'provision',
+    });
+  });
+
+  return Ember.run(function(){
+    return op.save().then(function(_op){
+      ok(true, 'operation saved');
+    });
+  });
+});
+

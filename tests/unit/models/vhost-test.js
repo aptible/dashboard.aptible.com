@@ -40,3 +40,32 @@ test('creating POSTs to correct url', function() {
     });
   });
 });
+
+test('updating PUTs to correct url', function() {
+  expect(2);
+
+  var store = this.store();
+  var vhost, service;
+  let vhostId = 'vhost-id';
+
+  Ember.run(function(){
+    service = store.createRecord('service', {id: '1'});
+    vhost = store.push('vhost', {id: vhostId, status:'provisioned', service:service});
+  });
+
+  stubRequest('put', `/vhosts/${vhostId}`, function(request){
+    ok(true, 'calls with correct URL');
+
+    return this.success({
+      id: vhostId,
+      status: 'provisioned'
+    });
+  });
+
+  return Ember.run(function(){
+    vhost.set('virtualDomain', 'new-virtual-domain.com');
+    return vhost.save().then(function(){
+      ok(true, 'vhost did update');
+    });
+  });
+});

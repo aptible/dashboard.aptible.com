@@ -37,7 +37,7 @@ test(`visiting ${appVhostsUrl} without any Vhosts redirects to ${appVhostsNewUrl
   });
 });
 
-test('visit ' + appVhostsNewUrl + ' shows creation form', function(){
+test(`visit ${appVhostsNewUrl} shows creation form`, function(){
   var appId = 1;
   var appHandle = 'whammo-com';
   var stackHandle = 'moop-com';
@@ -66,26 +66,24 @@ test('visit ' + appVhostsNewUrl + ' shows creation form', function(){
   signInAndVisit(appVhostsNewUrl);
 
   andThen(function(){
-    var header = find('.panel-heading:contains(Create a new VHost)');
-    ok(header.length, 'has header');
-
-    formInputNames.forEach(function(name){
-      ok( find('.form-group *[name~="' + name + '"]').length,
-          'has input with name ' + name);
-    });
-
-    ok( find('button:contains(Save VHost)').length,
-        'has save button');
-
-    ok( find('button:contains(Cancel)').length,
-        'has Cancel button');
+    ok(find('.panel-heading:contains(Create a new VHost)').length,
+       'has header');
+    expectInput('service', {input:'select'});
+    expectInput('virtual-domain');
+    expectInput('certificate', {input:'textarea'});
+    expectInput('private-key', {input:'textarea'});
+    expectButton('Save VHost');
+    expectButton('Cancel');
+    titleUpdatedTo(`Add a domain - ${appHandle} - ${stackHandle}`);
   });
-  titleUpdatedTo(`Add a domain - ${appHandle} - ${stackHandle}`);
 });
 
-test('visit /services/:id/vhosts/new and create vhost', function(){
-  var appId = 1;
-  var serviceId = 'the-service-id';
+test(`visit ${appVhostsNewUrl} and create vhost`, function(){
+  expect(5);
+
+  let appId = 1;
+  let serviceId = 'the-service-id';
+  let vhostId = 'new-vhost-id';
 
   stubApp({
     id: appId,
@@ -106,24 +104,30 @@ test('visit /services/:id/vhosts/new and create vhost', function(){
     });
   });
 
-  signInAndVisit('/apps/' + appId + '/vhosts/new');
+  signInAndVisit(appVhostsNewUrl);
 
-  stubRequest('post', '/services/' + serviceId + '/vhosts', function(request){
-    var json = this.json(request);
+  stubRequest('post', `/services/${serviceId}/vhosts`, function(request){
+    let json = this.json(request);
     equal(json.virtual_domain, 'my.domain.com');
     equal(json.certificate, 'my long cert');
     equal(json.private_key, 'my long pk');
     equal(json.type, 'http');
 
-    return this.success({
-      id: 'new-vhost-id',
-    });
+    return this.success({id:vhostId});
   });
 
-  signInAndVisit('/apps/' + appId + '/vhosts/new');
-  fillIn('input[name="virtual-domain"]', 'my.domain.com');
-  fillIn('textarea[name="certificate"]', 'my long cert');
-  fillIn('textarea[name="private-key"]', 'my long pk');
+  stubRequest('post', `/vhosts/${vhostId}/operations`, function(request){
+    let json = this.json(request);
+    equal(json.type, 'provision', 'posts provision operation');
+    return this.success({id: 'new-op-id'});
+  });
 
-  click('button:contains(Save VHost)');
+  signInAndVisit(appVhostsNewUrl);
+  andThen(function(){
+    fillIn(findInput('virtual-domain'), 'my.domain.com');
+    fillIn(findInput('certificate', {input:'textarea'}), 'my long cert');
+    fillIn(findInput('private-key', {input:'textarea'}), 'my long pk');
+
+    click('button:contains(Save VHost)');
+  });
 });

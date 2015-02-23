@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-xs-6">
+    <div class="panel panel-default panel-subdued">
+      <div class="panel-heading">
+        <h3>Edit {{unbound model.virtualDomain}}</h3>
+      </div>
+      <div class="panel-body">
+        <form role="form">
+          {{#unless model.isValid}}
+            {{#bs-alert alert="warning" as |component|}}
+             {{#bs-alert-dismiss target=component}}
+               <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+             {{/bs-alert-dismiss}}
+
+              {{#each model.errors.messages as |message|}}
+                <p>{{message}}</p>
+              {{/each}}
+            {{/bs-alert}}
+          {{/unless}}
+
+          <div class="form-group">
+            <label>Service</label>
+            <select name="service" class='form-control' disabled>
+              <option>{{model.service.handle}}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Virtual Domain</label>
+            {{input class="form-control" value=model.virtualDomain name="virtual-domain"}}
+          </div>
+
+          <div class="form-group">
+            <label>Certificate</label>
+            {{textarea class="form-control" value=newCertificate name="certificate"}}
+          </div>
+
+          <div class="form-group">
+            <label>Private Key</label>
+            {{textarea class="form-control" value=newPrivateKey name="private-key"}}
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="resource-actions">
+  <button class="btn btn-default" {{action 'cancel'}}>Cancel</button>
+  <button class="btn btn-primary" {{action 'save'}}>Save VHost</button>
+</div>

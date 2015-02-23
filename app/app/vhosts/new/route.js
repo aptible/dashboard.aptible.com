@@ -29,11 +29,16 @@ export default Ember.Route.extend({
     },
 
     save: function(vhost, service){
-      var route = this;
       vhost.set('service', service);
 
-      vhost.save().then(function(){
-        route.transitionTo('app.vhosts');
+      vhost.save().then( () => {
+        let op = this.store.createRecord('operation', {
+          type: 'provision',
+          vhost: vhost
+        });
+        return op.save();
+      }).then( () => {
+        this.transitionTo('app.vhosts');
       });
     },
 
