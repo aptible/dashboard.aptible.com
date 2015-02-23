@@ -93,7 +93,7 @@ Ember.Test.registerHelper('stubStack', function(app, stackData){
   var id = stackData.id;
   if (!id) { throw new Error('cannot stub stack without id'); }
 
-  stubRequest('get', '/accounts/' + id, function(request){
+  stubRequest('get', `/accounts/${id}`, function(request){
     return this.success(stackData);
   });
 });

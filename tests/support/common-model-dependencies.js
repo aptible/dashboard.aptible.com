@@ -10,6 +10,7 @@ export default [
   'model:organization',
   'model:image',
   'model:log-drain',
+  'model:disk',
 
   'adapter:application',
   'serializer:application',

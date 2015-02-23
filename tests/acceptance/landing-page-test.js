@@ -37,17 +37,15 @@ test('visiting / when logged in with more than one stacks redirects to stacks in
 
 test('visiting / when logged in with only one stack redirects to first stack page', function() {
   let stackId = 'my-stack-1';
-  stubStacks({ includeApps: true });
+  stubStacks();
   stubOrganizations();
   stubRequest('get', '/accounts', function(request){
     return this.success({
       id: stackId,
       handle: stackId,
-      _links: {},
       _embedded: {
         accounts: [{
           _links: {
-            self: { href: '...' },
             apps: { href: '/accounts/my-stack-1/apps' },
             databases: { href: '/accounts/my-stack-1/databases' },
             organization: { href: '/organizations/1' }
@@ -65,10 +63,8 @@ test('visiting / when logged in with only one stack redirects to first stack pag
     equal(currentURL(), `/stacks/${stackId}/apps`);
     equal(currentPath(), 'stack.apps.index');
 
-    ok( find(`a[href*="stacks/${stackId}/databases"]`).length,
-        'has link to databases');
-    ok( find(`a[href*="stacks/${stackId}/logging"]`).length,
-        'has link to databases');
+    expectLink(`stacks/${stackId}/databases`);
+    expectLink(`stacks/${stackId}/logging`);
   });
 });
 
