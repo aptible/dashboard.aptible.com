@@ -8,8 +8,10 @@
   </div>
 
   <div class="resource-list-actions">
-    {{#aptible-ability scope="manage" user=session.currentUser stack=stack}}
-      {{link-to 'Create Database' 'databases.new' class="btn btn-primary"}}
+    {{#aptible-ability scope="manage" user=session.currentUser stack=stack as |hasAbility|}}
+      {{#if hasAbility}}
+        {{link-to 'Create Database' 'databases.new' class="btn btn-primary"}}
+      {{/if}}
     {{/aptible-ability}}
   </div>
 </div>
