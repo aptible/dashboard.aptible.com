@@ -116,7 +116,7 @@ test(`visit ${url} and create`, function(){
 
   // create DB
   stubRequest('post', '/accounts/my-stack-1/databases', function(request){
-    var json = JSON.parse(request.requestBody);
+    var json = this.json(request);
     equal(json.handle, dbHandle, 'posts db handle');
     equal(json.type, 'redis', 'posts db type of redis');
 
@@ -128,7 +128,7 @@ test(`visit ${url} and create`, function(){
 
   // create 'provision' operation with disk size
   stubRequest('post', '/databases/' + dbId + '/operations', function(request){
-    var json = JSON.parse(request.requestBody);
+    var json = this.json(request);
     equal(json.type, 'provision', 'posts type of provision');
     equal(json.disk_size, diskSize, 'posts disk size');
 

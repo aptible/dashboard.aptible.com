@@ -1,0 +1,26 @@
+{{#login-box}}
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+      <div class="panel panel-subdued panel-focused">
+        <div class="panel-heading">
+          <h3>Invitation Acceptance</h3>
+        </div>
+        <div class="panel-body">
+          {{#if error}}
+            {{#bs-alert alert="danger"}}
+              {{error}}
+            {{/bs-alert}}
+          {{/if}}
+          <p>
+            You are currently signed in as {{session.currentUser.email}}.
+          </p>
+          <form>
+            <button class="btn btn-primary btn-block btn-lg" {{action "claim"}}>
+              Accept organization invitation
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{{/login-box}}

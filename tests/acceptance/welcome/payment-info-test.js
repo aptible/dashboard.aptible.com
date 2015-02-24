@@ -75,7 +75,7 @@ test('submitting valid payment info should be successful', function() {
   var appHandle = 'my-app-1';
 
   stubRequest('post', '/organizations/1/subscriptions', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     equal(params.stripe_token, stripeToken, 'stripe token is correct');
     return this.success();
   });
@@ -89,7 +89,7 @@ test('submitting valid payment info should be successful', function() {
   };
 
   stubRequest('post', '/accounts', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     equal(params.organization_url, '/organizations/1', 'organization url is correct');
     stackAssertions[params.handle](params);
     return this.success({
@@ -144,7 +144,7 @@ test('submitting valid payment info for production plan should be successful', f
   var appHandle = 'my-app-1';
 
   stubRequest('post', '/organizations/1/subscriptions', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     equal(params.stripe_token, stripeToken, 'stripe token is correct');
     return this.success();
   });
@@ -164,7 +164,7 @@ test('submitting valid payment info for production plan should be successful', f
   };
 
   stubRequest('post', '/accounts', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     equal(params.organization_url, '/organizations/1', 'organization url is correct');
     stackAssertions[params.handle](params);
     return this.success({
@@ -219,13 +219,13 @@ test('submitting valid payment info should be successful and create app', functi
   var appHandle = 'my-app-1';
 
   stubRequest('post', '/organizations/1/subscriptions', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     equal(params.stripe_token, stripeToken, 'stripe token is correct');
     return this.success();
   });
 
   stubRequest('post', '/accounts', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     return this.success({
       id: params.handle,
       handle: params.handle,
@@ -234,7 +234,7 @@ test('submitting valid payment info should be successful and create app', functi
   });
 
   stubRequest('post', `/accounts/${stackHandle}-dev/apps`, function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     equal(params.handle, appHandle, 'app handle is correct');
     return this.success();
   });
@@ -286,13 +286,13 @@ test('submitting valid payment info should be successful and create db', functio
   var dbType = 'redis';
 
   stubRequest('post', '/organizations/1/subscriptions', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     equal(params.stripe_token, stripeToken, 'stripe token is correct');
     return this.success();
   });
 
   stubRequest('post', '/accounts', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     return this.success({
       id: params.handle,
       handle: params.handle,
@@ -301,7 +301,7 @@ test('submitting valid payment info should be successful and create db', functio
   });
 
   stubRequest('post', `/accounts/${stackHandle}-dev/databases`, function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     equal(params.handle, dbHandle, 'db handle is correct');
     equal(params.type, dbType, 'db type is correct');
     return this.success();
@@ -356,13 +356,13 @@ test('submitting valid payment info when user is verified should provision db', 
   let dbId = 'db-id';
 
   stubRequest('post', '/organizations/1/subscriptions', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     equal(params.stripe_token, stripeToken, 'stripe token is correct');
     return this.success();
   });
 
   stubRequest('post', '/accounts', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     return this.success({
       id: params.handle,
       handle: params.handle,
@@ -371,7 +371,7 @@ test('submitting valid payment info when user is verified should provision db', 
   });
 
   stubRequest('post', `/accounts/${stackHandle}-dev/databases`, function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     equal(params.handle, dbHandle, 'db handle is correct');
     equal(params.type, dbType, 'db type is correct');
     return this.success({

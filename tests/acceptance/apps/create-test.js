@@ -86,7 +86,7 @@ test(`visit ${url} and create an app`, function(){
   let appHandle = 'abc-my-app-handle';
 
   stubRequest('post', '/accounts/my-stack-1/apps', function(request){
-    var json = JSON.parse(request.requestBody);
+    var json = this.json(request);
     equal(json.handle, appHandle, 'posts app handle');
 
     return this.success(201, {

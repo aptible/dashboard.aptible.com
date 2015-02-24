@@ -9,9 +9,9 @@
         <div class="panel-body">
           <form role="form">
             {{#if error}}
-              <div class="alert alert-danger fade in">
+              {{#bs-alert alert="danger"}}
                 <p>{{error.message}}</p>
-              </div>
+              {{/bs-alert}}
             {{/if}}
 
             <div class="form-group">
