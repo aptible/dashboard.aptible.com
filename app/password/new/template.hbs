@@ -1,0 +1,53 @@
+{{#login-box}}
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+
+      <div class="panel panel-default panel-subdued panel-focused">
+        <div class="panel-heading">
+          <div class="panel-heading-link">
+            {{link-to "Sign in instead" "login"}}
+          </div>
+          <h3>Reset your password</h3>
+        </div>
+
+        <div class="panel-body">
+          {{#if error}}
+            <div class="alert alert-danger fade in">
+              {{error}}
+            </div>
+          {{else}}
+            {{#if hasSubmitted}}
+              {{#if errors.model.passwordConfirmation}}
+                {{#bs-alert alert="warning"}}
+                  Confirmation {{errors.model.passwordConfirmation}}.
+                {{/bs-alert}}
+              {{/if}}
+            {{/if}}
+          {{/if}}
+          <div class="form-group">
+            {{input type="password"
+              value=model.password
+              name="password"
+              class="form-control"
+              placeholder="Password"}}
+          </div>
+
+          <div class="form-group">
+            {{input type="password"
+              value=model.passwordConfirmation
+              name="password-confirmation"
+              class="form-control"
+              placeholder="Password Confirmation"}}
+          </div>
+
+          <div class="panel-submit">
+            <button class="btn btn-primary btn-block btn-lg" {{action "save" model}}>
+              Reset my password
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+{{/login-box}}

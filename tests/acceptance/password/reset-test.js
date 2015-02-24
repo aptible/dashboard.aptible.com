@@ -20,6 +20,13 @@ test('visiting /password/reset works', function() {
   });
 });
 
+test('visiting /password/reset signed in redirects to index', function() {
+  signInAndVisit('/password/reset');
+  andThen(function(){
+    equal(currentPath(), 'index');
+  });
+});
+
 test('visiting /password/reset and submitting an email creates password reset', function() {
   expect(2);
   var email = 'myEmail@email.com';

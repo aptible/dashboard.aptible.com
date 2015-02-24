@@ -5,7 +5,7 @@ export var auth = {};
 
 export default ApplicationAdapter.extend({
 
-  buildURL: function(type){
+  buildURL: function(){
     var url = [],
         host = Ember.get(this, 'host'),
         prefix = this.urlPrefix();

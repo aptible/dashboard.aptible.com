@@ -14,7 +14,7 @@ export default Ember.Route.extend({
         this.controllerFor('password/reset').set('error', `
           There was an error resetting your password.
         `);
-      })
+      });
     }
   }
 });

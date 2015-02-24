@@ -7,7 +7,7 @@ export default Ember.Object.extend({
   payload: function(){
     var token = this.get('token');
 
-    if (!token) { return {}; }
+    if (!token || token === "null") { return {}; }
 
     var parts = token.split('.');
 
