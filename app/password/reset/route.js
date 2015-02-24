@@ -1,7 +1,7 @@
 import Ember from 'ember';
+import DisallowAuthenticated from "../../mixins/routes/disallow-authenticated";
 
-export default Ember.Route.extend({
-  requireAuthentication: false,
+export default Ember.Route.extend(DisallowAuthenticated, {
   model: function(){
     return this.store.createRecord('password-reset-request');
   },

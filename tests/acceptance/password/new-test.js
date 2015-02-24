@@ -34,6 +34,20 @@ test('visiting /password/new/:reset_code/:user_id signed in redirects to index',
   });
 });
 
+test('visiting /password/new/:reset_code/:user_id and submitting without password displays an error', function() {
+  expect(2);
+  var userId = 'abcUserId';
+  var resetCode = 'defResetCode';
+  var newPassword = 'someGreatPassword1%';
+  visit(`/password/new/${resetCode}/${userId}`);
+  click('button:contains(Reset my password)');
+  andThen(function(){
+    equal(currentPath(), 'password.new');
+    var errors = find(':contains(Password can\'t be blank)');
+    notEqual(errors.length, 0, 'errors are on the page');
+  });
+});
+
 test('visiting /password/new/:reset_code/:user_id and submitting without password confirmation displays an error', function() {
   expect(2);
   var userId = 'abcUserId';
@@ -41,11 +55,25 @@ test('visiting /password/new/:reset_code/:user_id and submitting without passwor
   var newPassword = 'someGreatPassword1%';
   visit(`/password/new/${resetCode}/${userId}`);
   fillIn('[name=password]', newPassword);
-  fillIn('[name=password-confirmation]', newPassword+'sdfds');
   click('button:contains(Reset my password)');
   andThen(function(){
     equal(currentPath(), 'password.new');
     var errors = find(':contains(Confirmation does not match)');
+    notEqual(errors.length, 0, 'errors are on the page');
+  });
+});
+
+test('visiting /password/new/:reset_code/:user_id and submitting a poor password displays an error', function() {
+  expect(2);
+  var userId = 'abcUserId';
+  var resetCode = 'defResetCode';
+  var newPassword = 'somebadpassword';
+  visit(`/password/new/${resetCode}/${userId}`);
+  fillIn('[name=password]', newPassword);
+  click('button:contains(Reset my password)');
+  andThen(function(){
+    equal(currentPath(), 'password.new');
+    var errors = find(':contains(Password must)');
     notEqual(errors.length, 0, 'errors are on the page');
   });
 });

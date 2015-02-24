@@ -17,6 +17,11 @@
             </div>
           {{else}}
             {{#if hasSubmitted}}
+              {{#if errors.model.password}}
+                {{#bs-alert alert="warning"}}
+                  Password {{join-array errors.model.password ', '}}.
+                {{/bs-alert}}
+              {{/if}}
               {{#if errors.model.passwordConfirmation}}
                 {{#bs-alert alert="warning"}}
                   Confirmation {{errors.model.passwordConfirmation}}.

@@ -1,18 +1,7 @@
 import Ember from 'ember';
+import DisallowAuthenticated from "../../mixins/routes/disallow-authenticated";
 
-export default Ember.Route.extend({
-  requireAuthentication: false,
-  beforeModel: function(){
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      if (this.session.get('isAuthenticated')) {
-        resolve();
-      } else {
-        this.session.fetch('aptible').then(resolve, reject);
-      }
-    }).then(() => {
-      this.transitionTo('index');
-    }, function(){});
-  },
+export default Ember.Route.extend(DisallowAuthenticated, {
   model: function(params){
     return {
       resetCode: params.reset_code,

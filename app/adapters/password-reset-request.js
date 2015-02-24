@@ -1,18 +1,18 @@
-import ApplicationAdapter from "./application";
+import AuthAdapter from "./auth";
 import Ember from "ember";
 
 export var auth = {};
 
-export default ApplicationAdapter.extend({
+export default AuthAdapter.extend({
 
   buildURL: function(){
     var url = [],
         host = Ember.get(this, 'host'),
         prefix = this.urlPrefix();
 
-    if (prefix) { url.unshift(prefix); }
+    if (prefix) { url.push(prefix); }
 
-    url.unshift('password', 'resets', 'new');
+    url.push('password/resets/new');
 
     url = url.join('/');
     if (!host && url) { url = '/' + url; }

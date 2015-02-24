@@ -6,7 +6,9 @@ export default Ember.Controller.extend(EmberValidations.Mixin, {
 
   validations: {
     'model.password': {
-      confirmation: { message: 'does not match password' }
+      presence: true,
+      confirmation: { message: 'does not match password' },
+      'password-complexity': true
     }
   },
 

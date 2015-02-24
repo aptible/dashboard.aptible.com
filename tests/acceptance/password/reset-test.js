@@ -21,9 +21,12 @@ test('visiting /password/reset works', function() {
 });
 
 test('visiting /password/reset signed in redirects to index', function() {
+  stubOrganization();
+  stubOrganizations();
+  stubStacks();
   signInAndVisit('/password/reset');
   andThen(function(){
-    equal(currentPath(), 'index');
+    equal(currentPath(), 'stacks.index');
   });
 });
 
