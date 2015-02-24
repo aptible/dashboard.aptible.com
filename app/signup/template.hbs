@@ -3,12 +3,11 @@
     <div class="col-xs-5 col-xs-offset-1">
 
       {{#unless model.isValid}}
-        <div class="alert alert-danger fade in">
-          <a class="close" data-dismiss="alert">×</a>
+        {{#bs-alert alert="danger"}}
           {{#each message in model.errors.messages}}
             <p>{{message}}</p>
           {{/each}}
-        </div>
+        {{/bs-alert}}
       {{/unless}}
 
       <div class="panel panel-default panel-subdued panel-focused">
