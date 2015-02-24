@@ -82,7 +82,7 @@ test('visit ' + settingsProfileUrl + ' allows updating name', function(){
 
   stubRequest('put', userApiUrl, function(request){
     ok(true, 'calls PUT ' + userApiUrl);
-    var user = JSON.parse(request.requestBody);
+    var user = this.json(request);
 
     equal(user.name, newName, 'updates with new name: ' + newName);
 

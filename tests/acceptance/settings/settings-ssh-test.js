@@ -114,7 +114,7 @@ test('visit ' + settingsSshUrl + ' allows adding a key', function(){
   var publicKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC90B4...";
 
   stubRequest('post', '/users/user1/ssh_keys', function(request){
-    var json = JSON.parse(request.requestBody);
+    var json = this.json(request);
 
     equal(json.name, keyName);
     equal(json.ssh_public_key, publicKey);

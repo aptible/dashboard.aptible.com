@@ -48,7 +48,7 @@ test('visiting /claim/some-id/some-code revisits after sign in', function() {
   });
 
   stubRequest('post', '/verifications', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     ok(true, 'verification posted');
     return this.success({
       id: 'this-id',
@@ -84,7 +84,7 @@ test('visiting /claim/some-invitation/some-code creates verification', function(
   var invitationId = 'some-invitation';
 
   stubRequest('post', '/verifications', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     equal(params.verification_code, verificationCode, 'correct code is passed');
     equal(params.invitation_id, invitationId, 'correct code is passed');
     return this.success({
@@ -105,7 +105,7 @@ test('failed verification displays error', function() {
   var invitationId = 'some-invitation';
 
   stubRequest('post', '/verifications', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     return [401, jsonMimeType, {}];
   });
 
@@ -122,7 +122,7 @@ test('failed verification displays error', function() {
   var invitationId = 'some-invitation';
 
   stubRequest('post', '/verifications', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     return [401, jsonMimeType, {}];
   });
 

@@ -45,7 +45,7 @@ test('logging in with bad credentials', function() {
   var errorMessage = 'User not found: '+email;
 
   stubRequest('post', '/tokens', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     equal(params.username, email, 'correct email is passed');
     equal(params.password, password, 'correct password is passed');
     equal(params.grant_type, 'password', 'correct grant_type is passed');
@@ -78,7 +78,7 @@ test('logging in with correct credentials', function() {
   var userUrl = '/user-url';
 
   stubRequest('post', '/tokens', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     equal(params.username, email, 'correct email is passed');
     equal(params.password, password, 'correct password is passed');
     equal(params.grant_type, 'password', 'correct grant_type is passed');
@@ -192,7 +192,7 @@ test('Creating an account directs to login', function() {
   var organization = 'Great Co.';
 
   stubRequest('post', '/users', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     equal(params.email, email, 'correct email is passed');
     equal(params.password, password, 'correct password is passed');
     return this.success({
@@ -201,7 +201,7 @@ test('Creating an account directs to login', function() {
     });
   });
   stubRequest('post', '/tokens', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     equal(params.username, email, 'correct email is passed');
     equal(params.password, password, 'correct password is passed');
     return successfulTokenResponse(this, userUrl);
@@ -213,7 +213,7 @@ test('Creating an account directs to login', function() {
     });
   });
   stubRequest('post', '/organizations', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     equal(params.name, organization, 'correct organization is passed');
     return this.success({
       id: 'my-organization',

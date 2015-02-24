@@ -16,7 +16,7 @@ test('data is posted upon save', function() {
   var organizationId = 'org-1';
 
   stubRequest('post', '/organizations/org-1/subscriptions', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     equal(params.stripe_token, stripeToken, 'stripe token is correct');
     equal(params.plan, plan, 'plan is correct');
     equal(params.organization_id, organizationId, 'org id is correct');

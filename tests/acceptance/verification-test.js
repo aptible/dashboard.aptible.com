@@ -25,7 +25,7 @@ test('visiting /verify/some-code creates verification', function() {
   var verificationCode = 'some-code';
 
   stubRequest('post', '/verifications', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     equal(params.verification_code, verificationCode, 'correct code is passed');
     return this.success({
       id: 'this-id',
@@ -51,7 +51,7 @@ test('after verification, pending databases are provisioned', function(){
   stubDatabases(dbData);
 
   stubRequest('post', '/verifications', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     equal(params.verification_code, verificationCode, 'correct code is passed');
     return this.success({
       id: 'this-id',
@@ -82,7 +82,7 @@ test('failed verificaton directs to error page', function() {
   var verificationCode = 'some-code';
 
   stubRequest('post', '/verifications', function(request){
-    var params = JSON.parse(request.requestBody);
+    var params = this.json(request);
     equal(params.verification_code, verificationCode, 'correct code is passed');
     return [401, jsonMimeType, {}];
   });

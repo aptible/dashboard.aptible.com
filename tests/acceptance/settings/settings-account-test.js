@@ -82,7 +82,7 @@ test('visit ' + settingsAccountUrl + ' allows changing password', function(){
       oldPassword = 'defghiljk';
 
   stubRequest('put', 'users/user1', function(request){
-    var user = JSON.parse(request.requestBody);
+    var user = this.json(request);
 
     equal(user.current_password, oldPassword);
     equal(user.password, newPassword);
@@ -120,7 +120,7 @@ test('visit ' + settingsAccountUrl + ' and change password with errors', functio
       oldPassword = 'defghiljk';
 
   stubRequest('put', 'users/user1', function(request){
-    var user = JSON.parse(request.requestBody);
+    var user = this.json(request);
 
     return this.error({
       code: 401,
@@ -184,7 +184,7 @@ test('visit ' + settingsAccountUrl + ' allows change email', function(){
   var currentPassword = 'alkjsdf';
 
   stubRequest('put', '/users/user1', function(request){
-    var user = JSON.parse(request.requestBody);
+    var user = this.json(request);
 
     equal(user.email, newEmail);
     equal(user.current_password, currentPassword);
@@ -215,7 +215,7 @@ test('visit ' + settingsAccountUrl + ' change email and errors', function(){
   var currentPassword = 'alkjsdf';
 
   stubRequest('put', '/users/user1', function(request){
-    var user = JSON.parse(request.requestBody);
+    var user = this.json(request);
 
     return this.error({
       code: 401,
