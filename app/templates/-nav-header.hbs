@@ -10,3 +10,7 @@
     </ul>
   </div>
 </header>
+
+{{#unless session.currentUser.verified}}
+  {{verification-code-reset store=store}}
+{{/unless}}
