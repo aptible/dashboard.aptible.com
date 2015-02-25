@@ -19,11 +19,11 @@ module('Acceptance: App Vhosts', {
   }
 });
 
-test(appVhostsUrl + ' requires authentication', function(){
+test(`${appVhostsUrl} requires authentication`, function(){
   expectRequiresAuthentication(appVhostsUrl);
 });
 
-test('app show page includes link to vhosts url', function(){
+test(`app show page includes link to ${appVhostsUrl}`, function(){
   stubApp({
     id: appId,
     status: 'provisioned'
@@ -78,10 +78,9 @@ test(`visit ${appVhostsUrl} has link to ${appVhostsNewUrl}`, function(){
   signInAndVisit(appVhostsUrl);
 
   andThen(function(){
-    ok(find('a[href~="' + appVhostsNewUrl + '"]').length,
-       'has link to ' + appVhostsNewUrl);
+    expectLink(appVhostsNewUrl);
+    titleUpdatedTo(`${appHandle} Domains - ${stackHandle}`);
   });
-  titleUpdatedTo(appHandle+' Domains - '+stackHandle);
 });
 
 test(`visit ${appVhostsUrl} lists vhosts`, function(){
@@ -97,20 +96,12 @@ test(`visit ${appVhostsUrl} lists vhosts`, function(){
 
   stubApp({
     id: appId,
-    _embedded: {
-      services: []
-    },
-    _links: {
-      vhosts: { href: appVhostsApiUrl }
-    }
+    _embedded: { services: [] },
+    _links: { vhosts: { href: appVhostsApiUrl } }
   });
 
   stubRequest('get', appVhostsApiUrl, function(){
-    return this.success({
-      _embedded: {
-        vhosts: vhosts
-      }
-    });
+    return this.success({ _embedded: { vhosts: vhosts } });
   });
 
   signInAndVisit(appVhostsUrl);
@@ -118,12 +109,82 @@ test(`visit ${appVhostsUrl} lists vhosts`, function(){
   andThen(function(){
     equal( find('.vhost').length, vhosts.length);
 
-    vhosts.forEach(function(vhost){
-      ok( find('.vhost .vhost-virtualdomain:contains(' + vhost.virtual_domain + ')').length,
-          'has virtual domain ' + vhost.virtual_domain );
+    vhosts.forEach(function(vhost, index){
+      let vhostEl = find(`.vhost:eq(${index})`);
+      ok(vhostEl.find(`:contains(${vhost.virtual_domain})`).length,
+         `has virtual domain "${vhost.virtual_domain}"`);
 
-      ok( find('.vhost .external-host:contains(' + vhost.external_host + ')').length,
-          'has external host ' + vhost.external_host );
+      ok(vhostEl.find(`:contains(${vhost.external_host})`).length,
+         `has external host "${vhost.external_host}"`);
+
+      expectButton('Edit', {context:vhostEl});
+      expectButton('Delete', {context:vhostEl});
     });
+  });
+});
+
+test(`visit ${appVhostsUrl} allows deleting vhost`, function(){
+  expect(2);
+
+  let vhostId = 'vhost-1';
+  var vhosts = [{id: vhostId}];
+
+  stubApp({
+    id: appId,
+    _embedded: { services: [] },
+    _links: { vhosts: { href: appVhostsApiUrl } }
+  });
+
+  stubRequest('get', appVhostsApiUrl, function(){
+    return this.success({ _embedded: { vhosts: vhosts } });
+  });
+
+  stubRequest('post', `/vhosts/${vhostId}/operations`, function(request){
+    let json = this.json(request);
+    equal(json.type, 'deprovision', 'creates deprovision operation');
+    return this.success();
+  });
+
+  signInAndVisit(appVhostsUrl);
+  andThen(function(){
+    click(findButton('Delete'));
+  });
+  andThen(function(){
+    equal(find('.vhost').length, 0,
+          'the vhost is no longer shown in the UI');
+  });
+});
+
+test(`visit ${appVhostsUrl} and delete vhost has error`, function(){
+  expect(2);
+
+  let vhostId = 'vhost-1';
+  var vhosts = [{id: vhostId}];
+
+  stubApp({
+    id: appId,
+    _embedded: { services: [] },
+    _links: { vhosts: { href: appVhostsApiUrl } }
+  });
+
+  stubRequest('get', appVhostsApiUrl, function(){
+    return this.success({ _embedded: { vhosts: vhosts } });
+  });
+
+  stubRequest('post', `/vhosts/${vhostId}/operations`, function(request){
+    let json = this.json(request);
+    return this.error(401, {});
+  });
+
+  signInAndVisit(appVhostsUrl);
+  andThen(function(){
+    click(findButton('Delete'));
+  });
+  andThen(function(){
+    let errorMessage = 'error deleting the VHost';
+    let alert = find(`.alert`);
+    ok(alert.length, 'displays error div');
+    ok(alert.text().indexOf(errorMessage) > -1,
+       `Displays error message "${errorMessage}"`);
   });
 });

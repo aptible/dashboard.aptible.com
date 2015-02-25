@@ -1,3 +1,13 @@
+{{#if error}}
+  {{#bs-alert alert="warning" as |component|}}
+    {{#bs-alert-dismiss target=component}}
+      <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    {{/bs-alert-dismiss}}
+
+    <p>{{error}}</p>
+  {{/bs-alert}}
+{{/if}}
+
 {{#each model as |vhost|}}
   <div class="panel panel-default panel-subdued vhost">
     <div class="panel-heading with-actions">
@@ -12,9 +22,13 @@
           <span class="label label-default">Default</span>
         {{else}}
          {{link-to 'Edit' 'app.vhosts.edit' vhost class="btn btn-default btn-xs"}}
-          <a class="btn btn-default btn-xs" href="#" {{action 'delete' vhost}}>
+         <button class="btn btn-default btn-xs" href="#" {{action 'delete' vhost}} {{bind-attr disabled=vhost.isDeleting}}>
+          {{#if vhost.isDeleting}}
+            Deleting
+          {{else}}
             Delete
-          </a>
+          {{/if}}
+        </button>
         {{/if}}
       </div>
     </div>
