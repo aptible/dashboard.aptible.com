@@ -34,8 +34,8 @@ test(`${url} requires authentication`, function(){
   expectRequiresAuthentication(url);
 });
 
-test(`visit ${url}`, function(){
-  expect(3);
+test(`visit ${url} shows basic info`, function(){
+  expect(5);
   let stackHandle = 'my-new-stack';
   stubStack({id:stackId, handle: stackHandle});
 
@@ -43,6 +43,8 @@ test(`visit ${url}`, function(){
   andThen(function(){
     equal(currentPath(), 'stack.apps.new');
     expectInput('handle');
+    expectButton('Save App');
+    expectButton('Cancel');
     titleUpdatedTo(`Create an App - ${stackHandle}`);
   });
 });
@@ -52,8 +54,8 @@ test(`visit ${url} and cancel`, function(){
   signInAndVisit(url);
 
   andThen(function(){
-    fillIn( findInput('handle'), appHandle);
-    click( findButton('Cancel') );
+    fillInput('handle', appHandle);
+    clickButton('Cancel');
   });
 
   andThen(function(){
@@ -69,7 +71,7 @@ test(`visit ${url} and transition away`, function(){
   signInAndVisit(url);
 
   andThen(function(){
-    fillIn( findInput('handle'), appHandle);
+    fillInput('handle', appHandle);
     visit( appIndexUrl );
   });
 
@@ -97,13 +99,25 @@ test(`visit ${url} and create an app`, function(){
 
   signInAndVisit(url);
   andThen(function(){
-    fillIn( findInput('handle'), appHandle);
-    click( findButton('Save App') );
+    fillInput('handle', appHandle);
+    clickButton('Save App');
   });
   andThen(function(){
     equal(currentPath(), 'stack.apps.index');
 
     ok( findApp(appHandle).length === 1,
         'lists new app on index' );
+  });
+});
+
+test(`visit ${url} when user is not verified shows "Cannot create" message`, function(){
+  let userData = {verified: false};
+  signInAndVisit(url, userData);
+  andThen( () => {
+    expectNoButton('Save App');
+    expectNoButton('Cancel');
+    let message = find('.panel-heading h3');
+    ok(message.text().indexOf('Cannot create a new app') > -1,
+       'shows cannot create app message');
   });
 });

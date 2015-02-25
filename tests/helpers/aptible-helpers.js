@@ -3,22 +3,37 @@ import { locationHistory } from '../../utils/location';
 import { titleHistory } from '../../utils/title-route-extensions';
 import { stubRequest } from "./fake-server";
 
+/**
+ * @param userData object populate the signed-in user with this data.
+ *   If `privileged` is true, the user will be marked as privileged.
+ *   This property can be used to ensure `User#can` returns true
+ */
 Ember.Test.registerAsyncHelper('signIn', function(app, userData){
+  userData = userData || {};
   let defaultUserData = {
     id: 'user1',
     name: 'stubbed user',
     email: 'stubbed-user@gmail.com',
+    verified: true,
+    privileged: true,
     links: { sshKeys: '/users/user1/ssh_keys' }
   };
 
-  userData = userData || defaultUserData;
+  userData = Ember.$.extend(true, defaultUserData, userData);
+  let privileged = userData.privileged;
+  delete userData.privileged;
 
-  var session = app.__container__.lookup('torii:session');
-  var sm = session.get('stateMachine');
+  let session = app.__container__.lookup('torii:session');
+  let sm = session.get('stateMachine');
 
   Ember.run(function(){
-    var store = app.__container__.lookup('store:main');
-    var user = store.push('user', userData);
+    let store = app.__container__.lookup('store:main');
+    let user = store.push('user', userData);
+
+    if (privileged) {
+      user._isPrivileged = true;
+    }
+
     sm.transitionTo('authenticated');
     session.set('content.currentUser', user);
   });
@@ -348,10 +363,23 @@ Ember.Test.registerHelper('expectNoLink', function(app, link, options) {
 Ember.Test.registerHelper('findButton', function(app, buttonName, options) {
   let context = (options || {}).context;
 
-  let selector = `button:contains(${buttonName})`;
+  // find 'button' or '.btn' containing name
+  let buttonSelector = `button:contains(${buttonName})`;
+  let btnSelector = `.btn:contains(${buttonName})`;
+  let aSelector = `a:contains(${buttonName})`;
+
+  let selector = `${buttonSelector}, ${btnSelector}, ${aSelector}`;
   let el = context ? context.find(selector) : find(selector);
 
   return el;
+});
+
+Ember.Test.registerAsyncHelper('clickButton', function(app, buttonName, options) {
+  let button = findButton(buttonName, options);
+  if (!button.length){
+    throw new Error('Cannot find button with name: ' + buttonName);
+  }
+  click(button);
 });
 
 Ember.Test.registerHelper('expectButton', function(app, buttonName, options) {
@@ -363,12 +391,24 @@ Ember.Test.registerHelper('expectButton', function(app, buttonName, options) {
   }
 });
 
+Ember.Test.registerHelper('expectNoButton', function(app, buttonName, options) {
+  let el = findButton(buttonName, options);
+  if (el.length) {
+    ok(false, `Expected 0 but found ${el.length} of button "${buttonName}"`);
+  } else {
+    ok(true, `Expected and found 0 of button "${buttonName}"`);
+  }
+});
+
 Ember.Test.registerHelper('findInput', function(app, inputName, options) {
   options = options || {};
   let context = options.context;
   let inputType = options.input || 'input';
 
-  let selector = `${inputType}[name="${inputName}"]`;
+  let inputSel = `input[name="${inputName}"]`;
+  let textareaSel = `textarea[name="${inputName}"]`;
+  let selectSel = `select[name="${inputName}"]`;
+  let selector = `${inputSel}, ${textareaSel}, ${selectSel}`;
   let el = context ? context.find(selector) : find(selector);
 
   return el;
@@ -381,6 +421,14 @@ Ember.Test.registerHelper('expectInput', function(app, inputName, options) {
   } else {
     ok(false, `Found 0 of input "${inputName}"`);
   }
+});
+
+Ember.Test.registerAsyncHelper('fillInput', function(app, inputName, value, inputOptions){
+  let input = findInput(inputName, inputOptions);
+  if (!input.length) {
+    throw new Error(`Failed to find input: "${inputName}"`);
+  }
+  fillIn(input, value);
 });
 
 Ember.Test.registerHelper('stubDatabases', function(app, dbData){

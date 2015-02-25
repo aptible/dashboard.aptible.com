@@ -44,7 +44,7 @@ test(`visiting /stacks/:stack_id/databases without any databases redirects to ${
   });
 });
 
-test(`visit ${url} shows fields for creating a db`, function(){
+test(`visit ${url} shows basic info`, function(){
   let stackHandle = 'my-cool-handle';
   stubStack({id: stackId, handle: stackHandle});
   stubOrganization();
@@ -143,9 +143,9 @@ test(`visit ${url} and create`, function(){
   signInAndVisit(url);
 
   andThen(function(){
-    fillIn( findInput('handle'), dbHandle );
+    fillInput('handle', dbHandle);
     click('.select-option[title="Redis"]');
-    click( findButton('Save Database') );
+    clickButton('Save Database');
   });
 
   // the disk size starts at 10GB
@@ -166,8 +166,8 @@ test(`visit ${url} and click cancel button`, function(){
 
   signInAndVisit(url);
   andThen(function(){
-    fillIn( findInput('handle'), dbHandle );
-    click( findButton('Cancel') );
+    fillInput('handle', dbHandle);
+    clickButton('Cancel');
   });
   andThen(function(){
     equal(currentPath(), 'stack.databases.index');
@@ -184,7 +184,7 @@ test(`visit ${url} and transition away`, function(){
 
   signInAndVisit(url);
   andThen(function(){
-    fillIn( findInput('handle'), dbHandle );
+    fillInput('handle', dbHandle);
     visit(dbIndexUrl);
   });
   andThen(function(){
@@ -192,5 +192,17 @@ test(`visit ${url} and transition away`, function(){
 
     ok( !findDatabase(dbHandle).length,
         'does not show database in list' );
+  });
+});
+
+test(`visit ${url} when user is not verified shows "Cannot create" message`, function(){
+  let userData = {verified: false};
+  signInAndVisit(url, userData);
+  andThen( () => {
+    expectNoButton('Save Database');
+    expectNoButton('Cancel');
+    let message = find('.panel-heading h3');
+    ok(message.text().indexOf('Cannot create a new database') > -1,
+       'shows cannot create db message');
   });
 });

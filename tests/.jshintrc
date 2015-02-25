@@ -68,8 +68,11 @@
     "expectNoLink",
     "findInput",
     "expectInput",
+    "fillInput",
     "findButton",
-    "expectButton"
+    "expectButton",
+    "expectNoButton",
+    "clickButton"
   ],
   "node": false,
   "browser": false,

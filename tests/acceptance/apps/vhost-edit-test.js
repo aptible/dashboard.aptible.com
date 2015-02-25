@@ -63,7 +63,7 @@ test(`visit ${url} shows form, basic info`, function(){
     titleUpdatedTo(`Edit ${virtualDomain} - ${appHandle}`);
     equal(find('.panel-heading h3').text(), `Edit ${virtualDomain}`);
 
-    let serviceInput = findInput('service', {input:'select'});
+    let serviceInput = findInput('service');
     ok(serviceInput.length, 'has service input');
     ok(serviceInput.is(':disabled'), 'service is disabled');
     equal(serviceInput.find('option:first').val(), serviceHandle);
@@ -72,11 +72,11 @@ test(`visit ${url} shows form, basic info`, function(){
     equal(findInput('virtual-domain').val(), virtualDomain,
           'virtual domain is filled in input');
 
-    expectInput('certificate', {input:'textarea'});
-    equal(findInput('certificate', {input:'textarea'}).val(), '',
+    expectInput('certificate');
+    equal(findInput('certificate').val(), '',
           'certificate is empty');
-    expectInput('private-key', {input:'textarea'});
-    equal(findInput('private-key', {input:'textarea'}).val(), '',
+    expectInput('private-key');
+    equal(findInput('private-key').val(), '',
           'private key is empty');
 
     expectButton('Save VHost');
@@ -116,8 +116,8 @@ test(`visit ${url} click save`, function(){
   signInAndVisit(url);
   andThen( () => {
     fillIn(findInput('virtual-domain'), newVirtualDomain);
-    fillIn(findInput('certificate', {input:'textarea'}), newCert);
-    fillIn(findInput('private-key', {input:'textarea'}), newPk);
+    fillIn(findInput('certificate'), newCert);
+    fillIn(findInput('private-key'), newPk);
 
     click(findButton('Save VHost'));
   });
@@ -158,8 +158,8 @@ test(`visit ${url} and click cancel`, function(){
 
   signInAndVisit(url);
   andThen( () => {
-    fillIn(findInput('virtual-domain'), newVirtualDomain);
-    click(findButton('Cancel'));
+    fillInput('virtual-domain', newVirtualDomain);
+    clickButton('Cancel');
   });
 
   andThen( () => {
@@ -177,7 +177,7 @@ test(`visit ${url} and transition away`, function(){
 
   signInAndVisit(url);
   andThen( () => {
-    fillIn(findInput('virtual-domain'), newVirtualDomain);
+    fillInput('virtual-domain', newVirtualDomain);
     visit(vhostsUrl);
   });
 

@@ -67,4 +67,3 @@ test('visiting / when logged in with only one stack redirects to first stack pag
     expectLink(`stacks/${stackId}/logging`);
   });
 });
-

@@ -124,10 +124,9 @@ test(`visit ${appVhostsNewUrl} and create vhost`, function(){
 
   signInAndVisit(appVhostsNewUrl);
   andThen(function(){
-    fillIn(findInput('virtual-domain'), 'my.domain.com');
-    fillIn(findInput('certificate', {input:'textarea'}), 'my long cert');
-    fillIn(findInput('private-key', {input:'textarea'}), 'my long pk');
-
-    click('button:contains(Save VHost)');
+    fillInput('virtual-domain', 'my.domain.com');
+    fillInput('certificate', 'my long cert');
+    fillInput('private-key', 'my long pk');
+    clickButton('Save VHost');
   });
 });

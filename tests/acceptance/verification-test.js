@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import startApp from '../helpers/start-app';
-import { stubRequest, jsonMimeType } from '../helpers/fake-server';
+import { stubRequest } from '../helpers/fake-server';
 
 var App;
 
@@ -33,7 +33,8 @@ test('visiting /verify/some-code creates verification', function() {
     });
   });
 
-  signInAndVisit('/verify/'+verificationCode);
+  let userData = {verified: false};
+  signInAndVisit(`/verify/${verificationCode}`, userData);
   andThen(function(){
     equal(currentPath(), 'stacks.index');
   });
@@ -78,13 +79,41 @@ test('after verification, pending databases are provisioned', function(){
   });
 });
 
-test('failed verificaton directs to error page', function() {
+test('visiting / when not verified shows verification message with resend button', function(){
+  expect(3);
+  let userData = {
+    id: 'user-id',
+    verified: false
+  };
+
+  stubStacks();
+  stubOrganizations();
+  stubOrganization();
+
+  stubRequest('post', '/resets', function(request){
+    let json = this.json(request);
+    equal(json.type, 'verification_code', 'posts verification code');
+    return this.success(204, {});
+  });
+
+  signInAndVisit('/', userData);
+  andThen(function(){
+    let banner = find(':contains(Your email is not activated)');
+    ok(banner.length, 'shows not-activated message');
+
+    let resendMessage = 'Resend verification email';
+    expectButton(resendMessage);
+    click(findButton(resendMessage));
+  });
+});
+
+test('failed verification directs to error page', function() {
   var verificationCode = 'some-code';
 
   stubRequest('post', '/verifications', function(request){
-    var params = this.json(request);
-    equal(params.verification_code, verificationCode, 'correct code is passed');
-    return [401, jsonMimeType, {}];
+    let json = this.json(request);
+    equal(json.verification_code, verificationCode, 'correct code is passed');
+    return this.error(401, {});
   });
 
   signInAndVisit('/verify/'+verificationCode);

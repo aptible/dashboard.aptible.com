@@ -2,7 +2,9 @@ import Ember from 'ember';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
-var App, server;
+let App;
+let stackId = 'my-stack-1';
+let url = `/stacks/${stackId}/apps`;
 
 module('Acceptance: Apps', {
   setup: function() {
@@ -10,80 +12,84 @@ module('Acceptance: Apps', {
   },
   teardown: function() {
     Ember.run(App, 'destroy');
-    if (server) {
-      server.shutdown();
-    }
   }
 });
 
-test('visiting /stacks/1/apps requires authentication', function() {
-  expectRequiresAuthentication('/stacks/1/apps');
+
+test(`visiting ${url} requires authentication`, function() {
+  expectRequiresAuthentication(url);
 });
 
-test('visiting /stacks/my-stack-1/apps with no apps redirects to apps new', function() {
+test(`visiting ${url} with no apps redirects to apps new`, function() {
   stubStacks({ includeApps: false });
-  stubStack({ id: 'my-stack-1' });
+  stubStack({ id: stackId });
   stubOrganization();
 
-  signInAndVisit('/stacks/my-stack-1/apps');
+  signInAndVisit(url);
   andThen(function(){
     equal(currentPath(), 'stack.apps.new');
   });
 });
 
-test('visiting /stacks/my-stack-1/apps', function() {
+test(`visiting ${url}`, function() {
+  let orgId = 1, orgName = 'Sprocket Company';
+  let stackHandle = 'my-stack-handle';
+
   // This is needed to stub /stack/my-stack-1/apps
   stubStacks({ includeApps: true });
   stubStack({
-    id: 'my-stack-1',
-    handle: 'my-stack-1',
+    id: stackId,
+    handle: stackHandle,
     _links: {
-      apps: { href: '/accounts/my-stack-1/apps' },
-      organization: { href: '/organizations/1' }
+      apps: { href: `/accounts/${stackId}/apps` },
+      organization: { href: `/organizations/${orgId}` }
     }
   });
-  stubOrganization();
-  signInAndVisit('/stacks/my-stack-1/apps');
+  stubOrganization({
+    id: orgId,
+    name: orgName
+  });
+  signInAndVisit(url);
 
   andThen(function() {
     equal(currentPath(), 'stack.apps.index');
+    titleUpdatedTo(`${stackHandle} Apps - ${orgName}`);
   });
-  titleUpdatedTo('my-stack-1 Apps - Sprocket Co');
 });
 
-test('visiting /stacks/my-stack-1/apps shows list of apps', function() {
+test(`visiting ${url} shows list of apps`, function() {
+  let orgId = 1, orgName = 'Sprocket Company';
+  let stackHandle = 'my-stack-handle';
+
   // Just needed to stub /stack/my-stack-1/apps
   stubStacks({ includeApps: true });
   stubStack({
-    id: 'my-stack-1',
-    handle: 'my-stack-1',
+    id: stackId,
+    handle: stackHandle,
     _links: {
-      apps: { href: '/accounts/my-stack-1/apps' },
-      organization: { href: '/organizations/1' }
+      apps: { href: `/accounts/${stackId}/apps` },
+      organization: { href: `/organizations/${orgId}` }
     }
   });
   stubOrganization();
-  signInAndVisit('/stacks/my-stack-1/apps');
 
+  signInAndVisit(url);
   andThen(function() {
-    var appRows = find('.panel.app');
-
-    equal(appRows.length, 2, '2 apps');
+    equal(find('.panel.app').length, 2, '2 apps');
   });
 });
 
-test('visiting /stacks/my-stack-1/apps then clicking on an app visits the app', function() {
+test(`visiting ${url} then clicking on an app visits the app`, function() {
   // Just needed to stub /stack/my-stack-1/apps
   stubStacks({ includeApps: true });
   stubStack({
-    id: 'my-stack-1',
-    handle: 'my-stack-1',
+    id: stackId,
     _links: {
-      apps: { href: '/accounts/my-stack-1/apps' }
+      apps: { href: `/accounts/${stackId}/apps` }
     }
   });
-  signInAndVisit('/stacks/my-stack-1/apps');
 
+  signInAndVisit(url);
   andThen(function(){
     let appLink = expectLink("/apps/1");
     click(appLink);
@@ -94,32 +100,29 @@ test('visiting /stacks/my-stack-1/apps then clicking on an app visits the app', 
   });
 });
 
-test('/stacks/my-stack-1/apps requests apps, databases on each visit', function() {
+test(`${url} requests apps, databases on each visit`, function() {
   var appRequestCount = 0;
   var databaseRequestCount = 0;
+
   stubStack({
-    id: 'my-stack-1',
+    id: stackId,
     _links: {
-      databases: {href: '/accounts/my-stack-1/databases'},
-      apps: {href: '/accounts/my-stack-1/apps'}
+      databases: {href: `/accounts/${stackId}/databases`},
+      apps: {href: `/accounts/${stackId}/apps`}
     }
   });
-  stubRequest('get', '/accounts/my-stack-1/databases', function(request){
+
+  stubRequest('get', `/accounts/${stackId}/databases`, function(request){
     databaseRequestCount++;
     return this.success({
-      _links: {},
-      _embedded: {
-        databases: []
-      }
+      _embedded: { databases: [] }
     });
   });
-  stubRequest('get', '/accounts/my-stack-1/apps', function(request){
+
+  stubRequest('get', `/accounts/${stackId}/apps`, function(request){
     appRequestCount++;
     return this.success({
-      _links: {},
-      _embedded: {
-        apps: []
-      }
+      _embedded: { apps: [] }
     });
   });
 
@@ -128,25 +131,56 @@ test('/stacks/my-stack-1/apps requests apps, databases on each visit', function(
   // Unfortunately, what routes are entered when is very messy when
   // the first url is loaded in a test app. So let's ignore the initial
   // values and just confirm the requests are made on subsequent navigation.
-  signIn();
-  visit('/stacks/my-stack-1/apps');
+  signInAndVisit(url);
 
   andThen(function() {
     lastAppRequestCount = appRequestCount;
     lastDatabaseRequestCount = databaseRequestCount;
   });
 
-  visit('/stacks/my-stack-1/databases');
+  visit(`/stacks/${stackId}/databases`);
 
   andThen(function() {
     equal(databaseRequestCount, lastDatabaseRequestCount + 1, 'did one more database request');
     equal(appRequestCount, lastAppRequestCount, 'no new app request');
   });
 
-  visit('/stacks/my-stack-1/apps');
+  visit(`/stacks/${stackId}/apps`);
 
   andThen(function() {
     equal(databaseRequestCount, lastDatabaseRequestCount + 1, 'still one database request');
     equal(appRequestCount, lastAppRequestCount + 1, 'one new app request');
+  });
+});
+
+test(`visit ${url} shows create app button if user is verified`, function(){
+  stubStacks({ includeApps: true });
+  stubStack({
+    id: stackId,
+    _links: {
+      apps: { href: `/accounts/${stackId}/apps` }
+    }
+  });
+
+  let userData = {id: 'user1', verified: true};
+  signInAndVisit(url, userData);
+  andThen( () => {
+    expectButton('Create App');
+  });
+});
+
+test(`visit ${url} does not show create app button if user is not verified`, function(){
+  stubStacks({ includeApps: true });
+  stubStack({
+    id: stackId,
+    _links: {
+      apps: { href: `/accounts/${stackId}/apps` }
+    }
+  });
+
+  let userData = {id: 'user1', verified: false};
+  signInAndVisit(url, userData);
+  andThen( () => {
+    expectNoButton('Create App');
   });
 });

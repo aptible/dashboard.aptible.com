@@ -8,8 +8,12 @@
   </div>
 
   <div class="resource-list-actions">
-    {{#aptible-ability scope="manage" user=session.currentUser stack=stack}}
-      {{link-to 'Create Database' 'databases.new' class="btn btn-primary"}}
+    {{#aptible-ability scope="manage" user=session.currentUser stack=stack as |hasAbility|}}
+      {{#if hasAbility}}
+        {{#if session.currentUser.verified}}
+          {{link-to 'Create Database' 'databases.new' class="btn btn-primary"}}
+        {{/if}}
+      {{/if}}
     {{/aptible-ability}}
   </div>
 </div>

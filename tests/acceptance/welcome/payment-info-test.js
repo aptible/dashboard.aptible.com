@@ -3,26 +3,39 @@ import startApp from '../../helpers/start-app';
 import { mockStripe } from '../../helpers/mock-stripe';
 import { stubRequest } from "../../helpers/fake-server";
 
-var application;
-var oldCreateToken;
+let application;
+let oldCreateToken;
+let url = '/welcome/first-app';
 
 function visitPaymentInfoWithApp(options, userData){
-  signInAndVisit('/welcome/first-app', userData);
-  if (options) {
-    if (options.dbType) {
-      click(`.${options.dbType} a`);
-    }
+  userData = userData || {};
+  if (userData.verified === undefined) { userData.verified = false; }
+
+  signInAndVisit(url, userData);
+  andThen(function(){
+    if (!options) { return clickButton('Skip this step'); }
+
+    if (options.dbType){ click(`.${options.dbType} a`); }
     for (var prop in options){
       let dasherized = prop.dasherize();
-      if (dasherized === 'db-type') {
-        continue;
-      }
-      fillIn(`input[name="${dasherized}"]`, options[prop]);
+
+      // db-type is a button, not a fillIn-able input
+      if (dasherized === 'db-type') { continue; }
+      fillInput(dasherized, options[prop]);
     }
-    click('button:contains(Get Started)');
-  } else {
-    click('a:contains(Skip this step)');
-  }
+    clickButton('Get Started');
+  });
+}
+
+function mockSuccessfulPayment(stripeToken){
+  mockStripe.card.createToken = function(options, fn) {
+    setTimeout(function(){
+      fn(200, { id: stripeToken || 'mocked-stripe-token' });
+    }, 2);
+  };
+  stubRequest('post', '/organizations/:org_id/subscriptions', function(request){
+    return this.success();
+  });
 }
 
 module('Acceptance: WelcomePaymentInfo', {
@@ -50,48 +63,42 @@ test('submitting empty payment info raises an error', function() {
   stubOrganizations();
 
   visitPaymentInfoWithApp();
-  click('button:contains(Save)');
+  clickButton('Save');
 
   andThen(function() {
     equal(currentPath(), 'welcome.payment-info');
-    var error = find('p:contains(Failure)');
+    let error = find('p:contains(Failure)');
     ok(error.length, 'errors are on the page');
   });
 });
 
-test('submitting valid payment info should be successful', function() {
-  expect(11);
+test('payment info should be submitted to stripe to create stripeToken', function() {
+  expect(8);
+
   // This is to load apps.index
   stubStacks();
   stubOrganization();
-  var name = 'Bob Boberson';
-  var cardNumber = '4242424242424242';
-  var cvc = '123';
-  var expMonth = '03';
-  var expYear = '2019';
-  var addressZip = '11111';
-  var stripeToken = 'some-token';
-  var stackHandle = 'sprocket-co';
-  var appHandle = 'my-app-1';
+  let cardOptions = {
+    name: 'Bob Boberson',
+    cardNumber: '4242424242424242',
+    cvc: '123',
+    expMonth: '03',
+    expYear: '2019',
+    addressZip: '11111'
+  };
+  let stripeToken = 'some-token';
+  let stackHandle = 'sprocket-co';
+  let appHandle = 'my-app-1';
 
   stubRequest('post', '/organizations/1/subscriptions', function(request){
     var params = this.json(request);
-    equal(params.stripe_token, stripeToken, 'stripe token is correct');
+    equal(params.stripe_token, stripeToken, 'stripe token is submitted');
     return this.success();
   });
 
   let stackAssertions = {};
 
-  stackAssertions[`${stackHandle}-dev`] = (params) => {
-    ok(true, 'stack handle is correct');
-    equal(params.type, 'development', 'stack type is correct');
-    stackAssertions[params.handle] = null;
-  };
-
   stubRequest('post', '/accounts', function(request){
-    var params = this.json(request);
-    equal(params.organization_url, '/organizations/1', 'organization url is correct');
-    stackAssertions[params.handle](params);
     return this.success({
       id: stackHandle,
       handle: stackHandle,
@@ -100,326 +107,232 @@ test('submitting valid payment info should be successful', function() {
   });
 
   stubOrganizations();
-  stubDatabases([]);
 
   mockStripe.card.createToken = function(options, fn) {
-    equal(options.name, name, 'name is correct');
-    equal(options.number, cardNumber, 'card number is correct');
-    equal(options.cvc, cvc, 'cvc is correct');
-    equal(options.exp_month, expMonth, 'exp month is correct');
-    equal(options.exp_year, expYear, 'exp year is correct');
-    equal(options.address_zip, addressZip, 'zip is correct');
+    equal(options.name, cardOptions.name, 'name is correct');
+    equal(options.number, cardOptions.cardNumber, 'card number is correct');
+    equal(options.cvc, cardOptions.cvc, 'cvc is correct');
+    equal(options.exp_month, cardOptions.expMonth, 'exp month is correct');
+    equal(options.exp_year, cardOptions.expYear, 'exp year is correct');
+    equal(options.address_zip, cardOptions.addressZip, 'zip is correct');
     setTimeout(function(){
       fn(200, { id: stripeToken });
     }, 2);
   };
 
   visitPaymentInfoWithApp();
-  fillIn('[name=name]', name);
-  fillIn('[name=number]', cardNumber);
-  fillIn('[name=cvc]', cvc);
-  fillIn('[name=exp-month]', expMonth);
-  fillIn('[name=exp-year]', expYear);
-  fillIn('[name=zip]', addressZip);
-  click('button:contains(Save)');
-
-  andThen(function() {
+  fillInput('name', cardOptions.name);
+  fillInput('number', cardOptions.cardNumber);
+  fillInput('cvc', cardOptions.cvc);
+  fillInput('exp-month', cardOptions.expMonth);
+  fillInput('exp-year', cardOptions.expYear);
+  fillInput('zip', cardOptions.addressZip);
+  clickButton('Save');
+  andThen( () => {
     equal(currentPath(), 'stacks.index');
   });
 });
 
-test('submitting valid payment info for production plan should be successful', function() {
-  expect(14);
+test('submitting valid payment info for development plan should create dev stack', function() {
+  expect(4);
+
   // This is to load apps.index
   stubStacks();
   stubOrganization();
-  var name = 'Bob Boberson';
-  var cardNumber = '4242424242424242';
-  var cvc = '123';
-  var expMonth = '03';
-  var expYear = '2019';
-  var addressZip = '11111';
-  var stripeToken = 'some-token';
-  var stackHandle = 'sprocket-co';
-  var appHandle = 'my-app-1';
 
-  stubRequest('post', '/organizations/1/subscriptions', function(request){
-    var params = this.json(request);
-    equal(params.stripe_token, stripeToken, 'stripe token is correct');
-    return this.success();
-  });
+  let stackHandle = 'sprocket-co';
+  let appHandle = 'my-app-1';
 
   let stackAssertions = {};
 
   stackAssertions[`${stackHandle}-dev`] = (params) => {
     ok(true, 'stack handle is correct');
+    equal(params.organization_url, '/organizations/1', 'correct organization_url is posted');
     equal(params.type, 'development', 'stack type is correct');
     stackAssertions[params.handle] = null;
   };
 
   stackAssertions[`${stackHandle}-prod`] = (params) => {
+    ok(false, 'should not create prod stack');
+  };
+
+  stubRequest('post', '/accounts', function(request){
+    var params = this.json(request);
+    stackAssertions[params.handle](params);
+
+    return this.success(Ember.merge({id:params.handle},params));
+  });
+
+  stubOrganizations();
+  mockSuccessfulPayment();
+
+  visitPaymentInfoWithApp();
+  fillInput('plan', 'development');
+  clickButton('Save');
+  andThen( () => {
+    equal(currentPath(), 'stacks.index');
+  });
+});
+
+test('submitting valid payment info for production plan should create dev and prod stacks', function() {
+  expect(7);
+
+  // This is to load apps.index
+  stubStacks();
+  stubOrganization();
+
+  let stackHandle = 'sprocket-co';
+  let appHandle = 'my-app-1';
+
+  let stackAssertions = {};
+
+  stackAssertions[`${stackHandle}-dev`] = (params) => {
     ok(true, 'stack handle is correct');
+    equal(params.organization_url, '/organizations/1', 'correct organization_url is posted');
+    equal(params.type, 'development', 'stack type is correct');
+    stackAssertions[params.handle] = null;
+  };
+
+  stackAssertions[`${stackHandle}-prod`] = (params) => {
+    ok(true, 'should create prod stack');
+    equal(params.organization_url, '/organizations/1', 'correct organization_url is posted');
     equal(params.type, 'production', 'stack type is correct');
     stackAssertions[params.handle] = null;
   };
 
   stubRequest('post', '/accounts', function(request){
     var params = this.json(request);
-    equal(params.organization_url, '/organizations/1', 'organization url is correct');
     stackAssertions[params.handle](params);
-    return this.success({
-      id: stackHandle,
-      handle: stackHandle,
-      type: 'development'
-    });
+
+    return this.success(Ember.merge({id:params.handle},params));
   });
 
   stubOrganizations();
-
-  mockStripe.card.createToken = function(options, fn) {
-    equal(options.name, name, 'name is correct');
-    equal(options.number, cardNumber, 'card number is correct');
-    equal(options.cvc, cvc, 'cvc is correct');
-    equal(options.exp_month, expMonth, 'exp month is correct');
-    equal(options.exp_year, expYear, 'exp year is correct');
-    equal(options.address_zip, addressZip, 'zip is correct');
-    setTimeout(function(){
-      fn(200, { id: stripeToken });
-    }, 2);
-  };
+  mockSuccessfulPayment();
 
   visitPaymentInfoWithApp();
-  fillIn('[name=name]', name);
-  fillIn('[name=number]', cardNumber);
-  fillIn('[name=cvc]', cvc);
-  fillIn('[name=exp-month]', expMonth);
-  fillIn('[name=exp-year]', expYear);
-  fillIn('[name=zip]', addressZip);
-  fillIn('[name=plan]', 'production');
-  click('button:contains(Save)');
-
-  andThen(function() {
+  fillInput('plan', 'production');
+  clickButton('Save');
+  andThen( () => {
     equal(currentPath(), 'stacks.index');
   });
 });
 
-test('submitting valid payment info should be successful and create app', function() {
-  expect(9);
+test('submitting valid payment info should create app', function() {
+  expect(2);
   // This is to load apps.index
   stubStacks();
   stubOrganization();
-  var name = 'Bob Boberson';
-  var cardNumber = '4242424242424242';
-  var cvc = '123';
-  var expMonth = '03';
-  var expYear = '2019';
-  var addressZip = '11111';
-  var stripeToken = 'some-token';
-  var stackHandle = 'sprocket-co';
-  var appHandle = 'my-app-1';
+  let stackHandle = 'sprocket-co';
+  let appHandle = 'my-app-1';
 
-  stubRequest('post', '/organizations/1/subscriptions', function(request){
-    var params = this.json(request);
-    equal(params.stripe_token, stripeToken, 'stripe token is correct');
-    return this.success();
-  });
 
   stubRequest('post', '/accounts', function(request){
     var params = this.json(request);
-    return this.success({
-      id: params.handle,
-      handle: params.handle,
-      type: params.type
-    });
+    return this.success(Ember.merge({id:params.handle}, params));
   });
 
   stubRequest('post', `/accounts/${stackHandle}-dev/apps`, function(request){
     var params = this.json(request);
     equal(params.handle, appHandle, 'app handle is correct');
-    return this.success();
+    return this.success({id: appHandle, handle: appHandle});
   });
 
   stubOrganizations();
+  mockSuccessfulPayment();
 
-  mockStripe.card.createToken = function(options, fn) {
-    equal(options.name, name, 'name is correct');
-    equal(options.number, cardNumber, 'card number is correct');
-    equal(options.cvc, cvc, 'cvc is correct');
-    equal(options.exp_month, expMonth, 'exp month is correct');
-    equal(options.exp_year, expYear, 'exp year is correct');
-    equal(options.address_zip, addressZip, 'zip is correct');
-    setTimeout(function(){
-      fn(200, { id: stripeToken });
-    }, 2);
-  };
-
-  visitPaymentInfoWithApp({
-    appHandle: appHandle
-  });
-  fillIn('[name=name]', name);
-  fillIn('[name=number]', cardNumber);
-  fillIn('[name=cvc]', cvc);
-  fillIn('[name=exp-month]', expMonth);
-  fillIn('[name=exp-year]', expYear);
-  fillIn('[name=zip]', addressZip);
-  click('button:contains(Save)');
-
+  visitPaymentInfoWithApp({appHandle: appHandle});
+  clickButton('Save');
   andThen(function() {
     equal(currentPath(), 'stacks.index');
   });
 });
 
-test('submitting valid payment info should be successful and create db', function() {
-  expect(10);
+test('submitting valid payment info should create db', function() {
+  expect(3);
+
   // This is to load apps.index
   stubStacks();
   stubOrganization();
-  var name = 'Bob Boberson';
-  var cardNumber = '4242424242424242';
-  var cvc = '123';
-  var expMonth = '03';
-  var expYear = '2019';
-  var addressZip = '11111';
-  var stripeToken = 'some-token';
-  var stackHandle = 'sprocket-co';
-  var dbHandle = 'my-db-1';
-  var dbType = 'redis';
-
-  stubRequest('post', '/organizations/1/subscriptions', function(request){
-    var params = this.json(request);
-    equal(params.stripe_token, stripeToken, 'stripe token is correct');
-    return this.success();
-  });
+  let stackHandle = 'sprocket-co';
+  let dbHandle = 'my-db-1';
+  let dbType = 'redis';
 
   stubRequest('post', '/accounts', function(request){
     var params = this.json(request);
-    return this.success({
-      id: params.handle,
-      handle: params.handle,
-      type: params.type
-    });
+    return this.success(Ember.merge({id:params.handle}, params));
   });
 
   stubRequest('post', `/accounts/${stackHandle}-dev/databases`, function(request){
     var params = this.json(request);
     equal(params.handle, dbHandle, 'db handle is correct');
     equal(params.type, dbType, 'db type is correct');
-    return this.success();
+    return this.success({id: dbHandle});
   });
 
   stubOrganizations();
-
-  mockStripe.card.createToken = function(options, fn) {
-    equal(options.name, name, 'name is correct');
-    equal(options.number, cardNumber, 'card number is correct');
-    equal(options.cvc, cvc, 'cvc is correct');
-    equal(options.exp_month, expMonth, 'exp month is correct');
-    equal(options.exp_year, expYear, 'exp year is correct');
-    equal(options.address_zip, addressZip, 'zip is correct');
-    setTimeout(function(){
-      fn(200, { id: stripeToken });
-    }, 2);
-  };
+  mockSuccessfulPayment();
 
   visitPaymentInfoWithApp({
     dbHandle: dbHandle,
     dbType: dbType
   });
-  fillIn('[name=name]', name);
-  fillIn('[name=number]', cardNumber);
-  fillIn('[name=cvc]', cvc);
-  fillIn('[name=exp-month]', expMonth);
-  fillIn('[name=exp-year]', expYear);
-  fillIn('[name=zip]', addressZip);
-  click('button:contains(Save)');
-
+  clickButton('Save');
   andThen(function() {
     equal(currentPath(), 'stacks.index');
   });
 });
 
 test('submitting valid payment info when user is verified should provision db', function() {
-  expect(12);
+  expect(4);
+
   // This is to load apps.index
   stubStacks();
   stubOrganization();
-  var name = 'Bob Boberson';
-  var cardNumber = '4242424242424242';
-  var cvc = '123';
-  var expMonth = '03';
-  var expYear = '2019';
-  var addressZip = '11111';
-  var stripeToken = 'some-token';
   var stackHandle = 'sprocket-co';
   var dbHandle = 'my-db-1';
   var dbType = 'redis';
   let dbId = 'db-id';
+  let opType = 'provision';
 
-  stubRequest('post', '/organizations/1/subscriptions', function(request){
-    var params = this.json(request);
-    equal(params.stripe_token, stripeToken, 'stripe token is correct');
-    return this.success();
-  });
+  let databaseParams = {};
+  let operationsParams = {};
 
   stubRequest('post', '/accounts', function(request){
-    var params = this.json(request);
-    return this.success({
-      id: params.handle,
-      handle: params.handle,
-      type: params.type
-    });
+    let params = this.json(request);
+    return this.success(Ember.merge({id:params.handle},params));
   });
 
   stubRequest('post', `/accounts/${stackHandle}-dev/databases`, function(request){
-    var params = this.json(request);
-    equal(params.handle, dbHandle, 'db handle is correct');
-    equal(params.type, dbType, 'db type is correct');
-    return this.success({
-      id: dbId
-    });
+    databaseParams = this.json(request);
+    return this.success({id: dbId});
   });
 
+  // provisionDatabases must GET all dbs to provision them
   stubDatabases([{id:dbId}]);
 
   stubRequest('post', `/databases/${dbId}/operations`, function(request){
-    ok(true, 'POSTs to create db provision operation');
-    let json = this.json(request);
-    equal(json.type, 'provision');
-
-    return this.success(201, {
-      id: 'op-id',
-      type: json.type
-    });
+    operationsParams = this.json(request);
+    return this.success(201, {id: 'op-id'});
   });
 
   stubOrganizations();
-
-  mockStripe.card.createToken = function(options, fn) {
-    equal(options.name, name, 'name is correct');
-    equal(options.number, cardNumber, 'card number is correct');
-    equal(options.cvc, cvc, 'cvc is correct');
-    equal(options.exp_month, expMonth, 'exp month is correct');
-    equal(options.exp_year, expYear, 'exp year is correct');
-    equal(options.address_zip, addressZip, 'zip is correct');
-    setTimeout(function(){
-      fn(200, { id: stripeToken });
-    }, 2);
-  };
+  mockSuccessfulPayment();
 
   let userData = {id: 'user-id', verified: true};
   visitPaymentInfoWithApp({
     dbHandle: dbHandle,
     dbType: dbType
   }, userData);
-  fillIn('[name=name]', name);
-  fillIn('[name=number]', cardNumber);
-  fillIn('[name=cvc]', cvc);
-  fillIn('[name=exp-month]', expMonth);
-  fillIn('[name=exp-year]', expYear);
-  fillIn('[name=zip]', addressZip);
-  click('button:contains(Save)');
-
+  clickButton('Save');
   andThen(function() {
     equal(currentPath(), 'stacks.index');
+
+    equal(databaseParams.handle, dbHandle,
+          'db params has handle');
+    equal(databaseParams.type, dbType,
+          'db params has type');
+    equal(operationsParams.type, opType,
+          'op params has type');
   });
 });

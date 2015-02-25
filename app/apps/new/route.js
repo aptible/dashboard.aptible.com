@@ -13,6 +13,15 @@ export default Ember.Route.extend({
     });
   },
 
+  renderTemplate: function(controller){
+    if (!this.session.get('currentUser.verified')) {
+      controller.set('resourceType', 'app');
+      this.render('shared/unverified');
+    } else {
+      this._super.apply(this, arguments);
+    }
+  },
+
   actions: {
     willTransition: function(){
       this.currentModel.rollback();

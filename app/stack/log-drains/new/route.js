@@ -6,6 +6,15 @@ export default Ember.Route.extend({
     return this.store.createRecord('log-drain');
   },
 
+  renderTemplate: function(controller){
+    if (!this.session.get('currentUser.verified')) {
+      controller.set('resourceType', 'log drain');
+      this.render('shared/unverified');
+    } else {
+      this._super.apply(this, arguments);
+    }
+  },
+
   actions: {
     cancel: function(log){
       log.deleteRecord();
