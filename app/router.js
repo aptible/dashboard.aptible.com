@@ -54,6 +54,10 @@ Router.map(function() {
   this.route("login");
   this.route("logout");
   this.route("signup");
+  this.route("password", {}, function(){
+    this.route('reset');
+    this.route('new', {path: 'new/:reset_code/:user_id'});
+  });
 
   this.route('settings', {}, function(){
     this.route('admin');

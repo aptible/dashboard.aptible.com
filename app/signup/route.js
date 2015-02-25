@@ -1,18 +1,8 @@
 import Ember from 'ember';
 import { buildCredentials } from "../login/route";
+import DisallowAuthenticated from "../mixins/routes/disallow-authenticated";
 
-export default Ember.Route.extend({
-  requireAuthentication: false,
-
-  beforeModel: function(){
-    var route = this, session = this.session;
-
-    return this._super().then(function(){
-      if (session.get('isAuthenticated')) {
-        route.transitionTo('index');
-      }
-    });
-  },
+export default Ember.Route.extend(DisallowAuthenticated, {
 
   setupController: function(controller){
     var user = this.store.createRecord('user');

@@ -1,4 +1,5 @@
 import Ember from "ember";
+import DisallowAuthenticated from "../mixins/routes/disallow-authenticated";
 
 export function buildCredentials(email, password) {
   return {
@@ -9,8 +10,7 @@ export function buildCredentials(email, password) {
   };
 }
 
-export default Ember.Route.extend({
-  requireAuthentication: false,
+export default Ember.Route.extend(DisallowAuthenticated, {
 
   model: function() {
     return Ember.Object.create({
