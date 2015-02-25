@@ -151,11 +151,11 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
     let formEl = find('form.create-log');
     let context = formEl;
 
-    fillIn( findInput('drain-host', {context}), drainHost);
-    fillIn( findInput('drain-port', {context}), drainPort);
+    fillInput('drain-host', drainHost, {context});
+    fillInput('drain-port', drainPort, {context});
     click( findInput('drain-type', {context}) ); // click radio button
-    fillIn( findInput('handle', {context}), handle);
-    click( formEl.find('.btn:contains(Save Log)') );
+    fillInput('handle', handle, {context});
+    clickButton('Save Log', {context});
   });
 
   andThen(function(){
@@ -176,7 +176,8 @@ test(`visit ${addLogUrl} and create log failure`, function(assert){
   signInAndVisit(addLogUrl);
   andThen(function(){
     let formEl = find('form.create-log');
-    click( formEl.find('.btn:contains(Save Log)') );
+    let context = formEl;
+    clickButton('Save Log', {context});
   });
   andThen(function(){
     equal(currentPath(), 'stack.log-drains.new');

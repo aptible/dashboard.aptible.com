@@ -33,7 +33,8 @@ test('visiting /verify/some-code creates verification', function() {
     });
   });
 
-  signInAndVisit('/verify/'+verificationCode);
+  let userData = {verified: false};
+  signInAndVisit(`/verify/${verificationCode}`, userData);
   andThen(function(){
     equal(currentPath(), 'stacks.index');
   });
