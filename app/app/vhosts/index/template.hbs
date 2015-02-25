@@ -22,13 +22,9 @@
           <span class="label label-default">Default</span>
         {{else}}
          {{link-to 'Edit' 'app.vhosts.edit' vhost class="btn btn-default btn-xs"}}
-         <button class="btn btn-default btn-xs" href="#" {{action 'delete' vhost}} {{bind-attr disabled=vhost.isDeleting}}>
-          {{#if vhost.isDeleting}}
-            Deleting
-          {{else}}
-            Delete
-          {{/if}}
-        </button>
+         {{delete-vhost vhost=vhost startDeletion="startDeletion"
+                                    failDeletion="failDeletion"
+                                    completeDeletion="completeDeletion"}}
         {{/if}}
       </div>
     </div>

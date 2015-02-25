@@ -12,22 +12,14 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    delete: function(vhost){
-      let op = this.store.createRecord('operation', {
-        type: 'deprovision',
-        vhost: vhost
-      });
-
+    startDeletion: function(){
       this.controller.set('error', null);
-      vhost.set('isDeleting', true);
-
-      op.save().then( () => {
-        vhost.deleteRecord();
-      }).catch( () => {
-        this.controller.set('error', 'There was an error deleting the VHost');
-      }).finally( () => {
-        vhost.set('isDeleting', false);
-      });
+    },
+    failDeletion: function(/* e */){
+      this.controller.set('error', 'There was an error deleting the VHost.');
+    },
+    completeDeletion: function(){
+      this.controller.set('error', null);
     }
   }
 });

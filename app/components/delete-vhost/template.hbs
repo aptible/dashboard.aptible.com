@@ -1,0 +1,7 @@
+<button class="btn btn-default btn-xs" href="#" {{action 'delete' vhost}} {{bind-attr disabled=isDeleting}}>
+  {{#if isDeleting}}
+    Deleting
+  {{else}}
+    Delete
+  {{/if}}
+</button>
