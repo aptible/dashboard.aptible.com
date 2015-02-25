@@ -1,39 +1,56 @@
-<div class="row">
-  <div class="col-xs-6">
-    <div class="panel panel-default panel-subdued">
-      <div class="panel-heading">
-        <h3>Create a new app</h3>
-      </div>
-      <div class="panel-body">
-        <form role="form">
-          {{#unless model.isValid}}
-            <div class="alert alert-warning fade in">
-              <a class="close" data-dismiss="alert">×</a>
-              {{#each model.errors.messages as |message|}}
-                <p>{{message}}</p>
-              {{/each}}
+{{#if session.currentUser.verified}}
+  <div class="row">
+    <div class="col-xs-6">
+      <div class="panel panel-default panel-subdued">
+        <div class="panel-heading">
+          <h3>Create a new app</h3>
+        </div>
+        <div class="panel-body">
+          <form role="form">
+            {{#unless model.isValid}}
+              <div class="alert alert-warning fade in">
+                <a class="close" data-dismiss="alert">×</a>
+                {{#each model.errors.messages as |message|}}
+                  <p>{{message}}</p>
+                {{/each}}
+              </div>
+            {{/unless}}
+
+            <div class="form-group-last">
+              <label class="block">
+                App handle
+                <span class="label-helper">Lowercase alphanumerics, periods, and dashes only</span>
+              </label>
+              {{handle-input class="form-control" value=model.handle name='handle'}}
             </div>
-          {{/unless}}
+          </form>
 
-          <div class="form-group-last">
-            <label class="block">
-              App handle
-              <span class="label-helper">Lowercase alphanumerics, periods, and dashes only</span>
-            </label>
-            {{handle-input class="form-control" value=model.handle name='handle'}}
-          </div>
-        </form>
-
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="resource-actions">
-  <button class="btn btn-default" {{action 'cancel'}}>
-    Cancel
-  </button>
-  <button class="btn btn-primary" {{action 'create'}}>
-    Save App
-  </button>
-</div>
+  <div class="resource-actions">
+    <button class="btn btn-default" {{action 'cancel'}}>
+      Cancel
+    </button>
+    <button class="btn btn-primary" {{action 'create'}}>
+      Save App
+    </button>
+  </div>
+{{else}}
+  <div class="row">
+    <div class="col-xs-6">
+      <div class="panel panel-default panel-subdued">
+        <div class="panel-heading">
+          <h3>Cannot create a new app</h3>
+        </div>
+        <div class="panel-body">
+          <p>
+          Before creating a new app, you must verify your email.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+{{/if}}

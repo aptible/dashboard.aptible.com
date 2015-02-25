@@ -2,7 +2,9 @@ import Ember from 'ember';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
-var App;
+let App;
+let stackId = 'my-stack-1';
+let url = `/stacks/${stackId}/databases`;
 
 module('Acceptance: Databases', {
   setup: function() {
@@ -10,7 +12,7 @@ module('Acceptance: Databases', {
     // Just needed to stub /stack/my-stack-1/databases
     stubStacks({includeDatabases:true});
     stubStack({
-      id: 'my-stack-1',
+      id: stackId,
       handle: 'my-stack-1',
       _links: {
         databases: { href: '/accounts/my-stack-1/databases' },
@@ -66,5 +68,21 @@ test('visiting /stacks/my-stack-1/databases then clicking on an database visits 
 
   andThen(function(){
     equal(currentPath(), 'database.activity', 'show page is visited');
+  });
+});
+
+test(`visiting ${url} when user is verified shows Create Database button`, function(){
+  let userData = {verified: true};
+  signInAndVisit(url, userData);
+  andThen( () => {
+    expectButton('Create Database');
+  });
+});
+
+test(`visiting ${url} when user is not verified shows no Create Database button`, function(){
+  let userData = {verified: false};
+  signInAndVisit(url, userData);
+  andThen( () => {
+    expectNoButton('Create Database');
   });
 });

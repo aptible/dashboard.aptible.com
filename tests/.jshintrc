@@ -71,6 +71,7 @@
     "fillInput",
     "findButton",
     "expectButton",
+    "expectNoButton",
     "clickButton"
   ],
   "node": false,

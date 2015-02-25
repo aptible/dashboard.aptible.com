@@ -11,7 +11,7 @@ let stackHandle = 'my-stack-handle',
     url = `stacks/${stackId}/logging`,
     addLogUrl = `/stacks/${stackId}/logging/new`;
 
-module('Acceptance: Log Drains Show', {
+module('Acceptance: Log Drains', {
   setup: function() {
     App = startApp();
   },
@@ -107,6 +107,9 @@ test(`visit ${url} with log drains and click add log shows form`, function(asser
     expectInput('drain-port', {context});
     expectInput('handle', {context});
     expectInput('drain-type', {context});
+
+    expectButton('Save Log Drain');
+    expectButton('Cancel');
   });
 });
 
@@ -116,7 +119,7 @@ test(`visit ${addLogUrl} and cancel`, function(assert){
 
   andThen(function(){
     equal(currentPath(), 'stack.log-drains.new');
-    click('.btn:contains(Cancel)');
+    clickButton('Cancel');
   });
 
   andThen(function(){
@@ -185,5 +188,18 @@ test(`visit ${addLogUrl} and create log failure`, function(assert){
     ok( errorDiv.length, 'error div is shown');
     ok( errorDiv.text().indexOf(errorMessage) > -1,
         'error message is displayed');
+  });
+});
+
+test(`visit ${addLogUrl} when unverified shows cannot create message`, function(){
+  this.prepareStubs();
+  let userData = {verified: false};
+  signInAndVisit(addLogUrl, userData);
+  andThen( () => {
+    expectNoButton('Save Log Drain');
+    expectNoButton('Cancel');
+    let message = find('.panel-heading h3');
+    ok(message.text().indexOf('Cannot create a new log') > -1,
+       'shows cannot create log message');
   });
 });

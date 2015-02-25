@@ -168,3 +168,19 @@ test(`visit ${url} shows create app button if user is verified`, function(){
     expectButton('Create App');
   });
 });
+
+test(`visit ${url} does not show create app button if user is not verified`, function(){
+  stubStacks({ includeApps: true });
+  stubStack({
+    id: stackId,
+    _links: {
+      apps: { href: `/accounts/${stackId}/apps` }
+    }
+  });
+
+  let userData = {id: 'user1', verified: false};
+  signInAndVisit(url, userData);
+  andThen( () => {
+    expectNoButton('Create App');
+  });
+});

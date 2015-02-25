@@ -391,6 +391,15 @@ Ember.Test.registerHelper('expectButton', function(app, buttonName, options) {
   }
 });
 
+Ember.Test.registerHelper('expectNoButton', function(app, buttonName, options) {
+  let el = findButton(buttonName, options);
+  if (el.length) {
+    ok(false, `Expected 0 but found ${el.length} of button "${buttonName}"`);
+  } else {
+    ok(true, `Expected and found 0 of button "${buttonName}"`);
+  }
+});
+
 Ember.Test.registerHelper('findInput', function(app, inputName, options) {
   options = options || {};
   let context = options.context;
