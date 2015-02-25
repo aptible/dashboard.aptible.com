@@ -5,7 +5,8 @@ export default ApplicationAdapter.extend({
   buildURL: buildURLWithPrefixMap({
     'databases': 'database.id',
     'apps':      'app.id',
-    'vhosts':    'vhost.id'
+    'vhosts':    'vhost.id',
+    'log_drains':    'logDrain.id'
   }),
 
   findQuery: function(store, type, query){

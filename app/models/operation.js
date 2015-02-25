@@ -14,5 +14,6 @@ export default DS.Model.extend({
   // as such not ember-data `attrs`.
   database: null,
   app: null,
-  vhost: null
+  vhost: null,
+  logDrain: null
 });

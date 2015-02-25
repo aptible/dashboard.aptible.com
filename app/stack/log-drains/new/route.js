@@ -22,13 +22,17 @@ export default Ember.Route.extend({
     },
 
     createLog: function(log){
-      let route = this;
-
       log.set('stack', this.modelFor('stack'));
 
-      log.save().then(function(){
-        route.transitionTo('stack.log-drains.index');
-      }).catch(function(e){
+      log.save().then( () => {
+        let op = this.store.createRecord('operation', {
+          type: 'configure',
+          logDrain: log
+        });
+        return op.save();
+      }).then( () => {
+        this.transitionTo('stack.log-drains.index');
+      }).catch( (e) => {
         if (e instanceof DS.InvalidError) {
           // no-op, this will populate model.errors
         } else {
