@@ -177,3 +177,35 @@ test(`when creating an operation for a vhost, POSTs to ${vhostOperationURL}`, fu
   });
 });
 
+let logDrainId = 'log-drain-id-1';
+let logDrainOperationURL = `/log_drains/${logDrainId}/operations`;
+test(`creating an operation for a log drain POSTS to ${logDrainOperationURL}`, function(){
+  expect(2);
+
+  let store = this.store(),
+      logDrain, op;
+
+  Ember.run(function(){
+    logDrain = store.createRecord('log-drain', {id: logDrainId});
+    op = store.createRecord('operation', {
+      type: 'configure',
+      logDrain: logDrain
+    });
+  });
+
+  stubRequest('post', logDrainOperationURL, function(){
+    ok(true, 'posts to correct url');
+
+    return this.success({
+      id: 'op-id',
+      type: 'configure',
+    });
+  });
+
+  return Ember.run(function(){
+    return op.save().then(function(_op){
+      ok(true, 'operation saved');
+    });
+  });
+});
+

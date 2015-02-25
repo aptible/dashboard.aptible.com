@@ -128,13 +128,14 @@ test(`visit ${addLogUrl} and cancel`, function(assert){
 });
 
 test(`visit ${addLogUrl} and create log success`, function(assert){
-  expect(6);
+  expect(7);
   this.prepareStubs();
 
   let drainHost = 'abc-host.com',
       drainPort = '1234',
       handle = 'my-log-name',
-      drainType = 'elasticsearch';
+      drainType = 'elasticsearch',
+      logDrainId = 'log-id-1';
 
   stubRequest('post', '/accounts/:stack_id/log_drains', function(request){
     ok(true, 'posts to log_drains');
@@ -145,8 +146,14 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
     equal(json.drain_type, drainType);
     equal(json.handle, handle);
 
-    json.id = 'new-log';
+    json.id = logDrainId;
     return this.success(json);
+  });
+
+  stubRequest('post', `/log_drains/${logDrainId}/operations`, function(request){
+    let json = this.json(request);
+    equal(json.type, 'configure', 'creates configure operation');
+    return this.success();
   });
 
   signInAndVisit(addLogUrl);
@@ -179,8 +186,7 @@ test(`visit ${addLogUrl} and create log failure`, function(assert){
   signInAndVisit(addLogUrl);
   andThen(function(){
     let formEl = find('form.create-log');
-    let context = formEl;
-    clickButton('Save Log', {context});
+    clickButton('Save Log', {context:formEl});
   });
   andThen(function(){
     equal(currentPath(), 'stack.log-drains.new');
