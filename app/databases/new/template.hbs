@@ -1,93 +1,78 @@
-{{#if session.currentUser.verified}}
-  <div class="row">
-    <div class="col-xs-6">
-      <div class="panel panel-default panel-subdued">
-        <div class="panel-heading">
-          <h3>Create a new database</h3>
-        </div>
-        <div class="panel-body">
-          <form role="form">
-            {{#unless model.isValid}}
-              <div class="alert alert-warning fade in">
-                <a class="close" data-dismiss="alert">×</a>
-                {{#each model.errors.messages as |message|}}
-                  <p>{{message}}</p>
-                {{/each}}
+<div class="row">
+  <div class="col-xs-6">
+    <div class="panel panel-default panel-subdued">
+      <div class="panel-heading">
+        <h3>Create a new database</h3>
+      </div>
+      <div class="panel-body">
+        <form role="form">
+          {{#unless model.isValid}}
+            <div class="alert alert-warning fade in">
+              <a class="close" data-dismiss="alert">×</a>
+              {{#each model.errors.messages as |message|}}
+                <p>{{message}}</p>
+              {{/each}}
+            </div>
+          {{/unless}}
+
+
+          <div class="form-group">
+            <label class="block">
+              Database handle
+              <span class="label-helper">Lowercase alphanumerics, periods, and dashes only</span>
+            </label>
+          </div>
+
+          <div class="form-group">
+            {{handle-input class="database-name form-control sanitize-handler"
+                    placeholder="e.g., postgresql-prod"
+                    name="handle"
+                    value=model.handle}}
+          </div>
+
+          <div class="form-group">
+            <label>Type</label>
+
+            <div class="select-options-container database-select row">
+              {{#db-selector action="selectDbType" as |dbType selectedDbType selectCallback|}}
+                {{db-selector-option
+                      selectCallback=selectCallback
+                      dbType=dbType
+                      selectedDbType=selectedDbType}}
+              {{/db-selector}}
+            </div>
+          </div>
+
+          <div class="">
+            <label>Disk Size</label>
+            <div class="slider-input-wrapper disk-size-slider">
+              <div class="container-count">
+                {{diskSize}} GB
               </div>
-            {{/unless}}
-
-
-            <div class="form-group">
-              <label class="block">
-                Database handle
-                <span class="label-helper">Lowercase alphanumerics, periods, and dashes only</span>
-              </label>
-            </div>
-
-            <div class="form-group">
-              {{handle-input class="database-name form-control sanitize-handler"
-                      placeholder="e.g., postgresql-prod"
-                      name="handle"
-                      value=model.handle}}
-            </div>
-
-            <div class="form-group">
-              <label>Type</label>
-
-              <div class="select-options-container database-select row">
-                {{#db-selector action="selectDbType" as |dbType selectedDbType selectCallback|}}
-                  {{db-selector-option
-                        selectCallback=selectCallback
-                        dbType=dbType
-                        selectedDbType=selectedDbType}}
-                {{/db-selector}}
-              </div>
-            </div>
-
-            <div class="">
-              <label>Disk Size</label>
-              <div class="slider-input-wrapper disk-size-slider">
-                <div class="container-count">
-                  {{diskSize}} GB
-                </div>
-                <div class="slider-wrapper">
-                  {{no-ui-slider didSlide="didSlide"
-                                   classNames="disk-size"
-                                   start=10 rangeMin=10 rangeMax=200 step=10}}
-                  <div class="label-wrapper">
-                    <div class="label pull-left">10 GB</div>
-                    <div class="label pull-right">200 GB</div>
-                  </div>
+              <div class="slider-wrapper">
+                {{no-ui-slider didSlide="didSlide"
+                                 classNames="disk-size"
+                                 start=10 rangeMin=10 rangeMax=200 step=10}}
+                <div class="label-wrapper">
+                  <div class="label pull-left">10 GB</div>
+                  <div class="label pull-right">200 GB</div>
                 </div>
               </div>
             </div>
-          </form>
-        </div>
-
+          </div>
+        </form>
       </div>
+
     </div>
   </div>
+</div>
 
-  <div class="resource-actions">
-    <button {{action 'cancel'}} class="btn btn-default" type='button'>
-      Cancel
-    </button>
+<div class="resource-actions">
+  <button {{action 'cancel'}} class="btn btn-default" type='button'>
+    Cancel
+  </button>
 
-    <button {{action 'create'}} class="btn btn-primary" type='submit'>
-      Save Database
-    </button>
-  </div>
-{{else}}
-  <div class="row">
-    <div class="col-xs-6">
-      <div class="panel panel-default panel-subdued">
-        <div class="panel-heading">
-          <h3>Cannot create a new database</h3>
-        </div>
-        <div class="panel-body">
-          <p>Before creating a new database, you must first verify your email.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-{{/if}}
+  <button {{action 'create'}} class="btn btn-primary" type='submit'>
+    Save Database
+  </button>
+</div>

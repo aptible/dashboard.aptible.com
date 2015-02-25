@@ -1,73 +1,58 @@
-{{#if session.currentUser.verified}}
-  <div class="row">
-    <div class="col-xs-6">
-      <form class="create-log" {{action 'createLog' model on='submit'}}>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3>Create a new log drain</h3>
-          </div>
-          <div class="panel-body">
-            {{#if model.errors.length}}
-              <div class="alert alert-warning">
-                {{#each model.errors.messages as |message|}}
-                  <p>{{message}}</p>
-                {{/each}}
-              </div>
-            {{/if}}
-
-            <div class="form-group">
-              <label class="block" for="drain-handle">Handle</label>
-              {{handle-input class="form-control" value=model.handle name='handle'}}
-            </div>
-            <div class="form-group">
-              <label class="block" for="drain-type">Type</label>
-              <div class="radio">
-                <div>
-                  {{#radio-button value="syslog_tls_tcp" groupValue=model.drainType name="drain-type"}}
-                    Syslog TLS TCP
-                  {{/radio-button}}
-                </div>
-                <div>
-                  {{#radio-button value="elasticsearch" groupValue=model.drainType name="drain-type"}}
-                    Elasticsearch
-                  {{/radio-button}}
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="block" for="drain-host">Syslog Host</label>
-              {{input name='drain-host' value=model.drainHost class="form-control"}}
-            </div>
-            <div class="">
-              <label class="block" for="drain-port">Syslog Port</label>
-              {{input name='drain-port' value=model.drainPort class="form-control"}}
-            </div>
-          </div>
-        </div>
-        <div class="resource-actions">
-          <button {{action 'cancel' model}} class='btn btn-lg-text btn-default'>Cancel</button>
-          <button {{action 'createLog' model}} {{bind-attr disabled=model.isSaving}} class='btn btn-primary'>
-            {{#if model.isSaving}}
-              Saving
-            {{else}}
-              Save Log Drain
-            {{/if}}
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-{{else}}
-  <div class="row">
-    <div class="col-xs-6">
+<div class="row">
+  <div class="col-xs-6">
+    <form class="create-log" {{action 'createLog' model on='submit'}}>
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3>Cannot create a new log drain</h3>
+          <h3>Create a new log drain</h3>
         </div>
         <div class="panel-body">
-          <p>Before creating a new log drain, you must first verify your email.</p>
+          {{#if model.errors.length}}
+            <div class="alert alert-warning">
+              {{#each model.errors.messages as |message|}}
+                <p>{{message}}</p>
+              {{/each}}
+            </div>
+          {{/if}}
+
+          <div class="form-group">
+            <label class="block" for="drain-handle">Handle</label>
+            {{handle-input class="form-control" value=model.handle name='handle'}}
+          </div>
+          <div class="form-group">
+            <label class="block" for="drain-type">Type</label>
+            <div class="radio">
+              <div>
+                {{#radio-button value="syslog_tls_tcp" groupValue=model.drainType name="drain-type"}}
+                  Syslog TLS TCP
+                {{/radio-button}}
+              </div>
+              <div>
+                {{#radio-button value="elasticsearch" groupValue=model.drainType name="drain-type"}}
+                  Elasticsearch
+                {{/radio-button}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="block" for="drain-host">Syslog Host</label>
+            {{input name='drain-host' value=model.drainHost class="form-control"}}
+          </div>
+          <div class="">
+            <label class="block" for="drain-port">Syslog Port</label>
+            {{input name='drain-port' value=model.drainPort class="form-control"}}
+          </div>
         </div>
       </div>
-    </div>
+      <div class="resource-actions">
+        <button {{action 'cancel' model}} class='btn btn-lg-text btn-default'>Cancel</button>
+        <button {{action 'createLog' model}} {{bind-attr disabled=model.isSaving}} class='btn btn-primary'>
+          {{#if model.isSaving}}
+            Saving
+          {{else}}
+            Save Log Drain
+          {{/if}}
+        </button>
+      </div>
+    </form>
   </div>
-{{/if}}
+</div>
