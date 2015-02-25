@@ -447,3 +447,7 @@ Ember.Test.registerHelper('stubUser', function(app, userData={}){
     return this.success(userData);
   });
 });
+
+Ember.Test.registerAsyncHelper('triggerSlider', function(app, selector, argument){
+  Ember.$(selector).trigger('slide', argument);
+});

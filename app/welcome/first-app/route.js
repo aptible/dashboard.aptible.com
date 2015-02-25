@@ -1,12 +1,12 @@
 import Ember from 'ember';
-import { write } from '../../utils/storage';
 export var firstAppKey = '_aptible_firstAppData';
 
 export default Ember.Route.extend({
   actions: {
 
-    create: function(model){
-      write(firstAppKey, model);
+    create: function(){
+      // model data is already stored on the parent
+      // route (welcome). Just move forward.
       this.transitionTo('welcome.payment-info');
     },
 
@@ -15,7 +15,7 @@ export default Ember.Route.extend({
     },
 
     setDiskSize: function(diskSize){
-      Ember.set(this.currentModel, 'diskSize', diskSize);
+      Ember.set(this.currentModel, 'initialDiskSize', diskSize);
     }
 
   }

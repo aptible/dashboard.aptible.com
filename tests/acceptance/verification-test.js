@@ -41,14 +41,15 @@ test('visiting /verify/some-code creates verification', function() {
 });
 
 test('after verification, pending databases are provisioned', function(){
-  expect(4);
+  expect(5);
   stubStacks(); // For loading index
   stubOrganization();
   stubOrganizations();
   var verificationCode = 'some-code';
   let dbId = 'db-id';
+  let diskSize = '10';
 
-  let dbData = [{id: dbId}];
+  let dbData = [{id: dbId, initialDiskSize: diskSize}];
   stubDatabases(dbData);
 
   stubRequest('post', '/verifications', function(request){
@@ -66,6 +67,7 @@ test('after verification, pending databases are provisioned', function(){
     ok(true, 'posts to create db provision op');
     let json = this.json(request);
     equal(json.type, 'provision');
+    equal(json.disk_size, diskSize);
 
     return this.success({
       id: 'op-id',

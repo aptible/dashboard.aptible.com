@@ -7,6 +7,7 @@ export default DS.Model.extend({
   connectionUrl: DS.attr('string'),
   type: DS.attr('string'), // postgresql, redis, etc.
   createdAt: DS.attr('iso-8601-timestamp'),
+  initialDiskSize: DS.attr('number'),
 
   // relationships
   stack: DS.belongsTo('stack', {async: true}),
@@ -21,7 +22,7 @@ export function provisionDatabases(user, store){
     let promises = databases.map(function(database){
       let op = store.createRecord('operation', {
         type: 'provision',
-        diskSize: '10', // FIXME
+        diskSize: database.get('initialDiskSize') || '10',
         database: database
       });
       return op.save();

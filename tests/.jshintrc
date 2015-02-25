@@ -72,7 +72,8 @@
     "findButton",
     "expectButton",
     "expectNoButton",
-    "clickButton"
+    "clickButton",
+    "triggerSlider"
   ],
   "node": false,
   "browser": false,

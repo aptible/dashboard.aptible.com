@@ -7,7 +7,7 @@ export default Ember.Route.extend({
         stackHandle: organizations.objectAt(0).get('name').dasherize(),
         appHandle: '',
         dbHandle: '',
-        diskSize: 10,
+        initialDiskSize: 10,
         dbType: null
       };
     });
