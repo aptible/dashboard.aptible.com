@@ -62,8 +62,6 @@
     "clickPrevPageLink",
     "locationUpdatedTo",
     "titleUpdatedTo",
-    "setNoUISlider",
-    "slideNoUISlider",
     "expectLink",
     "expectNoLink",
     "findInput",

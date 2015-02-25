@@ -3,10 +3,11 @@ import buildURLWithPrefixMap from '../utils/build-url-with-prefix-map';
 
 export default ApplicationAdapter.extend({
   buildURL: buildURLWithPrefixMap({
-    'databases': 'database.id',
-    'apps':      'app.id',
-    'vhosts':    'vhost.id',
-    'log_drains':    'logDrain.id'
+    'databases':   'database.id',
+    'apps':        'app.id',
+    'vhosts':      'vhost.id',
+    'log_drains':  'logDrain.id',
+    'services':    'service.id'
   }),
 
   findQuery: function(store, type, query){

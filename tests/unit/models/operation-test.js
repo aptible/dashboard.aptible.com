@@ -209,3 +209,34 @@ test(`creating an operation for a log drain POSTS to ${logDrainOperationURL}`, f
   });
 });
 
+let serviceId = 'service-1';
+let serviceOperationURL = `/services/${serviceId}/operations`;
+test(`creating an operation for a service POSTS to ${serviceOperationURL}`, function(){
+  expect(2);
+
+  let store = this.store(),
+      service, op;
+
+  Ember.run(function(){
+    service = store.createRecord('service', {id: serviceId});
+    op = store.createRecord('operation', {
+      type: 'configure',
+      service: service
+    });
+  });
+
+  stubRequest('post', serviceOperationURL, function(){
+    ok(true, 'posts to correct url');
+
+    return this.success({
+      id: 'op-id',
+      type: 'configure',
+    });
+  });
+
+  return Ember.run(function(){
+    return op.save().then(function(_op){
+      ok(true, 'operation saved');
+    });
+  });
+});
