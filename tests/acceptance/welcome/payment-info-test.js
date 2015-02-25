@@ -13,14 +13,23 @@ function visitPaymentInfoWithApp(options, userData){
 
   signInAndVisit(url, userData);
   andThen(function(){
-    if (!options) { return clickButton('Skip this step'); }
+    if (!options) {
+      return clickButton('Skip this step');
+    }
 
-    if (options.dbType){ click(`.${options.dbType} a`); }
+    if (options.dbType) {
+      click(`.${options.dbType} a`);
+    }
+    if (options.dbInitialDiskSize) {
+      triggerSlider('.slider', options.dbInitialDiskSize);
+    }
     for (var prop in options){
       let dasherized = prop.dasherize();
 
-      // db-type is a button, not a fillIn-able input
-      if (dasherized === 'db-type') { continue; }
+      // non-fillIn-able inputs
+      if ('db-type db-initial-disk-size'.w().indexOf(dasherized) !== -1) {
+        continue;
+      }
       fillInput(dasherized, options[prop]);
     }
     clickButton('Get Started');
@@ -249,7 +258,7 @@ test('submitting valid payment info should create app', function() {
 });
 
 test('submitting valid payment info should create db', function() {
-  expect(3);
+  expect(4);
 
   // This is to load apps.index
   stubStacks();
@@ -257,6 +266,7 @@ test('submitting valid payment info should create db', function() {
   let stackHandle = 'sprocket-co';
   let dbHandle = 'my-db-1';
   let dbType = 'redis';
+  let dbInitialDiskSize = '67';
 
   stubRequest('post', '/accounts', function(request){
     var params = this.json(request);
@@ -266,6 +276,7 @@ test('submitting valid payment info should create db', function() {
   stubRequest('post', `/accounts/${stackHandle}-dev/databases`, function(request){
     var params = this.json(request);
     equal(params.handle, dbHandle, 'db handle is correct');
+    equal(params.initial_disk_size, dbInitialDiskSize, 'disk size is correct');
     equal(params.type, dbType, 'db type is correct');
     return this.success({id: dbHandle});
   });
@@ -275,7 +286,8 @@ test('submitting valid payment info should create db', function() {
 
   visitPaymentInfoWithApp({
     dbHandle: dbHandle,
-    dbType: dbType
+    dbType: dbType,
+    dbInitialDiskSize: dbInitialDiskSize
   });
   clickButton('Save');
   andThen(function() {

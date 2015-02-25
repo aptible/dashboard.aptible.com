@@ -87,6 +87,7 @@ export default Ember.Route.extend({
           var db = store.createRecord('database', {
             handle: welcomeModel.dbHandle,
             type: welcomeModel.dbType,
+            initialDiskSize: welcomeModel.initialDiskSize,
             stack: stack
           });
           promises.push(db.save());
