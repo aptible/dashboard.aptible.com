@@ -311,20 +311,6 @@ Ember.Test.registerHelper('stubOrganization', function(app, orgData){
   });
 });
 
-Ember.Test.registerAsyncHelper('slideNoUISlider', function(app, selector, value){
-  var element = $(selector);
-  if (element && element.length) {
-    element.trigger('slide', value);
-  }
-});
-
-Ember.Test.registerAsyncHelper('setNoUISlider', function(app, selector, value){
-  var element = $(selector);
-  if (element && element.length) {
-    element.trigger('set', value);
-  }
-});
-
 Ember.Test.registerHelper('expectLink', function(app, link, options) {
   let contextEl = (options || {}).context;
   let selector = `*[href*="${link}"]`;
@@ -449,5 +435,7 @@ Ember.Test.registerHelper('stubUser', function(app, userData={}){
 });
 
 Ember.Test.registerAsyncHelper('triggerSlider', function(app, selector, argument){
-  Ember.$(selector).trigger('slide', argument);
+  let slider = findWithAssert(selector);
+  slider.trigger('slide', argument);
+  slider.trigger('set', argument);
 });

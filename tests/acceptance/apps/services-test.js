@@ -5,11 +5,11 @@ import { stubRequest } from '../../helpers/fake-server';
 let App;
 
 let appId = '1';
-let appUrl = '/apps/' + appId;
+let appUrl = `/apps/${appId}`;
 let appHandle = 'my-app-handle',
     stackHandle = 'my-stack-handle',
     stackId = 'my-stack-id';
-let appServicesUrl = '/apps/' + appId + '/services';
+let appServicesUrl = `/apps/${appId}/services`;
 let url = appServicesUrl;
 
 module('Acceptance: App Services', {
@@ -39,7 +39,7 @@ test('app show page includes link to services url', function(){
 });
 
 test(`visit ${url} lists services`, function(){
-  var services = [{
+  let services = [{
     id: 1,
     handle: 'hubot',
     command: 'bin/exec hubot',
@@ -66,21 +66,63 @@ test(`visit ${url} lists services`, function(){
   });
 
   signInAndVisit(url);
-
   andThen(function(){
-    equal( find('.service').length, services.length);
+    equal(find('.service').length, services.length,
+          `has ${services.length} services`);
 
-    services.forEach(function(service){
-      ok( find('.service .process-type:contains(' + service.processType + ')').length,
-          'has process type ' + service.processType );
+    services.forEach(function(service, index){
+      let el = find(`.service:eq(${index})`);
 
-      ok( find('.service .service-command:contains(' + service.command + ')').length,
-          'has command ' + service.command );
+      ok( el.find(`.process-type:contains(${service.processType})`).length,
+          `has process type ${service.processType}`);
 
-      ok( find('.service .container-count:contains(' + service.container_count + ')').length,
-          'has container count ' + service.container_count );
+      ok( el.find(`.service-command:contains(${service.command})`).length,
+          `has command ${service.command}`);
+
+      ok( el.find(`.container-count:contains(${service.container_count})`).length,
+          `has container count ${service.container_count}`);
     });
 
     titleUpdatedTo(`${appHandle} Services - ${stackHandle}`);
+  });
+});
+
+test(`visit ${url} allows scaling of services`, function(){
+  expect(5);
+
+  let serviceId = 1;
+  let services = [{id: serviceId, container_count: 2}];
+  let newContainerCount = 3;
+
+  stubApp({
+    id: appId,
+    _embedded: { services: services },
+    _links: { account: { href: `/accounts/${stackId}` } }
+  });
+
+  stubStack({id: stackId});
+
+  stubRequest('put', `/services/${serviceId}`, function(request){
+    ok(true, 'PUTs to services');
+    let json = this.json(request);
+    json.id = serviceId;
+    return this.success(json);
+  });
+
+  stubRequest('post', `/services/${serviceId}/operations`, function(request){
+    let json = this.json(request);
+    equal(json.type, 'scale');
+    equal(json.container_count, newContainerCount);
+    return this.success();
+  });
+
+  signInAndVisit(url);
+  andThen( () => {
+    expectNoButton('Scale');
+    triggerSlider('.slider', newContainerCount);
+  });
+  andThen( () => {
+    expectButton('Scale');
+    clickButton('Scale');
   });
 });
