@@ -20,9 +20,21 @@ test('visiting /welcome/first-app when not logged in', function() {
   });
 });
 
+test('visiting /welcome/first-app logged in with stacks', function() {
+  stubStacks();
+  stubOrganizations();
+  stubOrganization();
+  signInAndVisit('/welcome/first-app');
+
+  andThen(function() {
+    equal(currentPath(), 'stacks.index');
+  });
+});
+
 test('submitting a first app directs to subscriptions', function() {
   var appHandle = 'my-app';
 
+  stubStacks({}, []);
   stubOrganizations();
   signInAndVisit('/welcome/first-app');
 

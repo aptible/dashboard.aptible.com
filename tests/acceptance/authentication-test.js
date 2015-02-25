@@ -182,8 +182,8 @@ test('visiting /signup when logged in redirects', function() {
   });
 });
 
-test('Creating an account directs to login', function() {
-  stubStacks(); // For loading index
+test('Creating an account directs to welcome wizard', function() {
+  stubStacks({}, []); // For loading index
   stubOrganizations();
 
   var email = 'good@email.com';
