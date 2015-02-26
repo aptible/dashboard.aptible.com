@@ -62,6 +62,17 @@ test('visiting /welcome/payment-info when not logged in', function() {
   expectRequiresAuthentication('/welcome/payment-info');
 });
 
+test('visiting /welcome/payment-info logged in with stacks', function() {
+  stubStacks();
+  stubOrganizations();
+  stubOrganization();
+  signInAndVisit('/welcome/payment-info');
+
+  andThen(function() {
+    equal(currentPath(), 'stacks.index');
+  });
+});
+
 test('submitting empty payment info raises an error', function() {
   mockStripe.card.createToken = function(options, fn) {
     setTimeout(function(){
@@ -69,6 +80,7 @@ test('submitting empty payment info raises an error', function() {
     }, 2);
   };
 
+  stubStacks({}, []);
   stubOrganizations();
 
   visitPaymentInfoWithApp();
@@ -84,8 +96,8 @@ test('submitting empty payment info raises an error', function() {
 test('payment info should be submitted to stripe to create stripeToken', function() {
   expect(8);
 
+  stubStacks({}, []);
   // This is to load apps.index
-  stubStacks();
   stubOrganization();
   let cardOptions = {
     name: 'Bob Boberson',
@@ -130,6 +142,9 @@ test('payment info should be submitted to stripe to create stripeToken', functio
   };
 
   visitPaymentInfoWithApp();
+  andThen(function(){
+    stubStacks();
+  });
   fillInput('name', cardOptions.name);
   fillInput('number', cardOptions.cardNumber);
   fillInput('cvc', cardOptions.cvc);
@@ -145,8 +160,8 @@ test('payment info should be submitted to stripe to create stripeToken', functio
 test('submitting valid payment info for development plan should create dev stack', function() {
   expect(4);
 
+  stubStacks({}, []);
   // This is to load apps.index
-  stubStacks();
   stubOrganization();
 
   let stackHandle = 'sprocket-co';
@@ -176,6 +191,9 @@ test('submitting valid payment info for development plan should create dev stack
   mockSuccessfulPayment();
 
   visitPaymentInfoWithApp();
+  andThen(function(){
+    stubStacks();
+  });
   fillInput('plan', 'development');
   clickButton('Save');
   andThen( () => {
@@ -186,8 +204,8 @@ test('submitting valid payment info for development plan should create dev stack
 test('submitting valid payment info for production plan should create dev and prod stacks', function() {
   expect(7);
 
+  stubStacks({}, []);
   // This is to load apps.index
-  stubStacks();
   stubOrganization();
 
   let stackHandle = 'sprocket-co';
@@ -220,6 +238,9 @@ test('submitting valid payment info for production plan should create dev and pr
   mockSuccessfulPayment();
 
   visitPaymentInfoWithApp();
+  andThen(function(){
+    stubStacks();
+  });
   fillInput('plan', 'production');
   clickButton('Save');
   andThen( () => {
@@ -229,8 +250,8 @@ test('submitting valid payment info for production plan should create dev and pr
 
 test('submitting valid payment info should create app', function() {
   expect(2);
+  stubStacks({}, []);
   // This is to load apps.index
-  stubStacks();
   stubOrganization();
   let stackHandle = 'sprocket-co';
   let appHandle = 'my-app-1';
@@ -251,6 +272,9 @@ test('submitting valid payment info should create app', function() {
   mockSuccessfulPayment();
 
   visitPaymentInfoWithApp({appHandle: appHandle});
+  andThen(function(){
+    stubStacks();
+  });
   clickButton('Save');
   andThen(function() {
     equal(currentPath(), 'stacks.index');
@@ -260,8 +284,8 @@ test('submitting valid payment info should create app', function() {
 test('submitting valid payment info should create db', function() {
   expect(4);
 
+  stubStacks({}, []);
   // This is to load apps.index
-  stubStacks();
   stubOrganization();
   let stackHandle = 'sprocket-co';
   let dbHandle = 'my-db-1';
@@ -289,6 +313,9 @@ test('submitting valid payment info should create db', function() {
     dbType: dbType,
     dbInitialDiskSize: dbInitialDiskSize
   });
+  andThen(function(){
+    stubStacks();
+  });
   clickButton('Save');
   andThen(function() {
     equal(currentPath(), 'stacks.index');
@@ -298,8 +325,8 @@ test('submitting valid payment info should create db', function() {
 test('submitting valid payment info when user is verified should provision db', function() {
   expect(4);
 
+  stubStacks({}, []);
   // This is to load apps.index
-  stubStacks();
   stubOrganization();
   var stackHandle = 'sprocket-co';
   var dbHandle = 'my-db-1';
@@ -336,6 +363,9 @@ test('submitting valid payment info when user is verified should provision db', 
     dbHandle: dbHandle,
     dbType: dbType
   }, userData);
+  andThen(function(){
+    stubStacks();
+  });
   clickButton('Save');
   andThen(function() {
     equal(currentPath(), 'stacks.index');
