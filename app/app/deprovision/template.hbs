@@ -1,8 +1,12 @@
 <div class="row">
   <div class="col-xs-9">
-    <div class="panel panel-default panel-subdued panel-danger">
+    <div {{bind-attr class=":panel :panel-default :panel-subdued isPending:panel-danger"}}>
       <div class="panel-heading">
-        <h3>Permanently deprovision {{model.handle}} </h3>
+        {{#if model.hasBeenDeployed}}
+          <h3>Permanently deprovision {{model.handle}}</h3>
+        {{else}}
+          <h3>{{model.handle}} cannot be deprovisioned</h3>
+        {{/if}}
       </div>
       <div class="panel-body">
         <form role="form">
@@ -15,18 +19,25 @@
             </div>
           {{/if}}
 
-          <p>
-            This action CANNOT be undone. This will permanently deprovision
-            <strong>{{model.handle}}</strong>.
-          </p>
+          {{#if model.hasBeenDeployed}}
+            <p>
+              This action CANNOT be undone. This will permanently deprovision
+              <strong>{{model.handle}}</strong>.
+            </p>
 
-          <div class="form-group">
-            <label>Type the name of the app to permanently deprovision.</label>
+            <div class="form-group">
+              <label>Type the name of the app to permanently deprovision.</label>
 
-            {{#button-with-confirmation confirmValue=model.handle action='deprovision'}}
-              Deprovision Permanently
-            {{/button-with-confirmation}}
-          </div>
+              {{#button-with-confirmation confirmValue=model.handle action='deprovision'}}
+                Deprovision Permanently
+              {{/button-with-confirmation}}
+            </div>
+          {{else}}
+            <p>
+              This application can only be deprovisioned after it has
+              been deployed.
+            </p>
+          {{/if}}
         </form>
 
       </div>

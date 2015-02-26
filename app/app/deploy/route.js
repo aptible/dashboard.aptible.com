@@ -18,5 +18,15 @@ export default Ember.Route.extend({
     controller.set('model', model.app);
     controller.set('sshKeys', model.sshKeys);
     controller.set('gettingStartedDocs', gettingStartedDocs);
+  },
+
+  actions: {
+    delete: function(model){
+      let stack = model.get('stack');
+      model.deleteRecord();
+      model.save().then(() => {
+        this.transitionTo('apps', stack);
+      });
+    }
   }
 });

@@ -25,6 +25,7 @@ test('/apps/:id/deprovision will not deprovision without confirmation', function
   stubApp({
     id: appId,
     handle: appName,
+    status: 'provisioned',
     _links: {
       account: { href: `/accounts/${stackHandle}` }
     }
@@ -53,6 +54,7 @@ test('/apps/:id/deprovision will deprovision with confirmation', function(){
   stubApp({
     id: appId,
     handle: appName,
+    status: 'provisioned',
     _links: {
       account: {href: '/accounts/1'}
     }
@@ -92,6 +94,7 @@ test('/apps/:id/deprovision will show deprovision error', function(){
   stubApp({
     id: appId,
     handle: appName,
+    status: 'provisioned',
     _links: {
       account: {href: '/accounts/1'}
     }

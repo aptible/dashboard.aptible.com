@@ -9,6 +9,7 @@ let appHandle = 'my-app-handle';
 let url =`/apps/${appId}`;
 let gitRepo = 'git@aptible.com:my-app.git';
 let gettingStartedLink = config.externalUrls.gettingStartedDocs;
+let stackId = 'stack-one';
 
 module('Acceptance: Apps Show - Never deployed (app.status === "pending")', {
   setup: function() {
@@ -24,7 +25,10 @@ function setupAjaxStubs(sshKeys){
     id: appId,
     handle: appHandle,
     status: 'pending',
-    git_repo: gitRepo
+    git_repo: gitRepo,
+    _links: {
+      stack: {href: `/accounts/${stackId}`}
+    }
   });
 
   stubRequest('get', '/users/:user_id/ssh_keys', function(request){
@@ -121,5 +125,26 @@ test(`visit ${url} when user has ssh keys`, function(assert){
         'ssh key step number has checkmark');
 
     expectNoLink('settings/ssh', {context: sshKeyStep});
+  });
+});
+
+test(`visit ${url} when app has not been deployed, click destroy link`, function(assert){
+  expect(2);
+
+  stubRequest('delete', `/apps/${appId}`, function(request){
+    ok(true, 'app is deleted');
+    return this.noContent();
+  });
+
+  stubStack({
+    id: stackId
+  });
+
+  setupAjaxStubs([]);
+  signInAndVisit(url);
+
+  click(`a:contains(destroy ${appHandle})`);
+  andThen(function(){
+    equal(currentPath(), 'stack.apps.new', 'redirected to apps');
   });
 });
