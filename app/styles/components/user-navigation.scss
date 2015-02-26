@@ -1,3 +1,14 @@
+header.navbar.current-user-header {
+  background-image: linear-gradient(-180deg, #fafafa 0%, #f0f0f0 100%);
+  border-bottom: 1px solid #dfdfdf;
+}
+
+header.navbar.primary-nav-header {
+  border-top: 0;
+  background: #fafafa;
+  padding: 9px 8px 8px;
+}
+
 .nav.user-nav {
   .dropdown.current-user {
     .dropdown-menu {

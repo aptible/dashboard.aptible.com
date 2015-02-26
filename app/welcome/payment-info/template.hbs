@@ -1,10 +1,12 @@
-{{#login-box}}
+{{pricing-page-header plan=model.plan}}
+
+<div class="signup-form payment-information">
   <div class="row">
     <div class="col-xs-5 col-xs-offset-1">
 
       <div class="panel panel-subdued panel-focused">
         <div class="panel-heading">
-          <h3>Payment Method</h3>
+          <h3>Add a payment method</h3>
         </div>
         <div class="panel-body">
           <form role="form">
@@ -15,40 +17,23 @@
             {{/if}}
 
             <div class="form-group">
-              {{select-plan value=model.plan name="plan"}}
+              {{input class="form-control" value=model.name name="name" placeholder="Name on card"}}
             </div>
 
             <div class="form-group">
-              {{input class="form-control" value=model.name name="name" placeholder="Name on Card"}}
+              {{input class="form-control number" value=model.number name="number" placeholder="Card number"}}
+              {{input class="form-control cvc" value=model.cvc name="cvc" placeholder="CVV code" }}
             </div>
 
             <div class="form-group">
-              {{input class="form-control" value=model.number name="number" placeholder="Card Number"}}
-            </div>
-
-            <div class="row">
-              <div class="col-xs-6">
-                <div class="expiration-month">
-                  <div class="form-group">
-                    {{select-month value=model.expMonth name="exp-month"}}
-                  </div>
-                </div>
-
-                <div class="expiration-year">
-                  <div class="form-group">
-                    {{select-year value=model.expYear name="exp-year"}}
-                  </div>
-                </div>
+              <div class="expiration-month">
+                {{select-month value=model.expMonth name="exp-month"}}
               </div>
-              <div class="col-xs-6">
-                <div class="form-group">
-                  {{input class="form-control" value=model.cvc name="cvc" placeholder="Secure code"}}
-                </div>
+              <div class="expiration-year">
+                {{select-year value=model.expYear name="exp-year"}}
               </div>
-            </div>
 
-            <div class="form-group">
-              {{input class="form-control" value=model.zip name="zip" placeholder="Billing Zip Code"}}
+              {{input class="form-control zip" value=model.zip name="zip" placeholder="Billing zip"}}
             </div>
 
             <button class="btn btn-primary btn-block btn-lg" {{action 'create' model}}>Save</button>
@@ -59,16 +44,24 @@
     </div>
     <div class="col-xs-5">
       <div class="welcome-info">
-        {{#if firstApp.appHandle}}
-          <h2>Add a payment method to provision {{firstApp.appHandle}}.</h2>
-        {{else}}
-          <h2>Add a payment method to your free Development account</h2>
-        {{/if}}
-
-        <p>
-          Signing up for a development account is free.  You will not be charged.  Once your app is provisioned and you scale containers, you will be charged $0.06/container/hour.
-        </p>
+        {{plan-description app=firstApp plan=model.plan}}
       </div>
     </div>
   </div>
-{{/login-box}}
+
+  <div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+      {{change-plans value=model.plan}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="signup-progress-wrapper">
+      <ul class="signup-progress-indicator">
+        <li></li>
+        <li></li>
+        <li class="active"></li>
+      </ul>
+    </div>
+  </div>
+</div>

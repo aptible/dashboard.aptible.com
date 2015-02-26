@@ -5,10 +5,10 @@ import {
 
 import Ember from 'ember';
 
-moduleForComponent('select-plan', 'SelectPlanComponent', {
+moduleForComponent('change-plan', 'ChangePlanComponent', {
   needs: [],
   setup: function() {
-    this.container.register('view:select', Ember.Select);
+
   }
 });
 

@@ -1,0 +1,40 @@
+.payment-information {
+  .form-group {
+    @extend %clearfix;
+  }
+
+  input {
+    &.number,
+    &.cvc,
+    &.zip {
+      float: left;
+    }
+  }
+
+  input.number {
+    margin-right: 20px;
+    width: 200px;
+  }
+
+  input.cvc {
+    float: right;
+    width: 115px;
+  }
+
+  input.zip {
+    float: right;
+    width: 115px;
+  }
+
+  .expiration-month {
+    float: left;
+    margin-right: 20px;
+    width: 80px;
+  }
+
+  .expiration-year {
+    float: left;
+    margin-right: 20px;
+    width: 100px;
+  }
+}

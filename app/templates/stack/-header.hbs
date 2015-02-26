@@ -1,7 +1,7 @@
 <header class="resource-header">
   <div class="container">
 
-    <h1 class="resource-title">{{model.name}}</h1>
+    <h1 class="resource-title">{{model.handle}}</h1>
 
     <ul class="resource-metadata">
 
@@ -16,11 +16,6 @@
           <h3 class="resource-metadata-value"><span class="danger">Not Ready for PHI</span></h3>
         </li>
       {{/if}}
-
-      <li class="resource-metadata-item">
-        <h5 class="resource-metadata-title">Handle</h5>
-        <h3 class="resource-metadata-value">{{model.handle}}</h3>
-      </li>
 
       <li class="resource-metadata-item">
         <h5 class="resource-metadata-title">{{persistedApps.length}} Apps</h5>

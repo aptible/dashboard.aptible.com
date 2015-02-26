@@ -61,6 +61,11 @@
       max-width: 80%;
       margin-top: 14px;
     }
+
+    &:hover {
+      border-color: $color-bright-blue;
+      box-shadow: 0 0 4px rgba($color-bright-blue, 0.5);
+    }
   }
 
   .mysql .select-option img {

@@ -5,11 +5,11 @@
 @import "bower_components/aptible-sass/dist/styles/aptible_dashboard";
 
 @import "specific_resources/apps";
-@import "specific_resources/cards";
 @import "specific_resources/compliance_dashboard";
 @import "specific_resources/databases";
 @import "specific_resources/operations";
 @import "specific_resources/organizations";
+@import "specific_resources/payment-method";
 @import "specific_resources/resource";
 @import "specific_resources/roles";
 @import "specific_resources/service";
@@ -18,15 +18,16 @@
 @import "specific_resources/users";
 @import "specific_resources/verify";
 @import "specific_resources/vhost";
+@import "specific_resources/welcome";
 
-@import "components/resource-header";
+@import "components/button-with-confirmation";
+@import "components/change-plan";
 @import "components/clipboard";
 @import "components/config-form";
+@import "components/estimated-cost";
 @import "components/focus";
 @import "components/funnel";
 @import "components/provisioning";
+@import "components/resource-header";
 @import "components/slider";
-@import "components/estimated-cost";
-@import "components/login-box";
-@import "components/button-with-confirmation";
 @import "components/user-navigation";
