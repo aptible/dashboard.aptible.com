@@ -108,8 +108,8 @@ export default Ember.Route.extend({
       }).then(function(){
         saveProgress.set('currentStep', 6);
         route.transitionTo('index');
-      }, function(error,a,b) {
-        var error = error.message || error.responseJSON.message;
+      }, function(error) {
+        error = error.message || error.responseJSON.message;
         saveProgress.set('currentStep', 0);
         controller.set('error', error);
       });

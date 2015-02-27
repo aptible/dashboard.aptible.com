@@ -14,7 +14,7 @@ function visitPaymentInfoWithApp(options, userData){
   signInAndVisit(url, userData);
   andThen(function(){
     if (!options) {
-      return clickButton('Skip this step');
+      return clickButton('Do this later');
     }
 
     if (options.dbType) {
@@ -194,14 +194,14 @@ test('submitting valid payment info for development plan should create dev stack
   andThen(function(){
     stubStacks();
   });
-  fillInput('plan', 'development');
+
   clickButton('Save');
   andThen( () => {
     equal(currentPath(), 'stacks.index');
   });
 });
 
-test('submitting valid payment info for production plan should create dev and prod stacks', function() {
+test('submitting valid payment info for platform plan should create dev and prod stacks', function() {
   expect(7);
 
   stubStacks({}, []);
@@ -241,7 +241,7 @@ test('submitting valid payment info for production plan should create dev and pr
   andThen(function(){
     stubStacks();
   });
-  fillInput('plan', 'production');
+  clickButton('Switch to PHI-ready Platform plan');
   clickButton('Save');
   andThen( () => {
     equal(currentPath(), 'stacks.index');
