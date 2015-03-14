@@ -18,13 +18,25 @@
 
         {{#if model.stack.allowPHI}}
           <li class="resource-metadata-item">
-            <h5 class="resource-metadata-title">Dedicated Stack</h5>
+            <h5 class="resource-metadata-title">Dedicated Environment</h5>
             <h3 class="resource-metadata-value"><span class="success">PHI Ready</span></h3>
           </li>
         {{else}}
           <li class="resource-metadata-item">
-            <h5 class="resource-metadata-title">Shared Stack</h5>
+            <h5 class="resource-metadata-title">Shared Environment</h5>
             <h3 class="resource-metadata-value"><span class="danger">Not Ready for PHI</span></h3>
+          </li>
+        {{/if}}
+
+        <li class="resource-metadata-item">
+          <h5 class="resource-metadata-title">Git Remote</h5>
+          <h3 class="resource-metadata-value">{{model.gitRepo}}</h3>
+        </li>
+
+        {{#if model.currentImage}}
+          <li class="resource-metadata-item current-git-ref">
+            <h5 class="resource-metadata-title">Current Git Ref</h5>
+            <h3 class="resource-metadata-value">{{model.currentImage.gitRef}}</h3>
           </li>
         {{/if}}
 
@@ -36,13 +48,6 @@
               on
               {{format-date model.lastDeployOperation.createdAt}}
             </h3>
-          </li>
-        {{/if}}
-
-        {{#if model.currentImage}}
-          <li class="resource-metadata-item current-git-ref">
-            <h5 class="resource-metadata-title">Current Git Ref</h5>
-            <h3 class="resource-metadata-value">{{model.currentImage.gitRef}}</h3>
           </li>
         {{/if}}
       {{/if}}
