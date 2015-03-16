@@ -13,6 +13,10 @@
         <span class="empty-service">Deprovisioned</span>
       {{/if}}
 
+      {{#if app.isPending}}
+        <span class="empty-service">Never deployed</span>
+      {{/if}}
+
       {{#if app.isRunning}}
         {{#each app.services as |service|}}
           <span class="service-badge">

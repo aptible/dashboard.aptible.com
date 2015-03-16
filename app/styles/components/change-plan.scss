@@ -1,0 +1,16 @@
+.change-plan-callout {
+  margin: 50px 0 0;
+
+  .panel.panel-subdued {
+    box-shadow: none;
+    background: #fafafa;
+    padding: 25px;
+    text-align: center;
+
+    h3 {
+      font-size: 22px;
+      font-weight: $weight-normal;
+      margin: 0 0 15px;
+    }
+  }
+}

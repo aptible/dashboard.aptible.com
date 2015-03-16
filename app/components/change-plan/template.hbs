@@ -1,0 +1,11 @@
+<div class="panel panel-default panel-subdued">
+  {{#if isDevelopment}}
+    <h3>Need to store PHI?</h3>
+    <button class="btn btn-default btn-sm"  {{action 'setPlan' 'platform' }}>Switch to PHI-ready Platform plan</button>
+  {{/if}}
+
+  {{#if isPlatform}}
+    <h3>Not ready for PHI Yet?</h3>
+    <button class="btn btn-default btn-sm" {{action 'setPlan' 'development'}}>Switch to Development plan</button>
+  {{/if}}
+</div>

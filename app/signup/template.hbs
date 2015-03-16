@@ -24,7 +24,7 @@
               value=model.name
               autofocus=true
               class="form-control"
-              placeholder="Your Full Name"}}
+              placeholder="Full Name"}}
           </div>
 
           <div class="form-group">
@@ -39,7 +39,7 @@
               name="organization"
               value=organization.name
               class="form-control"
-              placeholder="Organization"}}
+              placeholder="Organization Name"}}
           </div>
 
           <div class="form-group">
@@ -50,10 +50,12 @@
           </div>
 
           <div class="form-group">
-            {{input type="password"
-              value=model.password
-              class="form-control"
-              placeholder="Password"}}
+            {{#bs-popover bs-container='body' placement='right' bs-trigger='focus' title="Password complexity" content="Your password must be 8 characters, contain an upper and lowercase letter and a number."}}
+              {{input type="password"
+                value=model.password
+                class="form-control"
+                placeholder="Password"}}
+            {{/bs-popover}}
           </div>
 
           <div class="panel-submit">
@@ -68,13 +70,15 @@
         <h2>
           Aptible is a deployment platform built to automate HIPAA compliance
         </h2>
-
         <p>
-          Run the applications and databases of your choice. Let us manage servers, network topology, security, backups, encryption,
+          We run the entire backend you need to securely host and deliver your apps: web servers, app servers, databases, load balancers, network security, backups, encryption, permissions - everything.
+        </p>
+        <p>
+          And because we run your ops, our compliance engines can help you implement an entire HIPAA compliance program at a fraction of the traditional cost.
         </p>
 
         <p>
-          Aptible will work great with your app’s language or framework.  Check out our getting started guides for help deploying your app.
+          Aptible works great with all languages and frameworks. <a href="https://support.aptible.com/quickstart" target="_blank">Check out our getting started guides</a> for help deploying your app.
         </p>
 
         {{query-box}}

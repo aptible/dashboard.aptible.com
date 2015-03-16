@@ -97,7 +97,7 @@ test(`visit ${url} shows basic stack info`, function() {
     ok(find('h5:contains(Shared Stack)').length,
        'has shared stack header');
 
-    ok(find(`h3:contains(${stackHandle})`).length,
+    ok(find(`h1:contains(${stackHandle})`).length,
        `has stack handle: ${stackHandle}`);
 
     ok(find(`h5:contains(${appData.length} Apps)`).length,

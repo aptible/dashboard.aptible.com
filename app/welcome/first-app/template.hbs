@@ -1,17 +1,18 @@
-{{#login-box}}
+<div class="page-header">
+  <h1>Create Your Production Environment</h1>
+</div>
+
+<div class="signup-form create-first-app">
   <div class="row">
     <div class="col-xs-5 col-xs-offset-1">
       <div class="panel panel-subdued panel-focused">
         <div class="panel-heading">
-          <div class="panel-heading-link">
-            {{link-to 'Skip this step →' 'welcome.payment-info'}}
-          </div>
-          <h3>Get Started</h3>
+          <h3>Configure your environment</h3>
         </div>
         <div class="panel-body">
           <div class="form-group">
             <label class="block">
-              Stack Handle
+              Environment Handle
               <span class="label-helper">
                 Lowercase alphanumerics only
               </span>
@@ -33,6 +34,7 @@
               placeholder="e.g., app-prod"
               name="app-handle"
               value=model.appHandle
+              autofocus="true"
               }}
           </div>
           <div class="form-group">
@@ -86,19 +88,46 @@
           </button>
         </div>
       </div>
+      <div class="skip-link">
+        {{link-to 'Do this later →' 'welcome.payment-info'}}
+      </div>
     </div>
 
     <div class="col-xs-5">
       <div class="welcome-info">
-        <h2>Creating your first App</h2>
-        <p>
-          Aptible’s platform allows you to deploy applications to a HIPAA-compliant cloud.  Code is delivered to our servers using Git.
-        </p>
+        <section class="welcome-section">
+          <h2>Your own private environment</h2>
+          <p>
+            Each Aptible Production Account's resources are deployed into an isolated network of dedicated instances. Access to and from applications is strictly controlled and logged for auditing.
+          </p>
+        </section>
 
-        <p>
-          Aptible offers data storage options with auditable and encrypted back-ups.  If your app requires a database you don’t see here, let us know.
-        </p>
+        <section class="welcome-section">
+          <h4>Create an app to run your code</h4>
+
+          <p>
+            Aptible is language- and framework-agnostic. If it runs on Linux, it runs on Aptible.
+          </p>
+        </section>
+
+        <section class="welcome-section">
+          <h4>Create a database to store PHI</h4>
+
+          <p>
+            Databases are further isolated in a private subnet, addressable only from within the network, and accessible only to the account's own apps, or via authenticated tunnel.
+          </p>
+        </section>
       </div>
     </div>
   </div>
-{{/login-box}}
+
+  <div class="row">
+    <div class="signup-progress-wrapper">
+      <ul class="signup-progress-indicator">
+        <li></li>
+        <li class="active"></li>
+        <li></li>
+      </ul>
+    </div>
+  </div>
+</div>
