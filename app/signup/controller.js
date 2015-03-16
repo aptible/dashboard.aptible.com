@@ -7,7 +7,19 @@ export default Ember.Controller.extend(EmberValidations.Mixin, {
   validations: {
     'organization.name': {
       presence: true,
-      length: { minimum: 5 }
+      length: { minimum: 3 }
+    },
+    'model.name': {
+      presence: true,
+      length: { minimum: 3 }
+    },
+    'model.email': {
+      presence: true,
+      email: true
+    },
+    'model.password': {
+      presence: true,
+      'password-complexity': true
     }
   },
 
@@ -31,3 +43,4 @@ export default Ember.Controller.extend(EmberValidations.Mixin, {
   }
 
 });
+
