@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  hasAbility: false, // cannot use `isVisible` with `tagName: ''`
+  hasAbility: false,
   tagName: '', // tagName must be exactly '' to render this component with no surrounding tag
 
   user: null,
