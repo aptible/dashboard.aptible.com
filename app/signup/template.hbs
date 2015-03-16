@@ -20,42 +20,47 @@
 
         <div class="panel-body">
           <div class="form-group">
-            {{input type="text"
-              value=model.name
-              autofocus=true
-              class="form-control"
-              placeholder="Full Name"}}
+            <div class="input-group">
+              {{input type="text"
+                name="name"
+                value=model.name
+                autofocus=true
+                class="form-control"
+                placeholder="Full Name"}}
+              {{validation-feedback error=errors.model.name value=model.name}}
+            </div>
           </div>
 
           <div class="form-group">
-            {{#if hasSubmitted}}
-              {{#if errors.organization.name}}
-                <div class="alert alert-warning">
-                  Organization name {{errors.organization.name}}
-                </div>
-              {{/if}}
-            {{/if}}
-            {{input type="text"
-              name="organization"
-              value=organization.name
-              class="form-control"
-              placeholder="Organization Name"}}
+            <div class="input-group">
+              {{input type="text"
+                name="organization"
+                value=organization.name
+                class="form-control"
+                placeholder="Organization Name"}}
+
+              {{validation-feedback error=errors.organization.name value=organization.name}}
+            </div>
           </div>
 
           <div class="form-group">
-            {{input type="email"
-              value=model.email
-              class="form-control"
-              placeholder="Email"}}
+            <div class="input-group">
+              {{input type="email"
+                value=model.email
+                class="form-control"
+                placeholder="Email"}}
+              {{validation-feedback error=errors.model.email value=model.email}}
+            </div>
           </div>
 
           <div class="form-group">
-            {{#bs-popover bs-container='body' placement='right' bs-trigger='focus' title="Password complexity" content="Your password must be 8 characters, contain an upper and lowercase letter and a number."}}
+            <div class="input-group">
               {{input type="password"
                 value=model.password
                 class="form-control"
                 placeholder="Password"}}
-            {{/bs-popover}}
+              {{validation-feedback error=errors.model.password value=model.password}}
+            </div>
           </div>
 
           <div class="panel-submit">

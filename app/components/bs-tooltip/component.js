@@ -19,6 +19,9 @@ export default Ember.Component.extend(BootstrapComponentOptions, {
   tagName: 'span',
 
   setupTooltip: function(){
-    this.$(':first-child').tooltip(this.getBootstrapOptions());
+    var options = this.getBootstrapOptions();
+    var tooltip = this.$(':first-child').tooltip(options);
+
+    if(options.trigger = 'immediate') { tooltip.tooltip('show'); }
   }.on('didInsertElement')
 });
