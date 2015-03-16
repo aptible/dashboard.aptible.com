@@ -2,13 +2,13 @@ import Ember from 'ember';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
-var App;
+let App;
 
-var appId = '1';
-var appUrl = '/apps/' + appId;
-var appVhostsUrl = '/apps/' + appId + '/vhosts';
-var appVhostsApiUrl = '/apps/' + appId + '/vhosts';
-var appVhostsNewUrl = '/apps/' + appId + '/vhosts/new';
+let appId = '1';
+let appUrl = '/apps/' + appId;
+let appVhostsUrl = '/apps/' + appId + '/vhosts';
+let appVhostsApiUrl = '/apps/' + appId + '/vhosts';
+let appVhostsNewUrl = '/apps/' + appId + '/vhosts/new';
 
 var formInputNames = ['service', 'virtual-domain', 'certificate', 'private-key'];
 
@@ -69,6 +69,7 @@ test(`visit ${appVhostsNewUrl} shows creation form`, function(){
     ok(find('.panel-heading:contains(Create a new VHost)').length,
        'has header');
     expectInput('service', {input:'select'});
+    expectFocusedInput('service', {input:'select'});
     expectInput('virtual-domain');
     expectInput('certificate', {input:'textarea'});
     expectInput('private-key', {input:'textarea'});

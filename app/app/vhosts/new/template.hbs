@@ -17,10 +17,11 @@
 
           <div class="form-group">
             <label>Service</label>
-            {{view "select" content=services
+            {{view "autofocusable-select" content=services
                             selection=vhostService
                             name="service"
                             optionLabelPath="content.handle"
+                            autofocus=true
                             class="form-control"}}
           </div>
 

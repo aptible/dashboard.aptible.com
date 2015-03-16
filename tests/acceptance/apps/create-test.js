@@ -46,7 +46,7 @@ test(`visiting /stacks/:stack_id/apps without any apps redirects to ${url}`, fun
 });
 
 test(`visit ${url} shows basic info`, function(){
-  expect(5);
+  expect(6);
 
   signInAndVisit(url);
   andThen(function(){
@@ -55,6 +55,7 @@ test(`visit ${url} shows basic info`, function(){
     expectButton('Save App');
     expectButton('Cancel');
     titleUpdatedTo(`Create an App - ${stackHandle}`);
+    expectFocusedInput('handle');
   });
 });
 
