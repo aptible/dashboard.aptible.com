@@ -1,4 +1,4 @@
-let monthNames = [
+export let monthNames = [
   'January',
   'February',
   'March',
@@ -12,6 +12,3 @@ let monthNames = [
   'November',
   'December'
 ];
-
-export { monthNames };
-
