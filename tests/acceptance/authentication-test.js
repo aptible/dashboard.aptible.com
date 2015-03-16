@@ -187,9 +187,10 @@ test('Creating an account directs to welcome wizard', function() {
   stubOrganizations();
 
   var email = 'good@email.com';
-  var password = 'correct';
+  var password = 'Correct#Password1!3';
   var userUrl = '/users/my-user';
   var organization = 'Great Co.';
+  var name = 'Test User';
 
   stubRequest('post', '/users', function(request){
     var params = this.json(request);
@@ -222,10 +223,12 @@ test('Creating an account directs to welcome wizard', function() {
   });
 
   visit('/signup');
+  fillIn('input[name=name]', name);
   fillIn('input[type=email]', email);
   fillIn('input[type=password]', password);
   fillIn('input[name=organization]', organization);
   click('button:contains(Sign Up)');
+
   andThen(function(){
     equal(currentPath(), 'welcome.first-app', 'directs to first app');
   });
@@ -235,7 +238,7 @@ test('Creating an account waits on a valid organization name', function() {
   var email = 'good@email.com';
   var password = 'correct';
   var userUrl = '/users/my-user';
-  var organization = 'bad';
+  var organization = 'ba';
 
   visit('/signup');
   fillIn('input[type=email]', email);
@@ -244,7 +247,7 @@ test('Creating an account waits on a valid organization name', function() {
   click('button:contains(Sign Up)');
   andThen(function(){
     equal(currentPath(), 'signup', 'path does not change');
-    var error = find(':contains(minimum is 5 characters)');
+    var error = find(':contains(minimum is 3 characters)');
     ok(error.length, 'has error on the screen');
   });
 });

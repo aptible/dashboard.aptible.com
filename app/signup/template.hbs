@@ -20,11 +20,15 @@
 
         <div class="panel-body">
           <div class="form-group">
-            {{input type="text"
-              value=model.name
-              autofocus=true
-              class="form-control"
-              placeholder="Full Name"}}
+            <div class="input-group">
+              {{input type="text"
+                name="name"
+                value=model.name
+                autofocus=true
+                class="form-control"
+                placeholder="Full Name"}}
+              {{validation-feedback error=errors.model.name value=model.name}}
+            </div>
           </div>
 
           <div class="form-group">
