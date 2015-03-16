@@ -7,8 +7,8 @@ module.exports = function(environment) {
     baseURL: '/',
     locationType: 'auto',
 
-    authBaseUri: "http://auth.aptible.foundry.io",
-    apiBaseUri: "http://api.aptible.foundry.io",
+    authBaseUri: "http://localhost:4000",
+    apiBaseUri: "http://localhost:4001",
     aptibleHosts: {
       'legacy-dashboard': "http://localhost:3000",
       support: "https://support.aptible.com"
