@@ -156,10 +156,12 @@ export function resourceOperationsTest(options){
 
     equal(operations.length, 3, 'has 3 operations');
 
-    ['configure', 'deploy', 'execute'].forEach(function(type){
+    ['configure', 'deploy'].forEach(function(type){
       ok(find('.operation-type:contains(' + type + 'ed)').length,
          'has capitalized operation type: ' + type);
     });
+
+    ok(find('.operation-type:contains(SSHed)').length, 'converts execute to SSH');
 
     ['succeeded', 'failed'].forEach(function(type){
       ok(find('.operation-icon .status-'+ type).length,
