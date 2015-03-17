@@ -10,6 +10,7 @@ module.exports = function(environment) {
     authBaseUri: "http://localhost:4000",
     apiBaseUri: "http://localhost:4001",
     aptibleHosts: {
+      'compliance': 'http://localhost:3001',
       'legacy-dashboard': "http://localhost:3000",
       support: "https://support.aptible.com"
     },
@@ -85,7 +86,8 @@ module.exports = function(environment) {
     ENV.authBaseUri = "https://auth.aptible-staging.com";
     ENV.apiBaseUri = "https://api.aptible-staging.com";
     ENV.aptibleHosts = {
-      'legacy-dashboard': "http://dashboard.aptible-staging.com",
+      'compliance': 'https://compliance.aptible-staging.com',
+      'legacy-dashboard': "https://dashboard.aptible-staging.com",
       support: "https://support.aptible-staging.com"
     };
     ENV.segmentioKey = 'KsTMCT4BN5';
@@ -95,7 +97,8 @@ module.exports = function(environment) {
     ENV.authBaseUri = "https://auth.aptible.com";
     ENV.apiBaseUri = "https://api.aptible.com";
     ENV.aptibleHosts = {
-      'legacy-dashboard': "http://dashboard.aptible.com",
+      'compliance': 'https://compliance.aptible.com',
+      'legacy-dashboard': "https://dashboard.aptible.com",
       support: "https://support.aptible.com"
     };
     ENV.segmentioKey = 'rJGVn1qpBW';
