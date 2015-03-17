@@ -20,7 +20,7 @@ after_success:
     npm install divshot-cli -g &&
     ember build -e staging &&
     divshot push production -c divshot.staging.json -t $DIVSHOT_STAGING_KEY;
-  fi
+  fi;
   if [ "$TRAVIS_PULL_REQUEST" == 'false' ] && [ "$TRAVIS_BRANCH" == 'release' ]; then
     npm install divshot-cli -g &&
     ember build -e production &&
