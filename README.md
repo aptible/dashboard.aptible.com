@@ -46,7 +46,9 @@ Make use of the many generators for code, try `ember help generate` for more det
 
 ### Deploying
 
-Specify what it takes to deploy your app.
+The `master` branch of this repo is deployed to [diesel.aptible-staging.com](http://diesel.aptible-staging.com/) upon a successful build.
+
+The `release` branch of this repo is deployed to [diesel.aptible.com](https://diesel.aptible.com/) upon a successful build.
 
 ### Deploying via CI
 
