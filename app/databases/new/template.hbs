@@ -68,9 +68,11 @@
 </div>
 
 <div class="resource-actions">
-  <button {{action 'cancel'}} class="btn btn-default" type='button'>
-    Cancel
-  </button>
+  {{#if showCancelButton}}
+    <button {{action 'cancel'}} class="btn btn-default" type='button'>
+      Cancel
+    </button>
+  {{/if}}
 
   <button {{action 'create'}} class="btn btn-primary" type='submit'>
     Save Database

@@ -6,16 +6,17 @@ var App;
 let url = '/stacks/my-stack-1/apps/new';
 let appIndexUrl = '/stacks/my-stack-1/apps';
 let stackId = 'my-stack-1';
+let stackHandle = 'my-stack-handle';
 
 module('Acceptance: App Create', {
   setup: function() {
     App = startApp();
     stubStacks({ includeApps: true });
     stubStack({
-      id: 'my-stack-1',
-      handle: 'my-stack-1',
+      id: stackId,
+      handle: stackHandle,
       _links: {
-        apps: { href: '/accounts/my-stack-1/apps' },
+        apps: { href: `/accounts/${stackId}/apps` },
         organization: { href: '/organizations/1' }
       }
     });
@@ -34,10 +35,18 @@ test(`${url} requires authentication`, function(){
   expectRequiresAuthentication(url);
 });
 
+test(`visiting /stacks/:stack_id/apps without any apps redirects to ${url}`, function() {
+  stubStack({ id: stackId });
+  stubOrganization();
+  signInAndVisit(`/stacks/${stackId}/apps`);
+
+  andThen(function() {
+    equal(currentPath(), 'stack.apps.new');
+  });
+});
+
 test(`visit ${url} shows basic info`, function(){
   expect(5);
-  let stackHandle = 'my-new-stack';
-  stubStack({id:stackId, handle: stackHandle});
 
   signInAndVisit(url);
   andThen(function(){
@@ -63,6 +72,17 @@ test(`visit ${url} and cancel`, function(){
 
     ok( !findApp(appHandle).length,
         'does not show app');
+  });
+});
+
+test(`visit ${url} without apps show no cancel button`, function(){
+  stubStack({id: stackId}); // stubs a stack with no apps
+  signInAndVisit(url);
+
+  andThen(function(){
+    equal(currentPath(), 'stack.apps.new');
+    let button = findButton('Cancel');
+    ok(!button.length, 'Cancel button is not present');
   });
 });
 

@@ -30,9 +30,11 @@
 </div>
 
 <div class="resource-actions">
-  <button class="btn btn-default" {{action 'cancel'}}>
-    Cancel
-  </button>
+  {{#if showCancelButton}}
+    <button class="btn btn-default" {{action 'cancel'}}>
+      Cancel
+    </button>
+  {{/if}}
   <button class="btn btn-primary" {{action 'create'}}>
     Save App
   </button>
