@@ -27,7 +27,7 @@ module('Acceptance: App Create', {
 });
 
 function findApp(appHandle){
-  return find(`.app-handle:contains(${appHandle})`);
+  return find(`:contains(${appHandle})`);
 }
 
 test(`${url} requires authentication`, function(){
@@ -97,15 +97,20 @@ test(`visit ${url} and create an app`, function(){
     });
   });
 
+  // Stub for app deploy
+  stubRequest('get', '/users/:user_id/ssh_keys', function(request){
+    return this.success({ _embedded: { ssh_keys: [] } });
+  });
+
   signInAndVisit(url);
   andThen(function(){
     fillInput('handle', appHandle);
     clickButton('Save App');
   });
   andThen(function(){
-    equal(currentPath(), 'stack.apps.index');
+    equal(currentPath(), 'app.deploy');
 
-    ok( findApp(appHandle).length === 1,
+    ok( findApp(appHandle).length > 0,
         'lists new app on index' );
   });
 });
