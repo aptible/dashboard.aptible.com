@@ -17,5 +17,14 @@ export default DS.Model.extend({
   app: null,
   vhost: null,
   logDrain: null,
-  service: null
+  service: null,
+
+  verb: function() {
+    var type = this.get('type');
+    if(type === 'execute') {
+      type = 'SSH';
+    }
+
+    return `${type}ed`;
+  }.property('type')
 });
