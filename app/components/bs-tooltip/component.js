@@ -22,6 +22,8 @@ export default Ember.Component.extend(BootstrapComponentOptions, {
     var options = this.getBootstrapOptions();
     var tooltip = this.$(':first-child').tooltip(options);
 
-    if(options.trigger = 'immediate') { tooltip.tooltip('show'); }
+    if(options.trigger === 'immediate') {
+      tooltip.tooltip('show');
+    }
   }.on('didInsertElement')
 });

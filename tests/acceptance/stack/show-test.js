@@ -94,7 +94,7 @@ test(`visit ${url} shows basic stack info`, function() {
     expectLink(`stacks/${stackId}/logging`);
     expectLink(`stacks/${stackId}/apps`);
 
-    ok(find('h5:contains(Shared Stack)').length,
+    ok(find('h5:contains(Shared Environment)').length,
        'has shared stack header');
 
     ok(find(`h1:contains(${stackHandle})`).length,

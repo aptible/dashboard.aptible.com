@@ -22,7 +22,7 @@ test('visiting /apps/my-app-id shows basic app info', function() {
   var serviceId = 'service-1';
 
   let deployUserName = 'Skylar Anderson';
-  let currentGitRef = 'b2bac0d8f9d5ab83ae2cc879b05cb8b61ca628ce';
+  let currentGitRef = 'b2bac0d8f9';
 
   stubStack({
     id: 'my-stack-1',

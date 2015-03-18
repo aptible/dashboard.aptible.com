@@ -60,6 +60,10 @@ function expectNoTab(tabName){
   }
 }
 
+function expectNoTabs() {
+  ok(!!find('.resource-navigation'), 'has no tabs');
+}
+
 test(`visit ${url} when app has not been deployed`, function(assert){
   let sshKeys = [];
   setupAjaxStubs(sshKeys);
@@ -72,15 +76,18 @@ test(`visit ${url} when app has not been deployed`, function(assert){
         'display app handle');
 
     // displayed tabs
-    expectTab('Deploy');
-    expectTab('Activity');
-    expectTab('Deprovision');
+    //expectTab('Deploy');
+    //expectTab('Activity');
+    //expectTab('Deprovision');
 
     // hidden tabs
-    expectNoTab('Services');
-    expectNoTab('Domains');
+    //expectNoTab('Services');
+    //expectNoTab('Domains');
 
     // displayed steps
+
+    expectNoTabs();
+
     let steps = [
       {title: 'Add your SSH Key', links: ['settings/ssh', gettingStartedLink]},
       {title: 'Add a Procfile to your App', links:[gettingStartedLink]},
@@ -143,7 +150,7 @@ test(`visit ${url} when app has not been deployed, click destroy link`, function
   setupAjaxStubs([]);
   signInAndVisit(url);
 
-  click(`a:contains(destroy ${appHandle})`);
+  click(`a:contains(Destroy ${appHandle})`);
   andThen(function(){
     equal(currentPath(), 'stack.apps.new', 'redirected to apps');
   });
