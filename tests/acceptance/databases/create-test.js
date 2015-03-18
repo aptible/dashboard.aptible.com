@@ -6,16 +6,17 @@ var App;
 let url = '/stacks/my-stack-1/databases/new';
 let dbIndexUrl = '/stacks/my-stack-1/databases';
 let stackId = 'my-stack-1';
+let stackHandle = 'my-stack-handle';
 
 module('Acceptance: Database Create', {
   setup: function() {
     App = startApp();
     stubStacks({ includeDatabases: true });
     stubStack({
-      id: 'my-stack-1',
-      handle: 'my-stack-1',
+      id: stackId,
+      handle: stackHandle,
       _links: {
-        databases: { href: '/accounts/my-stack-1/databases' },
+        databases: { href: `/accounts/${stackId}/databases` },
         organization: { href: '/organizations/1' }
       }
     });
@@ -44,11 +45,20 @@ test(`visiting /stacks/:stack_id/databases without any databases redirects to ${
   });
 });
 
-test(`visit ${url} shows basic info`, function(){
-  let stackHandle = 'my-cool-handle';
-  stubStack({id: stackId, handle: stackHandle});
+test(`visit ${url} when stack has no databases does not show cancel`, function(){
+  stubStack({ id: stackId }); // stubs a stack with no databases
   stubOrganization();
+  signInAndVisit(url);
 
+  andThen(function() {
+    equal(currentPath(), 'stack.databases.new');
+    let button = findButton('Cancel');
+    ok(!button.length, 'has no cancel button');
+  });
+});
+
+test(`visit ${url} shows basic info`, function(){
+  stubOrganization();
   signInAndVisit(url);
 
   andThen(function(){
