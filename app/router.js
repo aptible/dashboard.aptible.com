@@ -77,6 +77,10 @@ Router.map(function() {
     this.route("first-app");
     this.route("payment-info");
   });
+
+  this.route("organization", {path: "/organizations/:organization_id"}, function() {
+    this.route("members");
+  });
 });
 
 export default Router;
