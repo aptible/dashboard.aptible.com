@@ -2,18 +2,24 @@ import Ember from 'ember';
 import DisallowAuthenticated from "../../mixins/routes/disallow-authenticated";
 
 export default Ember.Route.extend(DisallowAuthenticated, {
-  model: function(){
+  model() {
     return this.store.createRecord('password-reset-request');
   },
 
+  resetController(controller) {
+    controller.setProperties({
+      error: null,
+      hasSubmitted: false
+    });
+  },
+
   actions: {
-    reset: function(model){
+    reset(model) {
       model.save().then( () => {
         this.transitionTo('login');
       }, () => {
-        this.controllerFor('password/reset').set('error', `
-          There was an error resetting your password.
-        `);
+        this.controller.set(
+          'error', `There was an error resetting your password. `);
       });
     },
     willTransition() {

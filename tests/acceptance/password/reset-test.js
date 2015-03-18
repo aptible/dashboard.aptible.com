@@ -2,7 +2,7 @@ import Ember from 'ember';
 import startApp from '../../helpers/start-app';
 import { stubRequest, jsonMimeType } from '../../helpers/fake-server';
 
-var App;
+let App;
 
 module('Acceptance: PasswordReset', {
   setup: function() {
@@ -16,6 +16,8 @@ module('Acceptance: PasswordReset', {
 test('visiting /password/reset works', function() {
   visit('/password/reset');
   andThen(function(){
+    expectInput('email');
+    expectButton('Email me reset instructions');
     equal(currentPath(), 'password.reset');
   });
 });
@@ -32,7 +34,7 @@ test('visiting /password/reset signed in redirects to index', function() {
 
 test('visiting /password/reset and submitting an email creates password reset', function() {
   expect(2);
-  var email = 'myEmail@email.com';
+  let email = 'myEmail@email.com';
 
   stubRequest('post', '/password/resets/new', function(request){
     var json = this.json(request);
@@ -41,15 +43,15 @@ test('visiting /password/reset and submitting an email creates password reset', 
   });
 
   visit('/password/reset');
-  fillIn('[type=email]', email);
-  click('button:contains(Email me reset instructions)');
+  fillInput('email', email);
+  clickButton('Email me reset instructions');
   andThen(function(){
     equal(currentPath(), 'login');
   });
 });
 
 test('visiting /password/reset and submitting an email handles error and resets upon departure', function() {
-  expect(5);
+  expect(4);
   var email = 'myEmail@email.com';
 
   stubRequest('post', '/password/resets/new', function(request){
@@ -57,17 +59,23 @@ test('visiting /password/reset and submitting an email handles error and resets 
   });
 
   visit('/password/reset');
-  fillIn('[type=email]', email);
-  click('button:contains(Email me reset instructions)');
-  andThen(function(){
-    ok(find(':contains(There was an error resetting)'), 'error is on the page');
+  fillInput('email', email);
+  clickButton('Email me reset instructions');
+
+  andThen(() => {
+    let error = find('.alert');
+
+    ok(error.text().indexOf('There was an error resetting') > -1,
+       'error is on the page');
     equal(currentPath(), 'password.reset');
   });
-  visit('/login');
-  visit('/password/reset');
-  andThen(function(){
-    ok(find(':contains(There was an error resetting)').length === 0, 'error is not on the page');
-    ok(find('[type=email]'), 'email prompt is on the page');
+
+  visit('/login'); // go away
+  visit('/password/reset'); // come back
+
+  andThen(() => {
+    let error = find('.alert');
+    ok(!error.length, 'error is not shown');
     equal(currentPath(), 'password.reset');
   });
 });

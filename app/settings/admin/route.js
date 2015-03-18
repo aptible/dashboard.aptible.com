@@ -1,12 +1,22 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  model: function(){
+  model(){
     return this.session.get('currentUser');
   },
 
+  resetController(controller){
+    controller.setProperties({
+      changingEmail: false,
+      changingPassword: false,
+
+      passwordError: null,
+      emailError: null
+    });
+  },
+
   actions: {
-    changePassword: function(){
+    changePassword(){
       var controller = this.controller;
 
       // Changing password is a 2-step process. We show the
@@ -34,30 +44,28 @@ export default Ember.Route.extend({
       });
     },
 
-    changeEmail: function(){
-      var controller = this.controller;
-
+    changeEmail(){
       // Changing email is a 2-step process. We show the
       // "enter current password" input after clicking the button once
-      if (!controller.get('changingEmail')) {
-        controller.set('changingEmail', true);
+      if (!this.controller.get('changingEmail')) {
+        this.controller.set('changingEmail', true);
         return;
       }
 
-      controller.set('emailError', null);
+      this.controller.set('emailError', null);
 
-      var user = this.currentModel;
+      let user = this.currentModel;
 
-      user.save().catch(function(e){
+      user.save().catch( (e) => {
         var message = e.responseJSON ? e.responseJSON.message : e.message;
         if (!message) { message = 'Unknown error'; }
-        controller.set('emailError',message);
-      }).finally(function(){
+        this.controller.set('emailError',message);
+      }).finally( () => {
 
         // Clears the current password input
         user.set('currentPassword', null);
 
-        controller.set('changingEmail', false);
+        this.controller.set('changingEmail', false);
       });
     }
   }

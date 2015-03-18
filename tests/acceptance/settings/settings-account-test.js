@@ -2,15 +2,16 @@ import Ember from 'ember';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
-var App;
+let App;
 
-var settingsUrl = '/settings';
-var settingsAccountUrl = settingsUrl + '/admin';
-var userId = 'user1'; // from signInAndVisit helper
-var userEmail = 'stubbed-user@gmail.com'; // from signInAndVisit helper
-var userName = 'stubbed user'; // from signInAndVisit helper
+let settingsUrl = '/settings';
+let settingsAccountUrl = `${settingsUrl}/admin`;
+let settingsProfileUrl = `${settingsUrl}/profile`;
+let userId = 'user1'; // from signInAndVisit helper
+let userEmail = 'stubbed-user@gmail.com'; // from signInAndVisit helper
+let userName = 'stubbed user'; // from signInAndVisit helper
 
-var userApiUrl = '/users/' + userId;
+let userApiUrl = '/users/' + userId;
 
 module('Acceptance: User Settings: Account', {
   setup: function() {
@@ -21,32 +22,6 @@ module('Acceptance: User Settings: Account', {
     Ember.run(App, 'destroy');
   }
 });
-
-// Helper methods
-
-function emailInput(){
-  return find('input[name="email"]');
-}
-
-function changeEmailButton(){
-  return find('button:contains(Change email)');
-}
-
-function passwordInput(){
-  return find('input[name="password"]');
-}
-
-function confirmPasswordInput(){
-  return find('input[name="confirm-password"]');
-}
-
-function currentPasswordInput(){
-  return find('input[name="current-password"]');
-}
-
-function changePasswordButton(){
-  return find('button:contains(Change password)');
-}
 
 test(settingsAccountUrl + ' requires authentication', function(){
   expectRequiresAuthentication(settingsAccountUrl);
@@ -61,19 +36,21 @@ test('visit ' + settingsAccountUrl + ' shows change password form', function(){
     ok(find('h3:contains(Change Your Password)').length,
        'has change password header' );
 
-    ok(passwordInput().length, 'has password input');
-    ok(confirmPasswordInput().length, 'has confirm password input');
-    ok(changePasswordButton().length, 'has change password button');
-    ok(!currentPasswordInput().length, 'shows no current password input');
-    click(changePasswordButton());
+    expectInput('password');
+    expectInput('confirm-password');
+    expectButton('Change password');
+    let currentPasswordInput = findInput('current-password');
+    ok(!currentPasswordInput.length, 'shows no current password input');
+
+    clickButton('Change password');
   });
 
   andThen(function(){
-    ok( currentPasswordInput().length, 'shows current password input');
+    expectInput('current-password');
   });
 });
 
-test('visit ' + settingsAccountUrl + ' allows changing password', function(){
+test(`visit ${settingsAccountUrl} allows changing password`, function(){
   expect(5);
 
   signInAndVisit(settingsAccountUrl);
@@ -93,28 +70,30 @@ test('visit ' + settingsAccountUrl + ' allows changing password', function(){
   });
 
   andThen(function(){
-    fillIn(passwordInput(), newPassword );
-    fillIn(confirmPasswordInput(), newPassword );
-    click(changePasswordButton());
+    fillInput('password', newPassword);
+    fillInput('confirm-password', newPassword);
+    clickButton('Change password');
   });
 
   andThen(function(){
-    fillIn(currentPasswordInput(), oldPassword);
-    click(changePasswordButton());
+    fillInput('current-password', oldPassword);
+    clickButton('Change password');
   });
 
   andThen(function(){
-    ok(Ember.isBlank(passwordInput().val()), 'password input is empty');
-    ok(Ember.isBlank(confirmPasswordInput().val()),
-       'password confirm input is empty');
-    ok(!currentPasswordInput().length, 'current password input is not shown');
+    let passwordInput = findInput('password');
+    ok(Ember.isBlank(passwordInput.val()), 'password input is empty');
+
+    let confirmPasswordInput = findInput('confirm-password');
+    ok(Ember.isBlank(confirmPasswordInput.val()), 'confirm password input is empty');
+
+    ok(!findInput('current-password').length, 'current password input is not shown');
   });
 });
 
-test('visit ' + settingsAccountUrl + ' and change password with errors', function(){
-  expect(2);
+test(`visit ${settingsAccountUrl} and change password with errors`, function(){
+  expect(3);
 
-  signInAndVisit(settingsAccountUrl);
 
   var newPassword = 'abcdefghi',
       oldPassword = 'defghiljk';
@@ -129,25 +108,30 @@ test('visit ' + settingsAccountUrl + ' and change password with errors', functio
     });
   });
 
-  andThen(function(){
-    fillIn(passwordInput(), newPassword );
-    fillIn(confirmPasswordInput(), newPassword );
-    click(changePasswordButton());
-  });
+  signInAndVisit(settingsAccountUrl);
+  fillInput('password', newPassword);
+  fillInput('confirm-password', newPassword);
+  clickButton('Change password');
+  fillInput('current-password', oldPassword);
+  clickButton('Change password');
 
   andThen(function(){
-    fillIn(currentPasswordInput(), oldPassword);
-    click(changePasswordButton());
-  });
-
-  andThen(function(){
-    var error = find('.alert');
+    let error = find('.alert');
     ok(error.length, 'shows error');
     ok(error.text().indexOf('Invalid password') > -1,
        'shows error message');
   });
+
+  visit(settingsProfileUrl); // go away
+  visit(settingsAccountUrl); // come back
+
+  andThen( () => {
+    let error = find('.alert');
+    ok(!error.length, 'error is not shown anymore');
+  });
 });
-test('visit ' + settingsAccountUrl + ' shows change email form', function(){
+
+test(`visit ${settingsAccountUrl} shows change email form`, function(){
   signInAndVisit(settingsAccountUrl);
 
   andThen(function(){
@@ -156,32 +140,30 @@ test('visit ' + settingsAccountUrl + ' shows change email form', function(){
     ok( find('h3:contains(Change Your Email)').length,
         'has change email header' );
 
-    ok( emailInput().length,
-        'has email input');
+    expectInput('email');
+    equal(findInput('email').val(), userEmail,
+          'email input has user email value');
 
-    equal( emailInput().val(), userEmail,
-           'email input has user email value');
-
-    ok(!currentPasswordInput().length,
+    ok(!findInput('current-password').length,
        'does not show current password input');
 
-    ok( changeEmailButton().length, 'has change email button');
-    click(changeEmailButton());
+    expectButton('Change email');
+    clickButton('Change email');
   });
 
   andThen(function(){
-    ok(currentPasswordInput().length, 'shows current password input');
-    ok(changeEmailButton().length, 'still shows change email button');
+    expectInput('current-password');
+    expectButton('Change email');
   });
 });
 
-test('visit ' + settingsAccountUrl + ' allows change email', function(){
+test(`visit ${settingsAccountUrl} allows change email`, function(){
   expect(2);
 
   signInAndVisit(settingsAccountUrl);
 
-  var newEmail = 'newEmail@example.com';
-  var currentPassword = 'alkjsdf';
+  let newEmail = 'newEmail@example.com';
+  let currentPassword = 'alkjsdf';
 
   stubRequest('put', '/users/user1', function(request){
     var user = this.json(request);
@@ -196,23 +178,22 @@ test('visit ' + settingsAccountUrl + ' allows change email', function(){
   });
 
   andThen(function(){
-    fillIn(emailInput(), newEmail);
-    click(changeEmailButton());
+    fillInput('email', newEmail);
+    clickButton('Change email');
   });
 
   andThen(function(){
-    fillIn(currentPasswordInput(), currentPassword);
-    click(changeEmailButton());
+    fillInput('current-password', currentPassword);
+    clickButton('Change email');
   });
 });
 
-test('visit ' + settingsAccountUrl + ' change email and errors', function(){
-  expect(2);
+test(`visit ${settingsAccountUrl} change email and errors`, function(){
+  expect(3);
 
-  signInAndVisit(settingsAccountUrl);
 
-  var newEmail = 'newEmail@example.com';
-  var currentPassword = 'alkjsdf';
+  let newEmail = 'newEmail@example.com';
+  let currentPassword = 'alkjsdf';
 
   stubRequest('put', '/users/user1', function(request){
     var user = this.json(request);
@@ -224,19 +205,23 @@ test('visit ' + settingsAccountUrl + ' change email and errors', function(){
     });
   });
 
-  andThen(function(){
-    fillIn(emailInput(), newEmail);
-    click(changeEmailButton());
-  });
+  signInAndVisit(settingsAccountUrl);
+  fillInput('email', newEmail);
+  clickButton('Change email');
+  fillInput('current-password', currentPassword);
+  clickButton('Change email');
 
   andThen(function(){
-    fillIn(currentPasswordInput(), currentPassword);
-    click(changeEmailButton());
-  });
-
-  andThen(function(){
-    var error = find('.alert');
+    let error = find('.alert');
     ok(error.length, 'shows error div');
     ok(error.text().indexOf('Invalid password'), 'shows error message');
+  });
+
+  visit(settingsProfileUrl); // go away
+  visit(settingsAccountUrl); // come back
+
+  andThen( () => {
+    let error = find('.alert');
+    ok(!error.length, 'error is no longer shown');
   });
 });
