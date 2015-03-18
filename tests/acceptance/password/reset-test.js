@@ -48,8 +48,8 @@ test('visiting /password/reset and submitting an email creates password reset', 
   });
 });
 
-test('visiting /password/reset and submitting an email handles error', function() {
-  expect(2);
+test('visiting /password/reset and submitting an email handles error and resets upon departure', function() {
+  expect(5);
   var email = 'myEmail@email.com';
 
   stubRequest('post', '/password/resets/new', function(request){
@@ -61,6 +61,13 @@ test('visiting /password/reset and submitting an email handles error', function(
   click('button:contains(Email me reset instructions)');
   andThen(function(){
     ok(find(':contains(There was an error resetting)'), 'error is on the page');
+    equal(currentPath(), 'password.reset');
+  });
+  visit('/login');
+  visit('/password/reset');
+  andThen(function(){
+    ok(find(':contains(There was an error resetting)').length === 0, 'error is not on the page');
+    ok(find('[type=email]'), 'email prompt is on the page');
     equal(currentPath(), 'password.reset');
   });
 });

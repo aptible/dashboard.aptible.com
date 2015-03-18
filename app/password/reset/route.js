@@ -15,6 +15,9 @@ export default Ember.Route.extend(DisallowAuthenticated, {
           There was an error resetting your password.
         `);
       });
+    },
+    willTransition() {
+      this.controllerFor('password/reset').set('error', null);
     }
   }
 });
