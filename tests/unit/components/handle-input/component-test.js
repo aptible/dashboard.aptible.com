@@ -139,3 +139,11 @@ test(`setting more than ${maxChars} chars truncates to ${maxChars}`, function(as
   assert.equal(input.val(), text);
   assert.equal(component.get('value'), text);
 });
+
+test(`autofocusable`, function(assert){
+  var component = this.subject({autofocus:true});
+
+  var $el = this.render();
+  var el = $el[0];
+  assert.equal(document.activeElement, el, 'input is focused');
+});

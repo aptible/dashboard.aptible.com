@@ -409,6 +409,23 @@ Ember.Test.registerHelper('expectInput', function(app, inputName, options) {
   }
 });
 
+Ember.Test.registerAsyncHelper('expectFocusedInput', function(app, inputName, options) {
+  // run.later gives DOM a chance to catch up, so that `autofocus` takes effect, e.g.
+  return Ember.run.later(null, () => {
+    let input = findInput(inputName, options);
+    if (!input.length) {
+      ok(false, `Found ${input.length} of input "${inputName}"`);
+    } else {
+      let el = input.get(0);
+      if (document.activeElement === el) {
+        ok(true, `Found focused input "${inputName}"`);
+      } else {
+        ok(false, `Expect input "${inputName}" to be focused`);
+      }
+    }
+  }, 0);
+});
+
 Ember.Test.registerAsyncHelper('fillInput', function(app, inputName, value, inputOptions){
   let input = findInput(inputName, inputOptions);
   if (!input.length) {

@@ -65,6 +65,7 @@ test(`visit ${url} shows basic info`, function(){
     equal(currentPath(), 'stack.databases.new');
 
     expectInput('handle');
+    expectFocusedInput('handle');
     expectButton('Save Database');
     expectButton('Cancel');
 

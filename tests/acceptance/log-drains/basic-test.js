@@ -60,8 +60,7 @@ test(`visit ${url} shows basic info`, function(assert){
   andThen(function(){
     equal(currentPath(), 'stack.log-drains.index');
 
-    ok( find('.btn:contains(Add Log)').length,
-        'button to add log');
+    expectButton('Add Log');
 
     let logDrainEls = find('.log-drain');
     equal( logDrainEls.length, logDrains.length );
@@ -92,7 +91,7 @@ test(`visit ${url} with log drains and click add log shows form`, function(asser
   signInAndVisit(url);
 
   andThen(function(){
-    click('.btn:contains(Add Log)');
+    clickButton('Add Log');
   });
 
   andThen(function(){
@@ -107,6 +106,7 @@ test(`visit ${url} with log drains and click add log shows form`, function(asser
     expectInput('drain-port', {context});
     expectInput('handle', {context});
     expectInput('drain-type', {context});
+    expectFocusedInput('handle', {context});
 
     expectButton('Save Log Drain');
     expectButton('Cancel');
