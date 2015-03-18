@@ -12,14 +12,16 @@ export default Ember.Controller.extend(EmberValidations.Mixin, {
 
   actions: {
 
-    reset: function(model){
-      var hasSubmitted = this.get('hasSubmitted');
+    reset(model) {
+      let hasSubmitted = this.get('hasSubmitted');
+
       if (!hasSubmitted) {
         this.set('hasSubmitted', true);
       }
+
       this.validate().then(() => {
         this.get('target').send('reset', model);
-      }).catch(function(){
+      }).catch( () => {
         // Silence the validation exception
       });
     }
