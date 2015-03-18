@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-xs-10 col-xs-offset-1">
+  <div class="col-xs-8">
     <div class="first-time-app-deploy">
       <h2>Deploy {{model.handle}} in 3 easy steps</h2>
       <div class="panel panel-default panel-steps">
@@ -62,13 +62,10 @@
             </div>
           </div>
         </div>
-        <div class="panel-body-section">
-          <p>
-            If this app was created in error, you can
-            <a href="#" {{action "delete" model}}>destroy {{model.handle}}</a>.
-          </p>
-        </div>
       </div>
+      <p>
+      <a href="#" {{action "delete" model}}>Destroy {{model.handle}}</a>
+      </p>
     </div>
   </div>
 </div>

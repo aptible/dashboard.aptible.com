@@ -30,15 +30,26 @@
 
         <li class="resource-metadata-item">
           <h5 class="resource-metadata-title">Git Remote</h5>
-          <h3 class="resource-metadata-value">{{model.gitRepo}}</h3>
+          <h3 class="resource-metadata-value">
+            {{model.gitRepo}}
+            {{#click-to-copy text=model.gitRepo as |copied|}}
+              {{#if copied}}
+                Copied
+              {{else}}
+                <a href='#'>Copy</a>
+              {{/if}}
+            {{/click-to-copy}}
+          </h3>
         </li>
 
         {{#if model.currentImage}}
           <li class="resource-metadata-item current-git-ref">
-            <h5 class="resource-metadata-title">Current Git Ref</h5>
-            <h3 class="resource-metadata-value">{{model.currentImage.gitRef}}</h3>
+            <h5 class="resource-metadata-title">Git Ref</h5>
+            <h3 class="resource-metadata-value">{{git-ref gitRef=model.currentImage.gitRef}}</h3>
           </li>
         {{/if}}
+
+
 
         {{#if model.lastDeployOperation}}
           <li class="resource-metadata-item last-deployed-by">

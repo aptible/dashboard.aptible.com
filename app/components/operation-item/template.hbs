@@ -1,5 +1,8 @@
 <div class="operation-icon">
-  {{operation-icon type=operation.type status=operation.status}}
+  {{#bs-tooltip placement="bottom"}}
+    {{operation-icon type=operation.type status=operation.status}}
+  {{/bs-tooltip}}
+
 </div>
 
 <div class="operation-author">

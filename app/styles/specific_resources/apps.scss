@@ -55,7 +55,48 @@
 .first-time-app-deploy {
   h2 {
     font-size: 24px;
-    text-align: center;
-    margin: 30px 0;
+    margin: 0 0 30px;
+  }
+
+  .panel-step-info {
+    p {
+      color: $color-light;
+    }
+
+    *:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+
+
+  .panel-step:first-child {
+    .panel-step-num {
+      border-radius: 3px 0 0 0;
+    }
+
+    .panel-step-info {
+      border-radius: 0 3px 0 0;
+    }
+  }
+
+  .panel-step:last-child {
+    .panel-step-num {
+      border-radius: 0 0 0 3px;
+    }
+
+    .panel-step-info {
+      border-radius: 0 0 3px 0;
+    }
+  }
+
+  .panel-step {
+    .panel-step-num i.fa {
+      font-size: 24px;
+    }
+
+    .panel-step-info {
+      border-left: 1px solid #f0f0f0;
+    }
   }
 }

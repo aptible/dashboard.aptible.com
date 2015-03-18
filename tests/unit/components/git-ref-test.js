@@ -5,11 +5,10 @@ import {
 
 import Ember from 'ember';
 
-moduleForComponent('operation-item', 'OperationItemComponent', {
+moduleForComponent('git-ref', 'GitRefComponent', {
   needs: [
-    'component:operation-icon',
-    'component:bs-tooltip',
-    'helper:format-utc-timestamp'
+    'component:click-to-copy',
+    'component:bs-tooltip'
   ]
 });
 
@@ -18,12 +17,7 @@ test('it renders', function() {
 
   // creates the component instance
   var component = this.subject({
-    operation: Ember.Object.create({
-      type: 'provision',
-      status: 'running',
-      userName: 'Test User',
-      createdAt: new Date()
-    })
+    gitRef: '60b04a6c76cf2a171893640de9a54cc92730c592'
   });
 
   equal(component._state, 'preRender');
