@@ -30,8 +30,15 @@
                 class="form-control"
                 placeholder="Password"}}
             </div>
-            <button class="btn btn-primary btn-block btn-lg" {{action "login" model}}>
-              Log in
+            <button
+              disabled={{isLoggingIn}}
+              class="btn btn-primary btn-block btn-lg"
+              {{action "login" model}}>
+              {{#if isLoggingIn}}
+                Logging you in...
+              {{else}}
+                Log in
+              {{/if}}
             </button>
           </form>
 
