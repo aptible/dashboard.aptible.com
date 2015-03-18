@@ -1,22 +1,23 @@
 <ul class="nav nav-pills resource-navigation">
   {{#if model.hasBeenDeployed}}
-    {{#link-to "app.services" tagName="li"}}
+    {{#activating-item tagName="li" currentWhen="app.services"}}
       {{link-to "Services" "app.services"}}
-    {{/link-to}}
+    {{/activating-item}}
 
-    {{#link-to "app.vhosts" tagName="li"}}
+    {{#activating-item tagName="li" currentWhen="app.vhosts"}}
       {{link-to "Domains" "app.vhosts"}}
-    {{/link-to}}
+    {{/activating-item}}
   {{else}}
-    {{#link-to "app.deploy" tagName="li"}}
+    {{#activating-item tagName="li" currentWhen="app.deploy"}}
       {{link-to "Deploy" "app.deploy"}}
-    {{/link-to}}
+    {{/activating-item}}
   {{/if}}
 
-  {{#link-to "app.activity" tagName="li"}}
+  {{#activating-item tagName="li" currentWhen="app.activity"}}
     {{link-to "Activity" "app.activity"}}
-  {{/link-to}}
-  {{#link-to "app.deprovision" tagName="li"}}
+  {{/activating-item}}
+
+  {{#activating-item tagName="li" currentWhen="app.deprovision"}}
     {{link-to "Deprovision" "app.deprovision"}}
-  {{/link-to}}
+  {{/activating-item}}
 </ul>

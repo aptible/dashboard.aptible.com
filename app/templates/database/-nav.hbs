@@ -1,8 +1,8 @@
 <ul class="nav nav-pills resource-navigation">
-  {{#link-to "database.activity" tagName="li"}}
+  {{#activating-item currentWhen="database.activity" tagName="li"}}
     {{link-to "Activity" "database.activity"}}
-  {{/link-to}}
-  {{#link-to "database.deprovision" tagName="li"}}
+  {{/activating-item}}
+  {{#activating-item currentWhen="database.deprovision" tagName="li"}}
     {{link-to "Deprovision" "database.deprovision"}}
-  {{/link-to}}
+  {{/activating-item}}
 </ul>

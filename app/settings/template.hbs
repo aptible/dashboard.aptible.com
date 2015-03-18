@@ -11,17 +11,17 @@
       <ul class="nav sidebar-nav">
         <li class='title'>Profile Settings</li>
 
-        {{#link-to 'settings.profile' tagName='li'}}
+        {{#activating-item currentWhen='settings.profile' tagName='li'}}
           {{link-to 'Profile' 'settings.profile'}}
-        {{/link-to}}
+        {{/activating-item}}
 
-        {{#link-to 'settings.admin' tagName='li'}}
+        {{#activating-item currentWhen='settings.admin' tagName='li'}}
           {{link-to 'Account Settings' 'settings.admin'}}
-        {{/link-to}}
+        {{/activating-item}}
 
-        {{#link-to 'settings.ssh' tagName='li'}}
+        {{#activating-item currentWhen='settings.ssh' tagName='li'}}
           {{link-to 'SSH Keys' 'settings.ssh'}}
-        {{/link-to}}
+        {{/activating-item}}
       </ul>
     </div>
     <div class="col-xs-8">
