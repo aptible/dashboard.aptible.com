@@ -31,7 +31,7 @@ export default Ember.Route.extend({
       var app = this.currentModel;
       var route = this;
       app.save({ stack: {id: app.get('stack.id')} }).then(function(){
-        route.transitionTo('apps.index');
+        route.transitionTo('app', app);
       });
     },
 
