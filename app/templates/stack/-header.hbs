@@ -18,12 +18,12 @@
       {{/if}}
 
       <li class="resource-metadata-item">
-        <h5 class="resource-metadata-title">{{persistedApps.length}} Apps</h5>
-        <h3 class="resource-metadata-value">Running on {{totalContainerCount}} containers</h3>
+        <h5 class="resource-metadata-title">{{persistedApps.length}} {{plural-string "App" persistedApps.length}}</h5>
+        <h3 class="resource-metadata-value">Running on {{totalContainerCount}} {{plural-string "container" totalContainerCount}}</h3>
       </li>
 
       <li class="resource-metadata-item">
-        <h5 class="resource-metadata-title">{{persistedDatabases.length}} Databases</h5>
+        <h5 class="resource-metadata-title">{{persistedDatabases.length}} {{plural-string "Database" persistedDatabases.length}}</h5>
         <h3 class="resource-metadata-value">Using {{format-disk-size totalDiskSize}} of Disk</h3>
       </li>
 
