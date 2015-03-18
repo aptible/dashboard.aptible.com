@@ -8,14 +8,12 @@ export function initialize(container, application) {
   var invitationId = getUrlParameter(window.location, 'invitation_id');
   var resetCode = getUrlParameter(window.location, 'reset_code');
   var userId = getUrlParameter(window.location, 'user_id');
-  if (verificationCode) {
-    if (resetCode) {
-      replaceLocation(`/password/new/${resetCode}/${userId}`);
-    } else if (invitationId) {
-      replaceLocation(`/claim/${invitationId}/${verificationCode}`);
-    } else {
-      replaceLocation(`/verify/${verificationCode}`);
-    }
+  if (resetCode) {
+    replaceLocation(`/password/new/${resetCode}/${userId}`);
+  } else if (invitationId) {
+    replaceLocation(`/claim/${invitationId}/${verificationCode}`);
+  } else if (verificationCode) {
+    replaceLocation(`/verify/${verificationCode}`);
   } else {
     application.advanceReadiness();
   }
