@@ -4,7 +4,7 @@ import DisallowAuthenticated from "../mixins/routes/disallow-authenticated";
 export function buildCredentials(email, password) {
   return {
     username: email,
-    password: password,
+    password,
     grant_type: 'password',
     scope: 'manage'
   };
@@ -29,6 +29,9 @@ export default Ember.Route.extend(DisallowAuthenticated, {
 
     login: function(authAttempt){
       var credentials = buildCredentials(authAttempt.email, authAttempt.password);
+
+      this.controller.set('isLoggingIn', true);
+
       this.session.open('aptible', credentials).then(() => {
         if (this.session.attemptedTransition) {
           this.session.attemptedTransition.retry();
@@ -38,6 +41,8 @@ export default Ember.Route.extend(DisallowAuthenticated, {
         }
       }, (e) => {
         this.currentModel.set('error', e.message);
+      }).finally( () => {
+        this.controller.set('isLoggingIn', false);
       });
     }
 
