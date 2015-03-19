@@ -8,5 +8,7 @@ export default DS.Model.extend({
   state: DS.attr('string'),
   zip: DS.attr('string'),
   address: DS.attr('string'),
-  plan: DS.attr('string')
+  plan: DS.attr('string'),
+
+  users: DS.hasMany('users', {async: true})
 });

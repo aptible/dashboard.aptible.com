@@ -1,1 +1,36 @@
-{{outlet}}
+<div class="panel">
+  <div class="panel-heading">
+    <h3>Members</h3>
+    <ul class="nav nav-pills sub-nav-tabs">
+      <li>
+        <a class="new-organization-membership-invite-link pull-right" title="Invite new user into {{organization.name}} by email." placement="bottom">
+          <i class="fa fa-envelope"></i>
+          Invite New Member
+        </a>
+      </li>
+    </ul>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Roles</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each model as |user|}}
+        <tr>
+          <td>
+            {{gravatar-image email=user.email size=25}}
+            {{user.name}}
+          </td>
+          <td>{{user.email}}</td>
+          <td>{{format-list user.roles 'name' ','}}</td>
+          <td></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

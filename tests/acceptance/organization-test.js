@@ -29,6 +29,6 @@ test('visiting /organization', function(assert) {
   setFeature('organization-settings', true);
   signInAndVisit('/organizations/42');
   andThen(function() {
-    assert.equal(currentPath(), 'organization.index');
+    assert.equal(currentPath(), 'organization.members');
   });
 });
