@@ -15,13 +15,30 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData){
     name: 'stubbed user',
     email: 'stubbed-user@gmail.com',
     verified: true,
-    privileged: true,
-    links: { sshKeys: '/users/user1/ssh_keys' }
+    links: {
+      sshKeys: '/users/user1/ssh_keys',
+      roles:  '/users/user1/roles'
+    }
   };
 
+  // FIXME this makes the tests slower. If we push the role data directly
+  // into the store we'll save this roundtrip during tests
+  stubRequest('get', '/users/user1/roles', function(request){
+    return this.success({
+      _embedded: {
+        roles: [{
+          id: 'r1',
+          privileged: true,
+          _links: {
+            self: { href: `/roles/r1` },
+            organization: { href: '/organizations/o1' }
+          }
+        }]
+      }
+    });
+  });
+
   userData = Ember.$.extend(true, defaultUserData, userData);
-  let privileged = userData.privileged;
-  delete userData.privileged;
 
   let session = app.__container__.lookup('torii:session');
   let sm = session.get('stateMachine');
@@ -29,10 +46,6 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData){
   Ember.run(function(){
     let store = app.__container__.lookup('store:main');
     let user = store.push('user', userData);
-
-    if (privileged) {
-      user._isPrivileged = true;
-    }
 
     sm.transitionTo('authenticated');
     session.set('content.currentUser', user);
@@ -107,6 +120,24 @@ Ember.Test.registerHelper('elementTextContains', function(app, node, expectedTex
 Ember.Test.registerHelper('stubStack', function(app, stackData){
   var id = stackData.id;
   if (!id) { throw new Error('cannot stub stack without id'); }
+  let defaultStackData = {
+    _links: {
+      permissions: { href: `/accounts/${id}/permissions` }
+    }
+  };
+  stackData = Ember.$.extend(true, defaultStackData, stackData);
+
+  stubRequest('get', `/accounts/${id}/permissions`, function(request){
+    return this.success({
+      _embedded: {
+        permissions: [{
+          id: 'p1',
+          scope: 'manage',
+          _links: { role: { href: `/roles/r1` } }
+        }]
+      }
+    });
+  });
 
   stubRequest('get', `/accounts/${id}`, function(request){
     return this.success(stackData);

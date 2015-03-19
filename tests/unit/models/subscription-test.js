@@ -7,7 +7,7 @@ import { stubRequest } from '../../helpers/fake-server';
 import modelDeps from '../../support/common-model-dependencies';
 
 moduleForModel('subscription', 'Subscription', {
-  needs: modelDeps
+  needs: modelDeps.concat(['adapter:subscription'])
 });
 
 test('data is posted upon save', function() {

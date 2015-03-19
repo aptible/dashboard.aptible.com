@@ -23,12 +23,57 @@
       {{#each model as |user|}}
         <tr>
           <td>
-            {{gravatar-image email=user.email size=25}}
-            {{user.name}}
+            {{#aptible-ability
+                user=session.currentUser
+                scope='manage'
+                permittable=organization as |hasAbility|}}
+              {{#if hasAbility}}
+                {{! FIXME should link to an edit membership page}}
+                {{#link-to 'index'}}
+                  {{gravatar-image email=user.email size=25}}
+                  {{user.name}}
+                {{/link-to}}
+              {{else}}
+                {{gravatar-image email=user.email size=25}}
+                {{user.name}}
+              {{/if}}
+            {{/aptible-ability}}
           </td>
           <td>{{user.email}}</td>
-          <td>{{format-list user.roles 'name' ','}}</td>
-          <td></td>
+          <td>{{format-list user.roles 'name' ', '}}</td>
+          <td>
+            {{#aptible-ability
+                user=session.currentUser
+                scope='manage'
+                permittable=organization as |hasAbility|}}
+              {{#if hasAbility}}
+                <div class="table-row-nav">
+                  <ul class="nav nav-pills sub-nav-tabs">
+                    <li>
+                      {{! FIXME should link to an edit membership page}}
+                      <a href="#" title="Edit {{user.name}}'s Roles">
+                        <i class="fa fa-edit"></i>
+                        <span class="button-label">
+                          Edit
+                        </span>
+                      </a>
+                    </li>
+                    {{#if (eq session.currentUser user)}}
+                    <li>
+                      {{! FIXME should fire action that calls deletion }}
+                      <a href="#" title="Remove {{user.name}} from {{organization.name}}">
+                        <i class="fa fa-times"></i>
+                        <span class="button-label">
+                          Remove
+                        </span>
+                      </a>
+                    </li>
+                    {{/if}}
+                  </ul>
+                </div>
+              {{/if}}
+            {{/aptible-ability}}
+          </td>
         </tr>
       {{/each}}
     </tbody>
