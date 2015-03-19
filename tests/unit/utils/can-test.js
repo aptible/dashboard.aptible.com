@@ -9,23 +9,16 @@ import Ember from "ember";
 import can from "../../../utils/can";
 import modelDeps from '../../support/common-model-dependencies';
 
-var store;
+let store;
 
-moduleForModel('user', 'Utils - #can', {
-  needs: modelDeps.concat([
-    'model:token',
-    'model:ssh-key',
-  ]),
+moduleForModel('user', 'Utils - #can with target=stack', {
+  needs: modelDeps,
   setup: function(){
     store = this.container.lookup('store:main');
   },
   teardown: function(){
     Ember.run(store, 'destroy');
   }
-});
-
-test('it exists', function(){
-  ok(!!can, 'it exists');
 });
 
 test('user and stack have same role, stack\'s permission has "manage" scope', function(){
@@ -95,23 +88,27 @@ test('user and stack do not have same role', function(){
   });
 });
 
-test('user has privileged role', function(){
-  var user, userRole, stack;
+test('user has privileged role cannot manage stack if its permissions do not include that role', function(){
+  let user, userRole, stack, otherRole, stackPermission;
 
   Ember.run(function(){
     user     = store.push('user', {id:'u1', roles:['r1']});
     userRole = store.push('role', {id:'r1', privileged:true});
+    otherRole = store.push('role', {id:'r2'});
+
+    // stack permission has otherRole, not privileged userRole
+    stackPermission = store.push('permission', {id:'p1', role: 'r2'});
 
     stack    = store.push('stack', {id:'s1', permissions:['p1']});
   });
 
   return Ember.run(function(){
     return can(user, 'manage', stack).then(function(res){
-      ok(res, 'privileged user can manage stack');
+      ok(!res, 'privileged user with matching role cannot manage stack');
 
       return can(user, 'read', stack);
     }).then(function(res){
-      ok(res, 'privileged user can read stack');
+      ok(!res, 'privileged user without matching role cannot read stack');
     });
   });
 });
@@ -293,5 +290,31 @@ test('#can fetches data when it is not in the store', function(){
     }).then(function(bool){
       ok(bool, 'user can read stack');
     });
+  });
+});
+
+test('when user has privileged organization role, user can manage organization', function(assert){
+  assert.expect(1);
+  let done = assert.async();
+  let user, roles = [], organization;
+  Ember.run( () => {
+    user = store.push('user', {id: 'u1', roles: ['r1', 'r2']});
+    roles.push( store.push('role', {id:'r1', organization: 'o1', links: {organization:'/organizations/o1'}}) );
+    roles.push( store.push('role',
+      {
+        id:'r2',
+        privileged: true,
+        organization: 'o1',
+        links: {organization: '/organizations/o1'}
+      }
+    ));
+
+    organization = store.push('organization', {id: 'o1'});
+  });
+
+  return Ember.run( () => {
+    can(user, 'manage', organization).then( (result) => {
+      assert.ok(result, 'user can manage organization');
+    }).finally(done);
   });
 });
