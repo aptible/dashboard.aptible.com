@@ -8,11 +8,12 @@ import { titleHistory } from '../utils/title-route-extensions';
 import FakeServer from "./helpers/fake-server";
 import { stubStripe, teardownStripe } from "./helpers/mock-stripe";
 import {stubAnalytics, teardownAnalytics} from './helpers/mock-analytics';
+import storage from 'diesel/utils/storage';
 
 setResolver(resolver);
 
 QUnit.testStart(function(){
-  window.localStorage.setItem(config.authTokenKey, null);
+  storage.remove(config.authTokenKey);
   delete locationHistory.last;
   delete titleHistory.last;
 });

@@ -1,5 +1,35 @@
 var serializedPrefix = '_object:';
 
+let NativeAdapter = function(){
+  this.getItem = (key) => window.localStorage.getItem(key);
+  this.setItem = (key, val) => window.localStorage.setItem(key, val);
+  this.removeItem = (val) => window.localStorage.removeItem(val);
+};
+
+let MemoryAdapter = function(){
+  let storage = {};
+  this.getItem = (key) => storage[key];
+  this.setItem = (key, val) => storage[key] = val;
+  this.removeItem = (val) => delete storage[val];
+};
+
+function checkLocalStorage(){
+  try {
+    window.localStorage.setItem('test',true);
+    window.localStorage.removeItem('test');
+    return true;
+  } catch(e) {
+    return false;
+  }
+}
+
+let adapter;
+if (checkLocalStorage()) {
+  adapter = new NativeAdapter();
+} else {
+  adapter = new MemoryAdapter();
+}
+
 export function write(key, value) {
   var serialized;
   if (typeof value === 'object') {
@@ -7,11 +37,11 @@ export function write(key, value) {
   } else {
     serialized = value;
   }
-  return window.localStorage.setItem(key, serialized);
+  return adapter.setItem(key, serialized);
 }
 
 export function read(key) {
-  var serialized = window.localStorage.getItem(key);
+  var serialized = adapter.getItem(key);
   var value;
   if (typeof serialized === 'string' && serialized.indexOf(serializedPrefix) === 0){
     value = JSON.parse(serialized.slice(8));
@@ -22,7 +52,7 @@ export function read(key) {
 }
 
 export function remove(key) {
-  return window.localStorage.removeItem(key);
+  return adapter.removeItem(key);
 }
 
 export default {
