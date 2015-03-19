@@ -49,6 +49,10 @@ module.exports = function(environment) {
       'script-src': "'self' 'unsafe-inline' https://js.stripe.com https://api.stripe.com http://use.typekit.net http://cdn.segment.com https://assets.customer.io http://www.google-analytics.com http://cdn.mxpnl.com",
       'font-src': "'self' data:",
       'object-src': "http://localhost:4200"
+    },
+
+    featureFlags: {
+      'organization-settings': true
     }
 
   };
@@ -91,6 +95,7 @@ module.exports = function(environment) {
       support: "https://support.aptible-staging.com"
     };
     ENV.segmentioKey = 'KsTMCT4BN5';
+    ENV.featureFlags['organization-settings'] = false;
   }
 
   if (environment === 'production') {
@@ -102,6 +107,7 @@ module.exports = function(environment) {
       support: "https://support.aptible.com"
     };
     ENV.segmentioKey = 'rJGVn1qpBW';
+    ENV.featureFlags['organization-settings'] = false;
   }
 
   return ENV;

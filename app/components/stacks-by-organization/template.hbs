@@ -4,7 +4,7 @@
   </div>
 {{else}}
   <h4>{{organization.name}} has no stacks configured.</h4>
-  {{#link-to-legacy-organization organization=organization}}
+  {{#link-to 'organization' organization}}
     Configure {{organization.name}} stacks.
-  {{/link-to-legacy-organization}}
+  {{/link-to}}
 {{/each}}
