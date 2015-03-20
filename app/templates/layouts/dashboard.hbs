@@ -1,13 +1,16 @@
-{{partial "current-user-header"}}
-{{partial "nav-header"}}
+<header class="layout-header">
+  {{partial "header"}}
+  {{#unless session.currentUser.verified}}
+    {{verification-code-reset}}
+  {{/unless}}
+</header>
 
-<div id="main-yield-wrapper" style="min-height: 504px;">
-  <div class="container">
-    <div class="alerts-partial-wrapper">
-    </div>
-  </div>
-
+<div class="layout-body">
   {{yield}}
 </div>
 
-{{partial "nav-footer"}}
+<footer class="layout-footer">
+  {{partial "nav-footer"}}
+</footer>
+
+

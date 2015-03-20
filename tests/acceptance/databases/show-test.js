@@ -7,6 +7,7 @@ var App;
 module('Acceptance: Databases Show', {
   setup: function() {
     App = startApp();
+    stubOrganizations();
   },
   teardown: function() {
     Ember.run(App, 'destroy');
@@ -18,10 +19,14 @@ test('visiting /databases/:id requires authentication', function(){
 });
 
 test('visiting /databases/my-db-id shows the database', function() {
+  stubStack({ id: 'my-stack-1' });
   stubRequest('get', '/databases/my-db-id', function(request){
     return this.success({
       id: 'my-db-id',
-      handle: 'my-database'
+      handle: 'my-database',
+      _links: {
+        account: { href: '/accounts/my-stack-1' }
+      }
     });
   });
 

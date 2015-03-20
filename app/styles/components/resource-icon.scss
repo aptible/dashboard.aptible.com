@@ -1,0 +1,20 @@
+.resource-icon {
+  background: image-url('images/sprite.png');
+  background-repeat: no-repeat;
+  height: 35px;
+  width: 35px;
+  display: inline-block;
+  background-size: 25px 93px;
+
+  &.resource-environment {
+    background-position: 6px 5px;
+  }
+
+  &.resource-app {
+    background-position: 6px -28px;
+  }
+
+  &.resource-db {
+    background-position: 6px -61px;
+  }
+}

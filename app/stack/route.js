@@ -14,17 +14,17 @@ export default Ember.Route.extend({
     return tokens.join(' - ');
   },
 
+  setupController: function(controller, model) {
+    controller.set('model', model);
+    controller.set('organizations', this.store.find('organization'));
+    controller.set('stacks', this.store.find('stack'));
+  },
+
   afterModel: function(model){
     return Ember.RSVP.hash({
       apps: model.get('apps'),
       databases: model.get('databases'),
       organization: model.get('organization')
     });
-  },
-
-  setupController: function(controller, model){
-    var stacks = this.modelFor('stacks');
-    controller.set('model', model);
-    controller.set('stacks', stacks);
   }
 });

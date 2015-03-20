@@ -5,9 +5,8 @@ import {
 
 import Ember from 'ember';
 
-moduleForComponent('stacks-by-organization', 'StacksByOrganizationComponent', {
-  needs: ['component:link-to-legacy-organization'],
-  setup: function() {}
+moduleForComponent('stacks-nav', 'StacksNavComponent', {
+  needs: []
 });
 
 test('it renders', function() {

@@ -70,7 +70,7 @@ test('visiting /claim/some-id/some-code revisits after sign in', function() {
   });
   click('button:contains(Accept organization invitation)');
   andThen(function(){
-    equal(currentPath(), 'stacks.index');
+    equal(currentPath(), 'stack.apps.index');
   });
 });
 
@@ -96,7 +96,7 @@ test('visiting /claim/some-invitation/some-code creates verification', function(
   signInAndVisit(`/claim/${invitationId}/${verificationCode}`);
   click('button:contains(Accept organization invitation)');
   andThen(function(){
-    equal(currentPath(), 'stacks.index');
+    equal(currentPath(), 'stack.apps.index');
   });
 });
 

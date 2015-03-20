@@ -1,6 +1,17 @@
 header.navbar.current-user-header {
   background-image: linear-gradient(-180deg, #fafafa 0%, #f0f0f0 100%);
   border-bottom: 1px solid #dfdfdf;
+
+  .navbar-header {
+    width: 225px;
+    border-right: 1px solid #dfdfdf;
+    height: 54px;
+
+    .navbar-brand {
+      background-position: 50% 0;
+      width: 100%;
+    }
+  }
 }
 
 header.navbar.primary-nav-header {
@@ -10,7 +21,41 @@ header.navbar.primary-nav-header {
 }
 
 .nav.user-nav {
+  border: 0;
+
+  > li {
+    padding: 0;
+
+    .btn-group {
+      height: 54px;
+      margin:0;
+      border:0;
+      border-left: 1px solid #dfdfdf;
+
+      > a {
+        height: 54px;
+        padding: 19px 20px;
+      }
+
+      > a.dropdown-toggle {
+        padding: 19px 8px;
+      }
+
+      &:hover, &.open {
+        background: #ececec;
+        border: 0;
+        border-left: 1px solid #dfdfdf;
+      }
+    }
+  }
+
+  &.navbar-right {
+    margin: 0;
+  }
+
   .dropdown.current-user {
+
+
     .dropdown-menu {
       width: 225px;
     }

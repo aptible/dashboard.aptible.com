@@ -98,7 +98,7 @@ test('logging in with correct credentials', function() {
   fillIn('input[type=password]', password);
   click('button:contains(Log in)');
   andThen(function(){
-    equal(currentPath(), 'stacks.index');
+    equal(currentPath(), 'stack.apps.index');
   });
 });
 
@@ -144,7 +144,7 @@ test('visit /login while already logged in redirects to stack', function(){
   signInAndVisit('/login');
 
   andThen(function(){
-    equal(currentPath(), 'stacks.index');
+    equal(currentPath(), 'stack.apps.index');
   });
 });
 
@@ -178,7 +178,7 @@ test('visiting /signup when logged in redirects', function() {
   stubOrganizations();
   signInAndVisit('/signup');
   andThen(function(){
-    equal(currentPath(), 'stacks.index');
+    equal(currentPath(), 'stack.apps.index');
   });
 });
 

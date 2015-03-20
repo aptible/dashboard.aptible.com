@@ -1,29 +1,23 @@
-<div class="container">
-  <div class="row">
-    <div class="verified-user-alert">
-      {{#bs-alert alert="warning" as |component|}}
-        {{#bs-alert-dismiss target=component}}
-           <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        {{/bs-alert-dismiss}}
+{{#bs-alert alert="warning" as |component|}}
+  {{#bs-alert-dismiss target=component}}
+     <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  {{/bs-alert-dismiss}}
 
-        <span class='danger'>Your email is not activated.</span>
+  <span class='danger'>Your email is not activated.</span>
 
-        You will not be able to deploy or create new apps until you activate your email.
-        <button class='btn btn-default btn-xs' {{action 'resendVerification'}} {{bind-attr disabled=isDisabled}}>
-          {{#if sending}}
-            Sending
-          {{else if sent}}
-            Verification email sent
-          {{else}}
-            <i class='fa fa-refresh'></i>
-            Resend verification email
-          {{/if}}
-        </button>
+  You will not be able to deploy or create new apps until you activate your email.
+  <button class='btn btn-default btn-xs' {{action 'resendVerification'}} {{bind-attr disabled=isDisabled}}>
+    {{#if sending}}
+      Sending
+    {{else if sent}}
+      Verification email sent
+    {{else}}
+      <i class='fa fa-refresh'></i>
+      Resend verification email
+    {{/if}}
+  </button>
 
-        {{#if error}}
-          There was an error sending the email, please try again.
-        {{/if}}
-      {{/bs-alert}}
-    </div>
-  </div>
-</div>
+  {{#if error}}
+    There was an error sending the email, please try again.
+  {{/if}}
+{{/bs-alert}}

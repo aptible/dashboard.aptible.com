@@ -20,6 +20,7 @@ module('Acceptance: Databases', {
       }
     });
     stubOrganization();
+    stubOrganizations();
   },
   teardown: function() {
     Ember.run(App, 'destroy');
