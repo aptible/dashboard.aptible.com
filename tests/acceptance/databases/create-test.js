@@ -21,6 +21,7 @@ module('Acceptance: Database Create', {
       }
     });
     stubOrganization();
+    stubOrganizations();
   },
   teardown: function() {
     Ember.run(App, 'destroy');
@@ -47,6 +48,14 @@ test(`visiting /stacks/:stack_id/databases without any databases redirects to ${
 
 test(`visit ${url} when stack has no databases does not show cancel`, function(){
   stubStack({ id: stackId }); // stubs a stack with no databases
+  stubRequest('get', '/accounts/my-stack-1/databases', function(request){
+    return this.success({
+      _links: {},
+      _embedded: {
+        databases: []
+      }
+    });
+  });
   stubOrganization();
   signInAndVisit(url);
 

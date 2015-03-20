@@ -14,6 +14,8 @@ let stackHandle = 'my-stack-handle',
 module('Acceptance: Log Drains', {
   setup: function() {
     App = startApp();
+    stubOrganizations();
+    stubStacks();
   },
   teardown: function() {
     Ember.run(App, 'destroy');

@@ -1,12 +1,10 @@
 <header class="resource-header">
-  <div class="container">
+  <div class="layout-container">
 
-    {{#link-to 'databases' model.stack class="resource-breadcrumb"}}
-      <i class="fa fa-chevron-left"></i>
-      {{model.stack.handle}}
-    {{/link-to}}
-
-    <h1 class="resource-title">{{model.handle}}</h1>
+    <div class="resource-title">
+      <i class="resource-icon resource-db"></i>
+      <h1>{{model.handle}}</h1>
+    </div>
 
     <ul class="resource-metadata">
       {{#if model.isDeprovisioned}}

@@ -1,0 +1,33 @@
+<header class="navbar navbar-static-top current-user-header">
+  <div class="navbar-header">
+    {{link-to "Aptible" "index" class="navbar-brand"}}
+  </div>
+
+  <nav class="main-navigation">
+    <ul class="nav nav-pills">
+      <li class="active">
+        {{link-to "Apps and Databases" "stacks"}}
+      </li>
+      <li>
+        {{#link-to-aptible app="compliance" path=""}}Compliance Tools{{/link-to-aptible}}
+      </li>
+    </ul>
+  </nav>
+
+  <nav>
+    <ul class="nav nav-pills navbar-right user-nav">
+      <li class="dropdown current-user">
+        {{#dashboard-dropdown title=session.currentUser.name defaultPath="settings"}}
+
+          {{#each session.currentUser.organizations as |organization|}}
+            {{dashboard-dropdown-organization-menu organization=organization}}
+            {{dashboard-dropdown-divider}}
+          {{/each}}
+
+          {{dashboard-dropdown-user-menu user=session.currentUser}}
+
+        {{/dashboard-dropdown}}
+      </li>
+    </ul>
+  </nav>
+</header>

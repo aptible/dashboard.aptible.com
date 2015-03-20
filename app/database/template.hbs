@@ -1,5 +1,10 @@
-{{partial 'database/header'}}
-<div class="container">
-  {{partial 'database/nav'}}
-  {{outlet}}
-</div>
+<main class="layout-content">
+  {{partial 'database/header'}}
+  <div class="layout-container">
+    {{partial 'database/nav'}}
+    {{outlet}}
+  </div>
+</main>
+
+{{resource-sidebar resource=model stack=stack user=session.currentUser}}
+

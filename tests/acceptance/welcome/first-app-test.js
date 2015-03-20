@@ -27,7 +27,7 @@ test('visiting /welcome/first-app logged in with stacks', function() {
   signInAndVisit('/welcome/first-app');
 
   andThen(function() {
-    equal(currentPath(), 'stacks.index');
+    equal(currentPath(), 'stack.apps.index');
   });
 });
 

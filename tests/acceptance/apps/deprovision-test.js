@@ -21,7 +21,7 @@ test('/apps/:id/deprovision will not deprovision without confirmation', function
   var appId = 1;
   var appName = 'foo-bar';
   var stackHandle = 'krwee-zing';
-
+  stubOrganizations();
   stubApp({
     id: appId,
     handle: appName,
@@ -71,6 +71,7 @@ test('/apps/:id/deprovision will deprovision with confirmation', function(){
 
   stubStacks();
   stubOrganization();
+  stubOrganizations();
 
   signInAndVisit('/apps/'+appId+'/deprovision');
   fillIn('input[type=text]', appName);
@@ -90,6 +91,7 @@ test('/apps/:id/deprovision will show deprovision error', function(){
   var errorMessage = 'Some bad error';
 
   stubStack({id: '1'});
+  stubOrganizations();
 
   stubApp({
     id: appId,

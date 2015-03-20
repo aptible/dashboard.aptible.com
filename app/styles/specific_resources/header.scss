@@ -1,0 +1,40 @@
+header.navbar.current-user-header {
+
+}
+
+nav.main-navigation {
+  float: left;
+
+  ul.nav.nav-pills {
+    > li + li {
+      margin: 0;
+    }
+
+    > li {
+      border-right: 1px solid #dfdfdf;
+
+      > a {
+        border-radius: 0;
+        background: none;
+        height: 54px;
+        padding: 19px 20px;
+        color: $color-light;
+        text-transform: uppercase;
+        font-size: 13px;
+        font-weight: $weight-semibold;
+
+        &:hover {
+          background: #ececec;
+          color: $color-primary;
+        }
+      }
+
+      &.active {
+        > a {
+          background: #ececec;
+          color: $color-primary;
+        }
+      }
+    }
+  }
+}

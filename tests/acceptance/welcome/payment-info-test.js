@@ -69,7 +69,7 @@ test('visiting /welcome/payment-info logged in with stacks', function() {
   signInAndVisit('/welcome/payment-info');
 
   andThen(function() {
-    equal(currentPath(), 'stacks.index');
+    equal(currentPath(), 'stack.apps.index');
   });
 });
 
@@ -108,8 +108,8 @@ test('payment info should be submitted to stripe to create stripeToken', functio
     addressZip: '11111'
   };
   let stripeToken = 'some-token';
-  let stackHandle = 'sprocket-co';
-  let appHandle = 'my-app-1';
+  let stackHandle = 'my-stack-1';
+  let appHandle = 'my-app-1-stack-1';
 
   stubRequest('post', '/organizations/1/subscriptions', function(request){
     var params = this.json(request);
@@ -153,7 +153,7 @@ test('payment info should be submitted to stripe to create stripeToken', functio
   fillInput('zip', cardOptions.addressZip);
   clickButton('Save');
   andThen( () => {
-    equal(currentPath(), 'stacks.index');
+    equal(currentPath(), 'stack.apps.index');
   });
 });
 
@@ -197,7 +197,7 @@ test('submitting valid payment info for development plan should create dev stack
 
   clickButton('Save');
   andThen( () => {
-    equal(currentPath(), 'stacks.index');
+    equal(currentPath(), 'stack.apps.new');
   });
 });
 
@@ -244,7 +244,7 @@ test('submitting valid payment info for platform plan should create dev and prod
   clickButton('Switch to PHI-ready Platform plan');
   clickButton('Save');
   andThen( () => {
-    equal(currentPath(), 'stacks.index');
+    equal(currentPath(), 'stack.apps.new');
   });
 });
 
@@ -268,6 +268,10 @@ test('submitting valid payment info should create app', function() {
     return this.success({id: appHandle, handle: appHandle});
   });
 
+  stubRequest('get', `/apps/${appHandle}`, function() {
+    return this.success({ id: appHandle, handle: appHandle });
+  });
+
   stubOrganizations();
   mockSuccessfulPayment();
 
@@ -277,7 +281,7 @@ test('submitting valid payment info should create app', function() {
   });
   clickButton('Save');
   andThen(function() {
-    equal(currentPath(), 'stacks.index');
+    equal(currentPath(), 'stack.apps.index');
   });
 });
 
@@ -318,7 +322,7 @@ test('submitting valid payment info should create db', function() {
   });
   clickButton('Save');
   andThen(function() {
-    equal(currentPath(), 'stacks.index');
+    equal(currentPath(), 'stack.apps.new');
   });
 });
 
@@ -368,7 +372,7 @@ test('submitting valid payment info when user is verified should provision db', 
   });
   clickButton('Save');
   andThen(function() {
-    equal(currentPath(), 'stacks.index');
+    equal(currentPath(), 'stack.apps.new');
 
     equal(databaseParams.handle, dbHandle,
           'db params has handle');
