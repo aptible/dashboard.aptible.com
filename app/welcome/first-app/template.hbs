@@ -40,11 +40,11 @@
           <div class="form-group">
             <label>Does your app need a database?</label>
             <div class="select-options-container database-select row">
-              {{#db-selector action="selectDbType" as |dbType selectedDbType selectCallback|}}
+              {{#db-selector action="selectDbType" as |dbType selectCallback|}}
                 {{db-selector-option
                       selectCallback=selectCallback
                       dbType=dbType
-                      selectedDbType=selectedDbType}}
+                      selectedDbType=model.dbType}}
               {{/db-selector}}
             </div>
           </div>

@@ -1,5 +1,11 @@
 import Ember from 'ember';
 
+export function resetDBData(model){
+  Ember.set(model, 'dbType', null);
+  Ember.set(model, 'initialDiskSize', 10);
+  Ember.set(model, 'dbHandle', '');
+}
+
 export default Ember.Route.extend({
   beforeModel: function(){
     if(this.session.get('isAuthenticated')) {
@@ -15,13 +21,12 @@ export default Ember.Route.extend({
 
   model: function(){
     return this.store.find('organization').then(function(organizations){
-      return {
-        stackHandle: organizations.objectAt(0).get('name').dasherize(),
-        appHandle: '',
-        dbHandle: '',
-        initialDiskSize: 10,
-        dbType: null
+      let stackHandle = organizations.objectAt(0).get('name').dasherize();
+      let model = {
+        stackHandle
       };
+      resetDBData(model);
+      return model;
     });
   }
 });
