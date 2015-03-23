@@ -1,0 +1,15 @@
+<ul class="nav sidebar-nav">
+  <li class="title">
+    {{organization.name}}
+
+    {{#link-to 'organization' organization}}
+      <i class="fa fa-cog"></i>
+    {{/link-to}}
+  </li>
+
+  {{#each organizationStacks as |stack|}}
+    {{#link-to 'stack' stack tagName="li"}}
+      {{link-to stack.handle 'stack' stack bubbles=false}}
+    {{/link-to}}
+  {{/each}}
+</ul>

@@ -15,8 +15,16 @@ export default Ember.Route.extend({
     return tokens.join(' - ');
   },
 
+  setupController: function(controller, model){
+    controller.set('model', model);
+    // FIXME: aptible-ability depends on an instance method on the stacks model.
+    // Because of this, we need to explicitly return the stack model,
+    // rather than the promise proxy.  Once aptible-ability is able to handle
+    // promise proxies, this line can be updated to model.get('stack')
+    controller.set('stack', model.get('stack.content'));
+  },
+
   afterModel: function(model){
-    // populates for `title` hook
     return model.get('stack');
   }
 });

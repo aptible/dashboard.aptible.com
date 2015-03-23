@@ -1,7 +1,11 @@
-{{partial 'app/header'}}
-<div class="container">
-  {{#if model.hasBeenDeployed}}
-    {{partial 'app/nav'}}
-  {{/if}}
-  {{outlet}}
-</div>
+<main class="layout-content">
+  {{partial 'app/header'}}
+  <div class="layout-container">
+    {{#if model.hasBeenDeployed}}
+      {{partial 'app/nav'}}
+    {{/if}}
+    {{outlet}}
+  </div>
+</main>
+
+{{resource-sidebar resource=model stack=stack user=session.currentUser}}

@@ -21,9 +21,18 @@ test(`visiting ${url} requires authentication`, function() {
 });
 
 test(`visiting ${url} with no apps redirects to apps new`, function() {
+  stubRequest('get', '/accounts/my-stack-1/apps', function(request){
+    return this.success({
+      _links: {},
+      _embedded: {
+        apps: []
+      }
+    });
+  });
   stubStacks({ includeApps: false });
   stubStack({ id: stackId });
   stubOrganization();
+  stubOrganizations();
 
   signInAndVisit(url);
   andThen(function(){
@@ -32,8 +41,8 @@ test(`visiting ${url} with no apps redirects to apps new`, function() {
 });
 
 test(`visiting ${url}`, function() {
-  let orgId = 1, orgName = 'Sprocket Company';
-  let stackHandle = 'my-stack-handle';
+  let orgId = 1, orgName = 'Sprocket Co';
+  let stackHandle = 'my-stack-1';
 
   // This is needed to stub /stack/my-stack-1/apps
   stubStacks({ includeApps: true });
@@ -49,6 +58,7 @@ test(`visiting ${url}`, function() {
     id: orgId,
     name: orgName
   });
+  stubOrganizations();
   signInAndVisit(url);
 
   andThen(function() {
@@ -58,8 +68,8 @@ test(`visiting ${url}`, function() {
 });
 
 test(`visiting ${url} shows list of apps`, function() {
-  let orgId = 1, orgName = 'Sprocket Company';
-  let stackHandle = 'my-stack-handle';
+  let orgId = 1, orgName = 'Sprocket Co';
+  let stackHandle = 'my-stack-1';
 
   // Just needed to stub /stack/my-stack-1/apps
   stubStacks({ includeApps: true });
@@ -72,6 +82,7 @@ test(`visiting ${url} shows list of apps`, function() {
     }
   });
   stubOrganization();
+  stubOrganizations();
 
   signInAndVisit(url);
   andThen(function() {
@@ -80,7 +91,8 @@ test(`visiting ${url} shows list of apps`, function() {
 });
 
 test(`visiting ${url} then clicking on an app visits the app`, function() {
-  // Just needed to stub /stack/my-stack-1/apps
+  stubOrganizations();
+  stubOrganization();
   stubStacks({ includeApps: true });
   stubStack({
     id: stackId,
@@ -90,6 +102,7 @@ test(`visiting ${url} then clicking on an app visits the app`, function() {
   });
 
   signInAndVisit(url);
+
   andThen(function(){
     let appLink = expectLink("/apps/1");
     click(appLink);
@@ -103,7 +116,9 @@ test(`visiting ${url} then clicking on an app visits the app`, function() {
 test(`${url} requests apps, databases on each visit`, function() {
   var appRequestCount = 0;
   var databaseRequestCount = 0;
-
+  stubOrganization();
+  stubOrganizations();
+  stubStacks();
   stubStack({
     id: stackId,
     _links: {
@@ -154,6 +169,8 @@ test(`${url} requests apps, databases on each visit`, function() {
 });
 
 test(`visit ${url} shows create app button if user is verified`, function(){
+  stubOrganization();
+  stubOrganizations();
   stubStacks({ includeApps: true });
   stubStack({
     id: stackId,
@@ -170,6 +187,8 @@ test(`visit ${url} shows create app button if user is verified`, function(){
 });
 
 test(`visit ${url} does not show create app button if user is not verified`, function(){
+  stubOrganization();
+  stubOrganizations();
   stubStacks({ includeApps: true });
   stubStack({
     id: stackId,

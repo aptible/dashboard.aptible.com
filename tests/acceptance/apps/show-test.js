@@ -23,7 +23,7 @@ test('visiting /apps/my-app-id shows basic app info', function() {
 
   let deployUserName = 'Skylar Anderson';
   let currentGitRef = 'b2bac0d8f9';
-
+  stubOrganizations();
   stubStack({
     id: 'my-stack-1',
     handle: 'my-stack-1'
@@ -81,7 +81,7 @@ test('visiting /apps/my-app-id shows basic app info', function() {
 
 test('visiting /apps/my-app-id when the app is deprovisioned', function() {
   var appId = 'my-app-id';
-
+  stubOrganizations();
   stubApp({id: appId, status: 'deprovisioned'});
 
   signInAndVisit('/apps/' + appId);

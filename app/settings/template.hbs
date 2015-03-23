@@ -1,31 +1,24 @@
-<header class="resource-header">
-  <div class="container">
-    <h1 class="resource-title">{{session.currentUser.name}}</h1>
+<main class="layout-content">
+  <div class="layout-container">
+    {{outlet}}
   </div>
-</header>
+</main>
 
+<nav class="layout-sidebar">
+  <ul class='nav sidebar-nav'>
+    <li class="title">
+      {{session.currentUser.name}}
+    </li>
+    {{#activating-item currentWhen='settings.profile' tagName='li'}}
+      {{link-to 'Profile' 'settings.profile'}}
+    {{/activating-item}}
 
-<div class="container">
-  <div class="row">
-    <div class="col-xs-4">
-      <ul class="nav sidebar-nav">
-        <li class='title'>Profile Settings</li>
+    {{#activating-item currentWhen='settings.admin' tagName='li'}}
+      {{link-to 'Account Settings' 'settings.admin'}}
+    {{/activating-item}}
 
-        {{#activating-item currentWhen='settings.profile' tagName='li'}}
-          {{link-to 'Profile' 'settings.profile'}}
-        {{/activating-item}}
-
-        {{#activating-item currentWhen='settings.admin' tagName='li'}}
-          {{link-to 'Account Settings' 'settings.admin'}}
-        {{/activating-item}}
-
-        {{#activating-item currentWhen='settings.ssh' tagName='li'}}
-          {{link-to 'SSH Keys' 'settings.ssh'}}
-        {{/activating-item}}
-      </ul>
-    </div>
-    <div class="col-xs-8">
-      {{outlet}}
-    </div>
-  </div>
-</div>
+    {{#activating-item currentWhen='settings.ssh' tagName='li'}}
+      {{link-to 'SSH Keys' 'settings.ssh'}}
+    {{/activating-item}}
+  </ul>
+</nav>

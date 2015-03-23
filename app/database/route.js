@@ -9,6 +9,12 @@ export default Ember.Route.extend({
     tokens.push(stack.get('handle'));
     return tokens.join(' - ');
   },
+
+  setupController: function(controller, model){
+    controller.set('model', model);
+    controller.set('stack', model.get('stack.content'));
+  },
+
   afterModel: function(model){
     return model.get('stack');
   }
