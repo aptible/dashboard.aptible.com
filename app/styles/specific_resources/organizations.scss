@@ -38,3 +38,11 @@
     display: block;
   }
 }
+
+.panel-heading {
+  @include clearfix();
+}
+
+.panel-heading h3 {
+  float: left;
+}

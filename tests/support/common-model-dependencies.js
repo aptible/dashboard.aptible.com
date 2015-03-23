@@ -11,6 +11,9 @@ export default [
   'model:image',
   'model:log-drain',
   'model:disk',
+  'model:user',
+  'model:token',
+  'model:ssh-key',
 
   'adapter:application',
   'serializer:application',

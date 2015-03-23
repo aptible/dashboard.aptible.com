@@ -4,9 +4,10 @@ import {
 } from 'ember-qunit';
 import Ember from "ember";
 import { stubRequest } from '../../helpers/fake-server';
+import modelDeps from '../../support/common-model-dependencies';
 
 moduleForModel('subscription', 'Subscription', {
-  needs: ['model:organization', 'adapter:subscription', 'serializer:application']
+  needs: modelDeps.concat(['adapter:subscription'])
 });
 
 test('data is posted upon save', function() {

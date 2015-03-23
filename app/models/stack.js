@@ -1,6 +1,22 @@
 import Ember from 'ember';
 import DS from 'ember-data';
 
+let roleUrlRegex = new RegExp('/roles/([a-zA-Z0-9\-]+)$');
+
+function getRoleIdFromPermission(permission){
+  var roleUrl = permission.get('data.links.role');
+
+  if (roleUrl && roleUrlRegex.test(roleUrl)) {
+    var id = roleUrlRegex.exec(roleUrl)[1];
+
+    return Ember.RSVP.resolve(id);
+  } else {
+    return permission.get('role').then(function(role){
+      return role.get('id');
+    });
+  }
+}
+
 export default DS.Model.extend({
   // properties
   name: DS.attr('string'),
@@ -22,5 +38,34 @@ export default DS.Model.extend({
   allowPHI: Ember.computed.match('type', /production/),
   appContainerCentsPerHour: function() {
     return this.get('allowPHI') ? 10 : 6;
-  }.property('allowPHI')
+  }.property('allowPHI'),
+
+  permitsRole(role, scope){
+    let permissions;
+
+    return this.get('permissions').then(function(_permissions){
+      permissions = _permissions;
+
+      let promises = permissions.map(function(perm){
+        return getRoleIdFromPermission(perm).then(function(roleId){
+          return {
+            roleId: roleId,
+            scope:  perm.get('scope')
+          };
+        });
+      });
+
+      return Ember.RSVP.all(promises);
+    }).then(function(stackRoleScopes){
+      return stackRoleScopes.any(function(stackRoleScope){
+        if (role.get('id') !== stackRoleScope.roleId) {
+          // skip irrelevant role
+          return false;
+        }
+
+        return stackRoleScope.scope === 'manage' ||
+          stackRoleScope.scope === scope;
+      });
+    });
+  }
 });
