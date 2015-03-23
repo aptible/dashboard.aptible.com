@@ -1,0 +1,55 @@
+<div class="panel">
+  <div class="panel-heading">
+    <h3>Pending Invitations</h3>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Date Sent</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each model as |invitation|}}
+        <tr>
+          <td>{{invitation.email}}</td>
+          <td>{{invitation.role.name}}</td>
+          <td>{{invitation.updatedAt}}</td>
+          <td>
+            {{#aptible-ability
+                user=session.currentUser
+                scope='manage'
+                permittable=organization as |hasAbility|}}
+              {{#if hasAbility}}
+                <div class="table-row-nav">
+                  <ul class="nav nav-pills sub-nav-tabs">
+                    <li>
+                      {{! FIXME should link to an edit membership page}}
+                      <a href="#" title="Resend invitation to {{invitation.email}}">
+                        <i class="fa fa-refresh"></i>
+                        <span class="button-label">
+                          Resend
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      {{! FIXME should fire action that calls deletion }}
+                      <a href="#" title="Delete invitation for {{invitation.email}}">
+                        <i class="fa fa-times"></i>
+                        <span class="button-label">
+                          Remove
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              {{/if}}
+            {{/aptible-ability}}
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

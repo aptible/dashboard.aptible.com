@@ -3,11 +3,6 @@ import { locationHistory } from '../../utils/location';
 import { titleHistory } from '../../utils/title-route-extensions';
 import { stubRequest } from "./fake-server";
 
-/**
- * @param userData object populate the signed-in user with this data.
- *   If `privileged` is true, the user will be marked as privileged.
- *   This property can be used to ensure `User#can` returns true
- */
 Ember.Test.registerAsyncHelper('signIn', function(app, userData){
   userData = userData || {};
   let defaultUserData = {

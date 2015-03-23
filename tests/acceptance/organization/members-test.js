@@ -7,10 +7,18 @@ import startApp from 'diesel/tests/helpers/start-app';
 import {stubRequest} from 'diesel/tests/helpers/fake-server';
 
 var application;
+let orgId = 'big-co';
+let url = `/organizations/${orgId}/members`;
+let membersUrl = `/organizations/${orgId}/users`;
 
 module('Acceptance: OrganizationMembers', {
   beforeEach: function() {
     application = startApp();
+    stubOrganization({
+      id: orgId,
+      _links: { users: { href: membersUrl } }
+    });
+
   },
 
   afterEach: function() {
@@ -18,19 +26,13 @@ module('Acceptance: OrganizationMembers', {
   }
 });
 
-test('visiting /organizations/big-co/members', function(assert) {
-  assert.expect(4);
-  let organizationId = 'big-co';
-  let membersUrl = '/organizations/'+organizationId+'/users';
+test(`visiting ${url} requires authentication`, function(){
+  expectRequiresAuthentication(url);
+});
 
-  stubOrganization({
-    id: organizationId,
-    _links: {
-      users: {
-        href: membersUrl
-      }
-    }
-  });
+test(`visiting ${url}`, function(assert) {
+  assert.expect(4);
+
   stubRequest('get', membersUrl, function(request){
     assert.ok(true, 'Request for members is made');
     return this.success({
@@ -56,6 +58,7 @@ test('visiting /organizations/big-co/members', function(assert) {
       }
     });
   });
+
   stubRequest('get', '/users/bob/roles', function(request){
     return this.success({
       _embedded: {
@@ -63,6 +66,7 @@ test('visiting /organizations/big-co/members', function(assert) {
       }
     });
   });
+
   stubRequest('get', '/users/mike/roles', function(request){
     return this.success({
       _embedded: {
@@ -71,7 +75,7 @@ test('visiting /organizations/big-co/members', function(assert) {
     });
   });
 
-  signInAndVisit('/organizations/big-co/members');
+  signInAndVisit(`/organizations/${orgId}/members`);
 
   andThen(function() {
     assert.equal(currentPath(), 'organization.members');

@@ -1,6 +1,8 @@
 import DS from 'ember-data';
 import Ember from 'ember';
 
+let orgRegex = new RegExp('organizations/([a-zA-Z0-9\-]+)');
+
 export default DS.Model.extend({
   name: DS.attr('string'),
   primaryPhone: DS.attr('string'),
@@ -11,13 +13,14 @@ export default DS.Model.extend({
   address: DS.attr('string'),
   plan: DS.attr('string'),
 
-  users: DS.hasMany('users', {async: true}),
+  users: DS.hasMany('user', {async: true}),
+  invitations: DS.hasMany('invitation', {async:true}),
 
+  // needed by aptible-ability
   permitsRole(role, scope){
     return new Ember.RSVP.Promise( (resolve) => {
       let roleOrganizationHref = role.get('data.links.organization');
-      let regex = /organizations\/(.*)/;
-      let match = regex.exec(roleOrganizationHref);
+      let match = orgRegex.exec(roleOrganizationHref);
       let roleOrganizationId = match[1];
 
       let result = roleOrganizationId === this.get('id');
