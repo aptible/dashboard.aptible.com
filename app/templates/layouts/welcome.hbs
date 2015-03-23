@@ -1,9 +1,15 @@
-{{partial "current-user-header"}}
+<header class="layout-header">
+  {{partial "focus-header"}}
+</header>
 
-<div id="main-yield-wrapper" style="min-height: 504px;">
+<div class="layout-body">
   <div class="container focus">
     {{yield}}
   </div>
 </div>
 
-{{partial "nav-footer"}}
+<footer class="layout-footer">
+  {{partial "nav-footer"}}
+</footer>
+
+

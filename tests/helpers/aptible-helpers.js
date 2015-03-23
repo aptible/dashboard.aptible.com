@@ -216,7 +216,6 @@ Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
   if (options.includeDatabases) {
     stubRequest('get', '/accounts/my-stack-1/databases', function(request){
       return this.success({
-        _links: {},
         _embedded: {
           databases: [{
             id: 1,
@@ -225,12 +224,14 @@ Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
             id: 2,
             handle: 'my-db-2-stack-1'
           }]
+        },
+        _links: {
+          account: { href: '/accounts/my-stack-1'}
         }
       });
     });
     stubRequest('get', '/accounts/my-stack-2/databases', function(request){
       return this.success({
-        _links: {},
         _embedded: {
           databases: [{
             id: 3,
@@ -239,6 +240,9 @@ Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
             id: 4,
             handle: 'my-db-2-stack-2'
           }]
+        },
+        _links: {
+          account: { href: '/accounts/my-stack-1'}
         }
       });
     });
@@ -259,6 +263,9 @@ Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
                 handle: 'the-service',
                 container_count: 1
               }]
+            },
+            _links: {
+              account: { href: '/accounts/my-stack-1'}
             }
           }, {
             id: 2,
@@ -270,6 +277,9 @@ Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
                 handle: 'the-service-2',
                 container_count: 1
               }]
+            },
+            _links: {
+              account: { href: '/accounts/my-stack-1'}
             }
           }]
         }

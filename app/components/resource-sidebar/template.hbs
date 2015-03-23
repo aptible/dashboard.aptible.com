@@ -1,0 +1,47 @@
+
+<div class="sidebar-header">
+  {{#link-to 'stack' stack class="back-to-stack"}}
+    <i class="fa fa-chevron-left"></i>
+    <h3>{{stack.handle}}</h3>
+  {{/link-to}}
+</div>
+
+<ul class="nav sidebar-nav">
+  <li class="title">
+    Apps
+
+    {{#aptible-ability scope="manage" user=user permittable=stack as |hasAbility|}}
+      {{#if hasAbility}}
+        {{#link-to 'apps.new' stack }}
+          <i class="fa fa-plus"></i>
+        {{/link-to}}
+      {{/if}}
+    {{/aptible-ability}}
+  </li>
+
+  {{#each stack.apps as |app|}}
+    {{#link-to 'app' app tagName="li"}}
+      {{link-to app.handle 'app' app bubbles=false}}
+    {{/link-to}}
+  {{/each}}
+</ul>
+
+<ul class="nav sidebar-nav">
+  <li class="title">
+    Databases
+
+    {{#aptible-ability scope="manage" user=user permittable=stack as |hasAbility|}}
+      {{#if hasAbility}}
+        {{#link-to 'databases.new' stack}}
+          <i class="fa fa-plus"></i>
+        {{/link-to}}
+      {{/if}}
+    {{/aptible-ability}}
+  </li>
+
+  {{#each stack.databases as |database|}}
+    {{#link-to 'database' database tagName="li"}}
+      {{link-to database.handle 'database' database bubbles=false}}
+    {{/link-to}}
+  {{/each}}
+</ul>

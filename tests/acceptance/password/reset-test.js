@@ -28,7 +28,7 @@ test('visiting /password/reset signed in redirects to index', function() {
   stubStacks();
   signInAndVisit('/password/reset');
   andThen(function(){
-    equal(currentPath(), 'stacks.index');
+    equal(currentPath(), 'stack.apps.index');
   });
 });
 

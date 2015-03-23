@@ -21,6 +21,8 @@ module('Acceptance: Apps Show - Never deployed (app.status === "pending")', {
 });
 
 function setupAjaxStubs(sshKeys){
+  stubOrganizations();
+  stubOrganization();
   stubApp({
     id: appId,
     handle: appHandle,
@@ -146,6 +148,7 @@ test(`visit ${url} when app has not been deployed, click destroy link`, function
   stubStack({
     id: stackId
   });
+  stubStacks();
 
   setupAjaxStubs([]);
   signInAndVisit(url);

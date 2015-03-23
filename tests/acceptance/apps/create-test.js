@@ -6,7 +6,7 @@ var App;
 let url = '/stacks/my-stack-1/apps/new';
 let appIndexUrl = '/stacks/my-stack-1/apps';
 let stackId = 'my-stack-1';
-let stackHandle = 'my-stack-handle';
+let stackHandle = 'my-stack-1';
 
 module('Acceptance: App Create', {
   setup: function() {
@@ -36,8 +36,17 @@ test(`${url} requires authentication`, function(){
 });
 
 test(`visiting /stacks/:stack_id/apps without any apps redirects to ${url}`, function() {
-  stubStack({ id: stackId });
+  stubStack({ id: stackId , apps: [] });
+  stubRequest('get', '/accounts/my-stack-1/apps', function(request){
+    return this.success({
+      _links: {},
+      _embedded: {
+        apps: []
+      }
+    });
+  });
   stubOrganization();
+  stubOrganizations();
   signInAndVisit(`/stacks/${stackId}/apps`);
 
   andThen(function() {
@@ -47,7 +56,8 @@ test(`visiting /stacks/:stack_id/apps without any apps redirects to ${url}`, fun
 
 test(`visit ${url} shows basic info`, function(){
   expect(6);
-
+  stubOrganization();
+  stubOrganizations();
   signInAndVisit(url);
   andThen(function(){
     equal(currentPath(), 'stack.apps.new');
@@ -60,6 +70,8 @@ test(`visit ${url} shows basic info`, function(){
 });
 
 test(`visit ${url} and cancel`, function(){
+  stubOrganization();
+  stubOrganizations();
   let appHandle = 'abc-my-app-handle';
   signInAndVisit(url);
 
@@ -77,6 +89,16 @@ test(`visit ${url} and cancel`, function(){
 });
 
 test(`visit ${url} without apps show no cancel button`, function(){
+  stubRequest('get', '/accounts/my-stack-1/apps', function(request){
+    return this.success({
+      _links: {},
+      _embedded: {
+        apps: []
+      }
+    });
+  });
+  stubOrganization();
+  stubOrganizations();
   stubStack({id: stackId}); // stubs a stack with no apps
   signInAndVisit(url);
 
@@ -88,6 +110,8 @@ test(`visit ${url} without apps show no cancel button`, function(){
 });
 
 test(`visit ${url} and transition away`, function(){
+  stubOrganization();
+  stubOrganizations();
   let appHandle = 'abc-my-app-handle';
   signInAndVisit(url);
 
@@ -105,6 +129,8 @@ test(`visit ${url} and transition away`, function(){
 });
 
 test(`visit ${url} and create an app`, function(){
+  stubOrganization();
+  stubOrganizations();
   expect(3);
   let appHandle = 'abc-my-app-handle';
 
@@ -138,6 +164,8 @@ test(`visit ${url} and create an app`, function(){
 
 test(`visit ${url} when user is not verified shows "Cannot create" message`, function(){
   let userData = {verified: false};
+  stubOrganization();
+  stubOrganizations();
   signInAndVisit(url, userData);
   andThen( () => {
     expectNoButton('Save App');

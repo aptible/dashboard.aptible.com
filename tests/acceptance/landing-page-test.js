@@ -31,7 +31,7 @@ test('visiting / when logged in with more than one stacks redirects to stacks in
   signInAndVisit('/');
 
   andThen(function() {
-    equal(currentPath(), 'stacks.index');
+    equal(currentPath(), 'stack.apps.index');
   });
 });
 

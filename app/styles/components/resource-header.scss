@@ -1,13 +1,20 @@
 header.resource-header {
-  margin: 0 0 30px;
-  padding: 30px 0;
   border-bottom: 1px solid $color-bg-gray;
 
   .resource-title {
-    margin: 0;
-    font-size: 20px;
-    font-weight: $weight-semibold;
-    color: $color-primary;
+    @extend %clearfix;
+
+    h1 {
+      float: left;
+      margin: 6px 0 0 11px;
+      font-size: 20px;
+      font-weight: $weight-semibold;
+      color: $color-primary;
+    }
+
+    .resource-icon {
+      float: left;
+    }
 
     .resource-title-link a {
       color: $color-light;
@@ -41,6 +48,7 @@ header.resource-header {
 
   .resource-metadata {
     @extend %clearfix;
+    clear: both;
     margin: 25px 0 0;
     padding: 0;
 

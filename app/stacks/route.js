@@ -13,7 +13,7 @@ export default Ember.Route.extend({
 
     if(stacks.get('length') === 0) {
       this.transitionTo('welcome.first-app');
-    } else if(stacks.get('length') === 1) {
+    } else {
       this.transitionTo('apps', stack);
     }
   }

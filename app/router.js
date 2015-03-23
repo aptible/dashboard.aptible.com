@@ -49,8 +49,7 @@ Router.map(function() {
     });
   });
 
-
-  this.route("stacks", { path: "stacks" }, function() {});
+  this.route("stacks");
   this.route("login");
   this.route("logout");
   this.route("signup");
