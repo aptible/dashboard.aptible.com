@@ -31,7 +31,7 @@ test('visiting /welcome/first-app logged in with stacks', function() {
   });
 });
 
-test('submitting a first app directs to subscriptions', function() {
+test('submitting a first app directs to payment info', function() {
   var appHandle = 'my-app';
 
   stubStacks({}, []);
@@ -42,5 +42,36 @@ test('submitting a first app directs to subscriptions', function() {
   click('button:contains(Get Started)');
   andThen(function() {
     equal(currentPath(), 'welcome.payment-info', 'redirected to payment info');
+  });
+});
+
+test('submitting a first app directs to payment info', function() {
+  var appHandle = 'my-app';
+
+  stubStacks({}, []);
+  stubOrganizations();
+  signInAndVisit('/welcome/first-app');
+
+  fillIn('input[name="app-handle"]', appHandle);
+  click('button:contains(Get Started)');
+  andThen(function() {
+    equal(currentPath(), 'welcome.payment-info', 'redirected to payment info');
+  });
+});
+
+test('choosing a database type opens database pane, clicking it again closes', function(assert) {
+  var appHandle = 'my-app';
+
+  stubStacks({}, []);
+  stubOrganizations();
+  signInAndVisit('/welcome/first-app');
+
+  click('.select-option[title="Redis"]');
+  andThen(() => {
+    assert.ok(find('input[name="db-handle"]').length === 1, 'db handle input on the page');
+  });
+  click('.select-option[title="Redis"]');
+  andThen(() => {
+    assert.ok(find('input[name="db-handle"]').length === 0, 'db handle input not on the page');
   });
 });

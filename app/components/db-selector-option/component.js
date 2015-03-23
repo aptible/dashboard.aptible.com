@@ -7,8 +7,8 @@ export default Ember.Component.extend({
   selectedDbType: null,
   selectCallback: Ember.K,
 
-  isSelected: Ember.computed('dbType', 'selectedDbType', function(){
-    return this.get('dbType') === this.get('selectedDbType');
+  isSelected: Ember.computed('dbType.value', 'selectedDbType', function(){
+    return this.get('dbType.value') === this.get('selectedDbType');
   }),
 
   actions: {

@@ -35,11 +35,11 @@
             <label>Type</label>
 
             <div class="select-options-container database-select row">
-              {{#db-selector action="selectDbType" as |dbType selectedDbType selectCallback|}}
+              {{#db-selector action="selectDbType" as |dbType selectCallback|}}
                 {{db-selector-option
                       selectCallback=selectCallback
                       dbType=dbType
-                      selectedDbType=selectedDbType}}
+                      selectedDbType=model.type}}
               {{/db-selector}}
             </div>
           </div>

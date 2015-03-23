@@ -1,4 +1,6 @@
 import Ember from 'ember';
+import { resetDBData } from "../route";
+
 export var firstAppKey = '_aptible_firstAppData';
 
 export default Ember.Route.extend({
@@ -11,7 +13,12 @@ export default Ember.Route.extend({
     },
 
     selectDbType: function(dbType){
-      Ember.set(this.currentModel, 'dbType', dbType);
+      let currentType = Ember.get(this.currentModel, 'dbType');
+      if (currentType === dbType) {
+        resetDBData(this.currentModel);
+      } else {
+        Ember.set(this.currentModel, 'dbType', dbType);
+      }
     },
 
     setDiskSize: function(diskSize){
