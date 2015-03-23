@@ -1,0 +1,49 @@
+import Ember from 'ember';
+import DS from 'ember-data';
+
+export default Ember.Route.extend({
+  model(){
+    return this.store.createRecord('invitation');
+  },
+
+  afterModel(){
+    return this.modelFor('organization').get('roles');
+  },
+
+  setupController(controller, model){
+    controller.set('model', model);
+    controller.set('organization', this.modelFor('organization'));
+  },
+
+  resetController(controller){
+    controller.set('success', null);
+  },
+
+  willTransition(){
+    this.controller.get('model').destroy();
+  },
+
+  actions: {
+    invite(){
+      let invitation = this.controller.get('model');
+
+      this.controller.set('success', null);
+      invitation.save().then( () => {
+        this.controller.set('success', true);
+
+        let newInvite = this.store.createRecord('invitation');
+        this.controller.set('model', newInvite);
+      }).catch((e) => {
+        if (e instanceof DS.InvalidError) {
+          // no-op, will be displayed in template
+        } else {
+          throw e;
+        }
+      });
+    },
+
+    cancel(){
+      this.transitionTo('organization.members');
+    }
+  }
+});

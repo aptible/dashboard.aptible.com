@@ -13,9 +13,9 @@ export default DS.Model.extend({
   address: DS.attr('string'),
   plan: DS.attr('string'),
 
-  users: DS.hasMany('user', {async: true}),
+  users: DS.hasMany('user', {async:true}),
   invitations: DS.hasMany('invitation', {async:true}),
-  roles: DS.hasMany('role', {async: true}),
+  roles: DS.hasMany('role', {async:true}),
 
   // needed by aptible-ability
   permitsRole(role, scope){

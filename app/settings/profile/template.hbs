@@ -2,7 +2,7 @@
   <div class="panel panel-default">
     <div class="panel-heading"><h3>Your Profile</h3></div>
     <div class="panel-body">
-      <form action="">
+      <form {{action 'submit' on='submit'}}>
         <div class="form-group clearfix update-gravatar">
           <label class="block">Profile Picture</label>
           <div class="gravatar lg">
@@ -30,8 +30,8 @@
 
         <div class="form-group">
           <button {{action "submit" userName}}
-             {{bind-attr disabled=model.isSaving}}
-             class="btn btn-primary" type="submit">
+                  disabled={{model.isSaving}}
+                  class="btn btn-primary" type="submit">
             {{#if model.isSaving}}
               Saving
             {{else}}

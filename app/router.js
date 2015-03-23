@@ -81,6 +81,7 @@ Router.map(function() {
     this.route("members");
     this.route("invitations");
     this.route("roles");
+    this.route("invite");
   });
 });
 

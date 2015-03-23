@@ -30,8 +30,8 @@ test(`visiting ${url} requires authentication`, function(){
   expectRequiresAuthentication(url);
 });
 
-test(`visiting ${url}`, function(assert) {
-  assert.expect(4);
+test(`visiting ${url} shows users`, function(assert) {
+  assert.expect(5);
 
   stubRequest('get', membersUrl, function(request){
     assert.ok(true, 'Request for members is made');
@@ -42,17 +42,13 @@ test(`visiting ${url}`, function(assert) {
             id: 'mike',
             name: 'Mike',
             email: 'mike@mike.com',
-            _links: {
-              roles: {href: '/users/mike/roles'}
-            }
+            _links: { roles: {href: '/users/mike/roles'} }
           },
           {
             id: 'bob',
             name: 'Bob',
             email: 'bob@bob.com',
-            _links: {
-              roles: {href: '/users/mike/roles'}
-            }
+            _links: { roles: {href: '/users/mike/roles'} }
           }
         ]
       }
@@ -60,26 +56,19 @@ test(`visiting ${url}`, function(assert) {
   });
 
   stubRequest('get', '/users/bob/roles', function(request){
-    return this.success({
-      _embedded: {
-        roles: []
-      }
-    });
+    return this.success({ _embedded: { roles: [] } });
   });
 
   stubRequest('get', '/users/mike/roles', function(request){
-    return this.success({
-      _embedded: {
-        roles: []
-      }
-    });
+    return this.success({ _embedded: { roles: [] } });
   });
 
-  signInAndVisit(`/organizations/${orgId}/members`);
+  signInAndVisit(url);
 
   andThen(function() {
     assert.equal(currentPath(), 'organization.members');
     assert.ok(find(':contains(Mike)').length, 'Mike is on the page');
     assert.ok(find(':contains(bob@bob.com)').length, 'bob@bob.com is on the page');
+    expectLink(`/organizations/${orgId}/invite`);
   });
 });
