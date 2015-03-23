@@ -4,6 +4,7 @@ import {
   test
 } from 'qunit';
 import startApp from 'diesel/tests/helpers/start-app';
+import { forcePromiseResolution } from 'diesel/organization/route';
 
 var application;
 
@@ -21,7 +22,12 @@ test('visiting /organization without organizationSettings feature redirects', fu
   stubOrganization({ id: 42 });
   setFeature('organization-settings', false);
   signInAndVisit('/organizations/42');
-  locationUpdatedTo('http://localhost:3000/organizations/42');
+  setTimeout(() => {
+    // this is needed so that the test will not hang indefinitely waiting
+    // for a promise that will never resolve
+    forcePromiseResolution();
+    locationUpdatedTo('http://localhost:3000/organizations/42');
+  }, 0);
 });
 
 test('visiting /organization', function(assert) {
@@ -30,5 +36,6 @@ test('visiting /organization', function(assert) {
   signInAndVisit('/organizations/42');
   andThen(function() {
     assert.equal(currentPath(), 'organization.members');
+    expectLink('/organizations/42/invitations');
   });
 });

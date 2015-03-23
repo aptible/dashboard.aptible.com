@@ -14,6 +14,7 @@ export default [
   'model:user',
   'model:token',
   'model:ssh-key',
+  'model:invitation',
 
   'adapter:application',
   'serializer:application',
