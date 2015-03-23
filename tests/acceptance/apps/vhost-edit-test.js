@@ -85,7 +85,7 @@ test(`visit ${url} shows form, basic info`, function(){
 });
 
 test(`visit ${url} click save`, function(){
-  expect(8);
+  expect(10);
 
   let newVirtualDomain = 'new-virt.domain.com';
   let newCert = 'abc-new-cert';
@@ -107,6 +107,8 @@ test(`visit ${url} click save`, function(){
     let json = this.json(request);
 
     equal(json.type, 'reprovision');
+    equal(json.certificate, newCert);
+    equal(json.private_key, newPk);
     return this.success({
       id: 'new-op-id',
       type: json.type
