@@ -1,0 +1,59 @@
+<div class="panel">
+  <div class="panel-heading">
+    <h3>Roles</h3>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Administrator</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each model as |role|}}
+        <tr>
+          <td>{{role.name}}</td>
+          <td>{{role.privileged}}</td>
+          <td>
+            {{#aptible-ability
+                user=session.currentUser
+                scope='manage'
+                permittable=organization as |hasAbility|}}
+              {{#if hasAbility}}
+                <div class="table-row-nav">
+                  <ul class="nav nav-pills sub-nav-tabs">
+                    <li>
+                      {{! FIXME should link to an edit role permissions}}
+                      <a href="#" title="Edit {{role.name}} Permissions">
+                        <i class="fa fa-edit"></i>
+                      </a>
+                    </li>
+                    <li>
+                      {{! FIXME should link to an edit users on role page}}
+                      <a href="#" title="Add an existing user to {{role.name}} role">
+                        <i class="fa fa-plus-circle"></i>
+                      </a>
+                    </li>
+                    <li>
+                      {{! FIXME should link to add a new user}}
+                      <a href="#" title="Invite new user to {{role.name}} by email">
+                        <i class="fa fa-envelope"></i>
+                      </a>
+                    </li>
+                    <li>
+                      {{! FIXME should fire action that calls deletion }}
+                      <a href="#" title="Delete {{role.name}} role">
+                        <i class="fa fa-times"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              {{/if}}
+            {{/aptible-ability}}
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
