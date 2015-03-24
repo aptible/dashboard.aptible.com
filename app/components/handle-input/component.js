@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Autofocusable from 'diesel/mixins/views/autofocusable';
+import FocusableInput from '../focusable-input/component';
 
 export var maxChars = 64;
 
@@ -24,7 +24,7 @@ function sanitizeInput(input){
          replace(nonAlphaNumerics, '');
 }
 
-export default Ember.TextField.extend(Autofocusable, {
+export default FocusableInput.extend({
   _sanitizedValue: null,
   value: Ember.computed(function(key, value){
     if (arguments.length > 1) {
