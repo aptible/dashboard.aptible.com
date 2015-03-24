@@ -36,8 +36,7 @@
                       </a>
                     </li>
                     <li>
-                      {{! FIXME should link to add a new user}}
-                      <a href="#" title="Invite new user to {{role.name}} by email">
+                      <a href="#" title="Invite new user to {{role.name}} by email" {{action "inviteTo" role}}>
                         <i class="fa fa-envelope"></i>
                       </a>
                     </li>

@@ -2,8 +2,18 @@ import Ember from 'ember';
 import DS from 'ember-data';
 
 export default Ember.Route.extend({
-  model(){
-    return this.store.createRecord('invitation');
+  queryParams: {
+    role: {
+      replace: true
+    }
+  },
+
+  model(params, transition){
+    let options = {};
+    if (transition.queryParams.role) {
+      options.role = transition.queryParams.role;
+    }
+    return this.store.createRecord('invitation', options);
   },
 
   afterModel(){
