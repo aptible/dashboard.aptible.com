@@ -2,6 +2,14 @@
   <div class="panel-heading">
     <h3>Pending Invitations</h3>
   </div>
+
+  {{#if successMessage}}
+    {{#bs-alert alert="success" as |component|}}
+      {{bs-alert-dismiss target=component}}
+      {{successMessage}}
+    {{/bs-alert}}
+  {{/if}}
+
   <table class="table table-striped">
     <thead>
       <tr>
@@ -25,15 +33,7 @@
               {{#if hasAbility}}
                 <div class="table-row-nav">
                   <ul class="nav nav-pills sub-nav-tabs">
-                    <li>
-                      {{! FIXME should link to an edit membership page}}
-                      <a href="#" title="Resend invitation to {{invitation.email}}">
-                        <i class="fa fa-refresh"></i>
-                        <span class="button-label">
-                          Resend
-                        </span>
-                      </a>
-                    </li>
+                    <li>{{resend-invitation invitation=invitation action="resentInvitation"}}</li>
                     <li>
                       {{! FIXME should fire action that calls deletion }}
                       <a href="#" title="Delete invitation for {{invitation.email}}">
