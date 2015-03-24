@@ -80,6 +80,7 @@ Router.map(function() {
   this.route("organization", {path: "/organizations/:organization_id"}, function() {
     this.route("members");
     this.route("invitations");
+    this.route("roles");
   });
 });
 

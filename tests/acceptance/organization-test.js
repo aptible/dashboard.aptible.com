@@ -37,5 +37,6 @@ test('visiting /organization', function(assert) {
   andThen(function() {
     assert.equal(currentPath(), 'organization.members');
     expectLink('/organizations/42/invitations');
+    expectLink('/organizations/42/roles');
   });
 });

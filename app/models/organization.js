@@ -15,6 +15,7 @@ export default DS.Model.extend({
 
   users: DS.hasMany('user', {async: true}),
   invitations: DS.hasMany('invitation', {async:true}),
+  roles: DS.hasMany('role', {async: true}),
 
   // needed by aptible-ability
   permitsRole(role, scope){
