@@ -1,0 +1,20 @@
+{{#login-box}}
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+      <div class="panel panel-subdued panel-focused">
+        <div class="panel-heading">
+          <h3>Really delete {{model.name}}?</h3>
+        </div>
+        <div class="panel-body">
+          <p>
+            Deleting the role {{model.name}} cannot be
+            undone.
+          </p>
+
+          <button class="btn btn-default btn-block btn-lg" {{action "cancel"}}>cancel</button>
+          <button class="btn btn-primary btn-block btn-lg" {{action "confirm"}}>confirm deletion</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{{/login-box}}
