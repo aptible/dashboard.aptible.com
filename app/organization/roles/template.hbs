@@ -41,8 +41,7 @@
                       </a>
                     </li>
                     <li>
-                      {{! FIXME should fire action that calls deletion }}
-                      <a href="#" title="Delete {{role.name}} role">
+                      <a href="#" title="Delete {{role.name}} role" {{action "delete" role}}>
                         <i class="fa fa-times"></i>
                       </a>
                     </li>

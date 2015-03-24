@@ -58,7 +58,6 @@ test(`visiting ${url} shows roles`, (assert) => {
 
 test(`visit ${url} and click to add a user`, (assert) => {
   assert.expect(3);
-
   stubOrganization({
     id: orgId,
     _links: {
@@ -86,4 +85,31 @@ test(`visit ${url} and click to add a user`, (assert) => {
   });
 });
 
-// FIXME wire up the resend and delete buttons and test them here
+test(`visit ${url} and delete a role`, (assert) => {
+  assert.expect(2);
+  stubOrganization({
+    id: orgId,
+    _links: {
+      roles: {href: rolesUrl}
+    }
+  });
+
+  let role = {
+    id: 'role1',
+    name: 'Owner'
+  };
+
+  stubRequest('get', rolesUrl, function(request){
+    assert.ok(true, `gets ${rolesUrl}`);
+    return this.success({ _embedded: { roles: [role] }});
+  });
+
+  stubRequest('delete', `/roles/${role.id}`, function(request){
+    assert.ok(true, `deletes the role`);
+    return this.noContent();
+  });
+
+  signInAndVisit(url);
+  click(`a[title="Delete ${role.name} role"]`);
+  clickButton('confirm deletion');
+});
