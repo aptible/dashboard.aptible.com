@@ -46,7 +46,7 @@ test(`visiting ${url} requires authentication`, () => {
 });
 
 test(`visiting ${url} shows pending invites`, (assert) => {
-  assert.expect(2 + 2*invitations.length);
+  assert.expect(3 + 2*invitations.length);
 
   signInAndVisit(url);
   andThen(() => {
@@ -62,6 +62,10 @@ test(`visiting ${url} shows pending invites`, (assert) => {
     assert.equal(find('a[title*="Resend invitation"]').length,
                  invitations.length,
                  'a refresh button for each invitation');
+
+    assert.equal(find('a[title*="Delete invitation"]').length,
+                 invitations.length,
+                 'a delete button for each invitation');
   });
 });
 
@@ -77,14 +81,33 @@ test(`visiting ${url} and clicking "refresh" sends the invite again`, (assert) =
   });
 
   signInAndVisit(url);
-  andThen(() => {
-    let resend = findWithAssert('a[title*="Resend invitation"]');
-    click(resend);
-  });
+  click('a[title*="Resend invitation"]');
   andThen(() => {
     assert.ok(find('.alert-success').length,
               'shows success message');
   });
 });
 
-// FIXME wire up the delete button and test it here
+test(`visiting ${url} and clicking "destroy" destroys the invite`, (assert) => {
+  assert.expect(4);
+  let invitationId = invitations[0].id;
+
+  stubRequest('delete', `/invitations/${invitationId}`, function(request){
+    assert.ok(true, 'deletes the invitation');
+    return this.success(204, {});
+  });
+
+  signInAndVisit(url);
+  andThen(() => {
+    assert.ok(find(`:contains(${invitations[0].email})`).length,
+              'precond - shows invitation email');
+  });
+  click('a[title*="Delete invitation"]');
+  andThen(() => {
+    assert.ok(find(`:contains(${invitations[0].email})`).length,
+              'no longer shows invitation email');
+
+    assert.ok(find('.alert-success').length,
+              'shows success message');
+  });
+});
