@@ -15,7 +15,7 @@ moduleForComponent('link-to-aptible', 'LinkToAptibleComponent', {
 test('it links to a configured host', function() {
   config.aptibleHosts['test-app'] = 'http://localhost.dev';
   this.subject({ path: 'foo.html', app: 'test-app' });
-  var element = this.render();
+  var element = this.$();
   var href = element.attr('href');
   equal(href, 'http://localhost.dev/foo.html', 'href combines app and path');
 });

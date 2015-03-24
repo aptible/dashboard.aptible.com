@@ -11,7 +11,7 @@ test('it renders active when within', function() {
     route: 'apps',
     applicationController: Ember.Object.create({currentPath: 'apps.new'})
   });
-  var element = this.render();
+  var element = this.$();
   equal(element.attr('class'), 'ember-view active');
 });
 
@@ -20,6 +20,6 @@ test('it does not render active with not within', function() {
     route: 'databases',
     applicationController: Ember.Object.create({currentPath: 'apps.new'})
   });
-  var element = this.render();
+  var element = this.$();
   equal(element.attr('class'), 'ember-view');
 });

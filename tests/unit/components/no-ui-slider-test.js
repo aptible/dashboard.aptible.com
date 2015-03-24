@@ -45,7 +45,7 @@ test('sliding sends action didSlide with the value', function(){
     didSlide: 'mySlideAction'
   });
 
-  var element = this.render();
+  var element = this.$();
 
   Ember.$(element).trigger('slide', 4);
 

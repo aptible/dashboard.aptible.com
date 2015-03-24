@@ -14,7 +14,7 @@ test('entering value with spaces adds dashes', function(assert) {
   assert.expect(2);
 
   var component = this.subject();
-  var element = this.render();
+  var element = this.$();
 
   var input = Ember.$(element, 'input');
 
@@ -43,7 +43,7 @@ test('entering value with capital letter lowercases it', function(assert){
   assert.expect(2);
 
   var component = this.subject();
-  var element = this.render();
+  var element = this.$();
 
   var input = Ember.$(element, 'input');
 
@@ -58,7 +58,7 @@ test('setting value with capital letter lowercases it', function(assert){
   assert.expect(2);
 
   var component = this.subject();
-  var element = this.render();
+  var element = this.$();
 
   var input = Ember.$(element, 'input');
 
@@ -72,7 +72,7 @@ test('entering value with bad char removes it', function(assert){
   assert.expect(2);
 
   var component = this.subject();
-  var element = this.render();
+  var element = this.$();
 
   var input = Ember.$(element, 'input');
 
@@ -87,7 +87,7 @@ test('setting value with bad char removes it', function(assert){
   assert.expect(2);
 
   var component = this.subject();
-  var element = this.render();
+  var element = this.$();
 
   var input = Ember.$(element, 'input');
 
@@ -101,7 +101,7 @@ test(`entering more than ${maxChars} chars truncates to ${maxChars}`, function(a
   assert.expect(3);
 
   var component = this.subject();
-  var element = this.render();
+  var element = this.$();
 
   var input = Ember.$(element, 'input');
 
@@ -123,7 +123,7 @@ test(`setting more than ${maxChars} chars truncates to ${maxChars}`, function(as
   assert.expect(3);
 
   var component = this.subject();
-  var element = this.render();
+  var element = this.$();
 
   var input = Ember.$(element, 'input');
 
@@ -143,7 +143,7 @@ test(`setting more than ${maxChars} chars truncates to ${maxChars}`, function(as
 test(`autofocusable`, function(assert){
   var component = this.subject({autofocus:true});
 
-  var $el = this.render();
+  var $el = this.$();
   var el = $el[0];
   assert.equal(document.activeElement, el, 'input is focused');
 });
