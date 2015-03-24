@@ -6,6 +6,9 @@ var centsToDollars = function(cents) {
 };
 
 export default Ember.Component.extend({
+  updateVisibility: function() {
+    this.set('isVisible', this.features.isEnabled('price-estimator'));
+  }.on('didInsertElement'),
   rateInDollars: function() {
     return centsToDollars(this.get('stack.appContainerCentsPerHour'));
   }.property('stack.appContainerCentsPerHour'),

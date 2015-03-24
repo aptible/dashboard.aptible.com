@@ -29,7 +29,7 @@ test('setting value with spaces adds dashes', function(assert) {
   assert.expect(2);
 
   var component = this.subject();
-  var element = this.render();
+  var element = this.$();
 
   var input = Ember.$(element, 'input');
 
