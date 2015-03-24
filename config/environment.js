@@ -52,7 +52,8 @@ module.exports = function(environment) {
     },
 
     featureFlags: {
-      'organization-settings': true
+      'organization-settings': true,
+      'price-estimator': true
     }
 
   };
@@ -96,6 +97,7 @@ module.exports = function(environment) {
     };
     ENV.segmentioKey = 'KsTMCT4BN5';
     ENV.featureFlags['organization-settings'] = false;
+    ENV.featureFlags['price-estimator'] = false;
   }
 
   if (environment === 'production') {
@@ -108,6 +110,7 @@ module.exports = function(environment) {
     };
     ENV.segmentioKey = 'rJGVn1qpBW';
     ENV.featureFlags['organization-settings'] = false;
+    ENV.featureFlags['price-estimator'] = false;
   }
 
   return ENV;

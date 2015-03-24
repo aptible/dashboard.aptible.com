@@ -5,8 +5,21 @@ import {
 
 import Ember from 'ember';
 
+let featuresMock;
+
+function buildFeaturesMock() {
+  return Ember.Object.extend({
+    isEnabled: function() {}
+  });
+}
+
 moduleForComponent('service-scaler', 'ServiceScalerComponent', {
-  needs: ['component:no-ui-slider', 'component:estimated-cost']
+  integration: true,
+  setup: function() {
+    this.container.register('service:features-mock', buildFeaturesMock());
+    this.container.injection('component', 'features', 'service:features-mock');
+    featuresMock = this.container.lookup('service:features-mock');
+  }
 });
 
 test('it renders', function() {
