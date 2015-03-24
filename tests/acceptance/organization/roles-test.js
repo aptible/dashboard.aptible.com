@@ -56,4 +56,34 @@ test(`visiting ${url} shows roles`, (assert) => {
   });
 });
 
+test(`visit ${url} and click to add a user`, (assert) => {
+  assert.expect(3);
+
+  stubOrganization({
+    id: orgId,
+    _links: {
+      roles: {href: rolesUrl}
+    }
+  });
+
+  let role = {
+    id: 'role1',
+    name: 'Owner'
+  };
+
+  stubRequest('get', rolesUrl, function(request){
+    return this.success({ _embedded: { roles: [role] }});
+  });
+
+  signInAndVisit(url);
+  andThen(() => {
+    assert.equal(currentPath(), 'organization.roles');
+  });
+  click(`a[title="Invite new user to ${role.name} by email"]`);
+  andThen(() => {
+    assert.equal(currentPath(), 'organization.invite');
+    assert.equal(find('select').val(), role.name, 'role is selected');
+  });
+});
+
 // FIXME wire up the resend and delete buttons and test them here
