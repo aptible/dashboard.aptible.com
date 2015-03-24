@@ -10,6 +10,12 @@
        Click here to dismiss the alert.
      {{/bs-alert}}
   {{/bs-alert}}
+
+  * If used in inline style, this will insert a pulled-right "X":
+
+   {{#bs-alert as |component|}}
+     {{bs-alert-dismiss target=component}}
+   {{/bs-alert}}
  */
 import Ember from 'ember';
 

@@ -1,1 +1,5 @@
-{{yield}}
+{{#if template}}
+  {{yield}}
+{{else}}
+  <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+{{/if}}
