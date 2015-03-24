@@ -3,16 +3,16 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   tagName: 'span',
 
+  store: Ember.inject.service(),
+
   vhost: null,
 
   isDeleting: false,
 
   actions: {
     delete: function(){
-      Ember.assert('delete-vhost component must have store', !!this.store);
-
       let vhost = this.get('vhost');
-      let op = this.store.createRecord('operation', {
+      let op = this.get('store').createRecord('operation', {
         type: 'deprovision',
         vhost: vhost
       });

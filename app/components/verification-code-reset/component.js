@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   classNames: ['verified-user-alert'],
-  store: null,
+  store: Ember.inject.service(),
 
   sending: false,
   sent: false,
@@ -11,12 +11,9 @@ export default Ember.Component.extend({
 
   actions: {
     resendVerification: function(){
-      let store = this.get('store');
-      Ember.assert('verification-code-reset must have store', !!store);
-
       this.setProperties({ sending: true, error: null });
 
-      let reset = store.createRecord('reset', {type:'verification_code'});
+      let reset = this.get('store').createRecord('reset', {type:'verification_code'});
       reset.save().then( () => {
         this.set('sent', true);
       }, (e) => {
