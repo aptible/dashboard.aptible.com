@@ -3,10 +3,11 @@
     <h3>Members</h3>
     <ul class="nav nav-pills sub-nav-tabs">
       <li>
-        <a class="new-organization-membership-invite-link pull-right" title="Invite new user into {{organization.name}} by email." placement="bottom">
+        {{#link-to 'organization.invite' class="new-organization-membership-invite-link pull-right"
+                  title="Invite new user into {{organization.name}} by email"}}
           <i class="fa fa-envelope"></i>
           Invite New Member
-        </a>
+        {{/link-to}}
       </li>
     </ul>
   </div>
