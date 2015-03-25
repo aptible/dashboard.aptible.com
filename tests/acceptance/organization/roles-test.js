@@ -47,7 +47,7 @@ test(`visiting ${url} shows roles`, (assert) => {
 
   signInAndVisit(url);
   andThen(() => {
-    equal(currentPath(), 'organization.roles');
+    equal(currentPath(), 'organization.roles.index');
 
     roles.forEach( (r) => {
       assert.ok(find(`:contains(${r.name})`).length,
@@ -76,7 +76,7 @@ test(`visit ${url} and click to add a user`, (assert) => {
 
   signInAndVisit(url);
   andThen(() => {
-    assert.equal(currentPath(), 'organization.roles');
+    assert.equal(currentPath(), 'organization.roles.index');
   });
   click(`a[title="Invite new user to ${role.name} by email"]`);
   andThen(() => {
@@ -93,7 +93,6 @@ test(`visit ${url} and delete a role`, (assert) => {
       roles: {href: rolesUrl}
     }
   });
-
   let role = {
     id: 'role1',
     name: 'Owner'
@@ -112,4 +111,29 @@ test(`visit ${url} and delete a role`, (assert) => {
   signInAndVisit(url);
   click(`a[title="Delete ${role.name} role"]`);
   clickButton('confirm deletion');
+});
+
+test(`visit ${url} and click to edit`, (assert) => {
+  assert.expect(2);
+  stubOrganization({
+    id: orgId,
+    _links: {
+      roles: {href: rolesUrl}
+    }
+  });
+  let role = {
+    id: 'role1',
+    name: 'Owner'
+  };
+
+  stubRequest('get', rolesUrl, function(request) {
+    assert.ok(true, `gets ${rolesUrl}`);
+    return this.success({ _embedded: {roles: [role]} });
+  });
+
+  signInAndVisit(url);
+  click(`a[title="Edit ${role.name} Permissions"]`);
+  andThen(() => {
+    equal(currentPath(), 'organization.roles.edit');
+  });
 });
