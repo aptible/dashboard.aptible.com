@@ -13,6 +13,7 @@ export default Ember.Route.extend({
     if (transition.queryParams.role) {
       options.role = transition.queryParams.role;
     }
+    options.organization = this.modelFor('organization');
     return this.store.createRecord('invitation', options);
   },
 

@@ -37,20 +37,17 @@ test(`visiting ${url} shows users`, function(assert) {
     assert.ok(true, 'Request for members is made');
     return this.success({
       _embedded: {
-        users: [
-          {
-            id: 'mike',
-            name: 'Mike',
-            email: 'mike@mike.com',
-            _links: { roles: {href: '/users/mike/roles'} }
-          },
-          {
-            id: 'bob',
-            name: 'Bob',
-            email: 'bob@bob.com',
-            _links: { roles: {href: '/users/mike/roles'} }
-          }
-        ]
+        users: [{
+          id: 'mike',
+          name: 'Mike',
+          email: 'mike@mike.com',
+          _links: { roles: {href: '/users/mike/roles'} }
+        }, {
+          id: 'bob',
+          name: 'Bob',
+          email: 'bob@bob.com',
+          _links: { roles: {href: '/users/mike/roles'} }
+        }]
       }
     });
   });
