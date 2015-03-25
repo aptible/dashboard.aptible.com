@@ -88,27 +88,50 @@ test('user and stack do not have same role', function(){
   });
 });
 
-test('user has privileged role cannot manage stack if its permissions do not include that role', function(){
+test('user has privileged role in stack organization can manage stack', function(){
   let user, userRole, stack, otherRole, stackPermission;
+  let links = { organization: '123' };
 
   Ember.run(function(){
-    user     = store.push('user', {id:'u1', roles:['r1']});
-    userRole = store.push('role', {id:'r1', privileged:true});
-    otherRole = store.push('role', {id:'r2'});
+    user     = store.push('user', {id: 'u1', roles: ['r1'] });
+    userRole = store.push('role', {id:'r1', privileged: true, links: links });
+    otherRole = store.push('role', {id: 'r2', links: links});
 
     // stack permission has otherRole, not privileged userRole
     stackPermission = store.push('permission', {id:'p1', role: 'r2'});
+    stack    = store.push('stack', {id:'s1', permissions:['p1'], links: links});
+  });
 
+  return Ember.run(function(){
+    return can(user, 'manage', stack).then(function(res){
+      ok(res, 'privileged user with matching role can manage stack');
+
+      return can(user, 'read', stack);
+    }).then(function(res){
+      ok(res, 'privileged user with privileged role in organization can read stack');
+    });
+  });
+});
+
+test('user has privileged role in outside organization cannot manage stack', function() {
+  let user, userRole, stack, outsideRole, stackPermission;
+  let organization = { organization: '123' };
+  let outsideOrganization = { organization: '321' };
+
+  Ember.run(function(){
+    user     = store.push('user', {id: 'u1', roles: ['r1'] });
+    userRole = store.push('role', {id:'r1', privileged: true, links: organization });
+    outsideRole = store.push('role', {id: 'r2', links: outsideOrganization});
+
+    stackPermission = store.push('permission', {id:'p1', role: 'r2', links: outsideOrganization});
     stack    = store.push('stack', {id:'s1', permissions:['p1']});
   });
 
   return Ember.run(function(){
     return can(user, 'manage', stack).then(function(res){
-      ok(!res, 'privileged user with matching role cannot manage stack');
+      ok(!res, 'privileged user from outside organization can not manage stack');
 
       return can(user, 'read', stack);
-    }).then(function(res){
-      ok(!res, 'privileged user without matching role cannot read stack');
     });
   });
 });

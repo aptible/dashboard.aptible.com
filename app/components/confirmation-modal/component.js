@@ -4,7 +4,7 @@ import layout from './template';
 export default Ember.Component.extend({
   confirmationModalService: Ember.inject.service('confirmation-modal'),
   layout: layout,
-
+  classNames: ['flex-wrapper'],
   model: Ember.computed.reads('modal.model'),
 
   startConfirmationModalServiceListener: function() {
