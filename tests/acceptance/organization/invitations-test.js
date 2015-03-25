@@ -16,6 +16,11 @@ let invitations = [{
   email: 'bob@invite1.com',
   roleName: 'owners',
   _links: { role: { href: roleUrl } }
+}, {
+  id: 'invite2',
+  email: 'bob2@invite1.com',
+  roleName: 'owners',
+  _links: { role: { href: roleUrl } }
 }];
 
 module('Acceptance: Organizations: Invitations', {
@@ -81,7 +86,7 @@ test(`visiting ${url} and clicking "refresh" sends the invite again`, (assert) =
   });
 
   signInAndVisit(url);
-  click('a[title*="Resend invitation"]');
+  click('a[title*="Resend invitation"]:eq(0)');
   andThen(() => {
     assert.ok(find('.alert-success').length,
               'shows success message');
@@ -89,10 +94,10 @@ test(`visiting ${url} and clicking "refresh" sends the invite again`, (assert) =
 });
 
 test(`visiting ${url} and clicking "destroy" destroys the invite`, (assert) => {
-  assert.expect(4);
-  let invitationId = invitations[0].id;
+  assert.expect(7);
 
-  stubRequest('delete', `/invitations/${invitationId}`, function(request){
+  // called for each deleted invitation (2x)
+  stubRequest('delete', `/invitations/:invite_id`, function(request){
     assert.ok(true, 'deletes the invitation');
     return this.success(204, {});
   });
@@ -102,12 +107,22 @@ test(`visiting ${url} and clicking "destroy" destroys the invite`, (assert) => {
     assert.ok(find(`:contains(${invitations[0].email})`).length,
               'precond - shows invitation email');
   });
-  click('a[title*="Delete invitation"]');
+  click('a[title*="Delete invitation"]:eq(0)');
   andThen(() => {
     assert.ok(find(`:contains(${invitations[0].email})`).length,
               'no longer shows invitation email');
 
     assert.ok(find('.alert-success').length,
               'shows success message');
+    click('.alert-success .bs-alert-dismiss');
+  });
+  andThen(() => {
+    assert.ok(!find('.alert-success').length,
+              'hides success message');
+    click('a[title*="Delete invitation"]:eq(0)');
+  });
+  andThen(() => {
+    assert.ok(find('.alert-success').length,
+              'shows success message again');
   });
 });

@@ -4,7 +4,7 @@
   </div>
 
   {{#if successMessage}}
-    {{#bs-alert alert="success" as |component|}}
+    {{#bs-alert alert="success" action="clearSuccessMessage" as |component|}}
       {{bs-alert-dismiss target=component}}
       {{successMessage}}
     {{/bs-alert}}
