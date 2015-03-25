@@ -35,8 +35,7 @@
                   <ul class="nav nav-pills sub-nav-tabs">
                     <li>{{resend-invitation invitation=invitation action="resentInvitation"}}</li>
                     <li>
-                      {{! FIXME should fire action that calls deletion }}
-                      <a href="#" title="Delete invitation for {{invitation.email}}">
+                      <a {{action 'destroyInvitation' invitation}} href="#" title="Delete invitation for {{invitation.email}}">
                         <i class="fa fa-times"></i>
                         <span class="button-label">
                           Remove
