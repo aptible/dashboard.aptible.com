@@ -43,6 +43,10 @@ export default DS.Model.extend({
   permitsRole(role, scope){
     let permissions;
 
+    if(role.get('privileged') && role.get('data.links.organization') === this.get('data.links.organization')) {
+      return true;
+    }
+
     return this.get('permissions').then(function(_permissions){
       permissions = _permissions;
 
