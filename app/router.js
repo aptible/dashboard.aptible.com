@@ -83,6 +83,8 @@ Router.map(function() {
     this.route("roles");
     this.route("invite");
   });
+
+  this.route('not-found', {path: '/*wildcard'});
 });
 
 export default Router;
