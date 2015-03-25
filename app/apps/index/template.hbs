@@ -9,6 +9,7 @@
 
   <div class="resource-actions">
     {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
+      {{hasAbility}}
       {{#if hasAbility}}
         {{#if session.currentUser.verified}}
           {{link-to 'Create App' 'apps.new' class="btn btn-primary"}}

@@ -17,6 +17,14 @@ body {
 
 }
 
+.flex-wrapper {
+  min-height: 100vh;
+  max-width: 1270px;
+  min-width: 960px;
+  display: flex;
+  width: 100%;
+}
+
 .main-wrapper {
   min-height: 100vh;
   display: -webkit-box;
@@ -27,8 +35,6 @@ body {
   -webkit-flex-direction: column;
   flex-direction: column;
   width: 100%;
-  max-width: 1270px;
-  min-width: 960px;
   background: #fff;
   border: 1px solid #DFDFDF;
   border-width: 0 1px;
@@ -73,10 +79,6 @@ body {
     flex: 0 0 225px;
     background: #fafafa;
     border-right: 1px solid #f0f0f0;
-  }
-
-  .layout-content {
-    flex: 1;
   }
 
   .layout-container {
