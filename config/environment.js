@@ -20,7 +20,7 @@ module.exports = function(environment) {
     replaceLocation: true,
     replaceTitle: true,
 
-    segmentioKey: 'B4MXa1tl9Z',
+    segmentioKey: 'Jp74HTqG03zhS4cAJK4pueo2FL1Z6bM3',
 
     externalUrls: {
       gettingStartedDocs: 'https://support.aptible.com/hc/en-us/articles/202638630-Deploying-your-first-app'
@@ -95,7 +95,7 @@ module.exports = function(environment) {
       'legacy-dashboard': "https://dashboard.aptible-staging.com",
       support: "https://support.aptible-staging.com"
     };
-    ENV.segmentioKey = 'KsTMCT4BN5';
+    ENV.segmentioKey = '6jZlAcweTojgXShBvn4B9Tvwr1IlqkEE';
     ENV.featureFlags['organization-settings'] = false;
     ENV.featureFlags['price-estimator'] = false;
   }
@@ -108,7 +108,7 @@ module.exports = function(environment) {
       'legacy-dashboard': "https://dashboard.aptible.com",
       support: "https://support.aptible.com"
     };
-    ENV.segmentioKey = 'rJGVn1qpBW';
+    ENV.segmentioKey = '5aOlxMYapu6bQCQYFbDz7rhNvVV7B1A5';
     ENV.featureFlags['organization-settings'] = false;
     ENV.featureFlags['price-estimator'] = false;
   }
