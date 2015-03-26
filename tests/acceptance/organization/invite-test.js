@@ -9,7 +9,9 @@ import {stubRequest} from 'diesel/tests/helpers/fake-server';
 var application;
 let orgId = 'big-co';
 let url = `/organizations/${orgId}/invite`;
-let rolesUrl = `/organizations/${orgId}/roles`;
+let invitationsUrl = `/organizations/${orgId}/invitations`;
+let apiRolesUrl = `/organizations/${orgId}/roles`;
+let apiInvitationsUrl = invitationsUrl;
 let roles = [{
   id: 'role1',
   name: 'owners'
@@ -17,6 +19,7 @@ let roles = [{
   id: 'role2',
   name: 'restricted'
 }];
+let invitations = [];
 
 
 module('Acceptance: Organizations: Invite Member', {
@@ -25,11 +28,15 @@ module('Acceptance: Organizations: Invite Member', {
     stubOrganization({
       id: orgId,
       _links: {
-        roles: { href: rolesUrl }
+        roles: { href: apiRolesUrl },
+        invitations: { href: apiInvitationsUrl }
       }
     });
-    stubRequest('get', rolesUrl, function(request){
+    stubRequest('get', apiRolesUrl, function(request){
       return this.success({ _embedded: { roles } });
+    });
+    stubRequest('get', apiInvitationsUrl, function(request){
+      return this.success({ _embedded: { invitations } });
     });
   },
 
@@ -74,9 +81,12 @@ test(`visiting ${url} and clicking cancel`, function(assert) {
   });
 });
 
-test(`visiting ${url} and inviting: success`, function(assert){
-  assert.expect(7);
+// necessary to visit invitationsUrl first to preload `organization.invitations`
+// so that we can test that the new invitation is added to them
+test(`visiting ${invitationsUrl} and then ${url} and inviting: success`, function(assert){
+  assert.expect(8);
 
+  let inviteSeedId = 0;
   let role = roles[1];
   let roleName = role.name,
       roleId   = role.id,
@@ -85,12 +95,15 @@ test(`visiting ${url} and inviting: success`, function(assert){
   stubRequest('post', `/roles/${roleId}/invitations`, function(request){
     assert.ok(true, `posts to create invitation`);
     let json = this.json(request);
-
     assert.equal(json.email, email, 'posts email');
-    return this.success({});
+
+    let invitation = json;
+    invitation.id = inviteSeedId++;
+    return this.success(invitation);
   });
 
-  signInAndVisit(url);
+  signInAndVisit(invitationsUrl);
+  visit(url);
   andThen(() => {
     assert.ok(findButton('Invite').is(':disabled'),
               'button is disabled with no email or role');
@@ -112,6 +125,11 @@ test(`visiting ${url} and inviting: success`, function(assert){
 
     let email = findInput('email');
     assert.ok(Ember.isBlank(email.val()), 'email input is blanked');
+  });
+  visit(invitationsUrl);
+  andThen(() => {
+    assert.ok(find(`:contains(${email})`).length,
+              'shows pending invitation');
   });
 });
 
