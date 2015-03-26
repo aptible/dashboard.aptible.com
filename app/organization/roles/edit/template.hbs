@@ -27,9 +27,32 @@
                           class="form-control"}}
       </div>
 
+      {{#each stacks as |stack|}}
+        <div class="form-group">
+          <label for="role-name">{{stack.handle}} Permissions</label>
+          <ul>
+            <li>
+              {{permission-checkbox
+                scope="read"
+                stack=stack
+                role=model
+                changeset=changeset}}
+              <label>Read</label>
+            </li>
+            <li>
+              {{permission-checkbox
+                scope="manage"
+                stack=stack
+                role=model
+                changeset=changeset}}
+              <label>Manage</label>
+            </li>
+          </ul>
+        </div>
+      {{/each}}
+
       <div class="form-group">
-        <button {{action 'invite'}}
-                disabled={{isDisabled}}
+        <button {{action 'save'}}
                 class='btn btn-primary' type='submit'>
           {{#if model.isSaving}}
             Saving...

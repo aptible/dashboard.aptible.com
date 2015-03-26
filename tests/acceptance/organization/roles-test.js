@@ -130,6 +130,7 @@ test(`visit ${url} and click to edit`, (assert) => {
     assert.ok(true, `gets ${rolesUrl}`);
     return this.success({ _embedded: {roles: [role]} });
   });
+  stubStacks();
 
   signInAndVisit(url);
   click(`a[title="Edit ${role.name} Permissions"]`);
