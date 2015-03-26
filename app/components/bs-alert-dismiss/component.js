@@ -11,10 +11,10 @@
      {{/bs-alert}}
   {{/bs-alert}}
 
-  * If used in inline style, this will insert a pulled-right "X":
+  * If used in inline style, this will insert a pulled-right "X" (this is the bootstrap default)
 
    {{#bs-alert as |component|}}
-     {{bs-alert-dismiss target=component}}
+     {{bs-alert-dismiss target=component}} {{! inline style}}
    {{/bs-alert}}
  */
 import Ember from 'ember';
@@ -22,6 +22,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   tagName: 'span',
   action: 'dismiss',
+  classNames: ['bs-alert-dismiss'],
 
   click: function(e){
     e.preventDefault();

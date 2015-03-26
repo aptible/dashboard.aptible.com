@@ -22,6 +22,11 @@ export default Ember.Route.extend({
         let message = `Deleted invitation for ${invitation.get('email')}`;
         this.controller.set('successMessage', message);
       });
+    },
+
+    // sent by the bs-alert component when it is dismissed
+    clearSuccessMessage(){
+      this.controller.set('successMessage', null);
     }
   }
 });
