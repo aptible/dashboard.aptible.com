@@ -3,14 +3,14 @@ import Ember from "ember";
 var StagedObject = Ember.Object.extend(Ember.Evented, {
 
   initialValue() {
-    if (!this._initialValue) {
+    if (this._initialValue === undefined) {
       this._initialValue = this.changeset.initialValue(this.keyData);
     }
     return this._initialValue;
   },
 
   value() {
-    if (!this._currentValue) {
+    if (this._currentValue === undefined) {
       this._currentValue = this.initialValue();
     }
     return this._currentValue;
@@ -27,6 +27,10 @@ export default Ember.Object.extend({
 
   init() {
     this._stagedObjects = Ember.create(null);
+    Ember.assert('must define `key` method',
+                 typeof this.key === 'function');
+    Ember.assert('must define `initialValue` method',
+                 typeof this.initialValue === 'function');
   },
 
   _lookupStagedObject(keyData) {
@@ -63,6 +67,13 @@ export default Ember.Object.extend({
       let stagedObject = this._stagedObjects[key];
       callback(stagedObject.keyData, stagedObject.initialValue(), stagedObject.value());
     });
-  }
+  },
 
+  forEachChangedValue(callback) {
+    this.forEachValue((keyData, initialValue, value) => {
+      if (initialValue !== value) {
+        callback(keyData, initialValue, value);
+      }
+    });
+  }
 });

@@ -7,7 +7,9 @@ import startApp from 'diesel/tests/helpers/start-app';
 import {stubRequest} from 'diesel/tests/helpers/fake-server';
 
 var application;
-let orgId = 'big-co';
+// MUST match the stubbed organization role for this user in `signIn` helper
+// so that the user can manage this organization
+let orgId = 'o1';
 let url = `/organizations/${orgId}/members`;
 let membersUrl = `/organizations/${orgId}/users`;
 
@@ -31,25 +33,23 @@ test(`visiting ${url} requires authentication`, function(){
 });
 
 test(`visiting ${url} shows users`, function(assert) {
-  assert.expect(5);
+  let users = [{
+    id: 'mike',
+    name: 'Mike',
+    email: 'mike@mike.com',
+    _links: { roles: {href: '/users/mike/roles'} }
+  },{
+    id: 'bob',
+    name: 'Bob',
+    email: 'bob@bob.com',
+    _links: { roles: {href: '/users/bob/roles'} }
+  }];
+
+  assert.expect(5 + 1*users.length);
 
   stubRequest('get', membersUrl, function(request){
     assert.ok(true, 'Request for members is made');
-    return this.success({
-      _embedded: {
-        users: [{
-          id: 'mike',
-          name: 'Mike',
-          email: 'mike@mike.com',
-          _links: { roles: {href: '/users/mike/roles'} }
-        }, {
-          id: 'bob',
-          name: 'Bob',
-          email: 'bob@bob.com',
-          _links: { roles: {href: '/users/mike/roles'} }
-        }]
-      }
-    });
+    return this.success({ _embedded: { users } });
   });
 
   stubRequest('get', '/users/bob/roles', function(request){
@@ -63,9 +63,12 @@ test(`visiting ${url} shows users`, function(assert) {
   signInAndVisit(url);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.members');
+    assert.equal(currentPath(), 'organization.members.index');
     assert.ok(find(':contains(Mike)').length, 'Mike is on the page');
     assert.ok(find(':contains(bob@bob.com)').length, 'bob@bob.com is on the page');
     expectLink(`/organizations/${orgId}/invite`);
+    users.forEach((user) => {
+      expectLink(`/organizations/${orgId}/members/${user.id}`);
+    });
   });
 });

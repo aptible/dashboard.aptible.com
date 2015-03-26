@@ -78,7 +78,9 @@ Router.map(function() {
   });
 
   this.route("organization", {path: "/organizations/:organization_id"}, function() {
-    this.route("members");
+    this.route("members", {}, function() {
+      this.route("edit", {path: ":user_id/edit"});
+    });
     this.route("invitations");
     this.route("roles", {}, function() {
       this.route("edit", {path: ":role_id/edit"});

@@ -25,14 +25,52 @@ module('Unit: Changeset', {
   }
 });
 
+test('throws if key is not set', (assert) => {
+  assert.throws(() => {
+    changeset = Changeset.create({
+      initialValue: Ember.K
+    });
+  }, /must define `key`/);
+});
+
+test('throws if initialValue is not set', (assert) => {
+  assert.throws(() => {
+    changeset = Changeset.create({
+      key: Ember.K
+    });
+  }, /must define `initialValue`/);
+});
+
 test('value can change from false to true', (assert) => {
   assert.expect(3);
 
   changeset.setValue(keyData, true);
   changeset.forEachValue((_keyData, initialValue, value) => {
     assert.equal(_keyData, keyData, 'key data is passed through');
-    assert.ok(!initialValue, 'intital value is false');
+    assert.ok(!initialValue, 'initial value is false');
     assert.ok(value, 'value is true');
+  });
+});
+
+// this ensures that we aren't falling back to initialValue
+// if currentValue is falsy
+test('value can change from true to false', (assert) => {
+  assert.expect(3);
+
+  changeset = Changeset.create({
+    key(keyData){
+      return JSON.stringify(keyData);
+    },
+    initialValue(keyData){
+      return true;
+    }
+  });
+
+  changeset.setValue(keyData, false);
+  changeset.forEachValue((_keyData, initialValue, value) => {
+    assert.equal(_keyData, keyData, 'key data is passed through');
+    assert.ok(initialValue, 'initial value is true');
+    assert.ok(!value, 'value is false');
   });
 });
 
@@ -105,4 +143,29 @@ test('forEachValue returns values that are read but not set', (assert) => {
   changeset.forEachValue((_keyData) => {
     assert.equal(_keyData, keyData, 'forEachValue yields for the keyData that was read');
   });
+});
+
+test('forEachChangedValue skips values that did not change', (assert) => {
+  changeset = Changeset.create({
+    key(keyData){
+      return keyData.key;
+    },
+    initialValue(keyData){
+      return keyData.value;
+    }
+  });
+
+  let changedKeyData = [];
+  let keyData1 = {key:'1', value:'foo'};
+  let keyData2 = {key:'2', value:'bar'};
+  let keyData3 = {key:'3', value:'baz'};
+
+  changeset.setValue(keyData1, 'first thing');
+  changeset.setValue(keyData3, 'third thing');
+
+  changeset.forEachChangedValue((_keyData, initialValue, value) => {
+    changedKeyData.push(_keyData);
+  });
+
+  assert.deepEqual(changedKeyData, [keyData1, keyData3]);
 });
