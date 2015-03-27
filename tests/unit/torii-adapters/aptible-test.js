@@ -8,19 +8,13 @@ import storage from '../../../utils/storage';
 import { stubRequest } from '../../helpers/fake-server';
 import DS from "ember-data";
 import Ember from "ember";
+import modelDeps from "../../support/common-model-dependencies";
 
 var originalWrite, originalRead;
 
 moduleFor('torii-adapter:aptible', 'Torii Adapter: Aptible', {
-  needs: [
-    'model:token',
-    'model:user',
-    'model:role',
-    'model:organization',
-    'model:ssh-key',
-    'adapter:application',
-    'serializer:application'
-  ],
+  needs: modelDeps,
+
   setup: function(){
     var container = this.container;
     DS._setupContainer(container);

@@ -11,7 +11,7 @@ export default Ember.Route.extend({
   },
 
   setupController(controller, model){
-    controller.set('model',model);
+    controller.set('model', model);
     controller.set('organization', this.modelFor('organization'));
   }
 });

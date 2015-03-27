@@ -29,8 +29,7 @@
                 scope='manage'
                 permittable=organization as |hasAbility|}}
               {{#if hasAbility}}
-                {{! FIXME should link to an edit membership page}}
-                {{#link-to 'index'}}
+                {{#link-to 'organization.members.edit' user}}
                   {{gravatar-image email=user.email size=25}}
                   {{user.name}}
                 {{/link-to}}
@@ -51,13 +50,10 @@
                 <div class="table-row-nav">
                   <ul class="nav nav-pills sub-nav-tabs">
                     <li>
-                      {{! FIXME should link to an edit membership page}}
-                      <a href="#" title="Edit {{user.name}}'s Roles">
+                      {{! FIXME: Should have a title of "Edit {{user.name\}\}'s Roles" }}
+                      {{#link-to "organization.members.edit" user}}
                         <i class="fa fa-edit"></i>
-                        <span class="button-label">
-                          Edit
-                        </span>
-                      </a>
+                      {{/link-to}}
                     </li>
                     {{#if (eq session.currentUser user)}}
                     <li>

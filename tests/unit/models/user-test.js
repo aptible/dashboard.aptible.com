@@ -2,10 +2,11 @@ import {
   moduleForModel,
   test
 } from 'ember-qunit';
+import modelDeps from "../../support/common-model-dependencies";
 
 moduleForModel('user', 'User', {
   // Specify the other units that are required for this test.
-  needs: ['model:token', 'model:role', 'model:organization','model:ssh-key']
+  needs: modelDeps
 });
 
 test('it exists', function() {
