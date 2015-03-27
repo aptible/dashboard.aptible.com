@@ -93,6 +93,42 @@ test('subscription hook is notified of changes', (assert) => {
   assert.equal(passedValues[1], 'def');
 });
 
+test('subscribeAll is notified of every `setValue` call', (assert) => {
+  assert.expect(2);
+
+  let keyData1 = {a:1};
+  let keyData2 = {a:2};
+  let notifs = [];
+
+  changeset.subscribeAll((sourceKeyData) => {
+    notifs.push(sourceKeyData);
+  });
+
+  changeset.setValue(keyData1, 'abc');
+  assert.deepEqual(notifs, [keyData1], 'called with the sourceKeyData');
+
+  changeset.setValue(keyData2, 'def');
+  assert.deepEqual(notifs, [keyData1, keyData2], 'called again with the second sourceKeyData');
+});
+
+test('subscribeAll is notified on initial `value` call', (assert) => {
+  assert.expect(2);
+
+  let keyData1 = {a:1};
+  let keyData2 = {a:2};
+  let notifs = [];
+
+  changeset.subscribeAll((sourceKeyData) => {
+    notifs.push(sourceKeyData);
+  });
+
+  changeset.value(keyData1);
+  assert.deepEqual(notifs, [keyData1], 'called with the sourceKeyData');
+
+  changeset.value(keyData2);
+  assert.deepEqual(notifs, [keyData1, keyData2], 'called again with the second sourceKeyData');
+});
+
 test('forEachValue yields final set value', (assert) => {
   assert.expect(3);
   changeset.setValue(keyData, 'v1');
@@ -143,29 +179,4 @@ test('forEachValue returns values that are read but not set', (assert) => {
   changeset.forEachValue((_keyData) => {
     assert.equal(_keyData, keyData, 'forEachValue yields for the keyData that was read');
   });
-});
-
-test('forEachChangedValue skips values that did not change', (assert) => {
-  changeset = Changeset.create({
-    key(keyData){
-      return keyData.key;
-    },
-    initialValue(keyData){
-      return keyData.value;
-    }
-  });
-
-  let changedKeyData = [];
-  let keyData1 = {key:'1', value:'foo'};
-  let keyData2 = {key:'2', value:'bar'};
-  let keyData3 = {key:'3', value:'baz'};
-
-  changeset.setValue(keyData1, 'first thing');
-  changeset.setValue(keyData3, 'third thing');
-
-  changeset.forEachChangedValue((_keyData, initialValue, value) => {
-    changedKeyData.push(_keyData);
-  });
-
-  assert.deepEqual(changedKeyData, [keyData1, keyData3]);
 });

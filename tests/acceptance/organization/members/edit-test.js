@@ -139,10 +139,39 @@ test(`visiting ${url} allows changing user's roles`, function(assert){
     secondRole = findWithAssert(`.role:eq(1)`);
     firstInput = findInput('user-role', {context:firstRole});
     secondInput = findInput('user-role', {context:secondRole});
-    click(firstInput);  // -> unchecked, delete this membership
     click(secondInput);  // -> checked,  create this membership
+    click(firstInput);  // -> unchecked, delete this membership
   });
   andThen(() => {
     clickButton('Update User Roles');
+  });
+});
+
+test(`visiting ${url} with only 1 role checked is disabled`, function(assert){
+  assert.expect(6);
+
+  let firstRole, secondRole, firstInput, secondInput;
+
+  signInAndVisit(url);
+  andThen(() => {
+    firstRole = findWithAssert(`.role:eq(0)`);
+    secondRole = findWithAssert(`.role:eq(1)`);
+    firstInput = findInput('user-role', {context:firstRole});
+    secondInput = findInput('user-role', {context:secondRole});
+
+    assert.ok(firstInput.is(':disabled'), 'precond - only checked input is disabled');
+    assert.ok(!secondInput.is(':disabled'), 'precond - second, unchecked input not disabled');
+
+    click(secondInput);  // -> checked,  create this membership
+  });
+  andThen(() => {
+    assert.ok(!firstInput.is(':disabled'), 'first input is no longer disabled');
+    assert.ok(!secondInput.is(':disabled'), 'second input still not disabled');
+
+    click(firstInput);  // -> unchecked, now only the 2nd input is checked
+  });
+  andThen(() => {
+    assert.ok(!firstInput.is(':disabled'), 'first input is not disabled');
+    assert.ok(secondInput.is(':disabled'), 'second input is disabled because it is the only one checked');
   });
 });

@@ -11,11 +11,17 @@ moduleForComponent('organization-membership-checkbox', {
 test('it renders', function(assert) {
   assert.expect(2);
 
-  // creates the component instance
-  var component = this.subject({changeset: {value: function(){}, subscribe: function(){}}});
+  let noop = function(){};
+  let mockChangeset = {
+    value: noop,
+    subscribe: noop,
+    subscribeAll: noop,
+    forEachValue: noop
+  };
+
+  var component = this.subject({changeset: mockChangeset});
   assert.equal(component._state, 'preRender');
 
-  // renders the component to the page
   this.render();
   assert.equal(component._state, 'inDOM');
 });
