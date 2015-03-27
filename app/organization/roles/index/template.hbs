@@ -24,8 +24,7 @@
                 <div class="table-row-nav">
                   <ul class="nav nav-pills sub-nav-tabs">
                     <li>
-                      {{! FIXME should link to an edit role permissions}}
-                      <a href="#" title="Edit {{role.name}} Permissions">
+                      <a href="#" title="Edit {{role.name}} Permissions" {{action "edit" role}}>
                         <i class="fa fa-edit"></i>
                       </a>
                     </li>
