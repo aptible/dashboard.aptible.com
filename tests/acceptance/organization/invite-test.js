@@ -113,7 +113,7 @@ test(`visiting ${invitationsUrl} and then ${url} and inviting: success`, functio
     assert.ok(findButton('Invite').is(':disabled'),
               'button is disabled with no role');
   });
-  fillInput('role', roleName);
+  fillInput('role', roleId);
   andThen(() => {
     assert.ok(!findButton('Invite').is(':disabled'),
               'button is enabled with email and role');
@@ -152,7 +152,7 @@ test(`visiting ${url} and inviting: error`, function(assert){
 
   signInAndVisit(url);
   fillInput('email', email);
-  fillInput('role', roleName);
+  fillInput('role', roleId);
   clickButton('Invite');
   andThen(() => {
     let error = find(`:contains(${errorMessage})`);

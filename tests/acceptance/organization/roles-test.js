@@ -81,7 +81,7 @@ test(`visit ${url} and click to add a user`, (assert) => {
   click(`a[title="Invite new user to ${role.name} by email"]`);
   andThen(() => {
     assert.equal(currentPath(), 'organization.invite');
-    assert.equal(find('select').val(), role.name, 'role is selected');
+    assert.equal(find('select').val(), role.id, 'role is selected');
   });
 });
 
