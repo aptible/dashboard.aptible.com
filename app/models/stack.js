@@ -43,7 +43,8 @@ export default DS.Model.extend({
   permitsRole(role, scope){
     let permissions;
 
-    if(role.get('privileged') && role.get('data.links.organization') === this.get('data.links.organization')) {
+    if (role.get('privileged') &&
+        role.get('data.links.organization') === this.get('data.links.organization')) {
       return true;
     }
 
@@ -61,12 +62,9 @@ export default DS.Model.extend({
 
       return Ember.RSVP.all(promises);
     }).then(function(stackRoleScopes){
-      return stackRoleScopes.any(function(stackRoleScope){
-        if (role.get('id') !== stackRoleScope.roleId) {
-          // skip irrelevant role
-          return false;
-        }
-
+      return stackRoleScopes.filter((stackRoleScope) => {
+        return role.get('id') === stackRoleScope.roleId;
+      }).any((stackRoleScope) => {
         return stackRoleScope.scope === 'manage' ||
           stackRoleScope.scope === scope;
       });

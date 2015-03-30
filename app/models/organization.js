@@ -24,12 +24,12 @@ export default DS.Model.extend({
       let match = orgRegex.exec(roleOrganizationHref);
       let roleOrganizationId = match[1];
 
-      let result = roleOrganizationId === this.get('id');
+      let permitted = roleOrganizationId === this.get('id');
       if (scope === 'manage') {
-        result = result && role.get('privileged');
+        permitted = permitted && role.get('privileged');
       }
 
-      resolve(result);
+      resolve(permitted);
     });
   }
 });

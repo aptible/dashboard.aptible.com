@@ -11,7 +11,7 @@ import modelDeps from '../../support/common-model-dependencies';
 
 let store;
 
-moduleForModel('user', 'Utils - #can with target=stack', {
+moduleForModel('user', 'Utils - #can', {
   needs: modelDeps,
   setup: function(){
     store = this.container.lookup('store:main');
