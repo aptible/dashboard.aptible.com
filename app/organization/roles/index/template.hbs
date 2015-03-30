@@ -24,9 +24,9 @@
                 <div class="table-row-nav">
                   <ul class="nav nav-pills sub-nav-tabs">
                     <li>
-                      <a href="#" title="Edit {{role.name}} Permissions" {{action "edit" role}}>
+                      {{#link-to 'organization.roles.show' role title=(concat-params "Edit " role.name " Permissions")}}
                         <i class="fa fa-edit"></i>
-                      </a>
+                      {{/link-to}}
                     </li>
                     <li>
                       {{! FIXME should link to an edit users on role page}}

@@ -10,10 +10,10 @@ let application;
 let orgId = 'o1'; // FIXME this is hardcoded to match the value for signIn in aptible-helpers
 let roleId = 'r1';
 let roleName = 'the-role';
-let url = `/organizations/${orgId}/roles/${roleId}/edit`;
+let url = `/organizations/${orgId}/roles/${roleId}`;
 let apiRoleUrl = `/roles/${roleId}`;
 
-module('Acceptance: Organizations: Roles Edit', {
+module('Acceptance: Organizations: Roles Show', {
   beforeEach: function() {
     application = startApp();
   },

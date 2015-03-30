@@ -5,10 +5,6 @@ export default Ember.Controller.extend({
   confirmationModalService: Ember.inject.service('confirmation-modal'),
 
   actions: {
-    edit(role) {
-      let organization = this.get('organization');
-      this.transitionToRoute('organization.roles.edit', organization, role);
-    },
     inviteTo(role) {
       let organization = this.get('organization');
       this.transitionToRoute('organization.invite', organization, {queryParams: {role}});
