@@ -12,7 +12,8 @@ let roles = [{
   id: 'r1',
   name: 'owners',
   _links: {
-    memberships: { href: `/roles/r1/memberships` }
+    memberships: { href: `/roles/r1/memberships` },
+    organization: { href: `/organizations/${orgId}` }
   }
 }, {
   id: 'r2',
@@ -88,7 +89,7 @@ test(`visiting ${url} shows user's info and all roles with checkboxes`, function
     assert.ok(find(`:contains(${user.name})`).length, `user name "${user.name} is on the page`);
     assert.ok(find(`:contains(${user.name})`).length, `user email "${user.email} is on the page`);
 
-    expectButton('Update User Roles');
+    expectButton('Save');
 
     roles.forEach((role, index) => {
       let roleDiv = find(`.role:eq(${index})`);
@@ -143,7 +144,7 @@ test(`visiting ${url} allows changing user's roles`, function(assert){
     click(firstInput);  // -> unchecked, delete this membership
   });
   andThen(() => {
-    clickButton('Update User Roles');
+    clickButton('Save');
   });
 });
 

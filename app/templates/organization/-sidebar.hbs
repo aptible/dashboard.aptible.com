@@ -1,0 +1,25 @@
+<nav class="layout-sidebar">
+  <ul class="nav sidebar-nav">
+    <li class="title">
+      Overview
+    </li>
+    {{#activating-item currentWhen="organization.members" tagName="li"}}
+      {{link-to "Members" "organization.members"}}
+    {{/activating-item}}
+    {{#activating-item currentWhen="organization.roles" tagName="li"}}
+      {{link-to "Roles" "organization.roles"}}
+    {{/activating-item}}
+    {{#activating-item currentWhen="index" tagName="li"}}
+      {{link-to "Environments" "index"}}
+    {{/activating-item}}
+    {{#activating-item currentWhen="index" tagName="li"}}
+      {{link-to "Contact Information" "index"}}
+    {{/activating-item}}
+    {{#activating-item currentWhen="index" tagName="li"}}
+      {{link-to "Payment Information" "index"}}
+    {{/activating-item}}
+    {{#activating-item currentWhen="index" tagName="li"}}
+      {{link-to "Invoices" "index"}}
+    {{/activating-item}}
+  </ul>
+</nav>

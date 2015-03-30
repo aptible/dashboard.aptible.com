@@ -4,7 +4,7 @@
   height: 35px;
   width: 35px;
   display: inline-block;
-  background-size: 25px 93px;
+  background-size: 25px 123px;
 
   &.resource-environment {
     background-position: 6px 5px;
@@ -16,5 +16,9 @@
 
   &.resource-db {
     background-position: 6px -61px;
+  }
+
+  &.resource-org {
+    background-position: 6px -95px;
   }
 }

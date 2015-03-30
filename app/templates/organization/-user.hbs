@@ -1,0 +1,12 @@
+<div class="panel panel-default panel-subdued user resource-list-item">
+  <div class="panel-heading">
+    <div class="user-gravatar">
+      {{gravatar-image email=user.email size=25}}
+    </div>
+
+    <h5 class="user-name">{{user.name}} <span class="user-email">{{user.email}}</span></h5>
+  </div>
+  <div class="panel-body">
+    {{format-list user.roles 'name' ', '}}
+  </div>
+</div>

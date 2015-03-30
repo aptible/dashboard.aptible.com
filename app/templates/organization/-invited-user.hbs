@@ -1,0 +1,24 @@
+<div class="panel panel-default panel-subdued user invitation resource-list-item">
+  <div class="panel-heading">
+    <h5 class="user-name">{{invitation.email}}</h5>
+
+    <div class="resource-panel-actions">
+      <ul class="nav">
+        <li>
+          <a class="btn btn-default" {{action 'destroyInvitation' invitation}} href="#" title="Delete invitation for {{invitation.email}}">
+            <i class="fa fa-times"></i>
+            <span class="button-label">
+              Remove
+            </span>
+          </a>
+        </li>
+        <li>
+          {{resend-invitation invitation=invitation action="resentInvitation"}}
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel-body">
+    {{invitation.role.name}}
+  </div>
+</div>

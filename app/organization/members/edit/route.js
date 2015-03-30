@@ -28,6 +28,9 @@ export default Ember.Route.extend({
 
 
   actions: {
+    cancel() {
+      this.transitionTo('organization.members');
+    },
     save() {
       const promises = [];
       const changeset = this.controller.get('changeset');

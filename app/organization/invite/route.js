@@ -30,11 +30,11 @@ export default Ember.Route.extend({
     controller.set('success', null);
   },
 
-  willTransition(){
-    this.controller.get('model').destroy();
-  },
-
   actions: {
+    willTransition(){
+      this.currentModel.rollback();
+    },
+
     invite(){
       let invitation = this.controller.get('model');
 
@@ -53,7 +53,7 @@ export default Ember.Route.extend({
       });
     },
 
-    cancel(){
+    cancel() {
       this.transitionTo('organization.members');
     }
   }

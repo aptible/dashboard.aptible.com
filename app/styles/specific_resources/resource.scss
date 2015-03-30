@@ -1,11 +1,91 @@
+a.panel-link {
+  &:hover, &:active, &:link {
+    text-decoration: none;
+  }
+}
+
 .resource-list-grid {
   .panel.panel-subdued {
-    > .panel-heading {
+    .panel-heading {
       padding: 11px;
+
+      .nav {
+        float: right;
+        margin: 0;
+
+        > li {
+          display: inline-block;
+          margin-right: 4px;
+
+          &:last-child {
+            margin-right: -4px;
+          }
+
+          .button-label {
+            display: none;
+          }
+
+          > a {
+            height: 25px;
+            width: 25px;
+            padding: 5px;
+            color: $color-light;
+
+            &:hover {
+              color: $color-primary;
+            }
+          }
+        }
+
+        i.fa {
+          vertical-align: 1px;
+          margin: 0;
+        }
+      }
     }
 
     .panel-body {
       padding: 10px;
+      color: $color-light;
+    }
+
+    &.invitation.user {
+      .user-gravatar {
+        opacity: .5;
+      }
+
+      .user-name {
+        opacity: .5;
+        margin: 4px 0 0;
+      }
+    }
+
+    &.user {
+      .panel-heading {
+        padding: 7px 11px;
+        @extend %clearfix;
+      }
+
+      .user-gravatar {
+        float: left;
+
+        img {
+          height: 24px;
+          width: 24px;
+          border-radius: 2px;
+        }
+      }
+
+      .user-name {
+        float: left;
+        margin: 4px 0 0 10px;
+      }
+
+      .user-email {
+        color: $color-light;
+        font-weight: $weight-normal;
+        font-size: 12px;
+      }
     }
   }
 }
@@ -13,5 +93,9 @@
 .resource-actions {
   .btn {
     margin-right: 10px;
+  }
+
+  > .btn:last-child {
+    margin-right: 0;
   }
 }

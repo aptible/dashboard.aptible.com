@@ -8,7 +8,7 @@ import {stubRequest} from 'diesel/tests/helpers/fake-server';
 
 let application;
 let orgId = 'o1'; // FIXME this is hardcoded to match the value for signIn in aptible-helpers
-let url = `/organizations/${orgId}/invitations`;
+let url = `/organizations/${orgId}/members`;
 let roleUrl = '/roles/role1';
 let invitationsUrl = url;
 let invitations = [{
@@ -55,7 +55,7 @@ test(`visiting ${url} shows pending invites`, (assert) => {
 
   signInAndVisit(url);
   andThen(() => {
-    equal(currentPath(), 'organization.invitations');
+    equal(currentPath(), 'organization.members.index');
 
     invitations.forEach( (i) => {
       assert.ok(find(`:contains(${i.email})`).length,
