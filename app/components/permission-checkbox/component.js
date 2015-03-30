@@ -13,11 +13,14 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   tagName: 'input',
-  attributeBindings: ['checked','type'],
+  classNames: ['permission-checkbox'],
+  attributeBindings: ['checked', 'type', 'disabled'],
   type: 'checkbox',
-  checked: Ember.computed.reads('isChecked'),
+  checked: Ember.computed.or('isChecked', 'disabled'),
 
   isChecked: null,
+
+  disabled: Ember.computed.reads('role.privileged'),
 
   init() {
     this._super();
@@ -44,4 +47,5 @@ export default Ember.Component.extend({
     this.changeset.setValue(
       this._stagedObjectKey, {permission: value.permission, isEnabled:!!isChecked});
   }
+
 });

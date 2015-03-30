@@ -12,9 +12,15 @@
     </thead>
     <tbody>
       {{#each model as |role|}}
-        <tr>
+        <tr class='role'>
           <td>{{role.name}}</td>
-          <td>{{role.privileged}}</td>
+          <td>
+            {{#if role.privileged}}
+              {{fa-icon "shield"
+                        title="This role has administrator privileges"
+                        classNames="privileged"}}
+            {{/if}}
+          </td>
           <td>
             {{#aptible-ability
                 user=session.currentUser

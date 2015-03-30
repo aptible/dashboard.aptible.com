@@ -45,7 +45,8 @@ export default Ember.Route.extend({
 
         if (value) {
           promise = this.store.createRecord('membership', {
-            user: userLink, role
+            userUrl: userLink,
+            role
           }).save();
         } else {
           promise = role.get('memberships').then((memberships) => {

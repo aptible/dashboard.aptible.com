@@ -1,6 +1,8 @@
+<h1>{{organization.name}} Roles: {{model.name}}</h1>
+
 <div class="panel">
   <div class="panel-heading">
-    <h3>Edit {{model.name}} Role</h3>
+    <h3>Settings</h3>
   </div>
 
   <div class="panel-body">
@@ -25,6 +27,14 @@
                           value=model.name
                           autofocus=true
                           class="form-control"}}
+      </div>
+
+      <div class="form-group">
+        <label for="role-name">Admin role</label>
+        {{input type="checkbox"
+                name="role-admin"
+                checked=model.privileged
+                class="form-control"}}
       </div>
 
       {{#each stacks as |stack|}}
@@ -53,6 +63,7 @@
 
       <div class="form-group">
         <button {{action 'save'}}
+                disabled={{isUnchanged}}
                 class='btn btn-primary' type='submit'>
           {{#if model.isSaving}}
             Saving...
@@ -63,6 +74,47 @@
         <button {{action 'cancel'}} class='btn btn-default' type='button'>
           Cancel
         </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-heading">
+    <h3>Members</h3>
+  </div>
+
+  <div class="panel-body">
+    <form role='form'>
+      <div class="form-group">
+        <label>Add member</label>
+        {{user-select users=nonmembers selected=invitedUser}}
+        <button {{action "inviteUser" invitedUser}}>Add</button>
+      </div>
+
+      <div class="form-group">
+        <label>Invite by email</label>
+        {{input name='invite-by-email' value=invitedEmail}}
+        <button {{action "inviteByEmail" invitedEmail}}>Invite</button>
+      </div>
+
+      <div class="role-members">
+        {{#each model.users as |user|}}
+          <div class="form-group">
+            <label>{{user.name}}</label>
+            <button {{action "removeUser" user}}>Remove</button>
+          </div>
+        {{/each}}
+      </div>
+
+      <div class="role-invitations">
+        {{#each model.invitations as |invitation|}}
+          <div class="form-group">
+            <label>{{invitation.email}}</label>
+            <button {{action "resendInvitation" invitation}}>Resend Invitation</button>
+            <button {{action "removeInvitation" invitation}}>Remove</button>
+          </div>
+        {{/each}}
       </div>
     </form>
   </div>

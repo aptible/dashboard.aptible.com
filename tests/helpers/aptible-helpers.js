@@ -3,7 +3,7 @@ import { locationHistory } from '../../utils/location';
 import { titleHistory } from '../../utils/title-route-extensions';
 import { stubRequest } from "./fake-server";
 
-Ember.Test.registerAsyncHelper('signIn', function(app, userData){
+Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData){
   userData = userData || {};
   let defaultUserData = {
     id: 'user1',
@@ -12,7 +12,18 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData){
     verified: true,
     links: {
       sshKeys: '/users/user1/ssh_keys',
-      roles:  '/users/user1/roles'
+      roles:  '/users/user1/roles',
+      self: '/users/user1'
+    }
+  };
+
+  roleData = roleData || {};
+  const defaultRoleData = {
+    id: 'r1',
+    privileged: true,
+    _links: {
+      self: { href: `/roles/r1` },
+      organization: { href: '/organizations/o1' }
     }
   };
 
@@ -21,19 +32,13 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData){
   stubRequest('get', '/users/user1/roles', function(request){
     return this.success({
       _embedded: {
-        roles: [{
-          id: 'r1',
-          privileged: true,
-          _links: {
-            self: { href: `/roles/r1` },
-            organization: { href: '/organizations/o1' }
-          }
-        }]
+        roles: [roleData]
       }
     });
   });
 
   userData = Ember.$.extend(true, defaultUserData, userData);
+  roleData = Ember.$.extend(true, defaultRoleData, roleData);
 
   let session = app.__container__.lookup('torii:session');
   let sm = session.get('stateMachine');

@@ -26,19 +26,21 @@ test(`visiting ${url} requires authentication`, () => {
 });
 
 test(`visiting ${url} shows roles`, (assert) => {
-  assert.expect(3);
+  let roles = [{
+    id: 'role1',
+    name: 'Owner',
+    privileged: true
+  }, {
+    id: 'role2',
+    name: 'devs'
+  }];
+
+  assert.expect(1 + 2*roles.length);
 
   stubOrganization({
     id: orgId,
-    _links: {
-      roles: {href: rolesUrl}
-    }
+    _links: { roles: {href: rolesUrl} }
   });
-
-  let roles = [{
-    id: 'role1',
-    name: 'Owner'
-  }];
 
   stubRequest('get', rolesUrl, function(request){
     assert.ok(true, `gets ${rolesUrl}`);
@@ -50,8 +52,13 @@ test(`visiting ${url} shows roles`, (assert) => {
     equal(currentPath(), 'organization.roles.index');
 
     roles.forEach( (r) => {
-      assert.ok(find(`:contains(${r.name})`).length,
-                `shows role name "${r.name}"`);
+      let roleDiv = find(`.role:contains(${r.name})`);
+      assert.ok(roleDiv.length, `shows role with name "${r.name}"`);
+
+      if (r.privileged) {
+        assert.ok(roleDiv.find('.privileged').length,
+                  'privileged role is marked as such in ui');
+      }
     });
   });
 });

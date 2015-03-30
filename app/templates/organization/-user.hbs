@@ -7,6 +7,6 @@
     <h5 class="user-name">{{user.name}} <span class="user-email">{{user.email}}</span></h5>
   </div>
   <div class="panel-body">
-    {{format-list user.roles 'name' ', '}}
+    {{format-list (filter-by-organization user.roles organization) 'name' ', '}}
   </div>
 </div>

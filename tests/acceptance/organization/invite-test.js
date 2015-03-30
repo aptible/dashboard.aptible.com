@@ -9,9 +9,8 @@ import {stubRequest} from 'diesel/tests/helpers/fake-server';
 var application;
 let orgId = 'big-co';
 let url = `/organizations/${orgId}/invite`;
-let invitationsUrl = `/organizations/${orgId}/members`;
 let apiRolesUrl = `/organizations/${orgId}/roles`;
-let apiInvitationsUrl = invitationsUrl;
+let apiInvitationsUrl = `/organizations/${orgId}/invitations`;
 let roles = [{
   id: 'role1',
   name: 'owners'
@@ -78,58 +77,6 @@ test(`visiting ${url} and clicking cancel`, function(assert) {
 
   andThen(() => {
     assert.equal(currentPath(), 'organization.members.index');
-  });
-});
-
-// necessary to visit invitationsUrl first to preload `organization.invitations`
-// so that we can test that the new invitation is added to them
-test(`visiting ${invitationsUrl} and then ${url} and inviting: success`, function(assert){
-  assert.expect(8);
-
-  let inviteSeedId = 0;
-  let role = roles[1];
-  let roleName = role.name,
-      roleId   = role.id,
-      email    = 'abc@gmail.com';
-
-  stubRequest('post', `/roles/${roleId}/invitations`, function(request){
-    assert.ok(true, `posts to create invitation`);
-    let json = this.json(request);
-    assert.equal(json.email, email, 'posts email');
-
-    let invitation = json;
-    invitation.id = inviteSeedId++;
-    return this.success(invitation);
-  });
-
-  signInAndVisit(invitationsUrl);
-  visit(url);
-  andThen(() => {
-    assert.ok(findButton('Send Invitation').is(':disabled'),
-              'button is disabled with no email or role');
-  });
-  fillInput('email', email);
-  andThen(() => {
-    assert.ok(findButton('Send Invitation').is(':disabled'),
-              'button is disabled with no role');
-  });
-  fillInput('role', roleId);
-  andThen(() => {
-    assert.ok(!findButton('Send Invitation').is(':disabled'),
-              'button is enabled with email and role');
-  });
-  clickButton('Send Invitation');
-  andThen(() => {
-    let success = find('.alert.alert-success');
-    assert.ok(success.length, 'success message is shown');
-
-    let email = findInput('email');
-    assert.ok(Ember.isBlank(email.val()), 'email input is blanked');
-  });
-  visit(invitationsUrl);
-  andThen(() => {
-    assert.ok(find(`:contains(${email})`).length,
-              'shows pending invitation');
   });
 });
 
