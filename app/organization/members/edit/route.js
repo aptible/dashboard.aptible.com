@@ -33,7 +33,9 @@ export default Ember.Route.extend({
       const changeset = this.controller.get('changeset');
       let promise;
 
-      changeset.forEachChangedValue((keyData, initialValue, value) => {
+      changeset.forEachValue((keyData, initialValue, value) => {
+        if (initialValue === value) { return; }
+
         let user = this.currentModel;
         let userLink = user.get('data.links.self');
         let role     = keyData.organizationRole;

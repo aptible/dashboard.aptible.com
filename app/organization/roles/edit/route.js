@@ -59,7 +59,9 @@ export default Ember.Route.extend({
       const savePromises = [];
       const changeset = this.controller.get('changeset');
 
-      changeset.forEachChangedValue((keyData, initialValue, value) => {
+      changeset.forEachValue((keyData, initialValue, value) => {
+        if (initialValue === value) { return; }
+
         let promise;
         if (value.isEnabled) {
           promise = this.store.createRecord('permission', {
