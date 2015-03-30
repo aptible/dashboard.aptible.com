@@ -1,62 +1,72 @@
-<div class="panel">
-  <div class="panel-heading">
-    <h3>Invite to Aptible</h3>
+<main class='layout-content'>
+  {{partial 'organization/members-header'}}
+  <div class="layout-container">
+    <div class="row">
+      <div class="col-xs-6">
+
+        {{#if success}}
+          {{#bs-alert alert='success' as |component|}}
+            {{bs-alert-dismiss target=component}}
+            The invitation has been sent.
+          {{/bs-alert}}
+        {{/if}}
+
+        {{#if model.errors.length}}
+          {{#bs-alert alert='danger' as |component|}}
+            {{bs-alert-dismiss target=component}}
+            <p>
+              There was an error sending this invitation.
+            </p>
+            <ul>
+              {{#each model.errors.messages as |message|}}
+              <li>{{message}}</li>
+              {{/each}}
+            </ul>
+          {{/bs-alert}}
+        {{/if}}
+        <div class="panel">
+          <div class="panel-heading">
+            <h3>Invite to {{organization.name}}</h3>
+          </div>
+
+          <div class="panel-body">
+            <form role='form' {{action 'invite' on='submit'}}>
+              <div class="form-group">
+                <label for="email">Email</label>
+                {{focusable-input name="email"
+                                  value=model.email
+                                  autofocus=true
+                                  class="form-control"}}
+              </div>
+
+              <div class="">
+                <label for="role">Role</label>
+                {{view "select" name="role" class="form-control"
+                    content=organization.roles
+                    optionLabelPath="content.name"
+                    optionValuePath="content.id"
+                    selection=model.role}}
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+        <div class="resource-actions">
+          <button {{action 'cancel'}} class='btn btn-default' type='button'>
+            Cancel
+          </button>
+          <button {{action 'invite'}}
+                  disabled={{isDisabled}}
+                  class='btn btn-primary' type='submit'>
+            {{#if model.isSaving}}
+              Sending...
+            {{else}}
+              Send Invitation
+            {{/if}}
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div class="panel-body">
-    <form role='form' {{action 'invite' on='submit'}}>
-      {{#if success}}
-        {{#bs-alert alert='success' as |component|}}
-          {{bs-alert-dismiss target=component}}
-          The invitation has been sent.
-        {{/bs-alert}}
-      {{/if}}
-
-      {{#if model.errors.length}}
-        {{#bs-alert alert='danger' as |component|}}
-          {{bs-alert-dismiss target=component}}
-          <p>
-            There was an error sending this invitation.
-          </p>
-          <ul>
-            {{#each model.errors.messages as |message|}}
-            <li>{{message}}</li>
-            {{/each}}
-          </ul>
-        {{/bs-alert}}
-      {{/if}}
-
-      <div class="form-group">
-        <label for="email">Email</label>
-        {{focusable-input name="email"
-                          value=model.email
-                          autofocus=true
-                          class="form-control"}}
-      </div>
-
-      <div class="form-group">
-        <label for="role">Role</label>
-        {{view "select" name="role" class="form-control"
-            content=organization.roles
-            optionLabelPath="content.name"
-            optionValuePath="content.id"
-            selection=model.role}}
-      </div>
-
-      <div class="form-group">
-        <button {{action 'invite'}}
-                disabled={{isDisabled}}
-                class='btn btn-primary' type='submit'>
-          {{#if model.isSaving}}
-            Sending...
-          {{else}}
-            Invite
-          {{/if}}
-        </button>
-        <button {{action 'cancel'}} class='btn btn-cancel' type='button'>
-          Cancel
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
+</main>

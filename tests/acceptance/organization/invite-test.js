@@ -9,7 +9,7 @@ import {stubRequest} from 'diesel/tests/helpers/fake-server';
 var application;
 let orgId = 'big-co';
 let url = `/organizations/${orgId}/invite`;
-let invitationsUrl = `/organizations/${orgId}/invitations`;
+let invitationsUrl = `/organizations/${orgId}/members`;
 let apiRolesUrl = `/organizations/${orgId}/roles`;
 let apiInvitationsUrl = invitationsUrl;
 let roles = [{
@@ -58,7 +58,7 @@ test(`visiting ${url} shows form to invite`, function(assert) {
     expectFocusedInput('email');
     expectInput('email');
     expectInput('role');
-    expectButton('Invite');
+    expectButton('Send Invitation');
     expectButton('Cancel');
 
     let roleSelect = findInput('role');
@@ -105,20 +105,20 @@ test(`visiting ${invitationsUrl} and then ${url} and inviting: success`, functio
   signInAndVisit(invitationsUrl);
   visit(url);
   andThen(() => {
-    assert.ok(findButton('Invite').is(':disabled'),
+    assert.ok(findButton('Send Invitation').is(':disabled'),
               'button is disabled with no email or role');
   });
   fillInput('email', email);
   andThen(() => {
-    assert.ok(findButton('Invite').is(':disabled'),
+    assert.ok(findButton('Send Invitation').is(':disabled'),
               'button is disabled with no role');
   });
   fillInput('role', roleId);
   andThen(() => {
-    assert.ok(!findButton('Invite').is(':disabled'),
+    assert.ok(!findButton('Send Invitation').is(':disabled'),
               'button is enabled with email and role');
   });
-  clickButton('Invite');
+  clickButton('Send Invitation');
   andThen(() => {
     let success = find('.alert.alert-success');
     assert.ok(success.length, 'success message is shown');
@@ -153,7 +153,7 @@ test(`visiting ${url} and inviting: error`, function(assert){
   signInAndVisit(url);
   fillInput('email', email);
   fillInput('role', roleId);
-  clickButton('Invite');
+  clickButton('Send Invitation');
   andThen(() => {
     let error = find(`:contains(${errorMessage})`);
     assert.ok(error.length, 'error message is shown');

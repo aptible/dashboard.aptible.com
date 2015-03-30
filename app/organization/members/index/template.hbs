@@ -1,78 +1,44 @@
-<div class="panel">
-  <div class="panel-heading">
-    <h3>Members</h3>
-    <ul class="nav nav-pills sub-nav-tabs">
-      <li>
-        {{#link-to 'organization.invite' class="new-organization-membership-invite-link pull-right"
-                  title="Invite new user into {{organization.name}} by email"}}
-          <i class="fa fa-envelope"></i>
-          Invite New Member
-        {{/link-to}}
-      </li>
-    </ul>
-  </div>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Roles</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each model as |user|}}
-        <tr>
-          <td>
-            {{#aptible-ability
-                user=session.currentUser
-                scope='manage'
-                permittable=organization as |hasAbility|}}
+<main class="layout-content">
+  {{partial 'organization/members-header'}}
+
+  <div class="layout-container">
+    {{#if successMessage}}
+      {{#bs-alert alert="success" action="clearSuccessMessage" as |component|}}
+        {{bs-alert-dismiss target=component}}
+        {{successMessage}}
+      {{/bs-alert}}
+    {{/if}}
+    <div class="resource-list-grid">
+      <div class="row">
+        {{#each model as |user|}}
+          <div class="col-xs-4">
+            {{#aptible-ability user=session.currentUser scope='manage' permittable=organization as |hasAbility|}}
               {{#if hasAbility}}
-                {{#link-to 'organization.members.edit' user}}
-                  {{gravatar-image email=user.email size=25}}
-                  {{user.name}}
+                {{#link-to 'organization.members.edit' user classNames='panel-link'}}
+                  {{partial 'organization/user'}}
                 {{/link-to}}
               {{else}}
-                {{gravatar-image email=user.email size=25}}
-                {{user.name}}
+                {{partial 'organization/user'}}
               {{/if}}
             {{/aptible-ability}}
-          </td>
-          <td>{{user.email}}</td>
-          <td>{{format-list user.roles 'name' ', '}}</td>
-          <td>
-            {{#aptible-ability
-                user=session.currentUser
-                scope='manage'
-                permittable=organization as |hasAbility|}}
-              {{#if hasAbility}}
-                <div class="table-row-nav">
-                  <ul class="nav nav-pills sub-nav-tabs">
-                    <li>
-                      {{! FIXME: Should have a title of "Edit {{user.name\}\}'s Roles" }}
-                      {{#link-to "organization.members.edit" user}}
-                        <i class="fa fa-edit"></i>
-                      {{/link-to}}
-                    </li>
-                    {{#if (eq session.currentUser user)}}
-                    <li>
-                      {{! FIXME should fire action that calls deletion }}
-                      <a href="#" title="Remove {{user.name}} from {{organization.name}}">
-                        <i class="fa fa-times"></i>
-                        <span class="button-label">
-                          Remove
-                        </span>
-                      </a>
-                    </li>
-                    {{/if}}
-                  </ul>
-                </div>
-              {{/if}}
-            {{/aptible-ability}}
-          </td>
-        </tr>
-      {{/each}}
-    </tbody>
-  </table>
-</div>
+          </div>
+        {{/each}}
+        {{#each organization.invitations as |invitation|}}
+          <div class="col-xs-4">
+            {{partial 'organization/invited-user'}}
+          </div>
+        {{/each}}
+      </div>
+
+      <div class="resource-actions">
+        {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
+          {{#if hasAbility}}
+            {{#link-to 'organization.invite' class="btn btn-primary"}}
+              Invite New Member
+            {{/link-to}}
+          {{/if}}
+        {{/aptible-ability}}
+      </div>
+    </div>
+  </div>
+</main>

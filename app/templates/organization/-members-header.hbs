@@ -1,0 +1,34 @@
+<header class="resource-header">
+  <div class="layout-container">
+    <div class="resource-title">
+      <i class="resource-icon resource-org"></i>
+      <h1>{{organization.name}} Members</h1>
+    </div>
+
+    <ul class="resource-metadata">
+      <li class="resource-metadata-item resource-metadata-button">
+        <a href=''>
+          <i class="fa fa-cog"></i>
+        </a>
+      </li>
+
+      <li class="resource-metadata-item with-image">
+        <div class="resource-metadata-image">
+          {{gravatar-image email=organization.securityOfficer.email size=30}}
+        </div>
+
+        <h5 class="resource-metadata-title">Security Officer</h5>
+        <h3 class="resource-metadata-value">{{organization.securityOfficer.name}} - {{organization.securityOfficer.email}}</h3>
+      </li>
+
+      <li class="resource-metadata-item with-image">
+        <div class="resource-metadata-image">
+          {{gravatar-image email=organization.billingContact.email size=30}}
+        </div>
+
+        <h5 class="resource-metadata-title">Billing Contact</h5>
+        <h3 class="resource-metadata-value">{{organization.billingContact.name}} {{organization.billingContact.email}}</h3>
+      </li>
+    </ul>
+  </div>
+</header>

@@ -12,10 +12,14 @@ export default DS.Model.extend({
   zip: DS.attr('string'),
   address: DS.attr('string'),
   plan: DS.attr('string'),
+  opsAlertEmail: DS.attr('string'),
+  securityAlertEmail: DS.attr('string'),
 
   users: DS.hasMany('user', {async:true}),
   invitations: DS.hasMany('invitation', {async:true}),
   roles: DS.hasMany('role', {async:true}),
+  securityOfficer: DS.belongsTo('user', {async:true}),
+  billingContact: DS.belongsTo('user', {async:true}),
 
   // needed by aptible-ability
   permitsRole(role, scope){
