@@ -113,7 +113,7 @@ test(`visit ${url} and delete a role`, (assert) => {
   clickButton('confirm deletion');
 });
 
-test(`visit ${url} and click to edit`, (assert) => {
+test(`visit ${url} and click to show`, (assert) => {
   assert.expect(2);
   stubOrganization({
     id: orgId,
@@ -135,6 +135,6 @@ test(`visit ${url} and click to edit`, (assert) => {
   signInAndVisit(url);
   click(`a[title="Edit ${role.name} Permissions"]`);
   andThen(() => {
-    equal(currentPath(), 'organization.roles.edit');
+    equal(currentPath(), 'organization.roles.show');
   });
 });

@@ -83,7 +83,7 @@ Router.map(function() {
     });
     this.route("invitations");
     this.route("roles", {}, function() {
-      this.route("edit", {path: ":role_id/edit"});
+      this.route("show", {path: ":role_id"});
     });
     this.route("invite");
   });
