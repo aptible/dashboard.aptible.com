@@ -82,6 +82,7 @@ Router.map(function() {
       this.route("edit", {path: ":user_id/edit"});
     });
     this.route("roles", {}, function() {
+      this.route('new');
       this.route("show", {path: ":role_id"});
     });
     this.route("invite");

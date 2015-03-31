@@ -1,6 +1,8 @@
 import Ember from "ember";
 
 export default Ember.Controller.extend({
+  saveButtonName: 'Update Role',
+
   isUnchanged: Ember.computed.not('isChanged'),
   isChanged: Ember.computed.or('_changesetIsChanged', 'model.isDirty'),
   _changesetIsChanged: false,

@@ -35,7 +35,7 @@ test(`visiting ${url} shows roles`, (assert) => {
     name: 'devs'
   }];
 
-  assert.expect(1 + 2*roles.length);
+  assert.expect(2 + 2*roles.length);
 
   stubOrganization({
     id: orgId,
@@ -60,6 +60,8 @@ test(`visiting ${url} shows roles`, (assert) => {
                   'privileged role is marked as such in ui');
       }
     });
+
+    expectButton('Create role');
   });
 });
 
