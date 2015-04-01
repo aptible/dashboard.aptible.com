@@ -10,5 +10,10 @@
   "cache_control": {
     "/assets/**": 2592000,
     "/": false
+  },
+  "headers": {
+    "*": {
+      "Strict-Transport-Security": "max-age=31536000"
+    }
   }
 }
