@@ -1,8 +1,6 @@
 import AuthAdapter from "./auth";
 import Ember from "ember";
 
-export var auth = {};
-
 export default AuthAdapter.extend({
 
   buildURL: function(){

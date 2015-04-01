@@ -4,7 +4,7 @@ import {
 } from 'ember-qunit';
 import modelDeps from '../../support/common-model-dependencies';
 
-moduleForModel('service', 'Service', {
+moduleForModel('service', 'model:service', {
   // Specify the other units that are required for this test.
   needs: modelDeps
 });

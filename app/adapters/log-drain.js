@@ -4,7 +4,7 @@ import Ember from 'ember';
 
 export default ApplicationAdapter.extend({
   buildURL: buildURLWithPrefixMap({
-    'accounts': 'stack.id'
+    'accounts': {property: 'stack.id'}
   }),
 
   // In URLs and JSON payloads, use "log_drains" instead of "logDrains"

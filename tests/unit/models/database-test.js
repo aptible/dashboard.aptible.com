@@ -7,7 +7,7 @@ import modelDeps from '../../support/common-model-dependencies';
 
 import Ember from 'ember';
 
-moduleForModel('database', 'Database', {
+moduleForModel('database', 'model:database', {
   // Specify the other units that are required for this test.
   needs: modelDeps.concat([
     'adapter:database'
@@ -36,6 +36,26 @@ test('finding uses correct url', function(){
     return store.find('database', dbId).then(function(){
       ok(true, 'database did find');
     });
+  });
+});
+
+test('reloading uses correct url', function(assert){
+  let done = assert.async();
+  assert.expect(1);
+
+  let store = this.store();
+  let dbId = 'db-id';
+  let db = Ember.run(store, 'push', 'database', {id:dbId});
+  let stack = Ember.run(store, 'push', 'stack', {id:'stackid'});
+
+  stubRequest('get', `/databases/${dbId}`, function(request){
+    assert.ok(true, 'calls with correct URL');
+    return this.success({id: dbId});
+  });
+
+  Ember.run(() => {
+    db.set('stack',stack);
+    db.reload().finally(done);
   });
 });
 

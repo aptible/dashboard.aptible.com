@@ -6,7 +6,7 @@ import { stubRequest } from "../../helpers/fake-server";
 import Ember from 'ember';
 import modelDeps from '../../support/common-model-dependencies';
 
-moduleForModel('stack', 'Stack', {
+moduleForModel('stack', 'model:stack', {
   // Specify the other units that are required for this test.
   needs: modelDeps
 });

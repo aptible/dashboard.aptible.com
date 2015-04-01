@@ -7,18 +7,19 @@ import modelDeps from '../../support/common-model-dependencies';
 
 import Ember from 'ember';
 
-moduleForModel('vhost', 'Vhost', {
+moduleForModel('vhost', 'model:vhost', {
   // Specify the other units that are required for this test.
   needs: modelDeps.concat([
     'adapter:vhost'
   ])
 });
 
-test('creating POSTs to correct url', function() {
-  expect(2);
+test('creating POSTs to correct url', function(assert) {
+  let done = assert.async();
+  assert.expect(1);
 
-  var store = this.store();
-  var vhost, service;
+  let store = this.store();
+  let vhost, service;
 
   Ember.run(function(){
     service = store.createRecord('service', {id: '1'});
@@ -26,35 +27,31 @@ test('creating POSTs to correct url', function() {
   });
 
   stubRequest('post', '/services/1/vhosts', function(request){
-    ok(true, 'calls with correct URL');
+    assert.ok(true, 'calls with correct URL');
 
-    return this.success(201, {
-      id: 'my-vhost-id',
-      status: 'provisioned'
-    });
+    return this.noContent();
   });
 
-  return Ember.run(function(){
-    return vhost.save().then(function(){
-      ok(true, 'vhost did save');
-    });
+  Ember.run(() => {
+    return vhost.save().finally(done);
   });
 });
 
-test('updating PUTs to correct url', function() {
-  expect(2);
+test('updating PUTs to correct url', function(assert) {
+  let done = assert.async();
+  assert.expect(1);
 
-  var store = this.store();
-  var vhost, service;
+  let store = this.store();
+  let vhost, service;
   let vhostId = 'vhost-id';
 
-  Ember.run(function(){
+  Ember.run(() => {
     service = store.createRecord('service', {id: '1'});
     vhost = store.push('vhost', {id: vhostId, status:'provisioned', service:service});
   });
 
   stubRequest('put', `/vhosts/${vhostId}`, function(request){
-    ok(true, 'calls with correct URL');
+    assert.ok(true, 'calls with correct URL');
 
     return this.success({
       id: vhostId,
@@ -62,10 +59,8 @@ test('updating PUTs to correct url', function() {
     });
   });
 
-  return Ember.run(function(){
+  Ember.run(() => {
     vhost.set('virtualDomain', 'new-virtual-domain.com');
-    return vhost.save().then(function(){
-      ok(true, 'vhost did update');
-    });
+    vhost.save().finally(done);
   });
 });

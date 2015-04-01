@@ -6,7 +6,7 @@ import modelDeps from '../../support/common-model-dependencies';
 import { stubRequest } from '../../helpers/fake-server';
 import Ember from 'ember';
 
-moduleForModel('reset', {
+moduleForModel('reset', 'model:reset', {
   // Specify the other units that are required for this test.
   needs: modelDeps.concat([
     'adapter:reset'
