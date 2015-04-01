@@ -6,7 +6,7 @@ import Ember from "ember";
 import { stubRequest } from '../../helpers/fake-server';
 import modelDeps from '../../support/common-model-dependencies';
 
-moduleForModel('subscription', 'Subscription', {
+moduleForModel('subscription', 'model:subscription', {
   needs: modelDeps.concat(['adapter:subscription'])
 });
 

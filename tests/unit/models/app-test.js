@@ -7,19 +7,20 @@ import modelDeps from '../../support/common-model-dependencies';
 
 import Ember from 'ember';
 
-moduleForModel('app', 'App', {
+moduleForModel('app', 'model:app', {
   needs: modelDeps.concat([
     'adapter:app',
     'adapter:operation', // for 'operation', to avoid getting the fixture adapter
   ])
 });
 
-test('finding uses correct url', function(){
+test('finding uses correct url', function(assert){
+  let done = assert.async();
   expect(2);
 
-  var appId = 'my-app-id';
+  let appId = 'my-app-id';
 
-  stubRequest('get', '/apps/' + appId, function(request){
+  stubRequest('get', `/apps/${appId}`, function(request){
     ok(true, 'calls with correct URL');
 
     return this.success({
@@ -31,12 +32,31 @@ test('finding uses correct url', function(){
     });
   });
 
-  var store = this.store();
+  let store = this.store();
 
   return Ember.run(function(){
     return store.find('app', appId).then(function(){
       ok(true, 'app did find');
-    });
+    }).finally(done);
+  });
+});
+
+test('reloading app with stack uses correct url', function(assert){
+  assert.expect(1);
+  let done = assert.async();
+  let store = this.store();
+
+  let app = Ember.run(store, 'push', 'app', {id:'app1'});
+  let stack = Ember.run(store, 'push', 'stack', {id:'stack1'});
+
+  stubRequest('get', `/apps/app1`, function(request){
+    assert.ok(true, 'gets correct url');
+    return this.success({id:'app1'});
+  });
+
+  Ember.run(() => {
+    app.set('stack', stack);
+    app.reload().finally(done);
   });
 });
 

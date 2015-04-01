@@ -3,7 +3,7 @@ import {
   test
 } from 'ember-qunit';
 
-moduleForModel('password-reset-request', {
+moduleForModel('password-reset-request', 'model:password-reset-request', {
   // Specify the other units that are required for this test.
   needs: []
 });

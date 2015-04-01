@@ -6,17 +6,11 @@ import { stubRequest } from "../../helpers/fake-server";
 import Ember from 'ember';
 import modelDeps from '../../support/common-model-dependencies';
 
-moduleForModel('operation', 'Operation', {
+moduleForModel('operation', 'model:operation', {
   // Specify the other units that are required for this test.
   needs: modelDeps.concat([
     'adapter:operation'
   ])
-});
-
-test('it exists', function() {
-  var model = this.subject();
-  // var store = this.store();
-  ok(!!model);
 });
 
 test('when creating an operation for a db, POSTs to /databases/:id/operations', function(){

@@ -55,11 +55,12 @@ test('/databases/:id/deprovision will deprovision with confirmation', function()
     id: databaseId,
     handle: databaseName,
     _links: {
-      account: {href: '/accounts/1'}
+      account: {href: '/accounts/1'},
+      self: {href: `/databases/${databaseId}`}
     }
   });
 
-  stubRequest('post', '/databases/'+databaseId+'/operations', function(request){
+  stubRequest('post', `/databases/${databaseId}/operations`, function(request){
     didDeprovision = true;
     return this.success({
       id: '1',

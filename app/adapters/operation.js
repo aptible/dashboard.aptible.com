@@ -3,23 +3,26 @@ import buildURLWithPrefixMap from '../utils/build-url-with-prefix-map';
 
 export default ApplicationAdapter.extend({
   buildURL: buildURLWithPrefixMap({
-    'databases':   'database.id',
-    'apps':        'app.id',
-    'vhosts':      'vhost.id',
-    'log_drains':  'logDrain.id',
-    'services':    'service.id'
+    'databases':   {property: 'database.id'},
+    'apps':        {property: 'app.id'},
+    'vhosts':      {property: 'vhost.id'},
+    'log_drains':  {property: 'logDrain.id'},
+    'services':    {property: 'service.id'}
   }),
 
   findQuery: function(store, type, query){
-    var url;
+    let url = this.buildURL(type.typeKey, null, null, 'findQuery');
+
+    if (this.sortQueryParams) {
+      query = this.sortQueryParams(query);
+    }
+
     if (query.app) {
-      url = this.buildURL(type.typeKey, null, {app: query.app});
+      url = url.replace('/operations', `/apps/${query.app.id}/operations`);
       delete query.app;
     } else if (query.database) {
-      url = this.buildURL(type.typeKey, null, {database: query.database});
+      url = url.replace('/operations', `/databases/${query.database.id}/operations`);
       delete query.database;
-    } else {
-      url = this.buildURL(type.typeKey);
     }
 
     return this.ajax(url, 'GET', {data:query});

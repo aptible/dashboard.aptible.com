@@ -57,3 +57,24 @@ test('updates by PUTting to /roles/:role_id', function(assert){
     role.save().finally(done);
   });
 });
+
+test('destroy DELETEs to /roles/:id', function(assert){
+  assert.expect(1);
+  let done = assert.async();
+  let store = this.store();
+  let role, organization;
+
+  Ember.run(() => {
+    organization = store.push('organization', {id:'o1'});
+    role = store.push('role', {id:'r1', organization});
+  });
+
+  stubRequest('delete', `/roles/r1`, function(request){
+    assert.ok(true, 'deletes to correct url');
+    return this.noContent();
+  });
+
+  Ember.run(() => {
+    role.destroyRecord().finally(done);
+  });
+});

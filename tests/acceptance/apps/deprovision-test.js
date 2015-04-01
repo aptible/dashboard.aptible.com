@@ -56,11 +56,12 @@ test('/apps/:id/deprovision will deprovision with confirmation', function(){
     handle: appName,
     status: 'provisioned',
     _links: {
-      account: {href: '/accounts/1'}
+      account: {href: '/accounts/1'},
+      self: {href: `/apps/${appId}` }
     }
   });
 
-  stubRequest('post', '/apps/'+appId+'/operations', function(request){
+  stubRequest('post', `/apps/${appId}/operations`, function(request){
     didDeprovision = true;
     return this.success({
       id: '1',
@@ -73,7 +74,7 @@ test('/apps/:id/deprovision will deprovision with confirmation', function(){
   stubOrganization();
   stubOrganizations();
 
-  signInAndVisit('/apps/'+appId+'/deprovision');
+  signInAndVisit(`/apps/${appId}/deprovision`);
   fillIn('input[type=text]', appName);
   andThen(function(){
     $('input[type=text]').trigger('input');
