@@ -1,0 +1,72 @@
+<form role='form'>
+  {{#if model.errors.length}}
+    {{#bs-alert alert='danger' as |component|}}
+      {{bs-alert-dismiss target=component}}
+      <p>
+        There was an error saving your changes.
+      </p>
+      <ul>
+        {{#each model.errors.messages as |message|}}
+        <li>{{message}}</li>
+        {{/each}}
+      </ul>
+    {{/bs-alert}}
+  {{/if}}
+
+  <div class="form-group">
+    <label for="role-name">Name</label>
+    {{focusable-input name="role-name"
+                      value=model.name
+                      autofocus=true
+                      class="form-control"}}
+  </div>
+
+  <div class="form-group">
+    <label for="role-name">Admin role</label>
+    {{input type="checkbox"
+            name="role-admin"
+            checked=model.privileged
+            class="form-control"}}
+  </div>
+
+  <div class="stacks">
+    {{#each stacks as |stack|}}
+      <div class="form-group stack">
+        <label for="role-name">{{stack.handle}} Permissions</label>
+        <ul>
+          <li>
+            {{permission-checkbox
+              scope="read"
+              stack=stack
+              role=model
+              changeset=changeset}}
+            <label>Read</label>
+          </li>
+          <li>
+            {{permission-checkbox
+              scope="manage"
+              stack=stack
+              role=model
+              changeset=changeset}}
+            <label>Manage</label>
+          </li>
+        </ul>
+      </div>
+    {{/each}}
+  </div>
+
+  <div class="form-group">
+    <button {{action 'save'}}
+            disabled={{isUnchanged}}
+            class='btn btn-primary' type='submit'>
+      {{#if model.isSaving}}
+        Saving...
+      {{else}}
+        {{saveButtonName}}
+      {{/if}}
+    </button>
+    <button {{action 'cancel'}} class='btn btn-default' type='button'>
+      Cancel
+    </button>
+  </div>
+</form>

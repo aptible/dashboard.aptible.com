@@ -117,7 +117,7 @@ test(`visiting ${url} allows changing user's roles`, function(assert){
 
   stubRequest('post', `/roles/${roles[1].id}/memberships`, function(request){
     assert.ok(true, 'posts to correct url');
-    assert.equal(this.json(request).user, apiUserUrl,
+    assert.equal(this.json(request).user_url, apiUserUrl,
                  `includes user url "${apiUserUrl}" parameter`);
     return this.noContent();
   });

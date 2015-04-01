@@ -5,16 +5,7 @@ let roleUrlRegex = new RegExp('/roles/([a-zA-Z0-9\-]+)$');
 
 function getRoleIdFromPermission(permission){
   var roleUrl = permission.get('data.links.role');
-
-  if (roleUrl && roleUrlRegex.test(roleUrl)) {
-    var id = roleUrlRegex.exec(roleUrl)[1];
-
-    return Ember.RSVP.resolve(id);
-  } else {
-    return permission.get('role').then(function(role){
-      return role.get('id');
-    });
-  }
+  return roleUrlRegex.exec(roleUrl)[1];
 }
 
 export default DS.Model.extend({
@@ -51,16 +42,12 @@ export default DS.Model.extend({
     return this.get('permissions').then(function(_permissions){
       permissions = _permissions;
 
-      let promises = permissions.map(function(perm){
-        return getRoleIdFromPermission(perm).then(function(roleId){
-          return {
-            roleId: roleId,
-            scope:  perm.get('scope')
-          };
-        });
+      return permissions.map(function(perm){
+        return {
+          roleId: getRoleIdFromPermission(perm),
+          scope:  perm.get('scope')
+        };
       });
-
-      return Ember.RSVP.all(promises);
     }).then(function(stackRoleScopes){
       return stackRoleScopes.filter((stackRoleScope) => {
         return role.get('id') === stackRoleScope.roleId;

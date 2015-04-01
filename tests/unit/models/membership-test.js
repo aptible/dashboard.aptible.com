@@ -19,11 +19,11 @@ test('create POSTs to /roles/:role_id/memberships with user url', function(asser
   let store = this.store();
   let roleId = 'r1';
   let role = Ember.run(store, 'push', 'role', {id:roleId});
-  let model = Ember.run(store, 'createRecord', 'membership', {role, user:'/users/1'});
+  let model = Ember.run(store, 'createRecord', 'membership', {role, userUrl:'/users/1'});
 
   stubRequest('post', `/roles/${roleId}/memberships`, function(request){
     assert.ok(true, 'posts to correct url');
-    assert.equal(this.json(request).user, '/users/1', 'has correct user param');
+    assert.equal(this.json(request).user_url, '/users/1', 'has correct user param');
     return this.noContent();
   });
 

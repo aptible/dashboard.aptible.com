@@ -10,19 +10,27 @@ export default Ember.Route.extend({
   model(params) {
     return this.store.find('role', params.role_id);
   },
-  afterModel() {
+  afterModel(model) {
     this._organization = this.modelFor('organization');
     const organizationUrl = this._organization.get('data.links.self');
 
+    const promises = [];
+
     // Find only the stacks that belong to the
     // current organization
-    return this.store.find('stack').then(() => {
+    promises.push(this.store.find('stack').then(() => {
       return this.store.filter('stack', (stack) => {
         return stack.get('data.links.organization') === organizationUrl;
       });
     }).then((stacks) => {
       this._stacks = stacks;
-    });
+    }));
+
+    promises.push(this._organization.get('users'));
+    promises.push(model.get('users'));
+    promises.push(model.get('invitations'));
+
+    return Ember.RSVP.all(promises);
   },
   setupController(controller, model) {
     controller.set('model', model);
@@ -52,8 +60,51 @@ export default Ember.Route.extend({
       }
     });
     controller.set('changeset', changeset);
+    controller.observeChangeset();
   },
   actions: {
+    inviteUser(user){
+      const role = this.currentModel;
+      const userLink = user.get('data.links.self');
+      const membership = this.store.createRecord('membership', {
+        role,
+        userUrl: userLink
+      });
+      membership.save().then(() => {
+        return this.currentModel.get('users').reload();
+      });
+    },
+    removeUser(user){
+      let role = this.currentModel;
+      let userLink = user.get('data.links.self');
+
+      role.get('memberships').then((memberships) => {
+        let membership = memberships.findBy('data.links.user', userLink);
+        return membership.destroyRecord();
+      }).then(() => {
+        return this.currentModel.get('users').reload();
+      });
+    },
+    inviteByEmail(email){
+      let role = this.currentModel;
+      let invitation = this.store.createRecord('invitation', {
+        email,
+        role
+      });
+      invitation.save();
+    },
+    removeInvitation(invitation){
+      invitation.destroyRecord();
+    },
+    resendInvitation(invitation){
+      let reset = this.store.createRecord('reset');
+      reset.setProperties({
+        type: 'invitation',
+        invitationId: invitation.get('id')
+      });
+      reset.save();
+    },
+
     save() {
 
       const savePromises = [];
@@ -65,10 +116,9 @@ export default Ember.Route.extend({
         let promise;
         if (value.isEnabled) {
           promise = this.store.createRecord('permission', {
-            role:  keyData.role,
+            role:  keyData.role.get('data.links.self'),
             scope: keyData.scope,
-            stack: keyData.stack,
-            roleUrl: keyData.role.get('data.links.self')
+            stack: keyData.stack
           }).save();
         } else {
           promise = value.permission.destroyRecord();
@@ -77,10 +127,13 @@ export default Ember.Route.extend({
         savePromises.push(promise);
       });
 
+      if (this.currentModel.get('isDirty')) {
+        savePromises.push(this.currentModel.save());
+      }
+
       return Ember.RSVP.all(savePromises).then(() => {
         this.transitionTo('organization.roles');
       });
     }
   }
 });
-

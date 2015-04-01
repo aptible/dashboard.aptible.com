@@ -1,68 +1,51 @@
+<h1>{{organization.name}} Roles: {{model.name}}</h1>
+
 <div class="panel">
   <div class="panel-heading">
-    <h3>Edit {{model.name}} Role</h3>
+    <h3>Settings</h3>
+  </div>
+
+  <div class="panel-body">
+    {{partial 'role/form'}}
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-heading">
+    <h3>Members</h3>
   </div>
 
   <div class="panel-body">
     <form role='form'>
-      {{#if model.errors.length}}
-        {{#bs-alert alert='danger' as |component|}}
-          {{bs-alert-dismiss target=component}}
-          <p>
-            There was an error saving your changes.
-          </p>
-          <ul>
-            {{#each model.errors.messages as |message|}}
-            <li>{{message}}</li>
-            {{/each}}
-          </ul>
-        {{/bs-alert}}
-      {{/if}}
-
       <div class="form-group">
-        <label for="role-name">Role Name</label>
-        {{focusable-input name="role-name"
-                          value=model.name
-                          autofocus=true
-                          class="form-control"}}
+        <label>Add member</label>
+        {{user-select users=nonmembers selected=invitedUser}}
+        <button {{action "inviteUser" invitedUser}}>Add</button>
       </div>
 
-      {{#each stacks as |stack|}}
-        <div class="form-group">
-          <label for="role-name">{{stack.handle}} Permissions</label>
-          <ul>
-            <li>
-              {{permission-checkbox
-                scope="read"
-                stack=stack
-                role=model
-                changeset=changeset}}
-              <label>Read</label>
-            </li>
-            <li>
-              {{permission-checkbox
-                scope="manage"
-                stack=stack
-                role=model
-                changeset=changeset}}
-              <label>Manage</label>
-            </li>
-          </ul>
-        </div>
-      {{/each}}
-
       <div class="form-group">
-        <button {{action 'save'}}
-                class='btn btn-primary' type='submit'>
-          {{#if model.isSaving}}
-            Saving...
-          {{else}}
-            Update Role
-          {{/if}}
-        </button>
-        <button {{action 'cancel'}} class='btn btn-default' type='button'>
-          Cancel
-        </button>
+        <label>Invite by email</label>
+        {{input name='invite-by-email' value=invitedEmail}}
+        <button {{action "inviteByEmail" invitedEmail}}>Invite</button>
+      </div>
+
+      <div class="role-members">
+        {{#each model.users as |user|}}
+          <div class="form-group">
+            <label>{{user.name}}</label>
+            <button {{action "removeUser" user}}>Remove</button>
+          </div>
+        {{/each}}
+      </div>
+
+      <div class="role-invitations">
+        {{#each model.invitations as |invitation|}}
+          <div class="form-group">
+            <label>{{invitation.email}}</label>
+            <button {{action "resendInvitation" invitation}}>Resend Invitation</button>
+            <button {{action "removeInvitation" invitation}}>Remove</button>
+          </div>
+        {{/each}}
       </div>
     </form>
   </div>
