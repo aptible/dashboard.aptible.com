@@ -96,7 +96,6 @@ module.exports = function(environment) {
       support: "https://support.aptible-staging.com"
     };
     ENV.segmentioKey = '6jZlAcweTojgXShBvn4B9Tvwr1IlqkEE';
-    ENV.featureFlags['organization-settings'] = false;
     ENV.featureFlags['price-estimator'] = false;
   }
 
