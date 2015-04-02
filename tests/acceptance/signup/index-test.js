@@ -88,3 +88,14 @@ test(`visiting ${url} and signing up with invalid data shows errors`, function(a
               'shows name message');
   });
 });
+
+test('Creating an account shows validation errors', function(assert) {
+  visit(url);
+  clickButton('Sign Up');
+  andThen(function(){
+    assert.equal(currentPath(), signupIndexPath, 'path does not change');
+
+    let error = find(":contains(can't be blank)");
+    assert.ok(error.length, "has error(s) on the screen");
+  });
+});

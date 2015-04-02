@@ -146,9 +146,7 @@ test('logging out redirects to login if not logged in', function() {
 });
 
 test('logging out reloads the page', function() {
-  stubStacks();
-  stubOrganization();
-  stubOrganizations();
+  stubIndexRequests();
   signInAndVisit('/');
   click('.current-user .dropdown-toggle');
   click('a:contains(Logout)');
