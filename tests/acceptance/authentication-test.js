@@ -251,3 +251,13 @@ test('Creating an account waits on a valid organization name', function() {
     ok(error.length, 'has error on the screen');
   });
 });
+
+test('Creating an account shows validation errors', function() {
+  visit('/signup');
+  click('button:contains(Sign Up)');
+  andThen(function(){
+    equal(currentPath(), 'signup', 'path does not change');
+    var error = find(':contains(can\'t be blank)');
+    ok(error.length, 'has error(s) on the screen');
+  });
+});
