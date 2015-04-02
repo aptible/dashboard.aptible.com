@@ -18,6 +18,6 @@ export default Ember.Component.extend({
     }
 
     return error;
-  }.property("error", "error.@each")
+  }.property("error.[]")
 });
 
