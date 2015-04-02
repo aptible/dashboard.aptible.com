@@ -15,6 +15,9 @@
             You are currently signed in as {{session.currentUser.email}}.
           </p>
           <form>
+            <div>
+              Join organization: {{model.organizationName}}
+            </div>
             <button class="btn btn-primary btn-block btn-lg" {{action "claim"}}>
               Accept organization invitation
             </button>

@@ -52,7 +52,9 @@ export default Router.map(function() {
   this.route("stacks");
   this.route("login");
   this.route("logout");
-  this.route("signup");
+  this.route("signup", {}, function(){
+    this.route('invitations', {path:'/invitations/:invitation_id/:verification_code'});
+  });
   this.route("password", {}, function(){
     this.route('reset');
     this.route('new', {path: 'new/:reset_code/:user_id'});

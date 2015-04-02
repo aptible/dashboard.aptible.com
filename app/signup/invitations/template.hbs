@@ -1,0 +1,19 @@
+{{#login-box}}
+  <div class="row">
+    {{partial 'signup/form'}}
+
+    <div class="col-xs-5">
+      <div class="welcome-info">
+        <h2>
+          Aptible is a deployment platform built to automate HIPAA compliance
+        </h2>
+
+        {{#if invitation}}
+          <h3>
+            You are invited to join: {{invitation.organizationName}}
+          </h3>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+{{/login-box}}

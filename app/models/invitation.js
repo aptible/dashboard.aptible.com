@@ -4,6 +4,7 @@ export default DS.Model.extend({
   email: DS.attr('string'),
   createdAt: DS.attr('date'),
   updatedAt: DS.attr('date'),
+  organizationName: DS.attr(),
 
   role: DS.belongsTo('role', {async:true}),
 
