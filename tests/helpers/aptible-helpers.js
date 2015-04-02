@@ -443,7 +443,11 @@ Ember.Test.registerHelper('findInput', function(app, inputName, options) {
 Ember.Test.registerHelper('expectInput', function(app, inputName, options) {
   let el = findInput(inputName, options);
   if (el.length) {
-    ok(true, `Found ${el.length} of input "${inputName}"`);
+    if (options && options.value) {
+      equal(el.val(), options.value, `Found input "${inputName}" with value "${options.value}"`);
+    } else {
+      ok(true, `Found ${el.length} of input "${inputName}"`);
+    }
   } else {
     ok(false, `Found 0 of input "${inputName}"`);
   }

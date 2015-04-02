@@ -86,6 +86,7 @@ export default Router.map(function() {
       this.route("show", {path: ":role_id"});
     });
     this.route("invite");
+    this.route('contact-settings');
   });
 
   this.route('not-found', {path: '/*wildcard'});

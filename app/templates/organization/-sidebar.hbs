@@ -9,14 +9,8 @@
     {{#activating-item currentWhen="organization.roles" tagName="li"}}
       {{link-to "Roles" "organization.roles"}}
     {{/activating-item}}
-    {{#activating-item currentWhen="index" tagName="li"}}
-      {{link-to "Contact Information" "index"}}
-    {{/activating-item}}
-    {{#activating-item currentWhen="index" tagName="li"}}
-      {{link-to "Payment Information" "index"}}
-    {{/activating-item}}
-    {{#activating-item currentWhen="index" tagName="li"}}
-      {{link-to "Invoices" "index"}}
+    {{#activating-item currentWhen="organization.contact-settings" tagName="li"}}
+      {{link-to "Contact Settings" "organization.contact-settings"}}
     {{/activating-item}}
   </ul>
 </nav>
