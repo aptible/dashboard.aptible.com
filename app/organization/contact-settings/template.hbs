@@ -1,0 +1,96 @@
+<main class="layout-content">
+
+  <header class="resource-header">
+    <div class="layout-container">
+      <div class="resource-title">
+        <h1>{{model.name}} Contact Settings</h1>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout-container">
+    <div class="row">
+      <div class="col-xs-6">
+
+        <form role='form'>
+          <div class="panel">
+            <div class="panel-heading">
+              <h3>Edit Contact Settings</h3>
+            </div>
+
+            <div class="panel-body">
+
+              <div class="form-group">
+                <label>Security Officer</label>
+                {{user-select
+                  autofocus=true
+                  class="form-control"
+                  selected=model.securityOfficer
+                  name="security-officer"
+                  users=model.users}}
+              </div>
+
+              <div class="form-group">
+                <label>Billing Contact</label>
+                {{user-select
+                  class="form-control"
+                  selected=model.billingContact
+                  name="billing-contact"
+                  users=model.users}}
+              </div>
+
+              <div class="form-group">
+                <label>Security Alert Notification Email</label>
+                {{input value=model.securityAlertEmail class="form-control" name="security-alert-email"}}
+              </div>
+
+              <div class="form-group">
+                <label>Ops Alert Notification Email</label>
+                {{input value=model.opsAlertEmail class="form-control" name="ops-alert-email"}}
+              </div>
+
+              <div class="form-group">
+                <label>Organization Name</label>
+                {{input value=model.name class="form-control" name="name"}}
+              </div>
+
+              <div class="form-group">
+                <label>Phone</label>
+                {{input value=model.primaryPhone class="form-control" name="primary-phone"}}
+              </div>
+
+              <div class="form-group">
+                <label>Emergency Phone</label>
+                {{input value=model.emergencyPhone class="form-control" name="emergency-phone"}}
+              </div>
+
+              <div class="form-group">
+                <label>Address</label>
+                {{input value=model.address class="form-control" name="address"}}
+              </div>
+
+              <div class="form-group">
+                <label>City</label>
+                {{input value=model.city class="form-control" name="city"}}
+
+                <label>State</label>
+                {{input value=model.state class="form-control" name="state"}}
+
+                <label>Zip</label>
+                {{input value=model.zip class="form-control" name="zip"}}
+              </div>
+            </div>
+          </div>
+
+          <div class="resource-actions">
+            <button {{action 'save' model}} class='btn btn-primary' type='submit'>
+              Save
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</main>
+
