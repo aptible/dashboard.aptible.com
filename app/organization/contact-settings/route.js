@@ -10,8 +10,8 @@ export default Ember.Route.extend({
     ]);
   },
 
-  deactivate() {
-    this.controller.set('error', null);
+  resetController(controller) {
+    controller.set('error', null);
   },
 
   actions: {

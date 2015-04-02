@@ -193,7 +193,7 @@ test(`visiting ${url} and saving with error`, function(assert) {
   fillInput('name', newName);
   clickButton('Save');
   andThen(function(){
-    const error = findWithAssert(':contains(There was an error)');
-    assert.ok(error.length > 0, 'Errors are on the page');
+    const error = find(':contains(There was an error)');
+    assert.ok(error.length, 'Errors are on the page');
   });
 });
