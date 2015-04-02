@@ -26,6 +26,12 @@ module.exports = function(environment) {
       gettingStartedDocs: 'https://support.aptible.com/hc/en-us/articles/202638630-Deploying-your-first-app'
     },
 
+    flashMessageDefaults: {
+      // https://github.com/poteto/ember-cli-flash#service-defaults
+      timeout: 6000,
+      showProgress: true
+    },
+
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
@@ -53,7 +59,8 @@ module.exports = function(environment) {
 
     featureFlags: {
       'organization-settings': true,
-      'price-estimator': true
+      'price-estimator': true,
+      'notifications': true
     }
 
   };
@@ -110,6 +117,7 @@ module.exports = function(environment) {
     ENV.segmentioKey = '5aOlxMYapu6bQCQYFbDz7rhNvVV7B1A5';
     ENV.featureFlags['organization-settings'] = false;
     ENV.featureFlags['price-estimator'] = false;
+    ENV.featureFlags['notifications'] = false;
   }
 
   return ENV;

@@ -85,3 +85,12 @@ body {
     padding: 30px;
   }
 }
+
+.notifications {
+  position: relative;
+  .alert {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
