@@ -6,7 +6,8 @@ export default BaseProvider.extend({
   open: function(credentials){
     return ajax(config.authBaseUri+'/tokens', {
       type: 'POST',
-      data: credentials
+      data: credentials,
+      xhrFields: { withCredentials: true }
     }).catch(function(jqXHR){
       if (jqXHR.responseJSON) {
         throw new Error(jqXHR.responseJSON.message);
