@@ -10,6 +10,15 @@ header.resource-header {
       font-size: 20px;
       font-weight: $weight-semibold;
       color: $color-primary;
+
+      &.resource-breadcrumb {
+        color: $color-light;
+
+        .current {
+          color: $color-primary;
+          margin: 0 0 0 10px;
+        }
+      }
     }
 
     .resource-icon {
@@ -56,6 +65,26 @@ header.resource-header {
       float: left;
       margin-right: 30px;
     }
+  }
+}
+
+.panel-link {
+  .resource-metadata {
+    padding: 0;
+    margin: 0;
+  }
+
+  .resource-metadata-item {
+    margin: 0 0 20px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .resource-metadata-title,
+  .resource-metadata-value {
+    font-size: 12px;
   }
 }
 

@@ -1,11 +1,26 @@
-<h1>{{organization.name}} Roles: Create Role</h1>
+<main class="layout-content">
+  <header class="resource-header">
+    <div class="layout-container">
+      <div class="resource-title">
+        <i class="resource-icon resource-org"></i>
+        <h1>{{organization.name}} Roles</h1>
+      </div>
+    </div>
+  </header>
 
-<div class="panel">
-  <div class="panel-heading">
-    <h3>Create role</h3>
-  </div>
+  <div class="layout-container">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="panel">
+          <div class="panel-heading">
+            <h3>Create role</h3>
+          </div>
 
-  <div class="panel-body">
-    {{partial 'role/form'}}
+          <div class="panel-body">
+            {{partial 'role/form'}}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+</main>

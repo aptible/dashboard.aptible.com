@@ -1,33 +1,96 @@
+.panel-section .invite-user {
+  .user-select-container,
+  .invite-user-container {
+    margin-right: 75px;
+  }
+
+  input.form-control {
+    margin-right: 100px;
+  }
+
+  button.btn-primary {
+    float:right;
+    width: 60px;
+  }
+}
+
 .panel {
-  .form-container {
-    background: #fff;
-    border-radius: 3px;
-    border: 1px solid #CCCCCC;
-    box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,0.07);
+  .panel-section {
+    border-bottom: 1px solid #f0f0f0;
+    padding: 20px;
 
-    ul {
-      margin: 0;
-      padding: 0;
-      list-style-type: none;
+    &:last-child {
+      border: 0;
+    }
+  }
 
-      > li {
-        border-bottom: 1px solid #f0f0f0;
-        height: 35px;
-        padding: 5px 10px;
+  .form-control {
+    height: 32px;
+  }
+}
 
-        &:last-child {
-          border: 0;
-        }
+.form-container {
+  background: #fff;
+  border-radius: 3px;
+  border: 1px solid #CCCCCC;
+  box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,0.07);
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+
+    > li {
+      border-bottom: 1px solid #f0f0f0;
+      height: 32px;
+      padding: 4px 10px;
+
+      &:last-child {
+        border: 0;
       }
+    }
 
-      label {
-        font-weight: normal;
-        margin: 0;
-      }
+    label {
+      font-weight: normal;
+      margin: 1px 0 0;
+    }
 
-      input {
-        margin: 6px 7px 0 0;
-      }
+    input {
+      margin: 6px 7px 0 0;
+    }
+  }
+}
+
+ul.role-members {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+
+  li.role-invite {
+    label {
+      opacity: .3;
+    }
+  }
+
+  li.role-member.empty {
+    color: $color-light;
+  }
+
+  li {
+    height: auto;
+    padding: 10px;
+    @extend %clearfix;
+
+    label {
+      font-weight: $weight-semibold;
+      font-size: 13px;
+      float: left;
+      margin: 5px 0 0;
+    }
+
+    button {
+      float: right;
+      margin-left: 5px;
     }
   }
 }

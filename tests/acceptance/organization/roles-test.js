@@ -26,6 +26,7 @@ test(`visiting ${url} requires authentication`, () => {
 });
 
 test(`visiting ${url} shows roles`, (assert) => {
+  stubStacks();
   let roles = [{
     id: 'role1',
     name: 'Owner',
@@ -56,7 +57,7 @@ test(`visiting ${url} shows roles`, (assert) => {
       assert.ok(roleDiv.length, `shows role with name "${r.name}"`);
 
       if (r.privileged) {
-        assert.ok(roleDiv.find('.privileged').length,
+        assert.ok(roleDiv.find('.fa-shield').length,
                   'privileged role is marked as such in ui');
       }
     });
@@ -65,64 +66,8 @@ test(`visiting ${url} shows roles`, (assert) => {
   });
 });
 
-test(`visit ${url} and click to add a user`, (assert) => {
-  assert.expect(3);
-  stubOrganization({
-    id: orgId,
-    _links: {
-      roles: {href: rolesUrl}
-    }
-  });
-
-  let role = {
-    id: 'role1',
-    name: 'Owner'
-  };
-
-  stubRequest('get', rolesUrl, function(request){
-    return this.success({ _embedded: { roles: [role] }});
-  });
-
-  signInAndVisit(url);
-  andThen(() => {
-    assert.equal(currentPath(), 'organization.roles.index');
-  });
-  click(`a[title="Invite new user to ${role.name} by email"]`);
-  andThen(() => {
-    assert.equal(currentPath(), 'organization.invite');
-    assert.equal(find('select').val(), role.id, 'role is selected');
-  });
-});
-
-test(`visit ${url} and delete a role`, (assert) => {
-  assert.expect(2);
-  stubOrganization({
-    id: orgId,
-    _links: {
-      roles: {href: rolesUrl}
-    }
-  });
-  let role = {
-    id: 'role1',
-    name: 'Owner'
-  };
-
-  stubRequest('get', rolesUrl, function(request){
-    assert.ok(true, `gets ${rolesUrl}`);
-    return this.success({ _embedded: { roles: [role] }});
-  });
-
-  stubRequest('delete', `/roles/${role.id}`, function(request){
-    assert.ok(true, `deletes the role`);
-    return this.noContent();
-  });
-
-  signInAndVisit(url);
-  click(`a[title="Delete ${role.name} role"]`);
-  clickButton('confirm deletion');
-});
-
 test(`visit ${url} and click to show`, (assert) => {
+  stubStacks();
   assert.expect(2);
   stubOrganization({
     id: orgId,

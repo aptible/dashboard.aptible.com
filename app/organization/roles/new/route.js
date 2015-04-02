@@ -24,6 +24,7 @@ export default Ember.Route.extend({
   setupController(controller, model){
     this._super(controller, model);
     controller.set('stacks', this._stacks);
+    controller.set('organization', this.modelFor('organization'));
 
     const changeset = Changeset.create({
       key(keyData) {
@@ -52,6 +53,14 @@ export default Ember.Route.extend({
   },
 
   actions: {
+    willTransition() {
+      this.currentModel.rollback();
+    },
+
+    cancel() {
+      this.transitionTo('organization.roles');
+    },
+
     save(){
       let role = this.currentModel;
       let changeset = this.controller.get('changeset');

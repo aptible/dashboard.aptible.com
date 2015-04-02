@@ -1,52 +1,93 @@
-<h1>{{organization.name}} Roles: {{model.name}}</h1>
-
-<div class="panel">
-  <div class="panel-heading">
-    <h3>Settings</h3>
-  </div>
-
-  <div class="panel-body">
-    {{partial 'role/form'}}
-  </div>
-</div>
-
-<div class="panel">
-  <div class="panel-heading">
-    <h3>Members</h3>
-  </div>
-
-  <div class="panel-body">
-    <form role='form'>
-      <div class="form-group">
-        <label>Add member</label>
-        {{user-select users=nonmembers selected=invitedUser}}
-        <button {{action "inviteUser" invitedUser}}>Add</button>
+<main class="layout-content">
+  <header class="resource-header">
+    <div class="layout-container">
+      <div class="resource-title">
+        <i class="resource-icon resource-org"></i>
+        <h1 class="resource-breadcrumb">
+          {{organization.name}} Roles
+          <span class="current">{{model.name}}</span>
+        </h1>
       </div>
+    </div>
+  </header>
 
-      <div class="form-group">
-        <label>Invite by email</label>
-        {{input name='invite-by-email' value=invitedEmail}}
-        <button {{action "inviteByEmail" invitedEmail}}>Invite</button>
-      </div>
+  <div class="layout-container">
+    <div class="row">
+      <div class="col-xs-6">
 
-      <div class="role-members">
-        {{#each model.users as |user|}}
-          <div class="form-group">
-            <label>{{user.name}}</label>
-            <button {{action "removeUser" user}}>Remove</button>
+        <div class="panel">
+          <div class="panel-heading">
+            <h3>{{model.name}} Settings</h3>
           </div>
-        {{/each}}
-      </div>
 
-      <div class="role-invitations">
-        {{#each model.invitations as |invitation|}}
-          <div class="form-group">
-            <label>{{invitation.email}}</label>
-            <button {{action "resendInvitation" invitation}}>Resend Invitation</button>
-            <button {{action "removeInvitation" invitation}}>Remove</button>
+          <div class="panel-body">
+            {{partial 'role/form'}}
           </div>
-        {{/each}}
+        </div>
+
       </div>
-    </form>
+      <div class="col-xs-6">
+
+        <div class="panel">
+          <div class="panel-heading">
+            <h3>{{model.name}} Members</h3>
+          </div>
+
+
+          <form role='form'>
+            <div class="panel-section">
+              <label>Add member</label>
+              <div class="invite-user">
+                <button class="btn btn-primary" {{action "inviteUser" invitedUser}}>Add</button>
+                <div class="user-select-container">
+                  {{user-select users=nonmembers selected=invitedUser}}
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-section">
+              <label>Invite by email</label>
+              <div class="invite-user">
+                <button class="btn btn-primary"{{action "inviteByEmail" invitedEmail}}>Invite</button>
+                <div class="invite-user-container">
+                  {{input name='invite-by-email' value=invitedEmail classNames="form-control"}}
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-section">
+              <label>Members</label>
+              <div class="form-container">
+                <ul class="role-members">
+                  {{#each model.users as |user|}}
+                    <li class="role-member">
+                      <label>{{user.name}}</label>
+                      <button class="btn btn-default btn-xs" {{action "removeUser" user}}>Remove</button>
+                    </li>
+                  {{else}}
+                    <li class="role-member empty">No users in this role.</li>
+                  {{/each}}
+                  {{#if model.invitations}}
+                    <div class="role-invitations">
+                      {{#each model.invitations as |invitation|}}
+
+                        <li class="role-invite">
+                          <label>{{invitation.email}}</label>
+
+                          <button class="btn btn-default btn-xs" {{action "removeInvitation" invitation}}>Remove</button>
+
+                          <button class="btn btn-default btn-xs" {{action "resendInvitation" invitation}}>Resend Invitation</button>
+                        </li>
+                      {{/each}}
+                    </div>
+                  {{/if}}
+                </ul>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+</main>

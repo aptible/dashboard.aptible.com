@@ -341,14 +341,15 @@ test(`visiting ${url} shows invitation UI`, (assert) => {
 
     // lists invitations, with resend/remove buttons
     let invitationsDiv = findWithAssert('.role-invitations');
+
     invitations.forEach((invite, index) => {
       assert.ok(invitationsDiv.find(`:contains(${invite.email})`).length,
                 `shows invite for email "${invite.email}"`);
 
-      assert.ok(invitationsDiv.find(`button:contains(Resend Invitation):eq(${index})`).length,
+      assert.ok(invitationsDiv.find(`.role-invite:eq(${index}) button:contains(Resend Invitation)`).length,
                 `has invitation resend button for item @ index ${index}`);
 
-      assert.ok(invitationsDiv.find(`button:contains(Remove):eq(${index})`).length,
+      assert.ok(invitationsDiv.find(`.role-invite:eq(${index}) button:contains(Remove)`).length,
                 `has invitation remove button for item @ index ${index}`);
     });
   });

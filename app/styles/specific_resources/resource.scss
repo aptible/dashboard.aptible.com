@@ -9,6 +9,17 @@ a.panel-link {
     .panel-heading {
       padding: 11px;
 
+      .panel-icon {
+        float: left;
+        margin-bottom: -2px;
+        margin-right: 4px;
+        color: $color-bright-blue;
+
+        i.fa {
+          vertical-align: 0;
+        }
+      }
+
       .nav {
         float: right;
         margin: 0;
