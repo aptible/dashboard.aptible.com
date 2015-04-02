@@ -1,6 +1,6 @@
-{{#if value}}
-  {{#if error}}
-    {{#bs-tooltip placement="right" title=error bs-trigger="immediate" bs-container=false}}
+{{#if shouldShowErrors}}
+  {{#if errorText}}
+    {{#bs-tooltip placement="right" title=errorText bs-trigger="immediate" bs-container=false}}
       <i class="fa fa-times-circle"></i>
     {{/bs-tooltip}}
   {{else}}
