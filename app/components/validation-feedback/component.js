@@ -7,7 +7,7 @@ export default Ember.Component.extend({
   /** @type {Boolean} Whether errors will show even if no value */
   hasSubmitted: false,
 
-  shouldShowErrors: Ember.computed.or("value", "hasSubmitted"),
+  shouldShowFeedback: Ember.computed.or("value", "hasSubmitted"),
 
   errorText: function() {
     var error = this.get("error");
