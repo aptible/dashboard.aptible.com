@@ -10,7 +10,7 @@ moduleForComponent('activating-item', {
 });
 
 test('it renders', function(assert) {
-  assert.expect(4);
+  assert.expect(5);
 
   let mockRoutingService = {
     currentPath: 'abc'
@@ -32,4 +32,9 @@ test('it renders', function(assert) {
 
   assert.ok(component.get('active'),
             'active when currentWhen path matches app path');
+
+  Ember.run(component, 'set', 'currentWhen', 'ab');
+
+  assert.ok(component.get('active'),
+            'active when app path is subset of currentWhen path');
 });
