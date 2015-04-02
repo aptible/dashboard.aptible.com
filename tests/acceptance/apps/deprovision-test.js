@@ -40,8 +40,8 @@ test('/apps/:id/deprovision will not deprovision without confirmation', function
   andThen(function(){
     var button = findWithAssert('button:contains(Deprovision)');
     ok(button.is(':disabled'), 'deprovision button is disabled');
+    expectTitle(`Deprovision ${appName} - ${stackHandle}`);
   });
-  titleUpdatedTo(`Deprovision ${appName} - ${stackHandle}`);
 });
 
 test('/apps/:id/deprovision will deprovision with confirmation', function(){

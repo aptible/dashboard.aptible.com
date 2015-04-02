@@ -75,7 +75,7 @@ test(`visit ${appVhostsNewUrl} shows creation form`, function(){
     expectInput('private-key', {input:'textarea'});
     expectButton('Save VHost');
     expectButton('Cancel');
-    titleUpdatedTo(`Add a domain - ${appHandle} - ${stackHandle}`);
+    expectTitle(`Add a domain - ${appHandle} - ${stackHandle}`);
   });
 });
 

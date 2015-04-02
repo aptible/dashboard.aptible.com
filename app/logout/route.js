@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { replaceLocation } from "../utils/location";
+import Location from "../utils/location";
 
 export default Ember.Route.extend({
   beforeModel: function(){
@@ -9,7 +9,7 @@ export default Ember.Route.extend({
   },
   activate: function(){
     this.session.close('aptible').then(function(){
-      replaceLocation('/');
+      Location.replace('/');
     });
   }
 });

@@ -175,7 +175,7 @@ export function resourceOperationsTest(options){
     ok( operationCreatedAt.length, 'displays UTC formatted timestamp' );
 
     expectPaginationElements();
-    titleUpdatedTo(`${resourceHandle} Activity - ${stackHandle}`);
+    expectTitle(`${resourceHandle} Activity - ${stackHandle}`);
   });
 }
 

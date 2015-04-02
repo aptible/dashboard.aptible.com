@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import { locationHistory } from '../../utils/location';
-import { titleHistory } from '../../utils/title-route-extensions';
 import { stubRequest } from "./fake-server";
+import MockLocation from './mock-location';
+import MockTitle from './mock-title';
 
 Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData){
   userData = userData || {};
@@ -65,13 +65,12 @@ Ember.Test.registerAsyncHelper('expectRequiresAuthentication', function(app, url
   });
 });
 
-Ember.Test.registerAsyncHelper('locationUpdatedTo', function(app, url){
-  equal(locationHistory.last, url, 'window.location updated to expected URL');
+Ember.Test.registerHelper('expectReplacedLocation', function(app, url){
+  equal(MockLocation.last(), url, `window.location replaced with "${url}"`);
 });
 
-Ember.Test.registerAsyncHelper('titleUpdatedTo', function(app, title){
-  equal(titleHistory.last, title,
-        `window.document.title updated to "${title}"`);
+Ember.Test.registerAsyncHelper('expectTitle', function(app, title){
+  equal(MockTitle.last(), title, `window.document.title updated to "${title}"`);
 });
 
 Ember.Test.registerAsyncHelper('clickNextPageLink', function(app){

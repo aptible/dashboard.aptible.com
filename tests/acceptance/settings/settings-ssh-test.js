@@ -32,34 +32,6 @@ function stubGetKeys(keys){
   });
 }
 
-function addButton(){
-  return find('button:contains(Add another SSH key)');
-}
-
-function addFirstButton(){
-  return findWithAssert('button:contains(Add your first SSH key)');
-}
-
-function deleteButton(){
-  return findWithAssert('a.delete-key');
-}
-
-function saveKeyButton(){
-  return find('button:contains(Save new SSH key)');
-}
-
-function nevermindButton(){
-  return findWithAssert('button:contains(Nevermind)');
-}
-
-function nameInput(){
-  return findWithAssert('input[name="name"]');
-}
-
-function publicKeyInput(){
-  return findWithAssert('textarea[name="ssh-public-key"]');
-}
-
 test(settingsSshUrl + ' requires authentication', function(){
   expectRequiresAuthentication(settingsSshUrl);
 });
@@ -71,8 +43,8 @@ test('visit ' + settingsSshUrl + ' shows ssh keys', function(){
   ];
 
   stubGetKeys(keys);
-  signInAndVisit(settingsSshUrl);
 
+  signInAndVisit(settingsSshUrl);
   andThen(function(){
     ok( find('h3:contains(SSH Keys)').length,
         'has header' );
@@ -80,19 +52,22 @@ test('visit ' + settingsSshUrl + ' shows ssh keys', function(){
     equal( find('.ssh-key-item').length, keys.length,
            'has ' + keys.length + ' ssh keys');
 
-    ok( addButton().length, 'has add button');
-    equal(deleteButton().length, keys.length,
-          'has ' + keys.length + ' delete buttons');
+    expectButton('Add another SSH key');
 
-    click(addButton());
+    let deleteButton = findButton('Delete SSH Key');
+    equal(deleteButton.length, keys.length,
+          'has ' + keys.length + ' delete buttons');
   });
+  clickButton('Add another SSH key');
 
   andThen(function(){
-    ok(nameInput().length, 'has name input');
-    ok(publicKeyInput().length, 'has ssh-public-key input');
-    ok( saveKeyButton().length, 'has save key button' );
-    ok( nevermindButton().length, 'has cancel button' );
-    ok(!addButton().length, 'does not show add button when adding a key');
+    expectInput('name');
+    expectInput('ssh-public-key');
+    expectButton('Save new SSH key');
+    expectButton('Nevermind');
+
+    let addButton = findButton('Add another SSH key');
+    ok(!addButton.length, 'does not show add button when adding a key');
   });
 });
 
@@ -101,7 +76,7 @@ test('visit ' + settingsSshUrl + ' with no key shows button to add key', functio
   signInAndVisit(settingsSshUrl);
 
   andThen(function(){
-    ok( addFirstButton().length, 'has Add First button');
+    expectButton('Add your first SSH key');
   });
 });
 
@@ -128,26 +103,16 @@ test('visit ' + settingsSshUrl + ' allows adding a key', function(){
   });
 
   signInAndVisit(settingsSshUrl);
-
+  clickButton('Add your first SSH key');
+  clickButton('Nevermind');
   andThen(function(){
-    click( addFirstButton() );
+    let saveButton = findButton('Save new SSH key');
+    ok( !saveButton.length, 'save button is not shown after cancel' );
   });
-
-  andThen(function(){
-    click( nevermindButton() );
-  });
-
-  andThen(function(){
-    ok( !saveKeyButton().length, 'save button is not shown after cancel' );
-    click( addFirstButton() );
-  });
-
-  andThen(function(){
-    fillIn( nameInput(), keyName );
-    fillIn( publicKeyInput(), publicKey);
-    click( saveKeyButton() );
-  });
-
+  clickButton('Add your first SSH key');
+  fillInput('name', keyName);
+  fillInput('ssh-public-key', publicKey);
+  clickButton('Save new SSH key');
   andThen(function(){
     ok( find('.ssh-key-item:contains(' + keyName + ')').length,
         'shows key with name: ' + keyName);
@@ -167,15 +132,10 @@ test('visit ' + settingsSshUrl + ' and adding a key when it returns an error', f
   });
 
   signInAndVisit(settingsSshUrl);
-
-  andThen(function(){
-    click( addFirstButton() );
-    fillIn( nameInput(), keyName );
-    fillIn( publicKeyInput(), publicKey );
-
-    click('button:contains(Save new SSH key)');
-  });
-
+  clickButton('Add your first SSH key');
+  fillInput('name', keyName );
+  fillInput('ssh-public-key', publicKey );
+  clickButton('Save new SSH key');
   andThen(function(){
     var error = find('.alert');
     ok( error.length, 'error div is shown');
@@ -201,11 +161,7 @@ test('visit ' + settingsSshUrl + ' and delete a key', function(){
   });
 
   signInAndVisit(settingsSshUrl);
-
-  andThen(function(){
-    click( deleteButton() );
-  });
-
+  clickButton('Delete SSH Key');
   andThen(function(){
     equal( find('.ssh-key-item').length, 0,
            'after deleting, 0 keys are shown');

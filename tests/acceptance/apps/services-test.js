@@ -83,7 +83,7 @@ test(`visit ${url} lists services`, function(){
           `has container count ${service.container_count}`);
     });
 
-    titleUpdatedTo(`${appHandle} Services - ${stackHandle}`);
+    expectTitle(`${appHandle} Services - ${stackHandle}`);
   });
 });
 

@@ -92,7 +92,7 @@ test(`visit ${url} shows basic info`, function(){
     var diskSizeSlider = findWithAssert('.slider.disk-size');
     ok(diskSizeSlider.length, 'has disk size slider');
 
-    titleUpdatedTo(`Create a Database - ${stackHandle}`);
+    expectTitle(`Create a Database - ${stackHandle}`);
   });
 });
 
