@@ -20,6 +20,20 @@
 
             <div class="panel-body">
 
+              {{#if model.errors.length}}
+                {{#bs-alert alert='danger' as |component|}}
+                  {{bs-alert-dismiss target=component}}
+                  <p>
+                    There was an error saving your changes.
+                  </p>
+                  <ul>
+                    {{#each model.errors.messages as |message|}}
+                    <li>{{message}}</li>
+                    {{/each}}
+                  </ul>
+                {{/bs-alert}}
+              {{/if}}
+
               <div class="form-group">
                 <label>Security Officer</label>
                 {{user-select

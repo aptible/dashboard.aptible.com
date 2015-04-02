@@ -151,3 +151,49 @@ test(`visiting ${url} and saving`, function(assert) {
   fillInput('name', newName);
   clickButton('Save');
 });
+
+test(`visiting ${url} and saving with error`, function(assert) {
+  assert.expect(1);
+
+  let securityOfficerData = buildUserData();
+  let billingContactData = buildUserData();
+  let organizationData = buildOrganizationData({
+    _links: {
+      self: {href: organizationApiUrl},
+      security_officer: {href: `/users/${securityOfficerData.id}`},
+      billing_contact: {href: `/users/${billingContactData.id}`},
+      users: {href: `${organizationApiUrl}/users`}
+    }
+  });
+  const newName = "Mike";
+
+  stubOrganization(organizationData);
+  stubUser(securityOfficerData);
+  stubUser(billingContactData);
+  stubRequest('get', `${organizationApiUrl}/users`, function() {
+    return this.success({
+      _embedded: {
+        users: [{
+          id: 'some-bozo',
+          name: 'named bozo'
+        }, securityOfficerData, billingContactData]
+      }
+    });
+  });
+
+  stubRequest('put', organizationApiUrl, function(request) {
+    return this.error(422, {
+      code: 422,
+      error: 'unprocessable_entity',
+      message: 'Name is not valid'
+    });
+  });
+
+  signInAndVisit(url);
+  fillInput('name', newName);
+  clickButton('Save');
+  andThen(function(){
+    const error = findWithAssert(':contains(There was an error)');
+    assert.ok(error.length > 0, 'Errors are on the page');
+  });
+});
