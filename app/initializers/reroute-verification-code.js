@@ -1,5 +1,5 @@
-import { getUrlParameter } from '../utils/url-parameters';
-import { replaceLocation } from '../utils/location';
+import { getUrlParameter } from 'diesel/utils/url-parameters';
+import Location from 'diesel/utils/location';
 
 export function initialize(container, application) {
   application.deferReadiness();
@@ -9,11 +9,11 @@ export function initialize(container, application) {
   var resetCode = getUrlParameter(window.location, 'reset_code');
   var userId = getUrlParameter(window.location, 'user_id');
   if (resetCode) {
-    replaceLocation(`/password/new/${resetCode}/${userId}`);
+    Location.replace(`/password/new/${resetCode}/${userId}`);
   } else if (invitationId) {
-    replaceLocation(`/claim/${invitationId}/${verificationCode}`);
+    Location.replace(`/claim/${invitationId}/${verificationCode}`);
   } else if (verificationCode) {
-    replaceLocation(`/verify/${verificationCode}`);
+    Location.replace(`/verify/${verificationCode}`);
   } else {
     application.advanceReadiness();
   }
