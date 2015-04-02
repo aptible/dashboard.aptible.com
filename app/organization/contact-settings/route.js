@@ -7,5 +7,13 @@ export default Ember.Route.extend({
       model.get('securityOfficer'),
       model.get('billingContact')
     ]);
+  },
+
+  actions: {
+    save(model) {
+      model.save().then(() => {
+        this.transitionTo('organization', model);
+      });
+    }
   }
 });

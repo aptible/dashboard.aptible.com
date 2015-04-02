@@ -25,8 +25,9 @@ function buildUserData(){
   };
 }
 
-function buildOrganziationData(data){
-  return $.extend({
+function buildOrganizationData(data){
+  return $.extend(true, {
+    id: organizationId,
     name: 'Bob',
     security_alert_email: 'security@bob.co',
     ops_alert_email: 'ops@bob.co',
@@ -54,9 +55,10 @@ test(`visiting ${url} requires authentication`, () => {
 });
 
 test(`visiting ${url}`, function(assert) {
+  assert.expect(14);
   let securityOfficerData = buildUserData();
   let billingContactData = buildUserData();
-  let organizationData = buildOrganziationData({
+  let organizationData = buildOrganizationData({
     _links: {
       self: {href: organizationApiUrl},
       security_officer: {href: `/users/${securityOfficerData.id}`},
@@ -64,6 +66,7 @@ test(`visiting ${url}`, function(assert) {
       users: {href: `${organizationApiUrl}/users`}
     }
   });
+
   stubOrganization(organizationData);
   stubUser(securityOfficerData);
   stubUser(billingContactData);
@@ -77,6 +80,7 @@ test(`visiting ${url}`, function(assert) {
       }
     });
   });
+
   signInAndVisit(url);
 
   andThen(function() {
@@ -95,4 +99,55 @@ test(`visiting ${url}`, function(assert) {
     expectInput('billing-contact', {value: billingContactData.id});
     expectButton('Save');
   });
+});
+
+test(`visiting ${url} and saving`, function(assert) {
+  assert.expect(11);
+
+  let securityOfficerData = buildUserData();
+  let billingContactData = buildUserData();
+  let organizationData = buildOrganizationData({
+    _links: {
+      self: {href: organizationApiUrl},
+      security_officer: {href: `/users/${securityOfficerData.id}`},
+      billing_contact: {href: `/users/${billingContactData.id}`},
+      users: {href: `${organizationApiUrl}/users`}
+    }
+  });
+  const newName = "Mike";
+
+  stubOrganization(organizationData);
+  stubUser(securityOfficerData);
+  stubUser(billingContactData);
+  stubRequest('get', `${organizationApiUrl}/users`, function() {
+    return this.success({
+      _embedded: {
+        users: [{
+          id: 'some-bozo',
+          name: 'named bozo'
+        }, securityOfficerData, billingContactData]
+      }
+    });
+  });
+
+  stubRequest('put', organizationApiUrl, function(request) {
+    const body = this.json(request);
+    assert.equal(body.name, newName, 'name is correct');
+    assert.equal(body.security_alert_email, organizationData.security_alert_email, 'security alert email is correct');
+    assert.equal(body.ops_alert_email, organizationData.ops_alert_email, 'ops alert email is correct');
+    assert.equal(body.primary_phone, organizationData.primary_phone, 'primary phone is correct');
+    assert.equal(body.emergency_phone, organizationData.emergency_phone, 'emergency phone is correct');
+    assert.equal(body.address, organizationData.address, 'address is correct');
+    assert.equal(body.city, organizationData.city, 'city is correct');
+    assert.equal(body.state, organizationData.state, 'state is correct');
+    assert.equal(body.zip, organizationData.zip, 'zip is correct');
+    assert.equal(body.security_officer_id, securityOfficerData.id, 'security officer is correct');
+    assert.equal(body.billing_contact_id, billingContactData.id, 'billing contact is correct');
+    body.id = organizationId;
+    return this.success(body);
+  });
+
+  signInAndVisit(url);
+  fillInput('name', newName);
+  clickButton('Save');
 });
