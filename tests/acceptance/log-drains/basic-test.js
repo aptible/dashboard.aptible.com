@@ -73,9 +73,8 @@ test(`visit ${url} shows basic info`, function(assert){
           'shows drain host');
       ok( logDrainEl.text().indexOf( logDrain.drain_port ) > -1,
           'shows drain port');
+      expectTitle(`${stackHandle} Logging - ${orgName}`);
     });
-
-    titleUpdatedTo(`${stackHandle} Logging - ${orgName}`);
   });
 });
 

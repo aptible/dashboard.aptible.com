@@ -4,8 +4,10 @@ import loadInitializers from 'ember/load-initializers';
 import config from './config/environment';
 import AuthenticatedRouteMixin from './mixins/routes/authenticated';
 
-// Calls reopen on route and router
-import './utils/title-route-extensions';
+import { RouteExtension, RouterExtension } from './utils/title-route-extensions';
+
+Ember.Route.reopen(RouteExtension);
+Ember.Router.reopen(RouterExtension);
 
 Ember.MODEL_FACTORY_INJECTIONS = true;
 

@@ -1,16 +1,12 @@
-import config from "../config/environment";
+import Ember from 'ember';
 
-export var locationHistory = {};
+let Location = {
+  replace:        (url) => window.location = url,
+  replaceAndWait: (url) => {
+    Location.replace(url);
+    // never-resolving promise
+    return Ember.RSVP.Promise(() => {});
+  }
+};
 
-var replaceLocation;
-if (config.replaceLocation) {
-  replaceLocation = function replaceLocation(url){
-    window.location = url;
-  };
-} else {
-  replaceLocation = function replaceLocation(url){
-    locationHistory.last = url;
-  };
-}
-
-export { replaceLocation };
+export default Location;

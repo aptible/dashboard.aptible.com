@@ -36,8 +36,8 @@ test('visiting /stacks/:stack_id/databases', function() {
 
   andThen(function() {
     equal(currentPath(), 'stack.databases.index');
+    expectTitle('my-stack-1 Databases - Sprocket Co');
   });
-  titleUpdatedTo('my-stack-1 Databases - Sprocket Co');
 });
 
 test('visiting /stacks/my-stack-1/databases shows list of databases', function() {

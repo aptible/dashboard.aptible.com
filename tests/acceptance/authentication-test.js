@@ -162,7 +162,9 @@ test('logging out reloads the page', function() {
   signInAndVisit('/');
   click('.current-user .dropdown-toggle');
   click('a:contains(Logout)');
-  locationUpdatedTo('/');
+  andThen(() => {
+    expectReplacedLocation('/');
+  });
 });
 
 test('visiting /signup', function() {

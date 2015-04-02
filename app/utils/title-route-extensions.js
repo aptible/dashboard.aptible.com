@@ -1,27 +1,14 @@
-import config from "../config/environment";
 import Ember from "ember";
 
-export var titleHistory = {};
-
-var replaceTitle;
-if (config.replaceTitle) {
-  replaceTitle = function replaceLocation(title){
+let Title = {
+  replace(title) {
     window.document.title = title;
-  };
-} else {
-  replaceTitle = function replaceLocation(title){
-    titleHistory.last = title;
-  };
-}
-
-export { replaceTitle };
+  }
+};
 
 // Via https://gist.github.com/machty/8413411
 
-// Extend Ember.Route to add support for sensible
-// document.title integration.
-Ember.Route.reopen({
-
+export const RouteExtension = {
   // `titleToken` can either be a static string or a function
   // that accepts a model object and returns a string (or array
   // of strings if there are multiple tokens).
@@ -68,14 +55,16 @@ Ember.Route.reopen({
       }
     }
   }
-});
+};
 
-Ember.Router.reopen({
+export const RouterExtension = {
   updateTitle: function() {
     this.send('collectTitleTokens', []);
   }.on('didTransition'),
 
   setTitle: function(title) {
-    replaceTitle(title);
+    Title.replace(title);
   }
-});
+};
+
+export default Title;

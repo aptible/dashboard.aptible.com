@@ -79,7 +79,7 @@ test(`visit ${appVhostsUrl} has link to ${appVhostsNewUrl}`, function(){
 
   andThen(function(){
     expectLink(appVhostsNewUrl);
-    titleUpdatedTo(`${appHandle} Domains - ${stackHandle}`);
+    expectTitle(`${appHandle} Domains - ${stackHandle}`);
   });
 });
 

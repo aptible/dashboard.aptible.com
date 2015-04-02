@@ -63,7 +63,7 @@ test(`visiting ${url}`, function() {
 
   andThen(function() {
     equal(currentPath(), 'stack.apps.index');
-    titleUpdatedTo(`${stackHandle} Apps - ${orgName}`);
+    expectTitle(`${stackHandle} Apps - ${orgName}`);
   });
 });
 

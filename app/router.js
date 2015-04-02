@@ -5,7 +5,7 @@ var Router = Ember.Router.extend({
   location: config.locationType
 });
 
-Router.map(function() {
+export default Router.map(function() {
   this.route("app", {
     path: "apps/:app_id"
   }, function() {
@@ -90,5 +90,3 @@ Router.map(function() {
 
   this.route('not-found', {path: '/*wildcard'});
 });
-
-export default Router;

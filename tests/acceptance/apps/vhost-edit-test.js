@@ -60,7 +60,7 @@ test(`visit ${url} shows form, basic info`, function(){
   signInAndVisit(url);
   andThen( () => {
     equal(currentPath(), 'app.vhosts.edit');
-    titleUpdatedTo(`Edit ${virtualDomain} - ${appHandle}`);
+    expectTitle(`Edit ${virtualDomain} - ${appHandle}`);
     equal(find('.panel-heading h3').text(), `Edit ${virtualDomain}`);
 
     let serviceInput = findInput('service');
