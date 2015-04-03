@@ -13,15 +13,17 @@ let orgName = 'Great Co.';
 let invitationId     = 'some-invite';
 let verificationCode = 'some-verification-code';
 
-let invitationData = {
-  id: invitationId,
-  organization_name: orgName
-};
-
 let userInput = {
   email: 'good@email.com',
   password: 'Correct#Password1!3',
   name: 'Test User'
+};
+
+let invitationData = {
+  id: invitationId,
+  organization_name: orgName,
+  email: userInput.email,
+  inviter_name: 'Houdini'
 };
 
 let url = `/signup/invitation/${invitationId}/${verificationCode}`;
@@ -43,13 +45,28 @@ test(`visiting ${url} when logged in redirects`, function(assert) {
 test(`visiting ${url} shows organization name`, function(assert) {
   visit(url);
   andThen(() => {
-    assert.ok(find(`:contains(${orgName})`).length,
-              `has org name "${orgName}"`);
+    assert.ok(find(`:contains(${invitationData.organization_name})`).length,
+              `has org name "${invitationData.organization_name}"`);
+  });
+});
+
+test(`visiting ${url} shows inviter name`, function(assert) {
+  visit(url);
+  andThen(() => {
+    assert.ok(find(`:contains(${invitationData.inviter_name})`).length,
+              `has inviter name "${invitationData.inviter_name}"`);
   });
 });
 
 test(`visiting ${url} shows signup inputs`, function(assert) {
   signupInputsTest(url);
+});
+
+test(`visiting ${url} pre-fills user's email from invitation`, function(assert){
+  visit(url);
+  andThen(() => {
+    expectInput('email', {value: invitationData.email});
+  });
 });
 
 test(`visiting ${url} shows no organization input`, function(assert) {

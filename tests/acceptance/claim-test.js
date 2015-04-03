@@ -9,7 +9,8 @@ const url = `/claim/${invitationId}/${verificationCode}`;
 const orgName = "My New Org";
 const invitationData = {
   id: invitationId,
-  organization_name: orgName
+  organization_name: orgName,
+  inviter_name: 'Mr inviter'
 };
 
 module('Acceptance: Claim', {
@@ -64,7 +65,7 @@ test(`visiting ${url} as unauthenticated revisits after log in`, function(assert
 
   stubIndexRequests();
 
-  assert.expect(7);
+  assert.expect(8);
 
   visit(url);
   andThen(function(){
@@ -75,8 +76,10 @@ test(`visiting ${url} as unauthenticated revisits after log in`, function(assert
   andThen(function(){
     assert.equal(currentPath(), 'claim');
     assert.equal(currentURL(), `/claim/${invitationId}/${verificationCode}`);
-    assert.ok(find(`:contains(${orgName})`).length,
-              `shows org name "${orgName}" when redirected back to claim`);
+    assert.ok(find(`:contains(${invitationData.organization_name})`).length,
+              `shows org name "${invitationData.organization_name}" when redirected back to claim`);
+    assert.ok(find(`:contains(${invitationData.inviter_name})`).length,
+              `shows inviter name "${invitationData.inviter_name}" when redirected back to claim`);
   });
   clickButton('Accept organization invitation');
   andThen(function(){
@@ -84,12 +87,21 @@ test(`visiting ${url} as unauthenticated revisits after log in`, function(assert
   });
 });
 
-test(`visiting ${url} as authenticated shows org info`, function(assert) {
+test(`visiting ${url} as authenticated shows org name`, function(assert) {
   signInAndVisit(url);
   andThen(() => {
     assert.equal(currentPath(), 'claim');
-    assert.ok(find(`:contains(${orgName})`).length,
-              `shows org name "${orgName}"`);
+    assert.ok(find(`:contains(${invitationData.organization_name})`).length,
+              `shows org name "${invitationData.organization_name}"`);
+  });
+});
+
+test(`visiting ${url} as authenticated shows inviter name`, function(assert) {
+  signInAndVisit(url);
+  andThen(() => {
+    assert.equal(currentPath(), 'claim');
+    assert.ok(find(`:contains(${invitationData.inviter_name})`).length,
+              `shows inviter name "${invitationData.inviter_name}"`);
   });
 });
 
