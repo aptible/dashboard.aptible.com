@@ -44,9 +44,24 @@
                 </div>
               </div>
             </div>
+          </form>
 
+          <form role='form' {{action "inviteByEmail" inviteByEmail on="submit"}}>
             <div class="panel-section">
               <label>Invite by email</label>
+              {{#if invitation.errors.length}}
+                {{#bs-alert alert='danger' as |component|}}
+                  {{bs-alert-dismiss target=component}}
+                  <p>
+                    There was an error saving your changes.
+                  </p>
+                  <ul>
+                    {{#each invitation.errors.messages as |message|}}
+                    <li>{{message}}</li>
+                    {{/each}}
+                  </ul>
+                {{/bs-alert}}
+              {{/if}}
               <div class="invite-user">
                 <button class="btn btn-primary"{{action "inviteByEmail" invitedEmail}}>Invite</button>
                 <div class="invite-user-container">
@@ -54,38 +69,37 @@
                 </div>
               </div>
             </div>
-
-            <div class="panel-section">
-              <label>Members</label>
-              <div class="form-container">
-                <ul class="role-members">
-                  {{#each model.users as |user|}}
-                    <li class="role-member">
-                      <label>{{user.name}}</label>
-                      <button class="btn btn-default btn-xs" {{action "removeUser" user}}>Remove</button>
-                    </li>
-                  {{else}}
-                    <li class="role-member empty">No users in this role.</li>
-                  {{/each}}
-                  {{#if model.invitations}}
-                    <div class="role-invitations">
-                      {{#each model.invitations as |invitation|}}
-
-                        <li class="role-invite">
-                          <label>{{invitation.email}}</label>
-
-                          <button class="btn btn-default btn-xs" {{action "removeInvitation" invitation}}>Remove</button>
-
-                          <button class="btn btn-default btn-xs" {{action "resendInvitation" invitation}}>Resend Invitation</button>
-                        </li>
-                      {{/each}}
-                    </div>
-                  {{/if}}
-                </ul>
-              </div>
-            </div>
-
           </form>
+
+          <div class="panel-section">
+            <label>Members</label>
+            <div class="form-container">
+              <ul class="role-members">
+                {{#each model.users as |user|}}
+                  <li class="role-member">
+                    <label>{{user.name}}</label>
+                    <button class="btn btn-default btn-xs" {{action "removeUser" user}}>Remove</button>
+                  </li>
+                {{else}}
+                  <li class="role-member empty">No users in this role.</li>
+                {{/each}}
+                {{#if model.persistedInvitations}}
+                  <div class="role-invitations">
+                    {{#each model.persistedInvitations as |invitation|}}
+                      <li class="role-invite">
+                        <label>{{invitation.email}}</label>
+
+                        <button class="btn btn-default btn-xs" {{action "removeInvitation" invitation}}>Remove</button>
+
+                        <button class="btn btn-default btn-xs" {{action "resendInvitation" invitation}}>Resend Invitation</button>
+                      </li>
+                    {{/each}}
+                  </div>
+                {{/if}}
+              </ul>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

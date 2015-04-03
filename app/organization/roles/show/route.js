@@ -88,11 +88,23 @@ export default Ember.Route.extend({
     },
     inviteByEmail(email){
       let role = this.currentModel;
-      let invitation = this.store.createRecord('invitation', {
-        email,
-        role
+      let invitation = this.controller.get('invitation');
+      if (invitation) {
+        invitation.set('email', email);
+      } else {
+        invitation = this.store.createRecord('invitation', {
+          email,
+          role
+        });
+        this.controller.set('invitation', invitation);
+      }
+      invitation.save().then(() => {
+        this.controller.set('invitation', null);
+      }, (e) => {
+        if (!(e instanceof DS.InvalidError)) {
+          throw e;
+        }
       });
-      invitation.save();
     },
     removeInvitation(invitation){
       invitation.destroyRecord();
@@ -138,7 +150,7 @@ export default Ember.Route.extend({
         savePromises.push(this.currentModel.save().catch((e) => {
           saveSuccessful = false;
           // Silence invalidation errors
-          if (!e instanceof DS.InvalidError) {
+          if (!(e instanceof DS.InvalidError)) {
             throw e;
           }
         }));
