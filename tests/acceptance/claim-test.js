@@ -2,29 +2,37 @@ import Ember from 'ember';
 import startApp from '../helpers/start-app';
 import { stubRequest, jsonMimeType } from '../helpers/fake-server';
 
-var App;
+let App;
+const invitationId = 'some-id';
+const verificationCode = 'some-code';
+const url = `/claim/${invitationId}/${verificationCode}`;
+const orgName = "My New Org";
+const invitationData = {
+  id: invitationId,
+  organization_name: orgName
+};
 
 module('Acceptance: Claim', {
   setup: function() {
     App = startApp();
+    stubInvitation(invitationData);
   },
   teardown: function() {
     Ember.run(App, 'destroy');
   }
 });
 
-test('visiting /claim/some-id/some-code requires authentication', function() {
-  visit('/claim/some-id/some-code');
+test(`visiting ${url} as unauthenticated redirects to signup/invitation/:invitation_id/:verification_code`, function() {
+  visit(url);
 
   andThen(function(){
-    equal(currentPath(), 'signup');
+    equal(currentURL(), `/signup/invitation/${invitationId}/${verificationCode}`);
+    equal(currentPath(), 'signup.invitation');
   });
 });
 
-test('visiting /claim/some-id/some-code revisits after sign in', function() {
-  expect(4);
-
-  var userUrl = '/user-url';
+test(`visiting ${url} as unauthenticated revisits after log in`, function(assert) {
+  let userUrl = '/user-url';
   stubRequest('post', '/tokens', function(request){
     return this.success({
       id: 'my-id',
@@ -33,11 +41,7 @@ test('visiting /claim/some-id/some-code revisits after sign in', function() {
       expires_in: 2,
       scope: 'manage',
       type: 'token',
-      _links: {
-        user: {
-          href: userUrl
-        }
-      }
+      _links: { user: { href: userUrl } }
     });
   });
   stubRequest('get', userUrl, function(){
@@ -48,43 +52,56 @@ test('visiting /claim/some-id/some-code revisits after sign in', function() {
   });
 
   stubRequest('post', '/verifications', function(request){
-    var params = this.json(request);
-    ok(true, 'verification posted');
+    let params = this.json(request);
+    assert.ok(true, 'verification posted');
+    assert.equal(params.verification_code, verificationCode, 'has correct verification code');
+
     return this.success({
       id: 'this-id',
       verification_code: params.verification_code
     });
   });
-  stubStacks(); // For loading index
-  stubOrganization();
-  stubOrganizations();
 
-  visit('/claim/some-id/some-code');
+  stubIndexRequests();
+
+  assert.expect(7);
+
+  visit(url);
   andThen(function(){
-    equal(currentPath(), 'signup');
+    assert.equal(currentPath(), 'signup.invitation');
   });
-  click("a:contains(Sign in)");
-  click("button:contains(Log in)");
+  clickButton('Sign in');
+  clickButton('Log in');
   andThen(function(){
-    equal(currentPath(), 'claim');
+    assert.equal(currentPath(), 'claim');
+    assert.equal(currentURL(), `/claim/${invitationId}/${verificationCode}`);
+    assert.ok(find(`:contains(${orgName})`).length,
+              `shows org name "${orgName}" when redirected back to claim`);
   });
-  click('button:contains(Accept organization invitation)');
+  clickButton('Accept organization invitation');
   andThen(function(){
-    equal(currentPath(), 'stack.apps.index');
+    assert.equal(currentPath(), 'stack.apps.index');
   });
 });
 
-test('visiting /claim/some-invitation/some-code creates verification', function() {
+test(`visiting ${url} as authenticated shows org info`, function(assert) {
+  signInAndVisit(url);
+  andThen(() => {
+    assert.equal(currentPath(), 'claim');
+    assert.ok(find(`:contains(${orgName})`).length,
+              `shows org name "${orgName}"`);
+  });
+});
+
+test(`visiting ${url} as authenticated creates verification`, function() {
   expect(3);
-  stubStacks(); // For loading index
-  stubOrganization();
-  stubOrganizations();
+
+  stubIndexRequests();
+
   stubUser();
-  var verificationCode = 'some-code';
-  var invitationId = 'some-invitation';
 
   stubRequest('post', '/verifications', function(request){
-    var params = this.json(request);
+    let params = this.json(request);
     equal(params.verification_code, verificationCode, 'correct code is passed');
     equal(params.invitation_id, invitationId, 'correct code is passed');
     return this.success({
@@ -93,24 +110,20 @@ test('visiting /claim/some-invitation/some-code creates verification', function(
     });
   });
 
-  signInAndVisit(`/claim/${invitationId}/${verificationCode}`);
-  click('button:contains(Accept organization invitation)');
+  signInAndVisit(url);
+  clickButton('Accept organization invitation');
   andThen(function(){
     equal(currentPath(), 'stack.apps.index');
   });
 });
 
 test('failed verification displays error', function() {
-  var verificationCode = 'some-code';
-  var invitationId = 'some-invitation';
-
   stubRequest('post', '/verifications', function(request){
-    var params = this.json(request);
     return [401, jsonMimeType, {}];
   });
 
-  signInAndVisit(`/claim/${invitationId}/${verificationCode}`);
-  click('button:contains(Accept organization invitation)');
+  signInAndVisit(url);
+  clickButton('Accept organization invitation');
   andThen(function(){
     equal(currentPath(), 'claim');
     ok(Ember.$(':contains(error accepting this invitation)').length, 'Failed verifications shows error');
@@ -126,8 +139,8 @@ test('failed verification displays error', function() {
     return [401, jsonMimeType, {}];
   });
 
-  signInAndVisit(`/claim/${invitationId}/${verificationCode}`);
-  click('button:contains(Accept organization invitation)');
+  signInAndVisit(url);
+  clickButton('Accept organization invitation');
   andThen(function(){
     equal(currentPath(), 'claim');
     ok(Ember.$(':contains(error accepting this invitation)').length, 'Failed verifications shows error');

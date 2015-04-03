@@ -1,0 +1,74 @@
+<div class="col-xs-5 col-xs-offset-1">
+
+  {{#unless model.isValid}}
+    {{#bs-alert alert="danger"}}
+      {{#each message in model.errors.messages}}
+        <p>{{message}}</p>
+      {{/each}}
+    {{/bs-alert}}
+  {{/unless}}
+
+  <div class="panel panel-default panel-subdued panel-focused">
+    <div class="panel-heading">
+      <div class="panel-heading-link">
+        {{link-to "Sign in instead" "login"}}
+      </div>
+      <h3>Create Your Aptible Account</h3>
+    </div>
+
+    <div class="panel-body">
+      <div class="form-group">
+        <div class="input-group">
+          {{input type="text"
+            name="name"
+            value=model.name
+            autofocus=true
+            class="form-control"
+            placeholder="Full Name"}}
+          {{validation-feedback error=errors.model.name value=model.name hasSubmitted=hasSubmitted}}
+        </div>
+      </div>
+
+      {{#if organization}}
+        <div class="form-group">
+          <div class="input-group">
+            {{input type="text"
+              name="organization"
+              value=organization.name
+              class="form-control"
+              placeholder="Organization Name"}}
+
+            {{validation-feedback error=errors.organization.name value=organization.name hasSubmitted=hasSubmitted}}
+          </div>
+        </div>
+      {{/if}}
+
+      <div class="form-group">
+        <div class="input-group">
+          {{input type="email"
+            value=model.email
+            name="email"
+            class="form-control"
+            placeholder="Email"}}
+          {{validation-feedback error=errors.model.email value=model.email hasSubmitted=hasSubmitted}}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="input-group">
+          {{input type="password"
+            value=model.password
+            name="password"
+            class="form-control"
+            placeholder="Password"}}
+          {{validation-feedback error=errors.model.password value=model.password hasSubmitted=hasSubmitted}}
+        </div>
+      </div>
+
+      <div class="panel-submit">
+        <button class="btn btn-primary btn-block btn-lg" {{action "validateAndSignup"}}>Sign Up</button>
+      </div>
+    </div>
+  </div>
+</div>
+

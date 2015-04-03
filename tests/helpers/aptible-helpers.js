@@ -65,11 +65,21 @@ Ember.Test.registerAsyncHelper('expectRequiresAuthentication', function(app, url
   });
 });
 
+
 Ember.Test.registerHelper('expectReplacedLocation', function(app, url){
   equal(MockLocation.last(), url, `window.location replaced with "${url}"`);
 });
 
-Ember.Test.registerAsyncHelper('expectTitle', function(app, title){
+Ember.Test.registerAsyncHelper('expectRedirectsWhenLoggedIn', function(app, url){
+  stubIndexRequests();
+  signInAndVisit(url);
+
+  andThen(function(){
+    equal(currentPath(), 'stack.apps.index');
+  });
+});
+
+Ember.Test.registerHelper('expectTitle', function(app, title){
   equal(MockTitle.last(), title, `window.document.title updated to "${title}"`);
 });
 
@@ -499,4 +509,25 @@ Ember.Test.registerAsyncHelper('triggerSlider', function(app, selector, argument
   let slider = findWithAssert(selector);
   slider.trigger('slide', argument);
   slider.trigger('set', argument);
+});
+
+Ember.Test.registerHelper('stubInvitation', function(app, invitationData={}){
+  const defaultData = {
+    id: 'invite-1',
+    organization_name: 'the org'
+  };
+
+  invitationData = Ember.$.extend(true, defaultData, invitationData);
+  stubRequest('get', `/invitations/${invitationData.id}`, function(request){
+    return this.success(invitationData);
+  });
+});
+
+// stubs the requests necessary to load the index route
+// for a logged-in user.
+// Note that this will redirect to stack.apps.index
+Ember.Test.registerHelper('stubIndexRequests', function(app){
+  stubStacks();
+  stubOrganization();
+  stubOrganizations();
 });

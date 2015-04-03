@@ -1,0 +1,29 @@
+{{#login-box}}
+  <div class="row">
+    {{partial 'signup/form'}}
+
+    <div class="col-xs-5">
+      <div class="welcome-info">
+        <h2>
+          Aptible is a deployment platform built to automate HIPAA compliance
+        </h2>
+        <p>
+          We run the entire backend you need to securely host and deliver your apps: web servers, app servers, databases, load balancers, network security, backups, encryption, permissions - everything.
+        </p>
+        <p>
+          And because we run your ops, our compliance engines can help you implement an entire HIPAA compliance program at a fraction of the traditional cost.
+        </p>
+
+        <p>
+        Aptible works great with all languages and frameworks.
+        {{#link-to-aptible app="support" path="quickstart" target="_blank"}}
+          Check out our getting started guides
+        {{/link-to-aptible}} for help deploying your app.
+        </p>
+
+        {{query-box}}
+      </div>
+    </div>
+
+  </div>
+{{/login-box}}

@@ -51,6 +51,7 @@
     "stubStacks",
     "expectReplacedLocation",
     "expectRequiresAuthentication",
+    "expectRedirectsWhenLoggedIn",
     "stubOrganizations",
     "stubOrganization",
     "stubApp",
@@ -72,7 +73,9 @@
     "expectNoButton",
     "clickButton",
     "triggerSlider",
-    "setFeature"
+    "setFeature",
+    "stubInvitation",
+    "stubIndexRequests"
   ],
   "node": false,
   "browser": false,

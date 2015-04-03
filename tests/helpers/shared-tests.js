@@ -1,5 +1,54 @@
 import { stubRequest } from './fake-server';
+import successfulTokenResponse from './successful-token-response';
 import Ember from 'ember';
+
+export function signupInputsTest(url){
+  visit(url);
+  andThen(() => {
+    expectInput('name');
+    expectInput('email');
+    expectInput('password');
+    expectButton('Sign Up');
+  });
+}
+
+export function doSignupSteps(url, userInput, options={}){
+  let defaultInput = {
+    name: 'bob', email: 'bob@gmail.com', password: 'abcDEF012!@#'
+  };
+  userInput = Ember.$.extend(true, defaultInput, userInput || {});
+  let userUrl = '/users/user1';
+
+  stubRequest('post', '/users', function(request){
+    let params = this.json(request);
+    equal(params.email, userInput.email, 'correct email is passed');
+    equal(params.password, userInput.password, 'correct password is passed');
+    return this.success({
+      id: 'my-user',
+      email: userInput.email
+    });
+  });
+
+  stubRequest('post', '/tokens', function(request){
+    let params = this.json(request);
+    equal(params.username, userInput.email, 'correct email is passed');
+    equal(params.password, userInput.password, 'correct password is passed');
+    return successfulTokenResponse(this, userUrl);
+  });
+
+  stubRequest('get', userUrl, function(){
+    return this.success({id: 'some-id', email: userInput.email});
+  });
+
+  visit(url);
+  fillInput('name', userInput.name);
+  fillInput('email', userInput.email);
+  fillInput('password', userInput.password);
+
+  if (options.clickButton !== false) {
+    clickButton('Sign Up');
+  }
+}
 
 export function paginatedResourceQueryParamsPage2Test(options){
   var resourceId = '1';
