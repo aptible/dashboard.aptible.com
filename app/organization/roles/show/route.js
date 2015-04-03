@@ -1,5 +1,6 @@
 import Changeset from 'diesel/utils/changeset';
 import Ember from 'ember';
+import DS from 'ember-data';
 
 export default Ember.Route.extend({
   init() {
@@ -131,12 +132,22 @@ export default Ember.Route.extend({
         savePromises.push(promise);
       });
 
+      let saveSuccessful = true;
+
       if (this.currentModel.get('isDirty')) {
-        savePromises.push(this.currentModel.save());
+        savePromises.push(this.currentModel.save().catch((e) => {
+          saveSuccessful = false;
+          // Silence invalidation errors
+          if (!e instanceof DS.InvalidError) {
+            throw e;
+          }
+        }));
       }
 
       return Ember.RSVP.all(savePromises).then(() => {
-        this.transitionTo('organization.roles');
+        if (saveSuccessful) {
+          this.transitionTo('organization.roles');
+        }
       });
     }
   }
