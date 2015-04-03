@@ -49,19 +49,7 @@
           <form role='form' {{action "inviteByEmail" inviteByEmail on="submit"}}>
             <div class="panel-section">
               <label>Invite by email</label>
-              {{#if invitation.errors.length}}
-                {{#bs-alert alert='danger' as |component|}}
-                  {{bs-alert-dismiss target=component}}
-                  <p>
-                    There was an error saving your changes.
-                  </p>
-                  <ul>
-                    {{#each invitation.errors.messages as |message|}}
-                    <li>{{message}}</li>
-                    {{/each}}
-                  </ul>
-                {{/bs-alert}}
-              {{/if}}
+              {{server-validation-errors model=invitation}}
               <div class="invite-user">
                 <button class="btn btn-primary"{{action "inviteByEmail" invitedEmail}}>Invite</button>
                 <div class="invite-user-container">
