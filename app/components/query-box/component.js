@@ -21,7 +21,7 @@ export default Ember.Component.extend({
     submit: function(email){
       if (email) {
         var component = this;
-        this.analytics.identify(email).then(function(){
+        this.analytics.identify(email, {email: email}).then(function(){
           component.analytics.showChat();
         });
       } else {
