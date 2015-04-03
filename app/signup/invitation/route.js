@@ -14,6 +14,8 @@ export default Ember.Route.extend(DisallowAuthenticated, SignupRouteMixin, {
 
   setupController: function(controller, model){
     let {invitation, verificationCode} = model;
+    Ember.assert(`This route's model hook must be passed an invitation id and verification code`,
+                 invitation && verificationCode);
 
     let user = this.store.createRecord('user');
     user.set('email', invitation.get('email'));

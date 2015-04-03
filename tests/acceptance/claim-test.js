@@ -22,12 +22,12 @@ module('Acceptance: Claim', {
   }
 });
 
-test(`visiting ${url} as unauthenticated redirects to signup/invitations/:invitation_id/:verification_code`, function() {
+test(`visiting ${url} as unauthenticated redirects to signup/invitation/:invitation_id/:verification_code`, function() {
   visit(url);
 
   andThen(function(){
-    equal(currentURL(), `/signup/invitations/${invitationId}/${verificationCode}`);
-    equal(currentPath(), 'signup.invitations');
+    equal(currentURL(), `/signup/invitation/${invitationId}/${verificationCode}`);
+    equal(currentPath(), 'signup.invitation');
   });
 });
 
@@ -68,7 +68,7 @@ test(`visiting ${url} as unauthenticated revisits after log in`, function(assert
 
   visit(url);
   andThen(function(){
-    assert.equal(currentPath(), 'signup.invitations');
+    assert.equal(currentPath(), 'signup.invitation');
   });
   clickButton('Sign in');
   clickButton('Log in');

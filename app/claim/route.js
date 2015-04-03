@@ -24,7 +24,7 @@ export default Ember.Route.extend({
 
       let invitationId = model.invitation.id;
       let verificationCode = model.verificationCode;
-      this.transitionTo('signup.invitations', invitationId, verificationCode);
+      this.transitionTo('signup.invitation', invitationId, verificationCode);
     }
   },
 

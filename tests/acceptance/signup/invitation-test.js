@@ -24,9 +24,9 @@ let userInput = {
   name: 'Test User'
 };
 
-let url = `/signup/invitations/${invitationId}/${verificationCode}`;
+let url = `/signup/invitation/${invitationId}/${verificationCode}`;
 
-module('Acceptance: Signup Invitations', {
+module('Acceptance: Signup Invitation', {
   setup: function() {
     App = startApp();
     stubInvitation(invitationData);
@@ -60,7 +60,7 @@ test(`visiting ${url} shows no organization input`, function(assert) {
   });
 });
 
-test(`visiting ${url} and signing up redirects to invitations`, function(assert) {
+test(`visiting ${url} and signing up redirects to invitation`, function(assert) {
   doSignupSteps(url, userInput);
   andThen(() => {
     assert.equal(currentPath(), 'claim');
@@ -76,7 +76,7 @@ test(`visiting ${url} and signing up with invalid data shows errors`, function(a
   };
   doSignupSteps(url, userInput);
   andThen(() => {
-    assert.equal(currentPath(), 'signup.invitations', 'path does not change');
+    assert.equal(currentPath(), 'signup.invitation', 'path does not change');
     assert.ok(find(':contains(must contain at least one uppercase)').length,
               'shows password error message');
     assert.ok(find(':contains(is not valid)').length,
