@@ -26,11 +26,18 @@ export default Ember.Route.extend({
     controller.set('changeset', changeset);
   },
 
-
   actions: {
     cancel() {
       this.transitionTo('organization.members');
     },
+
+    remove(user){
+      user.set('organizationId', this.modelFor('organization').get('id'));
+      user.destroyRecord().then(() => {
+        this.transitionTo('organization.members');
+      });
+    },
+
     save() {
       const promises = [];
       const changeset = this.controller.get('changeset');

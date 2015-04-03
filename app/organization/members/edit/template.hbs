@@ -35,9 +35,11 @@
           <button {{action 'save'}} class='btn btn-primary' type='submit'>
             Save
           </button>
-          <button {{action 'remove' model}} class='btn btn-danger pull-right'>
-            Remove {{model.name}} from {{organization.name}}
-          </button>
+          {{#unless (eq session.currentUser model)}}
+            <button {{action 'remove' model}} class='btn btn-danger pull-right'>
+              Remove {{model.name}} from {{organization.name}}
+            </button>
+          {{/unless}}
         </div>
 
       </div>
