@@ -1,0 +1,7 @@
+{{#each truncatedUsers as |user|}}
+  <li class="user-gravatar">
+    {{gravatar-image email=user.email size=size}}
+  </li>
+{{else}}
+  <li>{{placeholder}}</li>
+{{/each}}

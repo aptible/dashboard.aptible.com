@@ -25,6 +25,19 @@ export default Ember.Route.extend({
       this.controller.set('successMessage', successMessage);
     },
 
+    resendInvitation(invitation){
+      let reset = this.store.createRecord('reset');
+      reset.setProperties({
+        type: 'invitation',
+        invitationId: invitation.get('id')
+      });
+
+      reset.save().then(() => {
+        let message = `Invitation resent to ${invitation.get('email')}`;
+        this.controller.set('successMessage', message);
+      });
+    },
+
     destroyInvitation(invitation){
       invitation.destroyRecord().then(() => {
         let message = `Deleted invitation for ${invitation.get('email')}`;

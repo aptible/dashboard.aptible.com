@@ -7,8 +7,8 @@ module.exports = function(environment) {
     baseURL: '/',
     locationType: 'auto',
 
-    authBaseUri: "http://localhost:4000",
-    apiBaseUri: "http://localhost:4001",
+    authBaseUri: process.env.AUTH_BASE_URI || "http://localhost:4000",
+    apiBaseUri: process.env.API_BASE_URI || "http://localhost:4001",
     aptibleHosts: {
       'compliance': 'http://localhost:3001',
       'legacy-dashboard': "http://localhost:3000",

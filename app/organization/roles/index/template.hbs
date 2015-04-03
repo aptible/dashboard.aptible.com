@@ -1,64 +1,31 @@
-<div class="panel">
-  <div class="panel-heading">
-    <h3>Roles</h3>
-  </div>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Administrator</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each model as |role|}}
-        <tr class='role'>
-          <td>{{role.name}}</td>
-          <td>
-            {{#if role.privileged}}
-              {{fa-icon "shield"
-                        title="This role has administrator privileges"
-                        classNames="privileged"}}
-            {{/if}}
-          </td>
-          <td>
-            {{#aptible-ability
-                user=session.currentUser
-                scope='manage'
-                permittable=organization as |hasAbility|}}
+<main class="layout-content">
+  {{partial 'organization/roles-header'}}
+
+  <div class="layout-container">
+    <div class="resource-list-grid">
+      <div class="row">
+        {{#each model as |role|}}
+          <div class="col-xs-4">
+            {{#aptible-ability user=session.currentUser scope='manage' permittable=organization as |hasAbility|}}
               {{#if hasAbility}}
-                <div class="table-row-nav">
-                  <ul class="nav nav-pills sub-nav-tabs">
-                    <li>
-                      {{#link-to 'organization.roles.show' role title=(concat-params "Edit " role.name " Permissions")}}
-                        <i class="fa fa-edit"></i>
-                      {{/link-to}}
-                    </li>
-                    <li>
-                      {{! FIXME should link to an edit users on role page}}
-                      <a href="#" title="Add an existing user to {{role.name}} role">
-                        <i class="fa fa-plus-circle"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" title="Invite new user to {{role.name}} by email" {{action "inviteTo" role}}>
-                        <i class="fa fa-envelope"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" title="Delete {{role.name}} role" {{action "delete" role}}>
-                        <i class="fa fa-times"></i>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+                {{#link-to 'organization.roles.show' role title=(concat-params "Edit " role.name " Permissions") classNames="panel-link"}}
+                  {{partial 'organization/role'}}
+                {{/link-to}}
+              {{else}}
+                {{partial 'organization/role'}}
               {{/if}}
             {{/aptible-ability}}
-          </td>
-        </tr>
-      {{/each}}
-    </tbody>
-  </table>
+          </div>
+        {{/each}}
+      </div>
 
-  {{#link-to 'organization.roles.new' classNames='btn btn-primary'}}Create role{{/link-to}}
-</div>
+      <div class="resource-actions">
+        {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
+          {{#if hasAbility}}
+            {{#link-to 'organization.roles.new' classNames='btn btn-primary'}}Create role{{/link-to}}
+          {{/if}}
+        {{/aptible-ability}}
+      </div>
+    </div>
+  </div>
+</main>

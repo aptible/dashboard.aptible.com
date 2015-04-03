@@ -1,0 +1,28 @@
+<div class="panel panel-default panel-subdued role resource-list-item">
+  <div class="panel-heading">
+    {{#if role.privileged}}
+      <div class="panel-icon">
+        <i class="fa fa-shield"></i>
+      </div>
+    {{/if}}
+    <h5>{{role.name}}</h5>
+  </div>
+  <div class="panel-body">
+    <ul class="resource-metadata">
+      <li class="resource-metadata-item">
+        <h5 class="resource-metadata-title">Manage</h5>
+        <h3 class="resource-metadata-value">{{permitted-stacks-by-role scope='manage' role=role stacks=stacks}}</h3>
+      </li>
+      <li class="resource-metadata-item">
+        <h5 class="resource-metadata-title">Read</h5>
+        <h3 class="resource-metadata-value">{{permitted-stacks-by-role scope='read' role=role stacks=stacks}}</h3>
+      </li>
+      <li class="resource-metadata-item">
+        <h5 class="resource-metadata-title">Members</h5>
+        <h3 class="resource-metadata-value">
+          {{user-gravatars users=role.users size=24 count=5 placeholder='--'}}
+        </h3>
+      </li>
+    </ul>
+  </div>
+</div>

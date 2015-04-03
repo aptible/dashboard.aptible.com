@@ -13,7 +13,10 @@
           </a>
         </li>
         <li>
-          {{resend-invitation invitation=invitation action="resentInvitation"}}
+          <a class="btn btn-default" {{action 'resendInvitation' invitation}} href="#" title="Resend invitation for {{invitation.email}}">
+            <i class="fa fa-undo"></i>
+            <span class="button-label">Resend</span>
+          </a>
         </li>
       </ul>
     </div>

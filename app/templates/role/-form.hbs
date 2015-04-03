@@ -23,39 +23,57 @@
 
   <div class="form-group">
     <label for="role-name">Admin role</label>
-    {{input type="checkbox"
+    <div class="form-container">
+      <ul>
+        <li>
+          <label>
+            {{input type="checkbox"
             name="role-admin"
-            checked=model.privileged
-            class="form-control"}}
+            checked=model.privileged}}
+            Admin Role
+          </label>
+        </li>
+      </ul>
+    </div>
   </div>
 
   <div class="stacks">
     {{#each stacks as |stack|}}
       <div class="form-group stack">
         <label for="role-name">{{stack.handle}} Permissions</label>
-        <ul>
-          <li>
-            {{permission-checkbox
-              scope="read"
-              stack=stack
-              role=model
-              changeset=changeset}}
-            <label>Read</label>
-          </li>
-          <li>
-            {{permission-checkbox
-              scope="manage"
-              stack=stack
-              role=model
-              changeset=changeset}}
-            <label>Manage</label>
-          </li>
-        </ul>
+        <div class="form-container">
+          <ul>
+            <li>
+              <label>
+                {{permission-checkbox
+                  scope="read"
+                  stack=stack
+                  role=model
+                  changeset=changeset}}
+                Read
+              </label>
+            </li>
+            <li>
+              <label>
+                {{permission-checkbox
+                  scope="manage"
+                  stack=stack
+                  role=model
+                  changeset=changeset}}
+                Manage
+              </label>
+            </li>
+          </ul>
+        </div>
       </div>
     {{/each}}
   </div>
 
-  <div class="form-group">
+  <div class="resource-actions">
+    <button {{action 'cancel'}} class='btn btn-default' type='button'>
+      Cancel
+    </button>
+
     <button {{action 'save'}}
             disabled={{isUnchanged}}
             class='btn btn-primary' type='submit'>
@@ -65,8 +83,6 @@
         {{saveButtonName}}
       {{/if}}
     </button>
-    <button {{action 'cancel'}} class='btn btn-default' type='button'>
-      Cancel
-    </button>
   </div>
 </form>
+

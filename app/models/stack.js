@@ -36,7 +36,9 @@ export default DS.Model.extend({
 
     if (role.get('privileged') &&
         role.get('data.links.organization') === this.get('data.links.organization')) {
-      return true;
+      return new Ember.RSVP.Promise((resolve) => {
+        resolve(true);
+      });
     }
 
     return this.get('permissions').then(function(_permissions){
