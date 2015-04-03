@@ -16,7 +16,8 @@
           </p>
           <form>
             <div>
-              Join organization: {{model.organizationName}}
+              You have been invited by {{model.inviterName}}
+              to join organization {{model.organizationName}}.
             </div>
             <button class="btn btn-primary btn-block btn-lg" {{action "claim"}}>
               Accept organization invitation

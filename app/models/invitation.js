@@ -5,6 +5,7 @@ export default DS.Model.extend({
   createdAt: DS.attr('date'),
   updatedAt: DS.attr('date'),
   organizationName: DS.attr(),
+  inviterName: DS.attr(),
 
   role: DS.belongsTo('role', {async:true}),
 
