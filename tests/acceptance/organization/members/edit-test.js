@@ -6,8 +6,9 @@ import {
 import startApp from 'diesel/tests/helpers/start-app';
 import {stubRequest} from 'diesel/tests/helpers/fake-server';
 
-var application;
+let application;
 let orgId = 'big-co';
+let orgName = 'big company';
 let roles = [{
   id: 'r1',
   name: 'owners',
@@ -52,6 +53,7 @@ module('Acceptance: Organization Members: Member', {
     application = startApp();
     stubOrganization({
       id: orgId,
+      name: orgName,
       _links: {
         roles: { href: apiRolesUrl }
       }
@@ -61,10 +63,12 @@ module('Acceptance: Organization Members: Member', {
       return this.success(user);
     });
 
+    // all org roles
     stubRequest('get', apiRolesUrl, function(request){
       return this.success({ _embedded: { roles } });
     });
 
+    // this user's roles
     stubRequest('get', apiUserRolesUrl, function(request){
       return this.success({ _embedded: { roles: userRoles } });
     });
@@ -80,7 +84,7 @@ test(`visiting ${url} requires authentication`, function(){
 });
 
 test(`visiting ${url} shows user's info and all roles with checkboxes`, function(assert) {
-  assert.expect(4 + 3*roles.length);
+  assert.expect(5 + 3*roles.length);
 
   signInAndVisit(url);
 
@@ -90,12 +94,13 @@ test(`visiting ${url} shows user's info and all roles with checkboxes`, function
     assert.ok(find(`:contains(${user.name})`).length, `user email "${user.email} is on the page`);
 
     expectButton('Save');
+    expectButton(`Remove ${user.name} from ${orgName}`);
 
     roles.forEach((role, index) => {
       let roleDiv = find(`.role:eq(${index})`);
 
       assert.ok(roleDiv.text().indexOf(role.name) > -1,
-                `has role "${role.name}"`);
+                `has role name "${role.name}"`);
 
       let input = findInput('user-role', {context:roleDiv});
       assert.ok(input.length, `finds a checkbox for role "${role.name}"`);
@@ -109,6 +114,14 @@ test(`visiting ${url} shows user's info and all roles with checkboxes`, function
                   `input for role "${role.name}" is not checked`);
       }
     });
+  });
+});
+
+test(`visiting ${url} does not show "Remove user" button if the user is looking at their own page`, function(assert) {
+  signInAndVisit(url, user);
+
+  andThen(function() {
+    expectNoButton(`Remove ${user.name}`);
   });
 });
 
@@ -174,5 +187,19 @@ test(`visiting ${url} with only 1 role checked is disabled`, function(assert){
   andThen(() => {
     assert.ok(!firstInput.is(':disabled'), 'first input is not disabled');
     assert.ok(secondInput.is(':disabled'), 'second input is disabled because it is the only one checked');
+  });
+});
+
+test(`visit ${url} allows removing user from organization`, function(assert){
+  assert.expect(2);
+
+  stubRequest('delete', `/organizations/${orgId}/users/${userId}`, function(request){
+    assert.ok(true, 'deletes to correct url');
+    return this.noContent();
+  });
+  signInAndVisit(url);
+  clickButton(`Remove ${user.name}`);
+  andThen(() => {
+    assert.equal(currentPath(), 'organization.members.index');
   });
 });
