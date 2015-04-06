@@ -209,7 +209,27 @@ test(`visiting ${url} saves changed name and privileged values`, (assert)=> {
   // Should uncheck the admin role
   click('input[name=role-admin]');
   clickButton('Update Role');
+});
 
+test(`visiting ${url} show error for failuere to save changed name`, (assert)=> {
+  assert.expect(1);
+  doSetup();
+
+  stubRequest('put', `/roles/${roleId}`, function(request) {
+    return this.error({
+      code: 422,
+      error: 'unprocessable_entity',
+      message: 'Name is not valid'
+    });
+  });
+
+  visit(url);
+  fillInput('role-name', '');
+  clickButton('Update Role');
+  andThen(() => {
+    const error = find(':contains(There was an error)');
+    assert.ok(error.length, 'Errors are on the page');
+  });
 });
 
 test(`visiting ${url} shows list of members`, (assert) => {
@@ -355,7 +375,6 @@ test(`visiting ${url} shows invitation UI`, (assert) => {
   });
 });
 
-// FIXME test creating an invitation
 test(`visiting ${url} allows inviting a user by email`, (assert) => {
   assert.expect(1);
 
@@ -370,6 +389,29 @@ test(`visiting ${url} allows inviting a user by email`, (assert) => {
   visit(url);
   fillInput('invite-by-email', email);
   clickButton('Invite');
+});
+
+test(`visiting ${url} shows error when inviting a user by email`, (assert) => {
+  assert.expect(1);
+
+  const email = 'abc@gmail.com';
+
+  stubRequest('post', `/roles/${roleId}/invitations`, function(request){
+    return this.error({
+      code: 422,
+      error: 'unprocessable_entity',
+      message: 'Email is not valid'
+    });
+  });
+
+  doSetup();
+  visit(url);
+  fillInput('invite-by-email', email);
+  clickButton('Invite');
+  andThen(() => {
+    const error = find(':contains(There was an error)');
+    assert.ok(error.length, 'Errors are on the page');
+  });
 });
 
 test(`visiting ${url} allows removing an invitation`, (assert) => {
