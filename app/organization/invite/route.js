@@ -44,6 +44,7 @@ export default Ember.Route.extend({
 
         let newInvite = this.store.createRecord('invitation');
         this.controller.set('model', newInvite);
+        Ember.get(this, 'flashMessages').success(successMessage);
       }).catch((e) => {
         if (e instanceof DS.InvalidError) {
           // no-op, will be displayed in template

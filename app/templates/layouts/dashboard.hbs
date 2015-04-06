@@ -3,6 +3,7 @@
   {{#unless session.currentUser.verified}}
     {{verification-code-reset}}
   {{/unless}}
+
   {{#if flashMessages.queue}}
     <div class="notifications">
       {{#each flashMessages.queue as |flash|}}

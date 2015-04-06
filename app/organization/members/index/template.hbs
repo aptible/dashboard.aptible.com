@@ -2,12 +2,6 @@
   {{partial 'organization/members-header'}}
 
   <div class="layout-container">
-    {{#if successMessage}}
-      {{#bs-alert alert="success" action="clearSuccessMessage" as |component|}}
-        {{bs-alert-dismiss target=component}}
-        {{successMessage}}
-      {{/bs-alert}}
-    {{/if}}
     <div class="resource-list-grid">
       <div class="row">
         {{#each model as |user|}}

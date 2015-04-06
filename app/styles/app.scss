@@ -3,6 +3,7 @@
 @import "bower_components/animate/source/animate";
 @import "bower_components/aptible-sass/dist/styles/aptible";
 @import "bower_components/aptible-sass/dist/styles/aptible_dashboard";
+$color-bright-blue: #3498db;
 
 @import "layout";
 
@@ -29,6 +30,7 @@
 @import "components/clipboard";
 @import "components/config-form";
 @import "components/estimated-cost";
+@import "components/flash-messages";
 @import "components/focus";
 @import "components/funnel";
 @import "components/git-ref";
