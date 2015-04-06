@@ -4,16 +4,15 @@
 
     <div class="col-xs-5">
       <div class="welcome-info">
-        <h2>
-          Aptible is a deployment platform built to automate HIPAA compliance
-        </h2>
-
         {{#if invitation}}
-          <h3>
-            You have been invited by {{invitation.inviterName}}
-            to join organization {{invitation.organizationName}}.
-          </h3>
+          <h2>
+            {{invitation.inviterName}} invited you to join {{invitation.organizationName}} on Aptible.
+          </h2>
         {{/if}}
+
+        <p>
+          Aptible is a deployment platform built to automate HIPAA compliance.
+        </p>
       </div>
     </div>
   </div>

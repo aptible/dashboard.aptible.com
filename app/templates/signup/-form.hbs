@@ -13,7 +13,13 @@
       <div class="panel-heading-link">
         {{link-to "Sign in instead" "login"}}
       </div>
-      <h3>Create Your Aptible Account</h3>
+      <h3>
+        {{#if invitation}}
+          Join {{invitation.organizationName}}
+        {{else}}
+          Create Your Account
+        {{/if}}
+      </h3>
     </div>
 
     <div class="panel-body">
@@ -66,7 +72,9 @@
       </div>
 
       <div class="panel-submit">
-        <button class="btn btn-primary btn-block btn-lg" {{action "validateAndSignup"}}>Sign Up</button>
+        <button class="btn btn-primary btn-block btn-lg" {{action "validateAndSignup"}}>
+          Create account
+        </button>
       </div>
     </div>
   </div>

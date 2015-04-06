@@ -26,10 +26,14 @@
       font-weight: $weight-semibold;
     }
 
-    h2 {
+    h2, h3 {
       font-size: 22px;
       font-weight: $weight-normal;
       margin: 0 0 20px;
+    }
+
+    h3 {
+      font-size: 18px;
     }
 
     p {
@@ -40,7 +44,6 @@
 }
 
 .create-first-app {
-
   .welcome-info {
     padding: 100px 0 0 30px;
   }
@@ -108,5 +111,21 @@
       border: 1px solid #1B88CC;
       box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.10);
     }
+  }
+}
+
+.claim-invitation-description {
+  h2 {
+    font-size: 22px;
+    text-align: center;
+    line-height: 1.4em;
+    margin: 0 0 20px;
+  }
+
+  p {
+    color: $color-light;
+    font-size: 14px;
+    text-align: center;
+    margin: 20px 0;
   }
 }

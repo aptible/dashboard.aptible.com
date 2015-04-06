@@ -2,8 +2,14 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function() {
+    let stacks = this.store.find('stack');
+
+    if (stacks.get('isFulfilled')) {
+      stacks = stacks.reload();
+    }
+
     return Ember.RSVP.hash({
-      stacks: this.store.find('stack'),
+      stacks: stacks,
       organizations: this.store.find('organization')
     });
   },
