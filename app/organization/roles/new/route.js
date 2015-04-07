@@ -80,7 +80,10 @@ export default Ember.Route.extend({
 
         return Ember.RSVP.all(newPermissions);
       }).then(() => {
-        this.transitionTo('organization.roles.show', role);
+        let message = `${role.get('name')} created`;
+
+        this.transitionTo('organization.roles.index');
+        Ember.get(this, 'flashMessages').success(message);
       });
     }
   }

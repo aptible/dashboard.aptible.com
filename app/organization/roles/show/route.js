@@ -72,6 +72,8 @@ export default Ember.Route.extend({
         userUrl: userLink
       });
       membership.save().then(() => {
+        let message = `${user.get('name')} added to ${role.get('name')} role`;
+        Ember.get(this, 'flashMessages').success(message);
         return this.currentModel.get('users').reload();
       });
     },
@@ -83,6 +85,8 @@ export default Ember.Route.extend({
         let membership = memberships.findBy('data.links.user', userLink);
         return membership.destroyRecord();
       }).then(() => {
+        let message = `${user.get('name')} removed from ${role.get('name')} role`;
+        Ember.get(this, 'flashMessages').success(message);
         return this.currentModel.get('users').reload();
       });
     },
@@ -100,6 +104,8 @@ export default Ember.Route.extend({
       }
       invitation.save().then(() => {
         this.controller.set('invitation', null);
+        let message = `Invitation sent to ${email}`;
+        Ember.get(this, 'flashMessages').success(message);
       }, (e) => {
         if (!(e instanceof DS.InvalidError)) {
           throw e;
@@ -107,7 +113,10 @@ export default Ember.Route.extend({
       });
     },
     removeInvitation(invitation){
-      invitation.destroyRecord();
+      invitation.destroyRecord().then(() => {
+        let message = `Invitation to ${invitation.get('email')} destroyed`;
+        Ember.get(this, 'flashMessages').success(message);
+      });
     },
     resendInvitation(invitation){
       let reset = this.store.createRecord('reset');
@@ -115,7 +124,10 @@ export default Ember.Route.extend({
         type: 'invitation',
         invitationId: invitation.get('id')
       });
-      reset.save();
+      reset.save().then(() => {
+        let message = `Invitation resent to ${invitation.get('email')}`;
+        Ember.get(this, 'flashMessages').success(message);
+      });
     },
 
     cancel() {
@@ -158,6 +170,10 @@ export default Ember.Route.extend({
 
       return Ember.RSVP.all(savePromises).then(() => {
         if (saveSuccessful) {
+          let role = this.currentModel;
+          let message = `${role.get('name')} saved`;
+
+          Ember.get(this, 'flashMessages').success(message);
           this.transitionTo('organization.roles');
         }
       });

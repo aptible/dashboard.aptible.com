@@ -30,9 +30,10 @@ export default Ember.Route.extend({
     create: function(){
       var app = this.currentModel;
       var route = this;
-      app.save({ stack: {id: app.get('stack.id')} }).then(function(){
+      app.save({ stack: {id: app.get('stack.id')} }).then(() => {
+        let message = `${app.get('handle')} app created`;
         route.transitionTo('app', app);
-        Ember.get(this, 'flashMessages').success(`${app.get('handle')} app created.`);
+        Ember.get(this, 'flashMessages').success(message);
       });
     },
 

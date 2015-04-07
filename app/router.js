@@ -34,6 +34,7 @@ export default Router.map(function() {
 
 
   this.route("stack", { path: "stacks/:stack_id" }, function() {
+    this.route("activate", { path: 'activate'});
     this.route("log-drains", {
       path: 'logging'
     }, function(){

@@ -1,9 +1,8 @@
 {{#bs-alert alert="warning" as |component|}}
   {{bs-alert-dismiss target=component}}
 
-  <span class='danger'>Your email is not activated.</span>
-
-  You will not be able to deploy or create new apps until you activate your email.
+  You will not be able to deploy or create new apps until you activate your
+  email. Check your email for activation instructions.
   <button class='btn btn-default btn-xs' {{action 'resendVerification'}} disabled={{isDisabled}}>
     {{#if sending}}
       Sending

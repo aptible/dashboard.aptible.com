@@ -38,7 +38,9 @@ export default Ember.Route.extend({
         });
         return op.save();
       }).then( () => {
+        let message = `Domain ${vhost.get('virtualDomain')} created`;
         this.transitionTo('app.vhosts');
+        Ember.get(this, 'flashMessages').success(message);
       });
     },
 

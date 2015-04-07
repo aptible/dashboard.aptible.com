@@ -4,9 +4,18 @@
       {{gravatar-image email=user.email size=25}}
     </div>
 
-    <h5 class="user-name">{{user.name}} <span class="user-email">{{user.email}}</span></h5>
+    <div class="user-title">
+      <h5 class="user-name">{{user.name}}</h5>
+      <div class="user-email">{{user.email}}</div>
+    </div>
   </div>
+
   <div class="panel-body">
-    {{format-list (filter-by-organization user.roles organization) 'name' ', '}}
+    <ul class="resource-metadata">
+      <li class="resource-metadata-item">
+        <h5 class="resource-metadata-title">Roles</h5>
+        <h3 class="resource-metadata-value">{{format-list (filter-by-organization user.roles organization) 'name' ', '}}</h3>
+      </li>
+    </ul>
   </div>
 </div>

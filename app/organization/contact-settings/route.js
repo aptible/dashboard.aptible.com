@@ -17,7 +17,9 @@ export default Ember.Route.extend({
   actions: {
     save(model) {
       model.save().then(() => {
-        this.transitionTo('organization', model);
+        let message = 'Contact settings saved';
+        this.transitionTo('organization.contact-settings', model);
+        Ember.get(this, 'flashMessages').success(message);
       }, (e) => {
         if (e instanceof DS.InvalidError) {
           // no-op, will be displayed in template

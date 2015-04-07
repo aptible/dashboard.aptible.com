@@ -27,7 +27,7 @@ module.exports = function(environment) {
     },
 
     flashMessageDefaults: {
-      // https://github.com/poteto/ember-cli-flash#service-defaults
+      //timeout: 6500,
       sticky: true,
       showProgress: true
     },

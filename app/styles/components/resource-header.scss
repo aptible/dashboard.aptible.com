@@ -68,7 +68,7 @@ header.resource-header {
   }
 }
 
-.panel-link {
+.resource-list-item {
   .resource-metadata {
     padding: 0;
     margin: 0;
@@ -105,23 +105,21 @@ header.resource-header {
 }
 
 .resource-metadata-button {
+  cursor: pointer;
   height: 30px;
   width: 30px;
   background: #f0f0f0;
   border-radius: 3px;
   text-align: center;
-
-  a {
-    color: $color-light;
-
-    &:hover {
-      color: $color-primary;
-    }
-  }
+  color: $color-light;
 
   i.fa {
     margin: 0;
     vertical-align: -6px;
+  }
+
+  &:hover {
+    color: $color-primary;
   }
 }
 
@@ -132,6 +130,10 @@ header.resource-header {
 
   &.with-image {
     margin-left: 40px;
+
+    .resource-metadata-title {
+      margin: -1px 0 7px;
+    }
   }
 
   .resource-metadata-image {

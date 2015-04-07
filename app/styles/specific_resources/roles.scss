@@ -24,7 +24,7 @@
     }
   }
 
-  .form-control {
+  input.form-control {
     height: 34px;
   }
 }
@@ -67,8 +67,14 @@ ul.role-members {
   list-style-type: none;
 
   li.role-invite {
+    border-bottom: 1px solid #f0f0f0;
+
     label {
       opacity: .3;
+    }
+
+    &:last-child {
+      border: 0;
     }
   }
 

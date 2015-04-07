@@ -1,7 +1,7 @@
 <nav class="layout-sidebar">
   <ul class="nav sidebar-nav">
     <li class="title">
-      Overview
+      {{model.name}} Settings
     </li>
     {{#activating-item currentWhen="organization.members" tagName="li"}}
       {{link-to "Members" "organization.members"}}
@@ -9,8 +9,13 @@
     {{#activating-item currentWhen="organization.roles" tagName="li"}}
       {{link-to "Roles" "organization.roles"}}
     {{/activating-item}}
-    {{#activating-item currentWhen="organization.contact-settings" tagName="li"}}
-      {{link-to "Contact Settings" "organization.contact-settings"}}
-    {{/activating-item}}
+
+    {{#aptible-ability scope="manage" user=session.currentUser permittable=model as |hasAbility|}}
+      {{#if hasAbility}}
+        {{#activating-item currentWhen="organization.contact-settings" tagName="li"}}
+          {{link-to "Contact Settings" "organization.contact-settings"}}
+        {{/activating-item}}
+      {{/if}}
+    {{/aptible-ability}}
   </ul>
 </nav>
