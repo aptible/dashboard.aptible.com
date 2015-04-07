@@ -100,7 +100,7 @@ test('visiting / when not verified shows verification message with resend button
 
   signInAndVisit('/', userData);
   andThen(function(){
-    let banner = find(':contains(Your email is not activated)');
+    let banner = find(':contains(Check your email for activation instructions)');
     ok(banner.length, 'shows not-activated message');
 
     let resendMessage = 'Resend verification email';

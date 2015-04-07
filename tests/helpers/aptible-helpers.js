@@ -130,6 +130,7 @@ Ember.Test.registerHelper('stubStack', function(app, stackData){
   var id = stackData.id;
   if (!id) { throw new Error('cannot stub stack without id'); }
   let defaultStackData = {
+    activated: true,
     _links: {
       permissions: { href: `/accounts/${id}/permissions` }
     }
@@ -201,7 +202,8 @@ Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
     },
     _embedded: {},
     id: 'my-stack-1',
-    handle: 'my-stack-1'
+    handle: 'my-stack-1',
+    activated: true
   }, {
     _links: {
       self: { href: '...' },
@@ -211,7 +213,8 @@ Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
     },
     _embedded: {},
     id: 'my-stack-2',
-    handle: 'my-stack-2'
+    handle: 'my-stack-2',
+    activated: true
   }];
 
   if (options.logDrains) {

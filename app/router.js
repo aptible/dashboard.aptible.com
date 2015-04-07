@@ -4,8 +4,9 @@ import config from "./config/environment";
 var Router = Ember.Router.extend({
   analytics: Ember.inject.service(),
   location: config.locationType,
-  trackAnalytics: function() {
+  onTransition: function() {
     this.get('analytics').page();
+    this.get('flashMessages').clearMessages();
   }.on('didTransition')
 });
 

@@ -36,10 +36,12 @@ const apiOrgUrl = `/organizations/${orgId}`;
 const stacks = [{
   id: 'stack1',
   handle: 'stack1-handle',
+  activated: true,
   _links: { organization: {href: apiOrgUrl} }
 }, {
   id: 'stack2',
   handle: 'stack2-handle',
+  activated: true,
   _links: { organization: {href: apiOrgUrl} }
 }];
 
@@ -90,7 +92,7 @@ test(`visiting ${url} and creating new role without permissions`, (assert) => {
     clickButton('Save');
   });
   andThen(() => {
-    assert.equal(currentPath(), 'organization.roles.show');
+    assert.equal(currentPath(), 'organization.roles.index');
   });
 });
 
@@ -112,7 +114,7 @@ test(`visiting ${url} and creating new role with permissions`, (assert) => {
     assert.equal(json.scope, 'manage', 'posts correct scope');
     assert.equal(json.role, apiRoleUrl, 'posts correct role');
 
-    return this.noContent();
+    return this.success({ links: { role: apiRoleUrl } });
   });
 
   signInAndVisit(url);
@@ -123,6 +125,6 @@ test(`visiting ${url} and creating new role with permissions`, (assert) => {
   });
   clickButton('Save');
   andThen(() => {
-    assert.equal(currentPath(), 'organization.roles.show');
+    assert.equal(currentPath(), 'organization.roles.index');
   });
 });

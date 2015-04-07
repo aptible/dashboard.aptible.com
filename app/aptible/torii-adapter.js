@@ -38,10 +38,12 @@ export default Ember.Object.extend({
       }));
     }).then((token) => {
       const user = token.get('user');
-      this.identifyToAnalytics(user);
       return Ember.RSVP.hash({
         currentUser: user
       });
+    }).then((session) => {
+      this.identifyToAnalytics(session.currentUser);
+      return session;
     }).catch(function(e){
       clearSession();
       throw e;
@@ -59,15 +61,17 @@ export default Ember.Object.extend({
         }
       }));
     }).then((token) => {
-      const user = token.get('user');
-      this.identifyToAnalytics(user);
-
       var accessToken = token.get('accessToken');
       persistSession(accessToken);
 
       return Ember.RSVP.hash({
-        currentUser: user
+        currentUser: token.get('user')
       });
+    }).then((session) => {
+      const user = session.currentUser;
+      this.identifyToAnalytics(user);
+
+      return session;
     }).catch(function(e){
       clearSession();
       throw e;
@@ -83,7 +87,7 @@ export default Ember.Object.extend({
 
   identifyToAnalytics(user) {
     const email = user.get('email');
-    this.get('analytics').identify(email, {
+    this.get('analytics').identify(user.get('id'), {
       email: email,
       id: user.get('id'),
       name: user.get('name')

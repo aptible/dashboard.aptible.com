@@ -366,7 +366,7 @@ test(`visiting ${url} shows invitation UI`, (assert) => {
       assert.ok(invitationsDiv.find(`:contains(${invite.email})`).length,
                 `shows invite for email "${invite.email}"`);
 
-      assert.ok(invitationsDiv.find(`.role-invite:eq(${index}) button:contains(Resend Invitation)`).length,
+      assert.ok(invitationsDiv.find(`.role-invite:eq(${index}) button:contains(Resend)`).length,
                 `has invitation resend button for item @ index ${index}`);
 
       assert.ok(invitationsDiv.find(`.role-invite:eq(${index}) button:contains(Remove)`).length,
@@ -465,5 +465,5 @@ test(`visiting ${url} allows resending an invitation`, (assert) => {
   });
 
   visit(url);
-  click(`.role-invitations button:contains(Resend Invitation):eq(0)`);
+  click(`.role-invitations button:contains(Resend):eq(0)`);
 });

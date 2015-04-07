@@ -37,6 +37,7 @@ export default Ember.Route.extend(DisallowAuthenticated, {
           this.session.attemptedTransition.retry();
           this.session.attemptedTransition = null;
         } else {
+          this.controller.set('isSuccessful', true);
           this.transitionTo('index');
         }
       }, (e) => {
@@ -45,7 +46,5 @@ export default Ember.Route.extend(DisallowAuthenticated, {
         this.controller.set('isLoggingIn', false);
       });
     }
-
   }
-
 });

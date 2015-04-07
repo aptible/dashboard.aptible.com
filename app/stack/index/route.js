@@ -7,7 +7,7 @@ export default Ember.Route.extend({
     if(stack.get('activated')) {
       this.transitionTo('apps');
     } else {
-      this.transitionTo('stack.activate')
+      this.transitionTo('stack.activate');
     }
   }
 });

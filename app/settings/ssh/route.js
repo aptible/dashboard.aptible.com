@@ -21,7 +21,6 @@ export default Ember.Route.extend({
     cancelSaveKey: function(){
       this.controller.get('newKey').deleteRecord();
       this.controller.set('newKey', null);
-      this.controller.set('error', null);
     },
 
     saveKey: function(){
@@ -32,20 +31,19 @@ export default Ember.Route.extend({
       var key = this.controller.get('newKey');
 
       key.save().then(function(){
-        controller.set('error', null); // clear error
         controller.set('newKey', null); // clear key
-      }).catch(function(e){
-        controller.set('error', e.message);
+      }).catch((e) => {
+        Ember.get(this, 'flashMessages').danger(e.message);
       });
     },
 
     deleteKey: function(key){
-      var controller = this.controller;
-
-      key.destroyRecord().then(function(){
-        controller.set('error', null);
-      }).catch(function(){
-        controller.set('error', 'There was an error deleting this key.');
+      key.destroyRecord().then(() => {
+        let message = `${key.get('name')} deleted`;
+        Ember.get(this, 'flashMessages').success(message);
+      }).catch(() => {
+        let message = 'There was an error deleting this key.';
+        Ember.get(this, 'flashMessages').danger(message);
         key.rollback();
       });
     }

@@ -64,7 +64,7 @@ test('visit ' + settingsSshUrl + ' shows ssh keys', function(){
     expectInput('name');
     expectInput('ssh-public-key');
     expectButton('Save new SSH key');
-    expectButton('Nevermind');
+    expectButton('Cancel');
 
     let addButton = findButton('Add another SSH key');
     ok(!addButton.length, 'does not show add button when adding a key');
@@ -104,7 +104,7 @@ test('visit ' + settingsSshUrl + ' allows adding a key', function(){
 
   signInAndVisit(settingsSshUrl);
   clickButton('Add your first SSH key');
-  clickButton('Nevermind');
+  clickButton('Cancel');
   andThen(function(){
     let saveButton = findButton('Save new SSH key');
     ok( !saveButton.length, 'save button is not shown after cancel' );

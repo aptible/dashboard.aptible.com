@@ -1,0 +1,61 @@
+.error-page {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .error-body {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .error-dialog {
+    @extend %aptible-panel;
+    border-radius: 5px;
+    padding: 50px;
+  }
+
+  .error-logo {
+    height: 140px;
+    width: 140px;
+    background-size: 140px;
+    margin: 0 auto 0 auto;
+    background-image: url('/error-logo.png');
+  }
+
+  .circle-icon {
+    display: block;
+    margin: 0 auto;
+    height: 40px;
+    width: 40px;
+    background-image: url('/tiny-greyscale-logo.png');
+  }
+
+  .circle-icon:hover {
+    background-image: url('/tiny-color-logo.png');
+  }
+
+  h1 {
+    font-size: 29px;
+    color: $color-primary;
+    margin: 50px 0 0 0;
+  }
+
+  h3 {
+    font-size: 18px;
+    color: $color-light;
+  }
+
+  .error-footer {
+    margin: 50px 0;
+    padding: 0;
+    display: inline-block;
+    list-style-type: none;
+
+    li {
+      display: inline;
+      padding:0 25px;
+    }
+  }
+}

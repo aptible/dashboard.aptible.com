@@ -1,120 +1,34 @@
-<style type="text/css">
-  .wf-loading .blog-title, .wf-loading .post-title {
-      /* Prevents FOUT while fonts are loading */
-      visibility: hidden;
-    }
-</style>
-<style>
-  body {
-    background-color: white;
-    color: black;
-    text-align: center;
-    font-family: "proxima-nova", "open-sans", sans-serif;
-  }
+<div class="error-page">
 
-  div.error-logo {
-    height: 250px;
-    width: 250px;
-    margin: 0 auto 0 auto;
-    background-image: url('/error-logo.png');
-  }
+  <div class="error-body">
+    <div class="error-dialog">
+      <div class="error-logo"></div>
+      <h1 class="error-code">{{title}}</h1>
+      <h1>
+        {{#if subTitle}}
+          {{subTitle}}
+        {{else}}
+          Hmm...we can't find the page you're looking for.
+        {{/if}}
+      </h1>
 
-  div.dialog {
-    width: 500px;
-    margin: 75px auto 0 auto;
-    padding: 7px 4em 0 4em;
-  }
+      <h3>
+      {{#if message}}
+        {{message}} Maybe the URL you visited is no longer valid?
+      {{else}}
+        Maybe you mistyped the address? If not, the page may have moved.
+      {{/if}}
+      </h3>
+    </div>
 
-  h1 {
-    color: #006699;
-    line-height: 1em;
-  }
+    <ul class="error-footer">
+      <li>{{link-to 'Apps & Databases' 'index'}}</li>
+      <li><a href="http://status.aptible.com">Aptible Status</a></li>
+      <li><a href="https://twitter.com/aptiblestatus">@aptiblestatus</a></li>
+      <li>{{#link-to-aptible app="support" path="contact"}}Contact Support{{/link-to-aptible}}</li>
+    </ul>
 
-  body > p {
-    width: 500px;
-    margin: 0 auto 1em;
-    padding: 1em 0;
-    background-color: #003366;
-    border: 1px solid #CCC;
-    border-right-color: #999;
-    border-bottom-color: #999;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-top-color: #DADADA;
-    color: #666;
-    box-shadow:0 3px 8px rgba(50, 50, 50, 0.17);
-  }
+    <a class="circle-icon" href="https://www.aptible.com"></a>
 
-  h1.error-code {
-    font-size: 100px;
-    color: #003366;
-    margin: 0 auto;
-  }
-
-  ul {
-    list-style-type: none;
-    display: inline-block;
-    padding-left: 0px;
-  }
-
-  ul > li {
-    display: inline;
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  a {
-    color: #006699;
-  }
-  a:link {
-    text-decoration: none;
-  }
-  a:visited {
-    text-decoration: none;
-  }
-  a:hover {
-    text-decoration: underline;
-  }
-  a:active {
-    text-decoration: none;
-  }
-
-  .circle-icon {
-    display: block;
-    margin: 0 auto;
-    height: 40px;
-    width: 40px;
-    background-image: url('/tiny-greyscale-logo.png');
-  }
-
-  .circle-icon:hover {
-    background-image: url('/tiny-color-logo.png');
-  }
-
-</style>
-
-<div class="dialog">
-  <div class="error-logo"></div>
-  <h1 class="error-code">{{title}}</h1>
-  <h1>
-    {{#if subTitle}}
-      {{subTitle}}
-    {{else}}
-      Hmm...we can't find the page you're looking for.
-    {{/if}}
-  </h1>
-
-  <p>
-  {{#if message}}
-    {{message}} Maybe the URL you visited is no longer valid?
-  {{else}}
-    Maybe you mistyped the address? If not, the page may have moved.
-  {{/if}}
-  </p>
+  </div>
 </div>
-<ul>
-  <li><a href="http://status.aptible.com">Aptible Status</a></li>
-  <li><a href="https://twitter.com/aptiblestatus">@aptiblestatus</a></li>
-  <li>{{#link-to-aptible app="support"}}Contact Support{{/link-to-aptible}}</li>
-</ul>
-<a class="circle-icon" href="https://www.aptible.com"></a>

@@ -51,7 +51,8 @@ test('visiting / when logged in with only one stack redirects to first stack pag
             organization: { href: '/organizations/1' }
           },
           id: 'my-stack-1',
-          handle: 'my-stack-1'
+          handle: 'my-stack-1',
+          activated: true
         }]
       }
     });

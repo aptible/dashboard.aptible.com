@@ -1,45 +1,52 @@
-<div class="panel-group">
-  <div class="panel panel-default">
-    <div class="panel-heading"><h3>Your Profile</h3></div>
-    <div class="panel-body">
-      <form {{action 'submit' on='submit'}}>
-        <div class="form-group clearfix update-gravatar">
-          <label class="block">Profile Picture</label>
-          <div class="gravatar lg">
-            {{gravatar-image email=model.email}}
-          </div>
+<div class="row">
+  <div class="col-xs-6">
+    <div class="panel-group">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h3>Your Profile</h3></div>
+        <div class="panel-section">
+          <form {{action 'submit' on='submit'}}>
+            <div class="form-group">
+              <label for="name">Name</label>
 
-          <div class="input-group update-gravatar-info">
-            <h5>
-              Use <a href="https://en.gravatar.com/">Gravatar</a> to update your profile picture.
-            </h5>
-            <h6>
-              Your gravatar email is <strong class='email'>{{model.email}}</strong>
-            </h6>
-            <div>
-              <a class="btn btn-xs btn-default" href="https://en.gravatar.com/" target="_blank">Change</a>
+              {{input value=userName name="name" class="form-control"}}
             </div>
+
+            <div class="resource-actions">
+              <button {{action "submit" userName}}
+                      disabled={{model.isSaving}}
+                      class="btn btn-primary" type="submit">
+                {{#if model.isSaving}}
+                  Saving
+                {{else}}
+                  Change name
+                {{/if}}
+              </button>
+            </div>
+            </form>
           </div>
-        </div>
 
-        <div class="form-group">
-          <label for="name">Name</label>
+          <div class="panel-body">
+            <div class="update-gravatar">
+              <label class="block">Profile Picture</label>
+              <div class="gravatar lg">
+                {{gravatar-image email=model.email}}
+              </div>
 
-          {{input value=userName name="name" class="form-control"}}
+              <div class="update-gravatar-info">
+                <h5>
+                  Use <a href="https://en.gravatar.com/">Gravatar</a> to update your profile picture.
+                </h5>
+                <h6>
+                  Your gravatar email is <strong class='email'>{{model.email}}</strong>.
+                  {{link-to 'Change email' 'settings.admin' }}
+                </h6>
+                <div>
+                  <a class="btn btn-xs btn-default" href="https://en.gravatar.com/" target="_blank">Manage Gravatar</a>
+                </div>
+              </div>
+            </div>
         </div>
-
-        <div class="form-group">
-          <button {{action "submit" userName}}
-                  disabled={{model.isSaving}}
-                  class="btn btn-primary" type="submit">
-            {{#if model.isSaving}}
-              Saving
-            {{else}}
-              Update profile
-            {{/if}}
-          </button>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>
