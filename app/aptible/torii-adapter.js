@@ -15,6 +15,7 @@ function persistSession(accessToken){
 }
 
 export default Ember.Object.extend({
+  analytics: Ember.inject.service(),
   fetch: function(){
     var store = this.store;
     return new Ember.RSVP.Promise(function(resolve){
@@ -35,9 +36,11 @@ export default Ember.Object.extend({
           user: jwtPayload.sub
         }
       }));
-    }).then(function(token){
+    }).then((token) => {
+      const user = token.get('user');
+      this.identifyToAnalytics(user);
       return Ember.RSVP.hash({
-        currentUser: token.get('user')
+        currentUser: user
       });
     }).catch(function(e){
       clearSession();
@@ -55,12 +58,15 @@ export default Ember.Object.extend({
           user: tokenPayload._links.user.href
         }
       }));
-    }).then(function(token){
+    }).then((token) => {
+      const user = token.get('user');
+      this.identifyToAnalytics(user);
+
       var accessToken = token.get('accessToken');
       persistSession(accessToken);
 
       return Ember.RSVP.hash({
-        currentUser: token.get('user')
+        currentUser: user
       });
     }).catch(function(e){
       clearSession();
@@ -73,5 +79,15 @@ export default Ember.Object.extend({
       clearSession();
       resolve();
     });
+  },
+
+  identifyToAnalytics(user) {
+    const email = user.get('email');
+    this.get('analytics').identify(email, {
+      email: email,
+      id: user.get('id'),
+      name: user.get('name')
+    });
   }
+
 });

@@ -9,11 +9,5 @@ export default Ember.Route.extend(DisallowAuthenticated, SignupRouteMixin, {
 
     controller.set('model', user);
     controller.set('organization', organization);
-  },
-
-  actions: {
-    didTransition: function(){
-      this.analytics.page('Signup');
-    }
   }
 });

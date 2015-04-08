@@ -12,6 +12,11 @@ import modelDeps from "../../support/common-model-dependencies";
 
 var originalWrite, originalRead;
 
+class MockAnalytics {
+  identify() {}
+  page() {}
+}
+
 moduleFor('torii-adapter:aptible', 'Torii Adapter: Aptible', {
   needs: modelDeps,
 
@@ -29,7 +34,8 @@ moduleFor('torii-adapter:aptible', 'Torii Adapter: Aptible', {
     var store = this.container.lookup('store:main');
     var klass = this.container.lookupFactory(this.subjectName);
     return klass.create({
-      store: store
+      store: store,
+      analytics: new MockAnalytics()
     });
   }
 });

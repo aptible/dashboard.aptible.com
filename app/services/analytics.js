@@ -84,7 +84,7 @@ function load(){
   analytics.SNIPPET_VERSION = '3.0.1';
 }
 
-export default Ember.Object.extend({
+export default Ember.Service.extend({
 
   hasEmail: undefined,
 
