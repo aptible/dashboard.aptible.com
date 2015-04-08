@@ -6,7 +6,7 @@ import {
 import Ember from 'ember';
 
 moduleForComponent('user-gravatars', {
-  needs: ['component:gravatar-image']
+  needs: ['component:gravatar-image', 'component:bs-tooltip']
 });
 
 test('it renders', function() {

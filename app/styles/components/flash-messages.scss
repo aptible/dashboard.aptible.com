@@ -1,0 +1,18 @@
+.alert {
+  &.alert-success {
+    background: #2ecc71;
+  }
+
+  &.alert-danger {
+    background: #c0392b;
+  }
+
+  &.alert-warning {
+    background: #f1c40f;
+  }
+}
+
+.btn.btn-primary {
+  background: $color-bright-blue;
+  border: 1px solid $color-bright-blue;
+}

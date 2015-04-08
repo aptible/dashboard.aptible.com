@@ -12,9 +12,13 @@ export default Ember.Route.extend({
 
   actions: {
     submit: function(newName){
-      var user = this.currentModel;
+      let user = this.currentModel;
+
       user.set('name', newName);
-      user.save();
+      user.save().then(() => {
+        let message = `Profile updated`;
+        Ember.get(this, 'flashMessages').success(message);
+      });
     }
   }
 });

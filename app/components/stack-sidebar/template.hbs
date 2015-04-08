@@ -3,7 +3,9 @@
     {{organization.name}}
 
     {{#link-to 'organization' organization}}
-      <i class="fa fa-cog"></i>
+      {{#bs-tooltip title=tooltipTitle}}
+        <i class="fa fa-cog"></i>
+      {{/bs-tooltip}}
     {{/link-to}}
   </li>
 

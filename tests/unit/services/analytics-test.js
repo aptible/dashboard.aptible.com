@@ -37,13 +37,13 @@ test('it tracks a page', function() {
 });
 
 test('it identifies with email', function() {
-  expect(4);
+  expect(3);
   var service = this.subject();
   equal(service.get('hasEmail'), undefined, 'precond - hasEmail is undefined');
 
   var email = 'some@email.com';
 
-  mockAnalytics.identify = function(data, fn){
+  mockAnalytics.identify = function(id, data, fn){
     equal(data.email, email, 'email is passed to tracker');
     setTimeout(fn, 2);
   };
@@ -56,7 +56,7 @@ test('it identifies with email', function() {
     };
   };
 
-  return service.identify(email).then(function(){
+  return service.identify(1, { email: email }).then(function(){
     ok(true, 'promise is called');
     ok(service.get('hasEmail'), 'has an email');
   });

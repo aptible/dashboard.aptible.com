@@ -28,8 +28,9 @@ module.exports = function(environment) {
 
     flashMessageDefaults: {
       // https://github.com/poteto/ember-cli-flash#service-defaults
-      timeout: 6000,
-      showProgress: true
+      timeout: 6500,
+      showProgress: true,
+      injectionFactories : ['route', 'router', 'controller', 'view']
     },
 
     EmberENV: {
@@ -92,6 +93,11 @@ module.exports = function(environment) {
     delete ENV.apiBaseUri;
     delete ENV.authBaseUri;
     ENV.legacyDashboardHost = 'http://legacy-dashboard-host.com';
+
+    // https://github.com/poteto/ember-cli-flash/issues/32
+    // Flash messages with a timeout will pause andThen()'s for the timeout
+    // duration.  Forcing flashes to be sticky will allow them to be detectable
+    ENV.flashMessageDefaults.sticky = true;
   }
 
   if (environment === 'staging') {
@@ -115,9 +121,9 @@ module.exports = function(environment) {
       support: "https://support.aptible.com"
     };
     ENV.segmentioKey = '5aOlxMYapu6bQCQYFbDz7rhNvVV7B1A5';
-    ENV.featureFlags['organization-settings'] = false;
+    ENV.featureFlags['organization-settings'] = true;
     ENV.featureFlags['price-estimator'] = false;
-    ENV.featureFlags['notifications'] = false;
+    ENV.featureFlags['notifications'] = true;
   }
 
   return ENV;

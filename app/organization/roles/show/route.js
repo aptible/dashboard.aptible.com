@@ -8,9 +8,11 @@ export default Ember.Route.extend({
     this._stacks = null;
     this._organization = null;
   },
+
   model(params) {
     return this.store.find('role', params.role_id);
   },
+
   afterModel(model) {
     this._organization = this.modelFor('organization');
     const organizationUrl = this._organization.get('data.links.self');
@@ -33,6 +35,7 @@ export default Ember.Route.extend({
 
     return Ember.RSVP.all(promises);
   },
+
   setupController(controller, model) {
     controller.set('model', model);
     controller.set('stacks', this._stacks);
@@ -63,6 +66,7 @@ export default Ember.Route.extend({
     controller.set('changeset', changeset);
     controller.observeChangeset();
   },
+
   actions: {
     inviteUser(user){
       const role = this.currentModel;
@@ -71,10 +75,14 @@ export default Ember.Route.extend({
         role,
         userUrl: userLink
       });
+
       membership.save().then(() => {
+        let message = `${user.get('name')} added to ${role.get('name')} role`;
+        Ember.get(this, 'flashMessages').success(message);
         return this.currentModel.get('users').reload();
       });
     },
+
     removeUser(user){
       let role = this.currentModel;
       let userLink = user.get('data.links.self');
@@ -83,9 +91,12 @@ export default Ember.Route.extend({
         let membership = memberships.findBy('data.links.user', userLink);
         return membership.destroyRecord();
       }).then(() => {
+        let message = `${user.get('name')} removed from ${role.get('name')} role`;
+        Ember.get(this, 'flashMessages').success(message);
         return this.currentModel.get('users').reload();
       });
     },
+
     inviteByEmail(email){
       let role = this.currentModel;
       let invitation = this.controller.get('invitation');
@@ -100,22 +111,32 @@ export default Ember.Route.extend({
       }
       invitation.save().then(() => {
         this.controller.set('invitation', null);
+        let message = `Invitation sent to ${email}`;
+        Ember.get(this, 'flashMessages').success(message);
       }, (e) => {
         if (!(e instanceof DS.InvalidError)) {
           throw e;
         }
       });
     },
+
     removeInvitation(invitation){
-      invitation.destroyRecord();
+      invitation.destroyRecord().then(() => {
+        let message = `Invitation to ${invitation.get('email')} destroyed`;
+        Ember.get(this, 'flashMessages').success(message);
+      });
     },
+
     resendInvitation(invitation){
       let reset = this.store.createRecord('reset');
       reset.setProperties({
         type: 'invitation',
         invitationId: invitation.get('id')
       });
-      reset.save();
+      reset.save().then(() => {
+        let message = `Invitation resent to ${invitation.get('email')}`;
+        Ember.get(this, 'flashMessages').success(message);
+      });
     },
 
     cancel() {
@@ -123,7 +144,6 @@ export default Ember.Route.extend({
     },
 
     save() {
-
       const savePromises = [];
       const changeset = this.controller.get('changeset');
 
@@ -158,6 +178,10 @@ export default Ember.Route.extend({
 
       return Ember.RSVP.all(savePromises).then(() => {
         if (saveSuccessful) {
+          let role = this.currentModel;
+          let message = `${role.get('name')} saved`;
+
+          Ember.get(this, 'flashMessages').success(message);
           this.transitionTo('organization.roles');
         }
       });

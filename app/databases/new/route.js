@@ -1,19 +1,20 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  title: function(){
+  title() {
     var stack = this.modelFor('stack');
     return `Create a Database - ${stack.get('handle')}`;
   },
 
-  model: function(){
+  model() {
     var stack = this.modelFor('stack');
     return this.store.createRecord('database', {
-      stack: stack
+      stack: stack,
+      type: 'postgresql'
     });
   },
 
-  renderTemplate: function(controller){
+  renderTemplate(controller) {
     if (!this.session.get('currentUser.verified')) {
       controller.set('resourceType', 'database');
       this.render('shared/unverified');
@@ -23,17 +24,17 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    willTransition: function(){
+    willTransition() {
       this.currentModel.rollback();
     },
 
-    create: function(){
+    create() {
       var db = this.currentModel,
           route = this,
           controller = this.controller,
           store = this.store;
 
-      db.save().then(function(){
+      db.save().then(() => {
         var op = store.createRecord('operation', {
           type: 'provision',
           diskSize: controller.get('diskSize'),
@@ -41,15 +42,18 @@ export default Ember.Route.extend({
         });
 
         return op.save();
-      }).then(function(){
+      }).then(() => {
+        let message = `${db.get('handle')} database created`;
+
         route.transitionTo('databases.index');
-      }, function(e){
+        Ember.get(this, 'flashMessages').success(message);
+      }, (e) => {
         console.error(e);
         // TODO display errors in UI
       });
     },
 
-    cancel: function(){
+    cancel() {
       this.transitionTo('databases.index');
     }
   }

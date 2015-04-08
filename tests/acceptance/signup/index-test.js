@@ -52,7 +52,7 @@ test('Creating an account directs to welcome wizard', function() {
 
   doSignupSteps(url, userInput, {clickButton:false});
   fillInput('organization', userInput.organization);
-  clickButton('Sign Up');
+  clickButton('Create account');
   andThen(function(){
     equal(currentPath(), 'welcome.first-app', 'directs to first app');
   });
@@ -63,7 +63,7 @@ test(`visiting ${url} and signing up with too-short organization name shows erro
 
   doSignupSteps(url, userInput, {clickButton:false});
   fillInput('organization', tooShortOrganizationName);
-  clickButton('Sign Up');
+  clickButton('Create account');
   andThen(() => {
     equal(currentPath(), signupIndexPath, 'path does not change');
     let error = find(':contains(minimum is 3 characters)');
@@ -91,7 +91,7 @@ test(`visiting ${url} and signing up with invalid data shows errors`, function(a
 
 test('Creating an account shows validation errors', function(assert) {
   visit(url);
-  clickButton('Sign Up');
+  clickButton('Create account');
   andThen(function(){
     assert.equal(currentPath(), signupIndexPath, 'path does not change');
 

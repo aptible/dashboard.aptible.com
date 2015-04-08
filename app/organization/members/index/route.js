@@ -22,7 +22,7 @@ export default Ember.Route.extend({
   actions: {
     resentInvitation(invitation){
       let successMessage = `Re-sent invitation to ${invitation.get('email')}`;
-      this.controller.set('successMessage', successMessage);
+      Ember.get(this, 'flashMessages').success(successMessage);
     },
 
     resendInvitation(invitation){
@@ -34,14 +34,14 @@ export default Ember.Route.extend({
 
       reset.save().then(() => {
         let message = `Invitation resent to ${invitation.get('email')}`;
-        this.controller.set('successMessage', message);
+        Ember.get(this, 'flashMessages').success(message);
       });
     },
 
     destroyInvitation(invitation){
       invitation.destroyRecord().then(() => {
         let message = `Deleted invitation for ${invitation.get('email')}`;
-        this.controller.set('successMessage', message);
+        Ember.get(this, 'flashMessages').success(message);
       });
     },
 

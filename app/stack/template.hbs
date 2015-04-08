@@ -1,7 +1,10 @@
 <main class="layout-content">
   {{partial "stack/header"}}
   <div class="layout-container">
-    {{partial "stack/nav"}}
+    {{#if model.activated}}
+      {{partial "stack/nav"}}
+    {{/if}}
+
     {{outlet}}
   </div>
 </main>

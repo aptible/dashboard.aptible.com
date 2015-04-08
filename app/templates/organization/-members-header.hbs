@@ -6,11 +6,15 @@
     </div>
 
     <ul class="resource-metadata">
-      <li class="resource-metadata-item resource-metadata-button">
-        {{#link-to 'organization.contact-settings'}}
-          <i class="fa fa-cog"></i>
-        {{/link-to}}
-      </li>
+      {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
+        {{#if hasAbility}}
+          {{#link-to 'organization.contact-settings' tagName='li' classNames='resource-metadata-item resource-metadata-button'}}
+            {{#bs-tooltip title="Edit Contact Settings"}}
+              <i class="fa fa-cog"></i>
+            {{/bs-tooltip}}
+          {{/link-to}}
+        {{/if}}
+      {{/aptible-ability}}
 
       <li class="resource-metadata-item with-image">
         <div class="resource-metadata-image">
@@ -27,7 +31,7 @@
         </div>
 
         <h5 class="resource-metadata-title">Billing Contact</h5>
-        <h3 class="resource-metadata-value">{{organization.billingContact.name}} {{organization.billingContact.email}}</h3>
+        <h3 class="resource-metadata-value">{{organization.billingContact.name}} - {{organization.billingContact.email}}</h3>
       </li>
     </ul>
   </div>

@@ -17,6 +17,7 @@ export default DS.Model.extend({
   syslogHost: DS.attr('string'),
   syslogPort: DS.attr('string'),
   organizationUrl: DS.attr('string'),
+  activated: DS.attr('boolean'),
 
   // relationships
   apps: DS.hasMany('app', {async: true}),

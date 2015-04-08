@@ -81,7 +81,9 @@ test(`visiting ${url} as unauthenticated revisits after log in`, function(assert
     assert.ok(find(`:contains(${invitationData.inviter_name})`).length,
               `shows inviter name "${invitationData.inviter_name}" when redirected back to claim`);
   });
-  clickButton('Accept organization invitation');
+
+  clickButton('Accept invitation');
+
   andThen(function(){
     assert.equal(currentPath(), 'stack.apps.index');
   });
@@ -123,7 +125,7 @@ test(`visiting ${url} as authenticated creates verification`, function() {
   });
 
   signInAndVisit(url);
-  clickButton('Accept organization invitation');
+  clickButton('Accept invitation');
   andThen(function(){
     equal(currentPath(), 'stack.apps.index');
   });
@@ -135,7 +137,7 @@ test('failed verification displays error', function() {
   });
 
   signInAndVisit(url);
-  clickButton('Accept organization invitation');
+  clickButton('Accept invitation');
   andThen(function(){
     equal(currentPath(), 'claim');
     ok(Ember.$(':contains(error accepting this invitation)').length, 'Failed verifications shows error');
@@ -152,7 +154,7 @@ test('failed verification displays error', function() {
   });
 
   signInAndVisit(url);
-  clickButton('Accept organization invitation');
+  clickButton('Accept invitation');
   andThen(function(){
     equal(currentPath(), 'claim');
     ok(Ember.$(':contains(error accepting this invitation)').length, 'Failed verifications shows error');

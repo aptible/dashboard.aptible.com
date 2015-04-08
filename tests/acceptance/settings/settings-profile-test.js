@@ -46,7 +46,7 @@ function nameInput(){
 }
 
 function updateProfileButton(){
-  return find('button:contains(Update profile)');
+  return find('button:contains(Change name)');
 }
 
 test('visit ' + settingsProfileUrl + ' shows profile info', function(){

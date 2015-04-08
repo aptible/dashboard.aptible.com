@@ -1,10 +1,9 @@
-// Don't use sprockets here:
-// https://github.com/rails/sass-rails
-@import "bower_components/animate/source/animate";
 @import "bower_components/aptible-sass/dist/styles/aptible";
 @import "bower_components/aptible-sass/dist/styles/aptible_dashboard";
+$color-bright-blue: #3498db;
 
 @import "layout";
+@import "error";
 
 @import "specific_resources/apps";
 @import "specific_resources/compliance_dashboard";
@@ -29,6 +28,7 @@
 @import "components/clipboard";
 @import "components/config-form";
 @import "components/estimated-cost";
+@import "components/flash-messages";
 @import "components/focus";
 @import "components/funnel";
 @import "components/git-ref";

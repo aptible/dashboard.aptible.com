@@ -8,7 +8,7 @@ export function signupInputsTest(url){
     expectInput('name');
     expectInput('email');
     expectInput('password');
-    expectButton('Sign Up');
+    expectButton('Create account');
   });
 }
 
@@ -46,7 +46,7 @@ export function doSignupSteps(url, userInput, options={}){
   fillInput('password', userInput.password);
 
   if (options.clickButton !== false) {
-    clickButton('Sign Up');
+    clickButton('Create account');
   }
 }
 

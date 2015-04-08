@@ -13,7 +13,13 @@
       <div class="panel-heading-link">
         {{link-to "Sign in instead" "login"}}
       </div>
-      <h3>Create Your Aptible Account</h3>
+      <h3>
+        {{#if invitation}}
+          Join {{invitation.organizationName}}
+        {{else}}
+          Create Your Account
+        {{/if}}
+      </h3>
     </div>
 
     <div class="panel-body">
@@ -25,7 +31,7 @@
             autofocus=true
             class="form-control"
             placeholder="Full Name"}}
-          {{validation-feedback error=errors.model.name value=model.name hasSubmitted=hasSubmitted}}
+          {{validation-feedback error=errors.model.name value=model.name hasSubmitted=hasSubmitted fieldName='Name'}}
         </div>
       </div>
 
@@ -38,7 +44,7 @@
               class="form-control"
               placeholder="Organization Name"}}
 
-            {{validation-feedback error=errors.organization.name value=organization.name hasSubmitted=hasSubmitted}}
+            {{validation-feedback error=errors.organization.name value=organization.name hasSubmitted=hasSubmitted fieldName='Organization name'}}
           </div>
         </div>
       {{/if}}
@@ -50,7 +56,7 @@
             name="email"
             class="form-control"
             placeholder="Email"}}
-          {{validation-feedback error=errors.model.email value=model.email hasSubmitted=hasSubmitted}}
+          {{validation-feedback error=errors.model.email value=model.email hasSubmitted=hasSubmitted fieldName='Email'}}
         </div>
       </div>
 
@@ -61,12 +67,14 @@
             name="password"
             class="form-control"
             placeholder="Password"}}
-          {{validation-feedback error=errors.model.password value=model.password hasSubmitted=hasSubmitted}}
+          {{validation-feedback error=errors.model.password value=model.password hasSubmitted=hasSubmitted fieldName='Password'}}
         </div>
       </div>
 
       <div class="panel-submit">
-        <button class="btn btn-primary btn-block btn-lg" {{action "validateAndSignup"}}>Sign Up</button>
+        <button class="btn btn-primary btn-block btn-lg" {{action "validateAndSignup"}}>
+          Create account
+        </button>
       </div>
     </div>
   </div>

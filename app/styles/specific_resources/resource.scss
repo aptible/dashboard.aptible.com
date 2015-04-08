@@ -61,13 +61,18 @@ a.panel-link {
     }
 
     &.invitation.user {
+      .user-title {
+        margin: 0;
+      }
+
       .user-gravatar {
-        opacity: .5;
+        height: 30px;
+        width: 30px;
+        background: #fafafa;
       }
 
       .user-name {
-        opacity: .5;
-        margin: 4px 0 0;
+        margin: 4px 0 3px;
       }
     }
 
@@ -79,17 +84,22 @@ a.panel-link {
 
       .user-gravatar {
         float: left;
+        margin: 4px 0 0;
 
         img {
-          height: 24px;
-          width: 24px;
-          border-radius: 2px;
+          height: 30px;
+          width: 30px;
+          border-radius: 5px;
         }
       }
 
-      .user-name {
+      .user-title {
         float: left;
-        margin: 4px 0 0 10px;
+        margin: 0 0 0 10px;
+      }
+
+      .user-name {
+        margin: 4px 0 3px;
       }
 
       .user-email {
@@ -108,5 +118,23 @@ a.panel-link {
 
   > .btn:last-child {
     margin-right: 0;
+  }
+}
+
+.activate-panel {
+  background: #fafafa;
+  border-radius: 3px;
+  padding: 30px;
+
+  h1, h2 {
+    text-align: center;
+    font-size: 22px;
+    font-weight: $weight-normal;
+  }
+
+  h2 {
+    font-size: 14px;
+    line-height: 1.4em;
+    color: $color-light;
   }
 }

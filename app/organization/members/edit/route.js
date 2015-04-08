@@ -32,9 +32,14 @@ export default Ember.Route.extend({
     },
 
     remove(user){
-      user.set('organizationId', this.modelFor('organization').get('id'));
+      let organization = this.modelFor('organization');
+
+      user.set('organizationId', organization.get('id'));
       user.destroyRecord().then(() => {
+        let message = `${user.get('name')} removed from ${organization.get('name')}`;
+
         this.transitionTo('organization.members');
+        Ember.get(this, 'flashMessages').success(message);
       });
     },
 
@@ -69,6 +74,10 @@ export default Ember.Route.extend({
       });
 
       Ember.RSVP.all(promises).then(() => {
+        let user = this.currentModel;
+        let message = `${user.get('name')} updated`;
+
+        Ember.get(this, 'flashMessages').success(message);
         this.transitionTo('organization.members');
       });
     }

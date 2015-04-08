@@ -94,7 +94,6 @@ test(`visit ${settingsAccountUrl} allows changing password`, function(){
 test(`visit ${settingsAccountUrl} and change password with errors`, function(){
   expect(3);
 
-
   var newPassword = 'abcdefghi',
       oldPassword = 'defghiljk';
 
@@ -116,10 +115,11 @@ test(`visit ${settingsAccountUrl} and change password with errors`, function(){
   clickButton('Change password');
 
   andThen(function(){
-    let error = find('.alert');
+    let error = find('.alert-danger');
     ok(error.length, 'shows error');
     ok(error.text().indexOf('Invalid password') > -1,
        'shows error message');
+    click(error);
   });
 
   visit(settingsProfileUrl); // go away

@@ -3,15 +3,22 @@
   <div class="layout-container">
     <div class="row">
       <div class="col-xs-6">
+        {{server-validation-errors model=model}}
 
-        {{#if success}}
-          {{#bs-alert alert='success' as |component|}}
+        {{#if model.errors.length}}
+          {{#bs-alert alert='danger' as |component|}}
             {{bs-alert-dismiss target=component}}
-            The invitation has been sent.
+            <p>
+              There was an error sending this invitation.
+            </p>
+            <ul>
+              {{#each model.errors.messages as |message|}}
+              <li>{{message}}</li>
+              {{/each}}
+            </ul>
           {{/bs-alert}}
         {{/if}}
 
-        {{server-validation-errors model=model}}
         <div class="panel">
           <div class="panel-heading">
             <h3>Invite to {{organization.name}}</h3>
@@ -38,7 +45,6 @@
             </form>
           </div>
         </div>
-
 
         <div class="resource-actions">
           <button {{action 'cancel'}} class='btn btn-default' type='button'>

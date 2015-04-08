@@ -13,7 +13,9 @@
     {{#aptible-ability scope="manage" user=user permittable=stack as |hasAbility|}}
       {{#if hasAbility}}
         {{#link-to 'apps.new' stack }}
-          <i class="fa fa-plus"></i>
+          {{#bs-tooltip title='Create new app'}}
+            <i class="fa fa-plus"></i>
+          {{/bs-tooltip}}
         {{/link-to}}
       {{/if}}
     {{/aptible-ability}}
@@ -33,7 +35,9 @@
     {{#aptible-ability scope="manage" user=user permittable=stack as |hasAbility|}}
       {{#if hasAbility}}
         {{#link-to 'databases.new' stack}}
-          <i class="fa fa-plus"></i>
+          {{#bs-tooltip title='Create new database'}}
+            <i class="fa fa-plus"></i>
+          {{/bs-tooltip}}
         {{/link-to}}
       {{/if}}
     {{/aptible-ability}}

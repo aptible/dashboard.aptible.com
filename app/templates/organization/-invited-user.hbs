@@ -1,27 +1,40 @@
 <div class="panel panel-default panel-subdued user invitation resource-list-item">
   <div class="panel-heading">
-    <h5 class="user-name">{{invitation.email}}</h5>
-
-    <div class="resource-panel-actions">
-      <ul class="nav">
-        <li>
-          <a class="btn btn-default" {{action 'destroyInvitation' invitation}} href="#" title="Delete invitation for {{invitation.email}}">
-            <i class="fa fa-times"></i>
-            <span class="button-label">
-              Remove
-            </span>
-          </a>
-        </li>
-        <li>
-          <a class="btn btn-default" {{action 'resendInvitation' invitation}} href="#" title="Resend invitation for {{invitation.email}}">
-            <i class="fa fa-undo"></i>
-            <span class="button-label">Resend</span>
-          </a>
-        </li>
-      </ul>
+    <div class="user-title">
+      <h5 class="user-name">{{invitation.email}}</h5>
+      <div class="user-email">Invited on {{format-date invitation.createdAt}}</div>
     </div>
+
+    {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
+      {{#if hasAbility}}
+        <div class="resource-panel-actions">
+          <ul class="nav">
+            <li>
+              <a class="btn btn-default" {{action 'destroyInvitation' invitation}} href="#" title="Delete invitation for {{invitation.email}}">
+                {{#bs-tooltip title="Delete Invitation"}}
+                  <i class="fa fa-times"></i>
+                {{/bs-tooltip}}
+              </a>
+            </li>
+            <li>
+              <a class="btn btn-default" {{action 'resendInvitation' invitation}} href="#" title="Resend invitation for {{invitation.email}}">
+                {{#bs-tooltip title="Resend Invitation"}}
+                <i class="fa fa-undo"></i>
+                {{/bs-tooltip}}
+              </a>
+            </li>
+          </ul>
+        </div>
+      {{/if}}
+    {{/aptible-ability}}
+
   </div>
   <div class="panel-body">
-    {{invitation.role.name}}
+    <ul class="resource-metadata">
+      <li class="resource-metadata-item">
+        <h5 class="resource-metadata-title">Roles</h5>
+        <h3 class="resource-metadata-value">{{invitation.role.name}}</h3>
+      </li>
+    </ul>
   </div>
 </div>

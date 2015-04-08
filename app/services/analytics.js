@@ -105,18 +105,17 @@ export default Ember.Service.extend({
     });
   },
 
-  identify: function(email){
-    var service = this;
-    return new Ember.RSVP.Promise(function(resolve){
-      var options = {};
-      if (email) {
-        options.email = email;
+  identify: function(id, attributes){
+    attributes = attributes || {};
+    let service = this;
+
+    return new Ember.RSVP.Promise(function(resolve) {
+      if(config.environment !== 'test') {
+        window.analytics.identify(id, attributes, Ember.run.bind(null, resolve));
+      } else {
+        resolve();
       }
-      window.analytics.identify(
-        options,
-        Ember.run.bind(null, resolve)
-      );
-    }).then(function(){
+    }).then(function() {
       service.updateEmailStatus();
     });
   },

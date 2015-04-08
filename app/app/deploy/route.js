@@ -25,7 +25,10 @@ export default Ember.Route.extend({
       let stack = model.get('stack');
       model.deleteRecord();
       model.save().then(() => {
+        let message = `${model.get('handle')} destroyed`;
+
         this.transitionTo('apps', stack);
+        Ember.get(this, 'flashMessages').success(message);
       });
     }
   }

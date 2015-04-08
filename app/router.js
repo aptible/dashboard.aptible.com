@@ -4,8 +4,9 @@ import config from "./config/environment";
 var Router = Ember.Router.extend({
   analytics: Ember.inject.service(),
   location: config.locationType,
-  trackAnalytics: function() {
+  onTransition: function() {
     this.get('analytics').page();
+    this.get('flashMessages').clearMessages();
   }.on('didTransition')
 });
 
@@ -34,6 +35,7 @@ export default Router.map(function() {
 
 
   this.route("stack", { path: "stacks/:stack_id" }, function() {
+    this.route("activate", { path: 'activate'});
     this.route("log-drains", {
       path: 'logging'
     }, function(){

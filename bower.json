@@ -12,7 +12,7 @@
     "ember-qunit": "0.3.0",
     "ember-qunit-notifications": "0.0.7",
     "qunit": "~1.17.1",
-    "animate": "jackilyn/animate.scss#c03607f922850b5c2d1da1ec45e5d56f4e4403ab",
+    "animate": "daneden/animate.css",
     "aptible-sass": "aptible/aptible-sass#diesel",
     "nouislider": "~7.0.9",
     "font-awesome": "~4.3.0",
