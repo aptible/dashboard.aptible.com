@@ -113,6 +113,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
+    ENV.stripePublishableKey = 'pk_live_ujeTeUIMpUcvNsWwu7R9b3Zy';
     ENV.authBaseUri = "https://auth.aptible.com";
     ENV.apiBaseUri = "https://api.aptible.com";
     ENV.aptibleHosts = {
