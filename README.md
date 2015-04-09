@@ -1,8 +1,8 @@
-# Diesel [![Build Status](https://travis-ci.org/aptible/diesel.aptible.com.svg?branch=master)](https://travis-ci.org/aptible/diesel.aptible.com)
+# ![Aptible](http://aptible-media-assets-manual.s3.amazonaws.com/tiny-github-icon.png) diesel.aptible.com 
 
-This README outlines the details of collaborating on this Ember application.
+[![Build Status](https://travis-ci.org/aptible/diesel.aptible.com.svg?branch=master)](https://travis-ci.org/aptible/diesel.aptible.com) [![Stories in Ready](https://badge.waffle.io/aptible/diesel.aptible.com.svg?label=ready&title=Ready)](http://waffle.io/aptible/diesel.aptible.com)
 
-A short introduction of this app could easily go here.
+Aptible's customer dashboard. It allows users to manage organizations, access controls, and ops.
 
 ## Prerequisites
 
@@ -21,10 +21,10 @@ You will need the following things properly installed on your computer.
 ## Running / Development
 
 * `ember server`
-* Visit your app at http://localhost:4200.
+* Visit localhost:4200
 
 By default, the api.aptible.com and auth.aptible.com servers will be used as
-data sources. For use with diesel they should be given the `.env` values of:
+data sources. For use with Diesel they should be given the `.env` values of:
 
 ```
 CORS_DOMAIN="http://localhost:4200"
@@ -71,3 +71,8 @@ that example to replace the one at the start of the `after_success` section.
   * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
   * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
 
+## Copyright
+
+Copyright (c) 2015 [Aptible](https://www.aptible.com). All rights reserved.
+
+[<img src="https://s.gravatar.com/avatar/9b58236204e844e3181e43e05ddb0809?s=60" style="border-radius: 50%;" alt="@sandersonet" />](https://github.com/sandersonet)
