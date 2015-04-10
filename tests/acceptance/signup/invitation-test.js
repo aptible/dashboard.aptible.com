@@ -12,7 +12,7 @@ let App;
 let orgName = 'Great Co.';
 let invitationId     = 'some-invite';
 let verificationCode = 'some-verification-code';
-
+let claimUrl = '/claims/user';
 let userInput = {
   email: 'good@email.com',
   password: 'Correct#Password1!3',
@@ -32,6 +32,9 @@ module('Acceptance: Signup Invitation', {
   setup: function() {
     App = startApp();
     stubInvitation(invitationData);
+    stubRequest('post', claimUrl, function(request) {
+      return [204, {}, ''];
+    });
   },
   teardown: function() {
     Ember.run(App, 'destroy');
