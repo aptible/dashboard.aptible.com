@@ -11,7 +11,8 @@ let claimUrl = '/claims/organization';
 moduleFor('validator:uniqueness', 'UniquenessValidator', {
   setup() {
     model = Ember.Object.create({
-      dependentValidationKeys: {}
+      dependentValidationKeys: {},
+      handle: 'handle'
     });
   }
 });
@@ -34,7 +35,7 @@ test('A valid response should add no error messages', function() {
       }
     });
 
-    validator.fetch().then(() => {
+    validator.validate().then(() => {
       ok(!validator.get('errors.length'), 'has no errors');
       start();
     });
@@ -60,7 +61,7 @@ test('An error response should add an error message', function() {
       }
     });
 
-    validator.fetch().then(() => {
+    validator.validate().finally(() => {
       ok(validator.get('errors.length') === 1, 'has an error');
       equal(validator.get('errors').objectAt(0), "seat's taken!");
       start();

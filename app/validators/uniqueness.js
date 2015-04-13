@@ -3,6 +3,11 @@ import Base from 'ember-validations/validators/base';
 import ajax from '../utils/ajax';
 
 export default Base.extend({
+  _validate: function() {
+    this.errors.clear();
+    return this.call();
+  }.on('init'),
+
   setupOptions: function() {
     if(this.options === true) {
       this.options = {};
@@ -23,23 +28,28 @@ export default Base.extend({
   },
 
   call() {
-    if (!Ember.isBlank(Ember.get(this.model, this.property))) {
-      return Ember.run.debounce(this, this.fetch, this._options.debounce);
+    if (Ember.isBlank(Ember.get(this.model, this.property))) {
+      return Ember.RSVP.resolve(true);
     }
+
+    return new Ember.RSVP.Promise((resolve) => {
+      Ember.run.debounce(this, () => {
+        this.fetch(resolve);
+      }, this._options.debounce);
+    });
   },
 
-  fetch() {
+  fetch(resolve) {
     let options = this._options;
     let errors = this.errors;
     options.data[this.getDataPropertyName()] = this.model.get(this.property);
 
-    if(errors === null) {
-      debugger;
-    }
-
     return ajax(options.url, Ember.$.extend({}, options)).then(() => {
+      resolve(true);
     }, () => {
+      errors.clear();
       errors.pushObject(options.message);
+      resolve(false);
     });
   }
 });

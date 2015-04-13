@@ -15,7 +15,7 @@ export default Ember.Route.extend({
     controller.set('model', model);
     var firstApp = this.modelFor('welcome');
     controller.set('firstApp', firstApp);
-    controller.set('saveProgress', Ember.Object.create({ totalSteps: 6, currentStep: 0 }));
+    controller.set('saveProgress', Ember.Object.create({ totalSteps: 5, currentStep: 0 }));
   },
 
   actions: {
@@ -35,7 +35,7 @@ export default Ember.Route.extend({
         address_zip: model.zip
       };
 
-      var organization, stack;
+      var organization;
       saveProgress.set('currentStep', 1);
       Ember.RSVP.hash({
         stripeResponse: createStripeToken(options),
@@ -54,33 +54,20 @@ export default Ember.Route.extend({
 
         return subscription.save();
       }).then(function(){
-        var promises = [];
         var organizationUrl = organization.get('_data.links.self');
-        var devStack = store.createRecord('stack', {
-          handle: `${welcomeModel.stackHandle}-dev`,
-          type: 'development',
-          organizationUrl: organizationUrl
-        });
 
         saveProgress.set('currentStep', 3);
 
-        promises.push(devStack.save());
+        return store.createRecord('stack', {
+          handle: welcomeModel.stackHandle,
+          type: model.plan === 'development' ? 'development' : 'production',
+          organizationUrl: organizationUrl
+        }).save();
+      }).then(function(stack) {
+        var promises = [];
 
-        if (model.plan !== 'development') {
-          var prodStack = store.createRecord('stack', {
-            handle: `${welcomeModel.stackHandle}-prod`,
-            type: 'production',
-            organizationUrl: organizationUrl
-          });
-          promises.push(prodStack.save());
-        }
-
-        return Ember.RSVP.all(promises);
-      }).then(function(stacks){
-        stack = stacks[0]; // development stack is first
         saveProgress.set('currentStep', 4);
 
-        var promises = [];
         if (welcomeModel.appHandle) {
           var app = store.createRecord('app', {
             handle: welcomeModel.appHandle,
