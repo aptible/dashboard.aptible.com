@@ -1,11 +1,18 @@
 import Ember from 'ember';
 import startApp from '../../helpers/start-app';
-
+import { stubRequest } from "../../helpers/fake-server";
 var application;
+
+let claimUrls = ['/claims/user', '/claims/account', '/claims/app', '/claims/database'];
 
 module('Acceptance: WelcomeFirstApp', {
   setup: function() {
     application = startApp();
+    claimUrls.forEach((claimUrl) => {
+      stubRequest('post', claimUrl, function(request) {
+        return [204, {}, ''];
+      });
+    });
   },
   teardown: function() {
     Ember.run(application, 'destroy');

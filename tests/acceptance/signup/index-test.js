@@ -9,7 +9,7 @@ import {
 
 let App;
 let signupIndexPath = 'signup.index';
-
+let claimUrls = ['/claims/user', '/claims/account', '/claims/app', '/claims/database'];
 let userUrl = '/users/my-user';
 let userInput = {
   email: 'good@email.com',
@@ -22,6 +22,11 @@ let url = '/signup';
 module('Acceptance: Signup', {
   setup: function() {
     App = startApp();
+    claimUrls.forEach((claimUrl) => {
+      stubRequest('post', claimUrl, function(request) {
+        return [204, {}, ''];
+      });
+    });
   },
   teardown: function() {
     Ember.run(App, 'destroy');

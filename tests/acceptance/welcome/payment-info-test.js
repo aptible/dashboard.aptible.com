@@ -6,6 +6,7 @@ import { stubRequest } from "../../helpers/fake-server";
 let application;
 let oldCreateToken;
 let url = '/welcome/first-app';
+let claimUrls = ['/claims/user', '/claims/account', '/claims/app', '/claims/database'];
 
 function visitPaymentInfoWithApp(options, userData){
   userData = userData || {};
@@ -51,6 +52,12 @@ module('Acceptance: WelcomePaymentInfo', {
   setup: function() {
     application = startApp();
     oldCreateToken = mockStripe.card.createToken;
+
+    claimUrls.forEach((claimUrl) => {
+      stubRequest('post', claimUrl, function(request) {
+        return [204, {}, ''];
+      });
+    });
   },
   teardown: function() {
     Ember.run(application, 'destroy');
@@ -169,7 +176,7 @@ test('submitting valid payment info for development plan should create dev stack
 
   let stackAssertions = {};
 
-  stackAssertions[`${stackHandle}-dev`] = (params) => {
+  stackAssertions[stackHandle] = (params) => {
     ok(true, 'stack handle is correct');
     equal(params.organization_url, '/organizations/1', 'correct organization_url is posted');
     equal(params.type, 'development', 'stack type is correct');
@@ -201,53 +208,6 @@ test('submitting valid payment info for development plan should create dev stack
   });
 });
 
-test('submitting valid payment info for platform plan should create dev and prod stacks', function() {
-  expect(7);
-
-  stubStacks({}, []);
-  // This is to load apps.index
-  stubOrganization();
-
-  let stackHandle = 'sprocket-co';
-  let appHandle = 'my-app-1';
-
-  let stackAssertions = {};
-
-  stackAssertions[`${stackHandle}-dev`] = (params) => {
-    ok(true, 'stack handle is correct');
-    equal(params.organization_url, '/organizations/1', 'correct organization_url is posted');
-    equal(params.type, 'development', 'stack type is correct');
-    stackAssertions[params.handle] = null;
-  };
-
-  stackAssertions[`${stackHandle}-prod`] = (params) => {
-    ok(true, 'should create prod stack');
-    equal(params.organization_url, '/organizations/1', 'correct organization_url is posted');
-    equal(params.type, 'production', 'stack type is correct');
-    stackAssertions[params.handle] = null;
-  };
-
-  stubRequest('post', '/accounts', function(request){
-    var params = this.json(request);
-    stackAssertions[params.handle](params);
-
-    return this.success(Ember.merge({id:params.handle},params));
-  });
-
-  stubOrganizations();
-  mockSuccessfulPayment();
-
-  visitPaymentInfoWithApp();
-  andThen(function(){
-    stubStacks();
-  });
-  clickButton('Switch to PHI-ready Platform plan');
-  clickButton('Save');
-  andThen( () => {
-    equal(currentPath(), 'stack.apps.new');
-  });
-});
-
 test('submitting valid payment info should create app', function() {
   expect(2);
   stubStacks({}, []);
@@ -262,7 +222,7 @@ test('submitting valid payment info should create app', function() {
     return this.success(Ember.merge({id:params.handle}, params));
   });
 
-  stubRequest('post', `/accounts/${stackHandle}-dev/apps`, function(request){
+  stubRequest('post', `/accounts/${stackHandle}/apps`, function(request){
     var params = this.json(request);
     equal(params.handle, appHandle, 'app handle is correct');
     return this.success({id: appHandle, handle: appHandle});
@@ -301,7 +261,7 @@ test('submitting valid payment info should create db', function() {
     return this.success(Ember.merge({id:params.handle}, params));
   });
 
-  stubRequest('post', `/accounts/${stackHandle}-dev/databases`, function(request){
+  stubRequest('post', `/accounts/${stackHandle}/databases`, function(request){
     var params = this.json(request);
     equal(params.handle, dbHandle, 'db handle is correct');
     equal(params.initial_disk_size, dbInitialDiskSize, 'disk size is correct');
@@ -346,7 +306,7 @@ test('submitting valid payment info when user is verified should provision db', 
     return this.success(Ember.merge({id:params.handle},params));
   });
 
-  stubRequest('post', `/accounts/${stackHandle}-dev/databases`, function(request){
+  stubRequest('post', `/accounts/${stackHandle}/databases`, function(request){
     databaseParams = this.json(request);
     return this.success({id: dbId});
   });

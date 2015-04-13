@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import EmberValidationsMixin from "ember-validations/mixin";
+import config from "../../config/environment";
 
 export default Ember.Mixin.create(EmberValidationsMixin, {
   hasSubmitted: false,
@@ -22,7 +23,11 @@ export default Ember.Mixin.create(EmberValidationsMixin, {
     },
     'model.email': {
       presence: true,
-      email: true
+      email: true,
+      uniqueness: {
+        message: 'is taken.',
+        url: `${config.authBaseUri || ''}/claims/user`
+      }
     },
     'model.password': {
       presence: true,

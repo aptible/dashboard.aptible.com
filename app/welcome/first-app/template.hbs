@@ -17,12 +17,16 @@
                 Lowercase alphanumerics only
               </span>
             </label>
-            {{handle-input class="stack-handle form-control sanitize-handler"
-              placeholder="e.g., organization-prod"
-              name="stack-handle"
-              value=model.stackHandle
-              }}
+            <div class="input-group">
+              {{handle-input class="stack-handle form-control sanitize-handler"
+                placeholder="e.g., organization-prod"
+                name="stack-handle"
+                value=model.stackHandle
+                }}
+              {{validation-feedback error=errors.model.stackHandle value=model.stackHandle fieldName='Environment handle'}}
+            </div>
           </div>
+
           <div class="form-group">
             <label class="block">
               App Handle
@@ -30,12 +34,15 @@
                 Lowercase alphanumerics only
               </span>
             </label>
-            {{handle-input class="app-name form-control sanitize-handler"
-              placeholder="e.g., app-prod"
-              name="app-handle"
-              value=model.appHandle
-              autofocus="true"
-              }}
+            <div class="input-group">
+              {{handle-input class="app-name form-control sanitize-handler"
+                placeholder="e.g., app-prod"
+                name="app-handle"
+                value=model.appHandle
+                autofocus="true"
+                }}
+              {{validation-feedback error=errors.model.appHandle value=model.appHandle fieldName='App handle'}}
+            </div>
           </div>
           <div class="form-group">
             <label>Does your app need a database?</label>
@@ -57,11 +64,14 @@
                   Lowercase alphanumerics only
                 </span>
               </label>
-              {{handle-input class="database-name form-control sanitize-handler"
-                    placeholder="e.g., postgresql-prod"
-                    name="db-handle"
-                    value=model.dbHandle
-                    }}
+              <div class="input-group">
+                {{handle-input class="database-name form-control sanitize-handler"
+                  placeholder="e.g., postgresql-prod"
+                  name="db-handle"
+                  value=model.dbHandle
+                  }}
+                {{validation-feedback error=errors.model.dbHandle value=model.dbHandle fieldName='Database Handle'}}
+              </div>
             </div>
 
             <div class="form-group">
