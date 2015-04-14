@@ -5,7 +5,9 @@
   "routes": {
     "/tests": "tests/index.html",
     "/tests/**": "tests/index.html",
-    "/**": "index.html",
+    "/**": "index.html"
+  },
+  "redirects": {
     "/apps": "/",
     "/apps/**": "/",
     "/databases": "/",
