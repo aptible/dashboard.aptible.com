@@ -1,4 +1,14 @@
 <main class="layout-content">
+  <header class="resource-header">
+    <div class="layout-container">
+      <div class="resource-title">
+        <h1>
+          {{session.currentUser.name}}
+        </h1>
+      </div>
+    </div>
+  </header>
+
   <div class="layout-container">
     {{outlet}}
   </div>
@@ -7,7 +17,7 @@
 <nav class="layout-sidebar">
   <ul class='nav sidebar-nav'>
     <li class="title">
-      {{session.currentUser.name}}
+      {{session.currentUser.name}} Settings
     </li>
     {{#activating-item currentWhen='settings.profile' tagName='li'}}
       {{link-to 'Profile' 'settings.profile'}}

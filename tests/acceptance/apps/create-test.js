@@ -170,7 +170,7 @@ test(`visit ${url} when user is not verified shows "Cannot create" message`, fun
   andThen( () => {
     expectNoButton('Save App');
     expectNoButton('Cancel');
-    let message = find('.panel-heading h3');
+    let message = find('.activate-panel h1');
     ok(message.text().indexOf('Cannot create a new app') > -1,
        'shows cannot create app message');
   });

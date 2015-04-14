@@ -167,3 +167,20 @@ test('visit ' + settingsSshUrl + ' and delete a key', function(){
            'after deleting, 0 keys are shown');
   });
 });
+
+test(`visiting ${settingsSshUrl} as unverified user shows verification message`, function() {
+  stubGetKeys([]);
+  let userData = {verified: false};
+  stubOrganization();
+  stubOrganizations();
+  signInAndVisit(settingsSshUrl, userData);
+
+  andThen(() => {
+    expectNoButton('Add your first SSH key');
+    expectNoButton('Add another SSH key');
+
+    let message = find('.activate-panel h1');
+    ok(message.text().indexOf('Activate your email') > -1,
+       'shows unverified user message');
+  });
+});

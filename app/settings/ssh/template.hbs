@@ -1,30 +1,45 @@
-<div class="row">
-  <div class="col-xs-6">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3>SSH Keys</h3>
-      </div>
-      <div class="ssh-keys">
-        {{#each validKeys as |sshKey|}}
-        <div class="ssh-key-item">
-          <div class="ssh-key-info">
-            <label>{{sshKey.name}}</label>
-            <div class="ssh-key-fingerprint">{{sshKey.publicKeyFingerprint}}</div>
-          </div>
-          <div class="ssh-key-nav app-list-nav">
-            <ul class="nav nav-pills sub-nav-tabs">
-              <li>
-                <a class="btn delete-key" {{action 'deleteKey' sshKey}}>
-                  <i class="fa fa-times"></i>
-                  <span class="button-label">Delete SSH Key</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        {{/each}}
+{{#unless session.currentUser.verified}}
+  <div class="activate-panel">
+    <div class="row">
+      <div class="col-xs-8 col-xs-offset-2">
+        <h1>Activate your email</h1>
+        <h2>
+          Before adding an SSH key, you must activate your email.  Check your email for activation instructions.
+        </h2>
       </div>
     </div>
+  </div>
+{{/unless}}
+
+<div class="row">
+  <div class="col-xs-6">
+    {{#if validKeys}}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3>SSH Keys</h3>
+        </div>
+        <div class="ssh-keys">
+          {{#each validKeys as |sshKey|}}
+          <div class="ssh-key-item">
+            <div class="ssh-key-info">
+              <label>{{sshKey.name}}</label>
+              <div class="ssh-key-fingerprint">{{sshKey.publicKeyFingerprint}}</div>
+            </div>
+            <div class="ssh-key-nav app-list-nav">
+              <ul class="nav nav-pills sub-nav-tabs">
+                <li>
+                  <a class="btn delete-key" {{action 'deleteKey' sshKey}}>
+                    <i class="fa fa-times"></i>
+                    <span class="button-label">Delete SSH Key</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+    {{/if}}
 
     {{#if error}}
       <div class="panel-body">
@@ -42,39 +57,40 @@
         <div class="panel-body">
           <form>
             <div class="form-group">
-              <label class="block" for="name">SSH Key Name</label>
+              <label class="block" for="name">SSH key name</label>
               {{input value=newKey.name name="name" class="form-control"}}
             </div>
             <div class="form-group">
-              <label>Set your public SSH key</label>
+              <label>Public SSH key</label>
               {{textarea value=newKey.sshPublicKey name="ssh-public-key" class="form-control monospace" cols="40" rows="10"}}
-            </div>
-
-            <div class="resource-actions">
-              <button {{action 'cancelSaveKey'}} {{bind-attr disabled=newKey.isSaving}}
-                      class="nevermind btn btn-lg-text btn-default pull-left"
-                      type="button">
-                Cancel
-              </button>
-
-              <button {{action 'saveKey'}} {{bind-attr disabled=newKey.isSaving}}
-                      class="btn btn-lg-text btn-primary confirm-action"
-                      type="submit">
-                {{#if newKey.isSaving}}Saving{{else}}Save new SSH key{{/if}}
-              </button>
             </div>
           </form>
         </div>
       </div>
+      <div class="resource-actions">
+        <button {{action 'cancelSaveKey'}} {{bind-attr disabled=newKey.isSaving}}
+                class="nevermind btn btn-lg-text btn-default pull-left"
+                type="button">
+          Cancel
+        </button>
+
+        <button {{action 'saveKey'}} {{bind-attr disabled=newKey.isSaving}}
+                class="btn btn-lg-text btn-primary confirm-action"
+                type="submit">
+          {{#if newKey.isSaving}}Saving{{else}}Save new SSH key{{/if}}
+        </button>
+      </div>
 
     {{else}}
-      <div class="resource-actions">
-        {{#if model.length}}
-          <button class='btn btn-primary' {{action 'addKey'}}>Add another SSH key</button>
-        {{else}}
-          <button class='btn btn-primary' {{action 'addKey'}}>Add your first SSH key</button>
-        {{/if}}
-      </div>
+      {{#if session.currentUser.verified}}
+        <div class="resource-actions">
+          {{#if model.length}}
+            <button class='btn btn-primary' {{action 'addKey'}}>Add another SSH key</button>
+          {{else}}
+            <button class='btn btn-primary' {{action 'addKey'}}>Add your first SSH key</button>
+          {{/if}}
+        </div>
+      {{/if}}
     {{/if}}
 
   </div>

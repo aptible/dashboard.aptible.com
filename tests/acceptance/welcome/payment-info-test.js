@@ -130,7 +130,8 @@ test('payment info should be submitted to stripe to create stripeToken', functio
     return this.success({
       id: stackHandle,
       handle: stackHandle,
-      type: 'development'
+      type: 'development',
+      activated: true
     });
   });
 
@@ -190,8 +191,8 @@ test('submitting valid payment info for development plan should create dev stack
   stubRequest('post', '/accounts', function(request){
     var params = this.json(request);
     stackAssertions[params.handle](params);
-
-    return this.success(Ember.merge({id:params.handle},params));
+    params.activated = true;
+    return this.success(Ember.merge({id:params.handle }, params));
   });
 
   stubOrganizations();
@@ -219,6 +220,7 @@ test('submitting valid payment info should create app', function() {
 
   stubRequest('post', '/accounts', function(request){
     var params = this.json(request);
+    params.activated = true;
     return this.success(Ember.merge({id:params.handle}, params));
   });
 
@@ -258,6 +260,7 @@ test('submitting valid payment info should create db', function() {
 
   stubRequest('post', '/accounts', function(request){
     var params = this.json(request);
+    params.activated = true;
     return this.success(Ember.merge({id:params.handle}, params));
   });
 
@@ -303,6 +306,7 @@ test('submitting valid payment info when user is verified should provision db', 
 
   stubRequest('post', '/accounts', function(request){
     let params = this.json(request);
+    params.activated = true;
     return this.success(Ember.merge({id:params.handle},params));
   });
 
