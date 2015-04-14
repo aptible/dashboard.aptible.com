@@ -90,7 +90,8 @@ export default Ember.Object.extend({
     this.get('analytics').identify(user.get('id'), {
       email: email,
       id: user.get('id'),
-      name: user.get('name')
+      name: user.get('name'),
+      createdAt: user.get('createdAt')
     });
   }
 
