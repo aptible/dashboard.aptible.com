@@ -221,7 +221,7 @@ test(`visit ${url} when user is not verified shows "Cannot create" message`, fun
   andThen( () => {
     expectNoButton('Save Database');
     expectNoButton('Cancel');
-    let message = find('.panel-heading h3');
+    let message = find('.activate-panel h1');
     ok(message.text().indexOf('Cannot create a new database') > -1,
        'shows cannot create db message');
   });

@@ -6,46 +6,50 @@
   {{/link-to}}
 </div>
 
-<ul class="nav sidebar-nav">
-  <li class="title">
-    Apps
+{{#if stack.apps}}
+  <ul class="nav sidebar-nav">
+    <li class="title">
+      Apps
 
-    {{#aptible-ability scope="manage" user=user permittable=stack as |hasAbility|}}
-      {{#if hasAbility}}
-        {{#link-to 'apps.new' stack }}
-          {{#bs-tooltip title='Create new app'}}
-            <i class="fa fa-plus"></i>
-          {{/bs-tooltip}}
-        {{/link-to}}
-      {{/if}}
-    {{/aptible-ability}}
-  </li>
+      {{#aptible-ability scope="manage" user=user permittable=stack as |hasAbility|}}
+        {{#if hasAbility}}
+          {{#link-to 'apps.new' stack }}
+            {{#bs-tooltip title='Create new app'}}
+              <i class="fa fa-plus"></i>
+            {{/bs-tooltip}}
+          {{/link-to}}
+        {{/if}}
+      {{/aptible-ability}}
+    </li>
 
-  {{#each stack.apps as |app|}}
-    {{#link-to 'app' app tagName="li"}}
-      {{link-to app.handle 'app' app bubbles=false}}
-    {{/link-to}}
-  {{/each}}
-</ul>
+    {{#each stack.apps as |app|}}
+      {{#link-to 'app' app tagName="li"}}
+        {{link-to app.handle 'app' app bubbles=false}}
+      {{/link-to}}
+    {{/each}}
+  </ul>
+{{/if}}
 
-<ul class="nav sidebar-nav">
-  <li class="title">
-    Databases
+{{#if stack.databases}}
+  <ul class="nav sidebar-nav">
+    <li class="title">
+      Databases
 
-    {{#aptible-ability scope="manage" user=user permittable=stack as |hasAbility|}}
-      {{#if hasAbility}}
-        {{#link-to 'databases.new' stack}}
-          {{#bs-tooltip title='Create new database'}}
-            <i class="fa fa-plus"></i>
-          {{/bs-tooltip}}
-        {{/link-to}}
-      {{/if}}
-    {{/aptible-ability}}
-  </li>
+      {{#aptible-ability scope="manage" user=user permittable=stack as |hasAbility|}}
+        {{#if hasAbility}}
+          {{#link-to 'databases.new' stack}}
+            {{#bs-tooltip title='Create new database'}}
+              <i class="fa fa-plus"></i>
+            {{/bs-tooltip}}
+          {{/link-to}}
+        {{/if}}
+      {{/aptible-ability}}
+    </li>
 
-  {{#each stack.databases as |database|}}
-    {{#link-to 'database' database tagName="li"}}
-      {{link-to database.handle 'database' database bubbles=false}}
-    {{/link-to}}
-  {{/each}}
-</ul>
+    {{#each stack.databases as |database|}}
+      {{#link-to 'database' database tagName="li"}}
+        {{link-to database.handle 'database' database bubbles=false}}
+      {{/link-to}}
+    {{/each}}
+  </ul>
+{{/if}}

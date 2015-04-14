@@ -19,8 +19,10 @@ export default Ember.Route.extend({
 
     if(stacks.get('length') === 0) {
       this.transitionTo('welcome.first-app');
-    } else {
+    } else if (stack.get('activated')) {
       this.transitionTo('apps', stack);
+    } else {
+      this.transitionTo('stack.activate', stack);
     }
   }
 });
