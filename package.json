@@ -12,7 +12,7 @@
     "build": "ember build",
     "test": "ember test"
   },
-  "repository": "https://github.com/aptible/diesel.aptible.com",
+  "repository": "https://github.com/aptible/dashboard.aptible.com",
   "engines": {
     "node": ">= 0.10.0"
   },
