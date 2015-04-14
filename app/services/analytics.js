@@ -131,5 +131,4 @@ export default Ember.Service.extend({
       window.analytics.page(name, Ember.run.bind(null, resolve));
     });
   }
-
 });
