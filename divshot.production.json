@@ -1,5 +1,5 @@
 {
-  "name": "diesel",
+  "name": "diesel-production",
   "root": "./dist",
   "clean_urls": true,
   "routes": {

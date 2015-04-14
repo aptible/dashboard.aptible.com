@@ -1,8 +1,10 @@
-# ![Aptible](http://aptible-media-assets-manual.s3.amazonaws.com/tiny-github-icon.png) dashboard.aptible.com 
+# ![Aptible](http://aptible-media-assets-manual.s3.amazonaws.com/tiny-github-icon.png) dashboard.aptible.com
 
 [![Build Status](https://travis-ci.org/aptible/dashboard.aptible.com.svg?branch=master)](https://travis-ci.org/aptible/dashboard.aptible.com) [![Stories in Ready](https://badge.waffle.io/aptible/dashboard.aptible.com.svg?label=ready&title=Ready)](http://waffle.io/aptible/dashboard.aptible.com)
 
-Aptible's customer dashboard. It allows users to manage organizations, access controls, and ops.
+Aptible's customer dashboard (aka **Diesel**). It allows users to manage organizations, access controls, and ops.
+
+The NPM package and internal project name for this Ember app is `diesel`.
 
 ## Prerequisites
 
