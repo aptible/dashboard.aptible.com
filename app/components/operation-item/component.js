@@ -5,9 +5,11 @@ export default Ember.Component.extend({
   operationAction: function() {
     var type = this.get('operation.type');
     if(type === 'execute') {
-      type = 'SSH';
+      return 'SSHed';
+    } else if (type === 'configure') {
+      return 'configured';
+    } else {
+      return `${type}ed`;
     }
-
-    return `${type}ed`;
   }.property('operation.type')
 });
