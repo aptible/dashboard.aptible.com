@@ -1,5 +1,5 @@
 {{#save-progress progress=saveProgress progressMessage="Provisioning your new environment..."}}
-  {{pricing-page-header plan=model.plan}}
+  {{pricing-page-header plan=firstApp.plan}}
   <div class="signup-form payment-information">
     <div class="row">
       <div class="col-xs-5 col-xs-offset-1">
@@ -44,14 +44,14 @@
       </div>
       <div class="col-xs-5">
         <div class="welcome-info">
-          {{plan-description app=firstApp plan=model.plan}}
+          {{plan-description app=firstApp plan=firstApp.plan}}
         </div>
       </div>
     </div>
 
     <div class="row">
       <div class="col-xs-10 col-xs-offset-1">
-        {{change-plan value=model.plan}}
+        {{change-plan value=firstApp.plan}}
       </div>
     </div>
 
