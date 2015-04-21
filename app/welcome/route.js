@@ -7,6 +7,9 @@ export function resetDBData(model){
 }
 
 export default Ember.Route.extend({
+  queryParams: {
+    plan: { }
+  },
   beforeModel: function(){
     if(this.session.get('isAuthenticated')) {
       return this.store.find('stack').then((stacks) => {
@@ -19,11 +22,18 @@ export default Ember.Route.extend({
     }
   },
 
-  model: function(){
-    return this.store.find('organization').then(function(organizations){
+  model: function(params){
+    return this.store.find('organization').then((organizations) => {
       let stackHandle = organizations.objectAt(0).get('name').dasherize();
+      let plan = params.plan || 'development';
+
+      if(plan === 'production') {
+        plan = 'platform';
+      }
+
       let model = {
-        stackHandle
+        stackHandle,
+        plan
       };
       resetDBData(model);
       return model;

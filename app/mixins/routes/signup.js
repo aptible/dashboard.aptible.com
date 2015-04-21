@@ -5,6 +5,7 @@ export default Ember.Mixin.create({
   actions: {
     signup: function(user, organization){
       let {email, password} = user.getProperties('email', 'password');
+      let plan = this.get('controller.plan') || 'development';
 
       user.save().then(() => {
         let credentials = buildCredentials(email, password);
@@ -14,7 +15,7 @@ export default Ember.Mixin.create({
         if (organization) {
           // standard signup flow, create organization at the same time
           return organization.save().then(() => {
-            this.transitionTo('welcome.first-app');
+            this.transitionTo('welcome.first-app', { queryParams: { plan: plan }});
           });
         } else {
           // accepting invitation, redirect to accept page

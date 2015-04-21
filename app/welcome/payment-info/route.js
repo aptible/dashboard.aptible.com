@@ -3,14 +3,6 @@ import { createStripeToken } from '../../utils/stripe';
 import { provisionDatabases } from '../../models/database';
 
 export default Ember.Route.extend({
-  model: function() {
-    return {
-      // TODO: should come from the link they click
-      // on the sales site to visit the signup flow
-      plan: 'development'
-    };
-  },
-
   setupController: function(controller, model) {
     controller.set('model', model);
     var firstApp = this.modelFor('welcome');
@@ -47,7 +39,7 @@ export default Ember.Route.extend({
         saveProgress.set('currentStep', 2);
         organization = result.organizations.objectAt(0);
         var subscription = store.createRecord('subscription', {
-          plan: model.plan,
+          plan: welcomeModel.plan,
           stripeToken: result.stripeResponse.id,
           organization: organization
         });

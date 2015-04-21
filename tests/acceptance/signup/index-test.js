@@ -63,6 +63,57 @@ test('Creating an account directs to welcome wizard', function() {
   });
 });
 
+test('Signing up with a platform plan shows platform copy', function() {
+  // for loading information on the welcome.first-app screen
+  stubStacks({}, []);
+  stubOrganizations();
+  url = `${url}?plan=platform`;
+
+  stubRequest('post', '/organizations', function(request){
+    let params = this.json(request);
+    equal(params.name, userInput.organization, 'correct organization is passed');
+    return this.success({
+      id: 'my-organization',
+      name: userInput.organization
+    });
+  });
+
+  doSignupSteps(url, userInput, {clickButton:false});
+  fillInput('organization', userInput.organization);
+  clickButton('Create account');
+
+  andThen(function() {
+    equal(currentPath(), 'welcome.first-app', 'directs to first app');
+    ok(find(':contains(Create Your Aptible platform Environment)'));
+    ok(find(':contains(Create a database to store PHI)'));
+  });
+});
+
+test('Signing up with no plan shows development copy', function() {
+  // for loading information on the welcome.first-app screen
+  stubStacks({}, []);
+  stubOrganizations();
+
+  stubRequest('post', '/organizations', function(request){
+    let params = this.json(request);
+    equal(params.name, userInput.organization, 'correct organization is passed');
+    return this.success({
+      id: 'my-organization',
+      name: userInput.organization
+    });
+  });
+
+  doSignupSteps(url, userInput, {clickButton:false});
+  fillInput('organization', userInput.organization);
+  clickButton('Create account');
+
+  andThen(function() {
+    equal(currentPath(), 'welcome.first-app', 'directs to first app');
+    ok(find(':contains(Create Your Aptible development Environment)'));
+    ok(find(':contains(Create a database for your app)'));
+  });
+});
+
 test(`visiting ${url} and signing up with too-short organization name shows error`, function() {
   let tooShortOrganizationName = 'ba';
 

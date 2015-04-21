@@ -1,12 +1,13 @@
 .container.focus {
   .page-header {
     margin: 50px 0;
+    padding: 0;
 
     h1 {
+      text-transform: capitalize;
       line-height: 39px;
       font-size: 26px;
       margin: 0 auto;
-      max-width: 500px;
     }
   }
 }
