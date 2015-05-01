@@ -13,12 +13,12 @@ export default Ember.Component.extend({
     this._super.apply(this, arguments);
 
     this._stagedObjectKey = {
-      organizationRole: this.organizationRole,
-      user: this.user
+      organizationRole: this.get('organizationRole'),
+      user: this.get('user')
     };
 
     this.updateUI();
-    this.changeset.subscribeAll(() => this.updateUI());
+    this.get('changeset').subscribeAll(() => this.updateUI());
   },
 
   updateUI() {
@@ -27,13 +27,13 @@ export default Ember.Component.extend({
   },
 
   updateCheckbox() {
-    const isChecked = this.changeset.value(this._stagedObjectKey);
+    const isChecked = this.get('changeset').value(this._stagedObjectKey);
     this.set('isChecked', isChecked);
   },
 
   updateDisabled() {
     let activeMemberships = [];
-    this.changeset.forEachValue((keyData, initialValue, value) => {
+    this.get('changeset').forEachValue((keyData, initialValue, value) => {
       if (value === true) { activeMemberships.push(keyData); }
     });
     const isDisabled = activeMemberships.length === 1 &&
@@ -44,7 +44,7 @@ export default Ember.Component.extend({
 
   click() {
     const isChecked = this.$().is(':checked');
-    this.changeset.setValue(this._stagedObjectKey, isChecked);
+    this.get('changeset').setValue(this._stagedObjectKey, isChecked);
   }
 
 });

@@ -143,20 +143,3 @@ test('failed verification displays error', function() {
     ok(Ember.$(':contains(error accepting this invitation)').length, 'Failed verifications shows error');
   });
 });
-
-test('failed verification displays error', function() {
-  var verificationCode = 'some-code';
-  var invitationId = 'some-invitation';
-
-  stubRequest('post', '/verifications', function(request){
-    var params = this.json(request);
-    return [401, jsonMimeType, {}];
-  });
-
-  signInAndVisit(url);
-  clickButton('Accept invitation');
-  andThen(function(){
-    equal(currentPath(), 'claim');
-    ok(Ember.$(':contains(error accepting this invitation)').length, 'Failed verifications shows error');
-  });
-});

@@ -29,7 +29,7 @@
             {{/if}}
             <div class="">
               <button {{action 'changePassword'}}
-                {{bind-attr disabled=model.isSaving}}
+                disabled={{model.isSaving}}
                 class="btn btn-primary" type="submit">
 
                 {{#if isSavingPassword}}
