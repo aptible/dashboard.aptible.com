@@ -205,7 +205,7 @@ test(`visit ${addLogUrl} when unverified shows cannot create message`, function(
   andThen( () => {
     expectNoButton('Save Log Drain');
     expectNoButton('Cancel');
-    let message = find('.activate-panel h1');
+    let message = find('.activate-notice h1');
     ok(message.text().indexOf('Cannot create a new log') > -1,
        'shows cannot create log message');
   });

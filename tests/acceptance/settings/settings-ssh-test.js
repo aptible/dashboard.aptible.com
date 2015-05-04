@@ -179,7 +179,7 @@ test(`visiting ${settingsSshUrl} as unverified user shows verification message`,
     expectNoButton('Add your first SSH key');
     expectNoButton('Add another SSH key');
 
-    let message = find('.activate-panel h1');
+    let message = find('.activate-notice h1');
     ok(message.text().indexOf('Activate your email') > -1,
        'shows unverified user message');
   });

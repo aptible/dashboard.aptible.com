@@ -1,11 +1,5 @@
-a.panel-link {
-  &:hover, &:active, &:link {
-    text-decoration: none;
-  }
-}
-
 .resource-list-grid {
-  .panel.panel-subdued {
+  .panel {
     .panel-heading {
       padding: 11px;
 
@@ -49,7 +43,7 @@ a.panel-link {
         }
 
         i.fa {
-          vertical-align: 1px;
+          vertical-align: 2px;
           margin: 0;
         }
       }
@@ -121,20 +115,34 @@ a.panel-link {
   }
 }
 
-.activate-panel {
-  background: #fafafa;
-  border-radius: 3px;
-  padding: 30px;
-
-  h1, h2 {
-    text-align: center;
-    font-size: 22px;
-    font-weight: $weight-normal;
+.resource-list-item {
+  .resource-metadata {
+    padding: 0;
+    margin: 0;
   }
 
-  h2 {
-    font-size: 14px;
-    line-height: 1.4em;
+  .resource-metadata-item {
+    margin: 0 0 20px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .resource-metadata-title,
+  .resource-metadata-value {
+    font-size: 12px;
+  }
+
+  .panel-body {
+    .success,
+    .danger {
+      font-size: 11px;
+    }
+  }
+
+  .empty-service {
     color: $color-light;
+    font-size: 11px;
   }
 }

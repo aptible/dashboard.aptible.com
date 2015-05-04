@@ -13,11 +13,11 @@ export default Ember.Component.extend({
   }.property(),
 
   dbTypes: [
-    { value: 'postgresql', imageSrc: '/assets/images/db-logos/postgres.png', title: 'PostgreSQL'},
-    { value: 'mongodb', imageSrc: '/assets/images/db-logos/mongo.png', title: 'MongoDB'},
-    { value: 'redis', imageSrc: '/assets/images/db-logos/redis.png', title: 'Redis'},
-    { value: 'mysql', imageSrc: '/assets/images/db-logos/mysql.png', title: 'MySQL'},
-    { value: 'couchdb', imageSrc: '/assets/images/db-logos/couchdb.png', title: 'CouchDB'},
-    { value: 'elasticsearch', imageSrc: '/assets/images/db-logos/elasticsearch.png', title: 'Elastic Search'}
+    { value: 'postgresql', imageSrc: '/images/db-logos/postgres.png', title: 'PostgreSQL'},
+    { value: 'mongodb', imageSrc: '/images/db-logos/mongo.png', title: 'MongoDB'},
+    { value: 'redis', imageSrc: '/images/db-logos/redis.png', title: 'Redis'},
+    { value: 'mysql', imageSrc: '/images/db-logos/mysql.png', title: 'MySQL'},
+    { value: 'couchdb', imageSrc: '/images/db-logos/couchdb.png', title: 'CouchDB'},
+    { value: 'elasticsearch', imageSrc: '/images/db-logos/elasticsearch.png', title: 'Elastic Search'}
   ]
 });

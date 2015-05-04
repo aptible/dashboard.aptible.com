@@ -1,0 +1,17 @@
+.activate-notice {
+  background: #fafafa;
+  border-radius: 3px;
+  padding: 30px;
+
+  h1, h2 {
+    text-align: center;
+    font-size: 22px;
+    font-weight: $weight-normal;
+  }
+
+  h2 {
+    font-size: 14px;
+    line-height: 1.4em;
+    color: $color-light;
+  }
+}
