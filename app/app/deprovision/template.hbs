@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-xs-9">
-    <div {{bind-attr class=":panel :panel-default :panel-subdued isPending:panel-danger"}}>
+    <div {{bind-attr class=":panel :panel-default isPending:panel-danger"}}>
       <div class="panel-heading">
         {{#if model.hasBeenDeployed}}
           <h3>Permanently deprovision {{model.handle}}</h3>
@@ -20,12 +20,12 @@
           {{/if}}
 
           {{#if model.hasBeenDeployed}}
-            <p>
+            <div class="form-group">
               This action CANNOT be undone. This will permanently deprovision
               <strong>{{model.handle}}</strong>.
-            </p>
+            </div>
 
-            <div class="form-group">
+            <div>
               <label>Type the name of the app to permanently deprovision.</label>
 
               {{#button-with-confirmation confirmValue=model.handle action='deprovision'}}

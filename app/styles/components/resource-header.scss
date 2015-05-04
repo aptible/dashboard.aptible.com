@@ -1,5 +1,5 @@
 header.resource-header {
-  border-bottom: 1px solid $color-bg-gray;
+  border-bottom: 1px solid $color-border-gray;
 
   .resource-title {
     @extend %clearfix;
@@ -65,26 +65,6 @@ header.resource-header {
       float: left;
       margin-right: 30px;
     }
-  }
-}
-
-.resource-list-item {
-  .resource-metadata {
-    padding: 0;
-    margin: 0;
-  }
-
-  .resource-metadata-item {
-    margin: 0 0 20px;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  .resource-metadata-title,
-  .resource-metadata-value {
-    font-size: 12px;
   }
 }
 

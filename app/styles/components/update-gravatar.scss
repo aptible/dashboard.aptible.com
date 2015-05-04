@@ -1,0 +1,24 @@
+.update-gravatar {
+  @extend %clearfix;
+
+  .gravatar {
+    float: left;
+    margin-right: 10px;
+  }
+
+  .update-gravatar-info {
+    h5 {
+      margin-top: 0;
+    }
+
+    h6 {
+      color: $color-light;
+      font-weight: $weight-normal;
+
+      strong {
+        color: $color-primary;
+        font-weight: $weight-semibold;
+      }
+    }
+  }
+}

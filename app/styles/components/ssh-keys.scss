@@ -1,0 +1,33 @@
+.ssh-keys {
+  margin: 0;
+
+  .ssh-key-item {
+    @extend %clearfix;
+    border-bottom: 1px solid $color-border-gray;
+    padding: 10px;
+
+    &:last-child {
+      border: 0;
+    }
+
+    .ssh-key-info {
+      float: left;
+
+      label {
+        color: $color-primary;
+        margin-bottom: 5px;
+      }
+
+      .ssh-key-fingerprint {
+        color: $color-light;
+        font-family: "Inconsolata", Menlo, Monaco, monospace;
+        font-size: 11px;
+      }
+    }
+
+    .ssh-key-nav {
+      margin-top: 2px;
+      float: right;
+    }
+  }
+}
