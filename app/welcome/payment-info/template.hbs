@@ -27,10 +27,10 @@
 
               <div class="form-group">
                 <div class="expiration-month">
-                  {{select-month value=model.expMonth name="exp-month"}}
+                  {{select-month value=model.expMonth name="exp-month" prompt="Exp month"}}
                 </div>
                 <div class="expiration-year">
-                  {{select-year value=model.expYear name="exp-year"}}
+                  {{select-year value=model.expYear name="exp-year" prompt="Exp year"}}
                 </div>
 
                 {{input class="form-control zip" value=model.zip name="zip" placeholder="Billing zip"}}
