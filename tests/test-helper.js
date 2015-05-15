@@ -3,7 +3,7 @@ import {
   setResolver
 } from 'ember-qunit';
 import config from "../config/environment";
-import FakeServer from "./helpers/fake-server";
+import FakeServer from "ember-cli-fake-server";
 import { stubStripe, teardownStripe } from "./helpers/mock-stripe";
 import {stubAnalytics, teardownAnalytics} from './helpers/mock-analytics';
 import storage from 'diesel/utils/storage';

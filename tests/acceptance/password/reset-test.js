@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import startApp from '../../helpers/start-app';
-import { stubRequest, jsonMimeType } from '../../helpers/fake-server';
+import { stubRequest } from '../../helpers/fake-server';
 
 let App;
 
@@ -36,10 +36,9 @@ test('visiting /password/reset and submitting an email creates password reset', 
   expect(2);
   let email = 'myEmail@email.com';
 
-  stubRequest('post', '/password/resets/new', function(request){
-    var json = this.json(request);
-    equal(json.email, email, 'email is sent');
-    return this.success(200, jsonMimeType, {});
+  stubRequest('post', '/password/resets/new', (request) => {
+    equal(request.json().email, email, 'email is sent');
+    request.created({});
   });
 
   visit('/password/reset');
@@ -54,9 +53,7 @@ test('visiting /password/reset and submitting an email handles error and resets 
   expect(4);
   var email = 'myEmail@email.com';
 
-  stubRequest('post', '/password/resets/new', function(request){
-    return this.notFound();
-  });
+  stubRequest('post', '/password/resets/new', (request) => request.notFound());
 
   visit('/password/reset');
   fillInput('email', email);
