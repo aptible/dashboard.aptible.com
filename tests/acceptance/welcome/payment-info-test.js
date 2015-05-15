@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import startApp from '../../helpers/start-app';
 import { mockStripe } from '../../helpers/mock-stripe';
-import { stubRequest } from "../../helpers/fake-server";
+import { stubRequest } from '../../helpers/fake-server';
 
 let application;
 let oldCreateToken;

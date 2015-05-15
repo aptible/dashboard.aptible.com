@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import { createStripeToken } from '../../utils/stripe';
-import { provisionDatabases } from '../../models/database';
+import { createStripeToken } from 'diesel/utils/stripe';
+import { provisionDatabases } from 'diesel/models/database';
 
 export default Ember.Route.extend({
   setupController: function(controller, model) {

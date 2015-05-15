@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Changeset from 'diesel/utils/changeset';
+import Changeset from "diesel/utils/changeset";
 
 export default Ember.Route.extend({
   model(){

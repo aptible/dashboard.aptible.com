@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import DisallowAuthenticated from "../../mixins/routes/disallow-authenticated";
+import DisallowAuthenticated from "diesel/mixins/routes/disallow-authenticated";
 
 export default Ember.Route.extend(DisallowAuthenticated, {
   model: function(params){

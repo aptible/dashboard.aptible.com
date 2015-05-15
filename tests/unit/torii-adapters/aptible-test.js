@@ -4,11 +4,11 @@ import {
 } from 'ember-qunit';
 import config from "../../../config/environment";
 import { auth } from '../../../adapters/application';
-import storage from '../../../utils/storage';
+import storage from 'diesel/utils/storage';
 import { stubRequest } from '../../helpers/fake-server';
 import DS from "ember-data";
 import Ember from "ember";
-import modelDeps from "../../support/common-model-dependencies";
+import modelDeps from '../../support/common-model-dependencies';
 
 var originalWrite, originalRead;
 

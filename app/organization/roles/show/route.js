@@ -1,4 +1,4 @@
-import Changeset from 'diesel/utils/changeset';
+import Changeset from "diesel/utils/changeset";
 import Ember from 'ember';
 import DS from 'ember-data';
 

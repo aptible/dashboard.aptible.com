@@ -16,7 +16,7 @@ export default Ember.Route.extend({
   renderTemplate: function(controller){
     if (!this.session.get('currentUser.verified')) {
       controller.set('resourceType', 'app');
-      this.render('shared/unverified');
+      this.render('unverified');
     } else {
       this._super.apply(this, arguments);
     }
