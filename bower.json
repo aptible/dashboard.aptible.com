@@ -12,7 +12,7 @@
     "ember-qunit": "0.3.0",
     "ember-qunit-notifications": "0.0.7",
     "qunit": "~1.17.1",
-    "pretender": "0.3.1",
+    "pretender": "~0.6.0",
     "JavaScript-MD5": "~1.1.0",
     "bootstrap-sass": "twbs/bootstrap-sass#3.3.1",
     "zeroclipboard": "~2.2.0",

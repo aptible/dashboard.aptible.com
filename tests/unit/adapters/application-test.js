@@ -4,7 +4,7 @@ import {
 } from 'ember-qunit';
 import DS from "ember-data";
 import Ember from "ember";
-import { stubRequest } from '../../helpers/fake-server';
+import { stubRequest } from 'ember-cli-fake-server';
 
 var Moose = DS.Model.extend();
 

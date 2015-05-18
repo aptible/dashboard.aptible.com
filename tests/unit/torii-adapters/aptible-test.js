@@ -5,7 +5,7 @@ import {
 import config from "../../../config/environment";
 import { auth } from '../../../adapters/application';
 import storage from 'dummy/utils/storage';
-import { stubRequest } from '../../helpers/fake-server';
+import { stubRequest } from 'ember-cli-fake-server';
 import DS from "ember-data";
 import Ember from "ember";
 import modelDeps from '../../support/common-model-dependencies';
