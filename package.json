@@ -2,7 +2,6 @@
   "name": "ember-cli-aptible-shared",
   "version": "0.0.1",
   "description": "Shared resources for Aptible's Ember Apps",
-  "private": true,
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -12,11 +11,11 @@
     "build": "ember build",
     "test": "ember test"
   },
-  "repository": "",
+  "repository": "https://github.com/aptible/ember-cli-aptible-shared",
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "author": "Aptible",
   "license": "MIT",
   "dependencies": {
     "ember-cli-babel": "~5.0.0",
@@ -24,7 +23,6 @@
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.0.2",
-    "broccoli-sass": "^0.2.4",
     "ember-cli": "0.2.2",
     "ember-cli-app-version": "0.3.3",
     "ember-cli-content-security-policy": "0.3.0",
