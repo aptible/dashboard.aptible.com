@@ -1,13 +1,18 @@
 /* jshint node: true */
 
-/* jshint node: true */
-
 module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'dummy',
     environment: environment,
     baseURL: '/',
     locationType: 'auto',
+    replaceLocation: true,
+    replaceTitle: true,
+    aptibleHosts: {
+      compliance: 'http://localhost:3001',
+      support: "https://support.aptible.com",
+      'legacy-dashboard': "http://localhost:3000"
+    },
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build

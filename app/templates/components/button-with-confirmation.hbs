@@ -1,0 +1,9 @@
+<div class="row">
+  <div class="col-xs-7">
+    {{input classNameBindings=":form-control isConfirmed:confirmed:unconfirmed" value=enteredValue name="virtual-domain"}}
+  </div>
+
+  <div class="col-xs-5">
+    <button {{bind-attr disabled=isUnconfirmed}} class="btn btn-danger btn-lg" {{action 'submit'}}>{{yield}}</button>
+  </div>
+</div>
