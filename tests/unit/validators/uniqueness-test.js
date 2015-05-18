@@ -3,7 +3,7 @@ import {
   test
 } from 'ember-qunit';
 import Ember from "ember";
-import { stubRequest } from '../../helpers/fake-server';
+import { stubRequest } from 'ember-cli-fake-server';
 
 let model;
 let claimUrl = '/claims/organization';

@@ -2,7 +2,7 @@ import {
   moduleForModel,
   test
 } from 'ember-qunit';
-import { stubRequest } from '../../helpers/fake-server';
+import { stubRequest } from 'ember-cli-fake-server';
 import modelDeps from '../../support/common-model-dependencies';
 import DS from "ember-data";
 import Ember from "ember";
