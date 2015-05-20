@@ -4,7 +4,7 @@ import {
   test
 } from 'qunit';
 import startApp from 'diesel/tests/helpers/start-app';
-import {stubRequest} from 'diesel/tests/helpers/fake-server';
+import { stubRequest } from '../../helpers/fake-server';
 
 var application;
 // MUST match the stubbed organization role for this user in `signIn` helper

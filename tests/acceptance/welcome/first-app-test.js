@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import startApp from '../../helpers/start-app';
-import { stubRequest } from "../../helpers/fake-server";
+import { stubRequest } from '../../helpers/fake-server';
 var application;
 
 let claimUrls = ['/claims/user', '/claims/account', '/claims/app', '/claims/database'];

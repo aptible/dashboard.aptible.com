@@ -2,9 +2,8 @@ import Ember from 'ember';
 import Resolver from 'ember/resolver';
 import loadInitializers from 'ember/load-initializers';
 import config from './config/environment';
-import AuthenticatedRouteMixin from './mixins/routes/authenticated';
-
-import { RouteExtension, RouterExtension } from './utils/title-route-extensions';
+import AuthenticatedRouteMixin from 'diesel/mixins/routes/authenticated';
+import { RouteExtension, RouterExtension } from 'diesel/utils/title-route-extensions';
 
 Ember.Route.reopen(RouteExtension);
 Ember.Router.reopen(RouterExtension);

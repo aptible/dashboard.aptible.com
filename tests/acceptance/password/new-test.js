@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import startApp from '../../helpers/start-app';
-import { stubRequest, jsonMimeType } from '../../helpers/fake-server';
+import { stubRequest } from '../../helpers/fake-server';
 
 var App;
 

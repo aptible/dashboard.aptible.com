@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Location from "../utils/location";
+import Location from '../utils/location';
 import config from '../config/environment';
 
 export default Ember.Route.extend({

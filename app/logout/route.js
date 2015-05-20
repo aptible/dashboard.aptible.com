@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Location from "../utils/location";
+import Location from '../utils/location';
 
 export default Ember.Route.extend({
   beforeModel: function(){

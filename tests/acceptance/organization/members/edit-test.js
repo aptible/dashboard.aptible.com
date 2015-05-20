@@ -4,7 +4,7 @@ import {
   test
 } from 'qunit';
 import startApp from 'diesel/tests/helpers/start-app';
-import {stubRequest} from 'diesel/tests/helpers/fake-server';
+import { stubRequest } from 'diesel/tests/helpers/fake-server';
 
 let application;
 let orgId = 'big-co';

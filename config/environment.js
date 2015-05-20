@@ -23,7 +23,7 @@ module.exports = function(environment) {
     segmentioKey: 'Jp74HTqG03zhS4cAJK4pueo2FL1Z6bM3',
 
     externalUrls: {
-      gettingStartedDocs: 'https://support.aptible.com/hc/en-us/articles/202638630-Deploying-your-first-app'
+      gettingStartedDocs: 'https://support.aptible.com/quickstart'
     },
 
     flashMessageDefaults: {
