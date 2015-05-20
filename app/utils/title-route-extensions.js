@@ -58,9 +58,9 @@ export const RouteExtension = {
 };
 
 export const RouterExtension = {
-  updateTitle: function() {
+  updateTitle: Ember.on('didTransition', function() {
     this.send('collectTitleTokens', []);
-  }.on('didTransition'),
+  }),
 
   setTitle: function(title) {
     Title.replace(title);

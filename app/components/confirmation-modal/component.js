@@ -7,13 +7,13 @@ export default Ember.Component.extend({
   classNames: ['flex-wrapper confirmation-modal-wrapper'],
   model: Ember.computed.reads('modal.model'),
 
-  startConfirmationModalServiceListener: function() {
+  startConfirmationModalServiceListener: Ember.on('init', function() {
     this._super.apply(this, arguments);
     this.get('confirmationModalService').on('open', (modal) => {
       this.set('modal', modal);
       this.set('isOpen', true);
     });
-  }.on('init'),
+  }),
 
   close() {
     this.set('isOpen', false);

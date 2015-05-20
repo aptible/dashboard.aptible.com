@@ -18,12 +18,12 @@ import BootstrapComponentOptions from '../../mixins/components/bootstrap-compone
 export default Ember.Component.extend(BootstrapComponentOptions, {
   tagName: 'span',
 
-  setupTooltip: function(){
+  setupTooltip: Ember.on('didInsertElement', function(){
     var options = this.getBootstrapOptions();
     var tooltip = this.$(':first-child').tooltip(options);
 
     if(options.trigger === 'immediate') {
       tooltip.tooltip('show');
     }
-  }.on('didInsertElement')
+  })
 });

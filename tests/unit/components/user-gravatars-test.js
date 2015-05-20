@@ -13,7 +13,7 @@ test('it renders', function() {
   expect(2);
 
   var component = this.subject({
-    users: [Ember.Object.create({ email: 'test@example.com'} )],
+    users: Ember.A([Ember.Object.create({ email: 'test@example.com'})]),
     size: 24,
     count: 1,
     placeholder: '--'
@@ -26,12 +26,12 @@ test('it renders', function() {
 });
 
 test('it truncates users when passed a count', function() {
-  let users = [
-    Ember.Object.create({ email: 'test@example.com'} ),
-    Ember.Object.create({ email: 'test1@example.com'} ),
-    Ember.Object.create({ email: 'test2@example.com'} ),
-    Ember.Object.create({ email: 'test3@example.com'} ),
-  ];
+  let users = Ember.A([
+    Ember.Object.create({ email: 'test@example.com'}),
+    Ember.Object.create({ email: 'test1@example.com'}),
+    Ember.Object.create({ email: 'test2@example.com'}),
+    Ember.Object.create({ email: 'test3@example.com'}),
+  ]);
 
   let component = this.subject({
     users: users,

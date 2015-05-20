@@ -10,7 +10,7 @@ export default Ember.Component.extend({
     this.body = Ember.$(document.body);
   },
 
-  updateDocumentClickListener: function(){
+  updateDocumentClickListener: Ember.observer('isOpen', function(){
     var component = this;
 
     if (!this.get('isOpen')) {
@@ -26,11 +26,11 @@ export default Ember.Component.extend({
         component.set('isOpen', false);
       });
     });
-  }.observes('isOpen'),
+  }),
 
-  detachDocumentClickListener: function(){
+  detachDocumentClickListener: Ember.on('willDestroyElement', function(){
     this.body.off(this.eventName);
-  }.on('willDestroyElement'),
+  }),
 
   actions: {
     toggle: function(){

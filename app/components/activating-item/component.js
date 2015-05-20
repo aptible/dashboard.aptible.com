@@ -8,7 +8,7 @@ export default Ember.Component.extend({
 
   currentWhen: null,
 
-  active: function(){
+  active: Ember.computed('routingService.currentPath', 'currentWhen', function() {
     return this.get('routingService.currentPath').indexOf(this.get('currentWhen')) === 0;
-  }.property('routingService.currentPath', 'currentWhen')
+  })
 });

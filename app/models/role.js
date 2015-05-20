@@ -8,7 +8,7 @@ export default DS.Model.extend({
   invitations: DS.hasMany('invitations', {async:true}),
   users: DS.hasMany('users', {async:true}),
 
-  persistedInvitations: function(){
+  persistedInvitations: Ember.computed('invitations.[]', function() {
     return this.get('invitations').rejectBy('isNew');
-  }.property('invitations.[]')
+  })
 });

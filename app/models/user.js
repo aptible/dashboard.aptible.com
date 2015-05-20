@@ -28,7 +28,7 @@ export default DS.Model.extend({
     return can(this, scope, stack);
   },
 
-  organizations: function() {
+  organizations: Ember.computed('roles.@each.organization', function() {
     var organizations = {};
 
     this.get('roles').forEach(function(role) {
@@ -41,5 +41,5 @@ export default DS.Model.extend({
       return organizations[organizationId];
     });
 
-  }.property('roles.@each.organization')
+  })
 });

@@ -26,9 +26,9 @@ export default Ember.Component.extend({
   role: 'alert',
 
   alert: 'warning',
-  alertClass: function(){
+  alertClass: Ember.computed('alert', function() {
     return `alert-${this.get('alert')}`;
-  }.property('alert'),
+  }),
 
   actions: {
     dismiss: function(){
