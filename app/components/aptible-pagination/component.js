@@ -5,17 +5,17 @@ export default Ember.Component.extend({
   totalCount: 0,
   perPage: 0,
 
-  hasPrev: function(){
+  hasPrev: Ember.computed('currentPage', function() {
      return this.get('currentPage') > 1;
-  }.property('currentPage'),
+  }),
 
-  hasNext: function(){
+  hasNext: Ember.computed('currentPage','totalCount','perPage', function() {
     var currentPage = this.get('currentPage'),
         totalCount  = this.get('totalCount'),
         perPage     = this.get('perPage');
 
      return (totalCount / perPage) > currentPage;
-  }.property('currentPage','totalCount','perPage'),
+  }),
 
   actions: {
     nextPage: function(currentPage){

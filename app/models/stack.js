@@ -28,9 +28,9 @@ export default DS.Model.extend({
 
   // computed properties
   allowPHI: Ember.computed.match('type', /production/),
-  appContainerCentsPerHour: function() {
+  appContainerCentsPerHour: Ember.computed('allowPHI', function() {
     return this.get('allowPHI') ? 10 : 6;
-  }.property('allowPHI'),
+  }),
 
   permitsRole(role, scope){
     let permissions;
@@ -52,9 +52,9 @@ export default DS.Model.extend({
         };
       });
     }).then(function(stackRoleScopes){
-      return stackRoleScopes.filter((stackRoleScope) => {
+      return Ember.A(Ember.A(stackRoleScopes).filter((stackRoleScope) => {
         return role.get('id') === stackRoleScope.roleId;
-      }).any((stackRoleScope) => {
+      })).any((stackRoleScope) => {
         return stackRoleScope.scope === 'manage' ||
           stackRoleScope.scope === scope;
       });

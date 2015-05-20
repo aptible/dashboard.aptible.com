@@ -8,7 +8,7 @@ export default Ember.Component.extend({
   scope: null,
   permittable: null,
 
-  checkAbility: function(){
+  checkAbility: Ember.on('willInsertElement', function(){
     var user  = this.get('user'),
         scope = this.get('scope'),
         permittable = this.get('permittable'),
@@ -23,5 +23,5 @@ export default Ember.Component.extend({
 
        component.set('hasAbility', bool);
      });
-  }.on('willInsertElement')
+  })
 });

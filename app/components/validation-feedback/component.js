@@ -9,7 +9,7 @@ export default Ember.Component.extend({
 
   shouldShowFeedback: Ember.computed.or("value", "hasSubmitted"),
 
-  errorText: function() {
+  errorText: Ember.computed("error.[]", "fieldName", function() {
     var error = this.get("error");
     var fieldName = this.get('fieldName');
 
@@ -23,6 +23,6 @@ export default Ember.Component.extend({
     }
 
     return error;
-  }.property("error.[]", "fieldName")
+  })
 });
 

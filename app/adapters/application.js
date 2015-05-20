@@ -10,14 +10,14 @@ export default HalAdapter.extend(LookupMethodsWithRequestTypesMixin, {
 
   host: config.apiBaseUri,
 
-  headers: function(){
+  headers: Ember.computed(function(){
     if (!auth.token) {
       return {};
     }
     return {
       'Authorization': 'Bearer ' + auth.token
     };
-  }.property().volatile(),
+  }).volatile(),
 
   pathForType: function(type){
     if (type === 'stack') {

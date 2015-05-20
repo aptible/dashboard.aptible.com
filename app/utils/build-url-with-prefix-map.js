@@ -40,7 +40,7 @@ function checkConditions(requestType, conditions){
   if (conditions.length === 0) { return true; }
 
   requestType = requestType.toLowerCase();
-  return conditions.any((condition) => requestType.match(condition));
+  return Ember.A(conditions).any((condition) => requestType.match(condition));
 }
 
 /*

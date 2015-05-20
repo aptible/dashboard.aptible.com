@@ -11,19 +11,19 @@ export default Ember.Component.extend({
 
   attributeBindings: ['data-clipboard-text', 'title'],
 
-  setupClipboard: function(){
+  setupClipboard: Ember.on('didInsertElement', function(){
     this.clipboard = new ZeroClipboard( this.$() );
     this.clipboard.on('aftercopy', Ember.run.bind(this, 'afterCopy'));
-  }.on('didInsertElement'),
+  }),
 
   afterCopy: function(){
     this.set('copied', true);
     Ember.run.later(this, 'set', 'copied', false, 1500);
   },
 
-  teardownClipboard: function(){
+  teardownClipboard: Ember.on('willDestroyElement', function(){
     if (this.clipboard) {
       this.clipboard.destroy();
     }
-  }.on('willDestroyElement')
+  })
 });

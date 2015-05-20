@@ -19,7 +19,7 @@ import BootstrapComponentOptions from '../../mixins/components/bootstrap-compone
 export default Ember.Component.extend(BootstrapComponentOptions, {
   tagName: 'span',
 
-  setupPopover: function(){
+  setupPopover: Ember.on('didInsertElement', function(){
     this.$(':first-child').popover(this.getBootstrapOptions());
-  }.on('didInsertElement')
+  })
 });

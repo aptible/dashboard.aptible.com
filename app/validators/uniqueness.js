@@ -3,12 +3,12 @@ import Base from 'ember-validations/validators/base';
 import ajax from "../utils/ajax";
 
 export default Base.extend({
-  _validate: function() {
+  _validate: Ember.on('init', function() {
     this.errors.clear();
     return this.call();
-  }.on('init'),
+  }),
 
-  setupOptions: function() {
+  setupOptions: Ember.on('init', function() {
     if(this.options === true) {
       this.options = {};
     }
@@ -21,7 +21,7 @@ export default Base.extend({
     }, this.options);
 
     this._options = options;
-  }.on('init'),
+  }),
 
   getDataPropertyName() {
     return this.options.paramName || this.property.replace('model.', '');
