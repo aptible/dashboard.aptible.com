@@ -14,7 +14,7 @@
   {{/bs-popover}}
  */
 import Ember from 'ember';
-import BootstrapComponentOptions from 'diesel/mixins/components/bootstrap-component-options';
+import BootstrapComponentOptions from '../../mixins/components/bootstrap-component-options';
 
 export default Ember.Component.extend(BootstrapComponentOptions, {
   tagName: 'span',
