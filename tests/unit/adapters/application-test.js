@@ -15,7 +15,6 @@ moduleFor('adapter:application', 'ApplicationAdapter', {
 
   setup: function(){
     var container = this.container;
-    DS._setupContainer(container);
     container.register('model:moose', Moose);
     store = container.lookup('store:application');
   }
