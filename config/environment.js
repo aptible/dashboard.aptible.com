@@ -61,7 +61,7 @@ module.exports = function(environment) {
     featureFlags: {
       'organization-settings': true,
       'price-estimator': true,
-      'notifications': true
+      'notifications': false
     }
 
   };

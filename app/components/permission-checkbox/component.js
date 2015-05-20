@@ -31,20 +31,20 @@ export default Ember.Component.extend({
     };
 
     this.updateIsChecked();
-    this.changeset.subscribe(this._stagedObjectKey, () => {
+    this.get('changeset').subscribe(this._stagedObjectKey, () => {
       this.updateIsChecked();
     });
   },
 
   updateIsChecked(){
-    const value = this.changeset.value(this._stagedObjectKey);
+    const value = this.get('changeset').value(this._stagedObjectKey);
     this.set('isChecked', value.isEnabled);
   },
 
   click(){
     const isChecked = this.$().is(':checked');
-    const value = this.changeset.value(this._stagedObjectKey);
-    this.changeset.setValue(
+    const value = this.get('changeset').value(this._stagedObjectKey);
+    this.get('changeset').setValue(
       this._stagedObjectKey, {permission: value.permission, isEnabled:!!isChecked});
   }
 

@@ -150,10 +150,8 @@ test(`visit ${url} and create an app`, function(){
   });
 
   signInAndVisit(url);
-  andThen(function(){
-    fillInput('handle', appHandle);
-    clickButton('Save App');
-  });
+  fillInput('handle', appHandle);
+  clickButton('Save App');
   andThen(function(){
     equal(currentPath(), 'app.deploy');
 

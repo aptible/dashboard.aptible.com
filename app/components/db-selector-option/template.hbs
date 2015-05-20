@@ -1,5 +1,3 @@
-<a class='select-option' {{bind-attr title=dbType.title}} {{action 'selectDbType' dbType}}>
-  <img class='select-option-image'
-       {{bind-attr alt=dbType.title}}
-       {{bind-attr src=dbType.imageSrc}} />
+<a class='select-option' title="{{dbType.title}}" {{action 'selectDbType' dbType}}>
+  <img class='select-option-image' alt="{{dbType.title}}" src="{{dbType.imageSrc}}" />
 </a>
