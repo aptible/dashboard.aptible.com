@@ -4,6 +4,6 @@
   </div>
 
   <div class="col-xs-5">
-    <button {{bind-attr disabled=isUnconfirmed}} class="btn btn-danger btn-lg" {{action 'submit'}}>{{yield}}</button>
+    <button disabled={{isUnconfirmed}} class="btn btn-danger btn-lg" {{action 'submit'}}>{{yield}}</button>
   </div>
 </div>

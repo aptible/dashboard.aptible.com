@@ -21,8 +21,7 @@ moduleFor('torii-adapter:aptible', 'Torii Adapter: Aptible', {
   needs: modelDeps,
 
   setup: function(){
-    var container = this.container;
-    DS._setupContainer(container);
+    DS._setupContainer(this.container);
     originalWrite = storage.write;
     originalRead = storage.read;
   },
