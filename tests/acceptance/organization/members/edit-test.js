@@ -89,7 +89,7 @@ test(`visiting ${url} shows user's info and all roles with checkboxes`, function
   signInAndVisit(url);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.members.edit');
+    assert.equal(currentPath(), 'dashboard.organization.members.edit');
     assert.ok(find(`:contains(${user.name})`).length, `user name "${user.name} is on the page`);
     assert.ok(find(`:contains(${user.name})`).length, `user email "${user.email} is on the page`);
 
@@ -200,6 +200,6 @@ test(`visit ${url} allows removing user from organization`, function(assert){
   signInAndVisit(url);
   clickButton(`Remove ${user.name}`);
   andThen(() => {
-    assert.equal(currentPath(), 'organization.members.index');
+    assert.equal(currentPath(), 'dashboard.organization.members.index');
   });
 });

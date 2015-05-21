@@ -59,7 +59,7 @@ module('Acceptance: App Vhost Edit', {
 test(`visit ${url} shows form, basic info`, function(){
   signInAndVisit(url);
   andThen( () => {
-    equal(currentPath(), 'app.vhosts.edit');
+    equal(currentPath(), 'dashboard.app.vhosts.edit');
     expectTitle(`Edit ${virtualDomain} - ${appHandle}`);
     equal(find('.panel-heading h3').text(), `Edit ${virtualDomain}`);
 
@@ -125,7 +125,7 @@ test(`visit ${url} click save`, function(){
   });
 
   andThen( () => {
-    equal(currentPath(), 'app.vhosts.index');
+    equal(currentPath(), 'dashboard.app.vhosts.index');
 
     ok( find(`.vhost .vhost-virtualdomain:contains(${newVirtualDomain})`).length,
         'shows new virtual domain "${newVirtualDomain}"');
@@ -147,7 +147,7 @@ test(`visit ${url} click save and error`, function(){
   });
 
   andThen( () => {
-    equal(currentPath(), 'app.vhosts.edit');
+    equal(currentPath(), 'dashboard.app.vhosts.edit');
 
     ok(find('.alert').length, 'has error div');
     ok(find('.alert').text().indexOf(errorMsg) > -1,
@@ -165,7 +165,7 @@ test(`visit ${url} and click cancel`, function(){
   });
 
   andThen( () => {
-    equal(currentPath(), 'app.vhosts.index');
+    equal(currentPath(), 'dashboard.app.vhosts.index');
 
     ok(!find(`.vhost .vhost-virtualdomain:contains(${newVirtualDomain})`).length,
        `does not show new virtual domain: "${newVirtualDomain}"`);
@@ -184,7 +184,7 @@ test(`visit ${url} and transition away`, function(){
   });
 
   andThen( () => {
-    equal(currentPath(), 'app.vhosts.index');
+    equal(currentPath(), 'dashboard.app.vhosts.index');
 
     ok(!find(`.vhost .vhost-virtualdomain:contains(${newVirtualDomain})`).length,
        `does not show new virtual domain: "${newVirtualDomain}"`);

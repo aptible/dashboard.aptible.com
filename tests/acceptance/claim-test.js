@@ -85,7 +85,7 @@ test(`visiting ${url} as unauthenticated revisits after log in`, function(assert
   clickButton('Accept invitation');
 
   andThen(function(){
-    assert.equal(currentPath(), 'stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 
@@ -127,7 +127,7 @@ test(`visiting ${url} as authenticated creates verification`, function() {
   signInAndVisit(url);
   clickButton('Accept invitation');
   andThen(function(){
-    equal(currentPath(), 'stack.apps.index');
+    equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 

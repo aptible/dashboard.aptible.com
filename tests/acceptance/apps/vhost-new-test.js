@@ -33,7 +33,7 @@ test(`visiting ${appVhostsUrl} without any Vhosts redirects to ${appVhostsNewUrl
   signInAndVisit(appVhostsUrl);
 
   andThen(function() {
-    equal(currentPath(), 'app.vhosts.new');
+    equal(currentPath(), 'dashboard.app.vhosts.new');
   });
 });
 

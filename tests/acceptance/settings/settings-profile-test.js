@@ -33,7 +33,7 @@ test(settingsProfileUrl + ' requires authentication', function(){
 test('visit ' + settingsUrl + ' redirects to profile', function(){
   signInAndVisit(settingsUrl);
   andThen(function(){
-    equal(currentPath(), 'settings.profile');
+    equal(currentPath(), 'dashboard.settings.profile');
   });
 });
 

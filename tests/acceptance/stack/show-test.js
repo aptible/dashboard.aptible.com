@@ -88,7 +88,7 @@ test(`visit ${url} shows basic stack info`, function() {
   signInAndVisit(url);
 
   andThen(function() {
-    equal(currentPath(), 'stack.apps.index');
+    equal(currentPath(), 'dashboard.stack.apps.index');
 
     expectLink(`stacks/${stackId}/databases`);
     expectLink(`stacks/${stackId}/logging`);

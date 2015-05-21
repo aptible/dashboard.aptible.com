@@ -84,7 +84,7 @@ test('logging in with correct credentials', function() {
   fillInput('password', password);
   clickButton('Log in');
   andThen(() => {
-    equal(currentPath(), 'stack.apps.index');
+    equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 
@@ -134,7 +134,7 @@ test('visit /login while already logged in redirects to stack', function(){
   signInAndVisit('/login');
 
   andThen(function(){
-    equal(currentPath(), 'stack.apps.index');
+    equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 

@@ -1,95 +1,93 @@
-<main class="layout-content">
-  <header class="resource-header">
-    <div class="layout-container">
-      <div class="resource-title">
-        <i class="resource-icon resource-org"></i>
-        <h1 class="resource-breadcrumb">
-          {{organization.name}} Roles
-          <span class="current">{{model.name}}</span>
-        </h1>
-      </div>
-    </div>
-  </header>
-
+<header class="resource-header">
   <div class="layout-container">
-    <div class="row">
-      <div class="col-xs-6">
+    <div class="resource-title">
+      <i class="resource-icon resource-org"></i>
+      <h1 class="resource-breadcrumb">
+        {{organization.name}} Roles
+        <span class="current">{{model.name}}</span>
+      </h1>
+    </div>
+  </div>
+</header>
 
-        <div class="panel">
-          <div class="panel-heading">
-            <h3>{{model.name}} Settings</h3>
-          </div>
+<div class="layout-container">
+  <div class="row">
+    <div class="col-xs-6">
 
-          <div class="panel-body">
-            {{partial 'role/form'}}
-          </div>
+      <div class="panel">
+        <div class="panel-heading">
+          <h3>{{model.name}} Settings</h3>
         </div>
 
+        <div class="panel-body">
+          {{partial 'role/form'}}
+        </div>
       </div>
-      <div class="col-xs-6">
 
-        <div class="panel">
-          <div class="panel-heading">
-            <h3>{{model.name}} Members</h3>
-          </div>
+    </div>
+    <div class="col-xs-6">
 
-          <div class="panel-section">
-            <label>Members</label>
-            <div class="form-container">
-              <ul class="role-members">
-                {{#each model.users as |user|}}
-                  <li class="role-member">
-                    <label>{{user.name}}</label>
-                    <button class="btn btn-default btn-xs" {{action "removeUser" user}}>Remove</button>
-                  </li>
-                {{else}}
-                  <li class="role-member empty">No users in this role.</li>
-                {{/each}}
-                {{#if model.persistedInvitations}}
-                  <div class="role-invitations">
-                    {{#each model.persistedInvitations as |invitation|}}
-
-                      <li class="role-invite">
-                        <label>{{invitation.email}}</label>
-
-                        <button class="btn btn-default btn-xs" {{action "removeInvitation" invitation}}>Remove</button>
-
-                        <button class="btn btn-default btn-xs" {{action "resendInvitation" invitation}}>Resend</button>
-                      </li>
-                    {{/each}}
-                  </div>
-                {{/if}}
-              </ul>
-            </div>
-          </div>
-
-          <div class="panel-section">
-            <form>
-              <label>Add member</label>
-              <div class="invite-user">
-                <button class="btn btn-primary" {{action "inviteUser" invitedUser}}>Add</button>
-                <div class="user-select-container">
-                  {{user-select users=nonmembers selected=invitedUser}}
-                </div>
-              </div>
-            </form>
-          </div>
-
-          <div class="panel-section">
-            <form role='form' {{action "inviteByEmail" inviteByEmail on="submit"}}>
-              {{server-validation-errors model=invitation}}
-              <label>Invite by email</label>
-              <div class="invite-user">
-                <button class="btn btn-primary" {{action "inviteByEmail" invitedEmail}}>Invite</button>
-                <div class="invite-user-container">
-                  {{input name='invite-by-email' value=invitedEmail classNames="form-control"}}
-                </div>
-              </div>
-            </form>
-          </div>
-
+      <div class="panel">
+        <div class="panel-heading">
+          <h3>{{model.name}} Members</h3>
         </div>
+
+        <div class="panel-section">
+          <label>Members</label>
+          <div class="form-container">
+            <ul class="role-members">
+              {{#each model.users as |user|}}
+                <li class="role-member">
+                  <label>{{user.name}}</label>
+                  <button class="btn btn-default btn-xs" {{action "removeUser" user}}>Remove</button>
+                </li>
+              {{else}}
+                <li class="role-member empty">No users in this role.</li>
+              {{/each}}
+              {{#if model.persistedInvitations}}
+                <div class="role-invitations">
+                  {{#each model.persistedInvitations as |invitation|}}
+
+                    <li class="role-invite">
+                      <label>{{invitation.email}}</label>
+
+                      <button class="btn btn-default btn-xs" {{action "removeInvitation" invitation}}>Remove</button>
+
+                      <button class="btn btn-default btn-xs" {{action "resendInvitation" invitation}}>Resend</button>
+                    </li>
+                  {{/each}}
+                </div>
+              {{/if}}
+            </ul>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <form>
+            <label>Add member</label>
+            <div class="invite-user">
+              <button class="btn btn-primary" {{action "inviteUser" invitedUser}}>Add</button>
+              <div class="user-select-container">
+                {{user-select users=nonmembers selected=invitedUser}}
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel-section">
+          <form role='form' {{action "inviteByEmail" inviteByEmail on="submit"}}>
+            {{server-validation-errors model=invitation}}
+            <label>Invite by email</label>
+            <div class="invite-user">
+              <button class="btn btn-primary" {{action "inviteByEmail" invitedEmail}}>Invite</button>
+              <div class="invite-user-container">
+                {{input name='invite-by-email' value=invitedEmail classNames="form-control"}}
+              </div>
+            </div>
+          </form>
+        </div>
+
       </div>
     </div>
   </div>
-</main>
+</div>

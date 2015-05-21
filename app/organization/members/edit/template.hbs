@@ -1,49 +1,46 @@
-<main class="layout-content">
-  {{partial 'organization/members-header'}}
+{{partial 'organization/members-header'}}
 
-  <div class="layout-container">
-    <div class="row">
-      <div class="col-xs-6">
+<div class="layout-container">
+  <div class="row">
+    <div class="col-xs-6">
 
-        <div class="panel">
-          <div class="panel-heading">
-            <h3>Edit {{model.name}} roles at {{organization.name}}</h3>
-          </div>
-
-          <div class="panel-body">
-            <form role='form'>
-              <label>Roles</label>
-              <div class="form-container">
-                <ul>
-                  {{#each organization.roles as |role|}}
-                    <li class="role">
-                      {{organization-membership-checkbox
-                        user=model
-                        organizationRole=role
-                        changeset=changeset}}
-                      <label>{{role.name}}</label>
-                    </li>
-                  {{/each}}
-                </ul>
-              </div>
-            </form>
-          </div>
+      <div class="panel">
+        <div class="panel-heading">
+          <h3>Edit {{model.name}} roles at {{organization.name}}</h3>
         </div>
 
-        <div class="resource-actions">
-          <button {{action 'cancel'}} class='btn btn-default'>Cancel</button>
-          <button {{action 'save'}} class='btn btn-primary' type='submit'>
-            Save
-          </button>
-          {{#unless (eq session.currentUser model)}}
-            <button {{action 'remove' model}} class='btn btn-danger pull-right'>
-              Remove {{model.name}} from {{organization.name}}
-            </button>
-          {{/unless}}
+        <div class="panel-body">
+          <form role='form'>
+            <label>Roles</label>
+            <div class="form-container">
+              <ul>
+                {{#each organization.roles as |role|}}
+                  <li class="role">
+                    {{organization-membership-checkbox
+                      user=model
+                      organizationRole=role
+                      changeset=changeset}}
+                    <label>{{role.name}}</label>
+                  </li>
+                {{/each}}
+              </ul>
+            </div>
+          </form>
         </div>
-
       </div>
+
+      <div class="resource-actions">
+        <button {{action 'cancel'}} class='btn btn-default'>Cancel</button>
+        <button {{action 'save'}} class='btn btn-primary' type='submit'>
+          Save
+        </button>
+        {{#unless (eq session.currentUser model)}}
+          <button {{action 'remove' model}} class='btn btn-danger pull-right'>
+            Remove {{model.name}} from {{organization.name}}
+          </button>
+        {{/unless}}
+      </div>
+
     </div>
   </div>
-</main>
-
+</div>

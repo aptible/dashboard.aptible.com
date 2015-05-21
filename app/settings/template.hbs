@@ -1,34 +1,13 @@
-<main class="layout-content">
-  <header class="resource-header">
-    <div class="layout-container">
-      <div class="resource-title">
-        <h1>
-          {{session.currentUser.name}}
-        </h1>
-      </div>
-    </div>
-  </header>
-
+<header class="resource-header">
   <div class="layout-container">
-    {{outlet}}
+    <div class="resource-title">
+      <h1>
+        {{session.currentUser.name}}
+      </h1>
+    </div>
   </div>
-</main>
+</header>
 
-<nav class="layout-sidebar">
-  <ul class='nav sidebar-nav'>
-    <li class="title">
-      {{session.currentUser.name}} Settings
-    </li>
-    {{#activating-item currentWhen='settings.profile' tagName='li'}}
-      {{link-to 'Profile' 'settings.profile'}}
-    {{/activating-item}}
-
-    {{#activating-item currentWhen='settings.admin' tagName='li'}}
-      {{link-to 'Account Settings' 'settings.admin'}}
-    {{/activating-item}}
-
-    {{#activating-item currentWhen='settings.ssh' tagName='li'}}
-      {{link-to 'SSH Keys' 'settings.ssh'}}
-    {{/activating-item}}
-  </ul>
-</nav>
+<div class="layout-container">
+  {{outlet}}
+</div>

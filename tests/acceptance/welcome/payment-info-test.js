@@ -76,7 +76,7 @@ test('visiting /welcome/payment-info logged in with stacks', function() {
   signInAndVisit('/welcome/payment-info');
 
   andThen(function() {
-    equal(currentPath(), 'stack.apps.index');
+    equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 
@@ -94,7 +94,7 @@ test('submitting empty payment info raises an error', function() {
   clickButton('Save');
 
   andThen(function() {
-    equal(currentPath(), 'welcome.payment-info');
+    equal(currentPath(), 'dashboard.welcome.payment-info');
     let error = find('p:contains(Failure)');
     ok(error.length, 'errors are on the page');
   });
@@ -161,7 +161,7 @@ test('payment info should be submitted to stripe to create stripeToken', functio
   fillInput('zip', cardOptions.addressZip);
   clickButton('Save');
   andThen( () => {
-    equal(currentPath(), 'stack.apps.index');
+    equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 
@@ -205,7 +205,7 @@ test('submitting valid payment info for development plan should create dev stack
 
   clickButton('Save');
   andThen( () => {
-    equal(currentPath(), 'stack.apps.new');
+    equal(currentPath(), 'dashboard.stack.apps.new');
   });
 });
 
@@ -243,7 +243,7 @@ test('submitting valid payment info should create app', function() {
   });
   clickButton('Save');
   andThen(function() {
-    equal(currentPath(), 'stack.apps.index');
+    equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 
@@ -285,7 +285,7 @@ test('submitting valid payment info should create db', function() {
   });
   clickButton('Save');
   andThen(function() {
-    equal(currentPath(), 'stack.apps.new');
+    equal(currentPath(), 'dashboard.stack.apps.new');
   });
 });
 
@@ -336,7 +336,7 @@ test('submitting valid payment info when user is verified should provision db', 
   });
   clickButton('Save');
   andThen(function() {
-    equal(currentPath(), 'stack.apps.new');
+    equal(currentPath(), 'dashboard.stack.apps.new');
 
     equal(databaseParams.handle, dbHandle,
           'db params has handle');

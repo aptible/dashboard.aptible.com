@@ -42,7 +42,7 @@ test(`visiting /stacks/:stack_id/databases without any databases redirects to ${
   signInAndVisit(`/stacks/${stackId}/databases`);
 
   andThen(function() {
-    equal(currentPath(), 'stack.databases.new');
+    equal(currentPath(), 'dashboard.stack.databases.new');
   });
 });
 
@@ -60,7 +60,7 @@ test(`visit ${url} when stack has no databases does not show cancel`, function()
   signInAndVisit(url);
 
   andThen(function() {
-    equal(currentPath(), 'stack.databases.new');
+    equal(currentPath(), 'dashboard.stack.databases.new');
     let button = findButton('Cancel');
     ok(!button.length, 'has no cancel button');
   });
@@ -71,7 +71,7 @@ test(`visit ${url} shows basic info`, function(){
   signInAndVisit(url);
 
   andThen(function(){
-    equal(currentPath(), 'stack.databases.new');
+    equal(currentPath(), 'dashboard.stack.databases.new');
 
     expectInput('handle');
     expectFocusedInput('handle');
@@ -172,7 +172,7 @@ test(`visit ${url} and create`, function(){
   // TODO test that moving the slider changes the disk size
 
   andThen(function(){
-    equal(currentPath(), 'stack.databases.index');
+    equal(currentPath(), 'dashboard.stack.databases.index');
 
     ok( findDatabase(dbHandle).length,
         'db list shows new db' );
@@ -190,7 +190,7 @@ test(`visit ${url} and click cancel button`, function(){
     clickButton('Cancel');
   });
   andThen(function(){
-    equal(currentPath(), 'stack.databases.index');
+    equal(currentPath(), 'dashboard.stack.databases.index');
 
     ok( !findDatabase(dbHandle).length,
         'does not show database in list' );
@@ -208,7 +208,7 @@ test(`visit ${url} and transition away`, function(){
     visit(dbIndexUrl);
   });
   andThen(function(){
-    equal(currentPath(), 'stack.databases.index');
+    equal(currentPath(), 'dashboard.stack.databases.index');
 
     ok( !findDatabase(dbHandle).length,
         'does not show database in list' );

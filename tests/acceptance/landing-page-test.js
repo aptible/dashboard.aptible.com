@@ -31,7 +31,7 @@ test('visiting / when logged in with more than one stacks redirects to stacks in
   signInAndVisit('/');
 
   andThen(function() {
-    equal(currentPath(), 'stack.apps.index');
+    equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 
@@ -62,7 +62,7 @@ test('visiting / when logged in with only one stack redirects to first stack pag
 
   andThen(function() {
     equal(currentURL(), `/stacks/${stackId}/apps`);
-    equal(currentPath(), 'stack.apps.index');
+    equal(currentPath(), 'dashboard.stack.apps.index');
 
     expectLink(`stacks/${stackId}/databases`);
     expectLink(`stacks/${stackId}/logging`);

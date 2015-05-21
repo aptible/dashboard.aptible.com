@@ -24,5 +24,12 @@ export default Ember.Route.extend({
     } else {
       this.transitionTo('stack.activate', stack);
     }
+  },
+  renderTemplate() {
+    this._super.apply(this, arguments);
+    this.render('sidebars/organizations-stacks', {
+      into: 'dashboard',
+      outlet: 'sidebar'
+    });
   }
 });

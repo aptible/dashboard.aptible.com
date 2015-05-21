@@ -1,31 +1,29 @@
-<main class="layout-content">
-  {{partial 'organization/roles-header'}}
+{{partial 'organization/roles-header'}}
 
-  <div class="layout-container">
-    <div class="resource-list-grid">
-      <div class="row">
-        {{#each model as |role|}}
-          <div class="col-xs-4">
-            {{#aptible-ability user=session.currentUser scope='manage' permittable=organization as |hasAbility|}}
-              {{#if hasAbility}}
-                {{#link-to 'organization.roles.show' role title=(concat-params "Edit " role.name " Permissions") classNames="panel-link"}}
-                  {{partial 'organization/role'}}
-                {{/link-to}}
-              {{else}}
+<div class="layout-container">
+  <div class="resource-list-grid">
+    <div class="row">
+      {{#each model as |role|}}
+        <div class="col-xs-4">
+          {{#aptible-ability user=session.currentUser scope='manage' permittable=organization as |hasAbility|}}
+            {{#if hasAbility}}
+              {{#link-to 'organization.roles.show' role title=(concat-params "Edit " role.name " Permissions") classNames="panel-link"}}
                 {{partial 'organization/role'}}
-              {{/if}}
-            {{/aptible-ability}}
-          </div>
-        {{/each}}
-      </div>
+              {{/link-to}}
+            {{else}}
+              {{partial 'organization/role'}}
+            {{/if}}
+          {{/aptible-ability}}
+        </div>
+      {{/each}}
+    </div>
 
-      <div class="resource-actions">
-        {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
-          {{#if hasAbility}}
-            {{#link-to 'organization.roles.new' classNames='btn btn-primary'}}Create role{{/link-to}}
-          {{/if}}
-        {{/aptible-ability}}
-      </div>
+    <div class="resource-actions">
+      {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
+        {{#if hasAbility}}
+          {{#link-to 'organization.roles.new' classNames='btn btn-primary'}}Create role{{/link-to}}
+        {{/if}}
+      {{/aptible-ability}}
     </div>
   </div>
-</main>
+</div>

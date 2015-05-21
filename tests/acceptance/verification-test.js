@@ -36,7 +36,7 @@ test('visiting /verify/some-code creates verification', function() {
   let userData = {verified: false};
   signInAndVisit(`/verify/${verificationCode}`, userData);
   andThen(function(){
-    equal(currentPath(), 'stack.apps.index');
+    equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 
@@ -77,7 +77,7 @@ test('after verification, pending databases are provisioned', function(){
 
   signInAndVisit('/verify/'+verificationCode);
   andThen(function(){
-    equal(currentPath(), 'stack.apps.index');
+    equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 

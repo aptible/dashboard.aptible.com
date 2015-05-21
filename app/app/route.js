@@ -1,7 +1,7 @@
 import Ember from "ember";
 
 export default Ember.Route.extend({
-  title: function(tokens){
+  title(tokens) {
     if (tokens.length === 0) {
       tokens.push(this.currentModel.get('handle'));
     }
@@ -15,7 +15,11 @@ export default Ember.Route.extend({
     return tokens.join(' - ');
   },
 
-  setupController: function(controller, model){
+  afterModel(model) {
+    return model.get('stack');
+  },
+
+  setupController(controller, model) {
     controller.set('model', model);
     // FIXME: aptible-ability depends on an instance method on the stacks model.
     // Because of this, we need to explicitly return the stack model,
@@ -24,7 +28,11 @@ export default Ember.Route.extend({
     controller.set('stack', model.get('stack.content'));
   },
 
-  afterModel: function(model){
-    return model.get('stack');
+  renderTemplate() {
+    this._super.apply(this, arguments);
+    this.render('sidebars/stack', {
+      into: 'dashboard',
+      outlet: 'sidebar'
+    });
   }
 });

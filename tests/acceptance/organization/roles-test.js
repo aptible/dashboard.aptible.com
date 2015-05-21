@@ -50,7 +50,7 @@ test(`visiting ${url} shows roles`, (assert) => {
 
   signInAndVisit(url);
   andThen(() => {
-    equal(currentPath(), 'organization.roles.index');
+    equal(currentPath(), 'dashboard.organization.roles.index');
 
     roles.forEach( (r) => {
       let roleDiv = find(`.role:contains(${r.name})`);
@@ -89,6 +89,6 @@ test(`visit ${url} and click to show`, (assert) => {
   signInAndVisit(url);
   click(`a[title="Edit ${role.name} Permissions"]`);
   andThen(() => {
-    equal(currentPath(), 'organization.roles.show');
+    equal(currentPath(), 'dashboard.organization.roles.show');
   });
 });

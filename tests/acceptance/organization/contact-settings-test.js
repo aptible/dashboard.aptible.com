@@ -84,7 +84,7 @@ test(`visiting ${url}`, function(assert) {
   signInAndVisit(url);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.contact-settings');
+    assert.equal(currentPath(), 'dashboard.organization.contact-settings');
     expectInput('name', {value: organizationData.name});
     expectInput('primary-phone', {value: organizationData.primaryPhone});
     expectInput('emergency-phone', {value: organizationData.emergencyPhone});

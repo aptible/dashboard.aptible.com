@@ -72,7 +72,7 @@ test(`visit ${url} when app has not been deployed`, function(assert){
 
   signInAndVisit(url);
   andThen(function(){
-    equal(currentPath(), 'app.deploy');
+    equal(currentPath(), 'dashboard.app.deploy');
 
     ok( find(`.first-time-app-deploy h2:contains(${appHandle})`).length,
         'display app handle');
@@ -155,6 +155,6 @@ test(`visit ${url} when app has not been deployed, click destroy link`, function
 
   click(`a:contains(Destroy ${appHandle})`);
   andThen(function(){
-    equal(currentPath(), 'stack.apps.new', 'redirected to apps');
+    equal(currentPath(), 'dashboard.stack.apps.new', 'redirected to apps');
   });
 });

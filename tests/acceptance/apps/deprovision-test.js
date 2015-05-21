@@ -82,7 +82,7 @@ test('/apps/:id/deprovision will deprovision with confirmation', function(){
   click('button:contains(Deprovision)');
   andThen(function(){
     ok(didDeprovision, 'deprovisioned');
-    equal(currentPath(), 'stack.apps.index');
+    equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 
@@ -120,6 +120,6 @@ test('/apps/:id/deprovision will show deprovision error', function(){
   andThen(function(){
     var error = findWithAssert('.alert');
     ok(error.text().indexOf(errorMessage) > -1, 'error message shown');
-    equal(currentPath(), 'app.deprovision');
+    equal(currentPath(), 'dashboard.app.deprovision');
   });
 });
