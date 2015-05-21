@@ -53,7 +53,7 @@ test(`visiting ${url} shows form to invite`, function(assert) {
 
   signInAndVisit(url);
   andThen(() => {
-    assert.equal(currentPath(), 'organization.invite');
+    assert.equal(currentPath(), 'dashboard.organization.invite');
     expectFocusedInput('email');
     expectInput('email');
     expectInput('role');
@@ -76,7 +76,7 @@ test(`visiting ${url} and clicking cancel`, function(assert) {
   clickButton('Cancel');
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.members.index');
+    assert.equal(currentPath(), 'dashboard.organization.members.index');
   });
 });
 

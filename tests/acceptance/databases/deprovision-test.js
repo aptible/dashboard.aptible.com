@@ -80,7 +80,7 @@ test('/databases/:id/deprovision will deprovision with confirmation', function()
   click('button:contains(Deprovision)');
   andThen(function(){
     ok(didDeprovision, 'deprovisioned');
-    equal(currentPath(), 'stack.databases.index');
+    equal(currentPath(), 'dashboard.stack.databases.index');
   });
 });
 
@@ -116,6 +116,6 @@ test('/databases/:id/deprovision will show deprovision error', function(){
   andThen(function(){
     var error = findWithAssert('.alert');
     ok(error.text().indexOf(errorMessage) > -1, 'error message shown');
-    equal(currentPath(), 'database.deprovision');
+    equal(currentPath(), 'dashboard.database.deprovision');
   });
 });

@@ -63,7 +63,7 @@ test(`visiting ${url} shows users`, function(assert) {
   signInAndVisit(url);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.members.index');
+    assert.equal(currentPath(), 'dashboard.organization.members.index');
     assert.ok(find(':contains(Mike)').length, 'Mike is on the page');
     assert.ok(find(':contains(bob@bob.com)').length, 'bob@bob.com is on the page');
     expectLink(`/organizations/${orgId}/invite`);

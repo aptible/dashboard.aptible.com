@@ -56,7 +56,7 @@ test('includes breadcrumb to parent stack', function() {
   });
 
   andThen(function() {
-    equal(currentPath(), 'stack.apps.index');
+    equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 

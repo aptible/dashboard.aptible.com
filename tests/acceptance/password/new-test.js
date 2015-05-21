@@ -30,7 +30,7 @@ test('visiting /password/new/:reset_code/:user_id signed in redirects to index',
   var resetCode = 'defResetCode';
   signInAndVisit(`/password/new/${resetCode}/${userId}`);
   andThen(function(){
-    equal(currentPath(), 'stack.apps.index');
+    equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 

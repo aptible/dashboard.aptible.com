@@ -10,12 +10,20 @@ export default Ember.Route.extend({
     return tokens.join(' - ');
   },
 
+  afterModel: function(model){
+    return model.get('stack');
+  },
+
   setupController: function(controller, model){
     controller.set('model', model);
     controller.set('stack', model.get('stack.content'));
   },
 
-  afterModel: function(model){
-    return model.get('stack');
+  renderTemplate() {
+    this._super.apply(this, arguments);
+    this.render('sidebars/stack', {
+      into: 'dashboard',
+      outlet: 'sidebar'
+    });
   }
 });

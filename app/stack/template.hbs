@@ -1,16 +1,8 @@
-<main class="layout-content">
-  {{partial "stack/header"}}
-  <div class="layout-container">
-    {{#if model.activated}}
-      {{partial "stack/nav"}}
-    {{/if}}
+{{partial "stack/header"}}
+<div class="layout-container">
+  {{#if model.activated}}
+    {{partial "stack/nav"}}
+  {{/if}}
 
-    {{outlet}}
-  </div>
-</main>
-<nav class="layout-sidebar">
-  {{#each organizations as |organization|}}
-    {{stack-sidebar organization=organization stacks=stacks}}
-  {{/each}}
-</nav>
-
+  {{outlet}}
+</div>

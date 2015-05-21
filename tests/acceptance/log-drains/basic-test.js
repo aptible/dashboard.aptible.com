@@ -60,7 +60,7 @@ test(`visit ${url} shows basic info`, function(assert){
   signInAndVisit(url);
 
   andThen(function(){
-    equal(currentPath(), 'stack.log-drains.index');
+    equal(currentPath(), 'dashboard.stack.log-drains.index');
 
     expectButton('Add Log');
 
@@ -83,7 +83,7 @@ test(`visit ${url} with no log drains will redirect to new log drains`, function
   signInAndVisit(url);
 
   andThen(function() {
-    equal(currentPath(), 'stack.log-drains.new');
+    equal(currentPath(), 'dashboard.stack.log-drains.new');
   });
 });
 
@@ -96,7 +96,7 @@ test(`visit ${url} with log drains and click add log shows form`, function(asser
   });
 
   andThen(function(){
-    equal(currentPath(), 'stack.log-drains.new');
+    equal(currentPath(), 'dashboard.stack.log-drains.new');
     equal(currentURL(), addLogUrl);
 
     let formEl = find('form.create-log');
@@ -119,12 +119,12 @@ test(`visit ${addLogUrl} and cancel`, function(assert){
   signInAndVisit(addLogUrl);
 
   andThen(function(){
-    equal(currentPath(), 'stack.log-drains.new');
+    equal(currentPath(), 'dashboard.stack.log-drains.new');
     clickButton('Cancel');
   });
 
   andThen(function(){
-    equal(currentPath(), 'stack.log-drains.index');
+    equal(currentPath(), 'dashboard.stack.log-drains.index');
   });
 });
 
@@ -170,7 +170,7 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
   });
 
   andThen(function(){
-    equal(currentPath(), 'stack.log-drains.index');
+    equal(currentPath(), 'dashboard.stack.log-drains.index');
   });
 });
 
@@ -190,7 +190,7 @@ test(`visit ${addLogUrl} and create log failure`, function(assert){
     clickButton('Save Log', {context:formEl});
   });
   andThen(function(){
-    equal(currentPath(), 'stack.log-drains.new');
+    equal(currentPath(), 'dashboard.stack.log-drains.new');
     let errorDiv = find('.alert');
     ok( errorDiv.length, 'error div is shown');
     ok( errorDiv.text().indexOf(errorMessage) > -1,

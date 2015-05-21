@@ -12,5 +12,12 @@ export default Ember.Route.extend({
         return Location.replaceAndWait(url);
       }
     });
+  },
+  renderTemplate() {
+    this._super.apply(this, arguments);
+    this.render('sidebars/organization', {
+      into: 'dashboard',
+      outlet: 'sidebar'
+    });
   }
 });

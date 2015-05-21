@@ -34,7 +34,7 @@ test('visiting /welcome/first-app logged in with stacks', function() {
   signInAndVisit('/welcome/first-app');
 
   andThen(function() {
-    equal(currentPath(), 'stack.apps.index');
+    equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 
@@ -48,21 +48,7 @@ test('submitting a first app directs to payment info', function() {
   fillIn('input[name="app-handle"]', appHandle);
   click('button:contains(Get Started)');
   andThen(function() {
-    equal(currentPath(), 'welcome.payment-info', 'redirected to payment info');
-  });
-});
-
-test('submitting a first app directs to payment info', function() {
-  var appHandle = 'my-app';
-
-  stubStacks({}, []);
-  stubOrganizations();
-  signInAndVisit('/welcome/first-app');
-
-  fillIn('input[name="app-handle"]', appHandle);
-  click('button:contains(Get Started)');
-  andThen(function() {
-    equal(currentPath(), 'welcome.payment-info', 'redirected to payment info');
+    equal(currentPath(), 'dashboard.welcome.payment-info', 'redirected to payment info');
   });
 });
 

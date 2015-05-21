@@ -36,7 +36,7 @@ test(`visiting ${url} with no apps redirects to apps new`, function() {
 
   signInAndVisit(url);
   andThen(function(){
-    equal(currentPath(), 'stack.apps.new');
+    equal(currentPath(), 'dashboard.stack.apps.new');
   });
 });
 
@@ -62,7 +62,7 @@ test(`visiting ${url}`, function() {
   signInAndVisit(url);
 
   andThen(function() {
-    equal(currentPath(), 'stack.apps.index');
+    equal(currentPath(), 'dashboard.stack.apps.index');
     expectTitle(`${stackHandle} Apps - ${orgName}`);
   });
 });
@@ -109,7 +109,7 @@ test(`visiting ${url} then clicking on an app visits the app`, function() {
   });
 
   andThen(function(){
-    equal(currentPath(), 'app.services', 'app show page is visited');
+    equal(currentPath(), 'dashboard.app.services', 'app show page is visited');
   });
 });
 

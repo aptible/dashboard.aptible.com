@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  title: function(tokens) {
+  title(tokens) {
     if (tokens.length === 0) {
       tokens.push(this.currentModel.get('handle'));
     }
@@ -14,17 +14,25 @@ export default Ember.Route.extend({
     return tokens.join(' - ');
   },
 
-  setupController: function(controller, model) {
+  afterModel(model){
+    return Ember.RSVP.hash({
+      apps: model.get('apps'),
+      databases: model.get('databases'),
+      organization: model.get('organization')
+    });
+  },
+
+  setupController(controller, model) {
     controller.set('model', model);
     controller.set('organizations', this.store.find('organization'));
     controller.set('stacks', this.store.find('stack'));
   },
 
-  afterModel: function(model){
-    return Ember.RSVP.hash({
-      apps: model.get('apps'),
-      databases: model.get('databases'),
-      organization: model.get('organization')
+  renderTemplate() {
+    this._super.apply(this, arguments);
+    this.render('sidebars/organizations-stacks', {
+      into: 'dashboard',
+      outlet: 'sidebar'
     });
   }
 });

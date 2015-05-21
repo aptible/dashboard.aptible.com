@@ -31,7 +31,7 @@ test('visiting /organization', function(assert) {
   setFeature('organization-settings', true);
   signInAndVisit('/organizations/42');
   andThen(function() {
-    assert.equal(currentPath(), 'organization.members.index');
+    assert.equal(currentPath(), 'dashboard.organization.members.index');
 
     // sidebar
     expectLink('/organizations/42/members');

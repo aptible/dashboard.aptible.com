@@ -50,7 +50,7 @@ test(`visiting /stacks/:stack_id/apps without any apps redirects to ${url}`, fun
   signInAndVisit(`/stacks/${stackId}/apps`);
 
   andThen(function() {
-    equal(currentPath(), 'stack.apps.new');
+    equal(currentPath(), 'dashboard.stack.apps.new');
   });
 });
 
@@ -60,7 +60,7 @@ test(`visit ${url} shows basic info`, function(){
   stubOrganizations();
   signInAndVisit(url);
   andThen(function(){
-    equal(currentPath(), 'stack.apps.new');
+    equal(currentPath(), 'dashboard.stack.apps.new');
     expectInput('handle');
     expectButton('Save App');
     expectButton('Cancel');
@@ -81,7 +81,7 @@ test(`visit ${url} and cancel`, function(){
   });
 
   andThen(function(){
-    equal(currentPath(), 'stack.apps.index');
+    equal(currentPath(), 'dashboard.stack.apps.index');
 
     ok( !findApp(appHandle).length,
         'does not show app');
@@ -103,7 +103,7 @@ test(`visit ${url} without apps show no cancel button`, function(){
   signInAndVisit(url);
 
   andThen(function(){
-    equal(currentPath(), 'stack.apps.new');
+    equal(currentPath(), 'dashboard.stack.apps.new');
     let button = findButton('Cancel');
     ok(!button.length, 'Cancel button is not present');
   });
@@ -121,7 +121,7 @@ test(`visit ${url} and transition away`, function(){
   });
 
   andThen(function(){
-    equal(currentPath(), 'stack.apps.index');
+    equal(currentPath(), 'dashboard.stack.apps.index');
 
     ok( !findApp(appHandle).length,
         'does not show app');
@@ -153,7 +153,7 @@ test(`visit ${url} and create an app`, function(){
   fillInput('handle', appHandle);
   clickButton('Save App');
   andThen(function(){
-    equal(currentPath(), 'app.deploy');
+    equal(currentPath(), 'dashboard.app.deploy');
 
     ok( findApp(appHandle).length > 0,
         'lists new app on index' );

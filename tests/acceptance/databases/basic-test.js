@@ -35,7 +35,7 @@ test('visiting /stacks/:stack_id/databases', function() {
   signInAndVisit('/stacks/my-stack-1/databases');
 
   andThen(function() {
-    equal(currentPath(), 'stack.databases.index');
+    equal(currentPath(), 'dashboard.stack.databases.index');
     expectTitle('my-stack-1 Databases - Sprocket Co');
   });
 });
@@ -68,7 +68,7 @@ test('visiting /stacks/my-stack-1/databases then clicking on an database visits 
   });
 
   andThen(function(){
-    equal(currentPath(), 'database.activity', 'show page is visited');
+    equal(currentPath(), 'dashboard.database.activity', 'show page is visited');
   });
 });
 
