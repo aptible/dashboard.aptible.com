@@ -8,51 +8,6 @@
       </h1>
     </div>
 
-    <ul class="resource-metadata">
-
-      {{#if model.activated}}
-        {{#if model.allowPHI}}
-          <li class="resource-metadata-item">
-            <h5 class="resource-metadata-title">Dedicated Environment</h5>
-            <h3 class="resource-metadata-value"><span class="success">PHI Ready</span></h3>
-          </li>
-        {{else}}
-          <li class="resource-metadata-item">
-            <h5 class="resource-metadata-title">Shared Environment</h5>
-            <h3 class="resource-metadata-value"><span class="danger">Not Ready for PHI</span></h3>
-          </li>
-        {{/if}}
-
-        <li class="resource-metadata-item">
-          <h5 class="resource-metadata-title">{{persistedApps.length}} {{plural-string "App" persistedApps.length}}</h5>
-          <h3 class="resource-metadata-value">Running on {{totalContainerCount}} {{plural-string "container" totalContainerCount}}</h3>
-        </li>
-
-        <li class="resource-metadata-item">
-          <h5 class="resource-metadata-title">{{persistedDatabases.length}} {{plural-string "Database" persistedDatabases.length}}</h5>
-          <h3 class="resource-metadata-value">Using {{format-disk-size totalDiskSize}} of Disk</h3>
-        </li>
-
-        <li class="resource-metadata-item">
-          <h5 class="resource-metadata-title">Log Drains</h5>
-          <h3 class="resource-metadata-value">
-            {{#with model.logDrains.firstObject as |logDrain|}}
-              {{logDrain.drainHost}}:{{logDrain.drainPort}}
-            {{else}}
-              None configured.
-            {{/with}}
-          </h3>
-        </li>
-      {{else}}
-        <li class="resource-metadata-item">
-          <h5 class="resource-metadata-title">Status</h5>
-          <h3 class="resource-metadata-value">
-            <i class="fa fa-spin fa-spinner"></i>
-            Provisioning
-          </h3>
-        </li>
-
-      {{/if}}
-    </ul>
+    {{stack-metadata model=model}}
   </div>
 </header>

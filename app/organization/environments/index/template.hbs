@@ -1,0 +1,35 @@
+{{#with organization as |model|}}
+  {{partial 'organization/header'}}
+{{/with}}
+
+<div class="layout-container">
+  <div class="resource-list-grid">
+    <div class="row">
+      {{#each model as |environment|}}
+        <div class="col-xs-4">
+
+          <div class="panel panel-default user resource-list-item">
+            <div class="panel-heading">
+              <h5>{{environment.handle}}</h5>
+            </div>
+
+            <div class="panel-body">
+              {{stack-metadata model=model}}
+            </div>
+          </div>
+
+        </div>
+      {{/each}}
+    </div>
+
+    <div class="resource-actions">
+      {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
+        {{#if hasAbility}}
+          {{#link-to 'organization.environments.new' class="btn btn-primary"}}
+            Create new environment
+          {{/link-to}}
+        {{/if}}
+      {{/aptible-ability}}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+<form role='form'>
+  {{server-validation-errors model=model}}
+
+  <div class="form-group">
+    <label class="block" for="environment-handle">
+      Handle
+      <span class="label-helper">Lowercase alphanumerics, periods, and dashes only</span>
+    </label>
+    {{handle-input class="form-control" value=model.handle name='environment-handle' autofocus=true}}
+  </div>
+
+  <div class="form-group">
+    <label for="role-name">PHI Ready</label>
+    <div class="form-container">
+      <ul>
+        <li>
+          <label>
+            {{input type="checkbox"
+              name="environment-phi"
+              disabled=(not organization.allowPHI)
+              checked=allowPHI}}
+            {{#if organization.allowPHI}}
+              PHI Ready?
+            {{else}}
+              PHI Ready environments require a Production plan.
+              {{! FIXME should link to where? }}
+              {{link-to "Upgrade now" "index"}}
+            {{/if}}
+          </label>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="resource-actions">
+    <button {{action 'cancel'}} class='btn btn-default' type='button'>
+      Cancel
+    </button>
+
+    <button {{action 'save'}}
+            disabled={{isUnchanged}}
+            class='btn btn-primary' type='submit'>
+      {{#if model.isSaving}}
+        Saving...
+      {{else}}
+        Save environment
+      {{/if}}
+    </button>
+  </div>
+</form>
+

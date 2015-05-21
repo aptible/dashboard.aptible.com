@@ -75,7 +75,8 @@
     "triggerSlider",
     "setFeature",
     "stubInvitation",
-    "stubIndexRequests"
+    "stubIndexRequests",
+    "check"
   ],
   "node": false,
   "browser": false,
