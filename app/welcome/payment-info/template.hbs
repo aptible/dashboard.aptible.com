@@ -1,12 +1,15 @@
 {{#save-progress progress=saveProgress progressMessage="Provisioning your new environment..."}}
-  {{pricing-page-header plan=firstApp.plan}}
+  <div class="page-header">
+    <h1>Step 3: Add a Payment Method</h1>
+  </div>
+
   <div class="signup-form">
     <div class="row">
       <div class="col-xs-5 col-xs-offset-1">
 
         <div class="panel panel-focused">
           <div class="panel-heading">
-            <h3>Add a payment method</h3>
+            <h3>Add a credit card</h3>
           </div>
           <div class="panel-body">
             <form role="form" class="payment-form">
@@ -22,7 +25,7 @@
 
               <div class="form-group">
                 {{input class="form-control number" value=model.number name="number" placeholder="Card number"}}
-                {{input class="form-control cvc" value=model.cvc name="cvc" placeholder="CVV code" }}
+                {{input class="form-control cvc" value=model.cvc name="cvc" placeholder="CVV" }}
               </div>
 
               <div class="form-group">
@@ -33,7 +36,7 @@
                   {{select-year value=model.expYear name="exp-year" prompt="Exp year"}}
                 </div>
 
-                {{input class="form-control zip" value=model.zip name="zip" placeholder="Billing zip"}}
+                {{input class="form-control zip" value=model.zip name="zip" placeholder="ZIP"}}
               </div>
 
               <button class="btn btn-primary btn-block btn-lg" {{action 'create' model}}>Save</button>
