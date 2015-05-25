@@ -1,8 +1,8 @@
 {{#bs-alert alert="warning" as |component|}}
   {{bs-alert-dismiss target=component}}
 
-  You will not be able to deploy or create new apps until you activate your
-  email. Check your email for activation instructions.
+  You will not be able to deploy or create new apps until you confirm your
+  email address. Check your email for instructions.
   <button class='btn btn-default btn-xs' {{action 'resendVerification'}} disabled={{isDisabled}}>
     {{#if sending}}
       Sending
