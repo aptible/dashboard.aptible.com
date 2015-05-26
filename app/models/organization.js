@@ -21,6 +21,8 @@ export default DS.Model.extend({
   securityOfficer: DS.belongsTo('user', {async:true}),
   billingContact: DS.belongsTo('user', {async:true}),
 
+  allowPHI: Ember.computed.match('plan', /production|platform/),
+
   // needed by aptible-ability
   permitsRole(role, scope){
     return new Ember.RSVP.Promise( (resolve) => {

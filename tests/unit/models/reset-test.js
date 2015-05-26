@@ -25,7 +25,7 @@ test('posts to /resets when there is an invitation', function(assert){
   });
 
   stubRequest('post', `/resets`, function(request){
-    assert.ok('posts to correct url');
+    assert.ok(true, 'posts to correct url');
     let json = this.json(request);
     assert.equal(json.type, 'invitation');
     assert.equal(json.invitation_id, invitationId);
