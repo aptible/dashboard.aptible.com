@@ -2,12 +2,10 @@ import HalAdapter from "ember-data-hal-9000/adapter";
 import DS from "ember-data";
 import Ember from "ember";
 import config from "../config/environment";
-import LookupMethodsWithRequestTypesMixin from "../mixins/adapters/-lookup-methods-with-request-types";
 
 export var auth = {};
 
-export default HalAdapter.extend(LookupMethodsWithRequestTypesMixin, {
-
+export default HalAdapter.extend({
   host: config.apiBaseUri,
 
   headers: Ember.computed(function(){

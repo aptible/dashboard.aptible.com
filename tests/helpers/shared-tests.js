@@ -1,4 +1,4 @@
-import { stubRequest } from './fake-server';
+import { stubRequest } from "ember-cli-fake-server";
 import successfulTokenResponse from './successful-token-response';
 import Ember from 'ember';
 

@@ -16,8 +16,8 @@ export default HalSerializer.extend({
     }
   },
 
-  typeForRoot: function(typeKey){
-    var result = this._super(typeKey);
+  modelNameFromPayloadKey(key){
+    var result = this._super(key);
     if (result === 'account') {
       result = 'stack';
     }
