@@ -11,12 +11,7 @@ export default Ember.Route.extend({
 
   afterModel(){
     let organization = this.modelFor('organization');
-    let organizationLink = organization.get('data.links.self');
-
-    return this.store.find('stack').then((stacks) => {
-      return stacks.filterBy('data.links.organization',
-                             organizationLink);
-    }).then((stacks) => {
+    return this.store.findStacksFor(organization).then((stacks) => {
       this._stacks = stacks;
     });
   },

@@ -2,7 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model() {
-    return this.store.find('stack');
+    let organization = this.modelFor('organization');
+    return this.store.findStacksFor(organization);
   },
 
   setupController(controller, model) {
