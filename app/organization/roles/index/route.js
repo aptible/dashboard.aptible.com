@@ -6,7 +6,7 @@ export default Ember.Route.extend({
 
     return Ember.RSVP.hash({
       roles: organization.get('roles'),
-      stacks: this.store.find('stack')
+      stacks: this.store.findStacksFor(organization)
     });
   },
 

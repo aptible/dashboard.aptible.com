@@ -413,6 +413,12 @@ Ember.Test.registerHelper('findButton', function(app, buttonName, options) {
   return el;
 });
 
+Ember.Test.registerAsyncHelper('check', function(app, name) {
+  let checkbox = findInput(name);
+  checkbox.prop('checked', true);
+  checkbox.change();
+});
+
 Ember.Test.registerAsyncHelper('clickButton', function(app, buttonName, options) {
   let button = findButton(buttonName, options);
   if (!button.length){

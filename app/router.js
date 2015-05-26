@@ -79,6 +79,9 @@ export default Router.map(function() {
       });
       this.route("invite");
       this.route('contact-settings');
+      this.route('environments', function() {
+        this.route('new');
+      });
     });
 
     this.route('settings', {
