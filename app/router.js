@@ -82,6 +82,10 @@ export default Router.map(function() {
       this.route('environments', function() {
         this.route('new');
       });
+      this.route("billing", {}, function() {
+        this.route('plan');
+        this.route('payment-method');
+      });
     });
 
     this.route('settings', {

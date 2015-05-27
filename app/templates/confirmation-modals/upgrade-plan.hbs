@@ -1,0 +1,24 @@
+{{#login-box}}
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+      <div class="panel panel-focused">
+        <div class="panel-heading">
+          <h3>Upgrade to Platform</h3>
+        </div>
+        <div class="panel-body">
+          <p>
+            Once you upgrade, an Aptible Account Manager will contact you with
+            instructions for signing a Business Associate Agreement and using
+            your new PHI-ready environment.
+          </p>
+          <p>
+            Your account will be billed immediately when you upgrade.
+          </p>
+
+          <button class="btn btn-default btn-block btn-lg" {{action "cancel"}}>Cancel</button>
+          <button class="btn btn-primary btn-block btn-lg" {{action "confirm"}}>Confirm Upgrade</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{{/login-box}}

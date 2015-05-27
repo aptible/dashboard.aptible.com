@@ -1,8 +1,7 @@
 import Ember from "ember";
 
 export default Ember.Controller.extend({
-
-  confirmationModalService: Ember.inject.service('confirmation-modal'),
+  confirmationModal: Ember.inject.service(),
 
   actions: {
     inviteTo(role) {
@@ -10,7 +9,7 @@ export default Ember.Controller.extend({
       this.transitionToRoute('organization.invite', organization, {queryParams: {role}});
     },
     delete(role) {
-      this.get('confirmationModalService').open({
+      this.get('confirmationModal').open({
         partial: 'confirmation-modals/delete-role',
         model: role,
         onConfirm: () => {

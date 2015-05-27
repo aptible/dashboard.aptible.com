@@ -1,0 +1,65 @@
+.plan-panel {
+  color: $color-light;
+
+  &.active {
+    border: 1px solid $color-bright-blue;
+  }
+
+  .panel-heading h5 {
+    text-align: center;
+  }
+
+  &.active .panel-heading h5 {
+    color: #0D0D0D;
+  }
+
+  .plan-cost {
+    margin: 5px 0;
+  }
+
+  .plan-hero {
+    /* flexbox */
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+    color: #0D0D0D;
+    height: 110px;
+    font-size: 18px;
+    font-weight: $weight-normal;
+    text-align: center;
+  }
+
+  .plan-cost-amount {
+    color: #0D0D0D;
+    font-size: 28px;
+    font-weight: $weight-normal;
+    margin: 2px;
+    vertical-align: middle;
+  }
+
+  .plan-include {
+    color: #0D0D0D;
+    margin-bottom: 1.5em;
+  }
+
+  .plan-include-subheader {
+    color: $color-light;
+    font-size: smaller;
+  }
+
+  .plan-btn {
+    width: 100%;
+
+    &[disabled] {
+      color: #FFF;
+    }
+
+    &.current {
+      opacity: 1;
+      background-color: #FFF;
+      color: $color-success;
+      border: 2px solid $color-success;
+    }
+  }
+}
