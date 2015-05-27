@@ -17,7 +17,6 @@ moduleFor('adapter:application', 'ApplicationAdapter', {
     container.register('model:moose', Moose);
     store = container.lookup('store:application');
   }
-
 });
 
 test('errors messages available', function(){

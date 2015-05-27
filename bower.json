@@ -4,7 +4,7 @@
     "bootstrap": "~3.3.2",
     "bootstrap-sass": "twbs/bootstrap-sass#3.3.1",
     "ember": "1.12.0",
-    "ember-data": "1.0.0-beta.16.1",
+    "ember-data": "1.0.0-beta.18",
     "ember-resolver": "~0.1.15",
     "ember-cli-shims": "ember-cli/ember-cli-shims#0.0.3",
     "ember-cli-test-loader": "ember-cli-test-loader#0.1.3",

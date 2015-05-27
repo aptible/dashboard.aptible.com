@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { stubRequest } from "./fake-server";
+import { stubRequest } from "ember-cli-fake-server";
 import MockLocation from './mock-location';
 import MockTitle from './mock-title';
 
