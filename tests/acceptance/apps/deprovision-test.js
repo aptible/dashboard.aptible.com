@@ -111,7 +111,7 @@ test('/apps/:id/deprovision will show deprovision error', function(){
     });
   });
 
-  signInAndVisit('/apps/'+appId+'/deprovision');
+  signInAndVisit(`/apps/${appId}/deprovision`);
   fillIn('input[type=text]', appName);
   andThen(function(){
     $('input[type=text]').trigger('input');
