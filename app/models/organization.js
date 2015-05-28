@@ -3,6 +3,10 @@ import Ember from 'ember';
 
 let orgRegex = new RegExp('organizations/([a-zA-Z0-9\-]+)');
 
+const UPGRADE_PLAN_REQUEST_EVENT = 'Production Upgrade Request';
+
+export { UPGRADE_PLAN_REQUEST_EVENT };
+
 export default DS.Model.extend({
   name: DS.attr('string'),
   primaryPhone: DS.attr('string'),
