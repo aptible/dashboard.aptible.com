@@ -110,7 +110,7 @@ export default Ember.Service.extend({
     let service = this;
 
     return new Ember.RSVP.Promise(function(resolve) {
-      if(config.environment !== 'test') {
+      if (config.environment !== 'test') {
         window.analytics.identify(id, attributes, Ember.run.bind(null, resolve));
       } else {
         resolve();
@@ -130,5 +130,9 @@ export default Ember.Service.extend({
     return new Ember.RSVP.Promise(function(resolve){
       window.analytics.page(name, Ember.run.bind(null, resolve));
     });
+  },
+
+  track(eventName, attributes) {
+    window.analytics.track(eventName, attributes);
   }
 });
