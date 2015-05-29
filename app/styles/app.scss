@@ -1,5 +1,7 @@
 @import "bower_components/aptible-sass/dist/styles/aptible";
 
+@import "billing-plans";
+
 @import "components/activate-notice";
 @import "components/button-with-confirmation";
 @import "components/change-plan";
@@ -27,4 +29,3 @@
 @import "components/verification-code-reset";
 @import "components/vhost-panel";
 @import "components/welcome";
-

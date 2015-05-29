@@ -20,5 +20,11 @@
         {{/activating-item}}
       {{/if}}
     {{/aptible-ability}}
+
+    {{#if features.organizationBillingSettings}}
+      {{#activating-item currentWhen="organization.billing" tagName="li"}}
+        {{link-to "Billing" "organization.billing"}}
+      {{/activating-item}}
+    {{/if}}
   </ul>
 </nav>

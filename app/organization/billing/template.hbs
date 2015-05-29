@@ -1,0 +1,12 @@
+<div class="layout-container">
+  <ul class='nav nav-pills resource-navigation'>
+    {{#activating-item currentWhen="organization.billing.plan" tagName="li"}}
+      {{link-to "Plan" "organization.billing.plan"}}
+    {{/activating-item}}
+    {{#activating-item currentWhen="organization.billing.payment-method" tagName="li"}}
+      {{link-to "Payment Method" "organization.billing.payment-method"}}
+    {{/activating-item}}
+  </ul>
+</div>
+
+{{outlet}}

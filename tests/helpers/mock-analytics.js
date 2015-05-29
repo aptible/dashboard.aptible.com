@@ -1,4 +1,5 @@
 var oldAnalytics;
+let trackedEvents = [];
 
 export var mockAnalytics = {
  load: function(){},
@@ -18,6 +19,9 @@ export var mockAnalytics = {
        return {};
      }
    };
+ },
+ track(eventName, attributes={}) {
+   trackedEvents.push({eventName, attributes});
  }
 };
 
@@ -27,5 +31,17 @@ export function stubAnalytics(){
 }
 
 export function teardownAnalytics(){
+  trackedEvents = [];
   window.analytics = oldAnalytics;
+}
+
+export function didTrackEvent(eventName) {
+  return trackedEvents.filterBy('eventName', eventName).length > 0;
+}
+
+export function didTrackEventWith(eventName, key, value) {
+  let foundEvents = trackedEvents.filterBy('eventName', eventName);
+  return foundEvents.find((evt) => {
+    return evt.attributes[key] === value;
+  });
 }
