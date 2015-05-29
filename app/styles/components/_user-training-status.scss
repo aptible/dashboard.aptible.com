@@ -1,0 +1,34 @@
+.user-training-status {
+  @extend %clearfix;
+
+  .user-image {
+    float: left;
+    margin-right: 10px;
+    margin-bottom: -5px;
+
+    .compliance-icon-wrapper {
+      text-align: center;
+      height: 24px;
+      width: 24px;
+      background: #fff;
+      border-radius: 12px;
+      margin-left: -16px;
+      display: inline-block;
+    }
+
+    .compliance-icon {
+      padding-top: 3px;
+      font-size: 18px;
+    }
+  }
+
+  .info {
+    float: left;
+  }
+
+  .name {
+    font-size: 14px;
+    font-weight: $weight-semibold;
+    margin: 1px 0 2px 0;
+  }
+}

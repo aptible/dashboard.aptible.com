@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Sheriff</title>
+    <title>Aptible Compliance Dashboard</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -11,11 +11,20 @@
 
     <link rel="stylesheet" href="assets/vendor.css">
     <link rel="stylesheet" href="assets/sheriff.css">
+
+    {{content-for 'head-footer'}}
+
+    <script type="text/javascript" src="//use.typekit.net/hen3udh.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
   </head>
   <body>
     {{content-for 'body'}}
 
     <script src="assets/vendor.js"></script>
     <script src="assets/sheriff.js"></script>
+
+    {{content-for 'body-footer'}}
+
+    <div id="IntercomDefaultWidget"></div>
   </body>
 </html>

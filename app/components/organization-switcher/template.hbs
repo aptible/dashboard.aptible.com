@@ -1,0 +1,7 @@
+{{#dashboard-dropdown title=currentOrganization.name classNames='btn-group dropdown-select'}}
+  {{#each organizations as |organization|}}
+    {{organization-switcher-option
+      organization=organization
+      currentOrganization=currentOrganization }}
+  {{/each}}
+{{/dashboard-dropdown}}

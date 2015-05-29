@@ -2,11 +2,17 @@ import resolver from './helpers/resolver';
 import {
   setResolver
 } from 'ember-qunit';
+import config from "../config/environment";
+import FakeServer from "ember-cli-fake-server";
+import storage from 'sheriff/utils/storage';
 
 setResolver(resolver);
 
-document.write('<div id="ember-testing-container"><div id="ember-testing"></div></div>');
+QUnit.testStart(function(){
+  storage.remove(config.authTokenKey);
+  FakeServer.start();
+});
 
-QUnit.config.urlConfig.push({ id: 'nocontainer', label: 'Hide container'});
-var containerVisibility = QUnit.urlParams.nocontainer ? 'hidden' : 'visible';
-document.getElementById('ember-testing-container').style.visibility = containerVisibility;
+QUnit.testDone(function(){
+  FakeServer.stop();
+});
