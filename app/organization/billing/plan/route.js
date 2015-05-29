@@ -45,7 +45,7 @@ export default Ember.Route.extend({
                      Ember.get(e, 'responseJSON.message'));
       organization.rollback();
     }).finally(() => {
-      this.controller.set('isUpgrading', false);
+      controller.set('isUpgrading', false);
     });
   },
 

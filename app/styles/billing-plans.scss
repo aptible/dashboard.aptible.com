@@ -51,7 +51,7 @@
   .plan-btn {
     width: 100%;
 
-    &[disabled] {
+    &:disabled {
       color: #FFF;
     }
 
