@@ -24,6 +24,7 @@ export default DS.Model.extend({
   roles: DS.hasMany('role', {async:true}),
   securityOfficer: DS.belongsTo('user', {async:true}),
   billingContact: DS.belongsTo('user', {async:true}),
+  billingDetail: DS.belongsTo('billing-detail', {async:true}),
 
   allowPHI: Ember.computed.match('plan', /production|platform/),
 
