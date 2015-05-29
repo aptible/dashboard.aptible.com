@@ -16,6 +16,7 @@ export default [
   'model:ssh-key',
   'model:invitation',
   'model:membership',
+  'model:billing-detail',
   'adapter:application',
   'serializer:application',
   'transform:iso-8601-timestamp'
