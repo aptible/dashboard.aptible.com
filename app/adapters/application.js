@@ -21,6 +21,11 @@ export default HalAdapter.extend({
     if (type === 'stack') {
       type = 'account';
     }
+
+    if(type === 'criterion') {
+      return 'criteria';
+    }
+
     return this._super(type);
   },
 
