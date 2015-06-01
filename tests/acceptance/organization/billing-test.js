@@ -68,3 +68,29 @@ test(`visiting ${url} shows "Payment Method" tab`, (assert) => {
     expectLink(paymentMethodUrl);
   });
 });
+
+test(`visiting ${billingUrl} displays "Billing" header`, (assert) => {
+  const billingDetailUrl = `/organizations/${organizationId}/billing_detail`;
+
+  stubOrganization({
+    _links: { billing_detail: { href: billingDetailUrl } }
+  });
+
+  stubRequest('get', billingDetailUrl, (request) => {
+    request.ok({
+      id: 'b-d-id',
+      payment_method_name: 'VISA',
+      payment_method_display: '4242',
+      next_invoice_date: '2015-06-29T11:06:48.000-04:00'
+    });
+  });
+
+  signInAndVisit(url);
+  andThen(() => {
+    let billingHeader = findWithAssert('.resource-header h1:contains(Billing)').
+      parents('.resource-header');
+    assert.ok(billingHeader.text().match('VISA'), 'shows credit card brand');
+    assert.ok(billingHeader.text().match('4242'), 'shows credit card last 4');
+    assert.ok(billingHeader.text().match('June 29, 2015'), 'shows next invoice date');
+  });
+});

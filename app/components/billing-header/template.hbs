@@ -1,0 +1,44 @@
+<header class="resource-header">
+  <div class="layout-container">
+    <div class="resource-title">
+      <h1>Billing</h1>
+    </div>
+
+    <ul class="resource-metadata">
+      {{#if isLoaded}}
+        <li class="resource-metadata-item">
+          <h5 class="resource-metadata-title">
+            Plan
+          </h5>
+          <h3 class="resource-metadata-value">
+            {{plan}}
+          </h3>
+        </li>
+
+        <li class="resource-metadata-item">
+          <h5 class="resource-metadata-title">
+            Payment Method
+          </h5>
+          <h3 class="resource-metadata-value">
+            {{paymentMethodName}} ****{{paymentMethodDisplay}}
+          </h3>
+        </li>
+
+        <li class="resource-metadata-item">
+          <h5 class="resource-metadata-title">
+            Next Invoice Date
+          </h5>
+          <h3 class="resource-metadata-value">
+            {{format-date nextInvoiceDate}}
+          </h3>
+        </li>
+      {{else}}
+        <li class="resource-metadata-item">
+          <h5 class="resource-metadata-title">
+            Loading billing details
+          </h5>
+        </li>
+      {{/if}}
+    </ul>
+  </div>
+</header>
