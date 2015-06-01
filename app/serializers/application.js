@@ -22,6 +22,10 @@ export default HalSerializer.extend({
       result = 'stack';
     }
 
+    if (result === 'criterium') {
+      result = 'criterion';
+    }
+
     return result;
   },
 
