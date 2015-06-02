@@ -5,11 +5,15 @@ import Ember from "ember";
 export default Ember.Mixin.create({
   requireAuthentication: false,
   beforeModel: function(){
+
     return new Ember.RSVP.Promise((resolve, reject) => {
-      if (this.session.get('isAuthenticated')) {
+      var isAuthenticated = this.get('session.isAuthenticated');
+      if (isAuthenticated) {
         reject();
+      } else if (isAuthenticated === undefined) {
+        return this.session.fetch('aptible').then(reject, resolve);
       } else {
-        this.session.fetch('aptible').then(reject, resolve);
+        resolve();
       }
     }).catch(() => {
       this.transitionTo('index');

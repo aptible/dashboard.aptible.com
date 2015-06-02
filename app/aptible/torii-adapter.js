@@ -1,45 +1,37 @@
 import Ember from "ember";
-import storage from '../utils/storage';
 import config from "../config/environment";
-import JWT from '../utils/jwt';
-import { auth } from '../adapters/application';
+import ajax from "../utils/ajax";
+import { getAccessToken, setAccessToken } from '../adapters/application';
 
 function clearSession(){
-  delete auth.token;
-  storage.remove(config.authTokenKey);
+  setAccessToken(null);
 }
 
 function persistSession(accessToken){
-  auth.token = accessToken;
-  storage.write(config.authTokenKey, accessToken);
+  setAccessToken(accessToken);
+}
+
+function pushTokenToStore(tokenPayload, store) {
+  return store.push('token', {
+    id: tokenPayload.id,
+    accessToken: tokenPayload.access_token,
+    links: {
+      user: tokenPayload._links.user.href
+    }
+  });
 }
 
 export default Ember.Object.extend({
   analytics: Ember.inject.service(),
-  fetch: function(){
+  _authenticateWithPayload(tokenPayload) {
     var store = this.store;
     return new Ember.RSVP.Promise(function(resolve){
-      var token = storage.read(config.authTokenKey);
-
-      if (!token) {
-        throw new Error('Token not found');
-      }
-
-      auth.token = token;
-      var jwt = JWT.create({token:token});
-
-      var jwtPayload = jwt.get('payload');
-      resolve(store.push('token', {
-        id: jwtPayload.id,
-        accessToken: token,
-        links: {
-          user: jwtPayload.sub
-        }
-      }));
+      persistSession(tokenPayload.access_token);
+      resolve(pushTokenToStore(tokenPayload, store));
     }).then((token) => {
-      const user = token.get('user');
       return Ember.RSVP.hash({
-        currentUser: user
+        token,
+        currentUser: token.get('user')
       });
     }).then((session) => {
       this.identifyToAnalytics(session.currentUser);
@@ -50,38 +42,40 @@ export default Ember.Object.extend({
     });
   },
 
-  open: function(tokenPayload){
-    var store = this.store;
-    return new Ember.RSVP.Promise(function(resolve){
-      resolve(store.push('token', {
-        id: tokenPayload.id,
-        accessToken: tokenPayload.access_token,
-        links: {
-          user: tokenPayload._links.user.href
-        }
-      }));
-    }).then((token) => {
-      var accessToken = token.get('accessToken');
-      persistSession(accessToken);
-
-      return Ember.RSVP.hash({
-        currentUser: token.get('user')
-      });
-    }).then((session) => {
-      const user = session.currentUser;
-      this.identifyToAnalytics(user);
-
-      return session;
-    }).catch(function(e){
-      clearSession();
-      throw e;
+  fetch() {
+    return ajax(config.authBaseUri+'/current_token', {
+      type: 'GET',
+      xhrFields: { withCredentials: true }
+    }).then((tokenPayload) => {
+      return this._authenticateWithPayload(tokenPayload);
+    }).catch(function(jqXHR){
+      if (jqXHR.responseJSON) {
+        throw new Error(jqXHR.responseJSON.message);
+      } else if (jqXHR.responseText) {
+        throw new Error(jqXHR.responseText);
+      } else {
+        throw new Error("Unknown error from the server.");
+      }
     });
   },
 
-  close: function(){
-    return new Ember.RSVP.Promise(function(resolve){
+  open(tokenPayload) {
+    return this._authenticateWithPayload(tokenPayload);
+  },
+
+  close(token) {
+    Ember.assert(
+      `A token must be passed: session.close('aptible', /*token*/);`,
+      !!token
+    );
+    return ajax(config.authBaseUri+`/tokens/${token.get('id')}`, {
+      type: 'DELETE',
+      headers: {
+        'Authorization': 'Bearer ' + getAccessToken()
+      },
+      xhrFields: { withCredentials: true }
+    }).then(() => {
       clearSession();
-      resolve();
     });
   },
 

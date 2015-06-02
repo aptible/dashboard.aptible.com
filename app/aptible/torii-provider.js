@@ -3,7 +3,7 @@ import ajax from "../utils/ajax";
 import config from "../config/environment";
 
 export default BaseProvider.extend({
-  open: function(credentials){
+  open(credentials) {
     return ajax(config.authBaseUri+'/tokens', {
       type: 'POST',
       data: credentials,
