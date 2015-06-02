@@ -1,5 +1,5 @@
 let history = [];
-import Title from 'dummy/utils/title-route-extensions';
+import Title from '../../utils/title-route-extensions';
 
 let originalReplace;
 

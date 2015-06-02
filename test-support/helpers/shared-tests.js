@@ -1,6 +1,6 @@
+import Ember from 'ember';
 import { stubRequest } from "ember-cli-fake-server";
 import successfulTokenResponse from './successful-token-response';
-import Ember from 'ember';
 
 export function signupInputsTest(url){
   visit(url);

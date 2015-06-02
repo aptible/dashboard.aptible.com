@@ -18,3 +18,8 @@ export function stubStripe(){
 export function teardownStripe(){
   window.Stripe = oldStripe;
 }
+
+export default {
+  setup: stubStripe,
+  teardown: teardownStripe
+};
