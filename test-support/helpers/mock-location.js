@@ -1,4 +1,4 @@
-import Location from 'dummy/utils/location';
+import Location from '../../utils/location';
 
 let originalReplaceAndWait, originalReplace;
 let history = [];
@@ -6,6 +6,8 @@ let history = [];
 export default {
   setup() {
     originalReplaceAndWait = Location.replaceAndWait;
+    originalReplace = Location.replace;
+
     Location.replaceAndWait = (url) => history.push(url);
     Location.replace = (url) => history.push(url);
   },

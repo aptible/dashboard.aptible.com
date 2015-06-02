@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { stubRequest } from "ember-cli-fake-server";
+import { stubRequest } from 'ember-cli-fake-server';
 import MockLocation from './mock-location';
 import MockTitle from './mock-title';
 
@@ -49,6 +49,7 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData){
 
     sm.transitionTo('authenticated');
     session.set('content.currentUser', user);
+    session.set('content.token', Ember.Object.create({id: 'stubbed-token-id'}));
   });
 });
 
@@ -75,7 +76,7 @@ Ember.Test.registerAsyncHelper('expectRedirectsWhenLoggedIn', function(app, url)
   signInAndVisit(url);
 
   andThen(function(){
-    equal(currentPath(), 'stack.apps.index');
+    equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 
@@ -411,6 +412,12 @@ Ember.Test.registerHelper('findButton', function(app, buttonName, options) {
   let el = context ? context.find(selector) : find(selector);
 
   return el;
+});
+
+Ember.Test.registerAsyncHelper('check', function(app, name) {
+  let checkbox = findInput(name);
+  checkbox.prop('checked', true);
+  checkbox.change();
 });
 
 Ember.Test.registerAsyncHelper('clickButton', function(app, buttonName, options) {
