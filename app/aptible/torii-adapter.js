@@ -2,6 +2,7 @@ import Ember from "ember";
 import storage from '../utils/storage';
 import config from "../config/environment";
 import JWT from '../utils/jwt';
+import ajax from "../utils/ajax";
 import { auth } from '../adapters/application';
 
 function clearSession(){
@@ -31,6 +32,7 @@ export default Ember.Object.extend({
       resolve(pushTokenToStore(tokenPayload, store));
     }).then((token) => {
       return Ember.RSVP.hash({
+        token,
         currentUser: token.get('user')
       });
     }).then((session) => {
@@ -42,18 +44,40 @@ export default Ember.Object.extend({
     });
   },
 
-  fetch(tokenPayload) {
-    return this._authenticateWithPayload(tokenPayload);
+  fetch() {
+    return ajax(config.authBaseUri+'/current_token', {
+      type: 'GET',
+      xhrFields: { withCredentials: true }
+    }).then((tokenPayload) => {
+      return this._authenticateWithPayload(tokenPayload);
+    }).catch(function(jqXHR){
+      if (jqXHR.responseJSON) {
+        throw new Error(jqXHR.responseJSON.message);
+      } else if (jqXHR.responseText) {
+        throw new Error(jqXHR.responseText);
+      } else {
+        throw new Error("Unknown error from the server.");
+      }
+    });
   },
 
   open(tokenPayload) {
     return this._authenticateWithPayload(tokenPayload);
   },
 
-  close() {
-    return new Ember.RSVP.Promise(function(resolve){
+  close(token) {
+    Ember.assert(
+      `A token must be passed: session.close('aptible', /*token*/);`,
+      !!token
+    );
+    return ajax(config.authBaseUri+`/tokens/${token.get('id')}`, {
+      type: 'DELETE',
+      headers: {
+        'Authorization': 'Bearer ' + auth.token
+      },
+      xhrFields: { withCredentials: true }
+    }).then(() => {
       clearSession();
-      resolve();
     });
   },
 
