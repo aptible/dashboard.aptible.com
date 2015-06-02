@@ -94,13 +94,13 @@ export default Router.map(function() {
       this.route('profile');
       this.route('ssh');
     });
+  });
 
-    this.route("welcome", {
-      resetNamespace: true
-    }, function() {
-      this.route("first-app");
-      this.route("payment-info");
-    });
+  this.route("welcome", {
+    resetNamespace: true
+  }, function() {
+    this.route("first-app");
+    this.route("payment-info");
   });
 
   this.route("login");
