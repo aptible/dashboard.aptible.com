@@ -6,7 +6,6 @@ export default Ember.Component.extend({
   isActive: Ember.computed('route', 'applicationController.currentPath', function() {
     var currentPath = this.applicationController.get('currentPath');
     var route = this.get('route');
-    return currentPath.indexOf(route) === 0;
+    return currentPath.indexOf(route) > -1;
   })
-
 });
