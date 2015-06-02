@@ -15,7 +15,6 @@ Router.map(function() {
     this.route("training", { path: 'training' }, function() {});
   });
 
-  this.route('login');
   this.route('stacks', { path: 'stacks'}, function() {});
   this.route('settings', { path: 'settings'}, function() {
     this.route('ssh');
