@@ -6,40 +6,32 @@ import { auth } from '../adapters/application';
 
 function clearSession(){
   delete auth.token;
-  storage.remove(config.authTokenKey);
 }
 
 function persistSession(accessToken){
   auth.token = accessToken;
-  storage.write(config.authTokenKey, accessToken);
+}
+
+function pushTokenToStore(tokenPayload, store) {
+  return store.push('token', {
+    id: tokenPayload.id,
+    accessToken: tokenPayload.access_token,
+    links: {
+      user: tokenPayload._links.user.href
+    }
+  });
 }
 
 export default Ember.Object.extend({
   analytics: Ember.inject.service(),
-  fetch: function(){
+  _authenticateWithPayload(tokenPayload) {
     var store = this.store;
     return new Ember.RSVP.Promise(function(resolve){
-      var token = storage.read(config.authTokenKey);
-
-      if (!token) {
-        throw new Error('Token not found');
-      }
-
-      auth.token = token;
-      var jwt = JWT.create({token:token});
-
-      var jwtPayload = jwt.get('payload');
-      resolve(store.push('token', {
-        id: jwtPayload.id,
-        accessToken: token,
-        links: {
-          user: jwtPayload.sub
-        }
-      }));
+      persistSession(tokenPayload.access_token);
+      resolve(pushTokenToStore(tokenPayload, store));
     }).then((token) => {
-      const user = token.get('user');
       return Ember.RSVP.hash({
-        currentUser: user
+        currentUser: token.get('user')
       });
     }).then((session) => {
       this.identifyToAnalytics(session.currentUser);
@@ -50,35 +42,15 @@ export default Ember.Object.extend({
     });
   },
 
-  open: function(tokenPayload){
-    var store = this.store;
-    return new Ember.RSVP.Promise(function(resolve){
-      resolve(store.push('token', {
-        id: tokenPayload.id,
-        accessToken: tokenPayload.access_token,
-        links: {
-          user: tokenPayload._links.user.href
-        }
-      }));
-    }).then((token) => {
-      var accessToken = token.get('accessToken');
-      persistSession(accessToken);
-
-      return Ember.RSVP.hash({
-        currentUser: token.get('user')
-      });
-    }).then((session) => {
-      const user = session.currentUser;
-      this.identifyToAnalytics(user);
-
-      return session;
-    }).catch(function(e){
-      clearSession();
-      throw e;
-    });
+  fetch(tokenPayload) {
+    return this._authenticateWithPayload(tokenPayload);
   },
 
-  close: function(){
+  open(tokenPayload) {
+    return this._authenticateWithPayload(tokenPayload);
+  },
+
+  close() {
     return new Ember.RSVP.Promise(function(resolve){
       clearSession();
       resolve();
