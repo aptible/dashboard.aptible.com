@@ -49,6 +49,7 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData){
 
     sm.transitionTo('authenticated');
     session.set('content.currentUser', user);
+    session.set('content.token', Ember.Object.create({id: 'stubbed-token-id'}));
   });
 });
 

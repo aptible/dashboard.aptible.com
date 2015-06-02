@@ -147,6 +147,8 @@ test('logging out redirects to login if not logged in', function() {
 
 test('logging out reloads the page', function() {
   stubIndexRequests();
+  stubRequest('delete', `/tokens/:token_id`, (req) => req.noContent());
+
   signInAndVisit('/');
   click('.current-user .dropdown-toggle');
   click('a:contains(Logout)');
