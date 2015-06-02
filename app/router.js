@@ -6,7 +6,6 @@ var Router = Ember.Router.extend({
   location: config.locationType,
   onTransition: function() {
     this.get('analytics').page();
-    this.get('flashMessages').clearMessages();
   }.on('didTransition')
 });
 
