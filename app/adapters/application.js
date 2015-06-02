@@ -3,17 +3,25 @@ import DS from "ember-data";
 import Ember from "ember";
 import config from "../config/environment";
 
-export var auth = {};
+let accessToken;
+
+export function setAccessToken(token) {
+  accessToken = token;
+}
+
+export function getAccessToken() {
+  return accessToken;
+}
 
 export default HalAdapter.extend({
   host: config.apiBaseUri,
 
   headers: Ember.computed(function(){
-    if (!auth.token) {
+    if (!getAccessToken()) {
       return {};
     }
     return {
-      'Authorization': 'Bearer ' + auth.token
+      'Authorization': 'Bearer ' + getAccessToken()
     };
   }).volatile(),
 

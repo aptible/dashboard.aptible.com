@@ -3,7 +3,7 @@ import {
   test
 } from 'ember-qunit';
 import config from "../../../config/environment";
-import { auth } from '../../../adapters/application';
+import { getAccessToken, setAccessToken } from '../../../adapters/application';
 import storage from 'dummy/utils/storage';
 import { stubRequest } from 'ember-cli-fake-server';
 import DS from "ember-data";
@@ -28,7 +28,7 @@ moduleFor('torii-adapter:aptible', 'Torii Adapter: Aptible', {
   teardown: function(){
     storage.write = originalWrite;
     storage.read = originalRead;
-    auth.token = null;
+    setAccessToken(null);
   },
   subject: function() {
     var store = this.container.lookup('store:main');
@@ -40,8 +40,9 @@ moduleFor('torii-adapter:aptible', 'Torii Adapter: Aptible', {
   }
 });
 
-test('#close destroys token, storage', function(){
-  expect(4);
+test('#close destroys token, storage', function(assert){
+  assert.expect(4);
+  const done = assert.async();
   var adapter = this.subject();
   var tokenId = 'some-token-id';
 
@@ -49,30 +50,31 @@ test('#close destroys token, storage', function(){
   storage.remove = function(key){
     removedKey = key;
   };
-  auth.token = 'some-token';
+  setAccessToken('some-token');
 
   var token = Ember.Object.create({
     id: tokenId
   });
 
   stubRequest('delete', `/tokens/${tokenId}`, function() {
-    ok(true, 'delete is called at the API');
+    assert.ok(true, 'delete is called at the API');
     return this.noContent();
   });
 
   Ember.run(function(){
     adapter.close(token).then(function(){
-      ok(true, 'session is opened with an auth_token');
-      equal(removedKey, config.authTokenKey, 'removes token value');
-      ok(!auth.token, 'unsets token on auth');
-    }, function(e){
-      ok(false, "Unexpected error: "+e);
-    });
+      assert.ok(true, 'session is opened with an auth_token');
+      assert.equal(removedKey, config.authTokenKey, 'removes token value');
+      assert.ok(!getAccessToken(), 'unsets token on auth');
+    }).finally(done);
   });
 });
 
 
-test('#open stores payload, set currentUser', function(){
+test('#open stores payload, set currentUser', function(assert){
+  const done = assert.async();
+  assert.expect();
+
   var adapter = this.subject();
   var token = 'some-token';
   var tokenId = 'some-token-id';
@@ -87,7 +89,7 @@ test('#open stores payload, set currentUser', function(){
     });
   });
 
-  ok(!auth.token, 'precond - no auth.token');
+  assert.ok(!getAccessToken(), 'precond - no auth token');
 
   var optionsFromProvider = {
     id: tokenId,
@@ -98,25 +100,26 @@ test('#open stores payload, set currentUser', function(){
       }
     }
   };
+
   Ember.run(function(){
     adapter.open(optionsFromProvider).then(function(resultForSession){
       ok(true, 'session is opened with an auth_token');
-      // FIXME: PhantomJS fails to set the value here
-      // equal(auth.token, token, 'sets token on auth');
+      assert.equal(getAccessToken(), token, 'sets token on auth');
 
       // QUnit will hang forever if we don't explicitly turn this into
       // a boolean, because the currentUser object (maybe) has some recursive
       // structure that foils QUnit's eager generation of its failure message
-      ok(!!resultForSession.currentUser, 'sets currentUser on session');
-      equal(Ember.get(resultForSession, 'currentUser.username'), userEmail, 'user email is from the API');
-      equal(Ember.get(resultForSession, 'token.id'), tokenId, 'token is present with id');
-    }, function(e){
-      ok(false, "Unexpected error: "+e);
-    });
+      assert.ok(!!resultForSession.currentUser, 'sets currentUser on session');
+      assert.equal(Ember.get(resultForSession, 'currentUser.username'), userEmail, 'user email is from the API');
+      assert.equal(Ember.get(resultForSession, 'token.id'), tokenId, 'token is present with id');
+    }).finally(done);
   });
 });
 
-test('#fetch fetches current_token, stores payload, set currentUser', function(){
+test('#fetch fetches current_token, stores payload, set currentUser', function(assert){
+  const done = assert.async();
+  assert.expect(6);
+
   var adapter = this.subject();
   var token = 'some-token';
   var tokenId = 'some-token-id';
@@ -144,22 +147,19 @@ test('#fetch fetches current_token, stores payload, set currentUser', function()
     });
   });
 
-  ok(!auth.token, 'precond - no auth.token');
+  assert.ok(!getAccessToken(), 'precond - no auth token');
 
   Ember.run(function(){
     adapter.fetch().then(function(resultForSession){
-      ok(true, 'session is opened with an auth_token');
-      // FIXME: PhantomJS fails to set the value here
-      // equal(auth.token, token, 'sets token on auth');
+      assert.ok(true, 'session is opened with an auth_token');
+      assert.equal(getAccessToken(), token, 'sets token on auth');
 
       // QUnit will hang forever if we don't explicitly turn this into
       // a boolean, because the currentUser object (maybe) has some recursive
       // structure that foils QUnit's eager generation of its failure message
-      ok(!!resultForSession.currentUser, 'sets currentUser on session');
-      equal(Ember.get(resultForSession, 'currentUser.username'), userEmail, 'user email is from the API');
-      equal(Ember.get(resultForSession, 'token.id'), tokenId, 'token is present with id');
-    }, function(e){
-      ok(false, "Unexpected error: "+e);
-    });
+      assert.ok(!!resultForSession.currentUser, 'sets currentUser on session');
+      assert.equal(Ember.get(resultForSession, 'currentUser.username'), userEmail, 'user email is from the API');
+      assert.equal(Ember.get(resultForSession, 'token.id'), tokenId, 'token is present with id');
+    }).finally(done);
   });
 });

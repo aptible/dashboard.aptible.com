@@ -1,16 +1,14 @@
 import Ember from "ember";
-import storage from '../utils/storage';
 import config from "../config/environment";
-import JWT from '../utils/jwt';
 import ajax from "../utils/ajax";
-import { auth } from '../adapters/application';
+import { getAccessToken, setAccessToken } from '../adapters/application';
 
 function clearSession(){
-  delete auth.token;
+  setAccessToken(null);
 }
 
 function persistSession(accessToken){
-  auth.token = accessToken;
+  setAccessToken(accessToken);
 }
 
 function pushTokenToStore(tokenPayload, store) {
@@ -73,7 +71,7 @@ export default Ember.Object.extend({
     return ajax(config.authBaseUri+`/tokens/${token.get('id')}`, {
       type: 'DELETE',
       headers: {
-        'Authorization': 'Bearer ' + auth.token
+        'Authorization': 'Bearer ' + getAccessToken()
       },
       xhrFields: { withCredentials: true }
     }).then(() => {
