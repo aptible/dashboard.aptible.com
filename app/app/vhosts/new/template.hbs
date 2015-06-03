@@ -31,6 +31,26 @@
           </div>
 
           <div class="form-group">
+            <label class="block" for="vhost-type">Type</label>
+            <div class="radio">
+              <div>
+                {{#radio-button value=false groupValue=model.internal name="vhost-type"}}
+                  {{#bs-tooltip placement="bottom" title='External Domains are accessible from the outside internet.' bs-container=false}}
+                    External
+                  {{/bs-tooltip}}
+                {{/radio-button}}
+              </div>
+              <div>
+                {{#radio-button value=true groupValue=model.internal name="vhost-type"}}
+                  {{#bs-tooltip placement="bottom" title='Internal Domains are only accessible from other apps in your environment.' bs-container=false}}
+                  Internal
+                  {{/bs-tooltip}}
+                {{/radio-button}}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
             <label>Certificate</label>
             {{textarea class="form-control" value=model.certificate name="certificate" rows=10}}
           </div>
