@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-var STATUSES = {
+const STATUSES = {
   PENDING:        'pending',
   PROVISIONING:   'provisioning',
   DEPROVISIONED:  'deprovisioned',

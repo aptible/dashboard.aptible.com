@@ -6,12 +6,14 @@ export default DS.Model.extend(ProvisionableMixin, {
   externalHost: DS.attr('string'),
   privateKey: DS.attr('string'),
   certificate: DS.attr('string'),
-  type: DS.attr('string', {defaultValue:'http'}),
+  type: DS.attr('string', {defaultValue:'http_proxy_protocol'}),
   isDefault: DS.attr('boolean'),
-  internal: DS.attr('boolean'),
+  internal: DS.attr('boolean', {defaultValue: false}),
+
   service: DS.belongsTo('service', {async:true}),
   app: DS.belongsTo('app', { async: true }),
-  isProvisioned: Ember.computed.equal('status', 'provisioned'),
+  operations: DS.hasMany('operation', {async:true}),
+
   displayHost: Ember.computed('isDefault', 'externalHost', 'virtualDomain', function() {
     if(this.get('isDefault')) {
       return this.get('virtualDomain');

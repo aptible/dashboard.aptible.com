@@ -28,7 +28,7 @@ export default DS.Model.extend({
 
   // computed properties
   allowPHI: Ember.computed.match('type', /production/),
-  appContainerCentsPerHour: '8',
+  appContainerCentsPerHour: 8,
   permitsRole(role, scope){
     let permissions;
 
