@@ -1,0 +1,38 @@
+{{#if multipleOrganizations}}
+  {{organization-switcher organizations=organizations currentOrganization=organization}}
+{{/if}}
+
+<ul class="nav sidebar-nav">
+  <li class="title">Compliance Engines</li>
+  {{#each complianceEngines as |engine| }}
+    {{#if engine.app}}
+      <li>
+        {{#link-to-aptible app=engine.app path=engine.path}}
+          {{engine.name}}
+        {{/link-to-aptible}}
+      </li>
+    {{else}}
+      {{#link-to engine.path tagName='li'}}
+        {{#link-to engine.path organization}}{{engine.name}}{{/link-to}}
+      {{/link-to}}
+    {{/if}}
+  {{/each}}
+</ul>
+
+<ul class="nav sidebar-nav">
+  <li class="title">Compliance Tools</li>
+  {{#each complianceTools as |tool| }}
+    <li>
+      {{#link-to-aptible app='compliance' path=tool.path}}
+        {{tool.name}}
+      {{/link-to-aptible}}
+    </li>
+  {{/each}}
+</ul>
+
+<ul class="nav sidebar-nav">
+  <li class="title">Compliance Alerts</li>
+  <li>
+    {{#link-to-aptible app='compliance' path='/'}}Alerts{{/link-to-aptible}}
+  </li>
+</ul>

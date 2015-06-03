@@ -1,8 +1,54 @@
-/* global require, module */
+/* global require, module, process */
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
-var app = new EmberApp();
+var options = {
+  emberCliFontAwesome: { includeFontAwesomeAssets: false },
+  vendorFiles: {
+    'handlebars.js': null
+  }
+};
+
+if (process.env.EMBER_ENV === 'staging') {
+  options.minifyCSS = {
+    enabled: true
+  };
+  options.minifyJS = {
+    enabled: true
+  };
+  options.fingerprint = {
+    enabled: true
+  };
+}
+
+var app = new EmberApp(options);
+
+app.import('bower_components/nouislider/src/jquery.nouislider.css');
+app.import('bower_components/nouislider/distribute/jquery.nouislider.js');
+
+// tooltips, popovers
+app.import('bower_components/bootstrap/dist/js/bootstrap.js');
+app.import('bower_components/animate/animate.css');
+app.import("bower_components/font-awesome/css/font-awesome.css");
+app.import("bower_components/font-awesome/fonts/fontawesome-webfont.eot", { destDir: "fonts" });
+app.import("bower_components/font-awesome/fonts/fontawesome-webfont.svg", { destDir: "fonts" });
+app.import("bower_components/font-awesome/fonts/fontawesome-webfont.ttf", { destDir: "fonts" });
+app.import("bower_components/font-awesome/fonts/fontawesome-webfont.woff", { destDir: "fonts" });
+app.import("bower_components/font-awesome/fonts/FontAwesome.otf", { destDir: "fonts" });
+
+app.import("bower_components/zeroclipboard/dist/ZeroClipboard.js");
+app.import("bower_components/zeroclipboard/dist/ZeroClipboard.swf", {
+  destDir: "assets"
+});
+
+// Should become and addon or use a tree
+app.import('bower_components/aptible-sass/dist/images/aptible-circle-logo.png', { destDir: "/" });
+app.import('bower_components/aptible-sass/dist/images/aptible-mark.png', { destDir: "/" });
+app.import('bower_components/aptible-sass/dist/images/aptible-mark@2x.png', { destDir: "/" });
+app.import('bower_components/aptible-sass/dist/images/nav-logo-dark.png', { destDir: "/" });
+app.import('bower_components/aptible-sass/dist/images/nav-logo-dark@2x.png', { destDir: "/" });
+app.import('bower_components/aptible-sass/dist/images/nav-logo.png', { destDir: "/" });
+app.import('bower_components/aptible-sass/dist/images/nav-logo@2x.png', { destDir: "/" });
 
 // Use `app.import` to add additional libraries to the generated
 // output files.

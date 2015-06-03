@@ -1,0 +1,22 @@
+{{#compliance-status subject=user criterion=criterion as |status|}}
+  <div class="user-image is-compliant-{{status.green}}">
+    <div class="gravatar md">
+      {{gravatar-image email=user.email}}
+    </div>
+    <div class="compliance-icon-wrapper">
+      {{compliance-icon status=status}}
+    </div>
+  </div>
+
+  <div class="info">
+    <div class="name">{{user.name}}</div>
+
+    {{#if status.green}}
+      <span class="description">
+        Last completed on {{format-utc-timestamp status.completedOn}}
+      </span>
+    {{else}}
+      <span class="description">Never completed, due immediately</span>
+    {{/if}}
+  </div>
+{{/compliance-status}}
