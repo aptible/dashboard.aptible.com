@@ -3,7 +3,7 @@
     <header class="layout-header">
       {{partial "header"}}
       {{#unless session.currentUser.verified}}
-        {{verification-code-reset}}
+        {{verification-code-reset user=session.currentUser}}
       {{/unless}}
 
       {{#if flashMessages.queue}}
