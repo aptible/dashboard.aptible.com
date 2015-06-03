@@ -5,6 +5,10 @@ import {
 } from 'qunit';
 import startApp from 'sheriff/tests/helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
+import MockLocation from '../../../helpers/mock-location';
+import Cookies from 'ember-cli-aptible-shared/utils/cookies';
+import { AFTER_AUTH_COOKIE, accessDenied } from 'sheriff/app';
+import config from 'sheriff/config/environment';
 
 let application;
 
@@ -142,7 +146,15 @@ module('Acceptance: Organization Training Dashboard', {
 // FIXME this test uses Location.redirect
 /*
 test(`visiting ${url} requires authentication`, function(assert) {
-  expectRequiresAuthentication(url);
+  var returnLocation = window.location;
+  visit(url);
+  Ember.run.later(this, () => {
+    accessDenied.lastReject();
+  }, 200);
+  andThen(function() {
+    equal(MockLocation.last(), config.dashboardBaseUri+'/login', `redirected to dashboard for login`);
+    equal(Cookies.read(AFTER_AUTH_COOKIE), returnLocation, `cookie for redirect set`);
+  });
 });
 */
 

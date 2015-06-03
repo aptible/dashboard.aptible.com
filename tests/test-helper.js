@@ -9,6 +9,8 @@ import MockAnalytics from './helpers/mock-analytics';
 import storage from '../utils/storage';
 import MockLocation from './helpers/mock-location';
 import MockTitle from './helpers/mock-title';
+import Cookies from 'ember-cli-aptible-shared/utils/cookies';
+import { AFTER_AUTH_COOKIE } from '../app';
 
 setResolver(resolver);
 
@@ -21,9 +23,12 @@ QUnit.testStart(function(){
   MockAnalytics.setup();
 
   FakeServer.start();
+  Cookies.erase(AFTER_AUTH_COOKIE);
 });
 
 QUnit.testDone(function(){
+  Cookies.erase(AFTER_AUTH_COOKIE);
+
   MockLocation.teardown();
   MockTitle.teardown();
   MockStripe.teardown();
