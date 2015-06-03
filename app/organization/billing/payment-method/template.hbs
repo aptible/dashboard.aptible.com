@@ -1,0 +1,24 @@
+<div class="layout-container">
+  <div class="row">
+    <div class="panel billing-payment-method">
+      <div class="panel-heading">
+        <h5>Payment Method</h5>
+      </div>
+      <div class="panel-body">
+        <p>
+          {{model.paymentMethodName}} ****{{model.paymentMethodDisplay}}
+          Expires {{model.paymentExpMonth}}/{{model.paymentExpYear}}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{#unless showPaymentForm}}
+  <button class='btn btn-primary' {{action 'showPaymentForm'}}>Update Payment Method</button>
+{{/unless}}
+
+{{#if showPaymentForm}}
+  {{stripe-cc-form organization=organization action="updatedPayment"}}
+{{/if}}
+
