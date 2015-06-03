@@ -1,7 +1,8 @@
 import DS from 'ember-data';
 import Ember from 'ember';
+import ProvisionableMixin from '../mixins/models/provisionable';
 
-export default DS.Model.extend({
+export default DS.Model.extend(ProvisionableMixin, {
   name: DS.attr('string'),
   handle: DS.attr('string'),
   connectionUrl: DS.attr('string'),

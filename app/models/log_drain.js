@@ -1,6 +1,7 @@
 import DS from 'ember-data';
+import ProvisionableMixin from '../mixins/models/provisionable';
 
-export default DS.Model.extend({
+export default DS.Model.extend(ProvisionableMixin, {
   handle: DS.attr('string'),
   drainHost: DS.attr('string'),
   drainPort: DS.attr('string'),
