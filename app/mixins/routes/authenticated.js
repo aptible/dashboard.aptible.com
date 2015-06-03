@@ -31,12 +31,12 @@ export default Ember.Mixin.create({
       return this.session.fetch('aptible').then(function(){
         return loadUserRoles(route);
       }).catch( () => {
-        this.accessDenied();
+        return this.accessDenied();
       });
     } else if (isAuthenticated) {
       return loadUserRoles(route);
     } else {
-      this.accessDenied();
+      return this.accessDenied();
     }
   },
 
