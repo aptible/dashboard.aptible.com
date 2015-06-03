@@ -58,15 +58,6 @@ Ember.Test.registerAsyncHelper('signInAndVisit', function(app, url, userData){
   visit(url);
 });
 
-Ember.Test.registerAsyncHelper('expectRequiresAuthentication', function(app, url){
-  visit(url);
-
-  andThen(function(){
-    equal(currentPath(), 'login');
-  });
-});
-
-
 Ember.Test.registerHelper('expectReplacedLocation', function(app, url){
   equal(MockLocation.last(), url, `window.location replaced with "${url}"`);
 });
