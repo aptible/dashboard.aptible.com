@@ -2,6 +2,8 @@ import Ember from 'ember';
 import startApp from '../helpers/start-app';
 import { stubRequest } from '../helpers/fake-server';
 import successfulTokenResponse from '../helpers/successful-token-response';
+import { AFTER_AUTH_COOKIE } from '../../login/route';
+import Cookies from "ember-cli-aptible-shared/utils/cookies";
 
 let App;
 let signupIndexPath = 'signup.index';
@@ -17,6 +19,7 @@ module('Acceptance: Login', {
     App = startApp();
   },
   teardown: function() {
+    Cookies.erase(AFTER_AUTH_COOKIE);
     Ember.run(App, 'destroy');
   }
 });
@@ -112,6 +115,36 @@ test('after logging in, nav header shows user name', function(){
   andThen(() => {
     let nav = find('header.navbar:contains('+ userName +')');
     ok(nav.length, 'Has header with user name ' + userName);
+  });
+});
+
+test('when redirect cookie is set, after logging in, the location is visited', function(){
+  stubStacks();
+  stubOrganization();
+  stubOrganizations();
+
+  let locationUrl = 'example.org/foobar',
+      userUrl = '/user-url',
+      userName = 'Joe Hippo';
+
+  stubRequest('post', '/tokens', function(request){
+    return successfulTokenResponse(this, userUrl);
+  });
+
+  stubRequest('get', userUrl, function(){
+    return this.success({
+      id: 'some-id',
+      name: userName
+    });
+  });
+
+  // Valid for one minute
+  Cookies.create(AFTER_AUTH_COOKIE, locationUrl, 0.00069);
+
+  visit('/login');
+  clickButton('Log in');
+  andThen(() => {
+    expectReplacedLocation(locationUrl);
   });
 });
 

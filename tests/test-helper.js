@@ -9,6 +9,7 @@ import MockAnalytics from './helpers/mock-analytics';
 import storage from '../utils/storage';
 import MockLocation from './helpers/mock-location';
 import MockTitle from './helpers/mock-title';
+import './helpers/authentication';
 
 setResolver(resolver);
 
