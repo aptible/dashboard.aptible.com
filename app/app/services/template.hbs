@@ -11,5 +11,11 @@
         {{service-scaler service=service scaleService="scaleService"}}
       </div>
     </div>
+  {{else}}
+    <div class="row">
+      <div class="col-xs-10">
+        {{deploy-instructions app=app sshKeys=sshKeys}}
+      </div>
+    </div>
   {{/each}}
 </div>

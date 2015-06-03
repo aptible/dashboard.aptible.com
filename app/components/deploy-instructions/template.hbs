@@ -1,0 +1,64 @@
+<div class="first-time-app-deploy">
+  <h2>Deploy {{app.handle}} in 3 easy steps</h2>
+  <div class="panel panel-default panel-steps">
+    <div class="panel-step">
+      <div class="panel-step-num">
+        {{#if sshKeys.length}}
+          <i class="fa fa-check success"></i>
+        {{else}}
+          <h3>1</h3>
+        {{/if}}
+      </div>
+
+      <div class="panel-step-info">
+        <h3>Add your SSH Key</h3>
+
+        {{#if sshKeys.length}}
+          <p>
+          Great, with an SSH key on your Aptible account, you're ready to deploy your app.
+          </p>
+        {{else}}
+          <p>
+             Aptible uses your SSH key to authenticate you when deploying your app.
+             To learn more about generating your SSH key,
+             <a href="{{gettingStartedDocs}}">check out our guides</a>.
+          </p>
+
+          <div class="panel-step-cta">
+            {{link-to 'Add your SSH Key' 'settings.ssh' class='btn btn-primary'}}
+          </div>
+        {{/if}}
+      </div>
+    </div>
+
+    <div class="panel-step">
+      <div class="panel-step-num">
+        <h3>2</h3>
+      </div>
+
+      <div class="panel-step-info">
+        <h3>Add a Procfile to your App</h3>
+        <p>
+           Aptible uses your app’s Procfile to configure which services
+           to run on your app.  You can read more about creating a
+           Procfile in <a href="{{gettingStartedDocs}}">Getting Started Guides</a>.
+        </p>
+      </div>
+    </div>
+
+    <div class="panel-step">
+      <div class="panel-step-num">
+        <h3>3</h3>
+      </div>
+
+      <div class="panel-step-info">
+        <h3>Git Push to Aptible</h3>
+
+        <div class="code-block">
+          <code>git remote add aptible {{app.gitRepo}}</code>
+          <code>git push aptible master</code>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
