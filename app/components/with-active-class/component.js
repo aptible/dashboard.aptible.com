@@ -8,5 +8,4 @@ export default Ember.Component.extend({
     var route = this.get('route');
     return currentPath.indexOf(route) === 0;
   })
-
 });
