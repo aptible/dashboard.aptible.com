@@ -1,0 +1,66 @@
+ <div class="panel panel-default vhost status-{{vhost.status}} provisioned-{{vhost.isProvisioned}} internal-{{vhost.internal}} default-{{vhost.isDefault}}">
+  <div class="panel-heading with-actions">
+    <h3>
+      {{#if vhost.isProvisioning}}
+        {{#bs-tooltip placement="bottom" title='Provisioning...' bs-container=false}}
+          <i class="fa fa-spin fa-spinner success"></i>
+        {{/bs-tooltip}}
+      {{/if}}
+
+      {{#if vhost.isDeprovisioning}}
+        {{#bs-tooltip placement="bottom" title='Deprovisioning...' bs-container=false}}
+        <i class="fa fa-spin fa-spinner danger"></i>
+        {{/bs-tooltip}}
+      {{/if}}
+
+
+      <span class="vhost-virtualdomain">{{vhost.virtualDomain}}</span>
+      <i class="fa fa-arrow-right"></i>
+      <span class="vhost-service">{{vhost.service.processType}} Service</span>
+    </h3>
+
+    <div class="panel-heading-actions">
+      {{#if vhost.isDefault}}
+        <span class="label label-default">Default</span>
+      {{else}}
+        {{#unless vhost.isDeprovisioning}}
+          {{link-to 'Edit' 'app.vhosts.edit' vhost class="btn btn-default btn-xs"}}
+          {{delete-vhost vhost=vhost startDeletion="startDeletion"
+                                    failDeletion="failDeletion"
+                                    completeDeletion="completeDeletion"}}
+        {{/unless}}
+      {{/if}}
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="resource-metadata-item">
+      {{#if vhost.displayHost}}
+        <h5 class="resource-metadata-title">
+          {{#if vhost.internal}}
+            Internal
+          {{else}}
+            External
+          {{/if}}
+
+          Hostname
+        </h5>
+        <h3 class="resource-metadata-value">
+          <div class="external-host">
+
+            {{vhost.displayHost}}
+            {{#click-to-copy text=vhost.displayHost as |copied|}}
+              {{#if copied}}
+                Copied.
+              {{else}}
+                <a href='#'>Copy</a>
+              {{/if}}
+            {{/click-to-copy}}
+          </div>
+        </h3>
+      {{else}}
+        <h3 class="resource-metadata-value">{{vhost.virtualDomain}} is {{vhost.status}}...</h3>
+      {{/if}}
+    </div>
+  </div>
+</div>
