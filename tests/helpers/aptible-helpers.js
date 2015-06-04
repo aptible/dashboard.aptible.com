@@ -497,6 +497,17 @@ Ember.Test.registerAsyncHelper('fillInput', function(app, inputName, value, inpu
   fillIn(input, value);
 });
 
+Ember.Test.registerHelper('stubStackDatabases', function(app, stackId, dbData){
+  stubRequest('get', `/accounts/${stackId}/databases`, function(request){
+    return this.success({
+      _embedded: {
+        databases: dbData
+      }
+    });
+  });
+});
+
+
 Ember.Test.registerHelper('stubDatabases', function(app, dbData){
   stubRequest('get', '/databases', function(request){
     return this.success({
