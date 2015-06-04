@@ -1,6 +1,11 @@
-{{#with organization as |model|}}
-  {{partial 'organization/header'}}
-{{/with}}
+<header class="resource-header">
+  <div class="layout-container">
+    <div class="resource-title">
+      <i class="resource-icon resource-org"></i>
+      <h1>{{organization.name}} Environments</h1>
+    </div>
+  </div>
+</header>
 
 <div class="layout-container">
   <div class="resource-list-grid">
@@ -14,7 +19,7 @@
             </div>
 
             <div class="panel-body">
-              {{stack-metadata model=model}}
+              {{stack-metadata model=environment}}
             </div>
           </div>
 
