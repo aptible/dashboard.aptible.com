@@ -8,20 +8,15 @@ export default Ember.Route.extend({
   },
 
   model: function(){
-    let app = this.modelFor('app');
-    let currentUser = this.session.get('currentUser');
-
-    return Ember.RSVP.hash({
-      app: app,
-      sshKeys: currentUser.get('sshKeys'),
-      services: app.get('services')
-    });
+    var app = this.modelFor('app');
+    return app.get('services');
   },
 
   setupController: function(controller, model) {
-    controller.set('model', model.services);
-    controller.set('app', model.app);
-    controller.set('sshKeys', model.sshKeys);
+    let app = this.modelFor('app');
+
+    controller.set('model', model);
+    controller.set('app', app);
   },
 
   actions: {
