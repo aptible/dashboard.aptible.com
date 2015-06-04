@@ -83,15 +83,17 @@ test(`visit ${appVhostsUrl} has link to ${appVhostsNewUrl}`, function(){
   });
 });
 
-test(`visit ${appVhostsUrl} lists vhosts`, function(){
+test(`visit ${appVhostsUrl} lists active vhosts`, function(){
   var vhosts = [{
     id: 1,
     virtual_domain: 'www.health1.io',
-    external_host: 'www.host1.com'
+    external_host: 'www.host1.com',
+    status: 'provisioned'
   },{
     id: 2,
     virtual_domain: 'www.health2.io',
-    external_host: 'www.host2.com'
+    external_host: 'www.host2.com',
+    status: 'provisioned'
   }];
 
   stubApp({
@@ -123,11 +125,97 @@ test(`visit ${appVhostsUrl} lists vhosts`, function(){
   });
 });
 
+test(`visit ${appVhostsUrl} lists pending vhosts`, function(){
+  var vhosts = [{
+    id: 1,
+    virtual_domain: 'www.health1.io',
+    external_host: 'www.host1.com',
+    status: 'provisioning'
+  },{
+    id: 2,
+    virtual_domain: 'www.health2.io',
+    external_host: 'www.host2.com',
+    status: 'provisioning'
+  }];
+
+  stubApp({
+    id: appId,
+    _embedded: { services: [] },
+    _links: { vhosts: { href: appVhostsApiUrl } }
+  });
+
+  stubRequest('get', appVhostsApiUrl, function(){
+    return this.success({ _embedded: { vhosts: vhosts } });
+  });
+
+  signInAndVisit(appVhostsUrl);
+
+  andThen(function(){
+    let el = find('.pending-domains')
+    equal( el.find('.vhost').length, vhosts.length);
+
+    vhosts.forEach(function(vhost, index){
+      let vhostEl = find(`.vhost:eq(${index})`);
+      ok(vhostEl.find(`:contains(${vhost.virtual_domain})`).length,
+         `has virtual domain "${vhost.virtual_domain}"`);
+
+      ok(vhostEl.find(`:contains(${vhost.external_host})`).length,
+         `has external host "${vhost.external_host}"`);
+
+      expectButton('Edit', {context:vhostEl});
+      expectButton('Delete', {context:vhostEl});
+    });
+  });
+});
+
+test(`visit ${appVhostsUrl} lists deprovisioning`, function(){
+    var vhosts = [{
+    id: 1,
+    virtual_domain: 'www.health1.io',
+    external_host: 'www.host1.com',
+    status: 'deprovisioned'
+  },{
+    id: 2,
+    virtual_domain: 'www.health2.io',
+    external_host: 'www.host2.com',
+    status: 'deprovisioning'
+  }];
+
+  stubApp({
+    id: appId,
+    _embedded: { services: [] },
+    _links: { vhosts: { href: appVhostsApiUrl } }
+  });
+
+  stubRequest('get', appVhostsApiUrl, function(){
+    return this.success({ _embedded: { vhosts: vhosts } });
+  });
+
+  signInAndVisit(appVhostsUrl);
+
+  andThen(function(){
+    let el = find('.deprovisioned-domains')
+    equal( el.find('.vhost').length, vhosts.length);
+
+    vhosts.forEach(function(vhost, index){
+      let vhostEl = find(`.vhost:eq(${index})`);
+      ok(vhostEl.find(`:contains(${vhost.virtual_domain})`).length,
+         `has virtual domain "${vhost.virtual_domain}"`);
+
+      ok(vhostEl.find(`:contains(${vhost.external_host})`).length,
+         `has external host "${vhost.external_host}"`);
+
+      expectNoButton('Edit', {context:vhostEl});
+      expectNoButton('Delete', {context:vhostEl});
+    });
+  });
+});
+
 test(`visit ${appVhostsUrl} allows deleting vhost`, function(){
   expect(2);
 
   let vhostId = 'vhost-1';
-  var vhosts = [{id: vhostId}];
+  var vhosts = [{id: vhostId, status: 'provisioned'}];
 
   stubApp({
     id: appId,
@@ -159,7 +247,7 @@ test(`visit ${appVhostsUrl} and delete vhost has error`, function(){
   expect(2);
 
   let vhostId = 'vhost-1';
-  var vhosts = [{id: vhostId}];
+  var vhosts = [{id: vhostId, status: 'provisioned'}];
 
   stubApp({
     id: appId,

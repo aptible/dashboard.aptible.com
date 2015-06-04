@@ -23,7 +23,7 @@
       {{#if vhost.isDefault}}
         <span class="label label-default">Default</span>
       {{else}}
-        {{#unless vhost.isDeprovisioning}}
+        {{#unless vhost.hasBeenDeprovisioned}}
           {{link-to 'Edit' 'app.vhosts.edit' vhost class="btn btn-default btn-xs"}}
           {{delete-vhost vhost=vhost startDeletion="startDeletion"
                                     failDeletion="failDeletion"

@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   deployedApps: Ember.computed.filter('model', function(app) {
-    return app.get('isProvisioned')
+    return app.get('isProvisioned');
   }),
   pendingApps: Ember.computed.filter('model', function(app) {
     return app.get('isPending');
