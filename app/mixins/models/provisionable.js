@@ -15,5 +15,6 @@ export default Ember.Mixin.create({
   isProvisioned: Ember.computed.equal('status', STATUSES.PROVISIONED),
   isProvisioning: Ember.computed.equal('status', STATUSES.PROVISIONING),
   isPending: Ember.computed.equal('status', STATUSES.PENDING),
+  hasBeenDeprovisioned: Ember.computed.or('isDeprovisioned', 'isDeprovisioning'),
   hasBeenDeployed: Ember.computed.not('isPending')
 });

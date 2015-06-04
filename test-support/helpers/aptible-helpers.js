@@ -229,10 +229,12 @@ Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
         _embedded: {
           databases: [{
             id: 1,
-            handle: 'my-db-1-stack-1'
+            handle: 'my-db-1-stack-1',
+            status: 'provisioned'
           }, {
             id: 2,
-            handle: 'my-db-2-stack-1'
+            handle: 'my-db-2-stack-1',
+            status: 'provisioned'
           }]
         },
         _links: {

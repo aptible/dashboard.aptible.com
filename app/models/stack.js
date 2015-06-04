@@ -27,6 +27,7 @@ export default DS.Model.extend({
   logDrains: DS.hasMany('log-drain', {async:true}),
 
   // computed properties
+  pending: Ember.computed.not('activated'),
   allowPHI: Ember.computed.match('type', /production/),
   appContainerCentsPerHour: 8,
   permitsRole(role, scope){
