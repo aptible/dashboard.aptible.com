@@ -9,23 +9,53 @@
 
 <div class="layout-container">
   <div class="resource-list-grid">
-    <div class="row">
-      {{#each model as |environment|}}
-        <div class="col-xs-4">
 
-          <div class="panel panel-default user resource-list-item">
-            <div class="panel-heading">
-              <h5>{{environment.handle}}</h5>
+
+    <div class="sort-group">
+      {{#if hasPending}}
+        <h5 class="sort-header">Provisioned Environments</h5>
+      {{/if}}
+      <div class="row">
+        {{#each activatedStacks as |environment|}}
+          <div class="col-xs-4">
+
+            <div class="panel panel-default user resource-list-item">
+              <div class="panel-heading">
+                <h5>{{environment.handle}}</h5>
+              </div>
+
+              <div class="panel-body">
+                {{stack-metadata model=environment}}
+              </div>
             </div>
 
-            <div class="panel-body">
-              {{stack-metadata model=environment}}
-            </div>
           </div>
-
-        </div>
-      {{/each}}
+        {{/each}}
+      </div>
     </div>
+
+    {{#if hasPending}}
+      <div class="sort-group">
+        <h5 class="sort-header">Pending Environments</h5>
+        <div class="row">
+          {{#each pendingStacks as |environment|}}
+            <div class="col-xs-4">
+
+              <div class="panel panel-default user resource-list-item">
+                <div class="panel-heading">
+                  <h5>{{environment.handle}}</h5>
+                </div>
+
+                <div class="panel-body">
+                  {{stack-metadata model=environment}}
+                </div>
+              </div>
+
+            </div>
+          {{/each}}
+        </div>
+      </div>
+    {{/if}}
 
     <div class="resource-actions">
       {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
@@ -38,3 +68,4 @@
     </div>
   </div>
 </div>
+
