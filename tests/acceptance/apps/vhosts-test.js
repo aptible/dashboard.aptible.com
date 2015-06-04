@@ -151,7 +151,7 @@ test(`visit ${appVhostsUrl} lists pending vhosts`, function(){
   signInAndVisit(appVhostsUrl);
 
   andThen(function(){
-    let el = find('.pending-domains')
+    let el = find('.pending-domains');
     equal( el.find('.vhost').length, vhosts.length);
 
     vhosts.forEach(function(vhost, index){
@@ -194,7 +194,7 @@ test(`visit ${appVhostsUrl} lists deprovisioning`, function(){
   signInAndVisit(appVhostsUrl);
 
   andThen(function(){
-    let el = find('.deprovisioned-domains')
+    let el = find('.deprovisioned-domains');
     equal( el.find('.vhost').length, vhosts.length);
 
     vhosts.forEach(function(vhost, index){
