@@ -149,6 +149,7 @@ Ember.Test.registerHelper('stubStack', function(app, stackData){
 Ember.Test.registerHelper('stubApp', function(app, appData){
   let defaultAppData = {
     id: 'app-id',
+    status: 'provisioned',
     _links: { account: { href: '/accounts/stubbed-stack' } }
   };
   if (Ember.get(appData, '_links.stack')) {
