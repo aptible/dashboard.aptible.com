@@ -5,19 +5,19 @@ export default Ember.Route.extend({
 
   model: function(){
     var stack = this.modelFor('stack');
-    return Ember.RSVP.all([
-      this.store.createRecord('log-drain', {drainType: 'syslog_tls_tcp' }),
-      stack.get('databases').then((databases) => {
+    return Ember.RSVP.hash({
+      logDrain: this.store.createRecord('log-drain', {drainType: 'syslog_tls_tcp' }),
+      elasticsearchDbs: stack.get('databases').then((databases) => {
         return databases.filter((database) => {
           return database.get('type') === 'elasticsearch' && !!database.get('connectionUrl');
       });
     })
-  ]);
+  });
   },
 
   setupController(controller, model) {
-    controller.set('model', model[0]);
-    controller.set('esDatabases', model[1]);
+    controller.set('model', model.logDrain);
+    controller.set('esDatabases', model.elasticsearchDbs);
   },
 
 
