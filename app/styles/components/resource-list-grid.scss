@@ -144,10 +144,12 @@
   .empty-service {
     color: $color-light;
     font-size: 11px;
+    display: block;
+    margin: 3px 0 7px;
   }
 }
 
-.app.resource-list-item {
+.app.resource-list-item, .database.resource-list-item {
   .panel-body {
     padding-bottom: 4px;
   }
