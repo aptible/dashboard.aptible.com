@@ -44,14 +44,14 @@ function findPlanPanel(assert, planType){
   return find(`.panel .panel-heading:contains(${planType})`).parent('.panel');
 }
 
-test(`shows 3 plan types: development, platform and HIPAA Compliance`, (assert) => {
+test(`shows 3 plan types: development, platform and Production`, (assert) => {
   stubOrganization();
   signInAndVisit(url);
 
   andThen(() => {
     expectDisplayedPlanType(assert, 'Development');
     expectDisplayedPlanType(assert, 'Platform');
-    expectDisplayedPlanType(assert, 'HIPAA Compliance');
+    expectDisplayedPlanType(assert, 'Production');
     expectButton(askAboutHIPAAButtonName);
   });
 });
@@ -93,6 +93,30 @@ test(`on plan "platform": highlights the current plan, shows "contact support to
               'Development panel is not active');
 
     expectButton('Contact Support to downgrade', {context:otherPanel});
+  });
+});
+
+test(`on plan "production": highlights the current plan, shows "contact support to downgrade" button for both platform and development`, (assert) => {
+  let plan = 'production';
+  stubOrganization({plan});
+  signInAndVisit(url);
+
+  andThen(() => {
+    let panel = findPlanPanel(assert, 'Production');
+    assert.ok(panel.hasClass(activePanelClass),
+              'panel "Production" is active');
+
+    expectButton('Current Plan', {context:panel});
+
+    let devPanel = findPlanPanel(assert, 'Development');
+    let platformPanel = findPlanPanel(assert, 'Platform');
+
+    assert.ok(!devPanel.hasClass(activePanelClass),
+              'Development panel is not active');
+    assert.ok(!devPanel.hasClass(activePanelClass),
+              'Platform panel is not active');
+
+    expectButton('Contact Support to downgrade', {context:platformPanel});
   });
 });
 
