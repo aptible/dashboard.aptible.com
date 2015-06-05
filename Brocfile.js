@@ -14,10 +14,13 @@ if (process.env.EMBER_ENV === 'staging') {
     enabled: true
   };
   options.minifyJS = {
-    enabled: false
+    enabled: true
   };
   options.fingerprint = {
     enabled: true
+  };
+  options.sourcemaps = {
+    enabled: false
   };
 }
 
