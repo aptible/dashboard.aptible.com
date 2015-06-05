@@ -7,43 +7,21 @@
 <div class="resource-list-grid">
   <div class="row">
     <div class="col-xs-4">
-      <div class='panel plan-panel {{if (eq model.plan "development") "active"}}'>
+      <div class='panel plan-panel development-plan {{if (eq model.plan "development") "active"}}'>
         <div class="panel-heading"><h5>Development</h5></div>
+        <div class='plan-cost'>
+          <span class='plan-cost-amount'>$0</span> base price per month
+        </div>
         <div class="panel-heading">
-          <div class='plan-cost'>
-            <span class='plan-cost-amount'>$0</span> per month
-          </div>
-          <p>
-            {{fa-icon "check" classNames="primary"}}
-            Ideal for staging or development
-          </p>
-          <p>
-            {{fa-icon "check" classNames="primary"}}
-            No commitment, pay month-to-month
-          </p>
+          <ul class="plan-items">
+            <li>{{fa-icon "times" classNames="danger"}} No PHI allowed</li>
+            <li>{{fa-icon "check" classNames="primary"}} No commitment: Pay as you go</li>
+            <li>{{fa-icon "check" classNames="primary"}} Ideal for staging/QA/sandboxes</li>
+            <li>{{fa-icon "check" classNames="primary"}} Email support</li>
+            <li>{{fa-icon "check" classNames="primary"}} Slack #public channel access</li>
+          </ul>
         </div>
         <div class="panel-body">
-          <div class="plan-include">
-            0 Containers Included
-            <div class="plan-include-subheader">
-              $0.08/hour per container
-            </div>
-          </div>
-
-          <div class="plan-include">
-            0 GB Disk Storage Included
-            <div class="plan-include-subheader">
-              $0.0005/hour per GB
-            </div>
-          </div>
-
-          <div class="plan-include">
-            0 Domains Included
-            <div class="plan-include-subheader">
-              $0.005/hour per domain
-            </div>
-          </div>
-
           {{#if (eq model.plan "development")}}
             <button class='btn plan-btn current' disabled>
               {{fa-icon "check" classNames="success"}}
@@ -57,43 +35,43 @@
     </div>
 
     <div class="col-xs-4">
-      <div class='panel plan-panel {{if (eq model.plan "platform") "active"}}'>
+      <div class='panel plan-panel platform-plan {{if (eq model.plan "platform") "active"}}'>
         <div class="panel-heading"><h5>Platform</h5></div>
+        <div class='plan-cost'>
+          <span class='plan-cost-amount'>$499</span> per month
+        </div>
         <div class="panel-heading">
-          <div class='plan-cost'>
-            <span class='plan-cost-amount'>$499</span> per month
-          </div>
-          <p>
-            {{fa-icon "check" classNames="primary"}}
-            HIPAA-compliant/PHI-ready private cloud
-          </p>
-          <p>
-            {{fa-icon "check" classNames="primary"}}
-            Signed Business Associate Agreement
-          </p>
+          <ul class="plan-items">
+            <li>
+              {{fa-icon "check" classNames="primary"}} HIPAA-compliant: PHI-ready
+            </li>
+            <li>
+              {{fa-icon "check" classNames="primary"}} 6 x 1GB Containers included
+            </li>
+            <li>
+              {{fa-icon "check" classNames="primary"}} 1TB Disk, Encryption &amp; Backups included
+            </li>
+            <li>
+              {{fa-icon "check" classNames="primary"}} 4 Domains included
+            </li>
+            <li>
+              {{fa-icon "check" classNames="primary"}} 3-month no-risk trial
+            </li>
+            <li>
+              {{fa-icon "check" classNames="primary"}} Month-to-month available
+            </li>
+            <li>
+              {{fa-icon "check" classNames="primary"}} 99.95% SLA
+            </li>
+            <li>
+              {{fa-icon "check" classNames="primary"}} Signed BAA
+            </li>
+            <li>
+              {{fa-icon "check" classNames="primary"}} Priority support
+            </li>
+          </ul>
         </div>
         <div class="panel-body">
-          <div class="plan-include">
-            6 Containers Included
-            <div class="plan-include-subheader">
-              $0.08/hour per container
-            </div>
-          </div>
-
-          <div class="plan-include">
-            1024 GB Disk Storage Included
-            <div class="plan-include-subheader">
-              $0.0005/hour per GB
-            </div>
-          </div>
-
-          <div class="plan-include">
-            4 Domains Included
-            <div class="plan-include-subheader">
-              $0.05/hour per domain
-            </div>
-          </div>
-
           {{#if isUpgrading}}
             <button class='btn plan-btn' disabled>Upgrading...</button>
           {{else}}
@@ -103,7 +81,11 @@
                 Current Plan
               </button>
             {{else}}
-              <button class='btn plan-btn btn-primary' {{action 'upgrade' 'platform'}}>Upgrade to Platform</button>
+              {{#if (eq model.plan "production")}}
+                <button class='btn plan-btn' disabled>Contact Support to downgrade</button>
+              {{else}}
+                <button class='btn plan-btn btn-primary' {{action 'upgrade' 'platform'}}>Upgrade to Platform</button>
+              {{/if}}
             {{/if}}
           {{/if}}
         </div>
@@ -111,40 +93,67 @@
     </div>
 
     <div class="col-xs-4">
-      <div class='panel plan-panel'>
-        <div class="panel-heading"><h5>HIPAA Compliance</h5></div>
+      <div class='panel plan-panel production-plan {{if (eq model.plan "production") "active"}}'>
+        <div class="panel-heading"><h5>Production</h5></div>
+        <div class='plan-cost'>
+          <span class='plan-cost-amount'>$ Custom</span> per month
+        </div>
         <div class="panel-heading">
-          <p>
-            {{fa-icon "check" classNames="primary"}}
-            HIPAA-compliant/PHI-ready private cloud
-          </p>
-          <p>
-            {{fa-icon "check" classNames="primary"}}
-            Signed Business Associate Agreement
-          </p>
-          <p>
-            {{fa-icon "check" classNames="primary"}}
-            Managed HIPAA Compliance
-          </p>
-          <p>
-            {{fa-icon "check" classNames="primary"}}
-            Dedicated HIPAA specialist
-          </p>
-          <p>
-            {{fa-icon "check" classNames="primary"}}
-            Risk, Policy, Security, Training Compliance Engines
-            and much more
-          </p>
+          <ul class="plan-items">
+            <li>
+              {{fa-icon "check" classNames="primary"}} Full-service compliance
+            </li>
+            <li>
+              {{fa-icon "check" classNames="primary"}} Includes everything from Platform plan
+            </li>
+            <li>
+              {{fa-icon "check" classNames="primary"}} Compliance Platform access
+            </li>
+            <li>
+              {{fa-icon "check" classNames="primary"}} Comprehensive risk &amp; security management
+            </li>
+            <li>
+              {{fa-icon "check" classNames="primary"}}
+              Industry-leading developer privay &amp; security compliance training
+            </li>
+            <li>
+              {{fa-icon "check" classNames="primary"}}
+              Custom BAA, SLA available
+            </li>
+            <li>
+              {{fa-icon "check" classNames="primary"}}
+              Premium support
+            </li>
+            <li>
+              {{fa-icon "check" classNames="primary"}}
+              Security review support
+            </li>
+            <li>
+              {{fa-icon "check" classNames="primary"}}
+              Dedicated POC in your Slack channel
+            </li>
+          </ul>
         </div>
         <div class="panel-body">
-          <div class="plan-hero">
-            <div>
-              Contact us about managed HIPAA compliance
+
+          {{#unless (eq model.plan "production")}}
+            <div class="plan-hero">
+              <div>
+                Contact us about managed HIPAA compliance
+              </div>
             </div>
-          </div>
-          <button class="btn plan-btn btn-primary" {{action 'requestUpgrade'}}>
-            Ask about our HIPAA compliant plans
-          </button>
+          {{/unless}}
+
+          {{#if (eq model.plan "production")}}
+            <button class='btn plan-btn current' disabled>
+              {{fa-icon "check" classNames="success"}}
+              Current Plan
+            </button>
+          {{else}}
+            <button class="btn plan-btn btn-primary" {{action 'requestUpgrade'}}>
+              Ask about our HIPAA compliant plans
+            </button>
+          {{/if}}
         </div>
       </div>
     </div>

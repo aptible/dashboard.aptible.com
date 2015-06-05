@@ -1,16 +1,17 @@
 <header class="resource-header">
   <div class="layout-container">
     <div class="resource-title">
-      <h1>Billing</h1>
+      <i class="resource-icon resource-org"></i>
+      <h1>{{organization.name}} Billing</h1>
     </div>
 
     <ul class="resource-metadata">
       {{#if isLoaded}}
         <li class="resource-metadata-item">
           <h5 class="resource-metadata-title">
-            Plan
+            Current Plan
           </h5>
-          <h3 class="resource-metadata-value">
+          <h3 class="resource-metadata-value plan-value">
             {{plan}}
           </h3>
         </li>
