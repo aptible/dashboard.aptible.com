@@ -184,7 +184,9 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
 test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
   expect(5);
 
-  let drainHost = 'abc-host.com',
+  let drainUser = 'someUser',
+      drainPassword = 'somePw',
+      drainHost = 'abc-host.com',
       drainPort = '1234',
       drainType = 'elasticsearch',
       logDrainId = 'log-drain-foo',
@@ -194,15 +196,18 @@ test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
     id: 'db-1', 
     type: 'elasticsearch', 
     handle: databaseHandle,
-    connection_url: `${drainHost}:${drainPort}`}
+    connection_url: `http:\/\/${drainUser}:${drainPassword}@${drainHost}:${drainPort}`}
   ];
   this.prepareStubs(null, databasesPayload);
 
   stubRequest('post', '/accounts/:stack_id/log_drains', function(request){
     ok(true, 'posts to log_drains');
 
+    let expectedUrl = `http:\/\/${drainUser}:${drainPassword}@${drainHost}`;
+
+
     let json = this.json(request);
-    equal(json.drain_host, drainHost);
+    equal(json.drain_host, expectedUrl);
     equal(json.drain_port, drainPort);
     equal(json.drain_type, drainType);
 
