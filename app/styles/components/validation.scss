@@ -1,14 +1,22 @@
 .input-group {
   width: 100%;
+  display: relative;
+
+  .form-control:first-child {
+    border-radius: 3px;
+    width: 100%;
+    padding-right: 40px;
+  }
 
   .input-group-addon {
-    border-color: #ccc;
-    padding: 6px 11px;
-    background-image: -webkit-linear-gradient(-180deg, #FAFAFA 0%, #F0F0F0 100%);
-    background-image: -moz-linear-gradient(-180deg, #FAFAFA 0%, #F0F0F0 100%);
-    background-image: -o-linear-gradient(-180deg, #FAFAFA 0%, #F0F0F0 100%);
-    background-image: linear-gradient(-180deg, #FAFAFA 0%, #F0F0F0 100%);
-    box-shadow: inset 0px 2px 0px 0px #FFFFFF;
+    background: none;
+    position: absolute;
+    right: 20px;
+    top: 13px;
+    z-index: 2;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
 
     .fa {
       font-size: 15px;

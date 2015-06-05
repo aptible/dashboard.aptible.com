@@ -48,8 +48,10 @@ export default Ember.Route.extend({
         route.transitionTo('databases.index');
         Ember.get(this, 'flashMessages').success(message);
       }, (e) => {
-        console.error(e);
-        // TODO display errors in UI
+        if(db.get('isValid')) {
+          let message = Ember.get(e, 'responseJSON.message') || `There was an error saving ${db.get('handle')}`;
+          Ember.get(this, 'flashMessages').danger(message);
+        }
       });
     },
 

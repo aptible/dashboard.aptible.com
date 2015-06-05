@@ -1,7 +1,4 @@
 import Ember from "ember";
-import config from '../../config/environment';
-
-let gettingStartedDocs = config.externalUrls.gettingStartedDocs;
 
 export default Ember.Route.extend({
   model: function(){
@@ -17,7 +14,6 @@ export default Ember.Route.extend({
   setupController: function(controller, model){
     controller.set('model', model.app);
     controller.set('sshKeys', model.sshKeys);
-    controller.set('gettingStartedDocs', gettingStartedDocs);
   },
 
   actions: {

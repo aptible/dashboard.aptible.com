@@ -2,7 +2,10 @@
   {{#activating-item currentWhen="database.activity" tagName="li"}}
     {{link-to "Activity" "database.activity"}}
   {{/activating-item}}
-  {{#activating-item currentWhen="database.deprovision" tagName="li"}}
-    {{link-to "Deprovision" "database.deprovision"}}
-  {{/activating-item}}
+
+  {{#unless model.hasBeenDeprovisioned}}
+    {{#activating-item currentWhen="database.deprovision" tagName="li"}}
+      {{link-to "Deprovision" "database.deprovision"}}
+    {{/activating-item}}
+  {{/unless}}
 </ul>

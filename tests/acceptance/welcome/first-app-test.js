@@ -48,7 +48,7 @@ test('submitting a first app directs to payment info', function() {
   fillIn('input[name="app-handle"]', appHandle);
   click('button:contains(Get Started)');
   andThen(function() {
-    equal(currentPath(), 'dashboard.welcome.payment-info', 'redirected to payment info');
+    equal(currentPath(), 'welcome.payment-info', 'redirected to payment info');
   });
 });
 
