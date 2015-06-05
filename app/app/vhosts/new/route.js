@@ -9,7 +9,7 @@ export default Ember.Route.extend({
     var app = this.modelFor('app');
 
     return Ember.RSVP.hash({
-      vhost: this.store.createRecord('vhost'),
+      vhost: this.store.createRecord('vhost', { app }),
       services: app.get('services')
     });
   },
@@ -39,6 +39,7 @@ export default Ember.Route.extend({
         return op.save();
       }).then( () => {
         let message = `Domain ${vhost.get('virtualDomain')} created`;
+
         this.transitionTo('app.vhosts');
         Ember.get(this, 'flashMessages').success(message);
       });

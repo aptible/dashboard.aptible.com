@@ -8,7 +8,7 @@ export default Ember.Route.extend({
     }
   },
   activate: function(){
-    this.session.close('aptible').then(function(){
+    this.session.close('aptible', this.get('session.token')).then(function(){
       Location.replace('/');
     });
   }

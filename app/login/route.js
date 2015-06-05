@@ -1,5 +1,9 @@
 import Ember from "ember";
+import Cookies from "ember-cli-aptible-shared/utils/cookies";
+import Location from "../utils/location";
 import DisallowAuthenticated from "diesel/mixins/routes/disallow-authenticated";
+
+export const AFTER_AUTH_COOKIE = 'afterAuthUrl';
 
 export function buildCredentials(email, password) {
   return {
@@ -13,10 +17,16 @@ export function buildCredentials(email, password) {
 export default Ember.Route.extend(DisallowAuthenticated, {
 
   model: function() {
-    return Ember.Object.create({
+    var model = Ember.Object.create({
       email: '',
       password: ''
     });
+    var afterAuthUrl = Cookies.read(AFTER_AUTH_COOKIE);
+    if (afterAuthUrl) {
+      Cookies.erase(AFTER_AUTH_COOKIE);
+      model.set('afterAuthUrl', afterAuthUrl);
+    }
+    return model;
   },
 
   redirect: function(){
@@ -28,7 +38,7 @@ export default Ember.Route.extend(DisallowAuthenticated, {
   actions: {
 
     login: function(authAttempt){
-      var credentials = buildCredentials(authAttempt.email, authAttempt.password);
+      var credentials = buildCredentials(authAttempt.get('email'), authAttempt.get('password'));
 
       this.controller.set('isLoggingIn', true);
 
@@ -36,6 +46,8 @@ export default Ember.Route.extend(DisallowAuthenticated, {
         if (this.session.attemptedTransition) {
           this.session.attemptedTransition.retry();
           this.session.attemptedTransition = null;
+        } else if (authAttempt.get('afterAuthUrl')) {
+          Location.replace(authAttempt.get('afterAuthUrl'));
         } else {
           this.controller.set('isSuccessful', true);
           this.transitionTo('index');

@@ -33,7 +33,7 @@
     margin-bottom: $option-margin;
 
     .select-option-image {
-      max-width: 80%;
+      max-width: 85px;
       margin-top: 14px;
     }
 
@@ -43,9 +43,25 @@
     }
   }
 
-  .mysql .select-option img {
+  .mysql .select-option-image {
     width: 60%;
     margin-top: 9px;
+  }
+
+  .postgresql .select-option-image {
+    margin-top: 11px;
+  }
+
+  .mongodb .select-option-image {
+   margin-top: 10px;
+  }
+
+  .redis .select-option-image {
+    margin-top: 12px;
+  }
+
+  .couchdb .select-option-image {
+    margin-top: 12px;
   }
 
   .elasticsearch .select-option img {

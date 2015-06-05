@@ -30,6 +30,7 @@ module('Acceptance: App Vhost Edit', {
       id: vhostId,
       certificate: 'abccert',
       private_key: 'abc-pk',
+      status: 'provisioned',
       virtual_domain: virtualDomain,
       _links: {
         service: { href: serviceUrl }
@@ -99,7 +100,7 @@ test(`visit ${url} click save`, function(){
     equal(json.certificate, newCert);
     equal(json.private_key, newPk);
 
-    return this.success(Ember.merge(json, {id:vhostId}));
+    return this.success(Ember.merge(json, {id:vhostId, status: 'provisioned' }));
   });
 
   stubRequest('post', `/vhosts/${vhostId}/operations`, function(request){

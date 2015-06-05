@@ -1,30 +1,28 @@
-<nav class="layout-sidebar">
-  <ul class="nav sidebar-nav">
-    <li class="title">
-      {{model.name}} Settings
-    </li>
-    {{#activating-item currentWhen="organization.members" tagName="li"}}
-      {{link-to "Members" "organization.members"}}
-    {{/activating-item}}
-    {{#activating-item currentWhen="organization.roles" tagName="li"}}
-      {{link-to "Roles" "organization.roles"}}
-    {{/activating-item}}
-    {{#activating-item currentWhen="organization.environments" tagName="li"}}
-      {{link-to "Environments" "organization.environments"}}
-    {{/activating-item}}
+<ul class="nav sidebar-nav">
+  <li class="title">
+    {{model.name}} Settings
+  </li>
+  {{#activating-item currentWhen="organization.members" tagName="li"}}
+    {{link-to "Members" "organization.members"}}
+  {{/activating-item}}
+  {{#activating-item currentWhen="organization.roles" tagName="li"}}
+    {{link-to "Roles" "organization.roles"}}
+  {{/activating-item}}
+  {{#activating-item currentWhen="organization.environments" tagName="li"}}
+    {{link-to "Environments" "organization.environments"}}
+  {{/activating-item}}
 
-    {{#aptible-ability scope="manage" user=session.currentUser permittable=model as |hasAbility|}}
-      {{#if hasAbility}}
-        {{#activating-item currentWhen="organization.contact-settings" tagName="li"}}
-          {{link-to "Contact Settings" "organization.contact-settings"}}
-        {{/activating-item}}
-      {{/if}}
-    {{/aptible-ability}}
-
-    {{#if features.organizationBillingSettings}}
-      {{#activating-item currentWhen="organization.billing" tagName="li"}}
-        {{link-to "Billing" "organization.billing"}}
+  {{#aptible-ability scope="manage" user=session.currentUser permittable=model as |hasAbility|}}
+    {{#if hasAbility}}
+      {{#activating-item currentWhen="organization.contact-settings" tagName="li"}}
+        {{link-to "Contact Settings" "organization.contact-settings"}}
       {{/activating-item}}
     {{/if}}
-  </ul>
-</nav>
+  {{/aptible-ability}}
+
+  {{#if features.organizationBillingSettings}}
+    {{#activating-item currentWhen="organization.billing" tagName="li"}}
+      {{link-to "Billing" "organization.billing"}}
+    {{/activating-item}}
+  {{/if}}
+</ul>

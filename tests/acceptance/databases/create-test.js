@@ -128,7 +128,8 @@ test(`visit ${url} and create`, function(){
       _embedded: {
         databases: [{
           id: dbId,
-          handle: dbHandle
+          handle: dbHandle,
+          status: 'provisioned'
         }]
       }
     });

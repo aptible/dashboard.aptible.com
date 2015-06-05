@@ -58,14 +58,18 @@ export default Ember.Route.extend({
         if (value) {
           promise = this.store.createRecord('membership', {
             userUrl: userLink,
+            user,
             role
-          }).save();
+          }).save().then(function() {
+            user.get('roles').addObject(role);
+          });
         } else {
           promise = role.get('memberships').then((memberships) => {
             let userMembership = memberships.findBy('data.links.user', userLink);
             Ember.assert(`A user membership could not be found for user id "${user.get('id')}"
                           and role name ${role.get('name')}`,
                          !!userMembership);
+            user.get('roles').removeObject(role);
             return userMembership.destroyRecord();
           });
         }
