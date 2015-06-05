@@ -14,7 +14,7 @@ if (process.env.EMBER_ENV === 'staging') {
     enabled: true
   };
   options.minifyJS = {
-    enabled: true
+    enabled: false
   };
   options.fingerprint = {
     enabled: true

@@ -13,6 +13,13 @@ module('Acceptance: App Sidebar', {
     stubStack({ id: 'my-stack-1' });
     stubOrganization();
     stubOrganizations();
+    stubRequest('get', '/users/user1/ssh_keys', function(){
+      return this.success({
+        _embedded: {
+          ssh_keys: []
+        }
+      });
+    });
     stubRequest('get', `/apps/${appId}`, function() {
       return this.success({
         id: appId,

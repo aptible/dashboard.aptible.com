@@ -13,6 +13,13 @@ var appVhostsNewUrl = '/apps/' + appId + '/vhosts/new';
 module('Acceptance: App Vhosts', {
   setup: function() {
     App = startApp();
+    stubRequest('get', '/users/user1/ssh_keys', function(){
+      return this.success({
+        _embedded: {
+          ssh_keys: []
+        }
+      });
+    });
   },
   teardown: function() {
     Ember.run(App, 'destroy');
