@@ -1,5 +1,5 @@
 <div class="resource-list">
-  {{#if app.hasBeenDeployed}}
+  {{#if inService}}
     {{#each model as |service|}}
       <div class="panel panel-default service">
         <div class="panel-heading">
@@ -10,12 +10,6 @@
         </div>
         <div class="panel-body">
           {{service-scaler service=service scaleService="scaleService"}}
-        </div>
-      </div>
-    {{else}}
-      <div class="row">
-        <div class="col-xs-10">
-          {{deploy-instructions app=app sshKeys=session.currentUser.sshKeys}}
         </div>
       </div>
     {{/each}}
