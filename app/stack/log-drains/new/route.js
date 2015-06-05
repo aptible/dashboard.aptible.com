@@ -2,11 +2,26 @@ import Ember from 'ember';
 import DS from 'ember-data';
 
 export default Ember.Route.extend({
+
   model: function(){
-    return this.store.createRecord('log-drain');
+    var stack = this.modelFor('stack');
+    return Ember.RSVP.all([
+      this.store.createRecord('log-drain', {drainType: 'syslog_tls_tcp' }),
+      stack.get('databases').then((databases) => {
+        return databases.filter((database) => {
+          return database.get('type') === 'elasticsearch' && !!database.get('connectionUrl');
+      });
+    })
+  ]);
   },
 
-  renderTemplate: function(controller){
+  setupController(controller, model) {
+    controller.set('model', model[0]);
+    controller.set('esDatabases', model[1]);
+  },
+
+
+renderTemplate: function(controller){
     if (!this.session.get('currentUser.verified')) {
       controller.set('resourceType', 'log drain');
       this.render('unverified');
