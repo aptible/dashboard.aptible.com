@@ -17,7 +17,7 @@
         <span class="empty-service">Never deployed</span>
       {{/if}}
 
-      {{#if app.isRunning}}
+      {{#if app.isProvisioned}}
         {{#each app.services as |service|}}
           <span class="service-badge">
             <span class="service-name">{{service.processType}}</span>

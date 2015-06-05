@@ -8,47 +8,47 @@
   {{/bs-alert}}
 {{/if}}
 
-{{#each model as |vhost|}}
-  <div class="panel panel-default vhost">
-    <div class="panel-heading with-actions">
-      <h3>
-        <span class="vhost-virtualdomain">{{vhost.virtualDomain}}</span>
-        <i class="fa fa-arrow-right"></i>
-        <span class="vhost-service">{{vhost.service.processType}} Service</span>
-      </h3>
-
-      <div class="panel-heading-actions">
-        {{#if vhost.isDefault}}
-          <span class="label label-default">Default</span>
-        {{else}}
-         {{link-to 'Edit' 'app.vhosts.edit' vhost class="btn btn-default btn-xs"}}
-         {{delete-vhost vhost=vhost startDeletion="startDeletion"
-                                    failDeletion="failDeletion"
-                                    completeDeletion="completeDeletion"}}
-        {{/if}}
+{{#if hasActive}}
+  <div class="sort-group active-domains">
+    {{#if showSortableHeader}}
+      <h5 class="sort-header">Provisioned Domains</h5>
+    {{/if}}
+    {{#each provisionedDomains as |vhost|}}
+      <div class="row">
+        <div class="col-xs-12">
+          {{partial 'app/domain'}}
+        </div>
       </div>
-    </div>
-
-    <div class="panel-body">
-      <div class="resource-metadata-item">
-        <h5 class="resource-metadata-title">Hostname</h5>
-        <h3 class="resource-metadata-value">
-          <div class="external-host">
-            {{vhost.externalHost}}
-            {{#click-to-copy text=vhost.externalHost as |copied|}}
-              {{#if copied}}
-                Copied.
-              {{else}}
-                <a href='#'>Copy</a>
-              {{/if}}
-            {{/click-to-copy}}
-          </div>
-        </h3>
-      </div>
-    </div>
+    {{/each}}
   </div>
-{{/each}}
+{{/if}}
 
+{{#if hasPending}}
+  <div class="sort-group pending-domains">
+    <h5 class="sort-header">Provisioning Domains</h5>
+    {{#each pendingDomains as |vhost|}}
+      <div class="row">
+        <div class="col-xs-12">
+          {{partial 'app/domain'}}
+        </div>
+      </div>
+    {{/each}}
+  </div>
+{{/if}}
+
+
+{{#if hasDeprovisioned}}
+  <div class="sort-group deprovisioned-domains">
+    <h5 class="sort-header">Deprovisioned Domains</h5>
+    {{#each deprovisionedDomains as |vhost|}}
+      <div class="row">
+        <div class="col-xs-12">
+          {{partial 'app/domain'}}
+        </div>
+      </div>
+    {{/each}}
+  </div>
+{{/if}}
 
 <div class="resource-list-actions">
   {{link-to 'Add Domain' 'app.vhosts.new' class="btn btn-primary"}}

@@ -15,6 +15,13 @@ let url = appServicesUrl;
 module('Acceptance: App Services', {
   setup: function() {
     App = startApp();
+    stubRequest('get', '/users/user1/ssh_keys', function(){
+      return this.success({
+        _embedded: {
+          ssh_keys: []
+        }
+      });
+    });
   },
   teardown: function() {
     Ember.run(App, 'destroy');

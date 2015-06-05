@@ -112,7 +112,7 @@ test(`visit ${appVhostsNewUrl} and create vhost`, function(){
     equal(json.virtual_domain, 'my.domain.com');
     equal(json.certificate, 'my long cert');
     equal(json.private_key, 'my long pk');
-    equal(json.type, 'http');
+    equal(json.type, 'http_proxy_protocol');
 
     return this.success({id:vhostId});
   });

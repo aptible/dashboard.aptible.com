@@ -1,11 +1,45 @@
 <div class="resource-list-grid">
-  <div class="row">
-    {{#each model as |database|}}
-      <div class="col-xs-4">
-        {{partial 'stack/db'}}
+
+  {{#if hasActive}}
+    <div class="sort-group active-databases">
+      {{#if showSortableHeader}}
+        <h5 class="sort-header">Active Databases</h5>
+      {{/if}}
+      <div class="row">
+        {{#each deployedDatabases as |database|}}
+          <div class="col-xs-4">
+            {{partial 'stack/db'}}
+          </div>
+        {{/each}}
       </div>
-    {{/each}}
-  </div>
+    </div>
+  {{/if}}
+
+  {{#if hasPending}}
+    <div class="sort-group pending-databases">
+      <h5 class="sort-header">Provisioning Databases</h5>
+      <div class="row">
+        {{#each pendingDatabases as |database|}}
+          <div class="col-xs-4">
+            {{partial 'stack/db'}}
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  {{/if}}
+
+  {{#if hasDeprovisioned}}
+    <div class="sort-group deprovisioned-databases">
+      <h5 class="sort-header">Deprovisioned Databases</h5>
+      <div class="row">
+        {{#each deprovisionedDatabases as |database|}}
+          <div class="col-xs-4">
+            {{partial 'stack/db'}}
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  {{/if}}
 
   <div class="resource-list-actions">
     {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}

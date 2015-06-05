@@ -94,7 +94,7 @@ test('submitting empty payment info raises an error', function() {
   clickButton('Save');
 
   andThen(function() {
-    equal(currentPath(), 'dashboard.welcome.payment-info');
+    equal(currentPath(), 'welcome.payment-info');
     let error = find('p:contains(Failure)');
     ok(error.length, 'errors are on the page');
   });

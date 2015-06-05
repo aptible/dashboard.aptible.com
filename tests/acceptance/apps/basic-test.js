@@ -90,6 +90,99 @@ test(`visiting ${url} shows list of apps`, function() {
   });
 });
 
+
+test(`visiting ${url} shows list of provisioning apps`, function() {
+  let orgId = 1, orgName = 'Sprocket Co';
+  let stackHandle = 'my-stack-1';
+
+  stubRequest('get', '/accounts/my-stack-1/apps', function(request){
+    return this.success({
+      _links: {},
+      _embedded: {
+        apps: [{
+          id: 1,
+          handle: 'my-app-1-stack-1',
+          status: 'pending',
+          _embedded: {
+            services: [{
+              id: '1',
+              handle: 'the-service',
+              container_count: 1
+            }]
+          },
+          _links: {
+            account: { href: '/accounts/my-stack-1'}
+          }
+        }]
+      }
+    });
+  });
+
+  stubStacks({ includeApps: false });
+  stubStack({
+    id: stackId,
+    handle: stackHandle,
+    _links: {
+      apps: { href: `/accounts/${stackId}/apps` },
+      organization: { href: `/organizations/${orgId}` }
+    }
+  });
+  stubOrganization();
+  stubOrganizations();
+
+  signInAndVisit(url);
+  andThen(function() {
+    let el = find('.pending-apps');
+    equal(el.find('.panel.app').length, 1, '1 pending app');
+  });
+});
+
+test(`visiting ${url} shows list of deprovisioning apps`, function() {
+  let orgId = 1, orgName = 'Sprocket Co';
+  let stackHandle = 'my-stack-1';
+
+  stubRequest('get', '/accounts/my-stack-1/apps', function(request){
+    return this.success({
+      _links: {},
+      _embedded: {
+        apps: [{
+          id: 1,
+          handle: 'my-app-1-stack-1',
+          status: 'deprovisioning',
+          _embedded: {
+            services: [{
+              id: '1',
+              handle: 'the-service',
+              container_count: 1
+            }]
+          },
+          _links: {
+            account: { href: '/accounts/my-stack-1'}
+          }
+        }]
+      }
+    });
+  });
+
+  stubStacks({ includeApps: false });
+  stubStack({
+    id: stackId,
+    handle: stackHandle,
+    _links: {
+      apps: { href: `/accounts/${stackId}/apps` },
+      organization: { href: `/organizations/${orgId}` }
+    }
+  });
+  stubOrganization();
+  stubOrganizations();
+
+  signInAndVisit(url);
+  andThen(function() {
+    let el = find('.deprovisioning-apps');
+    equal(el.find('.panel.app').length, 1, '1 deprovisioning apps');
+  });
+});
+
 test(`visiting ${url} then clicking on an app visits the app`, function() {
   stubOrganizations();
   stubOrganization();

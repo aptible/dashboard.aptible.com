@@ -12,6 +12,13 @@ export default Ember.Route.extend({
     return app.get('services');
   },
 
+  setupController: function(controller, model) {
+    let app = this.modelFor('app');
+
+    controller.set('model', model);
+    controller.set('app', app);
+  },
+
   actions: {
     scaleService: function(service, containerCount, deferred){
       service.set('containerCount', containerCount);
