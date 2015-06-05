@@ -177,6 +177,16 @@ Ember.Test.registerHelper('stubDatabase', function(app, databaseData){
   });
 });
 
+Ember.Test.registerHelper('stubStackDatabases', function(app, stackId, dbData){
+  stubRequest('get', `/accounts/${stackId}/databases`, function(request){
+    return this.success({
+      _embedded: {
+        databases: dbData
+      }
+    });
+  });
+});
+
 Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
   if (!options) { options = {}; }
   if (options.includeApps === undefined) {
