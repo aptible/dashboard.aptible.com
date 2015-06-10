@@ -11,9 +11,9 @@ fi
 if [ "$TRAVIS_BRANCH" == "master" ]; then
   # Deploy to staging on a merge to master
   ember build -e staging
-  ember deploy -e staging
+  ember deploy:assets -e staging
 elif [ "$TRAVIS_BRANCH" == "release" ]; then
   # Deploy to production on a merge to release
   ember build -e production
-  ember deploy -e production
+  ember deploy:assets -e production
 fi
