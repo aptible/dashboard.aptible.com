@@ -4,7 +4,7 @@
 set -e
 
 # Don't deploy on PRs
-if [ "$TRAVIS_PULL_REQUEST" == "true" ]; then
+if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
   exit 0
 fi
 
