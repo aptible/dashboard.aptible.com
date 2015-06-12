@@ -10,14 +10,15 @@ function parseUrl(url) {
 export default Ember.Controller.extend({
     actions: {
     setDrainFromDatabase(database) {
-        let a = parseUrl(database.get('connectionUrl'));
+        let connectionUrl = database.get('connectionUrl');
+        console.log(connectionUrl);
+        let a = parseUrl(connectionUrl);
 
-        let host = `${a.protocol}\/\/${a.username}:${a.password}@${a.host}`;
-        // This assumes that the port is always set on the connection url, otherwise this'll break badly.
-        let hostWithoutPort = host.substring(0, host.lastIndexOf(':'));
+        let hostWithoutPort = a.host.substring(0, a.host.lastIndexOf(':')); // Remove port
+        let hostWithCredentials = connectionUrl.substring(0, connectionUrl.lastIndexOf(hostWithoutPort)) + hostWithoutPort;
 
         let model = this.get('model');
-        model.set('drainHost', hostWithoutPort);
+        model.set('drainHost', hostWithCredentials);
         model.set('drainPort', a.port);
     }},
     isSyslogDrain: Ember.computed("model.drainType", function() {
