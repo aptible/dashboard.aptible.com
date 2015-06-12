@@ -7,11 +7,11 @@
         </div>
         <div class="panel-body">
           {{#if model.errors.length}}
-            <div class="alert alert-warning">
-              {{#each model.errors.messages as |message|}}
-                <p>{{message}}</p>
-              {{/each}}
-            </div>
+          <div class="alert alert-warning">
+            {{#each model.errors.messages as |message|}}
+            <p>{{message}}</p>
+            {{/each}}
+          </div>
           {{/if}}
 
           <div class="form-group">
@@ -23,28 +23,28 @@
             <div class="radio">
               <div>
                 {{#radio-button value="syslog_tls_tcp" groupValue=model.drainType name="drain-type"}}
-                  Syslog TLS TCP
+                Syslog TLS TCP
                 {{/radio-button}}
               </div>
               <div>
                 {{#radio-button value="elasticsearch" groupValue=model.drainType name="drain-type"}}
-                  Elasticsearch
+                Elasticsearch
                 {{/radio-button}}
               </div>
             </div>
           </div>
 
           {{#if isSyslogDrain }}
-            <div class="form-group">
-              <label class="block" for="drain-host">Host</label>
-              {{input name='drain-host' value=model.drainHost class="form-control"}}
-            </div>
-            <div class="">
-              <label class="block" for="drain-port">Port</label>
-              {{input name='drain-port' value=model.drainPort class="form-control"}}
-            </div>
+          <div class="form-group">
+            <label class="block" for="drain-host">Host</label>
+            {{input name='drain-host' value=model.drainHost class="form-control"}}
+          </div>
+          <div class="">
+            <label class="block" for="drain-port">Port</label>
+            {{input name='drain-port' value=model.drainPort class="form-control"}}
+          </div>
           {{else}}
-           {{ database-selector databases=esDatabases select='setDrainFromDatabase' }}
+          {{ database-selector databases=esDatabases select='setDrainFromDatabase' }}
           {{/if}}
         </div>
       </div>
@@ -52,9 +52,9 @@
         <button {{action 'cancel' model}} class='btn btn-lg-text btn-default'>Cancel</button>
         <button {{action 'createLog' model}} disabled={{model.isSaving}} class='btn btn-primary'>
           {{#if model.isSaving}}
-            Saving
+          Saving
           {{else}}
-            Save Log Drain
+          Save Log Drain
           {{/if}}
         </button>
       </div>
