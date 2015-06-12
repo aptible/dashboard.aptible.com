@@ -6,6 +6,8 @@ export default DS.Model.extend(ProvisionableMixin, {
   drainHost: DS.attr('string'),
   drainPort: DS.attr('string'),
   drainType: DS.attr('string'),
+  drainUsername: DS.attr('string'),
+  drainPassword: DS.attr('string'),
 
   stack: DS.belongsTo('stack', {async:true})
 });
