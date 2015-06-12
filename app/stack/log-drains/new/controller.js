@@ -11,7 +11,6 @@ export default Ember.Controller.extend({
     actions: {
     setDrainFromDatabase(database) {
         let connectionUrl = database.get('connectionUrl');
-        console.log(connectionUrl);
         let a = parseUrl(connectionUrl);
 
         let hostWithoutPort = a.host.substring(0, a.host.lastIndexOf(':')); // Remove port

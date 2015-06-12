@@ -33,9 +33,9 @@ module('Acceptance: Log Drains', {
       id: stackId,
       handle: stackHandle,
       _embedded: { log_drains: options.logDrains },
-      _links: { 
+      _links: {
         organization: { href: `/organizations/${orgId}`},
-        databases: { href: `/accounts/${stackId}/databases` } 
+        databases: { href: `/accounts/${stackId}/databases` }
      }
     });
 
@@ -193,8 +193,8 @@ test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
       databaseHandle = 'databaseHandle';
 
   let databasesPayload = [{
-    id: 'db-1', 
-    type: 'elasticsearch', 
+    id: 'db-1',
+    type: 'elasticsearch',
     handle: databaseHandle,
     connection_url: `http:\/\/${drainUser}:${drainPassword}@${drainHost}:${drainPort}`}
   ];
@@ -223,7 +223,7 @@ test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
   andThen(function(){
     let formEl = find('form.create-log');
     let context = formEl;
-    
+
     click( find('label:contains(Elasticsearch)')); // click elasticsearch radio button
     fillInput('handle', 'handle', {context});
     clickButton('Save Log', {context});
