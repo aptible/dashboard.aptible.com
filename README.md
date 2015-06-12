@@ -25,8 +25,7 @@ You will need the following things properly installed on your computer.
 * `ember server`
 * Visit localhost:4200
 
-By default, the api.aptible.com and auth.aptible.com servers will be used as
-data sources. For use with Dashboard they should be given the `.env` values of:
+By default, the api.aptible.com and auth.aptible.com servers will be used as data sources. For use with Dashboard they should be given the `.env` values of:
 
 ```
 CORS_DOMAIN="http://localhost:4200"
@@ -54,16 +53,11 @@ The `release` branch of this repo is deployed to [dashboard.aptible.com](https:/
 
 ### Deploying via CI
 
-This repo contains a `.travis.yml` file that will deploy the application
-to staging automatically. To do this, several credentials are encrypted in
-the `travis-env.sh.enc` file. To create a new set of credentials, copy
-`travis-env.sh.example` and add the appropriate keys, then encrypt the
-credentials:
+This repo contains a `.travis.yml` file that will automatically deploy the application to staging/production. To do this, our AWS credentials are encrypted and stored on Travis. To update these credentials, run the following command (inserting the credential values):
 
-travis encrypt-file travis-env.sh --add --org -r aptible/dashboard.aptible.com
+    travis encrypt -r aptible/dashboard.aptible.com --add env AWS_ACCESS_KEY_ID=... AWS_SECRET_ACCESS_KEY=...
 
-The `.travis.yml` file will be updated with a new decryption example. Use
-that example to replace the one at the start of the `after_success` section.
+The `.travis.yml` file will be updated with a new value for `env.secure`. Commit and push this file.
 
 ## Further Reading / Useful Links
 

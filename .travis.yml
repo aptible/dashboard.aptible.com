@@ -1,13 +1,10 @@
----
 language: node_js
 node_js:
-  - "0.12"
-
+- '0.12'
 sudo: false
-
 cache:
   directories:
-    - node_modules
+  - node_modules
 before_install:
   - mkdir phantomjs-2.0.0
   - wget https://s3.amazonaws.com/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -O phantomjs-2.0.0/phantomjs-2.0.0-ubuntu-12.04.tar.bz2
@@ -16,22 +13,11 @@ before_install:
   - npm config set spin false
   - npm install -g npm@^2
 install:
-  - npm install -g bower
-  - npm install
-  - bower install
+- npm install -g bower
+- npm install
+- bower install
 script:
-  - npm test
-after_success:
-  - openssl aes-256-cbc -K $encrypted_8e8627731b63_key -iv $encrypted_8e8627731b63_iv
-    -in travis-env.sh.enc -out travis-env.sh -d
-  - source ./travis-env.sh;
-    if [ "$TRAVIS_PULL_REQUEST" == 'false' ] && [ "$TRAVIS_BRANCH" == 'master' ]; then
-      npm install divshot-cli -g &&
-      ember build -e staging &&
-      divshot push production -c divshot.staging.json -t $DIVSHOT_STAGING_KEY;
-    fi;
-    if [ "$TRAVIS_PULL_REQUEST" == 'false' ] && [ "$TRAVIS_BRANCH" == 'release' ]; then
-      npm install divshot-cli -g &&
-      ember build -e production &&
-      divshot push production -c divshot.production.json -t $DIVSHOT_PRODUCTION_KEY;
-    fi
+- npm test
+- script/travis-deploy.sh
+env:
+  secure: bFmd+FmLO8rjn2b/aAGeTZfW0gweELhc29OMfWYRvFSy0k57rSqCmn+Z45KS58vYksYEv9+HYOWg4qW5N6W0MDI5WeWB64tVlUOJj2g2bU/U2t68OC5kPogY7yvRUgRGs7lNZmYBFumBTYeWA9ZXv5qy6m0fSdLVpayZGhCpB1w=

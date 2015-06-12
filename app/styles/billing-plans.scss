@@ -1,8 +1,12 @@
+.plan-value {
+  text-transform: capitalize;
+}
+
 .plan-panel {
   color: $color-light;
 
   &.active {
-    border: 1px solid $color-bright-blue;
+    border: 1px solid $color-success;
   }
 
   .panel-heading h5 {
@@ -14,7 +18,9 @@
   }
 
   .plan-cost {
-    margin: 5px 0;
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 10px;
   }
 
   .plan-hero {
@@ -38,9 +44,22 @@
     vertical-align: middle;
   }
 
-  .plan-include {
-    color: #0D0D0D;
-    margin-bottom: 1.5em;
+  ul.plan-items {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+
+    > li {
+      margin: 10px;
+      padding-left: 16px;
+    }
+
+    i.fa {
+      float: left;
+      display: block;
+      margin-top: 2px;
+      margin-left: -26px;
+    }
   }
 
   .plan-include-subheader {
