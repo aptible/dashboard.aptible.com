@@ -1,0 +1,39 @@
+<form role="form" class="payment-form stripe-cc-form" {{action 'saveCC' on='submit'}}>
+  {{#if error}}
+    {{#bs-alert alert="danger"}}
+      <p>There was an error updating: {{error}}</p>
+    {{/bs-alert}}
+  {{/if}}
+
+  <div class="form-group">
+    {{input class="form-control" value=name name="name" placeholder="Name on card"}}
+  </div>
+
+  <div class="form-group">
+    {{input class="form-control number" value=number name="number" placeholder="Card number"}}
+    {{input class="form-control cvc" value=cvc name="cvc" placeholder="CVC" }}
+  </div>
+
+  <div class="form-group">
+    <div class="expiration-month">
+      {{select-month value=expMonth name="exp-month" prompt="Exp month"}}
+    </div>
+    <div class="expiration-year">
+      {{select-year value=expYear name="exp-year" prompt="Exp year"}}
+    </div>
+
+    {{input class="form-control zip" value=zip name="zip" placeholder="ZIP"}}
+  </div>
+
+  <button
+    class="btn btn-primary btn-block btn-lg {{if isSaving 'disabled'}}"
+    disabled={{isSaving}}
+    {{action 'saveCC'}}>
+
+    {{#if isSaving}}
+      Saving
+    {{else}}
+      Save
+    {{/if}}
+  </button>
+</form>
