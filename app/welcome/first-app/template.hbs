@@ -98,9 +98,11 @@
           </button>
         </div>
       </div>
-      <div class="skip-link">
-        {{link-to 'Do this later →' 'welcome.payment-info'}}
-      </div>
+      {{#unless errors.model.stackHandle}}
+        <div class="skip-link">
+          {{link-to 'Do this later →' 'welcome.payment-info'}}
+        </div>
+      {{/unless}}
     </div>
 
     <div class="col-xs-5">

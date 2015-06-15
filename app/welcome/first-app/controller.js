@@ -6,6 +6,12 @@ export default Ember.Controller.extend(EmberValidationsMixin, {
   hasSubmitted: false,
   validations: {
     'model.stackHandle': {
+      presence: true,
+      format: {
+        with: /^([a-zA-Z]|\d|[_\-])+$/,
+        allowBlank: false,
+        message: 'must be letters, numbers, and hyphens only'
+      },
       uniqueness: {
         message: 'is taken.',
         paramName: 'handle',
