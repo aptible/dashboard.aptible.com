@@ -27,7 +27,7 @@ export default Ember.Component.extend({
   attributeBindings: ['title'],
 
   title: function() {
-    return this.get('status').capitalize() + ' ' + this.get('type') + ' operation.';
+    return `${this.get('type').capitalize()} ${this.get('status')}`;
   }.property('type', 'status'),
 
   color: function() {
