@@ -182,7 +182,7 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
 });
 
 test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
-  expect(5);
+  expect(7);
 
   let drainUser = 'someUser',
       drainPassword = 'somePw',
@@ -203,13 +203,13 @@ test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
   stubRequest('post', '/accounts/:stack_id/log_drains', function(request){
     ok(true, 'posts to log_drains');
 
-    let expectedUrl = `http:\/\/${drainUser}:${drainPassword}@${drainHost}`;
-
-
     let json = this.json(request);
-    equal(json.drain_host, expectedUrl);
+
+    equal(json.drain_host, drainHost);
     equal(json.drain_port, drainPort);
     equal(json.drain_type, drainType);
+    equal(json.drain_password, drainPassword);
+    equal(json.drain_username, drainUser);
 
     json.id = logDrainId;
     return this.success(json);
