@@ -6,7 +6,7 @@
           {{model.error}}
         {{/bs-alert}}
       {{/if}}
-      <div {{bind-attr class=":animated :panel :panel-focused isSuccessful:zoomOut"}}>
+      <div class="animated panel panel-focused {{if isSuccessful 'fadeOut'}}">
         <div class="panel-heading">
           <div class="panel-heading-link">
             {{link-to 'Create an account' 'signup'}}
@@ -32,6 +32,7 @@
             </div>
             <button
               disabled={{isLoggingIn}}
+              type="submit"
               class="btn btn-primary btn-block btn-lg"
               {{action "login" model}}>
               {{#if isLoggingIn}}

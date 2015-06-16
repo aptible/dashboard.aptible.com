@@ -49,8 +49,8 @@
         </div>
       </div>
       <div class="resource-actions">
-        <button {{action 'cancel' model}} class='btn btn-lg-text btn-default'>Cancel</button>
-        <button {{action 'createLog' model}} disabled={{model.isSaving}} class='btn btn-primary'>
+        <button {{action 'cancel' model}} class='btn btn-lg-text btn-default' type="reset">Cancel</button>
+        <button {{action 'createLog' model}} disabled={{model.isSaving}} class='btn btn-primary' type="submit">
           {{#if model.isSaving}}
           Saving
           {{else}}

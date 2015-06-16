@@ -66,7 +66,7 @@
           <form>
             <label>Add member</label>
             <div class="invite-user">
-              <button class="btn btn-primary" {{action "inviteUser" invitedUser}}>Add</button>
+              <button class="btn btn-primary" {{action "inviteUser" invitedUser}} type="submit">Add</button>
               <div class="user-select-container">
                 {{user-select users=nonmembers selected=invitedUser}}
               </div>
@@ -79,7 +79,7 @@
             {{server-validation-errors model=invitation}}
             <label>Invite by email</label>
             <div class="invite-user">
-              <button class="btn btn-primary" {{action "inviteByEmail" invitedEmail}}>Invite</button>
+              <button class="btn btn-primary" {{action "inviteByEmail" invitedEmail}} type="submit">Invite</button>
               <div class="invite-user-container">
                 {{input name='invite-by-email' value=invitedEmail classNames="form-control"}}
               </div>

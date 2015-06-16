@@ -1,12 +1,11 @@
 <ul class="nav sidebar-nav">
   <li class="title">
-    {{organization.name}}
-
     {{#link-to 'organization' organization}}
       {{#bs-tooltip title=tooltipTitle}}
         <i class="fa fa-cog"></i>
       {{/bs-tooltip}}
     {{/link-to}}
+    {{organization.name}} Environments
   </li>
 
   {{#each organizationStacks as |stack|}}
