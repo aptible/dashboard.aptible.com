@@ -85,7 +85,7 @@ function load(){
 }
 
 export default Ember.Service.extend({
-
+  sentry: Ember.inject.service(),
   hasEmail: undefined,
 
   init: function(){
@@ -112,6 +112,7 @@ export default Ember.Service.extend({
     return new Ember.RSVP.Promise(function(resolve) {
       if (config.environment !== 'test') {
         window.analytics.identify(id, attributes, Ember.run.bind(null, resolve));
+        service.get('sentry').identify(attributes);
       } else {
         resolve();
       }
