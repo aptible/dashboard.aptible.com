@@ -38,6 +38,13 @@ export default Ember.Route.extend({
       }).then(function(result) {
         saveProgress.set('currentStep', 2);
         organization = result.organizations.objectAt(0);
+
+        if(organization.get('hasStripe')) {
+          // Don't create another subscriptions if the organization already
+          // has one
+          return Ember.RSVP.resolve();
+        }
+
         var subscription = store.createRecord('subscription', {
           plan: welcomeModel.plan,
           stripeToken: result.stripeResponse.id,

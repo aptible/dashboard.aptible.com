@@ -14,7 +14,7 @@ test('it renders', function() {
 
   // creates the component instance
   var component = this.subject({
-    tye: 'provision',
+    type: 'provision',
     status: 'queued'
   });
 
