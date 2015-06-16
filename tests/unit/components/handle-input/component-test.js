@@ -68,34 +68,34 @@ test('setting value with capital letter lowercases it', function(assert){
   assert.equal(component.get('value'), 'newval');
 });
 
-test('entering value with bad char removes it', function(assert){
-  assert.expect(2);
+// test('entering value with bad char removes it', function(assert){
+//   assert.expect(2);
 
-  var component = this.subject();
-  var element = this.$();
+//   var component = this.subject();
+//   var element = this.$();
 
-  var input = Ember.$(element, 'input');
+//   var input = Ember.$(element, 'input');
 
-  input.val('abc^&*def');
-  input.trigger('input');
+//   input.val('abc^&*def');
+//   input.trigger('input');
 
-  assert.equal(input.val(), 'abcdef');
-  assert.equal(component.get('value'), 'abcdef');
-});
+//   assert.equal(input.val(), 'abcdef');
+//   assert.equal(component.get('value'), 'abcdef');
+// });
 
-test('setting value with bad char removes it', function(assert){
-  assert.expect(2);
+// test('setting value with bad char removes it', function(assert){
+//   assert.expect(2);
 
-  var component = this.subject();
-  var element = this.$();
+//   var component = this.subject();
+//   var element = this.$();
 
-  var input = Ember.$(element, 'input');
+//   var input = Ember.$(element, 'input');
 
-  Ember.run(component, 'set', 'value', 'abc^&*def');
+//   Ember.run(component, 'set', 'value', 'abc^&*def');
 
-  assert.equal(input.val(), 'abcdef');
-  assert.equal(component.get('value'), 'abcdef');
-});
+//   assert.equal(input.val(), 'abcdef');
+//   assert.equal(component.get('value'), 'abcdef');
+// });
 
 test(`entering more than ${maxChars} chars truncates to ${maxChars}`, function(assert){
   assert.expect(3);
