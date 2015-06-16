@@ -6,7 +6,10 @@ var Router = Ember.Router.extend({
   location: config.locationType,
   onTransition: function() {
     this.get('analytics').page();
-    this.get('flashMessages').clearMessages();
+
+    if(config.flashMessageDefaults.sticky) {
+      this.get('flashMessages').clearMessages();
+    }
   }.on('didTransition')
 });
 
@@ -95,13 +98,13 @@ export default Router.map(function() {
       this.route('profile');
       this.route('ssh');
     });
+  });
 
-    this.route("welcome", {
-      resetNamespace: true
-    }, function() {
-      this.route("first-app");
-      this.route("payment-info");
-    });
+  this.route("welcome", {
+    resetNamespace: true
+  }, function() {
+    this.route("first-app");
+    this.route("payment-info");
   });
 
   this.route("login");

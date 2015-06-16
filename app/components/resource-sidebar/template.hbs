@@ -9,7 +9,7 @@
 {{#if stack.apps}}
   <ul class="nav sidebar-nav">
     <li class="title">
-      Apps
+      {{link-to 'Apps' 'apps' stack classNames='title-link'}}
 
       {{#aptible-ability scope="manage" user=user permittable=stack as |hasAbility|}}
         {{#if hasAbility}}
@@ -33,7 +33,7 @@
 {{#if stack.databases}}
   <ul class="nav sidebar-nav">
     <li class="title">
-      Databases
+      {{link-to 'Databases' 'databases' stack classNames='title-link'}}
 
       {{#aptible-ability scope="manage" user=user permittable=stack as |hasAbility|}}
         {{#if hasAbility}}

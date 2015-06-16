@@ -1,11 +1,11 @@
-<div class="row">
-  <div class="col-xs-6">
-    <div class="panel panel-default ">
-      <div class="panel-heading">
-        <h3>Create a new VHost</h3>
-      </div>
-      <div class="panel-body">
-        <form role="form">
+<form role="form">
+  <div class="row">
+    <div class="col-xs-8">
+      <div class="panel panel-default ">
+        <div class="panel-heading">
+          <h3>Create a new VHost</h3>
+        </div>
+        <div class="panel-body">
           {{#unless model.isValid}}
             <div class="alert alert-warning fade in">
               <a class="close" data-dismiss="alert">×</a>
@@ -31,6 +31,26 @@
           </div>
 
           <div class="form-group">
+            <label class="block" for="vhost-type">Type</label>
+            <div class="radio">
+              <div>
+                {{#radio-button value=false groupValue=model.internal name="vhost-type"}}
+                  {{#bs-tooltip placement="bottom" title='External Domains are accessible from the outside internet.' bs-container=false}}
+                    External
+                  {{/bs-tooltip}}
+                {{/radio-button}}
+              </div>
+              <div>
+                {{#radio-button value=true groupValue=model.internal name="vhost-type"}}
+                  {{#bs-tooltip placement="bottom" title='Internal Domains are only accessible from other apps in your environment.' bs-container=false}}
+                  Internal
+                  {{/bs-tooltip}}
+                {{/radio-button}}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
             <label>Certificate</label>
             {{textarea class="form-control" value=model.certificate name="certificate" rows=10}}
           </div>
@@ -39,14 +59,14 @@
             <label>Private Key</label>
             {{textarea class="form-control" value=model.privateKey name="private-key" rows=10}}
           </div>
-        </form>
 
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="resource-actions">
-  <button class="btn btn-default" {{action 'cancel'}}>Cancel</button>
-  <button class="btn btn-primary" {{action 'save' model vhostService}}>Save VHost</button>
-</div>
+  <div class="resource-actions">
+    <button class="btn btn-default" type="reset" {{action 'cancel'}}>Cancel</button>
+    <button class="btn btn-primary" type="submit" {{action 'save' model vhostService}}>Save VHost</button>
+  </div>
+</form>

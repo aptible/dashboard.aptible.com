@@ -38,11 +38,12 @@ export default Ember.Route.extend({
     const controller = this.controller;
     organization.set('plan', planType);
 
-    controller.set('error', null);
     controller.set('isUpgrading', true);
     organization.save().catch((e) => {
-      controller.set('error',
-                     Ember.get(e, 'responseJSON.message'));
+      Ember.get(this, 'flashMessages').danger(
+        Ember.get(e, 'responseJSON.message')
+      );
+
       organization.rollback();
     }).finally(() => {
       controller.set('isUpgrading', false);

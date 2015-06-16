@@ -1,11 +1,11 @@
-<div class="row">
-  <div class="col-xs-6">
-    <div class="panel panel-default ">
-      <div class="panel-heading">
-        <h3>Create a new app</h3>
-      </div>
-      <div class="panel-body">
-        <form role="form">
+<form role="form">
+  <div class="row">
+    <div class="col-xs-6">
+      <div class="panel panel-default ">
+        <div class="panel-heading">
+          <h3>Create a new app</h3>
+        </div>
+        <div class="panel-body">
           {{#unless model.isValid}}
             <div class="alert alert-warning fade in">
               <a class="close" data-dismiss="alert">×</a>
@@ -22,20 +22,19 @@
             </label>
             {{handle-input class="form-control" value=model.handle name='handle' autofocus=true}}
           </div>
-        </form>
-
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="resource-actions">
-  {{#if showCancelButton}}
-    <button class="btn btn-default" {{action 'cancel'}}>
-      Cancel
+  <div class="resource-actions">
+    {{#if showCancelButton}}
+      <button class="btn btn-default" type="reset" {{action 'cancel'}}>
+        Cancel
+      </button>
+    {{/if}}
+    <button class="btn btn-primary" type="submit" {{action 'create'}}>
+      Save App
     </button>
-  {{/if}}
-  <button class="btn btn-primary" {{action 'create'}}>
-    Save App
-  </button>
-</div>
+  </div>
+</form>

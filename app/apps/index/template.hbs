@@ -1,11 +1,45 @@
 <div class="resource-list-grid">
-  <div class="row">
-    {{#each model as |app|}}
-      <div class="col-xs-4">
-        {{partial 'stack/app'}}
+
+  {{#if hasActive}}
+    <div class="sort-group deployed-apps">
+      {{#if showSortableHeader}}
+        <h5 class="sort-header">Deployed Apps</h5>
+      {{/if}}
+      <div class="row">
+        {{#each deployedApps as |app|}}
+          <div class="col-xs-4">
+            {{partial 'stack/app'}}
+          </div>
+        {{/each}}
       </div>
-    {{/each}}
-  </div>
+    </div>
+  {{/if}}
+
+  {{#if hasPending}}
+    <div class="sort-group pending-apps">
+      <h5 class="sort-header">Pending Apps</h5>
+      <div class="row">
+        {{#each pendingApps as |app|}}
+        <div class="col-xs-4">
+          {{partial 'stack/app'}}
+        </div>
+      {{/each}}
+      </div>
+    </div>
+  {{/if}}
+
+  {{#if hasDeprovisioning}}
+    <div class="sort-group deprovisioning-apps">
+      <h5 class="sort-header">Deprovisioned Apps</h5>
+      <div class="row">
+        {{#each deprovisionedApps as |app|}}
+          <div class="col-xs-4">
+            {{partial 'stack/app'}}
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  {{/if}}
 
   <div class="resource-actions">
     {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}

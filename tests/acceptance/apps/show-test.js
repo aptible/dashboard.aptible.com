@@ -4,9 +4,18 @@ import { stubRequest } from '../../helpers/fake-server';
 
 var App;
 
+
 module('Acceptance: Apps Show', {
   setup: function() {
     App = startApp();
+
+    stubRequest('get', '/users/user1/ssh_keys', function(){
+      return this.success({
+        _embedded: {
+          ssh_keys: []
+        }
+      });
+    });
   },
   teardown: function() {
     Ember.run(App, 'destroy');

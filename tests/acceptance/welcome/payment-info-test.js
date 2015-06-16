@@ -10,14 +10,11 @@ let claimUrls = ['/claims/user', '/claims/account', '/claims/app', '/claims/data
 
 function visitPaymentInfoWithApp(options, userData){
   userData = userData || {};
+  options = options || {};
   if (userData.verified === undefined) { userData.verified = false; }
 
   signInAndVisit(url, userData);
   andThen(function(){
-    if (!options) {
-      return clickButton('Do this later');
-    }
-
     if (options.dbType) {
       click(`.${options.dbType} a`);
     }
@@ -43,6 +40,7 @@ function mockSuccessfulPayment(stripeToken){
       fn(200, { id: stripeToken || 'mocked-stripe-token' });
     }, 2);
   };
+
   stubRequest('post', '/organizations/:org_id/subscriptions', function(request){
     return this.success();
   });
@@ -94,7 +92,7 @@ test('submitting empty payment info raises an error', function() {
   clickButton('Save');
 
   andThen(function() {
-    equal(currentPath(), 'dashboard.welcome.payment-info');
+    equal(currentPath(), 'welcome.payment-info');
     let error = find('p:contains(Failure)');
     ok(error.length, 'errors are on the page');
   });
@@ -205,6 +203,57 @@ test('submitting valid payment info for development plan should create dev stack
 
   clickButton('Save');
   andThen( () => {
+    equal(currentPath(), 'dashboard.stack.apps.new');
+  });
+});
+
+test('submitting valid payment info on organization with existing stripe info should not recreate the subscription', function() {
+  stubStacks({}, []);
+  stubOrganization();
+
+  stubRequest('post', '/accounts', function(request) {
+    var params = this.json(request);
+    params.activated = true;
+    return this.success(Ember.merge({id:params.handle }, params));
+  });
+
+  stubRequest('post', '/organizations/:org_id/subscriptions', function(request){
+    ok(false, 'should not create subscription again');
+    return this.success();
+  });
+
+  stubRequest('get', '/organizations', function(request){
+    return this.success({
+      _links: {},
+      _embedded: {
+        organizations: [{
+          _links: {
+            self: { href: '/organizations/1' }
+          },
+          id: 1, name: 'Sprocket Co', type: 'organization',
+          stripe_subscription_id: 'sub_xxx', stripe_customer_id: 'cus_xxx'
+        }]
+      }
+    });
+  });
+
+  let stackHandle = 'sprocket-co';
+
+  mockStripe.card.createToken = function(options, fn) {
+    setTimeout(function(){
+      fn(200, { id: 'mocked-stripe-token' });
+    }, 2);
+  };
+
+  visitPaymentInfoWithApp({ stackHandle: stackHandle });
+
+  andThen(function() {
+    stubStacks();
+  });
+
+  clickButton('Save');
+
+  andThen(function() {
     equal(currentPath(), 'dashboard.stack.apps.new');
   });
 });

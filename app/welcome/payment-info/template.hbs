@@ -5,7 +5,7 @@
 
   <div class="signup-form">
     <div class="row">
-      <div class="col-xs-5 col-xs-offset-1">
+      <div class="col-xs-6 col-lg-5 col-lg-offset-1">
 
         <div class="panel panel-focused">
           <div class="panel-heading">
@@ -29,23 +29,25 @@
               </div>
 
               <div class="form-group">
-                <div class="expiration-month">
-                  {{select-month value=model.expMonth name="exp-month" prompt="Exp month"}}
-                </div>
-                <div class="expiration-year">
-                  {{select-year value=model.expYear name="exp-year" prompt="Exp year"}}
+                <div class="expiration-fields">
+                  <div class="expiration-month">
+                    {{select-month value=model.expMonth name="exp-month" prompt="Exp month"}}
+                  </div>
+                  <div class="expiration-year">
+                    {{select-year value=model.expYear name="exp-year" prompt="Exp year"}}
+                  </div>
                 </div>
 
                 {{input class="form-control zip" value=model.zip name="zip" placeholder="ZIP"}}
               </div>
 
-              <button class="btn btn-primary btn-block btn-lg" {{action 'create' model}}>Save</button>
+              <button class="btn btn-primary btn-block btn-lg" {{action 'create' model}} type="submit">Save</button>
             </form>
           </div>
         </div>
 
       </div>
-      <div class="col-xs-5">
+      <div class="col-xs-6 col-lg-5">
         <div class="welcome-info">
           {{plan-description app=firstApp plan=firstApp.plan}}
         </div>
@@ -53,7 +55,7 @@
     </div>
 
     <div class="row">
-      <div class="col-xs-10 col-xs-offset-1">
+      <div class="col-xs-12 col-lg-10 col-lg-offset-1">
         {{change-plan value=firstApp.plan}}
       </div>
     </div>
