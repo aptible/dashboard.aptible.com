@@ -76,7 +76,8 @@
     "setFeature",
     "stubInvitation",
     "stubIndexRequests",
-    "check"
+    "check",
+    "stubStackDatabases"
   ],
   "node": false,
   "browser": false,

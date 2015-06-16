@@ -20,7 +20,7 @@ module('Acceptance: Log Drains', {
   teardown: function() {
     Ember.run(App, 'destroy');
   },
-  prepareStubs: function(options){
+  prepareStubs: function(options, databasesPayload){
     let defaultLogDrains = [{
       id: 'drain-1',
       handle: 'first-drain',
@@ -33,8 +33,14 @@ module('Acceptance: Log Drains', {
       id: stackId,
       handle: stackHandle,
       _embedded: { log_drains: options.logDrains },
-      _links: { organization: { href: `/organizations/${orgId}` } }
+      _links: {
+        organization: { href: `/organizations/${orgId}`},
+        databases: { href: `/accounts/${stackId}/databases` }
+     }
     });
+
+    databasesPayload = databasesPayload || [{id: 'db-1', type: 'elasticsearch'}];
+    stubStackDatabases(stackId, databasesPayload);
     stubOrganization({id: orgId, name: orgName});
   }
 });
@@ -130,6 +136,7 @@ test(`visit ${addLogUrl} and cancel`, function(assert){
 
 test(`visit ${addLogUrl} and create log success`, function(assert){
   expect(7);
+
   this.prepareStubs();
 
   let drainHost = 'abc-host.com',
@@ -166,6 +173,59 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
     fillInput('drain-port', drainPort, {context});
     click( findInput('drain-type', {context}) ); // click radio button
     fillInput('handle', handle, {context});
+    clickButton('Save Log', {context});
+  });
+
+  andThen(function(){
+    equal(currentPath(), 'dashboard.stack.log-drains.index');
+  });
+});
+
+test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
+  expect(7);
+
+  let drainUser = 'someUser',
+      drainPassword = 'somePw',
+      drainHost = 'abc-host.com',
+      drainPort = '1234',
+      drainType = 'elasticsearch',
+      logDrainId = 'log-drain-foo',
+      databaseHandle = 'databaseHandle';
+
+  let databasesPayload = [{
+    id: 'db-1',
+    type: 'elasticsearch',
+    handle: databaseHandle,
+    connection_url: `http:\/\/${drainUser}:${drainPassword}@${drainHost}:${drainPort}`}
+  ];
+  this.prepareStubs(null, databasesPayload);
+
+  stubRequest('post', '/accounts/:stack_id/log_drains', function(request){
+    ok(true, 'posts to log_drains');
+
+    let json = this.json(request);
+
+    equal(json.drain_host, drainHost);
+    equal(json.drain_port, drainPort);
+    equal(json.drain_type, drainType);
+    equal(json.drain_password, drainPassword);
+    equal(json.drain_username, drainUser);
+
+    json.id = logDrainId;
+    return this.success(json);
+  });
+
+  stubRequest('post', `/log_drains/${logDrainId}/operations`, function(request){
+    return this.success();
+  });
+
+  signInAndVisit(addLogUrl);
+  andThen(function(){
+    let formEl = find('form.create-log');
+    let context = formEl;
+
+    click( find('label:contains(Elasticsearch)')); // click elasticsearch radio button
+    fillInput('handle', 'handle', {context});
     clickButton('Save Log', {context});
   });
 
