@@ -1,6 +1,8 @@
 .input-group {
   width: 100%;
-  display: relative;
+  position: relative;
+  border-collapse: separate;
+  display: table;
 
   .form-control:first-child {
     border-radius: 3px;
