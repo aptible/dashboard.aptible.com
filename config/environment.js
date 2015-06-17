@@ -33,6 +33,15 @@ module.exports = function(environment) {
       injectionFactories : ['route', 'router', 'controller', 'view']
     },
 
+    sentry: {
+      skipCdn: false,
+      cdn: '//cdn.ravenjs.com',
+      dsn: 'https://825dc91773b5407f94cb86bd7b5982d0@app.getsentry.com/46076',
+      version: '1.1.16',
+      whitelistUrls: ['localhost:4200'],
+      development: true
+    },
+
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
@@ -52,8 +61,8 @@ module.exports = function(environment) {
     contentSecurityPolicy: {
       'connect-src': "'self' http://localhost:4000 http://localhost:4001 ws://localhost:35729 ws://0.0.0.0:35729 http://api.mixpanel.com http://api.segment.io http://auth.aptible.foundry.io http://api.aptible.foundry.io https://api-ping.intercom.io wss://*.intercom.io https://*.intercom.io",
       'style-src': "'self' 'unsafe-inline' http://use.typekit.net",
-      'img-src': "'self' http://www.gravatar.com https://secure.gravatar.com http://www.google-analytics.com http://p.typekit.net https://track.customer.io https://js.intercomcdn.com",
-      'script-src': "'self' 'unsafe-inline' https://js.stripe.com https://api.stripe.com http://use.typekit.net http://cdn.segment.com https://assets.customer.io http://www.google-analytics.com http://cdn.mxpnl.com https://js.intercomcdn.com https://static.intercomcdn.com https://widget.intercom.io",
+      'img-src': "'self' http://www.gravatar.com https://secure.gravatar.com http://www.google-analytics.com http://p.typekit.net https://track.customer.io https://js.intercomcdn.com data: app.getsentry.com",
+      'script-src': "'self' 'unsafe-inline' https://js.stripe.com https://api.stripe.com http://use.typekit.net http://cdn.segment.com https://assets.customer.io http://www.google-analytics.com http://cdn.mxpnl.com https://js.intercomcdn.com https://static.intercomcdn.com https://widget.intercom.io http://cdn.ravenjs.com",
       'font-src': "'self' data:",
       'object-src': "http://localhost:4200"
     },
@@ -99,6 +108,8 @@ module.exports = function(environment) {
     // Flash messages with a timeout will pause andThen()'s for the timeout
     // duration.  Forcing flashes to be sticky will allow them to be detectable
     ENV.flashMessageDefaults.sticky = true;
+    ENV.sentry.development = true;
+    ENV.sentry.skipCdn = true;
   }
 
   if (environment === 'staging') {
@@ -111,6 +122,8 @@ module.exports = function(environment) {
     };
     ENV.segmentioKey = '6jZlAcweTojgXShBvn4B9Tvwr1IlqkEE';
     ENV.featureFlags['price-estimator'] = false;
+    ENV.sentry.whitelistUrls = ['dashboard.aptible-staging.com'];
+    ENV.sentry.development = false;
   }
 
   if (environment === 'production') {
@@ -127,6 +140,10 @@ module.exports = function(environment) {
     ENV.featureFlags['price-estimator'] = false;
     ENV.featureFlags['notifications'] = true;
     ENV.featureFlags['organization-billing-settings'] = false;
+
+    ENV.sentry.whitelistUrls = ['dashboard.aptible.com'];
+    ENV.sentry.development = false;
+    ENV.sentry.dsn = 'https://2dc5b29fd35e408cbadf581f9a167074@app.getsentry.com/22629';
   }
 
   return ENV;

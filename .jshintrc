@@ -2,6 +2,7 @@
   "predef": [
     "document",
     "window",
+    "Raven",
     "-Promise"
   ],
   "browser": true,
