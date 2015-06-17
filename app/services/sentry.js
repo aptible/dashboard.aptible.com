@@ -1,12 +1,17 @@
+import config from '../config/environment';
+
 export default Ember.Service.extend({
+  enableRaven() {
+    return window.Raven && !config.sentry.development;
+  },
   identify(attributes) {
-    if(window.Raven) {
+    if(this.enableRaven()) {
       window.Raven.setUserContext(attributes);
     }
   },
 
   captureException(exception) {
-    if(window.Raven) {
+    if(this.enableRaven()) {
       window.Raven.captureException(exception);
     }
   }
