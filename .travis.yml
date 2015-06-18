@@ -20,4 +20,4 @@ script:
 - npm test
 - script/travis-deploy.sh
 env:
-  secure: bFmd+FmLO8rjn2b/aAGeTZfW0gweELhc29OMfWYRvFSy0k57rSqCmn+Z45KS58vYksYEv9+HYOWg4qW5N6W0MDI5WeWB64tVlUOJj2g2bU/U2t68OC5kPogY7yvRUgRGs7lNZmYBFumBTYeWA9ZXv5qy6m0fSdLVpayZGhCpB1w=
+  secure: IxCrZg+tqOsLbAh6Hu00CeID43n53xk9KvzXRqqqctH6N+NFn80sOtEc014D1i8rjtGWtzd6CNkad+lusNBtbPcikfSm1DzGgpg8YJl8PMuAVBq14Wfa0/OT2wG9uv59jq8IkhrE7hCSOmOPDu9lPQJw6yEuNP5RoJWVIZzpog8=
