@@ -1,5 +1,7 @@
 module.exports = {
   production: {
+    buildEnv: 'production',
+
     store: {
       type: 's3-static',
       accessKeyId: process.env['AWS_ACCESS_KEY_ID'],
@@ -18,6 +20,8 @@ module.exports = {
   },
 
   staging: {
+    buildEnv: 'staging',
+
     store: {
       type: 's3-static',
       accessKeyId: process.env['AWS_ACCESS_KEY_ID'],
