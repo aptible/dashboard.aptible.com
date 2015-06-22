@@ -1,0 +1,6 @@
+{
+  "name": "ember-deploy-s3-static-index",
+  "keywords": [
+    "ember-addon"
+  ]
+}

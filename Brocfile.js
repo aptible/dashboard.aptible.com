@@ -19,6 +19,9 @@ if (process.env.EMBER_ENV === 'staging') {
   options.fingerprint = {
     enabled: true
   };
+  options.sourcemaps = {
+    enabled: false
+  };
 }
 
 var app = new EmberApp(options);
