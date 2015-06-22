@@ -12,7 +12,11 @@ var Router = Ember.Router.extend({
 
 Router.map(function() {
   this.route('organization', { path: ':organization_id'}, function() {
-    this.route("training", { path: 'training' }, function() {});
+
+    this.route("training", { path: 'training', resetNamespace: true }, function() {
+      this.route("criterion", { path: ':criterion_handle' }, function() {});
+    });
+
   });
 
   this.route('stacks', { path: 'stacks'}, function() {});

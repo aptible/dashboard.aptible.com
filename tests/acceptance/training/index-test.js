@@ -23,7 +23,10 @@ let securityCriterionId = 'training-criterion-3';
 let rolesHref = `/organizations/${orgId}/roles`;
 let usersHref = `/organizations/${orgId}/users`;
 let securityOfficerHref = `/users/${securityOfficerId}`;
-let url = `/${orgId}/training`;
+let overviewUrl = `/${orgId}/training`;
+let basicUrl = `/${orgId}/training/training_log`;
+let developerUrl = `/${orgId}/training/developer_training_log`;
+let securityUrl = `/${orgId}/training/security_officer_training_log`;
 
 let organization = {
   id: orgId,
@@ -31,7 +34,8 @@ let organization = {
   _links: {
     roles: { href: rolesHref },
     users: { href: usersHref },
-    security_officer: { href: `/users/${securityOfficerId}` }
+    security_officer: { href: `/users/${securityOfficerId}` },
+    self: { href: `/organizations/${orgId}` }
   }
 };
 
@@ -139,34 +143,69 @@ module('Acceptance: Organization Training Dashboard', {
   }
 });
 
-test(`visiting ${url} requires authentication`, function(assert) {
-  expectRequiresAuthentication(url);
+test(`visiting ${overviewUrl} requires authentication`, function(assert) {
+  expectRequiresAuthentication(overviewUrl);
 });
 
-test(`visiting ${url} shows 3 training criteria`, function(assert) {
+test(`visiting ${overviewUrl}: shows all users`, function(assert) {
   stubDocuments({ basic: [], security: [], developer: [] });
   stubRequests();
-  signInAndVisit(url);
+  signInAndVisit(overviewUrl);
 
   andThen(function() {
     assert.equal(currentPath(), 'organization.training.index');
-
-    ok(find('.header-title:contains(Training Log)').length,
-            'shows basic training log');
-    ok(find('.header-title:contains(Developer Training Log)').length,
-            'shows developer training log');
-    ok(find('.header-title:contains(Security Officer Training Log)').length,
-            'shows security officer training log');
+    ok(find('.user-training-status .name:contains(Basic User)'),
+            'shows basic user');
+    ok(find('.user-training-status .name:contains(Developer User)'),
+            'shows developer user');
+    ok(find('.user-training-status .name:contains(Security Officer User)'),
+            'shows security officer user');
   });
 });
 
-test(`visiting ${url} shows all users under basic training criterion`, function(assert) {
+test(`visiting ${overviewUrl}: all users list basic training`, function(assert) {
   stubDocuments({ basic: [], security: [], developer: [] });
   stubRequests();
-  signInAndVisit(url);
+  signInAndVisit(overviewUrl);
 
   andThen(function() {
     assert.equal(currentPath(), 'organization.training.index');
+    ok(find('.user-training-status .subject-checklist .training_log').length === 3,
+            'all 3 users list basic training');
+  });
+});
+
+test(`visiting ${overviewUrl}: all developers list developer training`, function(assert) {
+  stubDocuments({ basic: [], security: [], developer: [] });
+  stubRequests();
+  signInAndVisit(overviewUrl);
+
+  andThen(function() {
+    assert.equal(currentPath(), 'organization.training.index');
+    ok(find('.developer_training_log:contains(Developer Training)').length === 1,
+            'only one developer training log');
+  });
+});
+
+test(`visiting ${overviewUrl}: security officer shows security officer training`, function(assert) {
+  stubDocuments({ basic: [], security: [], developer: [] });
+  stubRequests();
+  signInAndVisit(overviewUrl);
+
+  andThen(function() {
+    assert.equal(currentPath(), 'organization.training.index');
+    ok(find('.security_officer_training_log:contains(Security Officer Training)').length === 1,
+            'only one security officer training log');
+  });
+});
+
+test(`visiting ${basicUrl} shows all users under basic training criterion`, function(assert) {
+  stubDocuments({ basic: [], security: [], developer: [] });
+  stubRequests();
+  signInAndVisit(basicUrl);
+
+  andThen(function() {
+    assert.equal(currentPath(), 'organization.training.criterion.index');
 
     let el = find('.criterion-subjects.training_log');
     ok(el.find('.user-training-status').length === 3,
@@ -174,13 +213,13 @@ test(`visiting ${url} shows all users under basic training criterion`, function(
   });
 });
 
-test(`visiting ${url} shows all developers under developer training criterion`, function(assert) {
+test(`visiting ${developerUrl} shows all developers under developer training criterion`, function(assert) {
   stubDocuments({ basic: [], security: [], developer: [] });
   stubRequests();
-  signInAndVisit(url);
+  signInAndVisit(developerUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.index');
+    assert.equal(currentPath(), 'organization.training.criterion.index');
 
     let el = find('.criterion-subjects.developer_training_log');
     ok(el.find('.user-training-status').length === 1,
@@ -191,13 +230,13 @@ test(`visiting ${url} shows all developers under developer training criterion`, 
 });
 
 
-test(`visiting ${url} shows security officer under security officer training criterion`, function(assert) {
+test(`visiting ${securityUrl} shows security officer under security officer training criterion`, function(assert) {
   stubDocuments({ basic: [], security: [], developer: [] });
   stubRequests();
-  signInAndVisit(url);
+  signInAndVisit(securityUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.index');
+    assert.equal(currentPath(), 'organization.training.criterion.index');
 
     let el = find('.criterion-subjects.security_officer_training_log');
     ok(el.find('.user-training-status').length === 1,
@@ -207,13 +246,13 @@ test(`visiting ${url} shows security officer under security officer training cri
   });
 });
 
-test(`visiting ${url} with an untrained user shows a red x`, function(assert) {
+test(`visiting ${basicUrl} with an untrained user shows a red x`, function(assert) {
   stubDocuments({ basic: [], security: [], developer: [] });
   stubRequests();
-  signInAndVisit(url);
+  signInAndVisit(basicUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.index');
+    assert.equal(currentPath(), 'organization.training.criterion.index');
 
     let el = find('.criterion-subjects.training_log');
     let user = el.find('.user-training-status:contains(Basic User)');
@@ -224,13 +263,13 @@ test(`visiting ${url} with an untrained user shows a red x`, function(assert) {
   });
 });
 
-test(`visiting ${url} with an untrained developer shows a red x`, function(assert) {
+test(`visiting ${developerUrl} with an untrained developer shows a red x`, function(assert) {
   stubDocuments({ basic: [], security: [], developer: [] });
   stubRequests();
-  signInAndVisit(url);
+  signInAndVisit(developerUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.index');
+    assert.equal(currentPath(), 'organization.training.criterion.index');
 
     let el = find('.criterion-subjects.developer_training_log');
     let user = el.find('.user-training-status:contains(Developer User)');
@@ -241,13 +280,13 @@ test(`visiting ${url} with an untrained developer shows a red x`, function(asser
   });
 });
 
-test(`visiting ${url} with an untrained security officer shows a red x`, function(assert) {
+test(`visiting ${securityUrl} with an untrained security officer shows a red x`, function(assert) {
   stubDocuments({ basic: [], security: [], developer: [] });
   stubRequests();
-  signInAndVisit(url);
+  signInAndVisit(securityUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.index');
+    assert.equal(currentPath(), 'organization.training.criterion.index');
 
     let el = find('.criterion-subjects.security_officer_training_log');
     let user = el.find('.user-training-status:contains(Security Officer User)');
@@ -258,7 +297,7 @@ test(`visiting ${url} with an untrained security officer shows a red x`, functio
   });
 });
 
-test(`visiting ${url} with trained user shows a green check`, function(assert) {
+test(`visiting ${basicUrl} with trained user shows a green check`, function(assert) {
   let trainingDocument = {
     id: 'basic-training-document',
     created_at: '2015-05-27T17:47:13.287Z',
@@ -270,10 +309,10 @@ test(`visiting ${url} with trained user shows a green check`, function(assert) {
 
   stubDocuments({ basic: [trainingDocument], security: [], developer: [] });
   stubRequests();
-  signInAndVisit(url);
+  signInAndVisit(basicUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.index');
+    assert.equal(currentPath(), 'organization.training.criterion.index');
 
     let el = find('.criterion-subjects.training_log');
     let user = el.find('.user-training-status:contains(Basic User)');
@@ -285,7 +324,7 @@ test(`visiting ${url} with trained user shows a green check`, function(assert) {
   });
 });
 
-test(`visiting ${url} with trained developer shows a green check`, function(assert) {
+test(`visiting ${developerUrl} with trained developer shows a green check`, function(assert) {
   let trainingDocument = {
     id: 'developer-training-document',
     created_at: '2015-05-27T17:47:13.287Z',
@@ -297,10 +336,10 @@ test(`visiting ${url} with trained developer shows a green check`, function(asse
 
   stubDocuments({ basic: [], security: [], developer: [trainingDocument] });
   stubRequests();
-  signInAndVisit(url);
+  signInAndVisit(developerUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.index');
+    assert.equal(currentPath(), 'organization.training.criterion.index');
 
     let el = find('.criterion-subjects.developer_training_log');
     let user = el.find('.user-training-status:contains(Developer User)');
@@ -312,7 +351,7 @@ test(`visiting ${url} with trained developer shows a green check`, function(asse
   });
 });
 
-test(`visiting ${url} with trained security officer shows a green check`, function(assert) {
+test(`visiting ${securityUrl} with trained security officer shows a green check`, function(assert) {
   let trainingDocument = {
     id: 'security-officer-training-document',
     created_at: '2015-05-27T17:47:13.287Z',
@@ -324,10 +363,10 @@ test(`visiting ${url} with trained security officer shows a green check`, functi
 
   stubDocuments({ basic: [], security: [trainingDocument], developer: [] });
   stubRequests();
-  signInAndVisit(url);
+  signInAndVisit(securityUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.index');
+    assert.equal(currentPath(), 'organization.training.criterion.index');
 
     let el = find('.criterion-subjects.security_officer_training_log');
     let user = el.find('.user-training-status:contains(Security Officer User)');

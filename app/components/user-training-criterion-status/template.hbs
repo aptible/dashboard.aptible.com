@@ -1,4 +1,4 @@
-{{#compliance-status subject=user criterion=criterion as |status|}}
+{{#compliance-status subject=user criterion=criterion organization=organization as |status|}}
   <div class="user-image is-compliant-{{status.green}}">
     <div class="gravatar md">
       {{gravatar-image email=user.email}}
@@ -9,7 +9,10 @@
   </div>
 
   <div class="info">
-    <div class="name">{{user.name}}</div>
+    <div class="name">
+      {{user.name}}
+      <span class="email">{{user.email}}</span>
+    </div>
 
     {{#if status.green}}
       <span class="description">

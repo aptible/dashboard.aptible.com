@@ -1,0 +1,31 @@
+<div class="user-image is-compliant-false">
+  <div class="gravatar md">
+    {{gravatar-image email=user.email}}
+  </div>
+  <div class="compliance-icon-wrapper">
+    {{compliance-icon status=overallTrainingStatus}}
+  </div>
+</div>
+
+<div class="info">
+  <div class="name">
+    {{user.name}}
+    <span class="email">{{user.email}}</span>
+  </div>
+  <ul class="subject-checklist">
+    <li class="title">Required Training:</li>
+    {{#each requiredCriteria as |criterion|}}
+      {{#compliance-status subject=user criterion=criterion organization = organization as |status|}}
+        <li class="{{criterion.handle}} criterion-compliant-{{if status.green true false}}">
+          {{compliance-icon status=status}}
+          <span class="criterion-name">{{criterion.friendlyName}}</span> -
+          {{#if status.green}}
+            <span class="criterion-status">Last completed on {{format-utc-timestamp status.completedOn}}</span>
+          {{else}}
+            <span class="criterion-status">Never completed, due immediately</span>
+          {{/if}}
+        </li>
+      {{/compliance-status}}
+    {{/each}}
+  </ul>
+</div>

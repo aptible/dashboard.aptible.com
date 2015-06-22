@@ -1,0 +1,15 @@
+<section class="compliance-section">
+  <header>
+    <span class="header-title">{{organization.name}} Training Overview</span>
+  </header>
+
+  <div class="panel compliance-status-table-panel white-panel criterion-subjects {{criterion.handle}}">
+    {{#each organization.users as |user|}}
+      {{user-training-overall-status
+        user=user
+        criteria=criteria
+        organization=organization
+        permissions=permissions}}
+    {{/each}}
+  </div>
+</section>

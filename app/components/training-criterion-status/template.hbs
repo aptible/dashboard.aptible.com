@@ -1,6 +1,6 @@
 <header>
   <i class="fa.fa-user"></i>
-  <span class="header-title">{{criterion.name}}</span>
+  <span class="header-title">{{criterion.friendlyName}}</span>
   {{#if noncompliantSubjects}}
     <span class="badge">{{noncompliantSubjects}}</span>
   {{/if}}
@@ -9,7 +9,7 @@
 {{#if subjects}}
   <div class="panel compliance-status-table-panel white-panel criterion-subjects {{criterion.handle}}">
     {{#each subjects as |user|}}
-      {{user-training-status user=user criterion=criterion}}
+      {{user-training-criterion-status user=user criterion=criterion organization=organization}}
     {{/each}}
   </div>
 {{else}}
