@@ -4,8 +4,8 @@ import {
 } from 'ember-qunit';
 import Ember from 'ember';
 
-moduleForComponent('training-status', {
-  needs:['component:user-training-status']
+moduleForComponent('training-criterion-status', {
+  needs:['component:user-training-criterion-status']
 });
 
 test('it renders', function(assert) {

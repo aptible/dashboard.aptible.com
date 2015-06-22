@@ -16,5 +16,5 @@ export default GridironAdapter.extend({
     }
 
     return this._super(type);
-  },
+  }
 });

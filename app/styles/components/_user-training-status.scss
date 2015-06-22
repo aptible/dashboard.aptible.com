@@ -30,5 +30,39 @@
     font-size: 14px;
     font-weight: $weight-semibold;
     margin: 1px 0 2px 0;
+
+    .email {
+      font-weight: $weight-normal;
+      color: $color-light;
+    }
+  }
+}
+
+.subject-checklist {
+  margin: 10px 0 -3px;
+  padding: 0;
+  list-style-type: none;
+
+  > li.title {
+    font-weight: $weight-semibold;
+    text-transform: uppercase;
+    color: $color-light;
+  }
+
+  > li {
+    margin: 8px 0;
+    font-size: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .criterion-name {
+    font-weight: $weight-semibold;
+  }
+
+  .criterion-status {
+    color: $color-light;
   }
 }

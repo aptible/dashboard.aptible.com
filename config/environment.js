@@ -23,7 +23,7 @@ module.exports = function(environment) {
       { name: 'Risk Assessment', path: 'risk', app: 'compliance' },
       { name: 'Policies & Procedures', path: 'policy', app: 'compliance' },
       { name: 'Application Security', path: 'security', app: 'compliance' },
-      { name: 'Workforce Training', path: 'organization.training' }
+      { name: 'Workforce Training', path: 'training' }
     ],
 
     complianceTools: [

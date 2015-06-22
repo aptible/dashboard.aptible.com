@@ -4,7 +4,7 @@ import {
 } from 'ember-qunit';
 import Ember from 'ember';
 
-moduleForComponent('user-training-status', {
+moduleForComponent('user-training-criterion-status', {
   needs:['component:compliance-status', 'component:compliance-icon', 'component:gravatar-image']
 });
 
