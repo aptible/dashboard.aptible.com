@@ -120,6 +120,9 @@ module.exports = function(environment) {
   if (environment === 'staging') {
     ENV.authBaseUri = "https://auth.aptible-staging.com";
     ENV.apiBaseUri = "https://api.aptible-staging.com";
+    ENV.dashboardBaseUri = 'https://dashboard.aptible-staging.com';
+    ENV.complianceBaseUri = 'https://compliance.aptible-staging.com';
+    ENV.gridironBaseUri = 'https://gridiron.aptible-staging.com';
     ENV.aptibleHosts = {
       'compliance': 'https://compliance.aptible-staging.com',
       'legacy-dashboard': "https://dashboard.aptible-staging.com",
@@ -133,6 +136,9 @@ module.exports = function(environment) {
     ENV.stripePublishableKey = 'pk_live_ujeTeUIMpUcvNsWwu7R9b3Zy';
     ENV.authBaseUri = "https://auth.aptible.com";
     ENV.apiBaseUri = "https://api.aptible.com";
+    ENV.dashboardBaseUri = 'https://dashboard.aptible.com';
+    ENV.complianceBaseUri = 'https://compliance.aptible.com';
+    ENV.gridironBaseUri = 'https://gridiron.aptible.com';
     ENV.aptibleHosts = {
       'compliance': 'https://compliance.aptible.com',
       'legacy-dashboard': "https://dashboard.aptible.com",
