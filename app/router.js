@@ -20,11 +20,6 @@ Router.map(function() {
   });
 
   this.route('stacks', { path: 'stacks'}, function() {});
-  this.route('settings', { path: 'settings'}, function() {
-    this.route('ssh');
-    this.route('admin');
-    this.route('profile');
-  });
 });
 
 export default Router;
