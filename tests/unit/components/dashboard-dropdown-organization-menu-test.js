@@ -6,7 +6,7 @@ import {
 import Ember from 'ember';
 
 moduleForComponent('dashboard-dropdown-organization-menu', 'DashboardDropdownOrganizationMenuComponent', {
-  needs: ['component:dashboard-dropdown-item']
+  needs: ['component:dashboard-dropdown-item', 'component:link-to-aptible']
 });
 
 test('it renders', function() {
