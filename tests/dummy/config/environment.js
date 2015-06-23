@@ -2,6 +2,7 @@
 
 module.exports = function(environment) {
   var ENV = {
+    aptibleHosts: { dashboard: "dashboard" },
     modulePrefix: 'dummy',
     environment: environment,
     baseURL: '/',

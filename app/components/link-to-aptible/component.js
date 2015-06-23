@@ -10,6 +10,7 @@ export default Ember.Component.extend({
     var path = this.get('path');
     var app = this.get('app');
     var host = config.aptibleHosts[app];
+
     Ember.assert(`The app "${app}" is not a valid argument to link-to-aptible`,
                  !!host);
     return [host, path].join('/');
