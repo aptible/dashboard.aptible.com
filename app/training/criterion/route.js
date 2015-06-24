@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model(params) {
-    let trainingCriteria = this.modelFor('training');
+    let trainingCriteria = this.modelFor('training').criteria;
 
     return Ember.RSVP.hash({
       criterion: trainingCriteria.findBy('handle', params.criterion_handle),

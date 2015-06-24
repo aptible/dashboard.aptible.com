@@ -4,14 +4,12 @@ export default Ember.Route.extend({
   model() {
     return Ember.RSVP.hash({
       users: this.modelFor('organization').get('users'),
-      criteria: this.modelFor('training'),
-      permissions: this.store.find('permission')
+      criteria: this.modelFor('training').criteria,
     });
   },
 
   afterModel(model) {
     return Ember.RSVP.hash({
-      roles: this.modelFor('organization').get('roles'),
       securityOfficer: this.modelFor('organization').get('securityOfficer'),
       documents: model.criteria.map((c) => c.get('documents'))
     });
