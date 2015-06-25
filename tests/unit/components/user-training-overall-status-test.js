@@ -19,7 +19,8 @@ let criterion = Ember.Object.create({ documents: [doc], scope: 'user',
                                       organizationUrl: 'o1',
                                       getSubjectStatus: function() { return status; },
                                       getOrganizationSubjects: function() { return []; }});
-let organization = { data: { links: { self: 'o1' }}};
+let organization = { data: { links: { self: 'o1' }},
+                     getCriterionSubjects: function() { return []; }};
 
 test('it renders', function(assert) {
   assert.expect(2);

@@ -26,10 +26,11 @@ export default Ember.Route.extend({
     let organization = this.modelFor('organization');
     let permissions = model.permissions;
 
+    // Organization requires all permissions in order to determine developers
     organization.set('permissions', permissions);
 
     return Ember.RSVP.hash({
-      developers: organization.get('developerRoles').map((r) => r.get('users'))
+      developers: organization.get('developerRoles').map(r => r.get('users'))
     });
   },
 
@@ -38,3 +39,4 @@ export default Ember.Route.extend({
     controller.set('model', model.criteria);
   }
 });
+

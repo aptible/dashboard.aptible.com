@@ -20,7 +20,7 @@ export default Ember.Component.extend({
 
   isSubjectTo(criterion) {
     let organization = this.get('organization');
-    let subjects = criterion.getOrganizationSubjects(organization);
+    let subjects = organization.getCriterionSubjects(criterion);
     let userHref = this.get('user.data.links.self');
 
     return subjects.map((s) => s.get('data.links.self')).indexOf(userHref) >= 0;

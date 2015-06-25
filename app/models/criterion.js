@@ -24,14 +24,6 @@ export default DS.Model.extend({
     return currentName;
   }),
 
-  getOrganizationSubjects(organization) {
-    let prop = { training_log: 'users',
-                 developer_training_log: 'developers',
-                 security_officer_training_log: 'securityOfficer'}[this.get('handle')];
-
-    return Ember.makeArray(organization.get(prop));
-  },
-
   getSubjectStatus(subject, organization) {
     // FIXME: This method assumes documents are already loaded.  Instead
     // It should be promise-based and resolve unloaded documents before

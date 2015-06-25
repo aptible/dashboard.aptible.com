@@ -1,8 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  subjects: Ember.computed('criterion.handle', 'organization.developers.[]', 'organization.securityOfficer', function() {
-    let criterion = this.get('criterion');
-    return criterion.getOrganizationSubjects(this.get('organization'));
+  subjects: Ember.computed('criterion', 'organization.developers.[]', 'organization.securityOfficer', function() {
+    let organization = this.get('organization');
+    return organization.getCriterionSubjects(this.get('criterion'));
   })
 });

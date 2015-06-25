@@ -2,7 +2,11 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   afterModel(model) {
-    return model.get('roles');
+    return Ember.RSVP.hash({
+      users: model.get('users'),
+      securityOfficer: model.get('securityOfficer'),
+      roles: model.get('roles')
+    });
   },
 
   setupController(controller, model) {
