@@ -54,7 +54,10 @@ export default Ember.Route.extend({
 
       stack.save().then(() => {
         let message = `${stack.get('handle')} created`;
-        this._trackEnvironmentCreation();
+
+        if(stack.get('type') === 'production') {
+          this._trackEnvironmentCreation();
+        }
 
         this.transitionTo('organization.environments');
         Ember.get(this, 'flashMessages').success(message);
