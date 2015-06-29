@@ -1,11 +1,15 @@
-<ul class="nav nav-pills resource-navigation">
-  {{#link-to 'training.index' tagName="li"}}
-    {{link-to "Overview" "training.index" bubbles=false}}
-  {{/link-to}}
+<div class="row">
+  <div class="col-xs-3">
+    {{#link-to 'training.index' tagName='div'}}
+      {{training-overall-progress criteria=model organization=organization}}
+    {{/link-to}}
+  </div>
 
   {{#each model as |criterion|}}
-    {{#link-to 'training.criterion' criterion.handle tagName="li"}}
-      {{link-to criterion.name 'training.criterion' criterion.handle bubbles=false}}
-    {{/link-to}}
+    <div class="col-xs-3">
+      {{#link-to 'training.criterion' criterion.handle tagName='div'}}
+        {{criterion-completion-progress criterion=criterion organization=organization}}
+      {{/link-to}}
+    </div>
   {{/each}}
-  </ul>
+</div>

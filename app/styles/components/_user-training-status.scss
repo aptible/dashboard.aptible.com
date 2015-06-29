@@ -24,22 +24,24 @@
 
   .info {
     float: left;
+    width: 300px;
   }
 
   .name {
     font-size: 14px;
     font-weight: $weight-semibold;
-    margin: 1px 0 2px 0;
+    margin: 1px 0 5px 0;
+  }
 
-    .email {
-      font-weight: $weight-normal;
-      color: $color-light;
-    }
+  .email {
+    font-weight: $weight-normal;
+    color: $color-light;
   }
 }
 
 .subject-checklist {
-  margin: 10px 0 -3px;
+  float: left;
+  margin: 5px 0 0;
   padding: 0;
   list-style-type: none;
 
@@ -50,12 +52,23 @@
   }
 
   > li {
-    margin: 8px 0;
+    display: inline-block;
+    margin: 0 0 0 20px;
     font-size: 12px;
+    width: 180px;
 
-    &:last-child {
-      margin-bottom: 0;
+    &:first-child {
+      margin-left: 0;
     }
+  }
+
+  .compliance-icon {
+    float: left;
+    margin-top: 2px;
+  }
+
+  .criterion-details {
+    margin-left: 18px;
   }
 
   .criterion-name {

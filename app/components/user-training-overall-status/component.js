@@ -1,12 +1,11 @@
 import Ember from 'ember';
-import DevelopmentUsersComputedMixin from '../../mixins/components/development-users-computed';
 
-export default Ember.Component.extend(DevelopmentUsersComputedMixin, {
+export default Ember.Component.extend({
   complianceValidator: Ember.inject.service(),
   classNames: ['panel-row', 'user-training-status'],
-  requiredCriteria: Ember.computed('user', 'criteria.[]', 'developmentUsers.[]', function() {
+  requiredCriteria: Ember.computed('user', 'criteria.[]', 'organization.developers.[]', function() {
     return this.get('criteria').filter((c) => {
-      return this.subjectTo(c);
+      return this.isSubjectTo(c);
     });
   }),
 
@@ -19,30 +18,11 @@ export default Ember.Component.extend(DevelopmentUsersComputedMixin, {
     return { green };
   }),
 
-  subjectTo(criterion) {
-    let handle = criterion.get('handle');
-    let organization;
-    let developmentUsers;
-    let userHref;
+  isSubjectTo(criterion) {
+    let organization = this.get('organization');
+    let subjects = organization.getCriterionSubjects(criterion);
+    let userHref = this.get('user.data.links.self');
 
-    if(handle === 'training_log') {
-      return true;
-    }
-
-    if(handle === 'security_officer_training_log') {
-      organization = this.get('organization');
-      userHref = this.get('user.data.links.self');
-
-      return organization.get('data.links.securityOfficer') === userHref;
-    }
-
-    if (handle === 'developer_training_log') {
-      userHref = this.get('user.data.links.self');
-      let developmentUsers = this.get('developmentUsers').map((u) => {
-        return u.get('data.links.self');
-      });
-
-      return developmentUsers.indexOf(userHref) >= 0;
-    }
+    return subjects.map((s) => s.get('data.links.self')).indexOf(userHref) >= 0;
   }
 });

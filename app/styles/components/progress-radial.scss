@@ -1,0 +1,114 @@
+$overlayColor: #fff;
+$backColor: #f0f0f0;
+
+@mixin radial-progress($color) {
+  @for $i from 0 through $loops {
+    .progress-#{$i * $step} {
+      @if $i < $half {
+        $nextdeg: 90deg + $increment * $i;
+        background-image: linear-gradient(90deg, $backColor 50%, transparent 50%, transparent), linear-gradient($nextdeg, $color 50%, $backColor 50%, $backColor);
+      }
+      @else {
+        $nextdeg: -90deg + $increment * ($i - $half);
+        background-image: linear-gradient($nextdeg, $color 50%, transparent 50%, transparent), linear-gradient(270deg, $color 50%, $backColor 50%, $backColor);
+      }
+    }
+  }
+}
+
+.progress-radial {
+  margin: 0 auto;
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  text-align: center;
+
+  .overlay {
+    position: absolute;
+    width: 88px;
+    height: 88px;
+    background-color: $overlayColor;
+    border-radius: 50%;
+    margin-left: 6px;
+    margin-top: 6px;
+    text-align: center;
+    line-height: 90px;
+    font-size: 16px;
+    font-weight: $weight-semibold;
+    color: $color-primary;
+  }
+}
+
+.panel.progress-radial-panel {
+  cursor: pointer;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid transparent;
+  box-shadow: none;
+
+  > a {
+    display: block;
+
+    &:active, &:hover {
+      text-decoration:none;
+
+      * {
+        text-deocration: none;
+      }
+    }
+  }
+
+  &:hover, &:active {
+    border: 1px solid $color-bright-blue;
+    -moz-box-shadow: 0 0 8px rgba($color-bright-blue, .5);
+    box-shadow: 0 0 8px rgba($color-bright-blue, .5);
+  }
+
+  .progress-radial-label {
+    text-transform: uppercase;
+    text-decoration: none !important;
+    font-size: 11px;
+    margin: 20px 0 0;
+    font-weight: $weight-semibold;
+    color: $color-light;
+  }
+
+  .active & {
+    border: 1px solid #e5e5e5;
+    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .06);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .06);
+
+    > a:active, a:link, a:visited {
+      text-decoration: none !important;
+    }
+  }
+}
+
+
+
+
+$step: 5;
+$loops: round(100 / $step);
+$increment: 360 / $loops;
+$half: round($loops / 2);
+
+.green-progress-radial {
+  @include radial-progress($color-success);
+
+  .overlay {
+    color: $color-success;
+  }
+}
+
+.red-progress-radial {
+  @include radial-progress($color-danger);
+
+  .overlay {
+    color: $color-danger;
+  }
+
+}
+
+
+

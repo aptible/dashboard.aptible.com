@@ -4,6 +4,8 @@ import {
 } from 'ember-qunit';
 import Ember from 'ember';
 
+let criterionStub = {  };
+
 moduleForComponent('user-training-overall-status', {
   needs:['component:compliance-status', 'component:compliance-icon', 'component:gravatar-image', 'service:compliance-validator']
 });
@@ -15,8 +17,10 @@ let doc = Ember.Object.create({ userUrl: '/users/2',
                                   nextAssessment: '2016-05-27T17:47:13.287Z' });
 let criterion = Ember.Object.create({ documents: [doc], scope: 'user',
                                       organizationUrl: 'o1',
-                                      getSubjectStatus: function() { return status; }});
-let organization = { data: { links: { self: 'o1' }}};
+                                      getSubjectStatus: function() { return status; },
+                                      getOrganizationSubjects: function() { return []; }});
+let organization = { data: { links: { self: 'o1' }},
+                     getCriterionSubjects: function() { return []; }};
 
 test('it renders', function(assert) {
   assert.expect(2);

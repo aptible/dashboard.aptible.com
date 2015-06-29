@@ -4,6 +4,8 @@ import {
 } from 'ember-qunit';
 import Ember from 'ember';
 
+let organizationStub = { getCriterionSubjects: function() { return []; } };
+
 moduleForComponent('training-criterion-status', {
   needs:['component:user-training-criterion-status']
 });
@@ -11,7 +13,7 @@ moduleForComponent('training-criterion-status', {
 test('it renders', function(assert) {
   assert.expect(2);
 
-  var component = this.subject();
+  var component = this.subject({ organization:  organizationStub });
   assert.equal(component._state, 'preRender');
 
   this.render();

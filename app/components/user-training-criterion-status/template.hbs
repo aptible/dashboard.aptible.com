@@ -9,17 +9,21 @@
   </div>
 
   <div class="info">
-    <div class="name">
-      {{user.name}}
-      <span class="email">{{user.email}}</span>
-    </div>
+    <div class="name">{{user.name}}</div>
+    <div class="email">{{user.email}}</div>
+  </div>
 
-    {{#if status.green}}
-      <span class="description">
-        Last completed on {{format-utc-timestamp status.completedOn}}
-      </span>
-    {{else}}
-      <span class="description">Never completed, due immediately</span>
-    {{/if}}
+  <div class="subject-checklist">
+      <li class="{{criterion.handle}} criterion-compliant-{{if status.green true false}}">
+        {{compliance-icon status=stats}}
+        <div class="criterion-details">
+          <div class="criterion-name">{{criterion.friendlyName}}</div>
+          {{#if status.green}}
+            <div class="criterion-status">Completed {{format-utc-timestamp status.completedOn true}}</div>
+          {{else}}
+            <div class="criterion-status">Incomplete</div>
+          {{/if}}
+        </div>
+      </li>
   </div>
 {{/compliance-status}}

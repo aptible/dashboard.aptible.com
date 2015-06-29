@@ -2,17 +2,16 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model(params) {
-    let trainingCriteria = this.modelFor('training');
+    let trainingCriteria = this.modelFor('training').criteria;
+    return trainingCriteria.findBy('handle', params.criterion_handle);
+  },
 
-    return Ember.RSVP.hash({
-      criterion: trainingCriteria.findBy('handle', params.criterion_handle),
-      permissions: this.store.find('permission')
-    });
+  ssssafterModel(model) {
+    return this.modelFor('training').criteria.map(c => c.get('documents'));
   },
 
   setupController(controller, model) {
-    controller.set('model', model.criterion);
-    controller.set('permissions', model.permissions);
+    controller.set('model', model);
     controller.set('organization', this.modelFor('organization'));
   }
 });
