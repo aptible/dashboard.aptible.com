@@ -11,16 +11,19 @@
     {{partial 'signup/form'}}
 
     <div class="col-xs-5">
-      <div class="welcome-info">
-        {{#if invitation}}
-          <h2>
-            {{invitation.inviterName}} invited you to join {{invitation.organizationName}} on Aptible.
-          </h2>
-        {{/if}}
+      <div class="welcome-info invitation-welcome">
+        <h2>
+          {{invitation.inviterName}} invited you to join
+          {{invitation.organizationName}} on Aptible.
+        </h2>
 
         <p>
-          Aptible is a deployment platform built to streamline HIPAA compliance.
+          {{invitation.organizationName}} is using Aptible, a deployment
+          platform built to streamline HIPAA compliance.
         </p>
+
+        <h3>Already have an Aptible account?</h3>
+        {{link-to 'Sign in to accept this invitation' 'login' class='btn btn-primary'}}
       </div>
     </div>
   </div>

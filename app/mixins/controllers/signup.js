@@ -25,7 +25,7 @@ export default Ember.Mixin.create(EmberValidationsMixin, {
       presence: true,
       email: true,
       uniqueness: {
-        message: 'is taken.',
+        message: 'is in use.',
         url: `${config.authBaseUri || ''}/claims/user`
       }
     },
