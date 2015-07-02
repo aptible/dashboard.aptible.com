@@ -1,13 +1,22 @@
 <header class="resource-header">
   <div class="layout-container">
+
+    <div class="pull-right">
+      {{#link-to-aptible app='support' path='contact' classNames="btn btn-default"}}
+        Schedule Training
+      {{/link-to-aptible}}
+    </div>
+
     <div class="resource-title">
       <i class="resource-icon resource-environment"></i>
       <h1>{{organization.name}} Training</h1>
     </div>
+
   </div>
 </header>
 
 <div class="layout-container">
   {{partial 'training/nav'}}
+
   {{outlet}}
 </div>

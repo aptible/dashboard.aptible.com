@@ -5,6 +5,7 @@ export default Ember.Route.extend({
     return this.store.find('organization');
   },
   afterModel: function(model) {
-    this.transitionTo('organization.training', model.objectAt(0));
+    return this.transitionTo('training', model.get('firstObject'));
   }
 });
+
