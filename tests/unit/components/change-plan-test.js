@@ -6,10 +6,7 @@ import {
 import Ember from 'ember';
 
 moduleForComponent('change-plan', 'ChangePlanComponent', {
-  needs: [],
-  setup: function() {
-
-  }
+  unit: true
 });
 
 test('it renders', function() {

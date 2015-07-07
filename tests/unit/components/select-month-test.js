@@ -6,7 +6,8 @@ import {
 import Ember from 'ember';
 
 moduleForComponent('select-month', 'SelectMonthComponent', {
-  needs: [],
+  unit: true,
+
   setup: function() {
     this.container.register('view:select', Ember.Select);
   }

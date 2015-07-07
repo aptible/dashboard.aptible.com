@@ -4,8 +4,8 @@ import {
 } from 'ember-qunit';
 
 moduleFor('route:organization/contact-settings', {
-  // Specify the other units that are required for this test.
-  // needs: ['controller:foo']
+  unit: true,
+  needs: 'service:analytics'
 });
 
 test('it exists', function(assert) {

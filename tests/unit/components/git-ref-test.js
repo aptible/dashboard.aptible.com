@@ -6,6 +6,8 @@ import {
 import Ember from 'ember';
 
 moduleForComponent('git-ref', 'GitRefComponent', {
+  unit: true,
+
   needs: [
     'component:click-to-copy',
     'component:bs-tooltip'

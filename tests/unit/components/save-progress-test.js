@@ -6,7 +6,9 @@ import {
 import startApp from '../../helpers/start-app';
 import Ember from 'ember';
 
-moduleForComponent('save-progress', 'SaveProgressComponent', {});
+moduleForComponent('save-progress', 'SaveProgressComponent', {
+  unit: true
+});
 
 test('it renders', function() {
   expect(2);

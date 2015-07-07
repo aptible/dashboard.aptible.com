@@ -4,6 +4,8 @@ import {
 } from 'ember-qunit';
 
 moduleForComponent('verification-code-reset', {
+  unit: true,
+
   // specify the other units that are required for this test
   needs: ['component:bs-alert', 'component:bs-alert-dismiss']
 });
