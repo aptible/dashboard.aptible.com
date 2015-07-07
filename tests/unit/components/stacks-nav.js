@@ -6,7 +6,7 @@ import {
 import Ember from 'ember';
 
 moduleForComponent('stacks-nav', 'StacksNavComponent', {
-  needs: []
+  unit: true
 });
 
 test('it renders', function() {

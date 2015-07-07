@@ -6,8 +6,7 @@ import {
 import {maxChars} from 'diesel/components/handle-input/component';
 
 moduleForComponent('handle-input', {
-  // specify the other units that are required for this test
-  // needs: ['component:foo', 'helper:bar']
+  unit: true
 });
 
 test('entering value with spaces adds dashes', function(assert) {

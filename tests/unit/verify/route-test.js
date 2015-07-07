@@ -3,9 +3,9 @@ import {
   test
 } from 'ember-qunit';
 
-moduleFor('route:verify', 'VerifyRoute', {
-  // Specify the other units that are required for this test.
-  // needs: ['controller:foo']
+moduleFor('route:verify', {
+  unit: true,
+  needs: 'service:analytics'
 });
 
 test('it exists', function() {

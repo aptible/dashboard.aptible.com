@@ -14,7 +14,8 @@ function buildFeaturesMock() {
 }
 
 moduleForComponent('service-scaler', 'ServiceScalerComponent', {
-  integration: true,
+  unit: true,
+  needs: ['component:no-ui-slider', 'component:estimated-cost'],
   setup: function() {
     this.container.register('service:features-mock', buildFeaturesMock());
     this.container.injection('component', 'features', 'service:features-mock');

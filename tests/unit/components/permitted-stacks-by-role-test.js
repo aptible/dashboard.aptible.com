@@ -5,7 +5,9 @@ import {
 
 import Ember from 'ember';
 
-moduleForComponent('permitted-stacks-by-role');
+moduleForComponent('permitted-stacks-by-role', {
+  unit: true
+});
 
 let permits = function(role, scope) {
   return new Ember.RSVP.Promise((resolve) => { resolve(true); });

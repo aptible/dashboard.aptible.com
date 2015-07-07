@@ -14,6 +14,8 @@ function mockFeaturesService(isEnabled) {
 import Ember from 'ember';
 
 moduleForComponent('estimated-cost', 'EstimatedCostComponent', {
+  unit: true,
+
   subject: function(opts = {}) {
     var klass = this.container.lookupFactory(this.subjectName);
     return klass.create({

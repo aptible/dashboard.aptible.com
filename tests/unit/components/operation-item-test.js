@@ -6,6 +6,8 @@ import {
 import Ember from 'ember';
 
 moduleForComponent('operation-item', 'OperationItemComponent', {
+  unit: true,
+
   needs: [
     'component:operation-icon',
     'component:bs-tooltip',

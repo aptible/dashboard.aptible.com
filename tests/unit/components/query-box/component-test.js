@@ -7,6 +7,8 @@ import Ember from "ember";
 var mockAnalytics;
 
 moduleForComponent('query-box', 'QueryBoxComponent', {
+  unit: true,
+
   setup: function() {
     mockAnalytics = Ember.Object.create();
   },

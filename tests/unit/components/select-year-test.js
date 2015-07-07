@@ -6,6 +6,7 @@ import {
 import Ember from 'ember';
 
 moduleForComponent('select-year', 'SelectYearComponent', {
+  unit: true,
   needs: ['template:stack/-link'],
   setup: function() {
     this.container.register('view:select', Ember.Select);

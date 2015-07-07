@@ -6,6 +6,7 @@ import {
 import Ember from 'ember';
 
 moduleForComponent('app-setup-description', 'AppSetupDescriptionComponent', {
+  unit: true
 });
 
 test('it renders', function() {
