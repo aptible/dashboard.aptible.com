@@ -11,7 +11,7 @@ module.exports = function(environment) {
     apiBaseUri: process.env.API_BASE_URI || "http://localhost:4001",
     aptibleHosts: {
       compliance: 'http://localhost:3001',
-      dashboard: "http://localhost:3000",
+      dashboard: "http://localhost:4200",
       support: "https://support.aptible.com"
     },
 
