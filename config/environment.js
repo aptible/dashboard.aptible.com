@@ -37,7 +37,7 @@ module.exports = function(environment) {
       skipCdn: false,
       cdn: '//cdn.ravenjs.com',
       dsn: 'https://825dc91773b5407f94cb86bd7b5982d0@app.getsentry.com/46076',
-      version: '1.1.16',
+      version: '1.1.19',
       whitelistUrls: ['localhost:4200'],
       development: true
     },
