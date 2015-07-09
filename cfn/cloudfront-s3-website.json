@@ -34,12 +34,10 @@
   "Mappings": {
     "DomainAWSResourceIdMap": {
       "aptible.com": {
-        "IamCertificateId": "ASCAIIHAG2U3A2CIAFOSU",
-        "HostedZoneName": "aptible.com."
+        "IamCertificateId": "ASCAIIHAG2U3A2CIAFOSU"
       },
       "aptible-staging.com": {
-        "IamCertificateId": "ASCAIWRPADW2NPHDICMCA",
-        "HostedZoneName": "aptible-staging.com."
+        "IamCertificateId": "ASCAIWRPADW2NPHDICMCA"
       }
     }
   },
@@ -206,12 +204,14 @@
       "Type": "AWS::Route53::RecordSet",
       "Properties": {
         "HostedZoneName": {
-          "Fn::FindInMap": [
-            "DomainAWSResourceIdMap",
-            {
-              "Ref": "Domain"
-            },
-            "HostedZoneName"
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "Domain"
+              },
+              "."
+            ]
           ]
         },
         "Name": {
