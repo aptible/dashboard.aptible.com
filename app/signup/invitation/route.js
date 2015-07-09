@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import DisallowAuthenticated from "diesel/mixins/routes/disallow-authenticated";
 import SignupRouteMixin from "diesel/mixins/routes/signup";
+import Cookies from "ember-cli-aptible-shared/utils/cookies";
+import { AFTER_AUTH_COOKIE } from 'diesel/login/route';
 
 export default Ember.Route.extend(DisallowAuthenticated, SignupRouteMixin, {
   model(params){
@@ -12,8 +14,18 @@ export default Ember.Route.extend(DisallowAuthenticated, SignupRouteMixin, {
     });
   },
 
-  setupController: function(controller, model){
+  afterModel(model) {
     let {invitation, verificationCode} = model;
+    let router = this.get('router');
+    let afterAuthUrl = router.generate('claim', invitation.get('id'),
+                                       verificationCode);
+
+    Cookies.create(AFTER_AUTH_COOKIE, afterAuthUrl, 2);
+  },
+
+  setupController(controller, model) {
+    let {invitation, verificationCode} = model;
+
     Ember.assert(`This route's model hook must be passed an invitation id and verification code`,
                  invitation && verificationCode);
 
@@ -27,4 +39,3 @@ export default Ember.Route.extend(DisallowAuthenticated, SignupRouteMixin, {
     controller.set('verificationCode', verificationCode);
   }
 });
-

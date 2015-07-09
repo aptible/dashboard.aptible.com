@@ -2,6 +2,8 @@ import Ember from 'ember';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 import successfulTokenResponse from '../../helpers/successful-token-response';
+import { AFTER_AUTH_COOKIE } from 'diesel/login/route';
+import Cookies from "ember-cli-aptible-shared/utils/cookies";
 import {
   signupInputsTest,
   doSignupSteps
@@ -103,5 +105,14 @@ test(`visiting ${url} and signing up with invalid data shows errors`, function(a
               'shows email error message');
     assert.ok(find(':contains(is too short)').length,
               'shows name message');
+  });
+});
+
+test(`visiting ${url} sets afterAuthUrl cookie`, function(assert) {
+  let claimUrl = `/claim/${invitationId}/${verificationCode}`;
+  visit(url);
+
+  andThen(() => {
+    assert.equal(Cookies.read(AFTER_AUTH_COOKIE), claimUrl);
   });
 });
