@@ -15,16 +15,18 @@
       <ul>
         <li>
           <label>
-            {{input type="checkbox"
-              name="environment-phi"
-              disabled=(not organization.allowPHI)
-              checked=allowPHI}}
             {{#if organization.allowPHI}}
-              PHI Ready?
+              {{input type="checkbox"
+                name="environment-phi"
+                disabled=(not organization.allowPHI)
+                checked=allowPHI}}
+              PHI Ready
             {{else}}
-              PHI Ready environments require a Production plan.
-              {{! FIXME should link to where? }}
-              {{link-to "Upgrade now" "index"}}
+              {{! FIXME Once billing.plans is ready for primetime, update this
+              to link there }}
+              {{#link-to-aptible app='support' path='contact'}}
+                Contact support to upgrade to PHI ready plan.
+              {{/link-to-aptible}}
             {{/if}}
           </label>
         </li>
