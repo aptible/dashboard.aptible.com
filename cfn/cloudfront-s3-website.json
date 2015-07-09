@@ -157,15 +157,21 @@
               },
               "DomainName": {
                 "Fn::Join": [
-                  ".",
+                  "",
                   [
                     {
                       "Ref": "Subdomain"
                     },
+                    ".",
                     {
                       "Ref": "Domain"
                     },
-                    "s3-website-us-east-1.amazonaws.com"
+                    ".",
+                    "s3-website-",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ".amazonaws.com"
                   ]
                 ]
               },
