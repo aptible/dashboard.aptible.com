@@ -221,7 +221,20 @@
           ]
         },
         "Name": {
-          "Ref": "Subdomain"
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "Subdomain"
+              },
+              ".",
+              {
+                "Ref": "Domain"
+              },
+              "."
+            ]
+          ]
+
         },
         "ResourceRecords": [
           {
