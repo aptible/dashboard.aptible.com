@@ -1,0 +1,135 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Template for an S3 website distribution for deployment using ember-cli-s3-deploy and ember-deploy-s3-static-index.",
+  "Parameters": {
+    "Domain": {
+      "Type": "String",
+      "Default": "aptible-staging.com",
+      "AllowedValues": [
+        "aptible.com",
+        "aptible-staging.com"
+      ],
+      "Description": "Second-level domain (e.g., aptible-staging.com) for CloudFront distribution CNAME."
+    },
+    "Subdomain": {
+      "Type": "String",
+      "Description": "Together with domain, determines CNAME at which CloudFront distribution will be served. Also determines S3 bucket name (for index/assets) and log bucket subfolder name."
+    }
+  },
+  "Mappings": {
+    "DomainAWSResourceIdMap": {
+      "aptible.com": {
+        "IamCertificateId": "ASCAIIHAG2U3A2CIAFOSU",
+        "HostedZoneName": "aptible.com."
+      },
+      "aptible-staging.com": {
+        "IamCertificateId": "ASCAIWRPADW2NPHDICMCA",
+        "HostedZoneName": "aptible-staging.com."
+      }
+    }
+  },
+  "Resources": {
+    "S3Bucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "Private",
+        "BucketName": {
+          "Fn::Join": [
+            ".",
+            [
+              {
+                "Ref": "Subdomain"
+              },
+              {
+                "Ref": "Domain"
+              }
+            ]
+          ]
+        },
+        "WebsiteConfiguration": {
+          "IndexDocument": "index.html",
+          "RoutingRules": [
+            {
+              "RoutingRuleCondition": {
+                "HttpErrorCodeReturnedEquals": "403"
+              },
+              "RedirectRule": {
+                "HostName": {
+                  "Fn::Join": [
+                    ".",
+                    [
+                      {
+                        "Ref": "Subdomain"
+                      },
+                      {
+                        "Ref": "Domain"
+                      }
+                    ]
+                  ]
+                },
+                "Protocol": "http",
+                "ReplaceKeyPrefixWith": "#/"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "Route53RecordSet": {
+      "Type": "AWS::Route53::RecordSet",
+      "Properties": {
+        "HostedZoneName": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "Domain"
+              },
+              "."
+            ]
+          ]
+        },
+        "Name": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "Subdomain"
+              },
+              ".",
+              {
+                "Ref": "Domain"
+              },
+              "."
+            ]
+          ]
+
+        },
+        "ResourceRecords": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Ref": "Subdomain"
+                },
+                ".",
+                {
+                  "Ref": "Domain"
+                },
+                ".",
+                "s3-website-",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ".amazonaws.com"
+              ]
+            ]
+          }
+        ],
+        "TTL": "300",
+        "Type": "CNAME"
+      }
+    }
+  }
+}
