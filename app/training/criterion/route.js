@@ -6,8 +6,8 @@ export default Ember.Route.extend({
     return trainingCriteria.findBy('handle', params.criterion_handle);
   },
 
-  ssssafterModel(model) {
-    return this.modelFor('training').criteria.map(c => c.get('documents'));
+  afterModel(model) {
+    return model.get('documents');
   },
 
   setupController(controller, model) {

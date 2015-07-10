@@ -15,7 +15,7 @@
 
   <div class="subject-checklist">
       <li class="{{criterion.handle}} criterion-compliant-{{if status.green true false}}">
-        {{compliance-icon status=stats}}
+        {{compliance-icon status=status}}
         <div class="criterion-details">
           <div class="criterion-name">{{criterion.friendlyName}}</div>
           {{#if status.green}}

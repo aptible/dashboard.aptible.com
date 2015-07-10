@@ -5,7 +5,7 @@ export default Ember.Route.extend({
     return this.modelFor('training').criteria;
   },
 
-  sssafterModel(model) {
+  afterModel(model) {
     return model.map(c => c.get('documents'));
   },
 
