@@ -47,6 +47,24 @@ Make use of the many generators for code, try `ember help generate` for more det
 
 ### Deploying
 
+#### Custom website
+
+An addon is used to create new websites on top of S3 bucket with website hosting, CloudFront, and Route53 via a CloudFormation template.
+
+To create a new website use the following command:
+
+```
+ember create-website --domain=aptible-staging.com --subdomain=dashboard-rwjblue
+```
+
+To build and deploy to this newly created bucket, use the following command:
+
+```bash
+AWS_BUCKET=dashboard-rwjblue.aptible-staging.com ember deploy --environment staging
+```
+
+#### Continuous Deployment
+
 The `master` branch of this repo is deployed to [dashboard.aptible-staging.com](http://dashboard.aptible-staging.com/) upon a successful build.
 
 The `release` branch of this repo is deployed to [dashboard.aptible.com](https://dashboard.aptible.com/) upon a successful build.
