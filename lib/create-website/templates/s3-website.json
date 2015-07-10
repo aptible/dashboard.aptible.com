@@ -16,18 +16,6 @@
       "Description": "Together with domain, determines CNAME at which CloudFront distribution will be served. Also determines S3 bucket name (for index/assets) and log bucket subfolder name."
     }
   },
-  "Mappings": {
-    "DomainAWSResourceIdMap": {
-      "aptible.com": {
-        "IamCertificateId": "ASCAIIHAG2U3A2CIAFOSU",
-        "HostedZoneName": "aptible.com."
-      },
-      "aptible-staging.com": {
-        "IamCertificateId": "ASCAIWRPADW2NPHDICMCA",
-        "HostedZoneName": "aptible-staging.com."
-      }
-    }
-  },
   "Resources": {
     "S3Bucket": {
       "Type": "AWS::S3::Bucket",
