@@ -1,8 +1,8 @@
 var SilentError = require('silent-error');
 
-var storeBucketMap = {
+var bucketMap = {
   production: 'dashboard.aptible.com',
-  development: 'dashboard.aptible-staging.com'
+  staging: 'dashboard.aptible-staging.com'
 };
 
 function defaultOptions() {
@@ -11,7 +11,7 @@ function defaultOptions() {
 function optionsFor(environment, type) {
   var accessKeyId = process.env['AWS_ACCESS_KEY_ID'];
   var secretAccessKey = process.env['AWS_SECRET_ACCESS_KEY'];
-  var bucket = process.env['AWS_BUCKET'] || storeBucketMap[environment];
+  var bucket = process.env['AWS_BUCKET'] || bucketMap[environment];
 
   if (!bucket) {
     throw new SilentError('No bucket was found for ' + environment);
