@@ -28,6 +28,7 @@ export default Ember.Route.extend({
       };
 
       var organization;
+      var stripeResponse;
       saveProgress.set('currentStep', 1);
       Ember.RSVP.hash({
         stripeResponse: createStripeToken(options),
@@ -36,19 +37,25 @@ export default Ember.Route.extend({
         // entering payment information
         organizations: store.find('organization')
       }).then(function(result) {
-        saveProgress.set('currentStep', 2);
+        stripeResponse = result.stripeResponse;
         organization = result.organizations.objectAt(0);
 
-        if(organization.get('hasStripe')) {
-          // Don't create another subscriptions if the organization already
+        return store.find('billing-detail', organization.get('id')).catch(function() {
+          return null;
+        });
+      }).then(function(result) {
+        saveProgress.set('currentStep', 2);
+
+        if(result) {
+          // Don't create another subscription if the organization already
           // has one
           return Ember.RSVP.resolve();
         }
 
         var subscription = store.createRecord('subscription', {
+          id: organization.get('id'),
           plan: welcomeModel.plan,
-          stripeToken: result.stripeResponse.id,
-          organization: organization
+          stripeToken: stripeResponse.id
         });
 
         return subscription.save();

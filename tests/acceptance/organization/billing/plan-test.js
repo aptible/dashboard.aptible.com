@@ -16,7 +16,7 @@ const organizationId = 'o1';
 
 const planUrl = `/organizations/${organizationId}/billing/plan`;
 const url = planUrl;
-const apiOrganizationUrl = `/organizations/${organizationId}`;
+const apiOrganizationUrl = `/billing_details/${organizationId}`;
 const activePanelClass = 'active';
 const askAboutHIPAAButtonName = 'Ask about our HIPAA compliant plans';
 
@@ -46,6 +46,7 @@ function findPlanPanel(assert, planType){
 
 test(`shows 3 plan types: development, platform and Production`, (assert) => {
   stubOrganization();
+  stubBillingDetail();
   signInAndVisit(url);
 
   andThen(() => {
@@ -58,7 +59,8 @@ test(`shows 3 plan types: development, platform and Production`, (assert) => {
 
 test(`on plan "development": highlights the current plan, shows upgrade button`, (assert) => {
   let plan = 'development';
-  stubOrganization({plan});
+  stubOrganization();
+  stubBillingDetail({plan});
   signInAndVisit(url);
 
   andThen(() => {
@@ -78,7 +80,8 @@ test(`on plan "development": highlights the current plan, shows upgrade button`,
 
 test(`on plan "platform": highlights the current plan, shows "contact support to downgrade" button`, (assert) => {
   let plan = 'platform';
-  stubOrganization({plan});
+  stubOrganization();
+  stubBillingDetail({plan});
   signInAndVisit(url);
 
   andThen(() => {
@@ -98,7 +101,8 @@ test(`on plan "platform": highlights the current plan, shows "contact support to
 
 test(`on plan "production": highlights the current plan, shows "contact support to downgrade" button for both platform and development`, (assert) => {
   let plan = 'production';
-  stubOrganization({plan});
+  stubOrganization();
+  stubBillingDetail({plan});
   signInAndVisit(url);
 
   andThen(() => {
@@ -123,7 +127,8 @@ test(`on plan "production": highlights the current plan, shows "contact support 
 test(`on plan "development": clicking the upgrade platform shows modal`, (assert) => {
   let panel;
   let plan = 'development';
-  stubOrganization({plan});
+  stubBillingDetail({plan});
+  stubOrganization();
 
   signInAndVisit(url);
 
@@ -138,7 +143,8 @@ test(`on plan "development": clicking the upgrade platform updates organization'
   assert.expect(5);
 
   let plan = 'development';
-  stubOrganization({plan});
+  stubOrganization();
+  stubBillingDetail({plan});
 
   stubRequest('put', apiOrganizationUrl, (request) => {
     assert.ok(true, 'updates organization');
@@ -173,6 +179,7 @@ test(`on plan "development": clicking the upgrade platform updates organization'
 test(`clicking "${askAboutHIPAAButtonName}" triggers a tracking event, shows modal`, (assert) => {
   let organizationName = 'the organization';
   stubOrganization({name: organizationName});
+  stubBillingDetail();
   signInAndVisit(url);
   clickButton(askAboutHIPAAButtonName);
 
@@ -191,7 +198,8 @@ test(`clicking "${askAboutHIPAAButtonName}" triggers a tracking event, shows mod
 test('shows error message if the server has error', (assert) => {
   let errorMessage = `Stripe error: This plan cannot be upgraded`;
   let plan = 'development';
-  stubOrganization({plan});
+  stubOrganization();
+  stubBillingDetail({plan});
 
   stubRequest('put', apiOrganizationUrl, (request) => {
     assert.ok(true, 'updates organization');

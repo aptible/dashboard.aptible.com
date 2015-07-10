@@ -77,7 +77,8 @@
     "stubInvitation",
     "stubIndexRequests",
     "check",
-    "stubStackDatabases"
+    "stubStackDatabases",
+    "stubBillingDetail"
   ],
   "node": false,
   "browser": false,

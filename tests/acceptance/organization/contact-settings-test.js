@@ -16,6 +16,7 @@ const organizationId = 'o1';
 const contactSettingsUrl = `/organizations/${organizationId}/contact-settings`;
 const url = contactSettingsUrl;
 const organizationApiUrl = `/organizations/${organizationId}`;
+const billingDetailApiUrl = `/billing_details/${organizationId}`;
 
 function buildUserData(){
   const ref = Ember.uuid();
@@ -67,6 +68,12 @@ test(`visiting ${url}`, function(assert) {
     }
   });
 
+  stubBillingDetail({
+    _links: {
+      self: {href: billingDetailApiUrl},
+      billing_contact: {href: `/users/${billingContactData.id}`}
+    }
+  });
   stubOrganization(organizationData);
   stubUser(securityOfficerData);
   stubUser(billingContactData);
@@ -129,6 +136,12 @@ test(`visiting ${url} and saving`, function(assert) {
       }
     });
   });
+  stubBillingDetail({
+    _links: {
+      self: {href: billingDetailApiUrl},
+      billing_contact: {href: `/users/${billingContactData.id}`}
+    }
+  });
 
   stubRequest('put', organizationApiUrl, function(request) {
     const body = this.json(request);
@@ -142,6 +155,12 @@ test(`visiting ${url} and saving`, function(assert) {
     assert.equal(body.state, organizationData.state, 'state is correct');
     assert.equal(body.zip, organizationData.zip, 'zip is correct');
     assert.equal(body.security_officer_id, securityOfficerData.id, 'security officer is correct');
+    body.id = organizationId;
+    return this.success(body);
+  });
+
+  stubRequest('put', billingDetailApiUrl, function(request) {
+    const body = this.json(request);
     assert.equal(body.billing_contact_id, billingContactData.id, 'billing contact is correct');
     body.id = organizationId;
     return this.success(body);
@@ -163,6 +182,12 @@ test(`visiting ${url} and saving with error`, function(assert) {
       security_officer: {href: `/users/${securityOfficerData.id}`},
       billing_contact: {href: `/users/${billingContactData.id}`},
       users: {href: `${organizationApiUrl}/users`}
+    }
+  });
+  stubBillingDetail({
+    _links: {
+      self: {href: billingDetailApiUrl},
+      billing_contact: {href: `/users/${billingContactData.id}`}
     }
   });
   const newName = "Mike";

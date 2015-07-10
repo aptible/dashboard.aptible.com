@@ -2,44 +2,36 @@
   <div class="layout-container">
     <div class="resource-title">
       <i class="resource-icon resource-org"></i>
-      <h1>{{organization.name}} Billing</h1>
+      <h1>{{billingDetail.organization.name}} Billing</h1>
     </div>
 
     <ul class="resource-metadata">
-      {{#if isLoaded}}
-        <li class="resource-metadata-item">
-          <h5 class="resource-metadata-title">
-            Current Plan
-          </h5>
-          <h3 class="resource-metadata-value plan-value">
-            {{plan}}
-          </h3>
-        </li>
+      <li class="resource-metadata-item">
+        <h5 class="resource-metadata-title">
+          Current Plan
+        </h5>
+        <h3 class="resource-metadata-value plan-value">
+          {{billingDetail.plan}}
+        </h3>
+      </li>
 
-        <li class="resource-metadata-item">
-          <h5 class="resource-metadata-title">
-            Payment Method
-          </h5>
-          <h3 class="resource-metadata-value">
-            {{paymentMethodName}} ****{{paymentMethodDisplay}}
-          </h3>
-        </li>
+      <li class="resource-metadata-item">
+        <h5 class="resource-metadata-title">
+          Payment Method
+        </h5>
+        <h3 class="resource-metadata-value">
+          {{billingDetail.paymentMethodName}} ****{{billingDetail.paymentMethodDisplay}}
+        </h3>
+      </li>
 
-        <li class="resource-metadata-item">
-          <h5 class="resource-metadata-title">
-            Next Invoice Date
-          </h5>
-          <h3 class="resource-metadata-value">
-            {{format-date nextInvoiceDate}}
-          </h3>
-        </li>
-      {{else}}
-        <li class="resource-metadata-item">
-          <h5 class="resource-metadata-title">
-            Loading billing details
-          </h5>
-        </li>
-      {{/if}}
+      <li class="resource-metadata-item">
+        <h5 class="resource-metadata-title">
+          Next Invoice Date
+        </h5>
+        <h3 class="resource-metadata-value">
+          {{format-date billingDetail.nextInvoiceDate}}
+        </h3>
+      </li>
     </ul>
   </div>
 </header>

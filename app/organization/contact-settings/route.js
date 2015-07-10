@@ -2,11 +2,24 @@ import Ember from 'ember';
 import DS from 'ember-data';
 
 export default Ember.Route.extend({
+  model() {
+    const organization = this.modelFor('organization');
+    const billingDetail = this.store.find('billing-detail', organization.get('id'));
+    return Ember.RSVP.hash({
+      organization: organization,
+      billingDetail: billingDetail
+    });
+  },
+
+  setupController(controller, model) {
+    controller.set('model', model.organization);
+    controller.set('billingDetail', model.billingDetail);
+  },
+
   afterModel(model) {
     return Ember.RSVP.all([
-      model.get('users'),
-      model.get('securityOfficer'),
-      model.get('billingContact')
+      model.organization.get('users'),
+      model.organization.get('securityOfficer')
     ]);
   },
 
@@ -15,11 +28,13 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    save(model) {
+    save(model, billingDetail) {
       model.save().then(() => {
-        let message = 'Contact settings saved';
-        this.transitionTo('organization.contact-settings', model);
-        Ember.get(this, 'flashMessages').success(message);
+        billingDetail.save().then(() => {
+          let message = 'Contact settings saved';
+          this.transitionTo('organization.contact-settings', model);
+          Ember.get(this, 'flashMessages').success(message);
+        });
       }, (e) => {
         if (e instanceof DS.InvalidError) {
           // no-op, will be displayed in template

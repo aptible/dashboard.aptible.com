@@ -5,22 +5,28 @@ export default Ember.Route.extend({
   analytics: Ember.inject.service(),
   model() {
     let organization = this.modelFor('organization');
-    return this.store.createRecord('stack', {
+    const billingDetail = this.store.find('billing-detail', organization.get('id'));
+    const stack = this.store.createRecord('stack', {
       organization,
       organizationUrl: organization.get('_data.links.self')
+    });
+
+    return Ember.RSVP.hash({
+      stack: stack,
+      billingDetail: billingDetail
     });
   },
 
   setupController(controller, model) {
     let organization = this.modelFor('organization');
     controller.set('organization', organization);
-    controller.set('model', model);
+    controller.set('model', model.stack);
+    controller.set('billingDetail', model.billingDetail);
     controller.set('allowPHI', false);
   },
 
-
   _trackEnvironmentCreation() {
-      let stack = this.currentModel;
+      let stack = this.currentModel.stack;
       let organization = this.modelFor('organization');
       let eventName = CREATE_NEW_PRODUCTION_ENVIRONMENT_EVENT;
       let eventAttributes = {
@@ -35,7 +41,7 @@ export default Ember.Route.extend({
 
   actions: {
     willTransition() {
-      this.currentModel.rollback();
+      this.currentModel.stack.rollback();
     },
 
     cancel() {
@@ -43,7 +49,7 @@ export default Ember.Route.extend({
     },
 
     save() {
-      let stack = this.currentModel;
+      let stack = this.currentModel.stack;
       let allowPHI = this.controller.get('allowPHI');
 
       if (allowPHI) {

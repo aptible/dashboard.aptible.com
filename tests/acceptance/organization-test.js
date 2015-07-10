@@ -19,6 +19,7 @@ module('Acceptance: Organization', {
 
 test('visiting /organization', function(assert) {
   stubOrganization({ id: 42 });
+  stubBillingDetail({ id: 42 });
   setFeature('organization-settings', true);
   signInAndVisit('/organizations/42');
   andThen(function() {

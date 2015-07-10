@@ -9,6 +9,7 @@ module.exports = function(environment) {
 
     authBaseUri: process.env.AUTH_BASE_URI || "http://localhost:4000",
     apiBaseUri: process.env.API_BASE_URI || "http://localhost:4001",
+    billingBaseUri: process.env.BILLING_BASE_URI || "http://localhost:4004",
     aptibleHosts: {
       compliance: 'http://localhost:3001',
       dashboard: "http://localhost:4200",
@@ -59,7 +60,7 @@ module.exports = function(environment) {
     },
 
     contentSecurityPolicy: {
-      'connect-src': "'self' http://localhost:4000 http://localhost:4001 ws://localhost:35729 ws://0.0.0.0:35729 http://api.mixpanel.com http://api.segment.io http://auth.aptible.foundry.io http://api.aptible.foundry.io https://api-ping.intercom.io wss://*.intercom.io https://*.intercom.io",
+      'connect-src': "'self' http://localhost:4004 https://billing.aptible-staging.com https://api.aptible-staging.com https://auth.aptible-staging.com http://localhost:4000 http://localhost:4001 ws://localhost:35729 ws://0.0.0.0:35729 http://api.mixpanel.com http://api.segment.io http://auth.aptible.foundry.io http://api.aptible.foundry.io https://api-ping.intercom.io wss://*.intercom.io https://*.intercom.io",
       'style-src': "'self' 'unsafe-inline' http://use.typekit.net",
       'img-src': "'self' http://www.gravatar.com https://secure.gravatar.com http://www.google-analytics.com http://p.typekit.net https://track.customer.io https://js.intercomcdn.com data: app.getsentry.com",
       'script-src': "'self' 'unsafe-inline' https://js.stripe.com https://api.stripe.com http://use.typekit.net http://cdn.segment.com https://assets.customer.io http://www.google-analytics.com http://cdn.mxpnl.com https://js.intercomcdn.com https://static.intercomcdn.com https://widget.intercom.io http://cdn.ravenjs.com",
@@ -102,6 +103,7 @@ module.exports = function(environment) {
 
     delete ENV.apiBaseUri;
     delete ENV.authBaseUri;
+    delete ENV.billingBaseUri;
 
     // https://github.com/poteto/ember-cli-flash/issues/32
     // Flash messages with a timeout will pause andThen()'s for the timeout
@@ -114,6 +116,7 @@ module.exports = function(environment) {
   if (environment === 'staging') {
     ENV.authBaseUri = "https://auth.aptible-staging.com";
     ENV.apiBaseUri = "https://api.aptible-staging.com";
+    ENV.billingBaseUri = "https://billing.aptible-staging.com";
     ENV.aptibleHosts = {
       compliance: 'https://compliance.aptible-staging.com',
       dashboard: "https://dashboard.aptible-staging.com",
@@ -129,6 +132,7 @@ module.exports = function(environment) {
     ENV.stripePublishableKey = 'pk_live_ujeTeUIMpUcvNsWwu7R9b3Zy';
     ENV.authBaseUri = "https://auth.aptible.com";
     ENV.apiBaseUri = "https://api.aptible.com";
+    ENV.billingBaseUri = "https://billing.aptible.com";
     ENV.aptibleHosts = {
       compliance: 'https://compliance.aptible.com',
       dashboard: "https://dashboard.aptible.com",
