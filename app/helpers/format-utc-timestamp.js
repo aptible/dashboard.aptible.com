@@ -26,6 +26,10 @@ export function formatUtcTimestamp(date, excludeTime = false) {
 
   let formatted = `${month} ${day}, ${year}`;
 
+  if (excludeTime != typeof(boolean)) {
+    excludeTime = false;
+  }
+
   if(!excludeTime) {
     formatted = `${formatted} ${hours}:${minutes}${period} UTC`;
   }
