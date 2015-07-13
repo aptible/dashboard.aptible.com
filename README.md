@@ -69,6 +69,22 @@ The `master` branch of this repo is deployed to [dashboard.aptible-staging.com](
 
 The `release` branch of this repo is deployed to [dashboard.aptible.com](https://dashboard.aptible.com/) upon a successful build.
 
+#### Production Release
+
+To trigger CI to deploy a new version to production, run the following command:
+
+```bash
+ember release
+```
+
+This does the following steps automatically:
+
+* Update `package.json` version
+* Commit the `package.json` changes
+* Tag the next version. This automatically selects a patch level version bump. To bump the minor version you can run `ember release --minor` (same with major).
+* Push tag and `package.json` changes to master.
+* Push master to release (this triggers CI to do a production deployment).
+
 ### Deploying via CI
 
 This repo contains a `.travis.yml` file that will automatically deploy the application to staging/production. To do this, our AWS credentials are encrypted and stored on Travis. To update these credentials, run the following command (inserting the credential values):
