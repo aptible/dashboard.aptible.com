@@ -337,6 +337,30 @@ Ember.Test.registerHelper('expectStackHeader', function(app, stackHandle){
   ok(handle.length, 'expected stack header with handle: ' + stackHandle);
 });
 
+
+Ember.Test.registerHelper('stubBillingDetail', function(app, billingDetailData){
+  let defaultData = {
+    _links: {
+      self: { href: '' },
+      organization: { href: '' }
+    },
+   id: 1,
+   paymentMethodName: 'Visa',
+   paymentMethodDisplay: '4242',
+   type: 'billingDetail',
+   plan: 'platform'
+  };
+
+  billingDetailData = Ember.$.extend(true, defaultData, billingDetailData || {});
+  stubRequest('get', '/billing_details/:org_id', function(request){
+    billingDetailData.id = request.params.org_id;
+    billingDetailData._links.self.href = `/billing_details/${billingDetailData.id}`;
+    billingDetailData._links.organization.href = `/organizations/${billingDetailData.id}`;
+    return this.success( billingDetailData );
+  });
+});
+
+
 Ember.Test.registerHelper('stubOrganizations', function(app){
   stubRequest('get', '/organizations', function(request){
     return this.success({

@@ -20,18 +20,11 @@ export default DS.Model.extend({
   plan: DS.attr('string'),
   opsAlertEmail: DS.attr('string'),
   securityAlertEmail: DS.attr('string'),
-  stripeSubscriptionId: DS.attr('string'),
-  stripeCustomerId: DS.attr('string'),
   users: DS.hasMany('user', {async:true}),
   invitations: DS.hasMany('invitation', {async:true}),
   roles: DS.hasMany('role', {async:true}),
   securityOfficer: DS.belongsTo('user', {async:true}),
-  billingContact: DS.belongsTo('user', {async:true}),
   billingDetail: DS.belongsTo('billing-detail', {async:true}),
-  allowPHI: Ember.computed.match('plan', /production|platform/),
-  hasStripeSubscription: Ember.computed.bool('stripeSubscriptionId'),
-  hasStripeCustomer: Ember.computed.bool('stripeCustomerId'),
-  hasStripe: Ember.computed.and('hasStripeCustomer', 'hasStripeSubscription'),
   managePermissions: Ember.computed.filterBy('permissions', 'scope', 'manage'),
 
   getCriteriaSubjects(criteria) {

@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-aptible-shared",
-  "version": "0.0.22",
+  "version": "0.0.24",
   "description": "Shared resources for Aptible's Ember Apps",
   "directories": {
     "doc": "doc",
@@ -42,7 +42,8 @@
   },
   "dependencies": {
     "ember-cli-babel": "^5.0.0",
-    "ember-cli-pretender": "0.3.2"
+    "ember-cli-pretender": "0.3.2",
+    "ember-inflector": "^1.6.2"
   },
   "keywords": [
     "ember-addon"

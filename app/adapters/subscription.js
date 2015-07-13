@@ -1,7 +1,7 @@
-import AuthAdapter from './auth';
+import BillingDetailAdapter from './billing-detail';
 import buildURLWithPrefixMap from '../utils/build-url-with-prefix-map';
 
-export default AuthAdapter.extend({
+export default BillingDetailAdapter.extend({
   buildURL: buildURLWithPrefixMap({
     'organizations': {property: 'organization.id'}
   })
