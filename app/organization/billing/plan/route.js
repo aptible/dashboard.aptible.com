@@ -5,6 +5,11 @@ export default Ember.Route.extend({
   analytics: Ember.inject.service(),
   confirmationModal: Ember.inject.service(),
 
+  model(){
+    const model = this.modelFor('organization.billing');
+    return model.billingDetail;
+  },
+
   actions: {
     upgrade(planType) {
       this.get('confirmationModal').open({
@@ -34,17 +39,17 @@ export default Ember.Route.extend({
   },
 
   _upgradePlan(planType) {
-    const organization = this.modelFor('organization');
+    const details = this.model();
     const controller = this.controller;
-    organization.set('plan', planType);
-
     controller.set('isUpgrading', true);
-    organization.save().catch((e) => {
+
+    details.set('plan', planType);
+    details.save().catch((e) => {
       Ember.get(this, 'flashMessages').danger(
         Ember.get(e, 'responseJSON.message')
       );
 
-      organization.rollback();
+      details.rollback();
     }).finally(() => {
       controller.set('isUpgrading', false);
     });

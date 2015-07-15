@@ -35,7 +35,7 @@
               <label>Billing Contact</label>
               {{user-select
                 class="form-control"
-                selected=model.billingContact
+                selected=billingDetail.billingContact
                 name="billing-contact"
                 users=model.users}}
             </div>
@@ -96,7 +96,7 @@
         </div>
 
         <div class="resource-actions">
-          <button {{action 'save' model}} class='btn btn-primary' type='submit'>
+          <button {{action 'save' model billingDetail}} class='btn btn-primary' type='submit'>
             Save
           </button>
         </div>

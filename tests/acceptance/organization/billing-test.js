@@ -46,6 +46,7 @@ test(`visiting ${aptibleSettingsUrl} shows link to billing`, () => {
 });
 
 test(`visiting ${billingUrl} redirects to /plan`, (assert) => {
+  stubBillingDetail({id: organizationId });
   signInAndVisit(billingUrl);
   andThen(() => {
     assert.equal(currentPath(), 'dashboard.organization.billing.plan');
@@ -54,6 +55,7 @@ test(`visiting ${billingUrl} redirects to /plan`, (assert) => {
 });
 
 test(`visiting ${url} shows "Plan" tab`, (assert) => {
+  stubBillingDetail({id: organizationId });
   signInAndVisit(url);
   andThen(() => {
     expectNav(assert, 'Plan');
@@ -62,6 +64,7 @@ test(`visiting ${url} shows "Plan" tab`, (assert) => {
 });
 
 test(`visiting ${url} shows "Payment Method" tab`, (assert) => {
+  stubBillingDetail({id: organizationId });
   signInAndVisit(url);
   andThen(() => {
     expectNav(assert, 'Payment Method');
@@ -70,7 +73,7 @@ test(`visiting ${url} shows "Payment Method" tab`, (assert) => {
 });
 
 test(`visiting ${billingUrl} displays "Billing" header`, (assert) => {
-  const billingDetailUrl = `/organizations/${organizationId}/billing_detail`;
+  const billingDetailUrl = `/billing_details/${organizationId}`;
 
   stubOrganization({
     _links: { billing_detail: { href: billingDetailUrl } }
@@ -81,7 +84,8 @@ test(`visiting ${billingUrl} displays "Billing" header`, (assert) => {
       id: 'b-d-id',
       payment_method_name: 'VISA',
       payment_method_display: '4242',
-      next_invoice_date: '2015-06-29T11:06:48.000-04:00'
+      next_invoice_date: '2015-06-29T11:06:48.000-04:00',
+      _links: { organization: { href: `/organizations/${organizationId}` } }
     });
   });
 

@@ -15,10 +15,10 @@
       <ul>
         <li>
           <label>
-            {{#if organization.allowPHI}}
+            {{#if billingDetail.allowPHI}}
               {{input type="checkbox"
                 name="environment-phi"
-                disabled=(not organization.allowPHI)
+                disabled=(not billingDetail.allowPHI)
                 checked=allowPHI}}
               PHI Ready
             {{else}}

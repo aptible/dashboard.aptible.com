@@ -41,8 +41,8 @@ function mockSuccessfulPayment(stripeToken){
     }, 2);
   };
 
-  stubRequest('post', '/organizations/:org_id/subscriptions', function(request){
-    return this.success();
+  stubRequest('post', '/subscriptions', function(request){
+    return this.noContent();
   });
 }
 
@@ -79,6 +79,10 @@ test('visiting /welcome/payment-info logged in with stacks', function() {
 });
 
 test('submitting empty payment info raises an error', function() {
+  stubRequest('get', '/billing_details/1', function(request){
+    return this.notFound();
+  });
+
   mockStripe.card.createToken = function(options, fn) {
     setTimeout(function(){
       fn(422, { error: { message: 'Failure' } });
@@ -101,6 +105,10 @@ test('submitting empty payment info raises an error', function() {
 test('payment info should be submitted to stripe to create stripeToken', function() {
   expect(8);
 
+  stubRequest('get', '/billing_details/1', function(request){
+    return this.notFound();
+  });
+
   stubStacks({}, []);
   // This is to load apps.index
   stubOrganization();
@@ -116,10 +124,11 @@ test('payment info should be submitted to stripe to create stripeToken', functio
   let stackHandle = 'my-stack-1';
   let appHandle = 'my-app-1-stack-1';
 
-  stubRequest('post', '/organizations/1/subscriptions', function(request){
+  stubRequest('post', '/subscriptions', function(request){
     var params = this.json(request);
+    params.organization_id = params.id;
     equal(params.stripe_token, stripeToken, 'stripe token is submitted');
-    return this.success();
+    return this.noContent();
   });
 
   let stackAssertions = {};
@@ -158,6 +167,9 @@ test('payment info should be submitted to stripe to create stripeToken', functio
   fillInput('exp-year', cardOptions.expYear);
   fillInput('zip', cardOptions.addressZip);
   clickButton('Save');
+  andThen(function(){
+    stubStacks();
+  });
   andThen( () => {
     equal(currentPath(), 'dashboard.stack.apps.index');
   });
@@ -169,6 +181,10 @@ test('submitting valid payment info for development plan should create dev stack
   stubStacks({}, []);
   // This is to load apps.index
   stubOrganization();
+
+  stubRequest('get', '/billing_details/1', function(request){
+    return this.notFound();
+  });
 
   let stackHandle = 'sprocket-co';
   let appHandle = 'my-app-1';
@@ -208,6 +224,7 @@ test('submitting valid payment info for development plan should create dev stack
 });
 
 test('submitting valid payment info on organization with existing stripe info should not recreate the subscription', function() {
+  stubBillingDetail({id: 1});
   stubStacks({}, []);
   stubOrganization();
 
@@ -217,7 +234,7 @@ test('submitting valid payment info on organization with existing stripe info sh
     return this.success(Ember.merge({id:params.handle }, params));
   });
 
-  stubRequest('post', '/organizations/:org_id/subscriptions', function(request){
+  stubRequest('post', '/subscriptions', function(request){
     ok(false, 'should not create subscription again');
     return this.success();
   });
@@ -263,6 +280,11 @@ test('submitting valid payment info should create app', function() {
   stubStacks({}, []);
   // This is to load apps.index
   stubOrganization();
+
+  stubRequest('get', '/billing_details/1', function(request){
+    return this.notFound();
+  });
+
   let stackHandle = 'sprocket-co';
   let appHandle = 'my-app-1';
 
@@ -300,6 +322,11 @@ test('submitting valid payment info should create db', function() {
   expect(4);
 
   stubStacks({}, []);
+
+  stubRequest('get', '/billing_details/1', function(request){
+    return this.notFound();
+  });
+
   // This is to load apps.index
   stubOrganization();
   let stackHandle = 'sprocket-co';
@@ -340,6 +367,10 @@ test('submitting valid payment info should create db', function() {
 
 test('submitting valid payment info when user is verified should provision db', function() {
   expect(4);
+
+  stubRequest('get', '/billing_details/1', function(request){
+    return this.notFound();
+  });
 
   stubStacks({}, []);
   // This is to load apps.index

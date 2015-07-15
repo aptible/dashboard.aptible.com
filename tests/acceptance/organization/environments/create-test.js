@@ -13,7 +13,8 @@ let url = `/organizations/${orgId}/environments/new`;
 module('Acceptance: Organizations: Environments: New', {
   beforeEach: function() {
     application = startApp();
-    stubOrganization({id:orgId, plan: 'production'});
+    stubOrganization({ id:orgId });
+    stubBillingDetail({ id:orgId, plan: 'production'});
   },
 
   afterEach: function() {
