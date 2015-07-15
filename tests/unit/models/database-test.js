@@ -7,6 +7,9 @@ import modelDeps from '../../support/common-model-dependencies';
 
 import Ember from 'ember';
 
+const { run } = Ember;
+const TEST_RELOAD_RETRY_DELAY = 10;
+
 moduleForModel('database', 'model:database', {
   // Specify the other units that are required for this test.
   needs: modelDeps.concat([
@@ -82,5 +85,37 @@ test('creating POSTs to correct url', function(){
     return db.save().then(function(){
       ok(true, 'db did save');
     });
+  });
+});
+
+test('reloads while provisioning', function(assert){
+  let done = assert.async();
+  assert.expect(2);
+
+  let store = this.store();
+  let dbId = 'db-id';
+
+  stubRequest('get', `/databases/${dbId}`, function(request) {
+    assert.ok(true, 'calls with correct URL');
+
+    return this.success({id: dbId, status: 'provisioning'});
+  });
+
+  let db;
+  run(() => {
+    db = store.push('database', {
+      id: dbId,
+      status: 'provisioning'
+    });
+
+    db.set('_reloadRetryDelay', TEST_RELOAD_RETRY_DELAY);
+  });
+
+  stubRequest('get', `/databases/${dbId}`, function(request) {
+    assert.ok(true, 'calls with correct URL');
+
+    done();
+
+    return this.success({id: dbId, status: 'provisioned'});
   });
 });

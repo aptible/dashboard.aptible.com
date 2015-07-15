@@ -14,6 +14,8 @@ export default DS.Model.extend(ProvisionableMixin, {
   app: DS.belongsTo('app', { async: true }),
   operations: DS.hasMany('operation', {async:true}),
 
+  reloadWhileProvisioning: true,
+
   displayHost: Ember.computed('isDefault', 'externalHost', 'virtualDomain', function() {
     if(this.get('isDefault')) {
       return this.get('virtualDomain');
