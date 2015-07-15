@@ -43,7 +43,8 @@
   },
   "dependencies": {
     "ember-cli-babel": "^5.0.0",
-    "ember-cli-pretender": "0.3.2"
+    "ember-cli-pretender": "0.3.2",
+    "ember-inflector": "^1.6.2"
   },
   "keywords": [
     "ember-addon"
