@@ -193,11 +193,18 @@ test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
       logDrainId = 'log-drain-foo',
       databaseHandle = 'databaseHandle';
 
-  let databasesPayload = [{
-    id: 'db-1',
-    type: 'elasticsearch',
-    handle: databaseHandle,
-    connection_url: `http:\/\/${drainUser}:${drainPassword}@${drainHost}:${drainPort}`}
+  let databasesPayload = [
+    {
+      id: 'db-1',
+      type: 'elasticsearch',
+      handle: 'do-not-pick-me',
+      connection_url: `http:\/\/user:password@foo-bar.com:4567`
+    }, {
+      id: 'db-2',
+      type: 'elasticsearch',
+      handle: databaseHandle,
+      connection_url: `http:\/\/${drainUser}:${drainPassword}@${drainHost}:${drainPort}`
+    }
   ];
   this.prepareStubs(null, databasesPayload);
 
@@ -226,7 +233,8 @@ test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
     let context = formEl;
 
     click( find('label:contains(Elasticsearch)')); // click elasticsearch radio button
-    fillInput('handle', 'handle', {context});
+    fillInput('handle', 'handle', { context });
+    fillInput('database-selector', 'db-2');
     clickButton('Save Log', {context});
   });
 
