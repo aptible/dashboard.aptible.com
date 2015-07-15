@@ -1,5 +1,7 @@
-{{ view 'select'
-  content=databases
-  optionLabelPath='content.handle'
-  optionValuePath='content.id'
-  selection=selectedDatabase }}
+<select name="database-selector" {{action 'change' on='change'}}>
+  {{#each databases as |item|}}
+    <option value="{{item.id}}">
+      {{item.handle}}
+    </option>
+  {{/each}}
+</select>
