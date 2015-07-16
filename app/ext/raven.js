@@ -1,5 +1,3 @@
-/* global TraceKit */
-
 import config from '../config/environment';
 
 let attempts = 0;
@@ -16,12 +14,11 @@ export default function monkeyPatchRaven() {
   if (window.Raven) {
     originalCaptureMessage = window.Raven.captureMessage;
 
-    window.Raven.captureMessage = function(message, options) {
-      var exception = new Error('Fake exception to track the stack of [object Object] errors.');
+    window.Raven.captureMessage = function(message, _options) {
+      var options = _options || {};
+      var exception = new Error(message + '');
 
-      options.stacktrace = TraceKit.computeStackTrace(exception);
-
-      originalCaptureMessage.call(window.Raven, message, options);
+      window.Raven.captureException(exception, options);
     };
   } else if (attempts < 10) {
     setTimeout(monkeyPatchRaven, 500);
