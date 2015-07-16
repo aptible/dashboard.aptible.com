@@ -198,6 +198,25 @@ test(`visit ${url} and click cancel button`, function(){
   });
 });
 
+test(`diskSize is reset when leaving ${url} (#372)`, function(){
+  expect(1);
+
+  var diskSize = 30;
+
+  signInAndVisit(url);
+  andThen(function(){
+    triggerSlider('.disk-size', diskSize);
+    clickButton('Cancel');
+  });
+  visit(url);
+
+  andThen(function() {
+    let slider = find('.disk-size');
+
+    equal(slider.val(), '10.00');
+  });
+});
+
 test(`visit ${url} and transition away`, function(){
   expect(2);
 

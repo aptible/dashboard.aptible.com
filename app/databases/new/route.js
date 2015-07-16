@@ -23,6 +23,10 @@ export default Ember.Route.extend({
     }
   },
 
+  resetController() {
+    this.controller.set('diskSize', 10);
+  },
+
   actions: {
     willTransition() {
       this.currentModel.rollback();
