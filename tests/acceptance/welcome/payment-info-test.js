@@ -42,7 +42,7 @@ function mockSuccessfulPayment(stripeToken){
     }, 2);
   };
 
-  stubRequest('post', '/subscriptions', function(){
+  stubRequest('post', '/billing_details', function(){
     return this.noContent();
   });
 }
@@ -123,7 +123,7 @@ test('payment info should be submitted to stripe to create stripeToken', functio
   };
   let stripeToken = 'some-token';
   let stackHandle = 'my-stack-1';
-  stubRequest('post', '/subscriptions', function(request){
+  stubRequest('post', '/billing_details', function(request){
     var params = this.json(request);
     params.organization_id = params.id;
     assert.equal(params.stripe_token, stripeToken, 'stripe token is submitted');
@@ -160,8 +160,8 @@ test('payment info should be submitted to stripe to create stripeToken', functio
   fillInput('name', cardOptions.name);
   fillInput('number', cardOptions.cardNumber);
   fillInput('cvc', cardOptions.cvc);
-  fillInput('exp-month', cardOptions.expMonth);
-  fillInput('exp-year', cardOptions.expYear);
+  fillIn('select[data-stripe="exp-month"]', cardOptions.expMonth);
+  fillIn('select[data-stripe="exp-year"]', cardOptions.expYear);
   fillInput('zip', cardOptions.addressZip);
   clickButton('Save');
   andThen(function(){
@@ -230,7 +230,7 @@ test('submitting valid payment info on organization with existing stripe info sh
     return this.success(Ember.merge({id:params.handle }, params));
   });
 
-  stubRequest('post', '/subscriptions', function(){
+  stubRequest('post', '/billing_details', function(){
     assert.ok(false, 'should not create subscription again');
     return this.success();
   });

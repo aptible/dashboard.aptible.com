@@ -52,7 +52,7 @@ export default Ember.Route.extend({
           return Ember.RSVP.resolve();
         }
 
-        var subscription = store.createRecord('subscription', {
+        var subscription = store.createRecord('billing-detail', {
           id: organization.get('id'),
           plan: welcomeModel.plan,
           stripeToken: stripeResponse.id

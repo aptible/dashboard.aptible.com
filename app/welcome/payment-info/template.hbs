@@ -31,10 +31,10 @@
               <div class="form-group">
                 <div class="expiration-fields">
                   <div class="expiration-month">
-                    {{select-month update=(action (mut model.expMonth)) value=model.expMonth name="exp-month" prompt="Exp month"}}
+                    {{select-month update=(action (mut model.expMonth)) value=model.expMonth data-stripe="exp-month" prompt="Exp month"}}
                   </div>
                   <div class="expiration-year">
-                    {{select-year update=(action (mut model.expYear)) value=model.expYear name="exp-year" prompt="Exp year"}}
+                    {{select-year update=(action (mut model.expYear)) value=model.expYear data-stripe="exp-year" prompt="Exp year"}}
                   </div>
                 </div>
 
