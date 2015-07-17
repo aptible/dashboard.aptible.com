@@ -9,8 +9,8 @@ moduleForComponent('user-gravatars', {
   needs: ['component:gravatar-image', 'component:bs-tooltip']
 });
 
-test('it renders', function() {
-  expect(2);
+test('it renders', function(assert) {
+  assert.expect(2);
 
   var component = this.subject({
     users: Ember.A([Ember.Object.create({ email: 'test@example.com'})]),
@@ -19,13 +19,13 @@ test('it renders', function() {
     placeholder: '--'
   });
 
-  equal(component._state, 'preRender');
+  assert.equal(component._state, 'preRender');
 
   this.render();
-  equal(component._state, 'inDOM');
+  assert.equal(component._state, 'inDOM');
 });
 
-test('it truncates users when passed a count', function() {
+test('it truncates users when passed a count', function(assert) {
   let users = Ember.A([
     Ember.Object.create({ email: 'test@example.com'}),
     Ember.Object.create({ email: 'test1@example.com'}),
@@ -42,5 +42,5 @@ test('it truncates users when passed a count', function() {
 
   this.render();
 
-  equal(component.get('truncatedUsers.length'), 2, 'count of 2 truncates to 2 users');
+  assert.equal(component.get('truncatedUsers.length'), 2, 'count of 2 truncates to 2 users');
 });

@@ -15,12 +15,12 @@ moduleForModel('app', 'model:app', {
 
 test('finding uses correct url', function(assert){
   let done = assert.async();
-  expect(2);
+  assert.expect(2);
 
   let appId = 'my-app-id';
 
   stubRequest('get', `/apps/${appId}`, function(request){
-    ok(true, 'calls with correct URL');
+    assert.ok(true, 'calls with correct URL');
 
     return this.success({
       id: appId,
@@ -35,7 +35,7 @@ test('finding uses correct url', function(assert){
 
   return Ember.run(function(){
     return store.find('app', appId).then(function(){
-      ok(true, 'app did find');
+      assert.ok(true, 'app did find');
     }).finally(done);
   });
 });
@@ -59,8 +59,8 @@ test('reloading app with stack uses correct url', function(assert){
   });
 });
 
-test('creating POSTs to correct url', function(){
-  expect(2);
+test('creating POSTs to correct url', function(assert) {
+  assert.expect(2);
 
   var store = this.store();
   var app, stack;
@@ -70,7 +70,7 @@ test('creating POSTs to correct url', function(){
   });
 
   stubRequest('post', '/accounts/1/apps', function(request){
-    ok(true, 'calls with correct URL');
+    assert.ok(true, 'calls with correct URL');
 
     return this.success(201, {
       id: 'my-app-id',
@@ -80,32 +80,32 @@ test('creating POSTs to correct url', function(){
 
   return Ember.run(function(){
     return app.save().then(function(){
-      ok(true, 'app did save');
+      assert.ok(true, 'app did save');
     });
   });
 });
 
-test('#isDeprovisioned', function(){
+test('#isDeprovisioned', function(assert) {
   var app = this.subject();
 
-  ok(!app.get('isDeprovisioned'));
+  assert.ok(!app.get('isDeprovisioned'));
 
   Ember.run(function(){
     app.set('status', 'deprovisioned');
   });
 
-  ok(app.get('isDeprovisioned'));
+  assert.ok(app.get('isDeprovisioned'));
 });
 
-test('embedded lastDeployOperation is sideloaded', function(){
-  expect(4);
+test('embedded lastDeployOperation is sideloaded', function(assert) {
+  assert.expect(4);
 
   var store = this.store();
   var appId = '1',
       opId = 'last-deploy-op';
 
   stubRequest('get', '/apps/:app_id', function(){
-    ok(true, 'gets app by id');
+    assert.ok(true, 'gets app by id');
     return this.success({
       id: appId,
       _embedded: {
@@ -118,25 +118,25 @@ test('embedded lastDeployOperation is sideloaded', function(){
 
   return Ember.run(function(){
     return store.find('app', 1).then(function(app){
-      ok(app, 'gets app');
+      assert.ok(app, 'gets app');
 
       return app.get('lastDeployOperation');
     }).then(function(op){
-      ok(op, 'gets op');
-      equal(op.get('id'), opId);
+      assert.ok(op, 'gets op');
+      assert.equal(op.get('id'), opId);
     });
   });
 });
 
-test('embedded currentImage is sideloaded', function(){
-  expect(4);
+test('embedded currentImage is sideloaded', function(assert) {
+  assert.expect(4);
 
   var store = this.store();
   var appId = '1',
       imageId = 'image-id';
 
   stubRequest('get', '/apps/:app_id', function(){
-    ok(true, 'gets app by id');
+    assert.ok(true, 'gets app by id');
     return this.success({
       id: appId,
       _embedded: {
@@ -149,12 +149,12 @@ test('embedded currentImage is sideloaded', function(){
 
   return Ember.run(function(){
     return store.find('app', 1).then(function(app){
-      ok(app, 'gets app');
+      assert.ok(app, 'gets app');
 
       return app.get('currentImage');
     }).then(function(image){
-      ok(image, 'gets image');
-      equal(image.get('id'), imageId);
+      assert.ok(image, 'gets image');
+      assert.equal(image.get('id'), imageId);
     });
   });
 });

@@ -8,14 +8,14 @@ moduleForComponent('dashboard-dropdown-item', 'DashboardDropdownItemComponent', 
   // needs: ['component:foo', 'helper:bar']
 });
 
-test('it renders', function() {
+test('it renders', function(assert) {
   // creates the component instance
   var component = this.subject();
-  equal(component._state, 'preRender');
+  assert.equal(component._state, 'preRender');
 
   // appends the component to the page
   this.render();
-  equal(component._state, 'inDOM');
+  assert.equal(component._state, 'inDOM');
 
-  equal(component.element.tagName, 'LI', 'component is an li');
+  assert.equal(component.element.tagName, 'LI', 'component is an li');
 });

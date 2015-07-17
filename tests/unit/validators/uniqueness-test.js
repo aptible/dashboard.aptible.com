@@ -17,12 +17,12 @@ moduleFor('validator:uniqueness', 'UniquenessValidator', {
   }
 });
 
-test('A valid response should add no error messages', function() {
+test('A valid response should add no error messages', function(assert) {
   let validator;
-  stop();
+  let done = assert.async();
 
   stubRequest('post', claimUrl, function(request) {
-    ok(true, 'request was made');
+    assert.ok(true, 'request was made');
     return [204, {}, ''];
   });
 
@@ -36,18 +36,18 @@ test('A valid response should add no error messages', function() {
     });
 
     validator.validate().then(() => {
-      ok(!validator.get('errors.length'), 'has no errors');
-      start();
+      assert.ok(!validator.get('errors.length'), 'has no errors');
+      done();
     });
   });
 });
 
-test('An error response should add an error message', function() {
+test('An error response should add an error message', function(assert) {
   let validator;
-  stop();
+  let done = assert.async();
 
   stubRequest('post', claimUrl, function(request) {
-    ok(true, 'request was made');
+    assert.ok(true, 'request was made');
     return [400, {}, ''];
   });
 
@@ -62,9 +62,9 @@ test('An error response should add an error message', function() {
     });
 
     validator.validate().finally(() => {
-      ok(validator.get('errors.length') === 1, 'has an error');
-      equal(validator.get('errors').objectAt(0), "seat's taken!");
-      start();
+      assert.ok(validator.get('errors.length') === 1, 'has an error');
+      assert.equal(validator.get('errors').objectAt(0), "seat's taken!");
+      done();
     });
   });
 });

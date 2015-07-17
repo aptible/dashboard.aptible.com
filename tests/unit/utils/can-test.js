@@ -20,7 +20,7 @@ moduleForModel('user', 'Utils - #can', {
   }
 });
 
-test('user and stack have same role, stack\'s permission has "manage" scope', function(){
+test('user and stack have same role, stack\'s permission has "manage" scope', function(assert) {
   var user, userRole, stack, stackPermission;
 
   Ember.run(function(){
@@ -39,16 +39,16 @@ test('user and stack have same role, stack\'s permission has "manage" scope', fu
 
   return Ember.run(function(){
     return can(user, 'manage', stack).then(function(res){
-      ok(res, 'user can manage stack');
+      assert.ok(res, 'user can manage stack');
 
       return can(user, 'read', stack);
     }).then(function(res){
-      ok(res, 'user can read stack');
+      assert.ok(res, 'user can read stack');
     });
   });
 });
 
-test('user and stack have same role, stack\'s permission has "read" scope', function(){
+test('user and stack have same role, stack\'s permission has "read" scope', function(assert) {
   var user, userRole, stack, stackPermission;
 
   Ember.run(function(){
@@ -67,16 +67,16 @@ test('user and stack have same role, stack\'s permission has "read" scope', func
 
   return Ember.run(function(){
     return can(user, 'manage', stack).then(function(res){
-      ok(!res, 'user can not manage stack');
+      assert.ok(!res, 'user can not manage stack');
 
       return can(user, 'read', stack);
     }).then(function(res){
-      ok(res, 'user can read stack');
+      assert.ok(res, 'user can read stack');
     });
   });
 });
 
-test('user and stack do not have same role', function(){
+test('user and stack do not have same role', function(assert) {
   var user, userRole, stack, stackPermission, stackRole;
 
   Ember.run(function(){
@@ -96,16 +96,16 @@ test('user and stack do not have same role', function(){
 
   return Ember.run(function(){
     return can(user, 'manage', stack).then(function(res){
-      ok(!res, 'user can not manage stack');
+      assert.ok(!res, 'user can not manage stack');
 
       return can(user, 'read', stack);
     }).then(function(res){
-      ok(!res, 'user can not read stack');
+      assert.ok(!res, 'user can not read stack');
     });
   });
 });
 
-test('user has privileged role in stack organization can manage stack', function(){
+test('user has privileged role in stack organization can manage stack', function(assert) {
   let user, userRole, stack, otherRole, stackPermission;
   let links = { organization: '123' };
 
@@ -126,16 +126,16 @@ test('user has privileged role in stack organization can manage stack', function
 
   return Ember.run(function(){
     return can(user, 'manage', stack).then(function(res){
-      ok(res, 'privileged user with matching role can manage stack');
+      assert.ok(res, 'privileged user with matching role can manage stack');
 
       return can(user, 'read', stack);
     }).then(function(res){
-      ok(res, 'privileged user with privileged role in organization can read stack');
+      assert.ok(res, 'privileged user with privileged role in organization can read stack');
     });
   });
 });
 
-test('user has privileged role in outside organization cannot manage stack', function() {
+test('user has privileged role in outside organization cannot manage stack', function(assert) {
   let user, userRole, stack, outsideRole, stackPermission;
   let organization = { organization: '123' };
   let outsideOrganizationUrl = '/organziation/321';
@@ -157,14 +157,14 @@ test('user has privileged role in outside organization cannot manage stack', fun
 
   return Ember.run(function(){
     return can(user, 'manage', stack).then(function(res){
-      ok(!res, 'privileged user from outside organization can not manage stack');
+      assert.ok(!res, 'privileged user from outside organization can not manage stack');
 
       return can(user, 'read', stack);
     });
   });
 });
 
-test('user has multiple roles, some match stack\'s role', function(){
+test('user has multiple roles, some match stack\'s role', function(assert) {
   var user,
       userRole1, userRole2,
       stack,
@@ -187,16 +187,16 @@ test('user has multiple roles, some match stack\'s role', function(){
 
   return Ember.run(function(){
     return can(user, 'manage', stack).then(function(res){
-      ok(!res, 'user can not manage stack');
+      assert.ok(!res, 'user can not manage stack');
 
       return can(user, 'read', stack);
     }).then(function(res){
-      ok(res, 'user can read stack');
+      assert.ok(res, 'user can read stack');
     });
   });
 });
 
-test('stack has multiple permissions, some match user\'s role', function(){
+test('stack has multiple permissions, some match user\'s role', function(assert) {
   var user,
       userRole,
       stack,
@@ -227,16 +227,16 @@ test('stack has multiple permissions, some match user\'s role', function(){
 
   return Ember.run(function(){
     return can(user, 'manage', stack).then(function(res){
-      ok(!res, 'user can not manage stack');
+      assert.ok(!res, 'user can not manage stack');
 
       return can(user, 'read', stack);
     }).then(function(res){
-      ok(res, 'user can read stack');
+      assert.ok(res, 'user can read stack');
     });
   });
 });
 
-test('with manage permission scope, user can do anything', function(){
+test('with manage permission scope, user can do anything', function(assert) {
   var user,
       userRole,
       stack,
@@ -258,20 +258,20 @@ test('with manage permission scope, user can do anything', function(){
 
   return Ember.run(function(){
     return can(user, 'manage', stack).then(function(res){
-      ok(res, 'user can manage stack');
+      assert.ok(res, 'user can manage stack');
 
       return can(user, 'read', stack);
     }).then(function(res){
-      ok(res, 'user can read stack');
+      assert.ok(res, 'user can read stack');
 
       return can(user, 'glorp', stack);
     }).then(function(res){
-      ok(res, 'user can glorp stack');
+      assert.ok(res, 'user can glorp stack');
     });
   });
 });
 
-test('when permission data includes role links, do not fetch roles, just use derived ids', function(){
+test('when permission data includes role links, do not fetch roles, just use derived ids', function(assert) {
   var user,
       userRole,
       stack,
@@ -290,12 +290,12 @@ test('when permission data includes role links, do not fetch roles, just use der
   });
 
   stubRequest('get', '/roles/abc-DEF-123', function(){
-    ok(false, 'should not fetch role by url');
+    assert.ok(false, 'should not fetch role by url');
   });
 
   return Ember.run(function(){
     return can(user, 'manage', stack).then(function(){
-      ok(true, 'did not fetch role by url');
+      assert.ok(true, 'did not fetch role by url');
     });
   });
 });
@@ -418,7 +418,7 @@ test('when user is not verified, can read', (assert) => {
 
   return Ember.run(function(){
     return can(user, 'read', stack).then(function(res){
-      ok(res, 'user can read stack');
+      assert.ok(res, 'user can read stack');
     });
   });
 });
@@ -442,7 +442,7 @@ test('when user is not verified, cannot manage', (assert) => {
 
   return Ember.run(function(){
     return can(user, 'manage', stack).then((res) => {
-      ok(!res, 'user cannot manage stack');
+      assert.ok(!res, 'user cannot manage stack');
     });
   });
 });

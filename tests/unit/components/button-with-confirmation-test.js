@@ -9,25 +9,25 @@ moduleForComponent('button-with-confirmation', 'ButtonWithConfirmationComponent'
   // needs: ['component:foo', 'helper:bar']
 });
 
-test('it confirms', function() {
+test('it confirms', function(assert) {
   var component = this.subject({
     enteredValue: 'foo',
     confirmValue: 'foo'
   });
 
-  ok(component.get('isConfirmed'), 'is confirmed');
+  assert.ok(component.get('isConfirmed'), 'is confirmed');
 });
 
-test('it is not confirmed', function() {
+test('it is not confirmed', function(assert) {
   var component = this.subject({
     enteredValue: 'foo',
     confirmValue: 'boo'
   });
 
-  ok(!component.get('isConfirmed'), 'is not confirmed');
+  assert.ok(!component.get('isConfirmed'), 'is not confirmed');
 });
 
-test('input makes it confirmed', function() {
+test('input makes it confirmed', function(assert) {
   var component = this.subject({
     confirmValue: 'boo'
   });
@@ -36,20 +36,20 @@ test('input makes it confirmed', function() {
 
   var input = component.$('input').val('boo');
 
-  ok(input.hasClass('unconfirmed'), 'is not confirmed');
+  assert.ok(input.hasClass('unconfirmed'), 'is not confirmed');
 
   input.val('boo');
   input.trigger('input');
 
-  ok(input.hasClass('confirmed'), 'is confirmed');
+  assert.ok(input.hasClass('confirmed'), 'is confirmed');
 
   input.val('foo');
   input.trigger('input');
 
-  ok(input.hasClass('unconfirmed'), 'is not confirmed');
+  assert.ok(input.hasClass('unconfirmed'), 'is not confirmed');
 });
 
-test('action is sent when confirmed', function() {
+test('action is sent when confirmed', function(assert) {
   var actionCalled;
   var component = this.subject({
     enteredValue: 'foo',
@@ -63,10 +63,10 @@ test('action is sent when confirmed', function() {
   });
 
   Ember.run(component, 'send', 'submit');
-  ok(actionCalled, 'action is triggered');
+  assert.ok(actionCalled, 'action is triggered');
 });
 
-test('action is not sent when unconfirmed', function() {
+test('action is not sent when unconfirmed', function(assert) {
   var actionCalled;
   var component = this.subject({
     enteredValue: 'foo',
@@ -80,5 +80,5 @@ test('action is not sent when unconfirmed', function() {
   });
 
   Ember.run(component, 'send', 'submit');
-  ok(!actionCalled, 'action not is triggered');
+  assert.ok(!actionCalled, 'action not is triggered');
 });

@@ -41,7 +41,7 @@ test('can be cancelled', function(assert) {
   var component = this.subject();
   confirmationModalService.trigger('open', {
     model: {isModel: true},
-    onCancel(){
+    onCancel() {
       assert.ok(true, 'fires callback on cancel');
     }
   });
@@ -58,7 +58,7 @@ test('can be cancelled with promise', function(assert) {
   var component = this.subject();
   confirmationModalService.trigger('open', {
     model: {isModel: true},
-    onCancel(){
+    onCancel() {
       assert.ok(true, 'fires callback on cancel');
       return new Ember.RSVP.Promise(r => resolve = r);
     }
@@ -77,7 +77,7 @@ test('can be confirmed', function(assert) {
   var component = this.subject();
   confirmationModalService.trigger('open', {
     model: {isModel: true},
-    onConfirm(){
+    onConfirm() {
       assert.ok(true, 'fires callback on confirm');
     }
   });
@@ -94,7 +94,7 @@ test('can be confirmed with promise', function(assert) {
   var component = this.subject();
   confirmationModalService.trigger('open', {
     model: {isModel: true},
-    onConfirm(){
+    onConfirm() {
       assert.ok(true, 'fires callback on confirm');
       return new Ember.RSVP.Promise(r => resolve = r);
     }

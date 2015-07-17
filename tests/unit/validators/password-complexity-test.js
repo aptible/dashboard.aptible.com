@@ -21,13 +21,13 @@ moduleFor('validator:password-complexity', 'PasswordComplexityValidator', {
   }
 });
 
-test('finds invalid password', function() {
+test('finds invalid password', function(assert) {
   model.set('password', 'foo');
   let validator = this.subject({
     property: 'password'
   });
 
-  deepEqual(validator.get('errors'), [
+  assert.deepEqual(validator.get('errors'), [
    "must be at least 10 characters",
    "must contain at least one uppercase letter",
    "must contain at least one digit or special character"

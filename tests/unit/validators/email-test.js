@@ -21,20 +21,20 @@ moduleFor('validator:email', 'EmailValidator', {
   }
 });
 
-test('finds invalid emails', function() {
+test('finds invalid emails', function(assert) {
   model.set('email', 'foo');
   let validator = this.subject({
     property: 'email'
   });
 
-  equal(validator.get('errors.length'), 1, 'foo is not a valid email');
+  assert.equal(validator.get('errors.length'), 1, 'foo is not a valid email');
 });
 
-test('finds valid emails', function() {
+test('finds valid emails', function(assert) {
   model.set('email', 'foo');
   let validator = this.subject({
     property: 'email'
   });
 
-  ok(validator.get('errors.length'), 0, 'foo@baz.com is a valid email');
+  assert.ok(validator.get('errors.length'), 0, 'foo@baz.com is a valid email');
 });

@@ -2,15 +2,17 @@ import {
   pluralString
 } from 'dummy/helpers/plural-string';
 
+import {module, test} from 'qunit';
+
 module('PluralStringHelper');
 
-test('it pluralizes if count !== 1', function() {
+test('it pluralizes if count !== 1', function(assert) {
   var result = pluralString('Container', 1);
-  equal(result, 'Container');
+  assert.equal(result, 'Container');
 
   result = pluralString('Container', 0);
-  equal(result, 'Containers');
+  assert.equal(result, 'Containers');
 
   result = pluralString('Container', 2);
-  equal(result, 'Containers');
+  assert.equal(result, 'Containers');
 });

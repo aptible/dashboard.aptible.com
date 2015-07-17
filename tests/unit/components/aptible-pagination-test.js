@@ -10,7 +10,7 @@ moduleForComponent('aptible-pagination', 'AptiblePaginationComponent', {
   // needs: ['component:foo', 'helper:bar']
 });
 
-test('next page div is hidden when there is no next page', function() {
+test('next page div is hidden when there is no next page', function(assert) {
   var component = this.subject({
     hasNext: true
   });
@@ -18,14 +18,14 @@ test('next page div is hidden when there is no next page', function() {
   var element = this.$();
 
   var next = element.find('.pager .next');
-  ok(next.length, 'has .next div');
+  assert.ok(next.length, 'has .next div');
 
   Ember.run(component, 'set', 'hasNext', false);
 
-  ok(element.find('.pager .next').length === 0, 'next is hidden');
+  assert.ok(element.find('.pager .next').length === 0, 'next is hidden');
 });
 
-test('prev page div is hidden when there is no prev page', function() {
+test('prev page div is hidden when there is no prev page', function(assert) {
   var component = this.subject({
     hasPrev: false
   });
@@ -33,30 +33,30 @@ test('prev page div is hidden when there is no prev page', function() {
   var element = this.$();
   var prev = element.find('.pager .previous');
 
-  ok(prev.length === 0, 'previous is hidden');
+  assert.ok(prev.length === 0, 'previous is hidden');
 
   Ember.run(component, 'set', 'hasPrev', true);
 
-  ok(element.find('.pager .previous').length, 'has .previous div');
+  assert.ok(element.find('.pager .previous').length, 'has .previous div');
 });
 
-test('hasNext is calculated from currentPage, totalCount and perPage', function(){
+test('hasNext is calculated from currentPage, totalCount and perPage', function(assert) {
   var component = this.subject({
     currentPage: 1,
     totalCount: 5,
     perPage: 2
   });
 
-  ok(component.get('hasNext'), 'has next');
-  ok(!component.get('hasPrev'), '! has prev');
+  assert.ok(component.get('hasNext'), 'has next');
+  assert.ok(!component.get('hasPrev'), '! has prev');
 
   Ember.run(component, 'set', 'currentPage', 2);
 
-  ok(component.get('hasNext'), 'has next');
-  ok(component.get('hasPrev'), 'has prev');
+  assert.ok(component.get('hasNext'), 'has next');
+  assert.ok(component.get('hasPrev'), 'has prev');
 
   Ember.run(component, 'set', 'currentPage', 3);
 
-  ok(!component.get('hasNext'), '! has next');
-  ok(component.get('hasPrev'), 'has prev');
+  assert.ok(!component.get('hasNext'), '! has next');
+  assert.ok(component.get('hasPrev'), 'has prev');
 });

@@ -11,7 +11,7 @@ moduleForModel('stack', 'model:stack', {
   needs: modelDeps
 });
 
-test('findAll works', function(){
+test('findAll works', function(assert) {
   var store = this.store();
 
   stubRequest('get', '/accounts', function(request){
@@ -47,11 +47,11 @@ test('findAll works', function(){
 
   return Ember.run(function(){
     return store.find('stack').then(function(stacks){
-      equal(stacks.get('length'),2,'finds 2 stacks');
-      equal(stacks.get('firstObject.name'), 'first stack');
-      equal(stacks.get('lastObject.name'), 'second stack');
-      equal(stacks.get('firstObject.type'), 'development');
-      equal(stacks.get('lastObject.type'), 'production');
+      assert.equal(stacks.get('length'),2,'finds 2 stacks');
+      assert.equal(stacks.get('firstObject.name'), 'first stack');
+      assert.equal(stacks.get('lastObject.name'), 'second stack');
+      assert.equal(stacks.get('firstObject.type'), 'development');
+      assert.equal(stacks.get('lastObject.type'), 'production');
     });
   });
 });
