@@ -17,8 +17,8 @@ let rejects = function(role, scope) {
   return new Ember.RSVP.Promise((resolve) => { resolve(false); });
 };
 
-test('it renders', function() {
-  expect(2);
+test('it renders', function(assert) {
+  assert.expect(2);
 
   var component = this.subject({
     scope: 'manage',
@@ -26,13 +26,13 @@ test('it renders', function() {
     stacks: [Ember.Object.create({ permitsRole: permits })]
   });
 
-  equal(component._state, 'preRender');
+  assert.equal(component._state, 'preRender');
 
   this.render();
-  equal(component._state, 'inDOM');
+  assert.equal(component._state, 'inDOM');
 });
 
-test('returns all stacks that permit role', function() {
+test('returns all stacks that permit role', function(assert) {
   let stack1 = Ember.Object.create({
     handle: 'my-stack-1',
     permitsRole: permits
@@ -54,7 +54,7 @@ test('returns all stacks that permit role', function() {
   });
 
   component.updatePermittedStacks().then(function() {
-    equal(component.get('stacksString'), 'my-stack-1, my-stack-2',
+    assert.equal(component.get('stacksString'), 'my-stack-1, my-stack-2',
         'returns permitted stacks handle');
   });
 });

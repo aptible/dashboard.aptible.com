@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
@@ -11,7 +12,7 @@ var appVhostsApiUrl = '/apps/' + appId + '/vhosts';
 var appVhostsNewUrl = '/apps/' + appId + '/vhosts/new';
 
 module('Acceptance: App Vhosts', {
-  setup: function() {
+  beforeEach: function() {
     App = startApp();
     stubRequest('get', '/users/user1/ssh_keys', function(){
       return this.success({
@@ -21,16 +22,16 @@ module('Acceptance: App Vhosts', {
       });
     });
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(App, 'destroy');
   }
 });
 
-test(`${appVhostsUrl} requires authentication`, function(){
+test(`${appVhostsUrl} requires authentication`, function(assert) {
   expectRequiresAuthentication(appVhostsUrl);
 });
 
-test(`app show page includes link to ${appVhostsUrl}`, function(){
+test(`app show page includes link to ${appVhostsUrl}`, function(assert) {
   stubApp({
     id: appId,
     status: 'provisioned'
@@ -43,7 +44,7 @@ test(`app show page includes link to ${appVhostsUrl}`, function(){
   });
 });
 
-test(`visit ${appVhostsUrl} has link to ${appVhostsNewUrl}`, function(){
+test(`visit ${appVhostsUrl} has link to ${appVhostsNewUrl}`, function(assert) {
   let appHandle = 'handle-app';
   let stackHandle = 'handle-stack';
 
@@ -90,7 +91,7 @@ test(`visit ${appVhostsUrl} has link to ${appVhostsNewUrl}`, function(){
   });
 });
 
-test(`visit ${appVhostsUrl} lists active vhosts`, function(){
+test(`visit ${appVhostsUrl} lists active vhosts`, function(assert) {
   var vhosts = [{
     id: 1,
     virtual_domain: 'www.health1.io',
@@ -116,14 +117,14 @@ test(`visit ${appVhostsUrl} lists active vhosts`, function(){
   signInAndVisit(appVhostsUrl);
 
   andThen(function(){
-    equal( find('.vhost').length, vhosts.length);
+    assert.equal( find('.vhost').length, vhosts.length);
 
     vhosts.forEach(function(vhost, index){
       let vhostEl = find(`.vhost:eq(${index})`);
-      ok(vhostEl.find(`:contains(${vhost.virtual_domain})`).length,
+      assert.ok(vhostEl.find(`:contains(${vhost.virtual_domain})`).length,
          `has virtual domain "${vhost.virtual_domain}"`);
 
-      ok(vhostEl.find(`:contains(${vhost.external_host})`).length,
+      assert.ok(vhostEl.find(`:contains(${vhost.external_host})`).length,
          `has external host "${vhost.external_host}"`);
 
       expectButton('Edit', {context:vhostEl});
@@ -132,7 +133,7 @@ test(`visit ${appVhostsUrl} lists active vhosts`, function(){
   });
 });
 
-test(`visit ${appVhostsUrl} lists pending vhosts`, function(){
+test(`visit ${appVhostsUrl} lists pending vhosts`, function(assert) {
   var vhosts = [{
     id: 1,
     virtual_domain: 'www.health1.io',
@@ -159,14 +160,14 @@ test(`visit ${appVhostsUrl} lists pending vhosts`, function(){
 
   andThen(function(){
     let el = find('.pending-domains');
-    equal( el.find('.vhost').length, vhosts.length);
+    assert.equal( el.find('.vhost').length, vhosts.length);
 
     vhosts.forEach(function(vhost, index){
       let vhostEl = find(`.vhost:eq(${index})`);
-      ok(vhostEl.find(`:contains(${vhost.virtual_domain})`).length,
+      assert.ok(vhostEl.find(`:contains(${vhost.virtual_domain})`).length,
          `has virtual domain "${vhost.virtual_domain}"`);
 
-      ok(vhostEl.find(`:contains(${vhost.external_host})`).length,
+      assert.ok(vhostEl.find(`:contains(${vhost.external_host})`).length,
          `has external host "${vhost.external_host}"`);
 
       expectButton('Edit', {context:vhostEl});
@@ -175,7 +176,7 @@ test(`visit ${appVhostsUrl} lists pending vhosts`, function(){
   });
 });
 
-test(`visit ${appVhostsUrl} lists deprovisioning`, function(){
+test(`visit ${appVhostsUrl} lists deprovisioning`, function(assert) {
     var vhosts = [{
     id: 1,
     virtual_domain: 'www.health1.io',
@@ -202,14 +203,14 @@ test(`visit ${appVhostsUrl} lists deprovisioning`, function(){
 
   andThen(function(){
     let el = find('.deprovisioned-domains');
-    equal( el.find('.vhost').length, vhosts.length);
+    assert.equal( el.find('.vhost').length, vhosts.length);
 
     vhosts.forEach(function(vhost, index){
       let vhostEl = find(`.vhost:eq(${index})`);
-      ok(vhostEl.find(`:contains(${vhost.virtual_domain})`).length,
+      assert.ok(vhostEl.find(`:contains(${vhost.virtual_domain})`).length,
          `has virtual domain "${vhost.virtual_domain}"`);
 
-      ok(vhostEl.find(`:contains(${vhost.external_host})`).length,
+      assert.ok(vhostEl.find(`:contains(${vhost.external_host})`).length,
          `has external host "${vhost.external_host}"`);
 
       expectNoButton('Edit', {context:vhostEl});
@@ -218,8 +219,8 @@ test(`visit ${appVhostsUrl} lists deprovisioning`, function(){
   });
 });
 
-test(`visit ${appVhostsUrl} allows deleting vhost`, function(){
-  expect(2);
+test(`visit ${appVhostsUrl} allows deleting vhost`, function(assert) {
+  assert.expect(2);
 
   let vhostId = 'vhost-1';
   var vhosts = [{id: vhostId, status: 'provisioned'}];
@@ -236,7 +237,7 @@ test(`visit ${appVhostsUrl} allows deleting vhost`, function(){
 
   stubRequest('post', `/vhosts/${vhostId}/operations`, function(request){
     let json = this.json(request);
-    equal(json.type, 'deprovision', 'creates deprovision operation');
+    assert.equal(json.type, 'deprovision', 'creates deprovision operation');
     return this.success();
   });
 
@@ -245,13 +246,13 @@ test(`visit ${appVhostsUrl} allows deleting vhost`, function(){
     click(findButton('Delete'));
   });
   andThen(function(){
-    equal(find('.vhost').length, 0,
+    assert.equal(find('.vhost').length, 0,
           'the vhost is no longer shown in the UI');
   });
 });
 
-test(`visit ${appVhostsUrl} and delete vhost has error`, function(){
-  expect(2);
+test(`visit ${appVhostsUrl} and delete vhost has error`, function(assert) {
+  assert.expect(2);
 
   let vhostId = 'vhost-1';
   var vhosts = [{id: vhostId, status: 'provisioned'}];
@@ -278,8 +279,8 @@ test(`visit ${appVhostsUrl} and delete vhost has error`, function(){
   andThen(function(){
     let errorMessage = 'error deleting the VHost';
     let alert = find(`.alert`);
-    ok(alert.length, 'displays error div');
-    ok(alert.text().indexOf(errorMessage) > -1,
+    assert.ok(alert.length, 'displays error div');
+    assert.ok(alert.text().indexOf(errorMessage) > -1,
        `Displays error message "${errorMessage}"`);
   });
 });

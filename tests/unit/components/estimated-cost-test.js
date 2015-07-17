@@ -29,37 +29,37 @@ moduleForComponent('estimated-cost', 'EstimatedCostComponent', {
   }
 });
 
-test('it renders', function() {
-  expect(2);
+test('it renders', function(assert) {
+  assert.expect(2);
 
   var component = this.subject();
 
-  equal(component._state, 'preRender');
+  assert.equal(component._state, 'preRender');
 
   this.render();
-  equal(component._state, 'inDOM');
+  assert.equal(component._state, 'inDOM');
 });
 
-test('calculates accurate estimate', function() {
-  expect(3);
+test('calculates accurate estimate', function(assert) {
+  assert.expect(3);
   var component = this.subject();
 
-  equal(component.get('rateInDollars'), '$0.10');
-  equal(component.get('unitOfMeasure'), 'Production App Containers');
-  equal(component.get('total'), '$365.50');
+  assert.equal(component.get('rateInDollars'), '$0.10');
+  assert.equal(component.get('unitOfMeasure'), 'Production App Containers');
+  assert.equal(component.get('total'), '$365.50');
 });
 
-test('is visible with priceEstimator feature flag', function() {
+test('is visible with priceEstimator feature flag', function(assert) {
   var component = this.subject();
   this.render();
 
-  ok(component.get('isVisible'), 'it is visible');
+  assert.ok(component.get('isVisible'), 'it is visible');
 });
 
-test('is not visible with priceEstimator feature flag disabled', function() {
+test('is not visible with priceEstimator feature flag disabled', function(assert) {
   var component = this.subject({ features: mockFeaturesService(false) });
 
   this.render();
 
-  ok(!component.get('isVisible'), 'it is not visible');
+  assert.ok(!component.get('isVisible'), 'it is not visible');
 });

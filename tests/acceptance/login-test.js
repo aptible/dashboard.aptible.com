@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../helpers/start-app';
 import { stubRequest } from '../helpers/fake-server';
 import successfulTokenResponse from '../helpers/successful-token-response';
@@ -15,33 +16,33 @@ let organization = 'Great Co.';
 let name = 'Test User';
 
 module('Acceptance: Login', {
-  setup: function() {
+  beforeEach: function() {
     App = startApp();
   },
-  teardown: function() {
+  afterEach: function() {
     Cookies.erase(AFTER_AUTH_COOKIE);
     Ember.run(App, 'destroy');
   }
 });
 
-test('visiting /login', function() {
+test('visiting /login', function(assert) {
   visit('/login');
 
   andThen(function() {
-    equal(currentPath(), 'login');
+    assert.equal(currentPath(), 'login');
     expectInput('email');
     expectInput('password');
   });
 });
 
-test('logging in with bad credentials', function() {
+test('logging in with bad credentials', function(assert) {
   let errorMessage = 'User not found: '+email;
 
   stubRequest('post', '/tokens', function(request){
     let params = this.json(request);
-    equal(params.username, email, 'correct email is passed');
-    equal(params.password, password, 'correct password is passed');
-    equal(params.grant_type, 'password', 'correct grant_type is passed');
+    assert.equal(params.username, email, 'correct email is passed');
+    assert.equal(params.password, password, 'correct password is passed');
+    assert.equal(params.grant_type, 'password', 'correct grant_type is passed');
 
     return this.error(401, {
       code: 401,
@@ -55,22 +56,22 @@ test('logging in with bad credentials', function() {
   fillInput('password', password);
   clickButton('Log in');
   andThen(function(){
-    equal(currentPath(), 'login');
+    assert.equal(currentPath(), 'login');
     let error = findWithAssert('.alert.alert-danger');
     elementTextContains(error, errorMessage);
   });
 });
 
-test('logging in with correct credentials', function() {
+test('logging in with correct credentials', function(assert) {
   stubStacks();
   stubOrganization();
   stubOrganizations();
 
   stubRequest('post', '/tokens', function(request){
     let params = this.json(request);
-    equal(params.username, email, 'correct email is passed');
-    equal(params.password, password, 'correct password is passed');
-    equal(params.grant_type, 'password', 'correct grant_type is passed');
+    assert.equal(params.username, email, 'correct email is passed');
+    assert.equal(params.password, password, 'correct password is passed');
+    assert.equal(params.grant_type, 'password', 'correct grant_type is passed');
 
     return successfulTokenResponse(this, userUrl);
   });
@@ -87,11 +88,11 @@ test('logging in with correct credentials', function() {
   fillInput('password', password);
   clickButton('Log in');
   andThen(() => {
-    equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 
-test('after logging in, nav header shows user name', function(){
+test('after logging in, nav header shows user name', function(assert) {
   stubStacks();
   stubOrganization();
   stubOrganizations();
@@ -114,11 +115,11 @@ test('after logging in, nav header shows user name', function(){
   clickButton('Log in');
   andThen(() => {
     let nav = find('header.navbar:contains('+ userName +')');
-    ok(nav.length, 'Has header with user name ' + userName);
+    assert.ok(nav.length, 'Has header with user name ' + userName);
   });
 });
 
-test('when redirect cookie is set, after logging in, the location is visited', function(){
+test('when redirect cookie is set, after logging in, the location is visited', function(assert) {
   stubStacks();
   stubOrganization();
   stubOrganizations();
@@ -160,21 +161,21 @@ test('/login links to signup', function(assert) {
   });
 });
 
-test('visit /login while already logged in redirects to stack', function(){
+test('visit /login while already logged in redirects to stack', function(assert) {
   stubStacks();
   stubOrganization();
   stubOrganizations();
   signInAndVisit('/login');
 
   andThen(function(){
-    equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 
-test('logging out redirects to login if not logged in', function() {
+test('logging out redirects to login if not logged in', function(assert) {
   visit('/logout');
   andThen(function(){
-    equal(currentPath(), 'login', 'redirected to login');
+    assert.equal(currentPath(), 'login', 'redirected to login');
   });
 });
 

@@ -1,23 +1,24 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
 var App;
 
 module('Acceptance: App Deprovision', {
-  setup: function() {
+  beforeEach: function() {
     App = startApp();
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(App, 'destroy');
   }
 });
 
-test('/apps/:id/deprovision requires authentication', function(){
+test('/apps/:id/deprovision requires authentication', function(assert) {
   expectRequiresAuthentication('/apps/1/deprovision');
 });
 
-test('/apps/:id/deprovision will not deprovision without confirmation', function(){
+test('/apps/:id/deprovision will not deprovision without confirmation', function(assert) {
   var appId = 1;
   var appName = 'foo-bar';
   var stackHandle = 'krwee-zing';
@@ -39,12 +40,12 @@ test('/apps/:id/deprovision will not deprovision without confirmation', function
   signInAndVisit('/apps/'+appId+'/deprovision');
   andThen(function(){
     var button = findWithAssert('button:contains(Deprovision)');
-    ok(button.is(':disabled'), 'deprovision button is disabled');
+    assert.ok(button.is(':disabled'), 'deprovision button is disabled');
     expectTitle(`Deprovision ${appName} - ${stackHandle}`);
   });
 });
 
-test('/apps/:id/deprovision will deprovision with confirmation', function(){
+test('/apps/:id/deprovision will deprovision with confirmation', function(assert) {
   var appId = 1;
   var appName = 'foo-bar';
   var didDeprovision = false;
@@ -81,12 +82,12 @@ test('/apps/:id/deprovision will deprovision with confirmation', function(){
   });
   click('button:contains(Deprovision)');
   andThen(function(){
-    ok(didDeprovision, 'deprovisioned');
-    equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.ok(didDeprovision, 'deprovisioned');
+    assert.equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 
-test('/apps/:id/deprovision will show deprovision error', function(){
+test('/apps/:id/deprovision will show deprovision error', function(assert) {
   var appId = 1;
   var appName = 'foo-bar';
   var errorMessage = 'Some bad error';
@@ -119,7 +120,7 @@ test('/apps/:id/deprovision will show deprovision error', function(){
   click('button:contains(Deprovision)');
   andThen(function(){
     var error = findWithAssert('.alert');
-    ok(error.text().indexOf(errorMessage) > -1, 'error message shown');
-    equal(currentPath(), 'dashboard.app.deprovision');
+    assert.ok(error.text().indexOf(errorMessage) > -1, 'error message shown');
+    assert.equal(currentPath(), 'dashboard.app.deprovision');
   });
 });

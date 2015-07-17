@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 import config from 'diesel/config/environment';
@@ -12,10 +13,14 @@ let gettingStartedLink = config.externalUrls.gettingStartedDocs;
 let stackId = 'stack-one';
 
 module('Acceptance: Apps Show - Never deployed (app.status === "pending")', {
-  setup: function() {
+  beforeEach: function(assert) {
     App = startApp();
+    assert.expectTab = expectTab;
+    assert.expectNoTab = expectNoTab;
+    assert.expectNoTabs = expectNoTabs;
   },
-  teardown: function() {
+
+  afterEach: function() {
     Ember.run(App, 'destroy');
   }
 });
@@ -44,9 +49,9 @@ function findStep(index){
 
 function expectTab(tabName){
   if (!findTab(tabName).length) {
-    ok(false, `Could not find tab named ${tabName}`);
+    this.ok(false, `Could not find tab named ${tabName}`);
   } else {
-    ok(true, `Found tab named ${tabName}`);
+    this.ok(true, `Found tab named ${tabName}`);
   }
 }
 
@@ -56,14 +61,14 @@ function findTab(tabName){
 
 function expectNoTab(tabName){
   if (findTab(tabName).length) {
-    ok(false, `Expected not to find tab ${tabName}`);
+    this.ok(false, `Expected not to find tab ${tabName}`);
   } else {
-    ok(true, `Found no tab ${tabName}`);
+    this.ok(true, `Found no tab ${tabName}`);
   }
 }
 
 function expectNoTabs() {
-  ok(!!find('.resource-navigation'), 'has no tabs');
+  this.ok(!!find('.resource-navigation'), 'has no tabs');
 }
 
 test(`visit ${url} when app has not been deployed`, function(assert){
@@ -72,9 +77,9 @@ test(`visit ${url} when app has not been deployed`, function(assert){
 
   signInAndVisit(url);
   andThen(function(){
-    equal(currentPath(), 'dashboard.app.deploy');
+    assert.equal(currentPath(), 'dashboard.app.deploy');
 
-    ok( find(`.first-time-app-deploy h2:contains(${appHandle})`).length,
+    assert.ok( find(`.first-time-app-deploy h2:contains(${appHandle})`).length,
         'display app handle');
 
     // displayed tabs
@@ -88,7 +93,7 @@ test(`visit ${url} when app has not been deployed`, function(assert){
 
     // displayed steps
 
-    expectNoTabs();
+    assert.expectNoTabs();
 
     let steps = [
       {title: 'Add your SSH Key', links: ['settings/ssh', gettingStartedLink]},
@@ -100,14 +105,14 @@ test(`visit ${url} when app has not been deployed`, function(assert){
       let stepEl = findStep(i);
 
       let title = stepEl.find(`:contains(${step.title})`);
-      ok(title.length, `has title ${step.title} in position ${i}`);
+      assert.ok(title.length, `has title ${step.title} in position ${i}`);
 
-      ok( stepEl.find(`.panel-step-num:contains(${i+1})`).length,
+      assert.ok( stepEl.find(`.panel-step-num:contains(${i+1})`).length,
           `panel at position ${i} has number ${i+1}`);
 
       if (step.contains) {
         step.contains.forEach(function(text){
-          ok( stepEl.find(`*:contains(${text})`).length,
+          assert.ok( stepEl.find(`*:contains(${text})`).length,
               `step ${i} contains "${text}"`);
         });
       }
@@ -130,7 +135,7 @@ test(`visit ${url} when user has ssh keys`, function(assert){
     let sshKeyStep = findStep(0);
     let sshKeyNumber = sshKeyStep.find('.panel-step-num');
 
-    ok( sshKeyNumber.find('i.fa-check').length,
+    assert.ok( sshKeyNumber.find('i.fa-check').length,
         'ssh key step number has checkmark');
 
     expectNoLink('settings/ssh', {context: sshKeyStep});
@@ -138,10 +143,10 @@ test(`visit ${url} when user has ssh keys`, function(assert){
 });
 
 test(`visit ${url} when app has not been deployed, click destroy link`, function(assert){
-  expect(2);
+  assert.expect(2);
 
   stubRequest('delete', `/apps/${appId}`, function(request){
-    ok(true, 'app is deleted');
+    assert.ok(true, 'app is deleted');
     return this.noContent();
   });
 
@@ -155,6 +160,6 @@ test(`visit ${url} when app has not been deployed, click destroy link`, function
 
   click(`a:contains(Destroy ${appHandle})`);
   andThen(function(){
-    equal(currentPath(), 'dashboard.stack.apps.new', 'redirected to apps');
+    assert.equal(currentPath(), 'dashboard.stack.apps.new', 'redirected to apps');
   });
 });

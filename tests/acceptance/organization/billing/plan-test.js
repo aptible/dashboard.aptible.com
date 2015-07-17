@@ -216,7 +216,7 @@ test('shows error message if the server has error', (assert) => {
   clickButton('Confirm Upgrade'); // <-- modal
   andThen(() => {
     let error = findWithAssert('.alert');
-    ok(error.text().indexOf(errorMessage) > -1, 'error message shown');
+    assert.ok(error.text().indexOf(errorMessage) > -1, 'error message shown');
 
     let panel = findPlanPanel(assert, 'Platform');
     assert.ok(!panel.hasClass(activePanelClass),

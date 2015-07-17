@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
@@ -9,7 +10,7 @@ let stackId = 'my-stack-1';
 let stackHandle = 'my-stack-1';
 
 module('Acceptance: App Create', {
-  setup: function() {
+  beforeEach: function() {
     App = startApp();
     stubStacks({ includeApps: true });
     stubStack({
@@ -22,7 +23,7 @@ module('Acceptance: App Create', {
     });
     stubOrganization();
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(App, 'destroy');
   }
 });
@@ -31,11 +32,11 @@ function findApp(appHandle){
   return find(`:contains(${appHandle})`);
 }
 
-test(`${url} requires authentication`, function(){
+test(`${url} requires authentication`, function(assert) {
   expectRequiresAuthentication(url);
 });
 
-test(`visiting /stacks/:stack_id/apps without any apps redirects to ${url}`, function() {
+test(`visiting /stacks/:stack_id/apps without any apps redirects to ${url}`, function(assert) {
   stubStack({ id: stackId , apps: [] });
   stubRequest('get', '/accounts/my-stack-1/apps', function(request){
     return this.success({
@@ -50,17 +51,17 @@ test(`visiting /stacks/:stack_id/apps without any apps redirects to ${url}`, fun
   signInAndVisit(`/stacks/${stackId}/apps`);
 
   andThen(function() {
-    equal(currentPath(), 'dashboard.stack.apps.new');
+    assert.equal(currentPath(), 'dashboard.stack.apps.new');
   });
 });
 
-test(`visit ${url} shows basic info`, function(){
-  expect(6);
+test(`visit ${url} shows basic info`, function(assert) {
+  assert.expect(6);
   stubOrganization();
   stubOrganizations();
   signInAndVisit(url);
   andThen(function(){
-    equal(currentPath(), 'dashboard.stack.apps.new');
+    assert.equal(currentPath(), 'dashboard.stack.apps.new');
     expectInput('handle');
     expectButton('Save App');
     expectButton('Cancel');
@@ -69,7 +70,7 @@ test(`visit ${url} shows basic info`, function(){
   });
 });
 
-test(`visit ${url} and cancel`, function(){
+test(`visit ${url} and cancel`, function(assert) {
   stubOrganization();
   stubOrganizations();
   let appHandle = 'abc-my-app-handle';
@@ -81,14 +82,14 @@ test(`visit ${url} and cancel`, function(){
   });
 
   andThen(function(){
-    equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.stack.apps.index');
 
-    ok( !findApp(appHandle).length,
+    assert.ok( !findApp(appHandle).length,
         'does not show app');
   });
 });
 
-test(`visit ${url} without apps show no cancel button`, function(){
+test(`visit ${url} without apps show no cancel button`, function(assert) {
   stubRequest('get', '/accounts/my-stack-1/apps', function(request){
     return this.success({
       _links: {},
@@ -103,13 +104,13 @@ test(`visit ${url} without apps show no cancel button`, function(){
   signInAndVisit(url);
 
   andThen(function(){
-    equal(currentPath(), 'dashboard.stack.apps.new');
+    assert.equal(currentPath(), 'dashboard.stack.apps.new');
     let button = findButton('Cancel');
-    ok(!button.length, 'Cancel button is not present');
+    assert.ok(!button.length, 'Cancel button is not present');
   });
 });
 
-test(`visit ${url} and transition away`, function(){
+test(`visit ${url} and transition away`, function(assert) {
   stubOrganization();
   stubOrganizations();
   let appHandle = 'abc-my-app-handle';
@@ -121,22 +122,22 @@ test(`visit ${url} and transition away`, function(){
   });
 
   andThen(function(){
-    equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.stack.apps.index');
 
-    ok( !findApp(appHandle).length,
+    assert.ok( !findApp(appHandle).length,
         'does not show app');
   });
 });
 
-test(`visit ${url} and create an app`, function(){
+test(`visit ${url} and create an app`, function(assert) {
   stubOrganization();
   stubOrganizations();
-  expect(3);
+  assert.expect(3);
   let appHandle = 'abc-my-app-handle';
 
   stubRequest('post', '/accounts/my-stack-1/apps', function(request){
     var json = this.json(request);
-    equal(json.handle, appHandle, 'posts app handle');
+    assert.equal(json.handle, appHandle, 'posts app handle');
 
     return this.success(201, {
       id: 'my-new-app-id',
@@ -153,14 +154,14 @@ test(`visit ${url} and create an app`, function(){
   fillInput('handle', appHandle);
   clickButton('Save App');
   andThen(function(){
-    equal(currentPath(), 'dashboard.app.deploy');
+    assert.equal(currentPath(), 'dashboard.app.deploy');
 
-    ok( findApp(appHandle).length > 0,
+    assert.ok( findApp(appHandle).length > 0,
         'lists new app on index' );
   });
 });
 
-test(`visit ${url} when user is not verified shows "Cannot create" message`, function(){
+test(`visit ${url} when user is not verified shows "Cannot create" message`, function(assert) {
   let userData = {verified: false};
   stubOrganization();
   stubOrganizations();
@@ -169,7 +170,7 @@ test(`visit ${url} when user is not verified shows "Cannot create" message`, fun
     expectNoButton('Save App');
     expectNoButton('Cancel');
     let message = find('.activate-notice h1');
-    ok(message.text().indexOf('Cannot create a new app') > -1,
+    assert.ok(message.text().indexOf('Cannot create a new app') > -1,
        'shows cannot create app message');
   });
 });

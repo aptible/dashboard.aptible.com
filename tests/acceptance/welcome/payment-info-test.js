@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { mockStripe } from '../../helpers/mock-stripe';
 import { stubRequest } from '../../helpers/fake-server';
@@ -47,7 +48,7 @@ function mockSuccessfulPayment(stripeToken){
 }
 
 module('Acceptance: WelcomePaymentInfo', {
-  setup: function() {
+  beforeEach: function() {
     application = startApp();
     oldCreateToken = mockStripe.card.createToken;
 
@@ -57,28 +58,28 @@ module('Acceptance: WelcomePaymentInfo', {
       });
     });
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(application, 'destroy');
     mockStripe.card.createToken = oldCreateToken;
   }
 });
 
-test('visiting /welcome/payment-info when not logged in', function() {
+test('visiting /welcome/payment-info when not logged in', function(assert) {
   expectRequiresAuthentication('/welcome/payment-info');
 });
 
-test('visiting /welcome/payment-info logged in with stacks', function() {
+test('visiting /welcome/payment-info logged in with stacks', function(assert) {
   stubStacks();
   stubOrganizations();
   stubOrganization();
   signInAndVisit('/welcome/payment-info');
 
   andThen(function() {
-    equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 
-test('submitting empty payment info raises an error', function() {
+test('submitting empty payment info raises an error', function(assert) {
   stubRequest('get', '/billing_details/1', function(request){
     return this.notFound();
   });
@@ -96,14 +97,14 @@ test('submitting empty payment info raises an error', function() {
   clickButton('Save');
 
   andThen(function() {
-    equal(currentPath(), 'welcome.payment-info');
+    assert.equal(currentPath(), 'welcome.payment-info');
     let error = find('p:contains(Failure)');
-    ok(error.length, 'errors are on the page');
+    assert.ok(error.length, 'errors are on the page');
   });
 });
 
-test('payment info should be submitted to stripe to create stripeToken', function() {
-  expect(8);
+test('payment info should be submitted to stripe to create stripeToken', function(assert) {
+  assert.expect(8);
 
   stubRequest('get', '/billing_details/1', function(request){
     return this.notFound();
@@ -127,7 +128,7 @@ test('payment info should be submitted to stripe to create stripeToken', functio
   stubRequest('post', '/subscriptions', function(request){
     var params = this.json(request);
     params.organization_id = params.id;
-    equal(params.stripe_token, stripeToken, 'stripe token is submitted');
+    assert.equal(params.stripe_token, stripeToken, 'stripe token is submitted');
     return this.noContent();
   });
 
@@ -145,12 +146,12 @@ test('payment info should be submitted to stripe to create stripeToken', functio
   stubOrganizations();
 
   mockStripe.card.createToken = function(options, fn) {
-    equal(options.name, cardOptions.name, 'name is correct');
-    equal(options.number, cardOptions.cardNumber, 'card number is correct');
-    equal(options.cvc, cardOptions.cvc, 'cvc is correct');
-    equal(options.exp_month, cardOptions.expMonth, 'exp month is correct');
-    equal(options.exp_year, cardOptions.expYear, 'exp year is correct');
-    equal(options.address_zip, cardOptions.addressZip, 'zip is correct');
+    assert.equal(options.name, cardOptions.name, 'name is correct');
+    assert.equal(options.number, cardOptions.cardNumber, 'card number is correct');
+    assert.equal(options.cvc, cardOptions.cvc, 'cvc is correct');
+    assert.equal(options.exp_month, cardOptions.expMonth, 'exp month is correct');
+    assert.equal(options.exp_year, cardOptions.expYear, 'exp year is correct');
+    assert.equal(options.address_zip, cardOptions.addressZip, 'zip is correct');
     setTimeout(function(){
       fn(200, { id: stripeToken });
     }, 2);
@@ -171,12 +172,12 @@ test('payment info should be submitted to stripe to create stripeToken', functio
     stubStacks();
   });
   andThen( () => {
-    equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 
-test('submitting valid payment info for development plan should create dev stack', function() {
-  expect(4);
+test('submitting valid payment info for development plan should create dev stack', function(assert) {
+  assert.expect(4);
 
   stubStacks({}, []);
   // This is to load apps.index
@@ -192,14 +193,14 @@ test('submitting valid payment info for development plan should create dev stack
   let stackAssertions = {};
 
   stackAssertions[stackHandle] = (params) => {
-    ok(true, 'stack handle is correct');
-    equal(params.organization_url, '/organizations/1', 'correct organization_url is posted');
-    equal(params.type, 'development', 'stack type is correct');
+    assert.ok(true, 'stack handle is correct');
+    assert.equal(params.organization_url, '/organizations/1', 'correct organization_url is posted');
+    assert.equal(params.type, 'development', 'stack type is correct');
     stackAssertions[params.handle] = null;
   };
 
   stackAssertions[`${stackHandle}-prod`] = (params) => {
-    ok(false, 'should not create prod stack');
+    assert.ok(false, 'should not create prod stack');
   };
 
   stubRequest('post', '/accounts', function(request){
@@ -219,11 +220,11 @@ test('submitting valid payment info for development plan should create dev stack
 
   clickButton('Save');
   andThen( () => {
-    equal(currentPath(), 'dashboard.stack.apps.new');
+    assert.equal(currentPath(), 'dashboard.stack.apps.new');
   });
 });
 
-test('submitting valid payment info on organization with existing stripe info should not recreate the subscription', function() {
+test('submitting valid payment info on organization with existing stripe info should not recreate the subscription', function(assert) {
   stubBillingDetail({id: 1});
   stubStacks({}, []);
   stubOrganization();
@@ -235,7 +236,7 @@ test('submitting valid payment info on organization with existing stripe info sh
   });
 
   stubRequest('post', '/subscriptions', function(request){
-    ok(false, 'should not create subscription again');
+    assert.ok(false, 'should not create subscription again');
     return this.success();
   });
 
@@ -271,12 +272,12 @@ test('submitting valid payment info on organization with existing stripe info sh
   clickButton('Save');
 
   andThen(function() {
-    equal(currentPath(), 'dashboard.stack.apps.new');
+    assert.equal(currentPath(), 'dashboard.stack.apps.new');
   });
 });
 
-test('submitting valid payment info should create app', function() {
-  expect(2);
+test('submitting valid payment info should create app', function(assert) {
+  assert.expect(2);
   stubStacks({}, []);
   // This is to load apps.index
   stubOrganization();
@@ -297,7 +298,7 @@ test('submitting valid payment info should create app', function() {
 
   stubRequest('post', `/accounts/${stackHandle}/apps`, function(request){
     var params = this.json(request);
-    equal(params.handle, appHandle, 'app handle is correct');
+    assert.equal(params.handle, appHandle, 'app handle is correct');
     return this.success({id: appHandle, handle: appHandle});
   });
 
@@ -314,12 +315,12 @@ test('submitting valid payment info should create app', function() {
   });
   clickButton('Save');
   andThen(function() {
-    equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 
-test('submitting valid payment info should create db', function() {
-  expect(4);
+test('submitting valid payment info should create db', function(assert) {
+  assert.expect(4);
 
   stubStacks({}, []);
 
@@ -342,9 +343,9 @@ test('submitting valid payment info should create db', function() {
 
   stubRequest('post', `/accounts/${stackHandle}/databases`, function(request){
     var params = this.json(request);
-    equal(params.handle, dbHandle, 'db handle is correct');
-    equal(params.initial_disk_size, dbInitialDiskSize, 'disk size is correct');
-    equal(params.type, dbType, 'db type is correct');
+    assert.equal(params.handle, dbHandle, 'db handle is correct');
+    assert.equal(params.initial_disk_size, dbInitialDiskSize, 'disk size is correct');
+    assert.equal(params.type, dbType, 'db type is correct');
     return this.success({id: dbHandle});
   });
 
@@ -361,12 +362,12 @@ test('submitting valid payment info should create db', function() {
   });
   clickButton('Save');
   andThen(function() {
-    equal(currentPath(), 'dashboard.stack.apps.new');
+    assert.equal(currentPath(), 'dashboard.stack.apps.new');
   });
 });
 
-test('submitting valid payment info when user is verified should provision db', function() {
-  expect(4);
+test('submitting valid payment info when user is verified should provision db', function(assert) {
+  assert.expect(4);
 
   stubRequest('get', '/billing_details/1', function(request){
     return this.notFound();
@@ -416,13 +417,13 @@ test('submitting valid payment info when user is verified should provision db', 
   });
   clickButton('Save');
   andThen(function() {
-    equal(currentPath(), 'dashboard.stack.apps.new');
+    assert.equal(currentPath(), 'dashboard.stack.apps.new');
 
-    equal(databaseParams.handle, dbHandle,
+    assert.equal(databaseParams.handle, dbHandle,
           'db params has handle');
-    equal(databaseParams.type, dbType,
+    assert.equal(databaseParams.type, dbType,
           'db params has type');
-    equal(operationsParams.type, opType,
+    assert.equal(operationsParams.type, opType,
           'op params has type');
   });
 });

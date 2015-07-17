@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
@@ -8,15 +9,15 @@ let stackHandle = 'the-stack-dev';
 let url = `/stacks/${stackId}`;
 
 module('Acceptance: Stack Show', {
-  setup: function() {
+  beforeEach: function() {
     App = startApp();
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(App, 'destroy');
   }
 });
 
-test(`visit ${url} shows basic stack info`, function() {
+test(`visit ${url} shows basic stack info`, function(assert) {
   let appsURL = `/accounts/${stackId}/apps`;
   let databasesURL = `/accounts/${stackId}/databases`;
 
@@ -88,30 +89,30 @@ test(`visit ${url} shows basic stack info`, function() {
   signInAndVisit(url);
 
   andThen(function() {
-    equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.stack.apps.index');
 
     expectLink(`stacks/${stackId}/databases`);
     expectLink(`stacks/${stackId}/logging`);
     expectLink(`stacks/${stackId}/apps`);
 
-    ok(find('h5:contains(Shared Environment)').length,
+    assert.ok(find('h5:contains(Shared Environment)').length,
        'has shared stack header');
 
-    ok(find(`h1:contains(${stackHandle})`).length,
+    assert.ok(find(`h1:contains(${stackHandle})`).length,
        `has stack handle: ${stackHandle}`);
 
-    ok(find(`h5:contains(${appData.length} Apps)`).length,
+    assert.ok(find(`h5:contains(${appData.length} Apps)`).length,
        'Header that contains app length');
 
-    ok(find(`h5:contains(${databaseData.length} Databases)`).length,
+    assert.ok(find(`h5:contains(${databaseData.length} Databases)`).length,
        'Header that contains db length');
 
     // 2 + 3
-    ok(find(`h3:contains(Running on 5 containers)`).length,
+    assert.ok(find(`h3:contains(Running on 5 containers)`).length,
        'has containers count');
 
     // 4 + 2
-    ok(find(`h3:contains(Using 6GB of Disk)`).length,
+    assert.ok(find(`h3:contains(Using 6GB of Disk)`).length,
        'has disk size header');
   });
 });

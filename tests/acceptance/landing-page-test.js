@@ -1,41 +1,42 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../helpers/start-app';
 import { stubRequest } from '../helpers/fake-server';
 
 var App;
 
 module('Acceptance: LandingPage', {
-  setup: function() {
+  beforeEach: function() {
     App = startApp();
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(App, 'destroy');
   }
 });
 
-test('visiting / redirects to login page', function() {
+test('visiting / redirects to login page', function(assert) {
   stubStacks();
   stubOrganization();
   visit('/');
 
   andThen(function() {
-    equal(currentPath(), 'login');
+    assert.equal(currentPath(), 'login');
   });
 });
 
 
-test('visiting / when logged in with more than one stacks redirects to stacks index page', function() {
+test('visiting / when logged in with more than one stacks redirects to stacks index page', function(assert) {
   stubStacks();
   stubOrganization();
   stubOrganizations();
   signInAndVisit('/');
 
   andThen(function() {
-    equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 
-test('visiting / when logged in with only one stack redirects to first stack page', function() {
+test('visiting / when logged in with only one stack redirects to first stack page', function(assert) {
   let stackId = 'my-stack-1';
   stubStacks();
   stubOrganizations();
@@ -61,8 +62,8 @@ test('visiting / when logged in with only one stack redirects to first stack pag
   signInAndVisit('/');
 
   andThen(function() {
-    equal(currentURL(), `/stacks/${stackId}/apps`);
-    equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentURL(), `/stacks/${stackId}/apps`);
+    assert.equal(currentPath(), 'dashboard.stack.apps.index');
 
     expectLink(`stacks/${stackId}/databases`);
     expectLink(`stacks/${stackId}/logging`);

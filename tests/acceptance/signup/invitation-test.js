@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 import successfulTokenResponse from '../../helpers/successful-token-response';
@@ -31,14 +32,14 @@ let invitationData = {
 let url = `/signup/invitation/${invitationId}/${verificationCode}`;
 
 module('Acceptance: Signup Invitation', {
-  setup: function() {
+  beforeEach: function() {
     App = startApp();
     stubInvitation(invitationData);
     stubRequest('post', claimUrl, function(request) {
       return [204, {}, ''];
     });
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(App, 'destroy');
   }
 });

@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
@@ -13,31 +14,31 @@ let appVhostsNewUrl = '/apps/' + appId + '/vhosts/new';
 var formInputNames = ['service', 'virtual-domain', 'certificate', 'private-key'];
 
 module('Acceptance: App Vhost New', {
-  setup: function() {
+  beforeEach: function() {
     App = startApp();
     stubStacks();
     stubOrganization();
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(App, 'destroy');
   }
 });
 
-test('visit ' + appVhostsNewUrl + ' requires authentication', function(){
+test('visit ' + appVhostsNewUrl + ' requires authentication', function(assert) {
   expectRequiresAuthentication(appVhostsNewUrl);
 });
 
-test(`visiting ${appVhostsUrl} without any Vhosts redirects to ${appVhostsNewUrl}`, function() {
+test(`visiting ${appVhostsUrl} without any Vhosts redirects to ${appVhostsNewUrl}`, function(assert) {
   stubStacks();
   stubApp({ id: appId });
   signInAndVisit(appVhostsUrl);
 
   andThen(function() {
-    equal(currentPath(), 'dashboard.app.vhosts.new');
+    assert.equal(currentPath(), 'dashboard.app.vhosts.new');
   });
 });
 
-test(`visit ${appVhostsNewUrl} shows creation form`, function(){
+test(`visit ${appVhostsNewUrl} shows creation form`, function(assert) {
   var appId = 1;
   var appHandle = 'whammo-com';
   var stackHandle = 'moop-com';
@@ -66,7 +67,7 @@ test(`visit ${appVhostsNewUrl} shows creation form`, function(){
   signInAndVisit(appVhostsNewUrl);
 
   andThen(function(){
-    ok(find('.panel-heading:contains(Create a new VHost)').length,
+    assert.ok(find('.panel-heading:contains(Create a new VHost)').length,
        'has header');
     expectInput('service', {input:'select'});
     expectFocusedInput('service', {input:'select'});
@@ -79,8 +80,8 @@ test(`visit ${appVhostsNewUrl} shows creation form`, function(){
   });
 });
 
-test(`visit ${appVhostsNewUrl} and create vhost`, function(){
-  expect(5);
+test(`visit ${appVhostsNewUrl} and create vhost`, function(assert) {
+  assert.expect(5);
 
   let appId = 1;
   let serviceId = 'the-service-id';
@@ -109,17 +110,17 @@ test(`visit ${appVhostsNewUrl} and create vhost`, function(){
 
   stubRequest('post', `/services/${serviceId}/vhosts`, function(request){
     let json = this.json(request);
-    equal(json.virtual_domain, 'my.domain.com');
-    equal(json.certificate, 'my long cert');
-    equal(json.private_key, 'my long pk');
-    equal(json.type, 'http_proxy_protocol');
+    assert.equal(json.virtual_domain, 'my.domain.com');
+    assert.equal(json.certificate, 'my long cert');
+    assert.equal(json.private_key, 'my long pk');
+    assert.equal(json.type, 'http_proxy_protocol');
 
     return this.success({id:vhostId});
   });
 
   stubRequest('post', `/vhosts/${vhostId}/operations`, function(request){
     let json = this.json(request);
-    equal(json.type, 'provision', 'posts provision operation');
+    assert.equal(json.type, 'provision', 'posts provision operation');
     return this.success({id: 'new-op-id'});
   });
 

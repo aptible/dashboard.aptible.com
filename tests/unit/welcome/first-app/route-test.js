@@ -8,7 +8,7 @@ moduleFor('route:welcome/first-app', {
   needs: 'service:analytics'
 });
 
-test('it exists', function() {
+test('it exists', function(assert) {
   var route = this.subject();
-  ok(route);
+  assert.ok(route);
 });

@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
@@ -12,12 +13,12 @@ let stackHandle = 'my-stack-handle',
     addLogUrl = `/stacks/${stackId}/logging/new`;
 
 module('Acceptance: Log Drains', {
-  setup: function() {
+  beforeEach: function() {
     App = startApp();
     stubOrganizations();
     stubStacks();
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(App, 'destroy');
   },
   prepareStubs: function(options, databasesPayload){
@@ -66,30 +67,30 @@ test(`visit ${url} shows basic info`, function(assert){
   signInAndVisit(url);
 
   andThen(function(){
-    equal(currentPath(), 'dashboard.stack.log-drains.index');
+    assert.equal(currentPath(), 'dashboard.stack.log-drains.index');
 
     expectButton('Add Log');
 
     let logDrainEls = find('.log-drain');
-    equal( logDrainEls.length, logDrains.length );
+    assert.equal( logDrainEls.length, logDrains.length );
 
     logDrains.forEach(function(logDrain, i){
       let logDrainEl = find(`.log-drain:eq(${i})`);
-      ok( logDrainEl.text().indexOf( logDrain.drain_host ) > -1,
+      assert.ok( logDrainEl.text().indexOf( logDrain.drain_host ) > -1,
           'shows drain host');
-      ok( logDrainEl.text().indexOf( logDrain.drain_port ) > -1,
+      assert.ok( logDrainEl.text().indexOf( logDrain.drain_port ) > -1,
           'shows drain port');
       expectTitle(`${stackHandle} Logging - ${orgName}`);
     });
   });
 });
 
-test(`visit ${url} with no log drains will redirect to new log drains`, function() {
+test(`visit ${url} with no log drains will redirect to new log drains`, function(assert) {
   this.prepareStubs({logDrains:[]});
   signInAndVisit(url);
 
   andThen(function() {
-    equal(currentPath(), 'dashboard.stack.log-drains.new');
+    assert.equal(currentPath(), 'dashboard.stack.log-drains.new');
   });
 });
 
@@ -102,11 +103,11 @@ test(`visit ${url} with log drains and click add log shows form`, function(asser
   });
 
   andThen(function(){
-    equal(currentPath(), 'dashboard.stack.log-drains.new');
-    equal(currentURL(), addLogUrl);
+    assert.equal(currentPath(), 'dashboard.stack.log-drains.new');
+    assert.equal(currentURL(), addLogUrl);
 
     let formEl = find('form.create-log');
-    ok( formEl.length, 'has form');
+    assert.ok( formEl.length, 'has form');
 
     let context = formEl;
     expectInput('drain-host', {context});
@@ -125,17 +126,17 @@ test(`visit ${addLogUrl} and cancel`, function(assert){
   signInAndVisit(addLogUrl);
 
   andThen(function(){
-    equal(currentPath(), 'dashboard.stack.log-drains.new');
+    assert.equal(currentPath(), 'dashboard.stack.log-drains.new');
     clickButton('Cancel');
   });
 
   andThen(function(){
-    equal(currentPath(), 'dashboard.stack.log-drains.index');
+    assert.equal(currentPath(), 'dashboard.stack.log-drains.index');
   });
 });
 
 test(`visit ${addLogUrl} and create log success`, function(assert){
-  expect(7);
+  assert.expect(7);
 
   this.prepareStubs();
 
@@ -146,13 +147,13 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
       logDrainId = 'log-id-1';
 
   stubRequest('post', '/accounts/:stack_id/log_drains', function(request){
-    ok(true, 'posts to log_drains');
+    assert.ok(true, 'posts to log_drains');
 
     let json = this.json(request);
-    equal(json.drain_host, drainHost);
-    equal(json.drain_port, drainPort);
-    equal(json.drain_type, drainType);
-    equal(json.handle, handle);
+    assert.equal(json.drain_host, drainHost);
+    assert.equal(json.drain_port, drainPort);
+    assert.equal(json.drain_type, drainType);
+    assert.equal(json.handle, handle);
 
     json.id = logDrainId;
     return this.success(json);
@@ -160,7 +161,7 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
 
   stubRequest('post', `/log_drains/${logDrainId}/operations`, function(request){
     let json = this.json(request);
-    equal(json.type, 'configure', 'creates configure operation');
+    assert.equal(json.type, 'configure', 'creates configure operation');
     return this.success();
   });
 
@@ -177,12 +178,12 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
   });
 
   andThen(function(){
-    equal(currentPath(), 'dashboard.stack.log-drains.index');
+    assert.equal(currentPath(), 'dashboard.stack.log-drains.index');
   });
 });
 
 test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
-  expect(7);
+  assert.expect(7);
 
   let drainUser = 'someUser',
       drainPassword = 'somePw',
@@ -201,15 +202,15 @@ test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
   this.prepareStubs(null, databasesPayload);
 
   stubRequest('post', '/accounts/:stack_id/log_drains', function(request){
-    ok(true, 'posts to log_drains');
+    assert.ok(true, 'posts to log_drains');
 
     let json = this.json(request);
 
-    equal(json.drain_host, drainHost);
-    equal(json.drain_port, drainPort);
-    equal(json.drain_type, drainType);
-    equal(json.drain_password, drainPassword);
-    equal(json.drain_username, drainUser);
+    assert.equal(json.drain_host, drainHost);
+    assert.equal(json.drain_port, drainPort);
+    assert.equal(json.drain_type, drainType);
+    assert.equal(json.drain_password, drainPassword);
+    assert.equal(json.drain_username, drainUser);
 
     json.id = logDrainId;
     return this.success(json);
@@ -230,7 +231,7 @@ test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
   });
 
   andThen(function(){
-    equal(currentPath(), 'dashboard.stack.log-drains.index');
+    assert.equal(currentPath(), 'dashboard.stack.log-drains.index');
   });
 });
 
@@ -239,7 +240,7 @@ test(`visit ${addLogUrl} and create log failure`, function(assert){
   let errorMessage = 'The log drain is invalid';
 
   stubRequest('post', '/accounts/:stack_id/log_drains', function(request){
-    ok(true, 'posts to log_drains');
+    assert.ok(true, 'posts to log_drains');
 
     return this.error({ message: errorMessage });
   });
@@ -250,15 +251,15 @@ test(`visit ${addLogUrl} and create log failure`, function(assert){
     clickButton('Save Log', {context:formEl});
   });
   andThen(function(){
-    equal(currentPath(), 'dashboard.stack.log-drains.new');
+    assert.equal(currentPath(), 'dashboard.stack.log-drains.new');
     let errorDiv = find('.alert');
-    ok( errorDiv.length, 'error div is shown');
-    ok( errorDiv.text().indexOf(errorMessage) > -1,
+    assert.ok( errorDiv.length, 'error div is shown');
+    assert.ok( errorDiv.text().indexOf(errorMessage) > -1,
         'error message is displayed');
   });
 });
 
-test(`visit ${addLogUrl} when unverified shows cannot create message`, function(){
+test(`visit ${addLogUrl} when unverified shows cannot create message`, function(assert) {
   this.prepareStubs();
   let userData = {verified: false};
   signInAndVisit(addLogUrl, userData);
@@ -266,7 +267,7 @@ test(`visit ${addLogUrl} when unverified shows cannot create message`, function(
     expectNoButton('Save Log Drain');
     expectNoButton('Cancel');
     let message = find('.activate-notice h1');
-    ok(message.text().indexOf('Cannot create a new log') > -1,
+    assert.ok(message.text().indexOf('Cannot create a new log') > -1,
        'shows cannot create log message');
   });
 });

@@ -9,19 +9,19 @@ moduleForComponent('no-ui-slider', 'NoUiSliderComponent', {
   unit: true
 });
 
-test('it renders', function() {
-  expect(2);
+test('it renders', function(assert) {
+  assert.expect(2);
 
   // creates the component instance
   var component = this.subject();
-  equal(component._state, 'preRender');
+  assert.equal(component._state, 'preRender');
 
   // appends the component to the page
   this.render();
-  equal(component._state, 'inDOM');
+  assert.equal(component._state, 'inDOM');
 });
 
-test('sliding sends action didSlide with the value', function(){
+test('sliding sends action didSlide with the value', function(assert) {
   var slideValue;
 
   var MockController = Ember.Object.extend(Ember.ActionHandler, {
@@ -48,5 +48,5 @@ test('sliding sends action didSlide with the value', function(){
 
   Ember.$(element).trigger('slide', 4);
 
-  equal(slideValue, 4, 'slide action called with value');
+  assert.equal(slideValue, 4, 'slide action called with value');
 });
