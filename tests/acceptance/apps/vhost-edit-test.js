@@ -1,6 +1,7 @@
 // click button -> save vhost, create reprovision operation
 
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
@@ -18,7 +19,7 @@ let vhostsUrl = `/apps/${appId}/vhosts`;
 let url = `/apps/${appId}/vhosts/${vhostId}/edit`;
 
 module('Acceptance: App Vhost Edit', {
-  setup: function() {
+  beforeEach: function() {
     App = startApp();
     stubApp({
       id: appId,
@@ -52,32 +53,32 @@ module('Acceptance: App Vhost Edit', {
       });
     });
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(App, 'destroy');
   }
 });
 
-test(`visit ${url} shows form, basic info`, function(){
+test(`visit ${url} shows form, basic info`, function(assert) {
   signInAndVisit(url);
   andThen( () => {
-    equal(currentPath(), 'dashboard.app.vhosts.edit');
+    assert.equal(currentPath(), 'dashboard.app.vhosts.edit');
     expectTitle(`Edit ${virtualDomain} - ${appHandle}`);
-    equal(find('.panel-heading h3').text(), `Edit ${virtualDomain}`);
+    assert.equal(find('.panel-heading h3').text(), `Edit ${virtualDomain}`);
 
     let serviceInput = findInput('service');
-    ok(serviceInput.length, 'has service input');
-    ok(serviceInput.is(':disabled'), 'service is disabled');
-    equal(serviceInput.find('option:first').val(), serviceHandle);
+    assert.ok(serviceInput.length, 'has service input');
+    assert.ok(serviceInput.is(':disabled'), 'service is disabled');
+    assert.equal(serviceInput.find('option:first').val(), serviceHandle);
 
     expectInput('virtual-domain');
-    equal(findInput('virtual-domain').val(), virtualDomain,
+    assert.equal(findInput('virtual-domain').val(), virtualDomain,
           'virtual domain is filled in input');
 
     expectInput('certificate');
-    equal(findInput('certificate').val(), '',
+    assert.equal(findInput('certificate').val(), '',
           'certificate is empty');
     expectInput('private-key');
-    equal(findInput('private-key').val(), '',
+    assert.equal(findInput('private-key').val(), '',
           'private key is empty');
 
     expectButton('Save VHost');
@@ -85,31 +86,31 @@ test(`visit ${url} shows form, basic info`, function(){
   });
 });
 
-test(`visit ${url} click save`, function(){
-  expect(10);
+test(`visit ${url} click save`, function(assert) {
+  assert.expect(10);
 
   let newVirtualDomain = 'new-virt.domain.com';
   let newCert = 'abc-new-cert';
   let newPk = 'abc-new-pk';
 
   stubRequest('put', `/vhosts/${vhostId}`, function(request){
-    ok(true, 'posts to create vhost');
+    assert.ok(true, 'posts to create vhost');
     let json = this.json(request);
 
-    equal(json.virtual_domain, newVirtualDomain);
-    equal(json.certificate, newCert);
-    equal(json.private_key, newPk);
+    assert.equal(json.virtual_domain, newVirtualDomain);
+    assert.equal(json.certificate, newCert);
+    assert.equal(json.private_key, newPk);
 
     return this.success(Ember.merge(json, {id:vhostId, status: 'provisioned' }));
   });
 
   stubRequest('post', `/vhosts/${vhostId}/operations`, function(request){
-    ok(true, 'posts to create vhost operation');
+    assert.ok(true, 'posts to create vhost operation');
     let json = this.json(request);
 
-    equal(json.type, 'reprovision');
-    equal(json.certificate, newCert);
-    equal(json.private_key, newPk);
+    assert.equal(json.type, 'reprovision');
+    assert.equal(json.certificate, newCert);
+    assert.equal(json.private_key, newPk);
     return this.success({
       id: 'new-op-id',
       type: json.type
@@ -126,14 +127,14 @@ test(`visit ${url} click save`, function(){
   });
 
   andThen( () => {
-    equal(currentPath(), 'dashboard.app.vhosts.index');
+    assert.equal(currentPath(), 'dashboard.app.vhosts.index');
 
-    ok( find(`.vhost .vhost-virtualdomain:contains(${newVirtualDomain})`).length,
+    assert.ok( find(`.vhost .vhost-virtualdomain:contains(${newVirtualDomain})`).length,
         'shows new virtual domain "${newVirtualDomain}"');
   });
 });
 
-test(`visit ${url} click save and error`, function(){
+test(`visit ${url} click save and error`, function(assert) {
   let errorMsg = 'There was an error with this domain';
 
   stubRequest('put', `/vhosts/${vhostId}`, function(request){
@@ -148,15 +149,15 @@ test(`visit ${url} click save and error`, function(){
   });
 
   andThen( () => {
-    equal(currentPath(), 'dashboard.app.vhosts.edit');
+    assert.equal(currentPath(), 'dashboard.app.vhosts.edit');
 
-    ok(find('.alert').length, 'has error div');
-    ok(find('.alert').text().indexOf(errorMsg) > -1,
+    assert.ok(find('.alert').length, 'has error div');
+    assert.ok(find('.alert').text().indexOf(errorMsg) > -1,
        `shows error message "${errorMsg}"`);
   });
 });
 
-test(`visit ${url} and click cancel`, function(){
+test(`visit ${url} and click cancel`, function(assert) {
   let newVirtualDomain = 'new-virt.domain.com';
 
   signInAndVisit(url);
@@ -166,16 +167,16 @@ test(`visit ${url} and click cancel`, function(){
   });
 
   andThen( () => {
-    equal(currentPath(), 'dashboard.app.vhosts.index');
+    assert.equal(currentPath(), 'dashboard.app.vhosts.index');
 
-    ok(!find(`.vhost .vhost-virtualdomain:contains(${newVirtualDomain})`).length,
+    assert.ok(!find(`.vhost .vhost-virtualdomain:contains(${newVirtualDomain})`).length,
        `does not show new virtual domain: "${newVirtualDomain}"`);
-    ok(find(`.vhost .vhost-virtualdomain:contains(${virtualDomain})`).length,
+    assert.ok(find(`.vhost .vhost-virtualdomain:contains(${virtualDomain})`).length,
        `does show old virtual domain "${virtualDomain}"`);
   });
 });
 
-test(`visit ${url} and transition away`, function(){
+test(`visit ${url} and transition away`, function(assert) {
   let newVirtualDomain = 'new-virt.domain.com';
 
   signInAndVisit(url);
@@ -185,11 +186,11 @@ test(`visit ${url} and transition away`, function(){
   });
 
   andThen( () => {
-    equal(currentPath(), 'dashboard.app.vhosts.index');
+    assert.equal(currentPath(), 'dashboard.app.vhosts.index');
 
-    ok(!find(`.vhost .vhost-virtualdomain:contains(${newVirtualDomain})`).length,
+    assert.ok(!find(`.vhost .vhost-virtualdomain:contains(${newVirtualDomain})`).length,
        `does not show new virtual domain: "${newVirtualDomain}"`);
-    ok(find(`.vhost .vhost-virtualdomain:contains(${virtualDomain})`).length,
+    assert.ok(find(`.vhost .vhost-virtualdomain:contains(${virtualDomain})`).length,
        `does show old virtual domain "${virtualDomain}"`);
   });
 });

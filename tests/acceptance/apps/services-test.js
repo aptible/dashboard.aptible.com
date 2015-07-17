@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
@@ -13,7 +14,7 @@ let appServicesUrl = `/apps/${appId}/services`;
 let url = appServicesUrl;
 
 module('Acceptance: App Services', {
-  setup: function() {
+  beforeEach: function() {
     App = startApp();
     stubRequest('get', '/users/user1/ssh_keys', function(){
       return this.success({
@@ -23,16 +24,16 @@ module('Acceptance: App Services', {
       });
     });
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(App, 'destroy');
   }
 });
 
-test(`${url} requires authentication`, function(){
+test(`${url} requires authentication`, function(assert) {
   expectRequiresAuthentication(url);
 });
 
-test('app show page includes link to services url', function(){
+test('app show page includes link to services url', function(assert) {
   stubApp({
     id: appId,
     status: 'provisioned'
@@ -45,7 +46,7 @@ test('app show page includes link to services url', function(){
   });
 });
 
-test(`visit ${url} lists services`, function(){
+test(`visit ${url} lists services`, function(assert) {
   let services = [{
     id: 1,
     handle: 'hubot',
@@ -74,19 +75,19 @@ test(`visit ${url} lists services`, function(){
 
   signInAndVisit(url);
   andThen(function(){
-    equal(find('.service').length, services.length,
+    assert.equal(find('.service').length, services.length,
           `has ${services.length} services`);
 
     services.forEach(function(service, index){
       let el = find(`.service:eq(${index})`);
 
-      ok( el.find(`.process-type:contains(${service.processType})`).length,
+      assert.ok( el.find(`.process-type:contains(${service.processType})`).length,
           `has process type ${service.processType}`);
 
-      ok( el.find(`.service-command:contains(${service.command})`).length,
+      assert.ok( el.find(`.service-command:contains(${service.command})`).length,
           `has command ${service.command}`);
 
-      ok( el.find(`.container-count:contains(${service.container_count})`).length,
+      assert.ok( el.find(`.container-count:contains(${service.container_count})`).length,
           `has container count ${service.container_count}`);
     });
 
@@ -94,8 +95,8 @@ test(`visit ${url} lists services`, function(){
   });
 });
 
-test(`visit ${url} allows scaling of services`, function(){
-  expect(5);
+test(`visit ${url} allows scaling of services`, function(assert) {
+  assert.expect(5);
 
   let serviceId = 1;
   let services = [{id: serviceId, container_count: 2}];
@@ -110,7 +111,7 @@ test(`visit ${url} allows scaling of services`, function(){
   stubStack({id: stackId});
 
   stubRequest('put', `/services/${serviceId}`, function(request){
-    ok(true, 'PUTs to services');
+    assert.ok(true, 'PUTs to services');
     let json = this.json(request);
     json.id = serviceId;
     return this.success(json);
@@ -118,8 +119,8 @@ test(`visit ${url} allows scaling of services`, function(){
 
   stubRequest('post', `/services/${serviceId}/operations`, function(request){
     let json = this.json(request);
-    equal(json.type, 'scale');
-    equal(json.container_count, newContainerCount);
+    assert.equal(json.type, 'scale');
+    assert.equal(json.container_count, newContainerCount);
     return this.success();
   });
 

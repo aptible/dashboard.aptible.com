@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
@@ -6,7 +7,7 @@ var App;
 
 
 module('Acceptance: Apps Show', {
-  setup: function() {
+  beforeEach: function() {
     App = startApp();
 
     stubRequest('get', '/users/user1/ssh_keys', function(){
@@ -17,16 +18,16 @@ module('Acceptance: Apps Show', {
       });
     });
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(App, 'destroy');
   }
 });
 
-test('/apps/:id requires authentication', function(){
+test('/apps/:id requires authentication', function(assert) {
   expectRequiresAuthentication('/apps/1');
 });
 
-test('visiting /apps/my-app-id shows basic app info', function() {
+test('visiting /apps/my-app-id shows basic app info', function(assert) {
   var appId = 'my-app-id';
   var serviceId = 'service-1';
 
@@ -65,10 +66,10 @@ test('visiting /apps/my-app-id shows basic app info', function() {
   signInAndVisit('/apps/' + appId);
 
   andThen(function() {
-    equal(currentPath(), 'dashboard.app.services', 'show page is visited');
+    assert.equal(currentPath(), 'dashboard.app.services', 'show page is visited');
 
     let app = find('.resource-title:contains(my-app)');
-    ok(app.length, 'shows app handle');
+    assert.ok(app.length, 'shows app handle');
 
     expectLink("/apps/my-app-id/activity");
     expectLink("/apps/my-app-id/vhosts");
@@ -76,19 +77,19 @@ test('visiting /apps/my-app-id shows basic app info', function() {
     let lastDeployedBy = findWithAssert('.last-deployed-by');
     let expectedDate = 'February 15, 2015';
 
-    ok( lastDeployedBy.text().indexOf(deployUserName) > -1,
+    assert.ok( lastDeployedBy.text().indexOf(deployUserName) > -1,
         `shows last deploy user name "${deployUserName}"`);
-    ok( lastDeployedBy.text().indexOf(expectedDate) > -1,
+    assert.ok( lastDeployedBy.text().indexOf(expectedDate) > -1,
         `shows last deploy expectedDate "${expectedDate}"`);
 
     let currentGitRefEl = findWithAssert('.current-git-ref');
-    ok( currentGitRefEl.text().indexOf(currentGitRef) > -1,
+    assert.ok( currentGitRefEl.text().indexOf(currentGitRef) > -1,
         `shows currentGitRef "${currentGitRef}"`);
 
   });
 });
 
-test('visiting /apps/my-app-id when the app is deprovisioned', function() {
+test('visiting /apps/my-app-id when the app is deprovisioned', function(assert) {
   var appId = 'my-app-id';
   stubOrganizations();
   stubApp({id: appId, status: 'deprovisioned'});
@@ -96,6 +97,6 @@ test('visiting /apps/my-app-id when the app is deprovisioned', function() {
   signInAndVisit('/apps/' + appId);
   andThen(function() {
     var deprovisionTitle = find('.resource-metadata-value:contains(Deprovisioned)');
-    ok(deprovisionTitle.length, 'show deprovision title');
+    assert.ok(deprovisionTitle.length, 'show deprovision title');
   });
 });

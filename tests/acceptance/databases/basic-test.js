@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
@@ -7,7 +8,7 @@ let stackId = 'my-stack-1';
 let url = `/stacks/${stackId}/databases`;
 
 module('Acceptance: Databases', {
-  setup: function() {
+  beforeEach: function() {
     App = startApp();
     // Just needed to stub /stack/my-stack-1/databases
     stubStacks({includeDatabases:true});
@@ -22,34 +23,34 @@ module('Acceptance: Databases', {
     stubOrganization();
     stubOrganizations();
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(App, 'destroy');
   }
 });
 
-test('visiting /stacks/:stack_id/databases requires authentication', function(){
+test('visiting /stacks/:stack_id/databases requires authentication', function(assert) {
   expectRequiresAuthentication('/stacks/my-stack-1/databases');
 });
 
-test('visiting /stacks/:stack_id/databases', function() {
+test('visiting /stacks/:stack_id/databases', function(assert) {
   signInAndVisit('/stacks/my-stack-1/databases');
 
   andThen(function() {
-    equal(currentPath(), 'dashboard.stack.databases.index');
+    assert.equal(currentPath(), 'dashboard.stack.databases.index');
     expectTitle('my-stack-1 Databases - Sprocket Co');
   });
 });
 
-test('visiting /stacks/my-stack-1/databases shows list of databases', function() {
+test('visiting /stacks/my-stack-1/databases shows list of databases', function(assert) {
   signInAndVisit('/stacks/my-stack-1/databases');
 
   andThen(function() {
     var row = findWithAssert('.panel.database');
-    equal(row.length, 2, 'shows 2 databases');
+    assert.equal(row.length, 2, 'shows 2 databases');
   });
 });
 
-test('visiting /stacks/my-stack-1/databases then clicking on an database visits the database', function() {
+test('visiting /stacks/my-stack-1/databases then clicking on an database visits the database', function(assert) {
   stubRequest('get', '/databases/1/operations', function(request){
     return this.success({
       _embedded: {
@@ -62,17 +63,17 @@ test('visiting /stacks/my-stack-1/databases then clicking on an database visits 
 
   andThen(function(){
     var dbLink = find('a[href~="/databases/1"]');
-    ok(dbLink.length, 'has link to database');
+    assert.ok(dbLink.length, 'has link to database');
 
     click(dbLink);
   });
 
   andThen(function(){
-    equal(currentPath(), 'dashboard.database.activity', 'show page is visited');
+    assert.equal(currentPath(), 'dashboard.database.activity', 'show page is visited');
   });
 });
 
-test(`visiting ${url} when user is verified shows Create Database button`, function(){
+test(`visiting ${url} when user is verified shows Create Database button`, function(assert) {
   let userData = {verified: true};
   signInAndVisit(url, userData);
   andThen( () => {
@@ -80,7 +81,7 @@ test(`visiting ${url} when user is verified shows Create Database button`, funct
   });
 });
 
-test(`visiting ${url} when user is not verified shows no Create Database button`, function(){
+test(`visiting ${url} when user is not verified shows no Create Database button`, function(assert) {
   let userData = {verified: false};
   signInAndVisit(url, userData);
   andThen( () => {

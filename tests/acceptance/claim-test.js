@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../helpers/start-app';
 import { stubRequest, jsonMimeType } from '../helpers/fake-server';
 
@@ -14,21 +15,21 @@ const invitationData = {
 };
 
 module('Acceptance: Claim', {
-  setup: function() {
+  beforeEach: function() {
     App = startApp();
     stubInvitation(invitationData);
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(App, 'destroy');
   }
 });
 
-test(`visiting ${url} as unauthenticated redirects to signup/invitation/:invitation_id/:verification_code`, function() {
+test(`visiting ${url} as unauthenticated redirects to signup/invitation/:invitation_id/:verification_code`, function(assert) {
   visit(url);
 
   andThen(function(){
-    equal(currentURL(), `/signup/invitation/${invitationId}/${verificationCode}`);
-    equal(currentPath(), 'signup.invitation');
+    assert.equal(currentURL(), `/signup/invitation/${invitationId}/${verificationCode}`);
+    assert.equal(currentPath(), 'signup.invitation');
   });
 });
 
@@ -107,8 +108,8 @@ test(`visiting ${url} as authenticated shows inviter name`, function(assert) {
   });
 });
 
-test(`visiting ${url} as authenticated creates verification`, function() {
-  expect(3);
+test(`visiting ${url} as authenticated creates verification`, function(assert) {
+  assert.expect(3);
 
   stubIndexRequests();
 
@@ -116,8 +117,8 @@ test(`visiting ${url} as authenticated creates verification`, function() {
 
   stubRequest('post', '/verifications', function(request){
     let params = this.json(request);
-    equal(params.verification_code, verificationCode, 'correct code is passed');
-    equal(params.invitation_id, invitationId, 'correct code is passed');
+    assert.equal(params.verification_code, verificationCode, 'correct code is passed');
+    assert.equal(params.invitation_id, invitationId, 'correct code is passed');
     return this.success({
       id: 'this-id',
       verification_code: verificationCode
@@ -127,11 +128,11 @@ test(`visiting ${url} as authenticated creates verification`, function() {
   signInAndVisit(url);
   clickButton('Accept invitation');
   andThen(function(){
-    equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 
-test('failed verification displays error', function() {
+test('failed verification displays error', function(assert) {
   stubRequest('post', '/verifications', function(request){
     return [401, jsonMimeType, {}];
   });
@@ -139,7 +140,7 @@ test('failed verification displays error', function() {
   signInAndVisit(url);
   clickButton('Accept invitation');
   andThen(function(){
-    equal(currentPath(), 'claim');
-    ok(Ember.$(':contains(error accepting this invitation)').length, 'Failed verifications shows error');
+    assert.equal(currentPath(), 'claim');
+    assert.ok(Ember.$(':contains(error accepting this invitation)').length, 'Failed verifications shows error');
   });
 });

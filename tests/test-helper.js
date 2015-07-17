@@ -1,3 +1,5 @@
+/* globals QUnit */
+
 import resolver from './helpers/resolver';
 import {
   setResolver

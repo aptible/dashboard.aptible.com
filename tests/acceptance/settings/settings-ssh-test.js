@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
@@ -6,18 +7,21 @@ var App;
 
 var settingsUrl = '/settings';
 var settingsSshUrl = settingsUrl + '/ssh';
-var userId = 'user1'; // from signInAndVisit helper
-var userEmail = 'stubbed-user@gmail.com'; // from signInAndVisit helper
-var userName = 'stubbed user'; // from signInAndVisit helper
+// from signInAndVisit helper
+var userId = 'user1';
+// from signInAndVisit helper
+var userEmail = 'stubbed-user@gmail.com';
+// from signInAndVisit helper
+var userName = 'stubbed user';
 
 var userApiUrl = '/users/' + userId;
 
 module('Acceptance: User Settings: Ssh', {
-  setup: function() {
+  beforeEach: function() {
     App = startApp();
     stubStacks();
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(App, 'destroy');
   }
 });
@@ -32,11 +36,11 @@ function stubGetKeys(keys){
   });
 }
 
-test(settingsSshUrl + ' requires authentication', function(){
+test(settingsSshUrl + ' requires authentication', function(assert) {
   expectRequiresAuthentication(settingsSshUrl);
 });
 
-test('visit ' + settingsSshUrl + ' shows ssh keys', function(){
+test('visit ' + settingsSshUrl + ' shows ssh keys', function(assert) {
   var keys = [
     {id: 1, name: 'key1', public_key_fingerprint: '3b:55:f2:c6:4f'},
     {id: 2, name: 'key2', public_key_fingerprint: '4b:56:f3:c7:5f'}
@@ -46,16 +50,16 @@ test('visit ' + settingsSshUrl + ' shows ssh keys', function(){
 
   signInAndVisit(settingsSshUrl);
   andThen(function(){
-    ok( find('h3:contains(SSH Keys)').length,
+    assert.ok( find('h3:contains(SSH Keys)').length,
         'has header' );
 
-    equal( find('.ssh-key-item').length, keys.length,
+    assert.equal( find('.ssh-key-item').length, keys.length,
            'has ' + keys.length + ' ssh keys');
 
     expectButton('Add another SSH key');
 
     let deleteButton = findButton('Delete SSH Key');
-    equal(deleteButton.length, keys.length,
+    assert.equal(deleteButton.length, keys.length,
           'has ' + keys.length + ' delete buttons');
   });
   clickButton('Add another SSH key');
@@ -67,11 +71,11 @@ test('visit ' + settingsSshUrl + ' shows ssh keys', function(){
     expectButton('Cancel');
 
     let addButton = findButton('Add another SSH key');
-    ok(!addButton.length, 'does not show add button when adding a key');
+    assert.ok(!addButton.length, 'does not show add button when adding a key');
   });
 });
 
-test('visit ' + settingsSshUrl + ' with no key shows button to add key', function(){
+test('visit ' + settingsSshUrl + ' with no key shows button to add key', function(assert) {
   stubGetKeys([]);
   signInAndVisit(settingsSshUrl);
 
@@ -80,8 +84,8 @@ test('visit ' + settingsSshUrl + ' with no key shows button to add key', functio
   });
 });
 
-test('visit ' + settingsSshUrl + ' allows adding a key', function(){
-  expect(4);
+test('visit ' + settingsSshUrl + ' allows adding a key', function(assert) {
+  assert.expect(4);
 
   stubGetKeys([]);
 
@@ -91,8 +95,8 @@ test('visit ' + settingsSshUrl + ' allows adding a key', function(){
   stubRequest('post', '/users/user1/ssh_keys', function(request){
     var json = this.json(request);
 
-    equal(json.name, keyName);
-    equal(json.ssh_public_key, publicKey);
+    assert.equal(json.name, keyName);
+    assert.equal(json.ssh_public_key, publicKey);
 
     return this.success({
       id: 'ssh-key-id',
@@ -107,19 +111,19 @@ test('visit ' + settingsSshUrl + ' allows adding a key', function(){
   clickButton('Cancel');
   andThen(function(){
     let saveButton = findButton('Save new SSH key');
-    ok( !saveButton.length, 'save button is not shown after cancel' );
+    assert.ok( !saveButton.length, 'save button is not shown after cancel' );
   });
   clickButton('Add your first SSH key');
   fillInput('name', keyName);
   fillInput('ssh-public-key', publicKey);
   clickButton('Save new SSH key');
   andThen(function(){
-    ok( find('.ssh-key-item:contains(' + keyName + ')').length,
+    assert.ok( find('.ssh-key-item:contains(' + keyName + ')').length,
         'shows key with name: ' + keyName);
   });
 });
 
-test('visit ' + settingsSshUrl + ' and adding a key when it returns an error', function(){
+test('visit ' + settingsSshUrl + ' and adding a key when it returns an error', function(assert) {
   stubGetKeys([]);
 
   var keyName = "my-test-key";
@@ -138,15 +142,15 @@ test('visit ' + settingsSshUrl + ' and adding a key when it returns an error', f
   clickButton('Save new SSH key');
   andThen(function(){
     var error = find('.alert');
-    ok( error.length, 'error div is shown');
+    assert.ok( error.length, 'error div is shown');
 
-    ok( error.text().indexOf('The key is invalid') > -1,
+    assert.ok( error.text().indexOf('The key is invalid') > -1,
         'displays error text' );
   });
 });
 
-test('visit ' + settingsSshUrl + ' and delete a key', function(){
-  expect(2);
+test('visit ' + settingsSshUrl + ' and delete a key', function(assert) {
+  assert.expect(2);
 
   var keys = [
     {id: 1, name: 'key1', public_key_fingerprint: '3b:55:f2:c6:4f'}
@@ -156,19 +160,19 @@ test('visit ' + settingsSshUrl + ' and delete a key', function(){
   stubGetKeys(keys);
 
   stubRequest('delete', deleteUrl, function(){
-    ok(true, 'calls DELETE ' + deleteUrl);
+    assert.ok(true, 'calls DELETE ' + deleteUrl);
     return this.success({id:1});
   });
 
   signInAndVisit(settingsSshUrl);
   clickButton('Delete SSH Key');
   andThen(function(){
-    equal( find('.ssh-key-item').length, 0,
+    assert.equal( find('.ssh-key-item').length, 0,
            'after deleting, 0 keys are shown');
   });
 });
 
-test(`visiting ${settingsSshUrl} as unverified user shows verification message`, function() {
+test(`visiting ${settingsSshUrl} as unverified user shows verification message`, function(assert) {
   stubGetKeys([]);
   let userData = {verified: false};
   stubOrganization();
@@ -180,7 +184,7 @@ test(`visiting ${settingsSshUrl} as unverified user shows verification message`,
     expectNoButton('Add another SSH key');
 
     let message = find('.activate-notice h1');
-    ok(message.text().indexOf('Confirm your email') > -1,
+    assert.ok(message.text().indexOf('Confirm your email') > -1,
        'shows unverified user message');
   });
 });

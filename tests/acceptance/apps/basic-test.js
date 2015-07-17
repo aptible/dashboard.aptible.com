@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
@@ -7,20 +8,20 @@ let stackId = 'my-stack-1';
 let url = `/stacks/${stackId}/apps`;
 
 module('Acceptance: Apps', {
-  setup: function() {
+  beforeEach: function() {
     App = startApp();
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(App, 'destroy');
   }
 });
 
 
-test(`visiting ${url} requires authentication`, function() {
+test(`visiting ${url} requires authentication`, function(assert) {
   expectRequiresAuthentication(url);
 });
 
-test(`visiting ${url} with no apps redirects to apps new`, function() {
+test(`visiting ${url} with no apps redirects to apps new`, function(assert) {
   stubRequest('get', '/accounts/my-stack-1/apps', function(request){
     return this.success({
       _links: {},
@@ -36,11 +37,11 @@ test(`visiting ${url} with no apps redirects to apps new`, function() {
 
   signInAndVisit(url);
   andThen(function(){
-    equal(currentPath(), 'dashboard.stack.apps.new');
+    assert.equal(currentPath(), 'dashboard.stack.apps.new');
   });
 });
 
-test(`visiting ${url}`, function() {
+test(`visiting ${url}`, function(assert) {
   let orgId = 1, orgName = 'Sprocket Co';
   let stackHandle = 'my-stack-1';
 
@@ -62,12 +63,12 @@ test(`visiting ${url}`, function() {
   signInAndVisit(url);
 
   andThen(function() {
-    equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.stack.apps.index');
     expectTitle(`${stackHandle} Apps - ${orgName}`);
   });
 });
 
-test(`visiting ${url} shows list of apps`, function() {
+test(`visiting ${url} shows list of apps`, function(assert) {
   let orgId = 1, orgName = 'Sprocket Co';
   let stackHandle = 'my-stack-1';
 
@@ -86,12 +87,12 @@ test(`visiting ${url} shows list of apps`, function() {
 
   signInAndVisit(url);
   andThen(function() {
-    equal(find('.panel.app').length, 2, '2 apps');
+    assert.equal(find('.panel.app').length, 2, '2 apps');
   });
 });
 
 
-test(`visiting ${url} shows list of provisioning apps`, function() {
+test(`visiting ${url} shows list of provisioning apps`, function(assert) {
   let orgId = 1, orgName = 'Sprocket Co';
   let stackHandle = 'my-stack-1';
 
@@ -133,11 +134,11 @@ test(`visiting ${url} shows list of provisioning apps`, function() {
   signInAndVisit(url);
   andThen(function() {
     let el = find('.pending-apps');
-    equal(el.find('.panel.app').length, 1, '1 pending app');
+    assert.equal(el.find('.panel.app').length, 1, '1 pending app');
   });
 });
 
-test(`visiting ${url} shows list of deprovisioning apps`, function() {
+test(`visiting ${url} shows list of deprovisioning apps`, function(assert) {
   let orgId = 1, orgName = 'Sprocket Co';
   let stackHandle = 'my-stack-1';
 
@@ -179,11 +180,11 @@ test(`visiting ${url} shows list of deprovisioning apps`, function() {
   signInAndVisit(url);
   andThen(function() {
     let el = find('.deprovisioning-apps');
-    equal(el.find('.panel.app').length, 1, '1 deprovisioning apps');
+    assert.equal(el.find('.panel.app').length, 1, '1 deprovisioning apps');
   });
 });
 
-test(`visiting ${url} then clicking on an app visits the app`, function() {
+test(`visiting ${url} then clicking on an app visits the app`, function(assert) {
   stubOrganizations();
   stubOrganization();
   stubStacks({ includeApps: true });
@@ -202,11 +203,11 @@ test(`visiting ${url} then clicking on an app visits the app`, function() {
   });
 
   andThen(function(){
-    equal(currentPath(), 'dashboard.app.services', 'app show page is visited');
+    assert.equal(currentPath(), 'dashboard.app.services', 'app show page is visited');
   });
 });
 
-test(`${url} requests apps, databases on each visit`, function() {
+test(`${url} requests apps, databases on each visit`, function(assert) {
   var appRequestCount = 0;
   var databaseRequestCount = 0;
   stubOrganization();
@@ -249,19 +250,19 @@ test(`${url} requests apps, databases on each visit`, function() {
   visit(`/stacks/${stackId}/databases`);
 
   andThen(function() {
-    equal(databaseRequestCount, lastDatabaseRequestCount + 1, 'did one more database request');
-    equal(appRequestCount, lastAppRequestCount, 'no new app request');
+    assert.equal(databaseRequestCount, lastDatabaseRequestCount + 1, 'did one more database request');
+    assert.equal(appRequestCount, lastAppRequestCount, 'no new app request');
   });
 
   visit(`/stacks/${stackId}/apps`);
 
   andThen(function() {
-    equal(databaseRequestCount, lastDatabaseRequestCount + 1, 'still one database request');
-    equal(appRequestCount, lastAppRequestCount + 1, 'one new app request');
+    assert.equal(databaseRequestCount, lastDatabaseRequestCount + 1, 'still one database request');
+    assert.equal(appRequestCount, lastAppRequestCount + 1, 'one new app request');
   });
 });
 
-test(`visit ${url} shows create app button if user is verified`, function(){
+test(`visit ${url} shows create app button if user is verified`, function(assert) {
   stubOrganization();
   stubOrganizations();
   stubStacks({ includeApps: true });
@@ -279,7 +280,7 @@ test(`visit ${url} shows create app button if user is verified`, function(){
   });
 });
 
-test(`visit ${url} does not show create app button if user is not verified`, function(){
+test(`visit ${url} does not show create app button if user is not verified`, function(assert) {
   stubOrganization();
   stubOrganizations();
   stubStacks({ includeApps: true });

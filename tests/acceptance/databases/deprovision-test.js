@@ -1,24 +1,25 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
 var App;
 
 module('Acceptance: Database Deprovision', {
-  setup: function() {
+  beforeEach: function() {
     App = startApp();
     stubOrganizations();
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(App, 'destroy');
   }
 });
 
-test('/databases/:id/deprovision requires authentication', function(){
+test('/databases/:id/deprovision requires authentication', function(assert) {
   expectRequiresAuthentication('/databases/1/deprovision');
 });
 
-test('/databases/:id/deprovision will not deprovision without confirmation', function(){
+test('/databases/:id/deprovision will not deprovision without confirmation', function(assert) {
   var databaseId = 1;
   var databaseName = 'foo-bar';
   var stackHandle = 'rrriggi';
@@ -39,12 +40,12 @@ test('/databases/:id/deprovision will not deprovision without confirmation', fun
   signInAndVisit('/databases/'+databaseId+'/deprovision');
   andThen(function(){
     var button = findWithAssert('button:contains(Deprovision)');
-    ok(button.is(':disabled'), 'deprovision button is disabled');
+    assert.ok(button.is(':disabled'), 'deprovision button is disabled');
     expectTitle(`Deprovision ${databaseName} - ${stackHandle}`);
   });
 });
 
-test('/databases/:id/deprovision will deprovision with confirmation', function(){
+test('/databases/:id/deprovision will deprovision with confirmation', function(assert) {
   var databaseId = 1;
   var databaseName = 'foo-bar';
   var didDeprovision = false;
@@ -79,12 +80,12 @@ test('/databases/:id/deprovision will deprovision with confirmation', function()
   });
   click('button:contains(Deprovision)');
   andThen(function(){
-    ok(didDeprovision, 'deprovisioned');
-    equal(currentPath(), 'dashboard.stack.databases.index');
+    assert.ok(didDeprovision, 'deprovisioned');
+    assert.equal(currentPath(), 'dashboard.stack.databases.index');
   });
 });
 
-test('/databases/:id/deprovision will show deprovision error', function(){
+test('/databases/:id/deprovision will show deprovision error', function(assert) {
   var databaseId = 1;
   var databaseName = 'foo-bar';
   var errorMessage = 'Some bad error';
@@ -115,7 +116,7 @@ test('/databases/:id/deprovision will show deprovision error', function(){
   click('button:contains(Deprovision)');
   andThen(function(){
     var error = findWithAssert('.alert');
-    ok(error.text().indexOf(errorMessage) > -1, 'error message shown');
-    equal(currentPath(), 'dashboard.database.deprovision');
+    assert.ok(error.text().indexOf(errorMessage) > -1, 'error message shown');
+    assert.equal(currentPath(), 'dashboard.database.deprovision');
   });
 });

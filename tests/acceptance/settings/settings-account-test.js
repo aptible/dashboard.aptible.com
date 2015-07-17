@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
@@ -7,40 +8,43 @@ let App;
 let settingsUrl = '/settings';
 let settingsAccountUrl = `${settingsUrl}/admin`;
 let settingsProfileUrl = `${settingsUrl}/profile`;
-let userId = 'user1'; // from signInAndVisit helper
-let userEmail = 'stubbed-user@gmail.com'; // from signInAndVisit helper
-let userName = 'stubbed user'; // from signInAndVisit helper
+// from signInAndVisit helper
+let userId = 'user1';
+// from signInAndVisit helper
+let userEmail = 'stubbed-user@gmail.com';
+// from signInAndVisit helper
+let userName = 'stubbed user';
 
 let userApiUrl = '/users/' + userId;
 
 module('Acceptance: User Settings: Account', {
-  setup: function() {
+  beforeEach: function() {
     App = startApp();
     stubStacks();
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(App, 'destroy');
   }
 });
 
-test(settingsAccountUrl + ' requires authentication', function(){
+test(settingsAccountUrl + ' requires authentication', function(assert) {
   expectRequiresAuthentication(settingsAccountUrl);
 });
 
-test('visit ' + settingsAccountUrl + ' shows change password form', function(){
+test('visit ' + settingsAccountUrl + ' shows change password form', function(assert) {
   signInAndVisit(settingsAccountUrl);
 
   andThen(function(){
     // change password
 
-    ok(find('h3:contains(Change Your Password)').length,
+    assert.ok(find('h3:contains(Change Your Password)').length,
        'has change password header' );
 
     expectInput('password');
     expectInput('confirm-password');
     expectButton('Change password');
     let currentPasswordInput = findInput('current-password');
-    ok(!currentPasswordInput.length, 'shows no current password input');
+    assert.ok(!currentPasswordInput.length, 'shows no current password input');
 
     clickButton('Change password');
   });
@@ -50,8 +54,8 @@ test('visit ' + settingsAccountUrl + ' shows change password form', function(){
   });
 });
 
-test(`visit ${settingsAccountUrl} allows changing password`, function(){
-  expect(5);
+test(`visit ${settingsAccountUrl} allows changing password`, function(assert) {
+  assert.expect(5);
 
   signInAndVisit(settingsAccountUrl);
 
@@ -61,8 +65,8 @@ test(`visit ${settingsAccountUrl} allows changing password`, function(){
   stubRequest('put', 'users/user1', function(request){
     var user = this.json(request);
 
-    equal(user.current_password, oldPassword);
-    equal(user.password, newPassword);
+    assert.equal(user.current_password, oldPassword);
+    assert.equal(user.password, newPassword);
 
     return this.success({
       id: 'user1'
@@ -82,17 +86,17 @@ test(`visit ${settingsAccountUrl} allows changing password`, function(){
 
   andThen(function(){
     let passwordInput = findInput('password');
-    ok(Ember.isBlank(passwordInput.val()), 'password input is empty');
+    assert.ok(Ember.isBlank(passwordInput.val()), 'password input is empty');
 
     let confirmPasswordInput = findInput('confirm-password');
-    ok(Ember.isBlank(confirmPasswordInput.val()), 'confirm password input is empty');
+    assert.ok(Ember.isBlank(confirmPasswordInput.val()), 'confirm password input is empty');
 
-    ok(!findInput('current-password').length, 'current password input is not shown');
+    assert.ok(!findInput('current-password').length, 'current password input is not shown');
   });
 });
 
-test(`visit ${settingsAccountUrl} and change password with errors`, function(){
-  expect(3);
+test(`visit ${settingsAccountUrl} and change password with errors`, function(assert) {
+  assert.expect(3);
 
   var newPassword = 'abcdefghi',
       oldPassword = 'defghiljk';
@@ -116,8 +120,8 @@ test(`visit ${settingsAccountUrl} and change password with errors`, function(){
 
   andThen(function(){
     let error = find('.alert-danger');
-    ok(error.length, 'shows error');
-    ok(error.text().indexOf('Invalid password') > -1,
+    assert.ok(error.length, 'shows error');
+    assert.ok(error.text().indexOf('Invalid password') > -1,
        'shows error message');
     click(error);
   });
@@ -127,24 +131,24 @@ test(`visit ${settingsAccountUrl} and change password with errors`, function(){
 
   andThen( () => {
     let error = find('.alert');
-    ok(!error.length, 'error is not shown anymore');
+    assert.ok(!error.length, 'error is not shown anymore');
   });
 });
 
-test(`visit ${settingsAccountUrl} shows change email form`, function(){
+test(`visit ${settingsAccountUrl} shows change email form`, function(assert) {
   signInAndVisit(settingsAccountUrl);
 
   andThen(function(){
     // change email
 
-    ok( find('h3:contains(Change Your Email)').length,
+    assert.ok( find('h3:contains(Change Your Email)').length,
         'has change email header' );
 
     expectInput('email');
-    equal(findInput('email').val(), userEmail,
+    assert.equal(findInput('email').val(), userEmail,
           'email input has user email value');
 
-    ok(!findInput('current-password').length,
+    assert.ok(!findInput('current-password').length,
        'does not show current password input');
 
     expectButton('Change email');
@@ -157,8 +161,8 @@ test(`visit ${settingsAccountUrl} shows change email form`, function(){
   });
 });
 
-test(`visit ${settingsAccountUrl} allows change email`, function(){
-  expect(2);
+test(`visit ${settingsAccountUrl} allows change email`, function(assert) {
+  assert.expect(2);
 
   signInAndVisit(settingsAccountUrl);
 
@@ -168,8 +172,8 @@ test(`visit ${settingsAccountUrl} allows change email`, function(){
   stubRequest('put', '/users/user1', function(request){
     var user = this.json(request);
 
-    equal(user.email, newEmail);
-    equal(user.current_password, currentPassword);
+    assert.equal(user.email, newEmail);
+    assert.equal(user.current_password, currentPassword);
 
     return this.success({
       id: 'user1',
@@ -188,8 +192,8 @@ test(`visit ${settingsAccountUrl} allows change email`, function(){
   });
 });
 
-test(`visit ${settingsAccountUrl} change email and errors`, function(){
-  expect(3);
+test(`visit ${settingsAccountUrl} change email and errors`, function(assert) {
+  assert.expect(3);
 
 
   let newEmail = 'newEmail@example.com';
@@ -213,8 +217,8 @@ test(`visit ${settingsAccountUrl} change email and errors`, function(){
 
   andThen(function(){
     let error = find('.alert');
-    ok(error.length, 'shows error div');
-    ok(error.text().indexOf('Invalid password'), 'shows error message');
+    assert.ok(error.length, 'shows error div');
+    assert.ok(error.text().indexOf('Invalid password'), 'shows error message');
   });
 
   visit(settingsProfileUrl); // go away
@@ -222,6 +226,6 @@ test(`visit ${settingsAccountUrl} change email and errors`, function(){
 
   andThen( () => {
     let error = find('.alert');
-    ok(!error.length, 'error is no longer shown');
+    assert.ok(!error.length, 'error is no longer shown');
   });
 });

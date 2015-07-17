@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 import successfulTokenResponse from '../../helpers/successful-token-response';
@@ -20,7 +21,7 @@ let userInput = {
 let url = '/signup';
 
 module('Acceptance: Signup', {
-  setup: function() {
+  beforeEach: function() {
     App = startApp();
     claimUrls.forEach((claimUrl) => {
       stubRequest('post', claimUrl, function(request) {
@@ -28,12 +29,12 @@ module('Acceptance: Signup', {
       });
     });
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(App, 'destroy');
   }
 });
 
-test(`visiting ${url} when logged in redirects`, function() {
+test(`visiting ${url} when logged in redirects`, function(assert) {
   expectRedirectsWhenLoggedIn(url);
 });
 
@@ -41,14 +42,14 @@ test(`visiting ${url} shows signup inputs`, function(assert) {
   signupInputsTest(url);
 });
 
-test('Creating an account directs to welcome wizard', function() {
+test('Creating an account directs to welcome wizard', function(assert) {
   // for loading information on the welcome.first-app screen
   stubStacks({}, []);
   stubOrganizations();
 
   stubRequest('post', '/organizations', function(request){
     let params = this.json(request);
-    equal(params.name, userInput.organization, 'correct organization is passed');
+    assert.equal(params.name, userInput.organization, 'correct organization is passed');
     return this.success({
       id: 'my-organization',
       name: userInput.organization
@@ -59,11 +60,11 @@ test('Creating an account directs to welcome wizard', function() {
   fillInput('organization', userInput.organization);
   clickButton('Create account');
   andThen(function(){
-    equal(currentPath(), 'welcome.first-app', 'directs to first app');
+    assert.equal(currentPath(), 'welcome.first-app', 'directs to first app');
   });
 });
 
-test('Signing up with a platform plan shows platform copy', function() {
+test('Signing up with a platform plan shows platform copy', function(assert) {
   // for loading information on the welcome.first-app screen
   stubStacks({}, []);
   stubOrganizations();
@@ -71,7 +72,7 @@ test('Signing up with a platform plan shows platform copy', function() {
 
   stubRequest('post', '/organizations', function(request){
     let params = this.json(request);
-    equal(params.name, userInput.organization, 'correct organization is passed');
+    assert.equal(params.name, userInput.organization, 'correct organization is passed');
     return this.success({
       id: 'my-organization',
       name: userInput.organization
@@ -83,20 +84,20 @@ test('Signing up with a platform plan shows platform copy', function() {
   clickButton('Create account');
 
   andThen(function() {
-    equal(currentPath(), 'welcome.first-app', 'directs to first app');
-    ok(find(':contains(Create Your Aptible platform Environment)'));
-    ok(find(':contains(Create a database to store PHI)'));
+    assert.equal(currentPath(), 'welcome.first-app', 'directs to first app');
+    assert.ok(find(':contains(Create Your Aptible platform Environment)'));
+    assert.ok(find(':contains(Create a database to store PHI)'));
   });
 });
 
-test('Signing up with no plan shows development copy', function() {
+test('Signing up with no plan shows development copy', function(assert) {
   // for loading information on the welcome.first-app screen
   stubStacks({}, []);
   stubOrganizations();
 
   stubRequest('post', '/organizations', function(request){
     let params = this.json(request);
-    equal(params.name, userInput.organization, 'correct organization is passed');
+    assert.equal(params.name, userInput.organization, 'correct organization is passed');
     return this.success({
       id: 'my-organization',
       name: userInput.organization
@@ -108,22 +109,22 @@ test('Signing up with no plan shows development copy', function() {
   clickButton('Create account');
 
   andThen(function() {
-    equal(currentPath(), 'welcome.first-app', 'directs to first app');
-    ok(find(':contains(Create Your Aptible development Environment)'));
-    ok(find(':contains(Create a database for your app)'));
+    assert.equal(currentPath(), 'welcome.first-app', 'directs to first app');
+    assert.ok(find(':contains(Create Your Aptible development Environment)'));
+    assert.ok(find(':contains(Create a database for your app)'));
   });
 });
 
-test(`visiting ${url} and signing up with too-short organization name shows error`, function() {
+test(`visiting ${url} and signing up with too-short organization name shows error`, function(assert) {
   let tooShortOrganizationName = 'ba';
 
   doSignupSteps(url, userInput, {clickButton:false});
   fillInput('organization', tooShortOrganizationName);
   clickButton('Create account');
   andThen(() => {
-    equal(currentPath(), signupIndexPath, 'path does not change');
+    assert.equal(currentPath(), signupIndexPath, 'path does not change');
     let error = find(':contains(minimum is 3 characters)');
-    ok(error.length, 'has error on the screen');
+    assert.ok(error.length, 'has error on the screen');
   });
 });
 

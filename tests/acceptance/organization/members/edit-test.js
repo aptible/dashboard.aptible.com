@@ -79,7 +79,7 @@ module('Acceptance: Organization Members: Member', {
   }
 });
 
-test(`visiting ${url} requires authentication`, function(){
+test(`visiting ${url} requires authentication`, function(assert) {
   expectRequiresAuthentication(url);
 });
 
