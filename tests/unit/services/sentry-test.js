@@ -16,13 +16,13 @@ moduleFor('service:sentry', 'SentryService', {
   }
 });
 
-test('it identifies with email', function() {
-  expect(1);
+test('it identifies with email', function(assert) {
+  assert.expect(1);
   var service = this.subject();
   var email = 'some@email.com';
 
   mockRaven.setUserContext = function(attributes) {
-    equal(attributes.email, email, 'email is passed to context');
+    assert.equal(attributes.email, email, 'email is passed to context');
   };
 
   service.identify({ email: email });

@@ -1,6 +1,7 @@
 import {
+  module,
   test
-} from 'ember-qunit';
+} from 'qunit';
 import Ember from 'ember';
 
 import Changeset from 'dummy/utils/changeset';
@@ -8,19 +9,19 @@ import Changeset from 'dummy/utils/changeset';
 let changeset, keyData;
 
 module('Unit: Changeset', {
-  setup(){
+  beforeEach() {
     changeset = Changeset.create({
-      key(keyData){
+      key(keyData) {
         return JSON.stringify(keyData);
       },
-      initialValue(keyData){
+      initialValue(keyData) {
         return false;
       }
     });
 
     keyData = {a:1};
   },
-  teardown(){
+  afterEach() {
     Ember.run(changeset, 'destroy');
   }
 });
@@ -58,10 +59,10 @@ test('value can change from true to false', (assert) => {
   assert.expect(3);
 
   changeset = Changeset.create({
-    key(keyData){
+    key(keyData) {
       return JSON.stringify(keyData);
     },
-    initialValue(keyData){
+    initialValue(keyData) {
       return true;
     }
   });
@@ -145,10 +146,10 @@ test('initialValue hook is called with keyData when read', (assert) => {
   let passedKeyData;
 
   changeset = Changeset.create({
-    key(keyData){
+    key(keyData) {
       return JSON.stringify(keyData);
     },
-    initialValue(keyData){
+    initialValue(keyData) {
       passedKeyData = keyData;
       return keyData;
     }
@@ -165,10 +166,10 @@ test('forEachValue returns values that are read but not set', (assert) => {
   let passedKeyData;
 
   changeset = Changeset.create({
-    key(keyData){
+    key(keyData) {
       return JSON.stringify(keyData);
     },
-    initialValue(keyData){
+    initialValue(keyData) {
       return false;
     }
   });

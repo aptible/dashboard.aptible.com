@@ -10,8 +10,8 @@ moduleForComponent('aptible-ability', 'AptibleAbilityComponent', {
   // needs: ['component:foo', 'helper:bar']
 });
 
-test('it renders', function() {
-  expect(1);
+test('it renders', function(assert) {
+  assert.expect(1);
 
   // creates the component instance
   var component = this.subject({
@@ -21,7 +21,7 @@ test('it renders', function() {
     scope: 'read',
     stack: {}
   });
-  equal(component._state, 'preRender');
+  assert.equal(component._state, 'preRender');
 
   // appends the component to the page
 

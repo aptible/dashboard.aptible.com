@@ -13,8 +13,8 @@ moduleForModel('operation', 'model:operation', {
   ])
 });
 
-test('when creating an operation for a db, POSTs to /databases/:id/operations', function(){
-  expect(2);
+test('when creating an operation for a db, POSTs to /databases/:id/operations', function(assert) {
+  assert.expect(2);
 
   var store = this.store();
   var db, op;
@@ -28,7 +28,7 @@ test('when creating an operation for a db, POSTs to /databases/:id/operations', 
   });
 
   stubRequest('post', '/databases/db-id/operations', function(){
-    ok(true, 'posts to correct url');
+    assert.ok(true, 'posts to correct url');
 
     return this.success({
       id: 'op-id',
@@ -40,13 +40,13 @@ test('when creating an operation for a db, POSTs to /databases/:id/operations', 
 
   return Ember.run(function(){
     return op.save().then(function(_op){
-      ok(true, 'operation saved');
+      assert.ok(true, 'operation saved');
     });
   });
 });
 
-test('store.find("operation", {app:app, page:page}) formats the URL correctly"', function(){
-  expect(4);
+test('store.find("operation", {app:app, page:page}) formats the URL correctly"', function(assert) {
+  assert.expect(4);
 
   var store = this.store();
   var app;
@@ -55,7 +55,7 @@ test('store.find("operation", {app:app, page:page}) formats the URL correctly"',
   stubRequest('get', '/apps/app-id/operations', function(request){
     if (firstRequest) {
       firstRequest = false;
-      equal(request.queryParams.page, "1", "first request has page=1 query param");
+      assert.equal(request.queryParams.page, "1", "first request has page=1 query param");
 
       return this.success({
         page: 1,
@@ -65,7 +65,7 @@ test('store.find("operation", {app:app, page:page}) formats the URL correctly"',
         }
       });
     } else {
-      equal(request.queryParams.page, "2", "second request has page=2 query param");
+      assert.equal(request.queryParams.page, "2", "second request has page=2 query param");
 
       return this.success({
         page: 2,
@@ -81,19 +81,19 @@ test('store.find("operation", {app:app, page:page}) formats the URL correctly"',
     app = store.push('app', {id: 'app-id'});
 
     return store.find('operation', {app:app, page:1}).then(function(){
-      deepEqual(store.metadataFor('operation'),
+      assert.deepEqual(store.metadataFor('operation'),
                 {page:1,total_pages:2}, 'store has correct metadata first time');
 
       return store.find('operation', {app:app, page:2});
     }).then(function(){
-      deepEqual(store.metadataFor('operation'),
+      assert.deepEqual(store.metadataFor('operation'),
                 {page:2,total_pages:2}, 'store has correct metadata second time');
     });
   });
 });
 
-test('store.find("operation", {database:database, page:page}) formats the URL correctly"', function(){
-  expect(4);
+test('store.find("operation", {database:database, page:page}) formats the URL correctly"', function(assert) {
+  assert.expect(4);
 
   var store = this.store();
   var db;
@@ -102,7 +102,7 @@ test('store.find("operation", {database:database, page:page}) formats the URL co
   stubRequest('get', '/databases/db-id/operations', function(request){
     if (firstRequest) {
       firstRequest = false;
-      equal(request.queryParams.page, "1", "first request has page=1 query param");
+      assert.equal(request.queryParams.page, "1", "first request has page=1 query param");
 
       return this.success({
         page: 1,
@@ -112,7 +112,7 @@ test('store.find("operation", {database:database, page:page}) formats the URL co
         }
       });
     } else {
-      equal(request.queryParams.page, "2", "second request has page=2 query param");
+      assert.equal(request.queryParams.page, "2", "second request has page=2 query param");
 
       return this.success({
         page: 2,
@@ -128,12 +128,12 @@ test('store.find("operation", {database:database, page:page}) formats the URL co
     db = store.push('database', {id: 'db-id'});
 
     return store.find('operation', {database:db, page:1}).then(function(){
-      deepEqual(store.metadataFor('operation'),
+      assert.deepEqual(store.metadataFor('operation'),
                 {page:1,total_pages:2}, 'store has correct metadata first time');
 
       return store.find('operation', {database:db, page:2});
     }).then(function(){
-      deepEqual(store.metadataFor('operation'),
+      assert.deepEqual(store.metadataFor('operation'),
                 {page:2,total_pages:2}, 'store has correct metadata second time');
     });
   });
@@ -141,8 +141,8 @@ test('store.find("operation", {database:database, page:page}) formats the URL co
 
 let vhostId = 'vhost-id';
 let vhostOperationURL = `/vhosts/${vhostId}/operations`;
-test(`when creating an operation for a vhost, POSTs to ${vhostOperationURL}`, function(){
-  expect(2);
+test(`when creating an operation for a vhost, POSTs to ${vhostOperationURL}`, function(assert) {
+  assert.expect(2);
 
   var store = this.store();
   var vhost, op;
@@ -156,7 +156,7 @@ test(`when creating an operation for a vhost, POSTs to ${vhostOperationURL}`, fu
   });
 
   stubRequest('post', vhostOperationURL, function(){
-    ok(true, 'posts to correct url');
+    assert.ok(true, 'posts to correct url');
 
     return this.success({
       id: 'op-id',
@@ -166,15 +166,15 @@ test(`when creating an operation for a vhost, POSTs to ${vhostOperationURL}`, fu
 
   return Ember.run(function(){
     return op.save().then(function(_op){
-      ok(true, 'operation saved');
+      assert.ok(true, 'operation saved');
     });
   });
 });
 
 let logDrainId = 'log-drain-id-1';
 let logDrainOperationURL = `/log_drains/${logDrainId}/operations`;
-test(`creating an operation for a log drain POSTS to ${logDrainOperationURL}`, function(){
-  expect(2);
+test(`creating an operation for a log drain POSTS to ${logDrainOperationURL}`, function(assert) {
+  assert.expect(2);
 
   let store = this.store(),
       logDrain, op;
@@ -188,7 +188,7 @@ test(`creating an operation for a log drain POSTS to ${logDrainOperationURL}`, f
   });
 
   stubRequest('post', logDrainOperationURL, function(){
-    ok(true, 'posts to correct url');
+    assert.ok(true, 'posts to correct url');
 
     return this.success({
       id: 'op-id',
@@ -198,15 +198,15 @@ test(`creating an operation for a log drain POSTS to ${logDrainOperationURL}`, f
 
   return Ember.run(function(){
     return op.save().then(function(_op){
-      ok(true, 'operation saved');
+      assert.ok(true, 'operation saved');
     });
   });
 });
 
 let serviceId = 'service-1';
 let serviceOperationURL = `/services/${serviceId}/operations`;
-test(`creating an operation for a service POSTS to ${serviceOperationURL}`, function(){
-  expect(2);
+test(`creating an operation for a service POSTS to ${serviceOperationURL}`, function(assert) {
+  assert.expect(2);
 
   let store = this.store(),
       service, op;
@@ -220,7 +220,7 @@ test(`creating an operation for a service POSTS to ${serviceOperationURL}`, func
   });
 
   stubRequest('post', serviceOperationURL, function(){
-    ok(true, 'posts to correct url');
+    assert.ok(true, 'posts to correct url');
 
     return this.success({
       id: 'op-id',
@@ -230,7 +230,7 @@ test(`creating an operation for a service POSTS to ${serviceOperationURL}`, func
 
   return Ember.run(function(){
     return op.save().then(function(_op){
-      ok(true, 'operation saved');
+      assert.ok(true, 'operation saved');
     });
   });
 });

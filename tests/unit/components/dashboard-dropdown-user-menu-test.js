@@ -9,14 +9,14 @@ moduleForComponent('dashboard-dropdown-user-menu', 'DashboardDropdownUserMenuCom
   needs: ['component:dashboard-dropdown-item', 'component:link-to-aptible']
 });
 
-test('it renders', function() {
+test('it renders', function(assert) {
   // creates the component instance
   var component = this.subject({
     user: Ember.Object.create({ name: 'Test User' })
   });
-  equal(component._state, 'preRender');
+  assert.equal(component._state, 'preRender');
 
   // appends the component to the page
   this.render();
-  equal(component._state, 'inDOM');
+  assert.equal(component._state, 'inDOM');
 });

@@ -2,10 +2,12 @@ import {
   capitalizeString
 } from 'dummy/helpers/capitalize-string';
 
+import {module, test} from 'qunit';
+
 module('CapitalizeStringHelper');
 
 // Replace this with your real tests.
-test('it capitalizes', function() {
+test('it capitalizes', function(assert) {
   var result = capitalizeString('abc def');
-  equal(result, 'Abc def');
+  assert.equal(result, 'Abc def');
 });

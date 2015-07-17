@@ -1,33 +1,34 @@
 import {
+  module,
   test
-} from 'ember-qunit';
+} from 'qunit';
 
 import { read, write, remove } from '../../../utils/storage';
 
 var key = '_test_someKey';
 
 module('Unit: storage', {
-  teardown: function(){
+  afterEach: function(){
     remove(key);
   }
 });
 
-test('unset key is undefined', function(){
+test('unset key is undefined', function(assert) {
   var res = read(key);
-  equal(res, undefined, 'empty read key is undefined');
+  assert.equal(res, undefined, 'empty read key is undefined');
 });
 
-test('it parses a payload correctly', function(){
+test('it parses a payload correctly', function(assert) {
   var content = 'bazbaz';
   write(key, content);
   var res = read(key);
-  equal(res, content, 'written key has a value');
+  assert.equal(res, content, 'written key has a value');
 });
 
-test('an object can be written, read', function(){
+test('an object can be written, read', function(assert) {
   var content = 'bazbaz';
   var object = { meep: content };
   write(key, object);
   var res = read(key);
-  equal(res.meep, content, 'written object has values');
+  assert.equal(res.meep, content, 'written object has values');
 });

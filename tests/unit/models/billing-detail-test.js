@@ -10,23 +10,23 @@ moduleForModel('billing-detail', 'model:billing-detail', {
   needs: modelDeps
 });
 
-test('it exists', function() {
+test('it exists', function(assert) {
   var model = this.subject();
-  ok(!!model);
+  assert.ok(!!model);
 });
 
-test('it allowsPHI based on plan', function() {
+test('it allowsPHI based on plan', function(assert) {
   var model = this.subject();
   Ember.run(() => {
     model.set('plan', 'development');
   });
-  ok(!model.get('allowPHI'), 'PHI not allowed');
+  assert.ok(!model.get('allowPHI'), 'PHI not allowed');
   Ember.run(() => {
     model.set('plan', 'production');
   });
-  ok(model.get('allowPHI'), 'PHI allowed');
+  assert.ok(model.get('allowPHI'), 'PHI allowed');
   Ember.run(() => {
     model.set('plan', 'platform');
   });
-  ok(model.get('allowPHI'), 'PHI allowed');
+  assert.ok(model.get('allowPHI'), 'PHI allowed');
 });

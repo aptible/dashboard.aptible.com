@@ -19,8 +19,8 @@ moduleFor('adapter:application', 'ApplicationAdapter', {
   }
 });
 
-test('errors messages available', function(){
-  stop();
+test('errors messages available', function(assert) {
+  var done = assert.async();
 
   var error = 'Oh my';
   var moose;
@@ -33,11 +33,10 @@ test('errors messages available', function(){
 
   Ember.run(function(){
     moose.save().then(function(){
-      ok(false, 'save wrongly succeeded');
+      assert.ok(false, 'save wrongly succeeded');
     }, function(){
-      ok(true, 'save correctly failed');
-      equal(moose.get('errors.message.firstObject.message'), error, 'error message is correct');
-    }).finally(start);
+      assert.ok(true, 'save correctly failed');
+      assert.equal(moose.get('errors.message.firstObject.message'), error, 'error message is correct');
+    }).finally(done);
   });
 });
-

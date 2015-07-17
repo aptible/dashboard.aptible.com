@@ -17,12 +17,12 @@ moduleForModel('database', 'model:database', {
   ])
 });
 
-test('finding uses correct url', function(){
-  expect(2);
+test('finding uses correct url', function(assert) {
+  assert.expect(2);
   var dbId = 'my-db-id';
 
   stubRequest('get', '/databases/' + dbId, function(request){
-    ok(true, 'calls with correct URL');
+    assert.ok(true, 'calls with correct URL');
 
     return this.success({
       id: dbId,
@@ -37,7 +37,7 @@ test('finding uses correct url', function(){
 
   return Ember.run(function(){
     return store.find('database', dbId).then(function(){
-      ok(true, 'database did find');
+      assert.ok(true, 'database did find');
     });
   });
 });
@@ -62,8 +62,8 @@ test('reloading uses correct url', function(assert){
   });
 });
 
-test('creating POSTs to correct url', function(){
-  expect(2);
+test('creating POSTs to correct url', function(assert) {
+  assert.expect(2);
 
   var store = this.store();
   var db, stack;
@@ -73,7 +73,7 @@ test('creating POSTs to correct url', function(){
   });
 
   stubRequest('post', '/accounts/1/databases', function(request){
-    ok(true, 'calls with correct URL');
+    assert.ok(true, 'calls with correct URL');
 
     return this.success(201, {
       id: 'my-db-id',
@@ -83,7 +83,7 @@ test('creating POSTs to correct url', function(){
 
   return Ember.run(function(){
     return db.save().then(function(){
-      ok(true, 'db did save');
+      assert.ok(true, 'db did save');
     });
   });
 });

@@ -103,7 +103,7 @@ test('#open stores payload, set currentUser', function(assert){
 
   Ember.run(function(){
     adapter.open(optionsFromProvider).then(function(resultForSession){
-      ok(true, 'session is opened with an auth_token');
+      assert.ok(true, 'session is opened with an auth_token');
       assert.equal(getAccessToken(), token, 'sets token on auth');
 
       // QUnit will hang forever if we don't explicitly turn this into

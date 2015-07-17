@@ -12,10 +12,10 @@ moduleForComponent('link-to-aptible', 'LinkToAptibleComponent', {
   }
 });
 
-test('it links to a configured host', function() {
+test('it links to a configured host', function(assert) {
   config.aptibleHosts['test-app'] = 'http://localhost.dev';
   this.subject({ path: 'foo.html', app: 'test-app' });
   var element = this.$();
   var href = element.attr('href');
-  equal(href, 'http://localhost.dev/foo.html', 'href combines app and path');
+  assert.equal(href, 'http://localhost.dev/foo.html', 'href combines app and path');
 });

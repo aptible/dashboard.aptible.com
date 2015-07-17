@@ -10,17 +10,17 @@ moduleForModel('subscription', 'model:subscription', {
   needs: modelDeps.concat(['adapter:subscription'])
 });
 
-test('data is posted upon save', function() {
-  expect(4);
+test('data is posted upon save', function(assert) {
+  assert.expect(4);
   var stripeToken = 'some-token';
   var plan = 'development';
   var organizationId = 'org-1';
 
   stubRequest('post', '/organizations/org-1/subscriptions', function(request){
     var params = this.json(request);
-    equal(params.stripe_token, stripeToken, 'stripe token is correct');
-    equal(params.plan, plan, 'plan is correct');
-    equal(params.organization_id, organizationId, 'org id is correct');
+    assert.equal(params.stripe_token, stripeToken, 'stripe token is correct');
+    assert.equal(params.plan, plan, 'plan is correct');
+    assert.equal(params.organization_id, organizationId, 'org id is correct');
 
     return this.success();
   });
@@ -39,6 +39,6 @@ test('data is posted upon save', function() {
   });
 
   return Ember.run(subscription, 'save').then(function(s){
-    ok(true, 'subscription was saved');
+    assert.ok(true, 'subscription was saved');
   });
 });

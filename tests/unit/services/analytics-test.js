@@ -21,30 +21,30 @@ moduleFor('service:analytics', 'AnalyticsService', {
   }
 });
 
-test('it tracks a page', function() {
-  expect(2);
+test('it tracks a page', function(assert) {
+  assert.expect(2);
   var service = this.subject();
 
   var page = 'Signup';
   mockAnalytics.page = function(data, fn){
-    equal(data, page, 'page is passed to tracker');
+    assert.equal(data, page, 'page is passed to tracker');
     setTimeout(fn, 2);
   };
 
   return service.page(page).then(function(){
-    ok(true, 'promise is called');
+    assert.ok(true, 'promise is called');
   });
 });
 
-test('it identifies with email', function() {
-  expect(3);
+test('it identifies with email', function(assert) {
+  assert.expect(3);
   var service = this.subject();
-  equal(service.get('hasEmail'), undefined, 'precond - hasEmail is undefined');
+  assert.equal(service.get('hasEmail'), undefined, 'precond - hasEmail is undefined');
 
   var email = 'some@email.com';
 
   mockAnalytics.identify = function(id, data, fn){
-    equal(data.email, email, 'email is passed to tracker');
+    assert.equal(data.email, email, 'email is passed to tracker');
     setTimeout(fn, 2);
   };
 
@@ -57,7 +57,7 @@ test('it identifies with email', function() {
   };
 
   return service.identify(1, { email: email }).then(function(){
-    ok(true, 'promise is called');
-    ok(service.get('hasEmail'), 'has an email');
+    assert.ok(true, 'promise is called');
+    assert.ok(service.get('hasEmail'), 'has an email');
   });
 });
