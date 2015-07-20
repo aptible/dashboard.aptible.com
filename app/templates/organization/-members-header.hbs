@@ -27,11 +27,11 @@
 
       <li class="resource-metadata-item with-image">
         <div class="resource-metadata-image">
-          {{gravatar-image email=organization.billingContact.email size=30}}
+          {{gravatar-image email=organization.billingDetail.billingContact.email size=30}}
         </div>
 
         <h5 class="resource-metadata-title">Billing Contact</h5>
-        <h3 class="resource-metadata-value">{{organization.billingContact.name}} - {{organization.billingContact.email}}</h3>
+        <h3 class="resource-metadata-value">{{organization.billingDetail.billingContact.email}} - {{organization.billingDetail.billingContact.email}}</h3>
       </li>
     </ul>
   </div>
