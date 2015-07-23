@@ -21,6 +21,7 @@ export default DS.Model.extend({
 
   // relationships
   apps: DS.hasMany('app', {async: true}),
+  certificates: DS.hasMany('certificate', {async: true}),
   databases: DS.hasMany('database', {async: true}),
   permissions: DS.hasMany('permission', {async:true}),
   organization: DS.belongsTo('organization', {async:true}),
