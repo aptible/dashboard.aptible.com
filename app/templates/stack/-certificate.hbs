@@ -1,0 +1,23 @@
+<div class="panel panel-default certificate">
+  <div class="panel-heading with-actions">
+    <h3>{{certificate.commonName}}</h3>
+    <div class="panel-heading-actions">
+      {{#unless certificate.inUse}}
+        <button class="btn btn-default btn-xs">Delete</button>
+      {{/unless}}
+        {{link-to 'Edit' 'certificates.edit' certificate class="btn btn-default btn-xs"}}
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="resource-metadata-item">
+      <h5 class="resource-metadata-title">
+        VHosts
+      </h5>
+
+      <h3 class="resource-metadata-value">
+        {{certificate.vhosts.length}}
+      </h3>
+    </div>
+  </div>
+</div>

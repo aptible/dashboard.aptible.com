@@ -13,7 +13,7 @@
         {{/bs-tooltip}}
       {{/if}}
 
-      <span class="resource-titel vhost-virtualdomain">{{vhost.virtualDomain}}</span>
+      <span class="resource-title vhost-virtualdomain">{{vhost.virtualDomain}}</span>
       <i class="fa fa-arrow-right"></i>
       <span class="resource-subttle vhost-service">{{vhost.service.processType}} Service</span>
     </h3>
@@ -58,7 +58,7 @@
           </div>
         </h3>
       {{else}}
-        <h3 class="resource-metadata-value">{{vhost.virtualDomain}} is {{vhost.status}}...</h3>
+        <h3 class="resource-metadata-value">{{vhost.commonName}} is {{vhost.status}}...</h3>
       {{/if}}
     </div>
   </div>

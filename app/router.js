@@ -42,7 +42,6 @@ export default Router.map(function() {
       this.route("deprovision");
     });
 
-
     this.route("stack", {
       resetNamespace: true,
       path: "stacks/:stack_id"
@@ -64,6 +63,15 @@ export default Router.map(function() {
         resetNamespace: true
       }, function() {
         this.route("new");
+      });
+
+      this.route("certificates", {
+        resetNamespace: true
+      }, function() {
+        this.route("new");
+        this.route('edit', {
+          path: ':certificate_id/edit'
+        })
       });
     });
 
