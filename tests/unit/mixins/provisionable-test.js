@@ -1,7 +1,13 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
-import { ProvisionableBaseMixin, STATUSES } from '../../../mixins/models/provisionable';// minimum setTimeout resolution is 10 ms
+import {
+  ProvisionableBaseMixin,
+  STATUSES,
+  SHOULD_RELOAD,
+  SET_SHOULD_RELOAD
+} from '../../../mixins/models/provisionable';
 
+// minimum setTimeout resolution is 10 ms
 const TEST_RELOAD_RETRY_DELAY = 10;
 
 const FakeModel = Ember.Object.extend(ProvisionableBaseMixin, {
@@ -12,7 +18,15 @@ const FakeModel = Ember.Object.extend(ProvisionableBaseMixin, {
   }
 });
 
-module('mixin:provisionable');
+module('mixin:provisionable', {
+  beforeEach() {
+    this.originalShouldReload = SHOULD_RELOAD;
+  },
+
+  afterEach() {
+    SET_SHOULD_RELOAD(this.originalShouldReload);
+  }
+});
 
 
 test('will not reload when status is not STATUSES.PROVISIONING', function(assert) {
@@ -32,6 +46,18 @@ test('will not reload when reloadWhileProvisioning is false', function(assert) {
     status: STATUSES.PROVISIONING,
 
     reloadWhileProvisioning: false
+  });
+
+  assert.equal(model._shouldReload(), false);
+});
+
+test('will not reload when SHOULD_RELOAD is false', function(assert) {
+  assert.expect(1);
+
+  SET_SHOULD_RELOAD(false);
+
+  let model = FakeModel.create({
+    status: STATUSES.PROVISIONING
   });
 
   assert.equal(model._shouldReload(), false);
