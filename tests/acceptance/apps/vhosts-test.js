@@ -7,6 +7,7 @@ var App;
 
 var appId = '1';
 var appUrl = '/apps/' + appId;
+var vhostsApiUrl = '/vhosts/';
 var appVhostsUrl = '/apps/' + appId + '/vhosts';
 var appVhostsApiUrl = '/apps/' + appId + '/vhosts';
 var appVhostsNewUrl = '/apps/' + appId + '/vhosts/new';
@@ -135,12 +136,12 @@ test(`visit ${appVhostsUrl} lists active vhosts`, function(assert) {
 
 test(`visit ${appVhostsUrl} lists pending vhosts`, function(assert) {
   var vhosts = [{
-    id: 1,
+    id: 0,
     virtual_domain: 'www.health1.io',
     external_host: 'www.host1.com',
     status: 'provisioning'
   },{
-    id: 2,
+    id: 1,
     virtual_domain: 'www.health2.io',
     external_host: 'www.host2.com',
     status: 'provisioning'
@@ -154,6 +155,10 @@ test(`visit ${appVhostsUrl} lists pending vhosts`, function(assert) {
 
   stubRequest('get', appVhostsApiUrl, function(){
     return this.success({ _embedded: { vhosts: vhosts } });
+  });
+
+  stubRequest('get', vhostsApiUrl + ':id', function(request) {
+    return this.success(vhosts[request.params.id]);
   });
 
   signInAndVisit(appVhostsUrl);
@@ -173,17 +178,21 @@ test(`visit ${appVhostsUrl} lists pending vhosts`, function(assert) {
       expectButton('Edit', {context:vhostEl});
       expectButton('Delete', {context:vhostEl});
     });
+
+    vhosts.forEach(function(vhost) {
+      vhost.status = 'provisioned';
+    });
   });
 });
 
 test(`visit ${appVhostsUrl} lists deprovisioning`, function(assert) {
     var vhosts = [{
-    id: 1,
+    id: 0,
     virtual_domain: 'www.health1.io',
     external_host: 'www.host1.com',
     status: 'deprovisioned'
   },{
-    id: 2,
+    id: 1,
     virtual_domain: 'www.health2.io',
     external_host: 'www.host2.com',
     status: 'deprovisioning'
@@ -197,6 +206,10 @@ test(`visit ${appVhostsUrl} lists deprovisioning`, function(assert) {
 
   stubRequest('get', appVhostsApiUrl, function(){
     return this.success({ _embedded: { vhosts: vhosts } });
+  });
+
+  stubRequest('get', vhostsApiUrl + ':id', function(request) {
+    return this.success(vhosts[request.params.id]);
   });
 
   signInAndVisit(appVhostsUrl);
