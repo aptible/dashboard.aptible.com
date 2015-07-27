@@ -43,6 +43,7 @@
     "ember-cli-qunit": "0.3.13",
     "ember-cli-release": "^0.2.5",
     "ember-cli-sentry": "damiencaselli/ember-cli-sentry#2bcea789ebab6a93700c6edcb67282e0960cfad7",
+    "ember-cli-template-lint": "0.1.1",
     "ember-cli-uglify": "^1.0.1",
     "ember-data": "1.0.0-beta.18",
     "ember-data-hal-9000": "0.1.7",
