@@ -1,6 +1,12 @@
 import Ember from 'ember';
 import DS from 'ember-data';
 
+export let SHOULD_RELOAD = true;
+
+export function SET_SHOULD_RELOAD(bool) {
+  SHOULD_RELOAD = bool;
+}
+
 export let RELOAD_RETRY_DELAY = 30000;
 
 export const STATUSES = {
@@ -28,10 +34,13 @@ export const ProvisionableBaseMixin = Ember.Mixin.create({
   _shouldReload: function() {
     let {
       status,
-      reloadWhileProvisioning
-    } = this.getProperties('status', 'reloadWhileProvisioning');
+      reloadWhileProvisioning,
+      isDestroying,
+      isDestroyed
+    } = this.getProperties('status', 'reloadWhileProvisioning', 'isDestroying', 'isDestroyed');
+    let inReloadStatus = ReloadStatuses.indexOf(status) > -1;
 
-    return reloadWhileProvisioning && ReloadStatuses.indexOf(status) > -1;
+    return SHOULD_RELOAD && reloadWhileProvisioning && inReloadStatus && !isDestroyed && !isDestroying;
   },
 
   // we should refactor this away from using observers once
@@ -41,7 +50,9 @@ export const ProvisionableBaseMixin = Ember.Mixin.create({
     if (!this._shouldReload()) { return; }
 
     this.reload().then(() => {
-      run.later(this, this._recursiveReload, this._reloadRetryDelay);
+      setTimeout(() => {
+        run(this, '_recursiveReload');
+      }, this._reloadRetryDelay);
     });
   })),
 
