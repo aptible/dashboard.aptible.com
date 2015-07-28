@@ -1,7 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  needs: ['stack'],
-  persistedApps: Ember.computed.alias('controllers.stack.persistedApps'),
-  showCancelButton: Ember.computed.gt('persistedApps.length', 0)
+  stack: Ember.inject.controller(),
+  showCancelButton: Ember.computed.gt('stack.persistedApps.length', 0)
 });
