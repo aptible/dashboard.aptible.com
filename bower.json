@@ -11,7 +11,7 @@
     "ember-data": "1.0.0-beta.18",
     "ember-resolver": "~0.1.15",
     "ember-load-initializers": "ember-cli/ember-load-initializers#0.1.4",
-    "ember-qunit": "0.4.1",
+    "ember-qunit": "0.4.6",
     "ember-qunit-notifications": "0.0.7",
     "font-awesome": "~4.3.0",
     "jquery": "^1.11.1",
