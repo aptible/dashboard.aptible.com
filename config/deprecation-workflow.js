@@ -14,13 +14,11 @@ window.deprecationWorkflow.config = {
     { handler: "silence", matchMessage: "A container should only be created for an already instantiated registry. For backward compatibility, an isolated registry will be instantiated just for this container." },
     { handler: "silence", matchMessage: "In Ember 2.0 service factories must have an `isServiceFactory` property set to true. You registered (unknown mixin) as a service factory. Either add the `isServiceFactory` property to this factory or extend from Ember.Service." },
     { handler: "silence", matchMessage: "A container should only be created for an already instantiated registry. For backward compatibility, an isolated registry will be instantiated just for this container." },
-     { handler: "silence", matchMessage: "Using the '{{#each item in model}}' form of the {{#each}} helper ('diesel/app/vhosts/new/template.hbs' @ L12:C14) is deprecated. Please use the block param form instead ('{{#each model as |item|}}')." },
     { handler: "silence", matchMessage: "Using the `{{view \"string\"}}` helper is deprecated. ('diesel/app/vhosts/new/template.hbs' @ L20:C12) " },
     { handler: "silence", matchMessage: "Using `{{view \"select\"}}` is deprecated. ('diesel/components/select-month/template.hbs' @ L1:C0) " },
     { handler: "silence", matchMessage: "Using `{{view \"select\"}}` is deprecated. ('diesel/components/select-year/template.hbs' @ L1:C0) " },
     { handler: "silence", matchMessage: "Using `{{view \"select\"}}` is deprecated. ('diesel/organization/invite/template.hbs' @ L38:C14) " },
     { handler: "silence", matchMessage: "The `bind-attr` helper ('diesel/templates/components/flash-message.hbs' @ L7:C39) is deprecated in favor of HTMLBars-style bound attributes." },
     { handler: "silence", matchMessage: "Using `{{view \"select\"}}` is deprecated. ('diesel/templates/components/user-select.hbs' @ L1:C0) " },
-    { handler: "silence", matchMessage: "Using the '{{#each item in model}}' form of the {{#each}} helper ('diesel/templates/signup/-form.hbs' @ L5:C6) is deprecated. Please use the block param form instead ('{{#each model as |item|}}')." }
   ]
 };

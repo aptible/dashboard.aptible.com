@@ -2,7 +2,7 @@
 
   {{#unless model.isValid}}
     {{#bs-alert alert="danger"}}
-      {{#each message in model.errors.messages}}
+      {{#each model.errors.messages as |message|}}
         <p>{{message}}</p>
       {{/each}}
     {{/bs-alert}}
@@ -79,4 +79,3 @@
     </div>
   </div>
 </div>
-

@@ -9,7 +9,7 @@
           {{#unless model.isValid}}
             <div class="alert alert-warning fade in">
               <a class="close" data-dismiss="alert">×</a>
-              {{#each message in model.errors.messages}}
+              {{#each model.errors.messages as |message|}}
                 <p>{{message}}</p>
               {{/each}}
             </div>
