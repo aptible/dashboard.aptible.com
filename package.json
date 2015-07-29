@@ -32,7 +32,7 @@
     "ember-cli-deploy": "^0.4.1",
     "ember-cli-deprecation-workflow": "^0.1.4",
     "ember-cli-fake-server": "^0.2.1",
-    "ember-cli-flash": "1.0.0",
+    "ember-cli-flash": "^1.3.3",
     "ember-cli-font-awesome": "0.0.4",
     "ember-cli-gravatar": "^1.2.1",
     "ember-cli-htmlbars": "0.7.6",
