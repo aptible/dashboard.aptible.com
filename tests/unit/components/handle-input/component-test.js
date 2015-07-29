@@ -13,7 +13,7 @@ moduleForComponent('handle-input', {
 test('entering value with spaces adds dashes', function(assert) {
   assert.expect(2);
 
-  this.render(hbs(`{{handle-input value=value}}`));
+  this.render(hbs`{{handle-input value=value}}`);
 
   var input = this.$('input');
 
@@ -27,7 +27,7 @@ test('entering value with spaces adds dashes', function(assert) {
 test('setting value with spaces adds dashes', function(assert) {
   assert.expect(2);
 
-  this.render(hbs(`{{handle-input value=value}}`));
+  this.render(hbs`{{handle-input value=value}}`);
 
   var input = this.$('input');
 
@@ -40,7 +40,7 @@ test('setting value with spaces adds dashes', function(assert) {
 test('entering value with capital letter lowercases it', function(assert){
   assert.expect(2);
 
-  this.render(hbs(`{{handle-input value=value}}`));
+  this.render(hbs`{{handle-input value=value}}`);
 
   var input = this.$('input');
 
@@ -54,7 +54,7 @@ test('entering value with capital letter lowercases it', function(assert){
 test('setting value with capital letter lowercases it', function(assert){
   assert.expect(2);
 
-  this.render(hbs(`{{handle-input value=value}}`));
+  this.render(hbs`{{handle-input value=value}}`);
 
   var input = this.$('input');
 
@@ -67,7 +67,7 @@ test('setting value with capital letter lowercases it', function(assert){
 test('entering value with bad char removes it', function(assert){
   assert.expect(2);
 
-  this.render(hbs(`{{handle-input value=value}}`));
+  this.render(hbs`{{handle-input value=value}}`);
 
   var input = this.$('input');
 
@@ -81,7 +81,7 @@ test('entering value with bad char removes it', function(assert){
 test('setting value with bad char removes it', function(assert){
   assert.expect(2);
 
-  this.render(hbs(`{{handle-input value=value}}`));
+  this.render(hbs`{{handle-input value=value}}`);
 
   var input = this.$('input');
 
@@ -94,7 +94,7 @@ test('setting value with bad char removes it', function(assert){
 test(`entering more than ${maxChars} chars truncates to ${maxChars}`, function(assert){
   assert.expect(3);
 
-  this.render(hbs(`{{handle-input value=value}}`));
+  this.render(hbs`{{handle-input value=value}}`);
 
   var input = this.$('input');
 
@@ -115,7 +115,7 @@ test(`entering more than ${maxChars} chars truncates to ${maxChars}`, function(a
 test(`setting more than ${maxChars} chars truncates to ${maxChars}`, function(assert){
   assert.expect(3);
 
-  this.render(hbs(`{{handle-input value=value}}`));
+  this.render(hbs`{{handle-input value=value}}`);
 
   var input = this.$('input');
 
@@ -133,7 +133,7 @@ test(`setting more than ${maxChars} chars truncates to ${maxChars}`, function(as
 });
 
 test(`autofocusable`, function(assert){
-  this.render(hbs(`{{handle-input autofocus=true}}`));
+  this.render(hbs`{{handle-input autofocus=true}}`);
 
   var el = this.$('input')[0];
 

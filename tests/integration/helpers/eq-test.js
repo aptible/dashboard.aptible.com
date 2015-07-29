@@ -12,13 +12,13 @@ test('returns true for equal values', function(assert) {
     val2: 2
   });
 
-  this.render(hbs(`
+  this.render(hbs`
     {{#if (eq val1 val2)}}
       Truthy!
     {{else}}
       Falsey!
     {{/if}}
-  `));
+  `);
 
   assert.equal(this.$().text().trim(), 'Falsey!');
 
