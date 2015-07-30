@@ -1,0 +1,8 @@
+<select class="form-control" name={{name}} {{action 'update' on="change"}}>
+  {{#if prompt}}
+    <option disabled>{{prompt}}</option>
+  {{/if}}
+  {{#each items as |item|}}
+      <option>{{item}}</option>
+  {{/each}}
+</select>

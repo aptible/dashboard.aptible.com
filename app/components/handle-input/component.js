@@ -32,6 +32,9 @@ export default FocusableInput.extend({
     },
     set(key, value) {
       this._sanitizedValue = sanitizeInput(value);
+
+      this.attrs.value.update(this._sanitizedValue);
+
       return this._sanitizedValue;
     }
   })

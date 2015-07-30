@@ -100,6 +100,7 @@ test(`visiting ${url} and inviting: error`, function(assert){
   signInAndVisit(url);
   fillInput('email', email);
   fillInput('role', roleId);
+
   clickButton('Send Invitation');
   andThen(() => {
     let error = find(`:contains(${errorMessage})`);

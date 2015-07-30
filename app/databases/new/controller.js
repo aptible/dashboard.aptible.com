@@ -1,9 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  needs: ['stack'],
-  persistedDatabases: Ember.computed.alias('controllers.stack.persistedDatabases'),
-  showCancelButton: Ember.computed.gt('persistedDatabases.length', 0),
+  stack: Ember.inject.controller('stack'),
+  showCancelButton: Ember.computed.gt('stack.persistedDatabases.length', 0),
 
   diskSize: 10,
 

@@ -35,11 +35,12 @@
 
             <div class="">
               <label for="role">Role</label>
-              {{view "select" name="role" class="form-control"
-                  content=organization.roles
-                  optionLabelPath="content.name"
-                  optionValuePath="content.id"
-                  selection=model.role}}
+              {{object-select
+                name="role"
+                items=organization.roles
+                selected=model.role
+                update=(action (mut model.role))
+              }}
             </div>
           </form>
         </div>
