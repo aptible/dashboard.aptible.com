@@ -5,7 +5,6 @@ import { stubRequest } from '../../helpers/fake-server';
 
 var App;
 let databaseId = 'my-db-1-stack-1';
-let stackHandle = 'my-stack-1';
 
 module('Acceptance: Database Sidebar', {
   beforeEach: function() {
@@ -27,7 +26,7 @@ module('Acceptance: Database Sidebar', {
         }
       });
     });
-    stubRequest('get', `/databases/${databaseId}/operations`, function(request){
+    stubRequest('get', `/databases/${databaseId}/operations`, function(){
       return this.success({
         _embedded: {
           operations: []

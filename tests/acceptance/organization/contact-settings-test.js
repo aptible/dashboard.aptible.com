@@ -206,7 +206,7 @@ test(`visiting ${url} and saving with error`, function(assert) {
     });
   });
 
-  stubRequest('put', organizationApiUrl, function(request) {
+  stubRequest('put', organizationApiUrl, function() {
     return this.error(422, {
       code: 422,
       error: 'unprocessable_entity',

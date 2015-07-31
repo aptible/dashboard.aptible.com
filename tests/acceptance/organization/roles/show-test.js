@@ -41,7 +41,7 @@ function doSetup(options={}){
     }
   });
   stubStacks({}, options.stacks || []);
-  stubRequest('get', apiOrgUsersUrl, function(request){
+  stubRequest('get', apiOrgUsersUrl, function(){
     return this.success({ _embedded: {users: options.users || []} });
   });
   // This stubs out the roles URL, and since the roleId
@@ -66,15 +66,6 @@ test(`visiting ${url} lists permissions by stack`, (assert)=> {
   doSetup();
   let stackHandle = 'stack1-handle';
   let scopes = ['Read', 'Manage'];
-
-  let permissions = [{
-    id: 'p1',
-    scope: 'read',
-    _links: {
-      role: { href: '/some/other/role' }
-    }
-  }];
-
   let stackId = 'stack1';
   let stacks = [{
     id: stackId,
@@ -159,7 +150,7 @@ test(`visiting ${url} lists permissions by stack, checked boxes when permissions
   let deletedPermission;
   let expectedPermissionId = permissions[0].id;
   let deletePermissionUrl  = `/permissions/${expectedPermissionId}`;
-  stubRequest('delete', deletePermissionUrl, function(request){
+  stubRequest('delete', deletePermissionUrl, function(){
     deletedPermission = true;
     return this.noContent();
   });
@@ -215,7 +206,7 @@ test(`visiting ${url} show error for failuere to save changed name`, (assert)=> 
   assert.expect(1);
   doSetup();
 
-  stubRequest('put', `/roles/${roleId}`, function(request) {
+  stubRequest('put', `/roles/${roleId}`, function() {
     return this.error({
       code: 422,
       error: 'unprocessable_entity',
@@ -258,7 +249,7 @@ test(`visiting ${url} shows list of members`, (assert) => {
     users: orgUsers
   });
 
-  stubRequest('get', apiRoleUsersUrl, function(request){
+  stubRequest('get', apiRoleUsersUrl, function(){
     return this.success({ _embedded: {users: [memberUser]} });
   });
 
@@ -308,24 +299,24 @@ test(`visiting ${url} allows removing a user`, (assert) => {
     _links: { user: { href: `/users/some-other-user` } }
   }];
 
-  stubRequest('get', apiRoleMembersUrl, function(request){
+  stubRequest('get', apiRoleMembersUrl, function(){
     return this.success({ _embedded: {memberships} });
   });
 
-  stubRequest('get', apiRoleUsersUrl, function(request){
+  stubRequest('get', apiRoleUsersUrl, function(){
     return this.success({ _embedded: {users} });
   });
 
   // returns a list of users
-  stubRequest('get', apiUsersUrl, function(request){
+  stubRequest('get', apiUsersUrl, function(){
     return this.success({ _embedded: {users} });
   });
 
-  stubRequest('get', apiRoleUrl, function(request){
+  stubRequest('get', apiRoleUrl, function(){
     return this.success(roleData);
   });
 
-  stubRequest('delete', `/memberships/${memberships[0].id}`, function(request){
+  stubRequest('delete', `/memberships/${memberships[0].id}`, function(){
     assert.ok(true, `DELETEs membership id "${memberships[0].id}`);
     return this.noContent();
   });
@@ -396,7 +387,7 @@ test(`visiting ${url} shows error when inviting a user by email`, (assert) => {
 
   const email = 'abc@gmail.com';
 
-  stubRequest('post', `/roles/${roleId}/invitations`, function(request){
+  stubRequest('post', `/roles/${roleId}/invitations`, function(){
     return this.error({
       code: 422,
       error: 'unprocessable_entity',
@@ -431,7 +422,7 @@ test(`visiting ${url} allows removing an invitation`, (assert) => {
 
   doSetup({roleData});
 
-  stubRequest('delete', `/invitations/${invitations[0].id}`, function(request){
+  stubRequest('delete', `/invitations/${invitations[0].id}`, function(){
     assert.ok(true, 'DELETEs invitation');
     return this.noContent();
   });

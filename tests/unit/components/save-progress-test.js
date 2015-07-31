@@ -3,7 +3,6 @@ import {
   test
 } from 'ember-qunit';
 
-import startApp from '../../helpers/start-app';
 import Ember from 'ember';
 
 moduleForComponent('save-progress', 'SaveProgressComponent', {

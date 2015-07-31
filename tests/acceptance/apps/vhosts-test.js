@@ -28,11 +28,11 @@ module('Acceptance: App Vhosts', {
   }
 });
 
-test(`${appVhostsUrl} requires authentication`, function(assert) {
+test(`${appVhostsUrl} requires authentication`, function() {
   expectRequiresAuthentication(appVhostsUrl);
 });
 
-test(`app show page includes link to ${appVhostsUrl}`, function(assert) {
+test(`app show page includes link to ${appVhostsUrl}`, function() {
   stubApp({
     id: appId,
     status: 'provisioned'
@@ -45,7 +45,7 @@ test(`app show page includes link to ${appVhostsUrl}`, function(assert) {
   });
 });
 
-test(`visit ${appVhostsUrl} has link to ${appVhostsNewUrl}`, function(assert) {
+test(`visit ${appVhostsUrl} has link to ${appVhostsNewUrl}`, function() {
   let appHandle = 'handle-app';
   let stackHandle = 'handle-stack';
 
@@ -281,7 +281,7 @@ test(`visit ${appVhostsUrl} and delete vhost has error`, function(assert) {
   });
 
   stubRequest('post', `/vhosts/${vhostId}/operations`, function(request){
-    let json = this.json(request);
+    this.json(request);
     return this.error(401, {});
   });
 

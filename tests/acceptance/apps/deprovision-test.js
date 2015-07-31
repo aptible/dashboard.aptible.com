@@ -14,7 +14,7 @@ module('Acceptance: App Deprovision', {
   }
 });
 
-test('/apps/:id/deprovision requires authentication', function(assert) {
+test('/apps/:id/deprovision requires authentication', function() {
   expectRequiresAuthentication('/apps/1/deprovision');
 });
 
@@ -62,7 +62,7 @@ test('/apps/:id/deprovision will deprovision with confirmation', function(assert
     }
   });
 
-  stubRequest('post', `/apps/${appId}/operations`, function(request){
+  stubRequest('post', `/apps/${appId}/operations`, function(){
     didDeprovision = true;
     return this.success({
       id: '1',
@@ -104,7 +104,7 @@ test('/apps/:id/deprovision will show deprovision error', function(assert) {
     }
   });
 
-  stubRequest('post', '/apps/'+appId+'/operations', function(request){
+  stubRequest('post', '/apps/'+appId+'/operations', function(){
     return this.error(401, {
       code: 401,
       error: 'invalid_credentials',

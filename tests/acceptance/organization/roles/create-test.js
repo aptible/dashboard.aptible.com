@@ -11,8 +11,6 @@ let orgId = 'o1'; // FIXME this is hardcoded to match the value for signIn in ap
 let roleId = 'r1';
 let url = `/organizations/${orgId}/roles/new`;
 let apiRoleUrl = `/roles/${roleId}`;
-let apiRoleUsersUrl = `/roles/${roleId}/users`;
-let apiUsersUrl = `/organizations/${orgId}/users`;
 
 const roleData = {
   id: roleId,
@@ -101,7 +99,7 @@ test(`visiting ${url} and creating new role with permissions`, (assert) => {
   assert.expect(4);
 
   // tested in previous test
-  stubRequest('post', `/organizations/${orgId}/roles`, function(request){
+  stubRequest('post', `/organizations/${orgId}/roles`, function(){
     return this.success(roleData);
   });
 

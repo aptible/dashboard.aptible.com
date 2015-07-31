@@ -42,7 +42,7 @@ function mockSuccessfulPayment(stripeToken){
     }, 2);
   };
 
-  stubRequest('post', '/subscriptions', function(request){
+  stubRequest('post', '/subscriptions', function(){
     return this.noContent();
   });
 }
@@ -53,7 +53,7 @@ module('Acceptance: WelcomePaymentInfo', {
     oldCreateToken = mockStripe.card.createToken;
 
     claimUrls.forEach((claimUrl) => {
-      stubRequest('post', claimUrl, function(request) {
+      stubRequest('post', claimUrl, function() {
         return [204, {}, ''];
       });
     });
@@ -64,7 +64,7 @@ module('Acceptance: WelcomePaymentInfo', {
   }
 });
 
-test('visiting /welcome/payment-info when not logged in', function(assert) {
+test('visiting /welcome/payment-info when not logged in', function() {
   expectRequiresAuthentication('/welcome/payment-info');
 });
 
@@ -80,7 +80,7 @@ test('visiting /welcome/payment-info logged in with stacks', function(assert) {
 });
 
 test('submitting empty payment info raises an error', function(assert) {
-  stubRequest('get', '/billing_details/1', function(request){
+  stubRequest('get', '/billing_details/1', function(){
     return this.notFound();
   });
 
@@ -106,7 +106,7 @@ test('submitting empty payment info raises an error', function(assert) {
 test('payment info should be submitted to stripe to create stripeToken', function(assert) {
   assert.expect(8);
 
-  stubRequest('get', '/billing_details/1', function(request){
+  stubRequest('get', '/billing_details/1', function(){
     return this.notFound();
   });
 
@@ -123,8 +123,6 @@ test('payment info should be submitted to stripe to create stripeToken', functio
   };
   let stripeToken = 'some-token';
   let stackHandle = 'my-stack-1';
-  let appHandle = 'my-app-1-stack-1';
-
   stubRequest('post', '/subscriptions', function(request){
     var params = this.json(request);
     params.organization_id = params.id;
@@ -132,9 +130,7 @@ test('payment info should be submitted to stripe to create stripeToken', functio
     return this.noContent();
   });
 
-  let stackAssertions = {};
-
-  stubRequest('post', '/accounts', function(request){
+  stubRequest('post', '/accounts', function(){
     return this.success({
       id: stackHandle,
       handle: stackHandle,
@@ -183,12 +179,11 @@ test('submitting valid payment info for development plan should create dev stack
   // This is to load apps.index
   stubOrganization();
 
-  stubRequest('get', '/billing_details/1', function(request){
+  stubRequest('get', '/billing_details/1', function(){
     return this.notFound();
   });
 
   let stackHandle = 'sprocket-co';
-  let appHandle = 'my-app-1';
 
   let stackAssertions = {};
 
@@ -199,7 +194,7 @@ test('submitting valid payment info for development plan should create dev stack
     stackAssertions[params.handle] = null;
   };
 
-  stackAssertions[`${stackHandle}-prod`] = (params) => {
+  stackAssertions[`${stackHandle}-prod`] = () => {
     assert.ok(false, 'should not create prod stack');
   };
 
@@ -235,12 +230,12 @@ test('submitting valid payment info on organization with existing stripe info sh
     return this.success(Ember.merge({id:params.handle }, params));
   });
 
-  stubRequest('post', '/subscriptions', function(request){
+  stubRequest('post', '/subscriptions', function(){
     assert.ok(false, 'should not create subscription again');
     return this.success();
   });
 
-  stubRequest('get', '/organizations', function(request){
+  stubRequest('get', '/organizations', function(){
     return this.success({
       _links: {},
       _embedded: {
@@ -282,7 +277,7 @@ test('submitting valid payment info should create app', function(assert) {
   // This is to load apps.index
   stubOrganization();
 
-  stubRequest('get', '/billing_details/1', function(request){
+  stubRequest('get', '/billing_details/1', function(){
     return this.notFound();
   });
 
@@ -324,7 +319,7 @@ test('submitting valid payment info should create db', function(assert) {
 
   stubStacks({}, []);
 
-  stubRequest('get', '/billing_details/1', function(request){
+  stubRequest('get', '/billing_details/1', function(){
     return this.notFound();
   });
 
@@ -369,7 +364,7 @@ test('submitting valid payment info should create db', function(assert) {
 test('submitting valid payment info when user is verified should provision db', function(assert) {
   assert.expect(4);
 
-  stubRequest('get', '/billing_details/1', function(request){
+  stubRequest('get', '/billing_details/1', function(){
     return this.notFound();
   });
 

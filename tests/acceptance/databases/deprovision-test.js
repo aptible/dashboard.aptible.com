@@ -15,7 +15,7 @@ module('Acceptance: Database Deprovision', {
   }
 });
 
-test('/databases/:id/deprovision requires authentication', function(assert) {
+test('/databases/:id/deprovision requires authentication', function() {
   expectRequiresAuthentication('/databases/1/deprovision');
 });
 
@@ -61,7 +61,7 @@ test('/databases/:id/deprovision will deprovision with confirmation', function(a
     }
   });
 
-  stubRequest('post', `/databases/${databaseId}/operations`, function(request){
+  stubRequest('post', `/databases/${databaseId}/operations`, function(){
     didDeprovision = true;
     return this.success({
       id: '1',
@@ -100,7 +100,7 @@ test('/databases/:id/deprovision will show deprovision error', function(assert) 
     }
   });
 
-  stubRequest('post', '/databases/'+databaseId+'/operations', function(request){
+  stubRequest('post', '/databases/'+databaseId+'/operations', function(){
     return this.error(401, {
       code: 401,
       error: 'invalid_credentials',

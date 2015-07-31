@@ -59,17 +59,17 @@ module('Acceptance: Organization Members: Member', {
       }
     });
 
-    stubRequest('get', apiMemberUrl, function(request){
+    stubRequest('get', apiMemberUrl, function(){
       return this.success(user);
     });
 
     // all org roles
-    stubRequest('get', apiRolesUrl, function(request){
+    stubRequest('get', apiRolesUrl, function(){
       return this.success({ _embedded: { roles } });
     });
 
     // this user's roles
-    stubRequest('get', apiUserRolesUrl, function(request){
+    stubRequest('get', apiUserRolesUrl, function(){
       return this.success({ _embedded: { roles: userRoles } });
     });
   },
@@ -79,7 +79,7 @@ module('Acceptance: Organization Members: Member', {
   }
 });
 
-test(`visiting ${url} requires authentication`, function(assert) {
+test(`visiting ${url} requires authentication`, function() {
   expectRequiresAuthentication(url);
 });
 
@@ -117,7 +117,7 @@ test(`visiting ${url} shows user's info and all roles with checkboxes`, function
   });
 });
 
-test(`visiting ${url} does not show "Remove user" button if the user is looking at their own page`, function(assert) {
+test(`visiting ${url} does not show "Remove user" button if the user is looking at their own page`, function() {
   signInAndVisit(url, user);
 
   andThen(function() {
@@ -135,12 +135,12 @@ test(`visiting ${url} allows changing user's roles`, function(assert){
     return this.noContent();
   });
 
-  stubRequest('get', `/roles/${roles[0].id}/memberships`, function(request){
+  stubRequest('get', `/roles/${roles[0].id}/memberships`, function(){
     assert.ok(true, 'gets role memberships');
     return this.success({ _embedded: { memberships } });
   });
 
-  stubRequest('delete', `/memberships/${membershipId}`, function(request){
+  stubRequest('delete', `/memberships/${membershipId}`, function(){
     assert.ok(true, `deletes membership id ${membershipId}`);
     return this.noContent();
   });
@@ -193,7 +193,7 @@ test(`visiting ${url} with only 1 role checked is disabled`, function(assert){
 test(`visit ${url} allows removing user from organization`, function(assert){
   assert.expect(2);
 
-  stubRequest('delete', `/organizations/${orgId}/users/${userId}`, function(request){
+  stubRequest('delete', `/organizations/${orgId}/users/${userId}`, function(){
     assert.ok(true, 'deletes to correct url');
     return this.noContent();
   });

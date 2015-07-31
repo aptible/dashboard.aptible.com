@@ -32,13 +32,13 @@ function findApp(appHandle){
   return find(`:contains(${appHandle})`);
 }
 
-test(`${url} requires authentication`, function(assert) {
+test(`${url} requires authentication`, function() {
   expectRequiresAuthentication(url);
 });
 
 test(`visiting /stacks/:stack_id/apps without any apps redirects to ${url}`, function(assert) {
   stubStack({ id: stackId , apps: [] });
-  stubRequest('get', '/accounts/my-stack-1/apps', function(request){
+  stubRequest('get', '/accounts/my-stack-1/apps', function(){
     return this.success({
       _links: {},
       _embedded: {
@@ -90,7 +90,7 @@ test(`visit ${url} and cancel`, function(assert) {
 });
 
 test(`visit ${url} without apps show no cancel button`, function(assert) {
-  stubRequest('get', '/accounts/my-stack-1/apps', function(request){
+  stubRequest('get', '/accounts/my-stack-1/apps', function(){
     return this.success({
       _links: {},
       _embedded: {
@@ -146,7 +146,7 @@ test(`visit ${url} and create an app`, function(assert) {
   });
 
   // Stub for app deploy
-  stubRequest('get', '/users/:user_id/ssh_keys', function(request){
+  stubRequest('get', '/users/:user_id/ssh_keys', function(){
     return this.success({ _embedded: { ssh_keys: [] } });
   });
 

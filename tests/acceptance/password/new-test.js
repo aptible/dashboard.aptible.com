@@ -39,7 +39,6 @@ test('visiting /password/new/:reset_code/:user_id and submitting without passwor
   assert.expect(2);
   var userId = 'abcUserId';
   var resetCode = 'defResetCode';
-  var newPassword = 'someGreatPassword1%';
   visit(`/password/new/${resetCode}/${userId}`);
   click('button:contains(Reset my password)');
   andThen(function(){
@@ -110,7 +109,7 @@ test('visiting /password/new/:reset_code/:user_id and submitting a password hand
   var userId = 'abcUserId';
   var resetCode = 'defResetCode';
   var newPassword = 'someGreatPassword1%';
-  stubRequest('post', '/verifications', function(request){
+  stubRequest('post', '/verifications', function(){
     return this.error();
   });
 

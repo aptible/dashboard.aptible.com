@@ -6,12 +6,9 @@ import { stubRequest } from '../../helpers/fake-server';
 let App;
 
 let appId = '1';
-let appUrl = '/apps/' + appId;
 let appVhostsUrl = '/apps/' + appId + '/vhosts';
 let appVhostsApiUrl = '/apps/' + appId + '/vhosts';
 let appVhostsNewUrl = '/apps/' + appId + '/vhosts/new';
-
-var formInputNames = ['service', 'virtual-domain', 'certificate', 'private-key'];
 
 module('Acceptance: App Vhost New', {
   beforeEach: function() {
@@ -24,7 +21,7 @@ module('Acceptance: App Vhost New', {
   }
 });
 
-test('visit ' + appVhostsNewUrl + ' requires authentication', function(assert) {
+test('visit ' + appVhostsNewUrl + ' requires authentication', function() {
   expectRequiresAuthentication(appVhostsNewUrl);
 });
 

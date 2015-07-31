@@ -28,7 +28,7 @@ module('Acceptance: Databases', {
   }
 });
 
-test('visiting /stacks/:stack_id/databases requires authentication', function(assert) {
+test('visiting /stacks/:stack_id/databases requires authentication', function() {
   expectRequiresAuthentication('/stacks/my-stack-1/databases');
 });
 
@@ -51,7 +51,7 @@ test('visiting /stacks/my-stack-1/databases shows list of databases', function(a
 });
 
 test('visiting /stacks/my-stack-1/databases then clicking on an database visits the database', function(assert) {
-  stubRequest('get', '/databases/1/operations', function(request){
+  stubRequest('get', '/databases/1/operations', function(){
     return this.success({
       _embedded: {
         operations: []
@@ -73,7 +73,7 @@ test('visiting /stacks/my-stack-1/databases then clicking on an database visits 
   });
 });
 
-test(`visiting ${url} when user is verified shows Create Database button`, function(assert) {
+test(`visiting ${url} when user is verified shows Create Database button`, function() {
   let userData = {verified: true};
   signInAndVisit(url, userData);
   andThen( () => {
@@ -81,7 +81,7 @@ test(`visiting ${url} when user is verified shows Create Database button`, funct
   });
 });
 
-test(`visiting ${url} when user is not verified shows no Create Database button`, function(assert) {
+test(`visiting ${url} when user is not verified shows no Create Database button`, function() {
   let userData = {verified: false};
   signInAndVisit(url, userData);
   andThen( () => {

@@ -17,12 +17,12 @@ module('Acceptance: Apps', {
 });
 
 
-test(`visiting ${url} requires authentication`, function(assert) {
+test(`visiting ${url} requires authentication`, function() {
   expectRequiresAuthentication(url);
 });
 
 test(`visiting ${url} with no apps redirects to apps new`, function(assert) {
-  stubRequest('get', '/accounts/my-stack-1/apps', function(request){
+  stubRequest('get', '/accounts/my-stack-1/apps', function(){
     return this.success({
       _links: {},
       _embedded: {
@@ -69,7 +69,7 @@ test(`visiting ${url}`, function(assert) {
 });
 
 test(`visiting ${url} shows list of apps`, function(assert) {
-  let orgId = 1, orgName = 'Sprocket Co';
+  let orgId = 1;
   let stackHandle = 'my-stack-1';
 
   // Just needed to stub /stack/my-stack-1/apps
@@ -93,10 +93,10 @@ test(`visiting ${url} shows list of apps`, function(assert) {
 
 
 test(`visiting ${url} shows list of provisioning apps`, function(assert) {
-  let orgId = 1, orgName = 'Sprocket Co';
+  let orgId = 1;
   let stackHandle = 'my-stack-1';
 
-  stubRequest('get', '/accounts/my-stack-1/apps', function(request){
+  stubRequest('get', '/accounts/my-stack-1/apps', function(){
     return this.success({
       _links: {},
       _embedded: {
@@ -139,10 +139,10 @@ test(`visiting ${url} shows list of provisioning apps`, function(assert) {
 });
 
 test(`visiting ${url} shows list of deprovisioning apps`, function(assert) {
-  let orgId = 1, orgName = 'Sprocket Co';
+  let orgId = 1;
   let stackHandle = 'my-stack-1';
 
-  stubRequest('get', '/accounts/my-stack-1/apps', function(request){
+  stubRequest('get', '/accounts/my-stack-1/apps', function(){
     return this.success({
       _links: {},
       _embedded: {
@@ -221,14 +221,14 @@ test(`${url} requests apps, databases on each visit`, function(assert) {
     }
   });
 
-  stubRequest('get', `/accounts/${stackId}/databases`, function(request){
+  stubRequest('get', `/accounts/${stackId}/databases`, function(){
     databaseRequestCount++;
     return this.success({
       _embedded: { databases: [] }
     });
   });
 
-  stubRequest('get', `/accounts/${stackId}/apps`, function(request){
+  stubRequest('get', `/accounts/${stackId}/apps`, function(){
     appRequestCount++;
     return this.success({
       _embedded: { apps: [] }
@@ -262,7 +262,7 @@ test(`${url} requests apps, databases on each visit`, function(assert) {
   });
 });
 
-test(`visit ${url} shows create app button if user is verified`, function(assert) {
+test(`visit ${url} shows create app button if user is verified`, function() {
   stubOrganization();
   stubOrganizations();
   stubStacks({ includeApps: true });
@@ -280,7 +280,7 @@ test(`visit ${url} shows create app button if user is verified`, function(assert
   });
 });
 
-test(`visit ${url} does not show create app button if user is not verified`, function(assert) {
+test(`visit ${url} does not show create app button if user is not verified`, function() {
   stubOrganization();
   stubOrganizations();
   stubStacks({ includeApps: true });

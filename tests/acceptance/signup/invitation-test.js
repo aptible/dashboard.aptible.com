@@ -2,7 +2,6 @@ import Ember from 'ember';
 import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
-import successfulTokenResponse from '../../helpers/successful-token-response';
 import { AFTER_AUTH_COOKIE } from 'diesel/login/route';
 import Cookies from "ember-cli-aptible-shared/utils/cookies";
 import {
@@ -35,7 +34,7 @@ module('Acceptance: Signup Invitation', {
   beforeEach: function() {
     App = startApp();
     stubInvitation(invitationData);
-    stubRequest('post', claimUrl, function(request) {
+    stubRequest('post', claimUrl, function() {
       return [204, {}, ''];
     });
   },
@@ -44,7 +43,7 @@ module('Acceptance: Signup Invitation', {
   }
 });
 
-test(`visiting ${url} when logged in redirects`, function(assert) {
+test(`visiting ${url} when logged in redirects`, function() {
   expectRedirectsWhenLoggedIn('/signup');
 });
 
@@ -64,11 +63,11 @@ test(`visiting ${url} shows inviter name`, function(assert) {
   });
 });
 
-test(`visiting ${url} shows signup inputs`, function(assert) {
+test(`visiting ${url} shows signup inputs`, function() {
   signupInputsTest(url);
 });
 
-test(`visiting ${url} pre-fills user's email from invitation`, function(assert){
+test(`visiting ${url} pre-fills user's email from invitation`, function(){
   visit(url);
   andThen(() => {
     expectInput('email', {value: invitationData.email});

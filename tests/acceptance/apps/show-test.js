@@ -23,13 +23,12 @@ module('Acceptance: Apps Show', {
   }
 });
 
-test('/apps/:id requires authentication', function(assert) {
+test('/apps/:id requires authentication', function() {
   expectRequiresAuthentication('/apps/1');
 });
 
 test('visiting /apps/my-app-id shows basic app info', function(assert) {
   var appId = 'my-app-id';
-  var serviceId = 'service-1';
 
   let deployUserName = 'Skylar Anderson';
   let currentGitRef = 'b2bac0d8f9';
@@ -39,7 +38,7 @@ test('visiting /apps/my-app-id shows basic app info', function(assert) {
     handle: 'my-stack-1'
   });
 
-  stubRequest('get', '/apps/' + appId, function(request){
+  stubRequest('get', '/apps/' + appId, function(){
     return this.success({
       id: appId,
       handle: 'my-app',

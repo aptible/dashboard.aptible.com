@@ -14,7 +14,7 @@ module('Acceptance: Verification', {
   }
 });
 
-test('visiting /verify/some-code requires authentication', function(assert) {
+test('visiting /verify/some-code requires authentication', function() {
   expectRequiresAuthentication('/verify/some-code');
 });
 

@@ -1,4 +1,3 @@
-import { stubRequest } from '../../helpers/fake-server';
 import {module, test} from 'qunit';
 import {
   paginatedResourceQueryParamsPage2Test,
@@ -25,22 +24,22 @@ module('Acceptance: Apps Paginated Operations', {
   }
 });
 
-test('visit /apps/:id/activity requires authentication', function(assert) {
+test('visit /apps/:id/activity requires authentication', function() {
   expectRequiresAuthentication('/apps/1/activity');
 });
 
-test('visit /apps/:id/activity shows operations', function(assert) {
+test('visit /apps/:id/activity shows operations', function() {
   resourceOperationsTest(sharedTestOptions);
 });
 
-test('visit /apps/:id/activity does pagination', function(assert) {
+test('visit /apps/:id/activity does pagination', function() {
   paginatedResourceTest(sharedTestOptions);
 });
 
-test('visit /apps/:id/activity updates query params when changing page', function(assert) {
+test('visit /apps/:id/activity updates query params when changing page', function() {
   paginatedResourceUpdatesQueryParamsTest(sharedTestOptions);
 });
 
-test('visit /apps/:id/activity?page=2 starts at 2nd page', function(assert) {
+test('visit /apps/:id/activity?page=2 starts at 2nd page', function() {
   paginatedResourceQueryParamsPage2Test(sharedTestOptions);
 });
