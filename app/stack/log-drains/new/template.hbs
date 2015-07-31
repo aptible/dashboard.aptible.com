@@ -16,7 +16,7 @@
 
           <div class="form-group">
             <label class="block" for="drain-handle">Handle</label>
-            {{handle-input class="form-control" value=model.handle name='handle' autofocus=true}}
+            {{handle-input class="form-control" update=(action (mut model.handle)) value=model.handle name='handle' autofocus=true}}
           </div>
           <div class="form-group">
             <label class="block" for="drain-type">Type</label>

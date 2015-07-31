@@ -6,7 +6,7 @@
       Handle
       <span class="label-helper">Lowercase alphanumerics, periods, and dashes only</span>
     </label>
-    {{handle-input class="form-control" value=model.handle name='environment-handle' autofocus=true}}
+    {{handle-input class="form-control" update=(action (mut model.handle)) value=model.handle name='environment-handle' autofocus=true}}
   </div>
 
   <div class="form-group">
@@ -50,4 +50,3 @@
     </button>
   </div>
 </form>
-
