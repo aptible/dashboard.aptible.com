@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import FocusableInput from '../focusable-input/component';
+import Autofocusable from '../../mixins/views/autofocusable';
 
 export var maxChars = 64;
 
@@ -24,18 +24,36 @@ function sanitizeInput(input){
          replace(nonAlphaNumerics, '');
 }
 
-export default FocusableInput.extend({
-  _sanitizedValue: null,
-  value: Ember.computed({
-    get() {
-      return this._sanitizedValue;
-    },
-    set(key, value) {
-      this._sanitizedValue = sanitizeInput(value);
+function handleChangeEvent() {
+  let value = this.readDOMAttr('value');
 
-      this.attrs.value.update(this._sanitizedValue);
+  processValue.call(this, value);
+}
 
-      return this._sanitizedValue;
+function processValue(rawValue) {
+  let value = sanitizeInput(rawValue);
+
+  if (this._sanitizedValue !== value) {
+    this._sanitizedValue = value;
+    this.attrs.update(value);
+  }
+}
+
+export default Ember.Component.extend(Autofocusable, {
+  tagName: 'input',
+  attributeBindings: [ 'type', 'value', 'placeholder', 'name' ],
+  type: 'text',
+
+  input: handleChangeEvent,
+  change: handleChangeEvent,
+
+  _sanitizedValue: undefined,
+
+  didReceiveAttrs: function() {
+    if (!this.attrs.update) {
+      throw new Error('You must provide an `update` action to `{{handle-input}}`.');
     }
-  })
+
+    processValue.call(this, this.get('value'));
+  }
 });

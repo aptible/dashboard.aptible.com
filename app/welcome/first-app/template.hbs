@@ -21,6 +21,7 @@
               {{handle-input class="stack-handle form-control sanitize-handler"
                 placeholder="e.g., organization-prod"
                 name="stack-handle"
+                update=(action (mut model.stackHandle))
                 value=model.stackHandle
                 }}
               {{validation-feedback error=errors.model.stackHandle value=model.stackHandle fieldName='Environment handle'}}
@@ -38,6 +39,7 @@
               {{handle-input class="app-name form-control sanitize-handler"
                 placeholder="e.g., app-prod"
                 name="app-handle"
+                update=(action (mut model.appHandle))
                 value=model.appHandle
                 autofocus="true"
                 }}
@@ -68,6 +70,7 @@
                 {{handle-input class="database-name form-control sanitize-handler"
                   placeholder="e.g., postgresql-prod"
                   name="db-handle"
+                  update=(action (mut model.dbHandle))
                   value=model.dbHandle
                   }}
                 {{validation-feedback error=errors.model.dbHandle value=model.dbHandle fieldName='Database Handle'}}

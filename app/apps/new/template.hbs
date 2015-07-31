@@ -20,7 +20,7 @@
               App handle
               <span class="label-helper">Lowercase alphanumerics, periods, and dashes only</span>
             </label>
-            {{handle-input class="form-control" value=model.handle name='handle' autofocus=true}}
+            {{handle-input class="form-control" update=(action (mut model.handle)) value=model.handle name='handle' autofocus=true}}
           </div>
         </div>
       </div>
