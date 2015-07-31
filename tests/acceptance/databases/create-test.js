@@ -33,7 +33,7 @@ function findDatabase(dbName){
   return find(`.database-handle:contains(${dbName})`);
 }
 
-test(`visit ${url} requires authentication`, function(assert) {
+test(`visit ${url} requires authentication`, function() {
   expectRequiresAuthentication(url);
 });
 
@@ -49,7 +49,7 @@ test(`visiting /stacks/:stack_id/databases without any databases redirects to ${
 
 test(`visit ${url} when stack has no databases does not show cancel`, function(assert) {
   stubStack({ id: stackId }); // stubs a stack with no databases
-  stubRequest('get', '/accounts/my-stack-1/databases', function(request){
+  stubRequest('get', '/accounts/my-stack-1/databases', function(){
     return this.success({
       _links: {},
       _embedded: {
@@ -109,7 +109,7 @@ test(`visit ${url} and create`, function(assert) {
   stubStack({ id: stackId, handle: 'stack-1'});
 
   // get account (aka stack)
-  stubRequest('get', '/accounts', function(request){
+  stubRequest('get', '/accounts', function(){
     return this.success({
       _embedded: {
         accounts: [{
@@ -124,7 +124,7 @@ test(`visit ${url} and create`, function(assert) {
   });
 
   // get DB
-  stubRequest('get', '/accounts/my-stack-1/databases', function(request){
+  stubRequest('get', '/accounts/my-stack-1/databases', function(){
     return this.success({
       _embedded: {
         databases: [{

@@ -26,11 +26,11 @@ module('Acceptance: User Settings: Profile', {
   }
 });
 
-test(settingsUrl + ' requires authentication', function(assert) {
+test(settingsUrl + ' requires authentication', function() {
   expectRequiresAuthentication(settingsUrl);
 });
 
-test(settingsProfileUrl + ' requires authentication', function(assert) {
+test(settingsProfileUrl + ' requires authentication', function() {
   expectRequiresAuthentication(settingsProfileUrl);
 });
 

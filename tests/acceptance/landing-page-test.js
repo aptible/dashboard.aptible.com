@@ -40,7 +40,7 @@ test('visiting / when logged in with only one stack redirects to first stack pag
   let stackId = 'my-stack-1';
   stubStacks();
   stubOrganizations();
-  stubRequest('get', '/accounts', function(request){
+  stubRequest('get', '/accounts', function(){
     return this.success({
       id: stackId,
       handle: stackId,

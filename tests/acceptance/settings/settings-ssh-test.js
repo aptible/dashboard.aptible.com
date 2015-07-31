@@ -7,14 +7,6 @@ var App;
 
 var settingsUrl = '/settings';
 var settingsSshUrl = settingsUrl + '/ssh';
-// from signInAndVisit helper
-var userId = 'user1';
-// from signInAndVisit helper
-var userEmail = 'stubbed-user@gmail.com';
-// from signInAndVisit helper
-var userName = 'stubbed user';
-
-var userApiUrl = '/users/' + userId;
 
 module('Acceptance: User Settings: Ssh', {
   beforeEach: function() {
@@ -36,7 +28,7 @@ function stubGetKeys(keys){
   });
 }
 
-test(settingsSshUrl + ' requires authentication', function(assert) {
+test(settingsSshUrl + ' requires authentication', function() {
   expectRequiresAuthentication(settingsSshUrl);
 });
 
@@ -75,7 +67,7 @@ test('visit ' + settingsSshUrl + ' shows ssh keys', function(assert) {
   });
 });
 
-test('visit ' + settingsSshUrl + ' with no key shows button to add key', function(assert) {
+test('visit ' + settingsSshUrl + ' with no key shows button to add key', function() {
   stubGetKeys([]);
   signInAndVisit(settingsSshUrl);
 
@@ -129,7 +121,7 @@ test('visit ' + settingsSshUrl + ' and adding a key when it returns an error', f
   var keyName = "my-test-key";
   var publicKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC90B4...";
 
-  stubRequest('post', '/users/user1/ssh_keys', function(request){
+  stubRequest('post', '/users/user1/ssh_keys', function(){
     return this.error({
       message: 'The key is invalid'
     });

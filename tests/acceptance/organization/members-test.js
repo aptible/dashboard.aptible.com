@@ -28,7 +28,7 @@ module('Acceptance: OrganizationMembers', {
   }
 });
 
-test(`visiting ${url} requires authentication`, function(assert) {
+test(`visiting ${url} requires authentication`, function() {
   expectRequiresAuthentication(url);
 });
 
@@ -47,16 +47,16 @@ test(`visiting ${url} shows users`, function(assert) {
 
   assert.expect(5 + 1*users.length);
 
-  stubRequest('get', membersUrl, function(request){
+  stubRequest('get', membersUrl, function(){
     assert.ok(true, 'Request for members is made');
     return this.success({ _embedded: { users } });
   });
 
-  stubRequest('get', '/users/bob/roles', function(request){
+  stubRequest('get', '/users/bob/roles', function(){
     return this.success({ _embedded: { roles: [] } });
   });
 
-  stubRequest('get', '/users/mike/roles', function(request){
+  stubRequest('get', '/users/mike/roles', function(){
     return this.success({ _embedded: { roles: [] } });
   });
 

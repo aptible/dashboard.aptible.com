@@ -31,10 +31,10 @@ module('Acceptance: Organizations: Invite Member', {
         invitations: { href: apiInvitationsUrl }
       }
     });
-    stubRequest('get', apiRolesUrl, function(request){
+    stubRequest('get', apiRolesUrl, function(){
       return this.success({ _embedded: { roles } });
     });
-    stubRequest('get', apiInvitationsUrl, function(request){
+    stubRequest('get', apiInvitationsUrl, function(){
       return this.success({ _embedded: { invitations } });
     });
   },
@@ -44,7 +44,7 @@ module('Acceptance: Organizations: Invite Member', {
   }
 });
 
-test(`visiting ${url} requires authentication`, function(assert) {
+test(`visiting ${url} requires authentication`, function() {
   expectRequiresAuthentication(url);
 });
 
@@ -85,12 +85,11 @@ test(`visiting ${url} and inviting: error`, function(assert){
 
   let role = roles[1];
   let roleId   = role.id,
-      roleName = role.name,
       email    = 'abc@gmail.com',
       errorMessage = 'Validation failed: Email has already been taken';
 
   stubRequest('post', `/roles/${roleId}/invitations`, function(request){
-    let json = this.json(request);
+    this.json(request);
     return this.error({
       error: 'unprocessable_entity',
       message: errorMessage

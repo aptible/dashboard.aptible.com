@@ -29,11 +29,11 @@ module('Acceptance: App Services', {
   }
 });
 
-test(`${url} requires authentication`, function(assert) {
+test(`${url} requires authentication`, function() {
   expectRequiresAuthentication(url);
 });
 
-test('app show page includes link to services url', function(assert) {
+test('app show page includes link to services url', function() {
   stubApp({
     id: appId,
     status: 'provisioned'

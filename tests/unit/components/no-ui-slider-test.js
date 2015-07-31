@@ -34,7 +34,7 @@ test('sliding sends action didSlide with the value', function(assert) {
 
   var mockController = MockController.create();
 
-  var component = this.subject({
+  this.subject({
     targetObject: mockController,
     start: 1,
     rangeMin: 1,

@@ -38,7 +38,7 @@ module('Acceptance: App Vhost Edit', {
       }
     };
 
-    stubRequest('get', vhostsUrl, function(request){
+    stubRequest('get', vhostsUrl, function(){
       return this.success({
         _embedded: {
           vhosts: [vhostData]
@@ -46,7 +46,7 @@ module('Acceptance: App Vhost Edit', {
       });
     });
 
-    stubRequest('get', serviceUrl, function(request){
+    stubRequest('get', serviceUrl, function(){
       return this.success({
         id: serviceId,
         handle: serviceHandle
@@ -137,7 +137,7 @@ test(`visit ${url} click save`, function(assert) {
 test(`visit ${url} click save and error`, function(assert) {
   let errorMsg = 'There was an error with this domain';
 
-  stubRequest('put', `/vhosts/${vhostId}`, function(request){
+  stubRequest('put', `/vhosts/${vhostId}`, function(){
     return this.error({
       message: errorMsg
     });

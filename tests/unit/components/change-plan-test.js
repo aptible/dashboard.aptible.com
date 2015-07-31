@@ -3,8 +3,6 @@ import {
   test
 } from 'ember-qunit';
 
-import Ember from 'ember';
-
 moduleForComponent('change-plan', 'ChangePlanComponent', {
   unit: true
 });

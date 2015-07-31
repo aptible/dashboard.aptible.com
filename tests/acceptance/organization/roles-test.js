@@ -43,7 +43,7 @@ test(`visiting ${url} shows roles`, (assert) => {
     _links: { roles: {href: rolesUrl} }
   });
 
-  stubRequest('get', rolesUrl, function(request){
+  stubRequest('get', rolesUrl, function(){
     assert.ok(true, `gets ${rolesUrl}`);
     return this.success({ _embedded: { roles }});
   });
@@ -80,7 +80,7 @@ test(`visit ${url} and click to show`, (assert) => {
     name: 'Owner'
   };
 
-  stubRequest('get', rolesUrl, function(request) {
+  stubRequest('get', rolesUrl, function() {
     assert.ok(true, `gets ${rolesUrl}`);
     return this.success({ _embedded: {roles: [role]} });
   });

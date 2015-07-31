@@ -2,7 +2,6 @@ import Ember from 'ember';
 import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
-import successfulTokenResponse from '../../helpers/successful-token-response';
 import {
   signupInputsTest,
   doSignupSteps
@@ -11,7 +10,6 @@ import {
 let App;
 let signupIndexPath = 'signup.index';
 let claimUrls = ['/claims/user', '/claims/account', '/claims/app', '/claims/database'];
-let userUrl = '/users/my-user';
 let userInput = {
   email: 'good@email.com',
   password: 'Correct#Password1!3',
@@ -24,7 +22,7 @@ module('Acceptance: Signup', {
   beforeEach: function() {
     App = startApp();
     claimUrls.forEach((claimUrl) => {
-      stubRequest('post', claimUrl, function(request) {
+      stubRequest('post', claimUrl, function() {
         return [204, {}, ''];
       });
     });
@@ -34,11 +32,11 @@ module('Acceptance: Signup', {
   }
 });
 
-test(`visiting ${url} when logged in redirects`, function(assert) {
+test(`visiting ${url} when logged in redirects`, function() {
   expectRedirectsWhenLoggedIn(url);
 });
 
-test(`visiting ${url} shows signup inputs`, function(assert) {
+test(`visiting ${url} shows signup inputs`, function() {
   signupInputsTest(url);
 });
 

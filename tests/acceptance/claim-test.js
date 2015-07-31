@@ -35,7 +35,7 @@ test(`visiting ${url} as unauthenticated redirects to signup/invitation/:invitat
 
 test(`visiting ${url} as unauthenticated revisits after log in`, function(assert) {
   let userUrl = '/user-url';
-  stubRequest('post', '/tokens', function(request){
+  stubRequest('post', '/tokens', function(){
     return this.success({
       id: 'my-id',
       access_token: 'my-token',
@@ -133,7 +133,7 @@ test(`visiting ${url} as authenticated creates verification`, function(assert) {
 });
 
 test('failed verification displays error', function(assert) {
-  stubRequest('post', '/verifications', function(request){
+  stubRequest('post', '/verifications', function(){
     return [401, jsonMimeType, {}];
   });
 

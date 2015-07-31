@@ -40,7 +40,7 @@ test(`visiting ${url} shows form to create new environment`, (assert) => {
 test(`visiting ${url} and creating new environment`, (assert) => {
   const handle = 'some-handle';
 
-  stubRequest('get', `/accounts`, function(request){
+  stubRequest('get', `/accounts`, function(){
     return this.success({
       _embedded: {
       }
@@ -71,7 +71,7 @@ test(`visiting ${url} and creating new environment`, (assert) => {
 test(`visiting ${url} and creating new prod environment`, (assert) => {
   const handle = 'some-handle';
 
-  stubRequest('get', `/accounts`, function(request){
+  stubRequest('get', `/accounts`, function(){
     return this.success({
       _embedded: {
       }

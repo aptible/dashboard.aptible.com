@@ -70,7 +70,7 @@ test(`visit ${url} shows basic stack info`, function(assert) {
     }
   }];
 
-  stubRequest('get', appsURL, function(request){
+  stubRequest('get', appsURL, function(){
     return this.success({
       _embedded: {
         apps: appData
@@ -78,7 +78,7 @@ test(`visit ${url} shows basic stack info`, function(assert) {
     });
   });
 
-  stubRequest('get', databasesURL, function(request){
+  stubRequest('get', databasesURL, function(){
     return this.success({
       _embedded: {
         databases: databaseData
@@ -116,4 +116,3 @@ test(`visit ${url} shows basic stack info`, function(assert) {
        'has disk size header');
   });
 });
-

@@ -12,8 +12,6 @@ let signupIndexPath = 'signup.index';
 let email = 'good@email.com';
 let password = 'Correct#Password1!3';
 let userUrl = '/users/my-user';
-let organization = 'Great Co.';
-let name = 'Test User';
 
 module('Acceptance: Login', {
   beforeEach: function() {
@@ -100,7 +98,7 @@ test('after logging in, nav header shows user name', function(assert) {
   let userUrl = '/user-url',
       userName = 'Joe Hippa';
 
-  stubRequest('post', '/tokens', function(request){
+  stubRequest('post', '/tokens', function(){
     return successfulTokenResponse(this, userUrl);
   });
 
@@ -119,7 +117,7 @@ test('after logging in, nav header shows user name', function(assert) {
   });
 });
 
-test('when redirect cookie is set, after logging in, the location is visited', function(assert) {
+test('when redirect cookie is set, after logging in, the location is visited', function() {
   stubStacks();
   stubOrganization();
   stubOrganizations();
@@ -128,7 +126,7 @@ test('when redirect cookie is set, after logging in, the location is visited', f
       userUrl = '/user-url',
       userName = 'Joe Hippo';
 
-  stubRequest('post', '/tokens', function(request){
+  stubRequest('post', '/tokens', function(){
     return successfulTokenResponse(this, userUrl);
   });
 

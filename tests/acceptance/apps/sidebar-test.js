@@ -5,7 +5,6 @@ import { stubRequest } from '../../helpers/fake-server';
 
 var App;
 let appId = 'my-app-1-stack-1';
-let stackHandle = 'my-stack-1';
 
 module('Acceptance: App Sidebar', {
   beforeEach: function() {

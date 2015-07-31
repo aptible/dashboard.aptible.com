@@ -9,13 +9,7 @@ let settingsUrl = '/settings';
 let settingsAccountUrl = `${settingsUrl}/admin`;
 let settingsProfileUrl = `${settingsUrl}/profile`;
 // from signInAndVisit helper
-let userId = 'user1';
-// from signInAndVisit helper
 let userEmail = 'stubbed-user@gmail.com';
-// from signInAndVisit helper
-let userName = 'stubbed user';
-
-let userApiUrl = '/users/' + userId;
 
 module('Acceptance: User Settings: Account', {
   beforeEach: function() {
@@ -27,7 +21,7 @@ module('Acceptance: User Settings: Account', {
   }
 });
 
-test(settingsAccountUrl + ' requires authentication', function(assert) {
+test(settingsAccountUrl + ' requires authentication', function() {
   expectRequiresAuthentication(settingsAccountUrl);
 });
 
@@ -102,7 +96,7 @@ test(`visit ${settingsAccountUrl} and change password with errors`, function(ass
       oldPassword = 'defghiljk';
 
   stubRequest('put', 'users/user1', function(request){
-    var user = this.json(request);
+    this.json(request);
 
     return this.error({
       code: 401,
@@ -200,7 +194,7 @@ test(`visit ${settingsAccountUrl} change email and errors`, function(assert) {
   let currentPassword = 'alkjsdf';
 
   stubRequest('put', '/users/user1', function(request){
-    var user = this.json(request);
+    this.json(request);
 
     return this.error({
       code: 401,

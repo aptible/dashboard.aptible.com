@@ -38,7 +38,7 @@ function setupAjaxStubs(sshKeys){
     }
   });
 
-  stubRequest('get', '/users/:user_id/ssh_keys', function(request){
+  stubRequest('get', '/users/:user_id/ssh_keys', function(){
     return this.success({ _embedded: { ssh_keys: sshKeys } });
   });
 }
@@ -145,7 +145,7 @@ test(`visit ${url} when user has ssh keys`, function(assert){
 test(`visit ${url} when app has not been deployed, click destroy link`, function(assert){
   assert.expect(2);
 
-  stubRequest('delete', `/apps/${appId}`, function(request){
+  stubRequest('delete', `/apps/${appId}`, function(){
     assert.ok(true, 'app is deleted');
     return this.noContent();
   });

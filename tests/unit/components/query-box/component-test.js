@@ -13,7 +13,6 @@ moduleForComponent('query-box', 'QueryBoxComponent', {
     mockAnalytics = Ember.Object.create();
   },
   subject: function() {
-    var container = this.container;
     var klass = this.container.lookupFactory(this.subjectName);
     var createOptions = {analytics: mockAnalytics};
     return klass.create(createOptions);
@@ -42,7 +41,7 @@ test('it identifies with email', function(assert) {
 
   var component = this.subject();
 
-  mockAnalytics.identify = function(_email, fn) {
+  mockAnalytics.identify = function(_email) {
     assert.equal(_email, email, "email is passed");
     return new Ember.RSVP.Promise(function(resolve){
       setTimeout(resolve, 2);

@@ -10,7 +10,7 @@ module('Acceptance: WelcomeFirstApp', {
   beforeEach: function() {
     application = startApp();
     claimUrls.forEach((claimUrl) => {
-      stubRequest('post', claimUrl, function(request) {
+      stubRequest('post', claimUrl, function() {
         return [204, {}, ''];
       });
     });
@@ -54,8 +54,6 @@ test('submitting a first app directs to payment info', function(assert) {
 });
 
 test('choosing a database type opens database pane, clicking it again closes', function(assert) {
-  var appHandle = 'my-app';
-
   stubStacks({}, []);
   stubOrganizations();
   signInAndVisit('/welcome/first-app');

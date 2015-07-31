@@ -3,8 +3,6 @@ import {
   test
 } from 'ember-qunit';
 
-import Ember from 'ember';
-
 moduleForComponent('git-ref', 'GitRefComponent', {
   unit: true,
 

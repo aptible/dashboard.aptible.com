@@ -9,11 +9,11 @@ moduleForComponent('permitted-stacks-by-role', {
   unit: true
 });
 
-let permits = function(role, scope) {
+let permits = function() {
   return new Ember.RSVP.Promise((resolve) => { resolve(true); });
 };
 
-let rejects = function(role, scope) {
+let rejects = function() {
   return new Ember.RSVP.Promise((resolve) => { resolve(false); });
 };
 

@@ -15,13 +15,13 @@ module('Acceptance: Databases Show', {
   }
 });
 
-test('visiting /databases/:id requires authentication', function(assert) {
+test('visiting /databases/:id requires authentication', function() {
   expectRequiresAuthentication('/databases/1');
 });
 
 test('visiting /databases/my-db-id shows the database', function(assert) {
   stubStack({ id: 'my-stack-1' });
-  stubRequest('get', '/databases/my-db-id', function(request){
+  stubRequest('get', '/databases/my-db-id', function(){
     return this.success({
       id: 'my-db-id',
       handle: 'my-database',
@@ -31,7 +31,7 @@ test('visiting /databases/my-db-id shows the database', function(assert) {
     });
   });
 
-  stubRequest('get', '/databases/my-db-id/operations', function(request){
+  stubRequest('get', '/databases/my-db-id/operations', function(){
     return this.success({
       _embedded: {
         operations: []

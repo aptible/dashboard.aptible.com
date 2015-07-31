@@ -46,7 +46,7 @@ module('Acceptance: Log Drains', {
   }
 });
 
-test(`visit ${url} requires authentication`, function(assert){
+test(`visit ${url} requires authentication`, function(){
   expectRequiresAuthentication(url);
 });
 
@@ -223,7 +223,7 @@ test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
     return this.success(json);
   });
 
-  stubRequest('post', `/log_drains/${logDrainId}/operations`, function(request){
+  stubRequest('post', `/log_drains/${logDrainId}/operations`, function(){
     return this.success();
   });
 
@@ -247,7 +247,7 @@ test(`visit ${addLogUrl} and create log failure`, function(assert){
   this.prepareStubs();
   let errorMessage = 'The log drain is invalid';
 
-  stubRequest('post', '/accounts/:stack_id/log_drains', function(request){
+  stubRequest('post', '/accounts/:stack_id/log_drains', function(){
     assert.ok(true, 'posts to log_drains');
 
     return this.error({ message: errorMessage });
