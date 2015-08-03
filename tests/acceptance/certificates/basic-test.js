@@ -5,11 +5,23 @@ import { stubRequest } from '../../helpers/fake-server';
 
 let App;
 let stackId = 'my-stack-1';
+let orgId = 1;
 let url = `/stacks/${stackId}/certificates`;
 
 module('Acceptance: Certificates', {
   beforeEach: function() {
     App = startApp();
+    stubStacks();
+    stubStack({
+      id: stackId,
+      handle: stackId,
+      _links: {
+        certificates: { href: `/accounts/${stackId}/certificates` },
+        organization: { href: `/organizations/${orgId}` }
+      }
+    });
+    stubOrganization();
+    stubOrganizations();
   },
   afterEach: function() {
     Ember.run(App, 'destroy');
@@ -50,10 +62,7 @@ test(`visiting ${url} with no certificates redirects to certificates new`, funct
 });
 
 test(`visiting ${url} shows list of certificates`, function(assert) {
-  let orgId = 1, orgName = 'Sprocket Co';
-  let stackHandle = 'my-stack-1';
-
-  stubRequest('get', '/accounts/my-stack-1/certificates', function(request){
+  stubRequest('get', `/accounts/${stackId}/certificates`, function(request){
     return this.success({
       _links: {},
       _embedded: {
@@ -65,22 +74,10 @@ test(`visiting ${url} shows list of certificates`, function(assert) {
     });
   });
 
-  // Just needed to stub /stack/my-stack-1/certificates
-  stubStacks();
-  stubStack({
-    id: stackId,
-    handle: stackHandle,
-    _links: {
-      certificates: { href: `/accounts/${stackId}/certificates` },
-      organization: { href: `/organizations/${orgId}` }
-    }
-  });
-  stubOrganization();
-  stubOrganizations();
-
   signInAndVisit(url);
 
   andThen(function() {
     assert.equal(find('.panel.certificate').length, 2, '2 certificates');
   });
 });
+

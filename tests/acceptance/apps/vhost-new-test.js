@@ -68,7 +68,87 @@ test(`visit ${appVhostsNewUrl} shows creation form`, function(assert) {
        'has header');
     expectInput('service', {input:'select'});
     expectFocusedInput('service', {input:'select'});
-    expectInput('virtual-domain');
+    expectInput('certificate', {input:'textarea'});
+    expectInput('private-key', {input:'textarea'});
+    expectButton('Save VHost');
+    expectButton('Cancel');
+    expectTitle(`Add a domain - ${appHandle} - ${stackHandle}`);
+  });
+});
+
+test(`visit ${appVhostsNewUrl} shows creation form with existing certificates`, function(assert) {
+  var appId = 1;
+  var appHandle = 'whammo-com';
+  var stackHandle = 'moop-com';
+
+  stubApp({
+    id: appId,
+    handle: appHandle,
+    _embedded: { services: [] },
+    _links: {
+      vhosts: { href: appVhostsApiUrl },
+      account: { href: `/accounts/${stackHandle}` }
+    }
+  });
+
+  stubRequest('get', appVhostsApiUrl, function(){
+    return this.success({
+      _embedded: { vhosts: [] }
+    });
+  });
+
+  stubStack({
+    id: stackHandle,
+    handle: stackHandle
+  });
+
+  signInAndVisit(appVhostsNewUrl);
+
+  andThen(function(){
+    assert.ok(find('.panel-heading:contains(Create a new VHost)').length,
+       'has header');
+    expectInput('service', {input:'select'});
+    expectFocusedInput('service', {input:'select'});
+    expectInput('certificate', { input: 'select'});
+    expectButton('Save VHost');
+    expectButton('Cancel');
+    expectTitle(`Add a domain - ${appHandle} - ${stackHandle}`);
+  });
+});
+
+test(`visit ${appVhostsNewUrl} shows creation form without certificates`, function(assert) {
+  var appId = 1;
+  var appHandle = 'whammo-com';
+  var stackHandle = 'moop-com';
+
+  stubApp({
+    id: appId,
+    handle: appHandle,
+    _embedded: { services: [] },
+    _links: {
+      vhosts: { href: appVhostsApiUrl },
+      account: { href: `/accounts/${stackHandle}` }
+    }
+  });
+
+  stubRequest('get', appVhostsApiUrl, function(){
+    return this.success({
+      _embedded: { vhosts: [] }
+    });
+  });
+
+  stubStack({
+    id: stackHandle,
+    handle: stackHandle
+  });
+
+  signInAndVisit(appVhostsNewUrl);
+
+  andThen(function(){
+    assert.ok(find('.panel-heading:contains(Create a new VHost)').length,
+       'has header');
+    expectInput('service', {input:'select'});
+    expectFocusedInput('service', {input:'select'});
     expectInput('certificate', {input:'textarea'});
     expectInput('private-key', {input:'textarea'});
     expectButton('Save VHost');
@@ -123,7 +203,6 @@ test(`visit ${appVhostsNewUrl} and create vhost`, function(assert) {
 
   signInAndVisit(appVhostsNewUrl);
   andThen(function(){
-    fillInput('virtual-domain', 'my.domain.com');
     fillInput('certificate', 'my long cert');
     fillInput('private-key', 'my long pk');
     clickButton('Save VHost');

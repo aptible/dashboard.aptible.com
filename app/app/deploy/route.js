@@ -1,6 +1,14 @@
 import Ember from "ember";
 
 export default Ember.Route.extend({
+  redirect() {
+    let app = this.modelFor('app') ;
+
+    if(app.get('services.length') > 0) {
+      this.transitionTo('app.index');
+    }
+  },
+
   model: function(){
     let app = this.modelFor('app');
     let currentUser = this.session.get('currentUser');
