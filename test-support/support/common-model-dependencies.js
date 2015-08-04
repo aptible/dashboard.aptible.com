@@ -1,5 +1,6 @@
 export default [
   'model:service',
+  'model:certificate',
   'model:stack',
   'model:app',
   'model:database',
