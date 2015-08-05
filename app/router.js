@@ -71,7 +71,7 @@ export default Router.map(function() {
         this.route("new");
         this.route('edit', {
           path: ':certificate_id/edit'
-        })
+        });
       });
     });
 

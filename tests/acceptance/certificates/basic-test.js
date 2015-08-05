@@ -28,12 +28,12 @@ module('Acceptance: Certificates', {
   }
 });
 
-test(`visiting ${url} requires authentication`, function(assert) {
+test(`visiting ${url} requires authentication`, function() {
   expectRequiresAuthentication(url);
 });
 
 test(`visiting ${url} with no certificates redirects to certificates new`, function(assert) {
-  stubRequest('get', '/accounts/my-stack-1/certificates', function(request){
+  stubRequest('get', '/accounts/my-stack-1/certificates', function(){
     return this.success({
       _links: {},
       _embedded: {
@@ -42,7 +42,7 @@ test(`visiting ${url} with no certificates redirects to certificates new`, funct
     });
   });
 
-    stubRequest('get', '/accounts/my-stack-1/apps', function(request){
+  stubRequest('get', '/accounts/my-stack-1/apps', function(){
     return this.success({
       _links: {},
       _embedded: {
@@ -62,7 +62,7 @@ test(`visiting ${url} with no certificates redirects to certificates new`, funct
 });
 
 test(`visiting ${url} shows list of certificates`, function(assert) {
-  stubRequest('get', `/accounts/${stackId}/certificates`, function(request){
+  stubRequest('get', `/accounts/${stackId}/certificates`, function(){
     return this.success({
       _links: {},
       _embedded: {

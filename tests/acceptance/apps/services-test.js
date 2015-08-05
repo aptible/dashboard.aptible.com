@@ -38,6 +38,7 @@ test('app show page includes link to services url', function() {
     id: appId,
     status: 'provisioned'
   });
+  stubStack({ id: 'stubbed-stack' });
 
   signInAndVisit(appUrl);
 

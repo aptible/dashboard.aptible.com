@@ -9,7 +9,7 @@ let orgId = 1;
 let url = `/stacks/${stackId}/certificates`;
 
 function stubCertificatesAndVhosts() {
-  stubRequest('get', `/accounts/${stackId}/certificates`, function(request){
+  stubRequest('get', `/accounts/${stackId}/certificates`, function(){
     return this.success({
       _links: {},
       _embedded: {
@@ -24,7 +24,7 @@ function stubCertificatesAndVhosts() {
     });
   });
 
-  stubRequest('get', '/certificates/cert-1/vhosts', function(request) {
+  stubRequest('get', '/certificates/cert-1/vhosts', function() {
     return this.success({
       _links: {},
       _embedded: {
@@ -71,7 +71,7 @@ test("certificates with attached vhosts don't show delete button", function(asse
 test(`visiting ${url} and deleting a certificate should delete the certificate`, function(assert) {
   let didDelete = false;
 
-  stubRequest('delete', '/certificates/cert-2', function(request) {
+  stubRequest('delete', '/certificates/cert-2', function() {
     didDelete = true;
     return this.noContent();
   });
@@ -83,7 +83,7 @@ test(`visiting ${url} and deleting a certificate should delete the certificate`,
   });
 
   andThen(function() {
-    assert.ok(didDelete, 'certificate was deleted')
+    assert.ok(didDelete, 'certificate was deleted');
     assert.equal(currentPath(), 'dashboard.stack.certificates.index');
   });
 

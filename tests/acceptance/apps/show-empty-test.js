@@ -28,6 +28,7 @@ module('Acceptance: Apps Show - Never deployed (app.status === "pending")', {
 function setupAjaxStubs(sshKeys){
   stubOrganizations();
   stubOrganization();
+  stubStack({ id: 'stubbed-stack' });
   stubApp({
     id: appId,
     handle: appHandle,

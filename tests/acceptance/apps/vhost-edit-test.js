@@ -10,7 +10,7 @@ var App;
 let appId = '1';
 let appHandle = 'app-handle';
 let vhostId = 'vhost-id';
-let virtualDomain = 'abc.virtual-domain.com';
+let virtualDomain = 'health.io';
 let serviceId = 'abc-service-id';
 let serviceUrl = `/services/${serviceId}`;
 let serviceHandle = 'abc-service-handle';
@@ -29,14 +29,18 @@ module('Acceptance: App Vhost Edit', {
 
     let vhostData = {
       id: vhostId,
-      certificate: 'abccert',
-      private_key: 'abc-pk',
       status: 'provisioned',
       virtual_domain: virtualDomain,
       _links: {
-        service: { href: serviceUrl }
+        service: { href: serviceUrl },
+        certificate: { href: '/certificates/my-cert-1' }
       }
     };
+
+    stubRequest('get', '/certificates/my-cert-1', function() {
+      return this.success({ id: 'my-cert-1', 'common_name': virtualDomain,
+                            body: 'my cert', private_key: 'private key'});
+    });
 
     stubRequest('get', vhostsUrl, function(){
       return this.success({
@@ -58,7 +62,26 @@ module('Acceptance: App Vhost Edit', {
   }
 });
 
-test(`visit ${url} shows form, basic info`, function(assert) {
+test(`visit ${url} shows form with certificates`, function(assert) {
+  let stackId = 'stubbed-stack';
+
+  stubRequest('get', `/accounts/${stackId}/certificates`, function(){
+    return this.success({
+      _links: {},
+      _embedded: {
+        certificates: [
+          { id: 'cert-1', body: 'cert_body', private_key: 'private_key', common_name: '*.health.io'},
+          { id: 'cert-2', body: 'cert_body2', private_key: 'private_key2', common_name: 'health.io' }
+        ]
+      }
+    });
+  });
+
+  stubStack({
+    id: stackId,
+    _links: { certificates: { href: `/accounts/${stackId}/certificates` }}
+  });
+
   signInAndVisit(url);
   andThen( () => {
     assert.equal(currentPath(), 'dashboard.app.vhosts.edit');
@@ -70,12 +93,48 @@ test(`visit ${url} shows form, basic info`, function(assert) {
     assert.ok(serviceInput.is(':disabled'), 'service is disabled');
     assert.equal(serviceInput.find('option:first').val(), serviceHandle);
 
-    expectInput('virtual-domain');
-    assert.equal(findInput('virtual-domain').val(), virtualDomain,
-          'virtual domain is filled in input');
+    let certificateInput = findInput('certificate');
+    assert.ok(certificateInput.length, 'has certificate input');
+    assert.equal(certificateInput.find('option:first').text(), '*.health.io');
+    assert.equal(certificateInput.find('option:first').val(), 'cert-1');
 
-    expectInput('certificate');
-    assert.equal(findInput('certificate').val(), '',
+    assert.ok(!findInput('certificate-body').length, 'has no certificate body field');
+    assert.ok(!findInput('private-key').length, 'has no private key field');
+
+    expectButton('Save VHost');
+    expectButton('Cancel');
+  });
+});
+
+test(`visit ${url} shows form without certificates`, function(assert) {
+  let stackId = 'stubbed-stack';
+
+  stubRequest('get', `/accounts/${stackId}/certificates`, function(){
+    return this.success({
+      _embedded: { certificates: [] }
+    });
+  });
+
+  stubStack({
+    id: stackId,
+    _links: { certificates: { href: `/accounts/${stackId}/certificates` }}
+  });
+
+  signInAndVisit(url);
+  andThen( () => {
+    assert.equal(currentPath(), 'dashboard.app.vhosts.edit');
+    expectTitle(`Edit ${virtualDomain} - ${appHandle}`);
+    assert.equal(find('.panel-heading h3').text(), `Edit ${virtualDomain}`);
+
+    let serviceInput = findInput('service');
+    assert.ok(serviceInput.length, 'has service input');
+    assert.ok(serviceInput.is(':disabled'), 'service is disabled');
+    assert.equal(serviceInput.find('option:first').val(), serviceHandle);
+
+    assert.ok(!findInput('certificate').length, 'has no certificate select box');
+
+    expectInput('certificate-body');
+    assert.equal(findInput('certificate-body').val(), '',
           'certificate is empty');
     expectInput('private-key');
     assert.equal(findInput('private-key').val(), '',
@@ -87,19 +146,23 @@ test(`visit ${url} shows form, basic info`, function(assert) {
 });
 
 test(`visit ${url} click save`, function(assert) {
-  assert.expect(10);
+  stubStack({id: 'stubbed-stack'});
+  assert.expect(8);
 
-  let newVirtualDomain = 'new-virt.domain.com';
   let newCert = 'abc-new-cert';
   let newPk = 'abc-new-pk';
+  let certificateId = 'my-cert-1;';
+  let certificateHref = `/certificates/${certificateId}`;
+
+  stubRequest('post', '/accounts/stubbed-stack/certificates', function() {
+    return this.success({ id: certificateId, common_name: 'www.health.io',
+                          _links: { self: { href: certificateHref }}});
+  });
 
   stubRequest('put', `/vhosts/${vhostId}`, function(request){
     assert.ok(true, 'posts to create vhost');
     let json = this.json(request);
-
-    assert.equal(json.virtual_domain, newVirtualDomain);
-    assert.equal(json.certificate, newCert);
-    assert.equal(json.private_key, newPk);
+    assert.equal(json.certificate, certificateHref);
 
     return this.success(Ember.merge(json, {id:vhostId, status: 'provisioned' }));
   });
@@ -119,8 +182,7 @@ test(`visit ${url} click save`, function(assert) {
 
   signInAndVisit(url);
   andThen( () => {
-    fillIn(findInput('virtual-domain'), newVirtualDomain);
-    fillIn(findInput('certificate'), newCert);
+    fillIn(findInput('certificate-body'), newCert);
     fillIn(findInput('private-key'), newPk);
 
     click(findButton('Save VHost'));
@@ -129,13 +191,27 @@ test(`visit ${url} click save`, function(assert) {
   andThen( () => {
     assert.equal(currentPath(), 'dashboard.app.vhosts.index');
 
-    assert.ok( find(`.vhost .vhost-virtualdomain:contains(${newVirtualDomain})`).length,
-        'shows new virtual domain "${newVirtualDomain}"');
+    assert.ok( find(`.vhost .vhost-virtualdomain:contains(www.health.io)`).length,
+        'shows new virtual domain www.health.io');
   });
 });
 
 test(`visit ${url} click save and error`, function(assert) {
+  let stackId = 'stubbed-stack';
   let errorMsg = 'There was an error with this domain';
+
+  stubRequest('get', `/accounts/${stackId}/certificates`, function(){
+    return this.success({ _embedded: { certificates: [] } });
+  });
+
+  stubStack({
+    id: stackId,
+    _links: { certificates: { href: `/accounts/${stackId}/certificates` }}
+  });
+
+  stubRequest('post', '/accounts/stubbed-stack/certificates', function() {
+    return this.success({ id: 'my-cert', common_name: 'www.health.io' });
+  });
 
   stubRequest('put', `/vhosts/${vhostId}`, function(){
     return this.error({
@@ -144,6 +220,7 @@ test(`visit ${url} click save and error`, function(assert) {
   });
 
   signInAndVisit(url);
+
   andThen( () => {
     click(findButton('Save VHost'));
   });
@@ -158,11 +235,22 @@ test(`visit ${url} click save and error`, function(assert) {
 });
 
 test(`visit ${url} and click cancel`, function(assert) {
-  let newVirtualDomain = 'new-virt.domain.com';
+  let stackId = 'stubbed-stack';
+  let newVirtualDomain = 'aptible.com';
+
+  stubRequest('get', `/accounts/${stackId}/certificates`, function(){
+    return this.success({ _embedded: { certificates: [
+      { id: 'cert-1', body: 'cert_body', private_key: 'private_key', common_name: newVirtualDomain}
+    ] } });
+  });
+
+  stubStack({
+    id: stackId,
+    _links: { certificates: { href: `/accounts/${stackId}/certificates` }}
+  });
 
   signInAndVisit(url);
   andThen( () => {
-    fillInput('virtual-domain', newVirtualDomain);
     clickButton('Cancel');
   });
 
@@ -177,11 +265,12 @@ test(`visit ${url} and click cancel`, function(assert) {
 });
 
 test(`visit ${url} and transition away`, function(assert) {
+  stubStack({id: 'stubbed-stack'});
   let newVirtualDomain = 'new-virt.domain.com';
 
   signInAndVisit(url);
   andThen( () => {
-    fillInput('virtual-domain', newVirtualDomain);
+    fillInput('certificate-body', 'my cert');
     visit(vhostsUrl);
   });
 

@@ -15,6 +15,7 @@ var appVhostsNewUrl = '/apps/' + appId + '/vhosts/new';
 module('Acceptance: App Vhosts', {
   beforeEach: function() {
     App = startApp();
+    stubStack({ id: 'stubbed-stack' });
     stubRequest('get', '/users/user1/ssh_keys', function(){
       return this.success({
         _embedded: {

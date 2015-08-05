@@ -1,55 +1,101 @@
 import Ember from 'ember';
-import DS from 'ember-data';
 
 export default Ember.Route.extend({
-  title: function(){
+  title() {
     let app = this.modelFor('app');
 
-    return `Edit ${this.currentModel.get('virtualDomain')} - ${app.get('handle')}`;
+    return `Edit ${this.currentModel.vhost.get('virtualDomain')} - ${app.get('handle')}`;
   },
 
-  afterModel: function(model){
-    return model.get('service');
+  model(params) {
+    let app = this.modelFor('app');
+    let stack = app.get('stack');
+
+    return Ember.RSVP.hash({
+      vhost: this.store.find('vhost', params.vhost_id),
+      certificates: stack.get('certificates'),
+      stack: stack
+    });
+  },
+
+  afterModel(model) {
+    let vhost = model.vhost;
+
+    return Ember.RSVP.hash({
+      service: vhost.get('service'),
+      certificate: vhost.get('certificate')
+    });
+  },
+
+  setupController(controller, model) {
+    let vhost = model.vhost;
+    let certificates = model.certificates;
+
+    controller.set('model', vhost);
+    controller.set('certificates', model.certificates);
+    controller.set('vhostCertificate', certificates.objectAt(0));
+    controller.set('showAddNewCertificate', model.certificates.get('length') === 0);
   },
 
   actions: {
-    save: function(){
+    save() {
       let controller = this.controller;
       let app = this.modelFor('app');
-      let vhost = this.currentModel;
+      let vhost = this.currentModel.vhost;
+      let certificatePromise;
 
-      let certificate = controller.get('newCertificate');
-      let privateKey = controller.get('newPrivateKey');
+      // If certificate create UI is visible, create a certificate
+      // If not, use the selected certificate
+      if(controller.get('showAddNewCertificate')) {
+        let stack = this.currentModel.stack;
+        let body = controller.get('certificateBody');
+        let privateKey = controller.get('privateKey');
+        let certParams = { body, stack, privateKey };
+        let newCertificate = this.store.createRecord('certificate', certParams);
 
-      vhost.setProperties({
-        certificate,
-        privateKey,
-        app
-      });
-      vhost.save().then( () => {
+        certificatePromise = newCertificate.save();
+      } else {
+        certificatePromise = new Ember.RSVP.resolve(vhost.get('certificate'));
+      }
+
+      certificatePromise.then((certificate) => {
+        vhost.setProperties({ app, certificate });
+        vhost.set('certificateBody', '');
+        vhost.set('privateKey', '');
+        return vhost.save();
+      }).then(() => {
         let op = this.store.createRecord('operation', {
           type: 'reprovision',
-          certificate,
-          privateKey,
+          certificate: vhost.get('certificate.body'),
+          privateKey: vhost.get('certificate.privateKey'),
           vhost
         });
         return op.save();
       }).then( () => {
+        let message = `Domain ${vhost.get('virtualDomain')} updated.`;
         this.transitionTo('app.vhosts.index');
+        Ember.get(this, 'flashMessages').success(message);
+
       }).catch( (e) => {
-        if (e instanceof DS.InvalidError) {
-          // no-op
-        } else {
-          throw e;
-        }
+        let message = Ember.get(e, 'responseJSON.message') || `There was an error updating ${vhost.get('virtualDomain')}`;
+        Ember.get(this, 'flashMessages').danger(message);
       });
     },
 
-    cancel: function(){
+    showAddNewCertificate(show) {
+      this.controller.set('showAddNewCertificate', show);
+
+      if(!show) {
+        this.controller.set('newCertificate', '');
+        this.controller.set('newPrivateKey', '');
+      }
+    },
+
+    cancel() {
       this.transitionTo('app.vhosts.index');
     },
 
-    willTransition: function(){
+    willTransition() {
       this.currentModel.rollback();
     }
   }

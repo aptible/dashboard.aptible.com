@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-xs-6">
+  <div class="col-xs-8">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3>Edit {{unbound model.virtualDomain}}</h3>
@@ -25,20 +25,34 @@
             </select>
           </div>
 
-          <div class="form-group">
-            <label>Virtual Domain</label>
-            {{input class="form-control" value=model.virtualDomain name="virtual-domain"}}
-          </div>
+          {{#if showAddNewCertificate}}
+            <div class="form-group">
+              <label>Certificate</label>
+              {{textarea class="form-control" value=certificateBody name="certificate-body" rows=10}}
+            </div>
 
-          <div class="form-group">
-            <label>Certificate</label>
-            {{textarea class="form-control" value=newCertificate name="certificate"}}
-          </div>
+            <div class="form-group">
+              <label>Private Key</label>
+              {{textarea class="form-control" value=privateKey name="private-key" rows=10}}
+            </div>
 
-          <div class="form-group">
-            <label>Private Key</label>
-            {{textarea class="form-control" value=newPrivateKey name="private-key"}}
-          </div>
+            {{#if certificates}}
+              <div class="form-group">
+                <a {{action 'showAddNewCertificate' false}} class="toggle-new-certificate">Select existing certificate</a>
+              </div>
+            {{/if}}
+          {{else}}
+            {{#if certificates}}
+              <div class="form-group">
+                <label>Certificate</label>
+                {{object-select name="certificate" items=certificates update=(action (mut model.certificate))}}
+              </div>
+
+              <div class="form-group">
+                <a {{action 'showAddNewCertificate' true}} class="toggle-new-certificate">Add new certificate</a>
+              </div>
+            {{/if}}
+          {{/if}}
         </form>
 
       </div>

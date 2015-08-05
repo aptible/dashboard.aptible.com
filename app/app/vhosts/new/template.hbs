@@ -45,26 +45,33 @@
             </div>
           </div>
 
-          {{#if certificates}}
+          {{#if showAddNewCertificate}}
             <div class="form-group">
               <label>Certificate</label>
-              {{view "autofocusable-select" content=certificates
-                              selection=vhostCertificate
-                              name="certificate"
-                              optionLabelPath="content.commonName"
-                              autofocus=true
-                              class="form-control"}}
-            </div>
-          {{else}}
-            <div class="form-group">
-              <label>Certificate</label>
-              {{textarea class="form-control" value=model.certificate_body name="certificate" rows=10}}
+              {{textarea class="form-control" value=model.certificateBody name="certificate-body" rows=10}}
             </div>
 
             <div class="form-group">
               <label>Private Key</label>
               {{textarea class="form-control" value=model.privateKey name="private-key" rows=10}}
             </div>
+
+            {{#if certificates}}
+              <div class="form-group">
+                <a {{action 'showAddNewCertificate' false}} class="toggle-new-certificate">Select existing certificate</a>
+              </div>
+            {{/if}}
+          {{else}}
+            {{#if certificates}}
+              <div class="form-group">
+                <label>Certificate</label>
+                {{object-select name="certificate" items=certificates update=(action (mut model.certificate))}}
+              </div>
+
+              <div class="form-group">
+                <a {{action 'showAddNewCertificate' true}} class="toggle-new-certificate">Add new certificate</a>
+              </div>
+            {{/if}}
           {{/if}}
 
         </div>
