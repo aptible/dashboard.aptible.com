@@ -8,6 +8,7 @@ export default DS.Model.extend(ProvisionableMixin, {
   type: DS.attr('string', {defaultValue:'http_proxy_protocol'}),
   isDefault: DS.attr('boolean'),
   internal: DS.attr('boolean', {defaultValue: false}),
+  virtualDomain: DS.attr('string'),
 
   certificate: DS.belongsTo('certificate', { async: true }),
   service: DS.belongsTo('service', {async:true}),
@@ -16,7 +17,6 @@ export default DS.Model.extend(ProvisionableMixin, {
 
   reloadWhileProvisioning: true,
 
-  virtualDomain: DS.attr('string'),
   commonName: Ember.computed('certificate.commonName', 'virtualDomain', function() {
     return this.get('certificate.commonName') || this.get('virtualDomain')
   }),

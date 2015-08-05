@@ -62,8 +62,10 @@ test('reloading certificate with stack uses correct url', function(assert){
 test('creating POSTs to correct url', function(assert) {
   assert.expect(2);
 
-  var store = this.store();
-  var certificate, stack;
+  let store = this.store();
+  let certificate, stack;
+  let done = assert.async();
+
   Ember.run(function(){
     stack = store.createRecord('stack', {id: '1'});
     certificate = store.createRecord('certificate', {body:'cert', stack:stack});
@@ -81,6 +83,6 @@ test('creating POSTs to correct url', function(assert) {
   return Ember.run(function(){
     return certificate.save().then(function(){
       assert.ok(true, 'certificate did save');
-    });
+    }).finally(done);
   });
 });
