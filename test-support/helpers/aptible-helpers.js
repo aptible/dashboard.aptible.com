@@ -164,8 +164,6 @@ Ember.Test.registerHelper('stubApp', function(app, appData){
     appData.id = request.params.app_id;
     return this.success(appData);
   });
-
-  stubStack({id: 'stubbed-stack'});
 });
 
 Ember.Test.registerHelper('stubDatabase', function(app, databaseData){
