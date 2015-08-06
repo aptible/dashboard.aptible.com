@@ -48,8 +48,8 @@ test(`shows current payment method`, (assert) => {
 
   const name = 'VISA',
     display = '4242',
-    invoiceDate = '2015-06-29T11:06:48.000-04:00';
-    //,expiresAt = '06/15';
+    invoiceDate = '2015-06-29T11:06:48.000-04:00',
+    expiresAt = '6/2015';
 
   stubOrganization({
     _links: { billing_detail: { href: billingDetailUrl } }
@@ -58,6 +58,8 @@ test(`shows current payment method`, (assert) => {
   stubRequest('get', billingDetailUrl, (request) => {
     request.ok({
       id: 'b-d-id',
+      payment_exp_month: 6,
+      payment_exp_year: 2015,
       payment_method_name: name,
       payment_method_display: display,
       next_invoice_date: invoiceDate
@@ -70,10 +72,8 @@ test(`shows current payment method`, (assert) => {
               `has payment name "${name}"`);
     assert.ok(find(`.billing-payment-method:contains(${display})`).length,
               `has payment display "${display}"`);
-    /* FIXME billing does not report expiry yet
     assert.ok(find(`.billing-payment-method:contains(${expiresAt})`).length,
               `has payment expires at "${expiresAt}"`);
-     */
   });
 });
 
