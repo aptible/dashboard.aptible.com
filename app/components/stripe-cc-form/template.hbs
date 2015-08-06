@@ -6,12 +6,12 @@
   {{/if}}
 
   <div class="form-group">
-    {{stripe-input update=(action (mut name)) class="form-control" value=name data-stripe="name" placeholder="Name on card"}}
+    {{one-way-input update=(action (mut name)) class="form-control" value=name data-stripe="name" placeholder="Name on card"}}
   </div>
 
   <div class="form-group">
-    {{stripe-input update=(action (mut number)) class="form-control number" value=number data-stripe="number" placeholder="Card number"}}
-    {{stripe-input update=(action (mut cvc)) class="form-control cvc" value=cvc data-stripe="cvc" placeholder="CVC" }}
+    {{one-way-input update=(action (mut number)) class="form-control number" value=number data-stripe="number" placeholder="Card number"}}
+    {{one-way-input update=(action (mut cvc)) class="form-control cvc" value=cvc data-stripe="cvc" placeholder="CVC" }}
   </div>
 
   <div class="form-group">
@@ -22,7 +22,7 @@
       {{select-year update=(action (mut expYear)) value=expYear data-stripe="exp-year" prompt="Exp year"}}
     </div>
 
-    {{stripe-input update=(action (mut zip)) class="form-control zip" value=zip data-stripe="zip" placeholder="ZIP"}}
+    {{one-way-input update=(action (mut zip)) class="form-control zip" value=zip data-stripe="zip" placeholder="ZIP"}}
   </div>
 
   <button

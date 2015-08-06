@@ -14,11 +14,8 @@
   </div>
 </div>
 
-{{#unless showPaymentForm}}
-  <button class='btn btn-primary' {{action 'showPaymentForm'}}>Update Payment Method</button>
-{{/unless}}
-
 {{#if showPaymentForm}}
   {{stripe-cc-form organization=organization action="updatedPayment"}}
+{{else}}
+    <button class='btn btn-primary' {{action 'showPaymentForm'}}>Update Payment Method</button>
 {{/if}}
-
