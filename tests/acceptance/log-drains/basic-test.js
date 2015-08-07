@@ -55,13 +55,23 @@ test(`visit ${url} shows basic info`, function(assert){
     id: 'drain-1',
     handle: 'first-drain',
     drain_host: 'abcdef.com',
-    drain_port: 123
+    drain_port: 123,
+    status: 'provisioned'
   }, {
     id: 'drain-2',
     handle: 'second-drain',
     drain_host: 'second.com',
-    drain_port: 456
+    drain_port: 456,
+    status: 'pending'
+  },
+   {
+    id: 'drain-3',
+    handle: 'second-drain',
+    drain_host: 'second.com',
+    drain_port: 456,
+    status: 'deprovisioning'
   }];
+
   this.prepareStubs({logDrains});
 
   signInAndVisit(url);
@@ -82,6 +92,15 @@ test(`visit ${url} shows basic info`, function(assert){
           'shows drain port');
       expectTitle(`${stackHandle} Logging - ${orgName}`);
     });
+
+    assert.ok(find('h5:contains(Provisioned Log Drains)').length, 'has a provisioned header');
+    assert.equal(find('.provisioned-log-drains .log-drain').length, 1, 'has one provisioned log drain');
+
+    assert.ok(find('h5:contains(Provisioning Log Drains)').length, 'has a pending header');
+    assert.equal(find('.pending-log-drains .log-drain').length, 1, 'has one pending log drain');
+
+    assert.ok(find('h5:contains(Deprovisioned Log Drains)').length, 'has a deprovisioning header');
+    assert.equal(find('.deprovisioning-log-drains .log-drain').length, 1, 'has one deprovisioning log drain');
   });
 });
 
@@ -143,7 +162,7 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
   let drainHost = 'abc-host.com',
       drainPort = '1234',
       handle = 'my-log-name',
-      drainType = 'elasticsearch',
+      drainType = 'syslog_tls_tcp',
       logDrainId = 'log-id-1';
 
   stubRequest('post', '/accounts/:stack_id/log_drains', function(request){
@@ -172,13 +191,28 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
 
     fillInput('drain-host', drainHost, {context});
     fillInput('drain-port', drainPort, {context});
-    click( findInput('drain-type', {context}) ); // click radio button
     fillInput('handle', handle, {context});
-    clickButton('Save Log', {context});
+    clickButton('Save Log Drain', {context});
   });
 
   andThen(function(){
     assert.equal(currentPath(), 'dashboard.stack.log-drains.index');
+  });
+});
+
+test(`visit ${addLogUrl} without elasticsearch databases`, function(assert){
+  this.prepareStubs(null, []);
+
+  signInAndVisit(addLogUrl);
+  andThen(function(){
+    click( find('label:contains(Elasticsearch)')); // click elasticsearch radio button
+  });
+
+  andThen(function() {
+    let saveButton = find('button:contains(Save Log Drain)');
+
+    assert.ok(find('.no-es-databases-warning').length, 'shows warning');
+    assert.ok(saveButton.is(':disabled'), 'save button is disabled');
   });
 });
 

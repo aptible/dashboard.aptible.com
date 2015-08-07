@@ -1,0 +1,48 @@
+<div class="panel panel-default log-drain status-{{logDrain.status}} resource-list-item">
+  <div class="panel-heading with-actions">
+    <h3>
+      {{#if logDrain.isProvisioning}}
+        {{#bs-tooltip placement="bottom" title='Provisioning...' bs-container=false}}
+          <i class="fa fa-spin fa-spinner success"></i>
+        {{/bs-tooltip}}
+      {{/if}}
+
+      {{#if logDrain.isPending}}
+        {{#bs-tooltip placement="bottom" title='Provisioning...' bs-container=false}}
+          <i class="fa fa-spin fa-spinner success"></i>
+        {{/bs-tooltip}}
+      {{/if}}
+
+      {{#if logDrain.isDeprovisioning}}
+        {{#bs-tooltip placement="bottom" title='Deprovisioning...' bs-container=false}}
+        <i class="fa fa-spin fa-spinner danger"></i>
+        {{/bs-tooltip}}
+      {{/if}}
+
+      <span class="resource-title">{{logDrain.handle}}</span>
+      <i class="fa fa-arrow-right"></i>
+      <span class="resource-subtitle vhost-service">{{logDrain.drainType}}</span>
+    </h3>
+  </div>
+  <div class="panel-body">
+    <ul class="resource-metadata">
+      <li class="resource-metadata-item">
+        <h5 class="resource-metadata-title">
+          Status
+        </h5>
+        <h3 class="resource-metadata-value">
+          <span class="capitalize">{{logDrain.status}}</span>
+        </h3>
+      </li>
+
+      <li class="resource-metadata-item">
+        <h5 class="resource-metadata-title">
+          Host
+        </h5>
+        <h3 class="resource-metadata-value">
+          {{logDrain.drainHost}}:{{logDrain.drainPort}}
+        </h3>
+      </li>
+    </ul>
+  </div>
+</div>
