@@ -1,0 +1,39 @@
+<form role="form" class="payment-form stripe-cc-form" {{action 'saveCC' on='submit'}}>
+  {{#if error}}
+    {{#bs-alert alert="danger"}}
+      <p>There was an error updating: {{error}}</p>
+    {{/bs-alert}}
+  {{/if}}
+
+  <div class="form-group">
+    {{one-way-input update=(action (mut name)) class="form-control" value=name data-stripe="name" placeholder="Name on card"}}
+  </div>
+
+  <div class="form-group">
+    {{one-way-input update=(action (mut number)) class="form-control number" value=number data-stripe="number" placeholder="Card number"}}
+    {{one-way-input update=(action (mut cvc)) class="form-control cvc" value=cvc data-stripe="cvc" placeholder="CVC" }}
+  </div>
+
+  <div class="form-group">
+    <div class="expiration-month">
+      {{select-month update=(action (mut expMonth)) value=expMonth data-stripe="exp-month" prompt="Exp month"}}
+    </div>
+    <div class="expiration-year">
+      {{select-year update=(action (mut expYear)) value=expYear data-stripe="exp-year" prompt="Exp year"}}
+    </div>
+
+    {{one-way-input update=(action (mut zip)) class="form-control zip" value=zip data-stripe="zip" placeholder="ZIP"}}
+  </div>
+
+  <button
+    class="btn btn-primary btn-block btn-lg {{if isSaving 'disabled'}}"
+    disabled={{isSaving}}
+    {{action 'saveCC'}}>
+
+    {{#if isSaving}}
+      Saving
+    {{else}}
+      Save
+    {{/if}}
+  </button>
+</form>
