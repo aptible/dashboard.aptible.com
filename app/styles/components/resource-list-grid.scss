@@ -154,3 +154,49 @@
     padding-bottom: 4px;
   }
 }
+
+.panel {
+  .panel-heading {
+    .fa.fa-spinner {
+      font-size: 12px;
+      margin: 0 10px 0 0;
+    }
+
+    h3 {
+      float: left;
+    }
+  }
+
+  .fa-arrow-right {
+    font-size: 11px;
+    margin: 0 8px;
+    vertical-align: 2px;
+    color: $color-subdued;
+  }
+
+  .resource-subtitle {
+    color: $color-light;
+  }
+
+  .panel-heading-actions {
+    float: right;
+    margin-top: 4px;
+
+    .label {
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    button {
+      margin-left: 5px;
+    }
+  }
+
+  &.default-true .panel-heading-actions {
+    margin-top: 9px;
+  }
+}
+
+.capitalize {
+  text-transform: capitalize;
+}

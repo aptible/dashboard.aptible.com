@@ -3,25 +3,25 @@ import DS from 'ember-data';
 
 export default Ember.Route.extend({
 
-  model: function(){
+  model() {
     var stack = this.modelFor('stack');
+
     return Ember.RSVP.hash({
-      logDrain: this.store.createRecord('log-drain', {drainType: 'syslog_tls_tcp' }),
+      stack: stack,
+      logDrain: this.store.createRecord('log-drain', { drainType: 'syslog_tls_tcp' }),
       elasticsearchDbs: stack.get('databases').then((databases) => {
-        return databases.filter((database) => {
-          return database.get('type') === 'elasticsearch' && !!database.get('connectionUrl');
-      });
-    })
-  });
+        return databases.filterBy('type', 'elasticsearch').filter((d) => d.get('connectionUrl'));
+      })
+    });
   },
 
   setupController(controller, model) {
     controller.set('model', model.logDrain);
     controller.set('esDatabases', model.elasticsearchDbs);
+    controller.set('stack', model.stack);
   },
 
-
-renderTemplate: function(controller){
+  renderTemplate(controller) {
     if (!this.session.get('currentUser.verified')) {
       controller.set('resourceType', 'log drain');
       this.render('unverified');
@@ -31,12 +31,12 @@ renderTemplate: function(controller){
   },
 
   actions: {
-    cancel: function(log){
+    cancel(log) {
       log.deleteRecord();
       this.transitionTo('stack.log-drains.index');
     },
 
-    createLog: function(log){
+    createLog(log) {
       log.set('stack', this.modelFor('stack'));
 
       log.save().then( () => {
