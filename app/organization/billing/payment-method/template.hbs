@@ -1,21 +1,41 @@
-<div class="layout-container">
-  <div class="row">
-    <div class="panel billing-payment-method">
-      <div class="panel-heading">
-        <h5>Payment Method</h5>
+<div class="row">
+  <div class="col-xs-6">
+    <div class="panel panel-default resource-list-item billing-payment-method">
+      <div class="panel-heading with-actions">
+        {{#if showPaymentForm}}
+          <h3>Edit Payment Method</h3>
+        {{else}}
+          <h3>Current Payment Method</h3>
+          <div class="panel-heading-actions">
+            <button class="btn btn-default btn-xs" {{action 'showPaymentForm'}}>Edit</button>
+          </div>
+        {{/if}}
       </div>
       <div class="panel-body">
-        <p>
-          {{model.paymentMethodName}} ****{{model.paymentMethodDisplay}}
-          Expires {{model.paymentExpMonth}}/{{model.paymentExpYear}}
-        </p>
+        {{#if showPaymentForm}}
+          {{stripe-cc-form organization=organization action="updatedPayment"}}
+        {{else}}
+          <ul class="resource-metadata">
+            <li class="resource-metadata-item">
+              <h5 class="resource-metadata-title">Card Type</h5>
+              <h3 class="resource-metadata-value">{{model.paymentMethodName}}</h3>
+            </li>
+            <li class="resource-metadata-item">
+              <h5 class="resource-metadata-title">Last 4</h5>
+              <h3 class="resource-metadata-value">{{model.paymentMethodDisplay}}</h3>
+            </li>
+            <li class="resource-metadata-item">
+              <h5 class="resource-metadata-title">Expiration</h5>
+              <h3 class="resource-metadata-value">{{model.paymentExpMonth}}/{{model.paymentExpYear}}</h3>
+            </li>
+          </ul>
+        {{/if}}
       </div>
     </div>
+    {{#if showPaymentForm}}
+      <div class="resource-actions">
+        <button class="btn btn-default" {{action 'hidePaymentForm'}}>Cancel</button>
+      </div>
+    {{/if}}
   </div>
 </div>
-
-{{#if showPaymentForm}}
-  {{stripe-cc-form organization=organization action="updatedPayment"}}
-{{else}}
-    <button class='btn btn-primary' {{action 'showPaymentForm'}}>Update Payment Method</button>
-{{/if}}
