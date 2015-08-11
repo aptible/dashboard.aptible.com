@@ -16,7 +16,7 @@ const organizationId = 'o1';
 const paymentMethodUrl = `/organizations/${organizationId}/billing/payment-method`;
 const url = paymentMethodUrl;
 
-const updatePaymentMethodButton = "Update Payment Method";
+const updatePaymentMethodButton = "Edit";
 
 module('Acceptance: Organizations: Billing: Payment Method', {
   beforeEach: function() {
@@ -77,7 +77,7 @@ test(`shows current payment method`, (assert) => {
   });
 });
 
-test(`shows credit card form after clicking "Update Payment Method"`, (assert) => {
+test(`shows credit card form after clicking "Edit"`, (assert) => {
   stubOrganization();
   stubBillingDetail();
   signInAndVisit(url);
