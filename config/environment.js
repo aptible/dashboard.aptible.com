@@ -142,7 +142,7 @@ module.exports = function(environment) {
     ENV.featureFlags['organization-settings'] = true;
     ENV.featureFlags['price-estimator'] = false;
     ENV.featureFlags['notifications'] = true;
-    ENV.featureFlags['organization-billing-settings'] = false;
+    ENV.featureFlags['organization-billing-settings'] = true;
 
     ENV.sentry.whitelistUrls = ['dashboard.aptible.com'];
     ENV.sentry.development = false;
