@@ -9,11 +9,12 @@ export default Ember.Route.extend({
   },
 
   model(params, transition){
-    let options = {};
+    let organization = this.modelFor('organization');
+    let options = { organization };
     if (transition.queryParams.role) {
       options.role = transition.queryParams.role;
     }
-    options.organization = this.modelFor('organization');
+
     return this.store.createRecord('invitation', options);
   },
 
@@ -21,9 +22,15 @@ export default Ember.Route.extend({
     return this.modelFor('organization').get('roles');
   },
 
-  setupController(controller, model){
+  setupController(controller, model) {
+    let organization = this.modelFor('organization');
+
+    if(!model.get('role.id')) {
+      model.set('role', organization.get('roles.firstObject'));
+    }
+
     controller.set('model', model);
-    controller.set('organization', this.modelFor('organization'));
+    controller.set('organization', organization);
   },
 
   resetController(controller){

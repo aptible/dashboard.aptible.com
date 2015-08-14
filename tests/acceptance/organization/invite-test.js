@@ -49,7 +49,7 @@ test(`visiting ${url} requires authentication`, function() {
 });
 
 test(`visiting ${url} shows form to invite`, function(assert) {
-  assert.expect(6 + roles.length);
+  assert.expect(7 + roles.length);
 
   signInAndVisit(url);
   andThen(() => {
@@ -59,6 +59,9 @@ test(`visiting ${url} shows form to invite`, function(assert) {
     expectInput('role');
     expectButton('Send Invitation');
     expectButton('Cancel');
+
+    let button = findWithAssert('button:contains(Send Invitation)');
+    assert.ok(button.is(':disabled'), 'invite button is disabled');
 
     let roleSelect = findInput('role');
 
@@ -77,6 +80,29 @@ test(`visiting ${url} and clicking cancel`, function(assert) {
 
   andThen(() => {
     assert.equal(currentPath(), 'dashboard.organization.members.index');
+  });
+});
+
+test(`visiting ${url} should select a default role`, function(assert) {
+  assert.expect(2);
+
+  let role = roles[0];
+  let roleId = role.id;
+
+  signInAndVisit(url);
+  fillInput('email', 'test@example.com');
+
+  stubRequest('post', `/roles/${roleId}/invitations`, function(request){
+    assert.ok(true, 'posts to first role');
+    this.json(request);
+    return this.success({ id: '' });
+  });
+
+  andThen(() => {
+    let button = findWithAssert('button:contains(Send Invitation)');
+    assert.ok(button.is(':enabled'), 'invite button is enabled');
+
+    button.click();
   });
 });
 
