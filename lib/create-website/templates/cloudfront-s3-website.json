@@ -7,7 +7,8 @@
       "Default": "aptible-staging.com",
       "AllowedValues": [
         "aptible.com",
-        "aptible-staging.com"
+        "aptible-staging.com",
+        "aptible-sandbox.com"
       ],
       "Description": "Second-level domain (e.g., aptible-staging.com) for CloudFront distribution CNAME."
     },
@@ -38,6 +39,9 @@
       },
       "aptible-staging.com": {
         "IamCertificateId": "ASCAIWRPADW2NPHDICMCA"
+      },
+      "aptible-sandbox.com": {
+        "IamCertificateId": "ASCAJJHNGQXFAFJ77ANTO"
       }
     }
   },
