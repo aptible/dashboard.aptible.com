@@ -189,7 +189,7 @@ test('submitting valid payment info for development plan should create dev stack
 
   stackAssertions[stackHandle] = (params) => {
     assert.ok(true, 'stack handle is correct');
-    assert.equal(params.organization_url, '/organizations/1', 'correct organization_url is posted');
+    assert.equal(params.organization_id, '1', 'correct organization_id is posted');
     assert.equal(params.type, 'development', 'stack type is correct');
     stackAssertions[params.handle] = null;
   };

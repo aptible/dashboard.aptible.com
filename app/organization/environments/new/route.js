@@ -7,8 +7,7 @@ export default Ember.Route.extend({
     let organization = this.modelFor('organization');
     const billingDetail = this.store.find('billing-detail', organization.get('id'));
     const stack = this.store.createRecord('stack', {
-      organization,
-      organizationUrl: organization.get('_data.links.self')
+      organization
     });
 
     return Ember.RSVP.hash({
