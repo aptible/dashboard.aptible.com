@@ -3,7 +3,7 @@ import Ember from 'ember';
 
 export default DS.Model.extend({
   // properties
-  body: DS.attr('string'),
+  certificateBody: DS.attr('string'),
   privateKey: DS.attr('string'),
   commonName: DS.attr('string'),
   createdAt: DS.attr('iso-8601-timestamp'),
