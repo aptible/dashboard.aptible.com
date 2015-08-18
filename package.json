@@ -25,7 +25,7 @@
     "core-object": "^1.1.0",
     "ember-cli": "1.13.6",
     "ember-cli-app-version": "0.4.0",
-    "ember-cli-aptible-shared": "0.0.28",
+    "ember-cli-aptible-shared": "0.0.29",
     "ember-cli-babel": "^5.0.0",
     "ember-cli-content-security-policy": "0.4.0",
     "ember-cli-dependency-checker": "^1.0.0",

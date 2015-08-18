@@ -48,9 +48,9 @@ export default Ember.Route.extend({
       // If not, use the selected certificate
       if(controller.get('showAddNewCertificate')) {
         let stack = this.currentModel.stack;
-        let body = controller.get('certificateBody');
+        let certificateBody = controller.get('certificateBody');
         let privateKey = controller.get('privateKey');
-        let certParams = { body, stack, privateKey };
+        let certParams = { certificateBody, stack, privateKey };
         let newCertificate = this.store.createRecord('certificate', certParams);
 
         certificatePromise = newCertificate.save();

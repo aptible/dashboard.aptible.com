@@ -91,8 +91,8 @@ test(`visit ${appVhostsNewUrl} shows creation form with existing certificates`, 
       _links: {},
       _embedded: {
         certificates: [
-          { id: 'cert-1', body: 'cert_body', private_key: 'private_key', common_name: '*.health.io', _links: { self: { href: certificateHref }} },
-          { id: 'cert-2', body: 'cert_body2', private_key: 'private_key2', common_name: 'health.io' }
+          { id: 'cert-1', certificate_body: 'cert_body', private_key: 'private_key', common_name: '*.health.io', _links: { self: { href: certificateHref }} },
+          { id: 'cert-2', certificate_body: 'cert_body2', private_key: 'private_key2', common_name: 'health.io' }
         ]
       }
     });
@@ -242,8 +242,8 @@ test(`visit ${appVhostsNewUrl} and create vhost with existing certificates`, fun
       _links: {},
       _embedded: {
         certificates: [
-          { id: 'cert-1', body: 'cert_body', private_key: 'private_key', common_name: '*.health.io', _links: { self: { href: certificateHref }} },
-          { id: 'cert-2', body: 'cert_body2', private_key: 'private_key2', common_name: 'health.io' }
+          { id: 'cert-1', certificate_body: 'cert_body', private_key: 'private_key', common_name: '*.health.io', _links: { self: { href: certificateHref }} },
+          { id: 'cert-2', certificate_body: 'cert_body2', private_key: 'private_key2', common_name: 'health.io' }
         ]
       }
     });
@@ -342,7 +342,7 @@ test(`visit ${appVhostsNewUrl} and create vhost with new certificate`, function(
 
   stubRequest('post', '/accounts/stubbed-stack/certificates', function(request) {
     let json = this.json(request);
-    assert.equal(json.body, 'my long cert');
+    assert.equal(json.certificate_body, 'my long cert');
     assert.equal(json.private_key, 'my long pk');
     assert.ok(true, 'creates certificate');
     return this.success({ id: certificateId, common_name: 'www.health.io',

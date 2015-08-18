@@ -67,8 +67,8 @@ test(`visiting ${url} shows list of certificates`, function(assert) {
       _links: {},
       _embedded: {
         certificates: [
-          { id: 'cert-1', body: 'cert_body', private_key: 'private_key', common_name: 'common_name' },
-          { id: 'cert-2', body: 'cert_body2', private_key: 'private_key2', common_name: 'common_name2' }
+          { id: 'cert-1', certificate_body: 'cert_body', private_key: 'private_key', common_name: 'common_name' },
+          { id: 'cert-2', certificate_body: 'cert_body2', private_key: 'private_key2', common_name: 'common_name2' }
         ]
       }
     });

@@ -14,10 +14,10 @@ function stubCertificatesAndVhosts() {
       _links: {},
       _embedded: {
         certificates: [
-          { id: 'cert-1', body: 'cert_body', private_key: 'private_key',
+          { id: 'cert-1', certificate_body: 'cert_body', private_key: 'private_key',
             common_name: 'common_name',
             _links: { vhosts: { href: '/certificates/cert-1/vhosts' } } },
-          { id: 'cert-2', body: 'cert_body2', private_key: 'private_key2',
+          { id: 'cert-2', certificate_body: 'cert_body2', private_key: 'private_key2',
             common_name: 'common_name2' }
         ]
       }

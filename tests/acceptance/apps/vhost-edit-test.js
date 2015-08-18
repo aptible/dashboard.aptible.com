@@ -39,7 +39,7 @@ module('Acceptance: App Vhost Edit', {
 
     stubRequest('get', '/certificates/my-cert-1', function() {
       return this.success({ id: 'my-cert-1', 'common_name': virtualDomain,
-                            body: 'my cert', private_key: 'private key'});
+                            certificate_body: 'my cert', private_key: 'private key'});
     });
 
     stubRequest('get', vhostsUrl, function(){
@@ -70,8 +70,8 @@ test(`visit ${url} shows form with certificates`, function(assert) {
       _links: {},
       _embedded: {
         certificates: [
-          { id: 'cert-1', body: 'cert_body', private_key: 'private_key', common_name: '*.health.io'},
-          { id: 'cert-2', body: 'cert_body2', private_key: 'private_key2', common_name: 'health.io' }
+          { id: 'cert-1', certificate_body: 'cert_body', private_key: 'private_key', common_name: '*.health.io'},
+          { id: 'cert-2', certificate_body: 'cert_body2', private_key: 'private_key2', common_name: 'health.io' }
         ]
       }
     });
@@ -240,7 +240,7 @@ test(`visit ${url} and click cancel`, function(assert) {
 
   stubRequest('get', `/accounts/${stackId}/certificates`, function(){
     return this.success({ _embedded: { certificates: [
-      { id: 'cert-1', body: 'cert_body', private_key: 'private_key', common_name: newVirtualDomain}
+      { id: 'cert-1', certificate_body: 'cert_body', private_key: 'private_key', common_name: newVirtualDomain}
     ] } });
   });
 

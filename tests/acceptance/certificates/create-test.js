@@ -58,10 +58,10 @@ test(`visiting ${url} and creating new certificate`, function(assert) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to correct URL');
-    assert.equal(json.body, cert);
+    assert.equal(json.certificate_body, cert);
     assert.equal(json.private_key, pKey);
 
-    return this.success({ common_name: 'health.io', body: cert, private_key: pKey});
+    return this.success({ common_name: 'health.io', certificate_body: cert, private_key: pKey});
   });
 
 

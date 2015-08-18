@@ -45,7 +45,7 @@ export default Ember.Route.extend({
 
       if(!certificate) {
         let newCertificate = this.store.createRecord('certificate',
-          { body: vhost.get('certificateBody'),
+          { certificateBody: vhost.get('certificateBody'),
             stack: this.currentModel.stack,
             privateKey: vhost.get('privateKey') });
 
