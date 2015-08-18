@@ -171,9 +171,9 @@ test(`visit ${url} click save`, function(assert) {
     assert.ok(true, 'posts to create vhost operation');
     let json = this.json(request);
 
-    assert.equal(json.type, 'reprovision');
-    assert.equal(json.certificate, newCert);
-    assert.equal(json.private_key, newPk);
+    assert.equal(json.type, 'provision');
+    assert.ok(!json.certificate, 'doesn\'t pass a certificate');
+    assert.ok(!json.private_key, 'doesn\'t pass a private key');
     return this.success({
       id: 'new-op-id',
       type: json.type

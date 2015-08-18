@@ -65,9 +65,7 @@ export default Ember.Route.extend({
         return vhost.save();
       }).then(() => {
         let op = this.store.createRecord('operation', {
-          type: 'reprovision',
-          certificate: vhost.get('certificate.body'),
-          privateKey: vhost.get('certificate.privateKey'),
+          type: 'provision',
           vhost
         });
         return op.save();
