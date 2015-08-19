@@ -25,34 +25,8 @@
             </select>
           </div>
 
-          {{#if showAddNewCertificate}}
-            <div class="form-group">
-              <label>Certificate</label>
-              {{textarea class="form-control" value=certificateBody name="certificate-body" rows=10}}
-            </div>
+          {{select-or-create-certificate certificates=certificates vhost=model}}
 
-            <div class="form-group">
-              <label>Private Key</label>
-              {{textarea class="form-control" value=privateKey name="private-key" rows=10}}
-            </div>
-
-            {{#if certificates}}
-              <div class="form-group">
-                <a {{action 'showAddNewCertificate' false}} class="toggle-new-certificate">Select existing certificate</a>
-              </div>
-            {{/if}}
-          {{else}}
-            {{#if certificates}}
-              <div class="form-group">
-                <label>Certificate</label>
-                {{object-select name="certificate" items=certificates update=(action (mut model.certificate))}}
-              </div>
-
-              <div class="form-group">
-                <a {{action 'showAddNewCertificate' true}} class="toggle-new-certificate">Add new certificate</a>
-              </div>
-            {{/if}}
-          {{/if}}
         </form>
 
       </div>

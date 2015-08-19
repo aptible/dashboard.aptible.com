@@ -24,7 +24,7 @@ export default Ember.Route.extend({
 
   actions: {
     willTransition() {
-      //this.currentModel.rollback();
+      this.currentModel.rollback();
     },
 
     create() {

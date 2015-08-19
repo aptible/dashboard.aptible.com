@@ -27,40 +27,29 @@ export default Ember.Route.extend({
     controller.set('services', services);
     controller.set('certificates', certificates);
     controller.set('vhostService', services.objectAt(0));
-    controller.set('vhostCertificate', certificates.objectAt(0));
-    controller.set('showAddNewCertificate', certificates.get('length') === 0);
   },
 
   actions: {
-    showAddNewCertificate(show) {
-      this.controller.set('showAddNewCertificate', show);
-    },
-
-    willTransition() {
-      this.currentModel.rollback();
-    },
-
-    save(vhost, service, certificate) {
+    save(vhost, service) {
       let certificatePromise;
+      let stack = this.currentModel.stack;
 
-      if(!certificate) {
-        let newCertificate = this.store.createRecord('certificate',
-          { certificateBody: vhost.get('certificateBody'),
-            stack: this.currentModel.stack,
-            privateKey: vhost.get('privateKey') });
+      if(vhost.get('certificateBody')) {
+        let certificateBody = vhost.get('certificateBody');
+        let privateKey = vhost.get('privateKey');
+        let newCertificate = this.store.createRecord(
+          'certificate',
+          { certificateBody, stack, privateKey }
+        );
 
         certificatePromise = newCertificate.save();
       } else {
-        certificatePromise = new Ember.RSVP.resolve(certificate);
+        certificatePromise = new Ember.RSVP.resolve(vhost.get('certificate'));
       }
 
       certificatePromise.then((certificate) => {
-        vhost.set('service', service);
-        vhost.set('certificate', certificate);
-
-        // TODO: The following fields are deprecated and will soon be removed
-        vhost.set('certificateBody', '');
-        vhost.set('privateKey', '');
+        vhost.setProperties({ service, certificate, certificateBody: null,
+                              privateKey: null});
 
         return vhost.save();
       }).then( () => {
@@ -68,17 +57,27 @@ export default Ember.Route.extend({
           type: 'provision',
           vhost: vhost
         });
+
         return op.save();
       }).then( () => {
         let message = `Domain ${vhost.get('virtualDomain')} created`;
 
         this.transitionTo('app.vhosts');
         Ember.get(this, 'flashMessages').success(message);
+      }).catch( (e) => {
+        let message = Ember.get(e, 'responseJSON.message') ||
+                      Ember.get(e, 'message') ||
+                      `There was an error updating ${vhost.get('virtualDomain')}`;
+        Ember.get(this, 'flashMessages').danger(message);
       });
     },
 
     cancel() {
       this.transitionTo('app.vhosts');
+    },
+
+    willTransition() {
+      this.currentModel.vhost.rollback();
     }
   }
 });

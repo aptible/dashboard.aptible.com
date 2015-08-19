@@ -147,7 +147,7 @@ test(`visit ${url} shows form without certificates`, function(assert) {
 
 test(`visit ${url} click save`, function(assert) {
   stubStack({id: 'stubbed-stack'});
-  assert.expect(8);
+  assert.expect(9);
 
   let newCert = 'abc-new-cert';
   let newPk = 'abc-new-pk';
@@ -155,7 +155,8 @@ test(`visit ${url} click save`, function(assert) {
   let certificateHref = `/certificates/${certificateId}`;
 
   stubRequest('post', '/accounts/stubbed-stack/certificates', function() {
-    return this.success({ id: certificateId, common_name: 'www.health.io',
+    assert.ok(true, 'creates a new certificate');
+    return this.success({ id: certificateId, common_name: 'health.io',
                           _links: { self: { href: certificateHref }}});
   });
 
@@ -174,6 +175,7 @@ test(`visit ${url} click save`, function(assert) {
     assert.equal(json.type, 'provision');
     assert.ok(!json.certificate, 'doesn\'t pass a certificate');
     assert.ok(!json.private_key, 'doesn\'t pass a private key');
+
     return this.success({
       id: 'new-op-id',
       type: json.type
@@ -191,8 +193,8 @@ test(`visit ${url} click save`, function(assert) {
   andThen( () => {
     assert.equal(currentPath(), 'dashboard.app.vhosts.index');
 
-    assert.ok( find(`.vhost .vhost-virtualdomain:contains(www.health.io)`).length,
-        'shows new virtual domain www.health.io');
+    assert.ok( find(`.vhost .vhost-virtualdomain:contains(health.io)`).length,
+        'shows new virtual domain health.io');
   });
 });
 
@@ -237,11 +239,11 @@ test(`visit ${url} click save and error`, function(assert) {
 test(`visit ${url} and click cancel`, function(assert) {
   let stackId = 'stubbed-stack';
   let newVirtualDomain = 'aptible.com';
+  let cert = { id: 'cert-1', certificate_body: 'cert_body',
+               private_key: 'private_key', common_name: newVirtualDomain };
 
   stubRequest('get', `/accounts/${stackId}/certificates`, function(){
-    return this.success({ _embedded: { certificates: [
-      { id: 'cert-1', certificate_body: 'cert_body', private_key: 'private_key', common_name: newVirtualDomain}
-    ] } });
+    return this.success({ _embedded: { certificates: [cert] } });
   });
 
   stubStack({
@@ -256,7 +258,6 @@ test(`visit ${url} and click cancel`, function(assert) {
 
   andThen( () => {
     assert.equal(currentPath(), 'dashboard.app.vhosts.index');
-
     assert.ok(!find(`.vhost .vhost-virtualdomain:contains(${newVirtualDomain})`).length,
        `does not show new virtual domain: "${newVirtualDomain}"`);
     assert.ok(find(`.vhost .vhost-virtualdomain:contains(${virtualDomain})`).length,

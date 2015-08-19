@@ -45,34 +45,7 @@
             </div>
           </div>
 
-          {{#if showAddNewCertificate}}
-            <div class="form-group">
-              <label>Certificate</label>
-              {{textarea class="form-control" value=model.certificateBody name="certificate-body" rows=10}}
-            </div>
-
-            <div class="form-group">
-              <label>Private Key</label>
-              {{textarea class="form-control" value=model.privateKey name="private-key" rows=10}}
-            </div>
-
-            {{#if certificates}}
-              <div class="form-group">
-                <a {{action 'showAddNewCertificate' false}} class="toggle-new-certificate">Select existing certificate</a>
-              </div>
-            {{/if}}
-          {{else}}
-            {{#if certificates}}
-              <div class="form-group">
-                <label>Certificate</label>
-                {{object-select name="certificate" items=certificates update=(action (mut model.certificate))}}
-              </div>
-
-              <div class="form-group">
-                <a {{action 'showAddNewCertificate' true}} class="toggle-new-certificate">Add new certificate</a>
-              </div>
-            {{/if}}
-          {{/if}}
+          {{select-or-create-certificate certificates=certificates vhost=model}}
 
         </div>
       </div>
@@ -81,6 +54,6 @@
 
   <div class="resource-actions">
     <button class="btn btn-default" type="reset" {{action 'cancel'}}>Cancel</button>
-    <button class="btn btn-primary" type="submit" {{action 'save' model vhostService vhostCertificate}}>Save VHost</button>
+    <button class="btn btn-primary" type="submit" {{action 'save' model vhostService}}>Save VHost</button>
   </div>
 </form>

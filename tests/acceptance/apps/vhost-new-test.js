@@ -292,8 +292,8 @@ test(`visit ${appVhostsNewUrl} and create vhost with existing certificates`, fun
   stubRequest('post', `/services/${serviceId}/vhosts`, function(request){
     let json = this.json(request);
     assert.equal(json.certificate, certificateHref);
-    assert.equal(json.certificate_body, '');
-    assert.equal(json.private_key, '');
+    assert.equal(json.certificate_body, null);
+    assert.equal(json.private_key, null);
     assert.equal(json.type, 'http_proxy_protocol');
 
     return this.success({id:vhostId});
@@ -354,8 +354,8 @@ test(`visit ${appVhostsNewUrl} and create vhost with new certificate`, function(
   stubRequest('post', `/services/${serviceId}/vhosts`, function(request){
     let json = this.json(request);
     assert.equal(json.certificate, certificateHref);
-    assert.equal(json.certificate_body, '');
-    assert.equal(json.private_key, '');
+    assert.equal(json.certificate_body, null);
+    assert.equal(json.private_key, null);
     assert.equal(json.type, 'http_proxy_protocol');
 
     return this.success({id:vhostId});
