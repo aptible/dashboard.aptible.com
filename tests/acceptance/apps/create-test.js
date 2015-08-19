@@ -66,6 +66,9 @@ test(`visit ${url} shows basic info`, function(assert) {
     expectButton('Save App');
     expectButton('Cancel');
     expectTitle(`Create an App - ${stackHandle}`);
+  });
+
+  andThen(function() {
     expectFocusedInput('handle');
   });
 });

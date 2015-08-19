@@ -13,7 +13,7 @@
         {{/bs-tooltip}}
       {{/if}}
 
-      <span class="resource-titel vhost-virtualdomain">{{vhost.virtualDomain}}</span>
+      <span class="resource-title vhost-virtualdomain">{{vhost.commonName}}</span>
       <i class="fa fa-arrow-right"></i>
       <span class="resource-subttle vhost-service">{{vhost.service.processType}} Service</span>
     </h3>
@@ -22,12 +22,12 @@
       {{#if vhost.isDefault}}
         <span class="label label-default">Default</span>
       {{else}}
-        {{#unless vhost.hasBeenDeprovisioned}}
-          {{link-to 'Edit' 'app.vhosts.edit' vhost class="btn btn-default btn-xs"}}
+        {{#if vhost.isProvisioned}}
+          {{link-to 'Edit' 'app.vhosts.edit' vhost.id class="btn btn-default btn-xs"}}
           {{delete-vhost vhost=vhost startDeletion="startDeletion"
                                     failDeletion="failDeletion"
                                     completeDeletion="completeDeletion"}}
-        {{/unless}}
+        {{/if}}
       {{/if}}
     </div>
   </div>
@@ -58,7 +58,7 @@
           </div>
         </h3>
       {{else}}
-        <h3 class="resource-metadata-value">{{vhost.virtualDomain}} is {{vhost.status}}...</h3>
+        <h3 class="resource-metadata-value">{{vhost.commonName}} is {{vhost.status}}...</h3>
       {{/if}}
     </div>
   </div>

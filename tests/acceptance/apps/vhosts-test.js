@@ -15,6 +15,7 @@ var appVhostsNewUrl = '/apps/' + appId + '/vhosts/new';
 module('Acceptance: App Vhosts', {
   beforeEach: function() {
     App = startApp();
+    stubStack({ id: 'stubbed-stack' });
     stubRequest('get', '/users/user1/ssh_keys', function(){
       return this.success({
         _embedded: {
@@ -175,8 +176,8 @@ test(`visit ${appVhostsUrl} lists pending vhosts`, function(assert) {
       assert.ok(vhostEl.find(`:contains(${vhost.external_host})`).length,
          `has external host "${vhost.external_host}"`);
 
-      expectButton('Edit', {context:vhostEl});
-      expectButton('Delete', {context:vhostEl});
+      expectNoButton('Edit', {context:vhostEl});
+      expectNoButton('Delete', {context:vhostEl});
     });
 
     vhosts.forEach(function(vhost) {

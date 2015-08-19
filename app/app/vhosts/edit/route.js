@@ -1,56 +1,94 @@
 import Ember from 'ember';
-import DS from 'ember-data';
 
 export default Ember.Route.extend({
-  title: function(){
+  title() {
     let app = this.modelFor('app');
 
-    return `Edit ${this.currentModel.get('virtualDomain')} - ${app.get('handle')}`;
+    return `Edit ${this.currentModel.vhost.get('virtualDomain')} - ${app.get('handle')}`;
   },
 
-  afterModel: function(model){
-    return model.get('service');
+  model(params) {
+    let app = this.modelFor('app');
+    let stack = app.get('stack');
+
+    return Ember.RSVP.hash({
+      vhost: this.store.find('vhost', params.vhost_id),
+      certificates: stack.get('certificates'),
+      stack: stack
+    });
+  },
+
+  afterModel(model) {
+    let vhost = model.vhost;
+
+    return Ember.RSVP.hash({
+      service: vhost.get('service'),
+      certificate: vhost.get('certificate')
+    });
+  },
+
+  setupController(controller, model) {
+    let vhost = model.vhost;
+    let certificates = model.certificates;
+
+    controller.set('model', vhost);
+    controller.set('certificates', model.certificates);
+    controller.set('vhostCertificate', certificates.get('firstObject'));
+    controller.set('originalCertificate', vhost.get('certificate'));
   },
 
   actions: {
-    save: function(){
-      let controller = this.controller;
-      let app = this.modelFor('app');
-      let vhost = this.currentModel;
+    save() {
+      let vhost = this.currentModel.vhost;
+      let stack = this.currentModel.stack;
+      let certificatePromise;
 
-      let certificate = controller.get('newCertificate');
-      let privateKey = controller.get('newPrivateKey');
+      if(vhost.get('certificateBody')) {
+        let certificateBody = vhost.get('certificateBody');
+        let privateKey = vhost.get('privateKey');
+        let newCertificate = this.store.createRecord(
+          'certificate',
+          { certificateBody, stack, privateKey }
+        );
 
-      vhost.setProperties({
-        certificate,
-        privateKey,
-        app
-      });
-      vhost.save().then( () => {
+        certificatePromise = newCertificate.save();
+      } else {
+        certificatePromise = new Ember.RSVP.resolve(vhost.get('certificate'));
+      }
+
+      certificatePromise.then((certificate) => {
+        vhost.setProperties({ certificate, certificateBody: null, privateKey: null });
+        return vhost.save();
+      }).then(() => {
         let op = this.store.createRecord('operation', {
-          type: 'reprovision',
-          certificate,
-          privateKey,
+          type: 'provision',
           vhost
         });
+
         return op.save();
       }).then( () => {
+        let message = `Domain ${vhost.get('virtualDomain')} updated.`;
+        Ember.get(this, 'flashMessages').success(message);
+
         this.transitionTo('app.vhosts.index');
       }).catch( (e) => {
-        if (e instanceof DS.InvalidError) {
-          // no-op
-        } else {
-          throw e;
-        }
+        let message = Ember.get(e, 'responseJSON.message') ||
+                      Ember.get(e, 'message') ||
+                      `There was an error updating ${vhost.get('virtualDomain')}`;
+        Ember.get(this, 'flashMessages').danger(message);
       });
     },
 
-    cancel: function(){
+    cancel() {
       this.transitionTo('app.vhosts.index');
     },
 
-    willTransition: function(){
-      this.currentModel.rollback();
+    willTransition() {
+      this.currentModel.vhost.set(
+        'certificate',
+        this.controller.get('originalCertificate')
+      );
+      this.currentModel.vhost.rollback();
     }
   }
 });

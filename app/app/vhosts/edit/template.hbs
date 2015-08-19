@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-xs-6">
+  <div class="col-xs-8">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3>Edit {{unbound model.virtualDomain}}</h3>
@@ -25,20 +25,8 @@
             </select>
           </div>
 
-          <div class="form-group">
-            <label>Virtual Domain</label>
-            {{input class="form-control" value=model.virtualDomain name="virtual-domain"}}
-          </div>
+          {{select-or-create-certificate certificates=certificates vhost=model}}
 
-          <div class="form-group">
-            <label>Certificate</label>
-            {{textarea class="form-control" value=newCertificate name="certificate"}}
-          </div>
-
-          <div class="form-group">
-            <label>Private Key</label>
-            {{textarea class="form-control" value=newPrivateKey name="private-key"}}
-          </div>
         </form>
 
       </div>

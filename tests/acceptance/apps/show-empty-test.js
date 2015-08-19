@@ -8,6 +8,7 @@ let App;
 let appId = 'app-id';
 let appHandle = 'my-app-handle';
 let url =`/apps/${appId}`;
+let deployStepsUrl = `${url}/deploy`;
 let gitRepo = 'git@aptible.com:my-app.git';
 let gettingStartedLink = config.externalUrls.gettingStartedDocs;
 let stackId = 'stack-one';
@@ -28,6 +29,7 @@ module('Acceptance: Apps Show - Never deployed (app.status === "pending")', {
 function setupAjaxStubs(sshKeys){
   stubOrganizations();
   stubOrganization();
+  stubStack({ id: 'stubbed-stack' });
   stubApp({
     id: appId,
     handle: appHandle,
@@ -163,3 +165,46 @@ test(`visit ${url} when app has not been deployed, click destroy link`, function
     assert.equal(currentPath(), 'dashboard.stack.apps.new', 'redirected to apps');
   });
 });
+
+
+test(`visit ${deployStepsUrl} with app services should redirect to services page`, function(assert){
+  assert.expect(1);
+
+  stubStack({
+    id: stackId
+  });
+  stubStacks();
+
+  stubOrganizations();
+  stubOrganization();
+  stubStack({ id: 'stubbed-stack' });
+  stubApp({
+    id: appId,
+    handle: appHandle,
+    status: 'provisioned',
+    git_repo: gitRepo,
+    _embedded: {
+      services: [{
+        id: 3,
+        handle: "foundry-worker-service",
+        process_type: "worker",
+        command: "bundle exec sidekiq",
+        container_count: 1,
+      }]
+    },
+    _links: {
+      stack: {href: `/accounts/${stackId}` }
+    }
+  });
+
+  stubRequest('get', '/users/:user_id/ssh_keys', function(){
+    return this.success({ _embedded: { ssh_keys: [] } });
+  });
+
+  signInAndVisit(deployStepsUrl);
+
+  andThen(function(){
+    assert.equal(currentPath(), 'dashboard.app.services', 'redirected to app services');
+  });
+});
+

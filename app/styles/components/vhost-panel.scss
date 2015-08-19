@@ -1,4 +1,22 @@
-.vhost.panel {
+.panel {
+  .panel-heading {
+    .fa.fa-spinner {
+      font-size: 12px;
+      margin: 0 10px 0 0;
+    }
+
+    h3 {
+      float: left;
+    }
+  }
+
+  .fa-arrow-right {
+    font-size: 11px;
+    margin: 0 8px;
+    vertical-align: 2px;
+    color: $color-subdued;
+  }
+
   .vhost-service {
     color: $color-light;
     text-transform: capitalize;

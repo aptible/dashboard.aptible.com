@@ -1,0 +1,19 @@
+<div class="sort-group certificates">
+  <div class="row">
+    {{#each model as |certificate|}}
+      <div class="col-xs-12">
+        {{partial "stack/certificate"}}
+      </div>
+    {{/each}}
+  </div>
+</div>
+
+<div class="resource-actions">
+  {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
+    {{#if hasAbility}}
+      {{#if session.currentUser.verified}}
+        {{link-to 'Create Certificate' 'certificates.new' class="btn btn-primary"}}
+      {{/if}}
+    {{/if}}
+  {{/aptible-ability}}
+</div>

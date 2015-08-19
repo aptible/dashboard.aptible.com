@@ -1,0 +1,43 @@
+<form role="form">
+  <div class="row">
+    <div class="col-xs-8">
+      <div class="panel panel-default ">
+        <div class="panel-heading">
+          <h3>Create a new certificate</h3>
+        </div>
+        <div class="panel-body">
+          {{#unless model.isValid}}
+            <div class="alert alert-warning fade in">
+              <a class="close" data-dismiss="alert">×</a>
+              {{#each model.errors.messages as |message|}}
+                <p>{{message}}</p>
+              {{/each}}
+            </div>
+          {{/unless}}
+
+          <div class="form-group">
+            <label>Certificate</label>
+            {{textarea class="form-control" value=model.certificateBody name="body" rows=10 autofocus=true}}
+          </div>
+
+          <div class="form-group">
+            <label>Private Key</label>
+            {{textarea class="form-control" value=model.privateKey name="private-key" rows=10}}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="resource-actions">
+    {{#if showCancelButton}}
+      <button class="btn btn-default" type="reset" {{action 'cancel'}}>
+        Cancel
+      </button>
+    {{/if}}
+    <button class="btn btn-primary" type="submit" {{action 'create'}}>
+      Save Certificate
+    </button>
+  </div>
+</form>

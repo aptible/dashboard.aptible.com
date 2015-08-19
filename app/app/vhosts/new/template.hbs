@@ -26,11 +26,6 @@
           </div>
 
           <div class="form-group">
-            <label>Virtual Domain</label>
-            {{input class="form-control" value=model.virtualDomain name="virtual-domain"}}
-          </div>
-
-          <div class="form-group">
             <label class="block" for="vhost-type">Type</label>
             <div class="radio">
               <div>
@@ -50,15 +45,7 @@
             </div>
           </div>
 
-          <div class="form-group">
-            <label>Certificate</label>
-            {{textarea class="form-control" value=model.certificate name="certificate" rows=10}}
-          </div>
-
-          <div class="form-group">
-            <label>Private Key</label>
-            {{textarea class="form-control" value=model.privateKey name="private-key" rows=10}}
-          </div>
+          {{select-or-create-certificate certificates=certificates vhost=model}}
 
         </div>
       </div>

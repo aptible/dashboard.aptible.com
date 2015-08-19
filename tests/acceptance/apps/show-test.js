@@ -92,6 +92,7 @@ test('visiting /apps/my-app-id when the app is deprovisioned', function(assert) 
   var appId = 'my-app-id';
   stubOrganizations();
   stubApp({id: appId, status: 'deprovisioned'});
+  stubStack({ id: 'stubbed-stack' });
 
   signInAndVisit('/apps/' + appId);
   andThen(function() {
