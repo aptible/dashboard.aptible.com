@@ -8,8 +8,8 @@ export default Ember.Component.extend({
   name: null,
   number: null,
   cvc: null,
-  expMonth: '01',
-  expYear: '2015',
+  expMonth: null,
+  expYear: null,
   zip: null,
 
   isSaving: false,

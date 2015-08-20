@@ -1,8 +1,8 @@
 <select class="form-control" {{action 'update' on="change"}} name={{name}} data-stripe={{data-stripe}}>
     {{#if prompt}}
-      <option disabled>{{prompt}}</option>
+      <option disabled selected>{{prompt}}</option>
     {{/if}}
     {{#each items as |item|}}
-        <option>{{item}}</option>
+        <option value="{{item}}">{{item}}</option>
     {{/each}}
 </select>
