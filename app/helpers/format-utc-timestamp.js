@@ -26,7 +26,7 @@ export function formatUtcTimestamp(date, excludeTime = false) {
 
   let formatted = `${month} ${day}, ${year}`;
 
-  if (excludeTime != typeof(boolean)) {
+  if (typeof(excludeTime) != 'boolean') {
     excludeTime = false;
   }
 
