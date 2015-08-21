@@ -1,0 +1,11 @@
+.comma-separated-list {
+  .comma-separated-list-item {
+    &:after {
+      content: ', ';
+    }
+
+    &:last-child:after {
+      display: none;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 <form role="form" class="payment-form stripe-cc-form" {{action 'saveCC' on='submit'}}>
   {{#if error}}
     {{#bs-alert alert="danger"}}
-      <p>There was an error updating: {{error}}</p>
+      <p>Error: {{error}}</p>
     {{/bs-alert}}
   {{/if}}
 

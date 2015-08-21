@@ -8,8 +8,8 @@ export default Ember.Component.extend({
   name: null,
   number: null,
   cvc: null,
-  expMonth: '01',
-  expYear: '2015',
+  expMonth: null,
+  expYear: null,
   zip: null,
 
   isSaving: false,
@@ -52,7 +52,9 @@ export default Ember.Component.extend({
       }).then(() => {
         success = true;
       }).catch((e) => {
-        const message = e.message ? e.message : e;
+        const message = Ember.get(e, 'responseJSON.message') ||
+                        Ember.get(e, 'message') ||
+                        e;
         this.set('error', message);
       }).finally(() => {
         this.set('isSaving', false);
