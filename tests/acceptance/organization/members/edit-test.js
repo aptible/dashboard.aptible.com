@@ -94,7 +94,7 @@ test(`visiting ${url} shows user's info and all roles with checkboxes`, function
     assert.ok(find(`:contains(${user.name})`).length, `user email "${user.email} is on the page`);
 
     expectButton('Save');
-    expectButton(`Remove ${user.name} from ${orgName}`);
+    expectButton(`Remove from ${orgName}`);
 
     roles.forEach((role, index) => {
       let roleDiv = find(`.role:eq(${index})`);
@@ -198,7 +198,7 @@ test(`visit ${url} allows removing user from organization`, function(assert){
     return this.noContent();
   });
   signInAndVisit(url);
-  clickButton(`Remove ${user.name}`);
+  clickButton(`Remove from ${orgName}`);
   andThen(() => {
     assert.equal(currentPath(), 'dashboard.organization.members.index');
   });

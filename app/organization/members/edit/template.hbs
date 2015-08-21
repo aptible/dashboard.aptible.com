@@ -10,22 +10,42 @@
         </div>
 
         <div class="panel-body">
-          <form role='form'>
-            <label>Roles</label>
-            <div class="form-container">
-              <ul>
-                {{#each organization.roles as |role|}}
-                  <li class="role">
-                    {{organization-membership-checkbox
-                      user=model
-                      organizationRole=role
-                      changeset=changeset}}
-                    <label>{{role.name}}</label>
-                  </li>
-                {{/each}}
-              </ul>
+          <div class="form-group">
+            <form role='form'>
+              <label>Roles</label>
+              <div class="form-container">
+                <ul>
+                  {{#each organization.roles as |role|}}
+                    <li class="role">
+                      {{organization-membership-checkbox
+                        user=model
+                        organizationRole=role
+                        changeset=changeset}}
+                      <label>{{role.name}}</label>
+                    </li>
+                  {{/each}}
+                </ul>
+              </div>
+            </form>
+          </div>
+
+          {{#unless (eq session.currentUser model)}}
+            <div class="">
+              <label>Remove {{model.name}} from {{organization.name}}</label>
+              {{#if disableRemoveMessage}}
+                {{#bs-tooltip title=disableRemoveMessage placement="bottom" bs-contaner=false}}
+                  <div>
+                    <button class='btn btn-danger btn-block' disabled>Remove from {{organization.name}}
+                    </button>
+                  </div>
+                {{/bs-tooltip}}
+              {{else}}
+                <button {{action 'remove' model}} class='btn btn-danger btn-block'>
+                  Remove from {{organization.name}}
+                </button>
+              {{/if}}
             </div>
-          </form>
+          {{/unless}}
         </div>
       </div>
 
@@ -34,11 +54,6 @@
         <button {{action 'save'}} class='btn btn-primary' type='submit'>
           Save
         </button>
-        {{#unless (eq session.currentUser model)}}
-          <button {{action 'remove' model}} class='btn btn-danger pull-right'>
-            Remove {{model.name}} from {{organization.name}}
-          </button>
-        {{/unless}}
       </div>
 
     </div>

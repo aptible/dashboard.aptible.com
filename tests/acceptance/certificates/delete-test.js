@@ -55,11 +55,11 @@ module('Acceptance: Certificate Delete', {
   }
 });
 
-test("certificates with attached vhosts don't show delete button", function(assert) {
+test("certificates with attached vhosts disable delete button", function(assert) {
   signInAndVisit(url);
 
   andThen(function() {
-    assert.ok(!find('.panel.certificate:first .btn:contains(Delete)').length,
+    assert.ok(find('.panel.certificate:first .btn:contains(Delete):disabled').length,
               'first certificate can not be deleted');
     assert.ok(!!find('.panel.certificate:first .vhosts-count .resource-metadata-value:contains(1)'),
               'first certificate has 1 vhost');
