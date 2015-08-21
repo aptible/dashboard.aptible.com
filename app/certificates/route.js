@@ -12,7 +12,7 @@ export default Ember.Route.extend({
   },
 
   afterModel(model) {
-    return Ember.RSVP.all(model.map((certificate) => certificate.get('vhosts')));
+    return Ember.RSVP.all(model.map(certificate => certificate.get('apps')))
   },
 
   actions: {
@@ -29,3 +29,4 @@ export default Ember.Route.extend({
     }
   }
 });
+

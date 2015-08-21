@@ -131,6 +131,10 @@
   .resource-metadata-title,
   .resource-metadata-value {
     font-size: 12px;
+
+    a {
+      margin-left: 0;
+    }
   }
 
   .panel-body {
