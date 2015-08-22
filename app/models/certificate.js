@@ -23,7 +23,7 @@ export default DS.Model.extend({
   stack: DS.belongsTo('stack', {async: true}),
   operations: DS.hasMany('operation', {async:true}),
   vhosts: DS.hasMany('vhost', {async:true}),
-  apps: DS.hasMany('app', {asyn:true}),
+  apps: DS.hasMany('app', {async:true}),
 
   inUse: Ember.computed.gt('vhosts.length', 0),
   name: Ember.computed('commonName', 'notBefore', 'notAfter', 'issuerOrganization', function() {
