@@ -1,8 +1,8 @@
 <select class="form-control" name={{name}} {{action 'update' on="change"}}>
   {{#if prompt}}
-    <option disabled>{{prompt}}</option>
+    <option disabled selected={{if (not selected) true null}}>{{prompt}}</option>
   {{/if}}
   {{#each items as |item|}}
-      <option selected={{if (eq selected item) true null}} value="{{item.id}}">{{item.name}}</option>
+      <option selected={{if (eq selected.id item.id) true null}} value="{{item.id}}">{{item.name}}</option>
   {{/each}}
 </select>
