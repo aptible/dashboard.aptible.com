@@ -6,7 +6,9 @@ export default Ember.Component.extend({
     this.set('vhost.privateKey', null);
 
     if(this.get('certificates.length') > 0) {
-      this.set('vhost.certificate', this.get('certificates.firstObject'));
+      if(!this.get('selected.id')) {
+        this.set('vhost.certificate', this.get('certificates.firstObject'));
+      }
     } else {
       this.set('addNewCertificate', true);
     }

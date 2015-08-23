@@ -29,11 +29,9 @@ export default Ember.Route.extend({
 
   setupController(controller, model) {
     let vhost = model.vhost;
-    let certificates = model.certificates;
 
     controller.set('model', vhost);
     controller.set('certificates', model.certificates);
-    controller.set('vhostCertificate', certificates.get('firstObject'));
     controller.set('originalCertificate', vhost.get('certificate'));
   },
 
