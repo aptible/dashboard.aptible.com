@@ -45,7 +45,6 @@ module.exports = function(defaults) {
   });
 
   // Should become and addon or use a tree
-  app.import('bower_components/aptible-sass/dist/images/aptible-circle-logo.png', { destDir: "images" });
   app.import('bower_components/aptible-sass/dist/images/aptible-mark.png', { destDir: "images" });
   app.import('bower_components/aptible-sass/dist/images/aptible-mark@2x.png', { destDir: "images" });
   app.import('bower_components/aptible-sass/dist/images/nav-logo-dark.png', { destDir: "images" });
