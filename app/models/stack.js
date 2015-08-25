@@ -18,6 +18,9 @@ export default DS.Model.extend({
   syslogPort: DS.attr('string'),
   organizationUrl: DS.attr('string'),
   activated: DS.attr('boolean'),
+  containerCount: DS.attr('number'),
+  domainCount: DS.attr('number'),
+  totalDiskSize: DS.attr('number'),
 
   // relationships
   apps: DS.hasMany('app', {async: true}),
@@ -31,6 +34,13 @@ export default DS.Model.extend({
   pending: Ember.computed.not('activated'),
   allowPHI: Ember.computed.match('type', /production/),
   appContainerCentsPerHour: 8,
+
+  getUsageByResourceType(type) {
+    let usageAttr = { container: 'containerCount', disk: 'totalDiskSize',
+                      domain: 'domainCount' }[type];
+    return this.get(usageAttr);
+  },
+
   permitsRole(role, scope){
     let permissions;
 
