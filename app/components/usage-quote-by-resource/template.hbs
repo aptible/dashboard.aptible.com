@@ -1,0 +1,43 @@
+<div class="panel panel-default resource-usage">
+  <div class="panel-heading with-actions">
+    <h3>
+      <span class="resource-label">{{resourceLabel}}</span>
+      <small class="resource-rate">{{rate}}</small>
+    </h3>
+    <div class="resource-usage-total">
+      <span class="usage-label">
+        Total monthly {{resource}} cost:
+      </span>
+      <span class="usage-value">
+        {{totalUsageInDollars}}
+      </span>
+    </div>
+  </div>
+
+  <ul class="usage-quote-items">
+    {{#each stacks as |stack|}}
+      {{stack-resource-usage stack=stack resource=resource classNames="usage-quote-item"}}
+    {{/each}}
+
+    {{#if allowance}}
+      <li class="usage-quote-item total-item">
+        <div class="usage-label">Total current usage:</div>
+        <div class="usage-value gross-usage">{{grossUsage}}</div>
+      </li>
+
+      <li class="usage-quote-item total-item">
+        <div class="usage-label">
+          <span class="success">Less included in {{capitalize-string plan}} plan:</span>
+        </div>
+        <div class="usage-value">
+          <span class="success allowance">-{{allowance}}</span>
+        </div>
+      </li>
+    {{/if}}
+
+    <li class="usage-quote-item total-item">
+      <div class="usage-label">Current billable usage:</div>
+      <div class="usage-value net-usage">{{netUsage}}</div>
+    </li>
+  </ul>
+</div>
