@@ -27,6 +27,7 @@ module('Acceptance: Organizations: Billing', {
   beforeEach: function() {
     application = startApp();
     stubOrganization();
+    stubStacks();
   },
 
   afterEach: function() {
@@ -41,15 +42,6 @@ test(`visiting ${url} requires authentication`, () => {
 test(`visiting ${aptibleSettingsUrl} shows link to billing`, () => {
   signInAndVisit(aptibleSettingsUrl);
   andThen(() => {
-    expectLink(billingUrl);
-  });
-});
-
-test(`visiting ${billingUrl} redirects to /plan`, (assert) => {
-  stubBillingDetail({id: organizationId });
-  signInAndVisit(billingUrl);
-  andThen(() => {
-    assert.equal(currentPath(), 'dashboard.organization.billing.plan');
     expectLink(billingUrl);
   });
 });
@@ -82,6 +74,7 @@ test(`visiting ${billingUrl} displays "Billing" header`, (assert) => {
   stubRequest('get', billingDetailUrl, (request) => {
     request.ok({
       id: 'b-d-id',
+      plan: 'production',
       payment_method_name: 'VISA',
       payment_method_display: '4242',
       next_invoice_date: '2015-06-29T11:06:48.000-04:00',

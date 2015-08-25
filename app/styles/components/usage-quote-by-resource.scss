@@ -1,0 +1,61 @@
+.resource-usage.panel {
+  .panel-heading small {
+    color: $color-light;
+    font-size: 14px;
+  }
+  .resource-usage-total {
+    float: right;
+    font-size: 14px;
+    color: $color-light;
+    margin: 7px 0 0 0;
+
+    .usage-value {
+      font-weight: $weight-semibold;
+      color: $color-primary;
+      font-size: 16px;
+    }
+  }
+
+  ul.usage-quote-items {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+
+    .usage-quote-item {
+      @extend %clearfix;
+      border-bottom: 1px solid $color-border-gray;
+      padding: 14px 20px;
+      font-size: 14px;
+
+      &:last-child {
+        border: 0;
+      }
+
+      .usage-label {
+        color: $color-light;
+        float: left;
+      }
+
+      .usage-value {
+        float: right;
+        text-align: right;
+        color: $color-light;
+      }
+
+      &.total-item {
+        .usage-label, .usage-value {
+          font-weight: $weight-semibold;
+          color: $color-primary;
+        }
+      }
+    }
+  }
+
+  .danger {
+    color: $color-danger;
+  }
+
+  .success {
+    color: $color-success;
+  }
+}
