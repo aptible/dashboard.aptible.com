@@ -60,14 +60,12 @@ export default Ember.Route.extend({
 
         return subscription.save();
       }).then(function(){
-        var organizationUrl = organization.get('_data.links.self');
-
         saveProgress.set('currentStep', 3);
 
         return store.createRecord('stack', {
           handle: welcomeModel.stackHandle,
           type: model.plan === 'development' ? 'development' : 'production',
-          organizationUrl: organizationUrl
+          organization: organization
         }).save();
       }).then(function(stack) {
         var promises = [];
