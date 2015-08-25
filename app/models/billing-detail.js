@@ -2,7 +2,7 @@ import DS from 'ember-data';
 import Ember from 'ember';
 
 export const CONTAINER_CENTS_PER_HOUR = 8;
-export const DISK_CENTS_PER_HOUR = .05;
+export const DISK_CENTS_PER_HOUR = .0507;
 export const DOMAIN_CENTS_PER_HOUR = 5;
 export const PLAN_RATES = {
   development: 0,
