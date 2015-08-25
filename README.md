@@ -55,14 +55,14 @@ An addon is used to create new websites on top of S3 bucket with website hosting
 
 To create a new website use the following command:
 
-```
-ember create-website --domain=aptible-staging.com --subdomain=dashboard-rwjblue
+```bash
+ember create-website --domain=aptible-sandbox.com --subdomain-suffix="-rwjblue"
 ```
 
 To build and deploy to this newly created bucket, use the following command:
 
 ```bash
-AWS_BUCKET=dashboard-rwjblue.aptible-staging.com ember deploy --environment staging
+DOMAIN=aptible-sandbox.com SUBDOMAIN_SUFFIX="-rwjblue" ember deploy -e sandbox
 ```
 
 #### Continuous Deployment
