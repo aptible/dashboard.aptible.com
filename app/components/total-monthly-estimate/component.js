@@ -1,34 +1,42 @@
 import Ember from 'ember';
-
-const HOURS_PER_MONTH = 730;
-
-export function getStackTotalCents(stack, billingDetail) {
-  let stackTotal = 0;
-  let containerTotal = stack.get('containerCount') *
-                       billingDetail.get('containerCentsPerHour') *
-                       HOURS_PER_MONTH;
-  let domainTotal =    stack.get('domainCount') *
-                       billingDetail.get('domainCentsPerHour') *
-                       HOURS_PER_MONTH;
-  let diskTotal =      stack.get('totalDiskSize') *
-                       billingDetail.get('diskCentsPerHour') *
-                       HOURS_PER_MONTH;
-  return containerTotal + domainTotal + diskTotal;
-}
-
-export function getStacksTotal(stacks, billingDetail) {
-  let totalCents = 0;
-
-  this.get('stacks').forEach((stack) => {
-    totalCents += getStackTotalCents(stack, billingDetail);
-  });
-
-  return totalCents;
-}
+import { HOURS_PER_MONTH } from '../usage-quote-by-resource/component';
 
 export default Ember.Component.extend({
-  total: function() {
-    let total = getStacksTotal(this.get('stacks'), this.get('billingDetail'));
-    return (total / 100).toFixed(2);
-  }.volatile()
+  // Arrays of usage counts
+  containers: Ember.computed.mapBy('stacks', 'containerCount'),
+  domains: Ember.computed.mapBy('stacks', 'domainCount'),
+  disk: Ember.computed.mapBy('stacks', 'totalDiskSize'),
+
+  // Gross sums
+  grossContainers: Ember.computed.sum('containers'),
+  grossDomains: Ember.computed.sum('domains'),
+  grossDisk: Ember.computed.sum('disk'),
+
+  // Net sums
+  netContainers: Ember.computed('grossContainers', 'billingDetail.containerAllowance', function() {
+    return Math.max((this.get('grossContainers') - this.get('billingDetail.containerAllowance')), 0);
+  }),
+  netDomains: Ember.computed('grossDomains', 'billingDetail.domainAllowance', function() {
+    return Math.max((this.get('grossDomains') - this.get('billingDetail.domainAllowance')), 0);
+  }),
+  netDisk: Ember.computed('grossDisk', 'billingDetail.diskAllowance', function() {
+    return Math.max((this.get('grossDisk') - this.get('billingDetail.diskAllowance')), 0);
+  }),
+
+  // Total value
+  total: Ember.computed('netContainers', 'netDomains', 'netDisk', 'billingDetail', function() {
+    let billingDetail = this.get('billingDetail');
+    let { containerCentsPerHour, domainCentsPerHour, diskCentsPerHour } = billingDetail.getProperties(
+      ['containerCentsPerHour', 'domainCentsPerHour', 'diskCentsPerHour']);
+    let { netContainers, netDomains, netDisk } = this.getProperties(
+      ['netContainers', 'netDomains', 'netDisk']);
+
+    return (netContainers * containerCentsPerHour +
+            netDomains * domainCentsPerHour +
+            netDisk * diskCentsPerHour) * HOURS_PER_MONTH;
+  }),
+
+  totalDollars: Ember.computed('total', 'billingDetail.planRate', function() {
+    return ((this.get('total') / 100) + this.get('billingDetail.planRate')).toFixed(2);
+  })
 });
