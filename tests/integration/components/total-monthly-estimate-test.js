@@ -17,13 +17,13 @@ test('sums usage correctly', function(assert) {
   // Net domain rate: (8 + 1 - 4) * 5 * 730 = 18250
   // Net disk rate: (2000 + 1000 - 1000) * .0507 * 730 = 74022
   // Net cents: 138992
-  // net dollars: $1389.92
+  // net dollars: $1,389.92
 
   this.set('stacks', [stack1, stack2]);
   this.set('billingDetail', billingDetail);
   this.render(hbs('{{total-monthly-estimate stacks=stacks billingDetail=billingDetail}}'));
 
-  assert.equal(this.$().text(), '$1389.92', 'has correct total value');
+  assert.equal(this.$().text().trim(), '$1,389.92', 'has correct total value');
 });
 
 test('sums usage with base plan rate correctly', function(assert) {
@@ -38,11 +38,11 @@ test('sums usage with base plan rate correctly', function(assert) {
   // Net disk rate: (2000 + 1000 - 1000) * .0507 * 730 = 74022
   // Net plan rate 349900
   // Net cents: 488892
-  // net dollars: $4888.92
+  // net dollars: $4,888.92
 
   this.set('stacks', [stack1, stack2]);
   this.set('billingDetail', billingDetail);
   this.render(hbs('{{total-monthly-estimate stacks=stacks billingDetail=billingDetail}}'));
 
-  assert.equal(this.$().text(), '$4888.92', 'has correct total value');
+  assert.equal(this.$().text().trim(), '$4,888.92', 'has correct total value');
 });

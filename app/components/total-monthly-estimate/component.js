@@ -24,19 +24,16 @@ export default Ember.Component.extend({
   }),
 
   // Total value
-  total: Ember.computed('netContainers', 'netDomains', 'netDisk', 'billingDetail', function() {
+  total: Ember.computed('netContainers', 'netDomains', 'netDisk', 'billingDetail', 'billingDetail.planRate', function() {
     let billingDetail = this.get('billingDetail');
     let { containerCentsPerHour, domainCentsPerHour, diskCentsPerHour } = billingDetail.getProperties(
       ['containerCentsPerHour', 'domainCentsPerHour', 'diskCentsPerHour']);
     let { netContainers, netDomains, netDisk } = this.getProperties(
       ['netContainers', 'netDomains', 'netDisk']);
 
-    return (netContainers * containerCentsPerHour +
+    return ((netContainers * containerCentsPerHour +
             netDomains * domainCentsPerHour +
-            netDisk * diskCentsPerHour) * HOURS_PER_MONTH;
-  }),
-
-  totalDollars: Ember.computed('total', 'billingDetail.planRate', function() {
-    return ((this.get('total') / 100) + this.get('billingDetail.planRate')).toFixed(2);
+            netDisk * diskCentsPerHour) * HOURS_PER_MONTH) +
+            (this.get('billingDetail.planRate') * 100);
   })
 });
