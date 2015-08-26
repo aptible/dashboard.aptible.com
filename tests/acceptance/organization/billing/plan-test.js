@@ -23,6 +23,7 @@ const askAboutHIPAAButtonName = 'Ask about our HIPAA compliant plans';
 module('Acceptance: Organizations: Billing: Plan', {
   beforeEach: function() {
     application = startApp();
+    stubStacks();
   },
 
   afterEach: function() {

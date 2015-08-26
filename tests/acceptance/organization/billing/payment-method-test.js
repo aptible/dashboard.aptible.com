@@ -21,6 +21,7 @@ const updatePaymentMethodButton = "Edit";
 module('Acceptance: Organizations: Billing: Payment Method', {
   beforeEach: function() {
     application = startApp();
+    stubStacks();
   },
 
   afterEach: function() {

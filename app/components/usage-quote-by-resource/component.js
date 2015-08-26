@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const HOURS_PER_MONTH = 730;
+export const HOURS_PER_MONTH = 730;
 
 export default Ember.Component.extend({
   resourceLabel: Ember.computed('resource', function() {
