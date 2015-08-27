@@ -34,6 +34,6 @@ export default Ember.Component.extend({
     return ((netContainers * containerCentsPerHour +
             netDomains * domainCentsPerHour +
             netDisk * diskCentsPerHour) * HOURS_PER_MONTH) +
-            (this.get('billingDetail.planRate') * 100);
+            this.get('billingDetail.planRate');
   })
 });

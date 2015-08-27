@@ -31,7 +31,7 @@ test('sums usage with base plan rate correctly', function(assert) {
   let stack2 = Ember.Object.create({ handle: 'stack2',  containerCount: 3, domainCount: 1, totalDiskSize: 1000 });
   let billingDetail = Ember.Object.create({ containerAllowance: 6, domainAllowance: 4,
                                             diskAllowance: 1000, containerCentsPerHour: 8,
-                                            domainCentsPerHour: 5, diskCentsPerHour: 0.0507, planRate: 3499 });
+                                            domainCentsPerHour: 5, diskCentsPerHour: 0.0507, planRate: 349900 });
 
   // Net container rate: (11 + 3 - 6) * 8 * 730 = 46720
   // Net domain rate: (8 + 1 - 4) * 5 * 730 = 18250
