@@ -30,9 +30,5 @@ export default Ember.Component.extend({
 
   totalUsageCost: Ember.computed('netUsage', 'hourlyRate', function() {
     return this.get('netUsage') * this.get('hourlyRate') * HOURS_PER_MONTH;
-  }),
-
-  totalUsageInDollars: Ember.computed('totalUsageCost', function() {
-    return `$${(this.get('totalUsageCost') / 100).toFixed(2)}`;
   })
 });
