@@ -27,8 +27,10 @@ export default Ember.Route.extend({
         address_zip: model.zip
       };
 
-      var organization;
-      var stripeResponse;
+      let organization;
+      let stripeResponse;
+      let pendingSubscription;
+
       saveProgress.set('currentStep', 1);
       Ember.RSVP.hash({
         stripeResponse: createStripeToken(options),
@@ -52,13 +54,13 @@ export default Ember.Route.extend({
           return Ember.RSVP.resolve();
         }
 
-        var subscription = store.createRecord('billing-detail', {
+        pendingSubscription = store.createRecord('billing-detail', {
           id: organization.get('id'),
           plan: welcomeModel.plan,
           stripeToken: stripeResponse.id
         });
 
-        return subscription.save();
+        return pendingSubscription.save();
       }).then(function(){
         saveProgress.set('currentStep', 3);
 
@@ -103,6 +105,10 @@ export default Ember.Route.extend({
         error = error.message || error.responseJSON.message;
         saveProgress.set('currentStep', 0);
         controller.set('error', error);
+
+        if(pendingSubscription && pendingSubscription.get('isDirty')) {
+          pendingSubscription.deleteRecord();
+        }
       });
     }
   }
