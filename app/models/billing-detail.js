@@ -4,11 +4,13 @@ import Ember from 'ember';
 export const CONTAINER_CENTS_PER_HOUR = 8;
 export const DISK_CENTS_PER_HOUR = .0507;
 export const DOMAIN_CENTS_PER_HOUR = 5;
+
+// All monetary calculations are done in cents
 export const PLAN_RATES = {
   development: 0,
-  platform: 499,
-  pilot: 999,
-  production: 3499
+  platform: 49900,
+  pilot: 99900,
+  production: 349900
 };
 
 export const CONTAINER_ALLOWANCES = {
