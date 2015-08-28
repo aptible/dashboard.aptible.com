@@ -91,7 +91,7 @@ test(`visiting ${url} lists permissions by stack`, (assert)=> {
     // the first checkbox is 'read' scope, hardcoded by the template
     assert.equal(body.scope, 'read', `posts with scope read`);
     assert.equal(body.role, apiRoleUrl, `posts with role url`);
-    return this.success({});
+    return this.success({ _links: { role: { href: apiRoleUrl }}});
   });
 
   visit(url);

@@ -20,6 +20,8 @@ module('Acceptance: User Settings: Profile', {
   beforeEach: function() {
     App = startApp();
     stubStacks();
+    stubOrganizations();
+    stubOrganization({ id: 'o1'});
   },
   afterEach: function() {
     Ember.run(App, 'destroy');

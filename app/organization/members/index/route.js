@@ -7,7 +7,7 @@ export default Ember.Route.extend({
     return Ember.RSVP.hash({
       organization: organization,
       users: organization.get('users')
-    })
+    });
   },
 
   afterModel(model){
