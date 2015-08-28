@@ -7,3 +7,8 @@ header.navbar.current-user-header .navbar-header .navbar-brand {
     background-image: url("/images/nav-logo-dark@2x.png");
   }
 }
+
+// Fixes a weird issue with the drop down adding an underline to an anchor
+.user-nav a:focus {
+  text-decoration: none;
+}
