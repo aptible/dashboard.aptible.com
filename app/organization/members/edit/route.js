@@ -16,6 +16,7 @@ export default Ember.Route.extend({
   setupController(controller, model){
     controller.set('model', model);
     controller.set('organization', this.modelFor('organization'));
+
     let changeset = Changeset.create({
       key(keyData) {
         return keyData.organizationRole.get('id');

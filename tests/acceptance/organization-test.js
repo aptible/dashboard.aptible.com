@@ -18,15 +18,13 @@ module('Acceptance: Organization', {
 });
 
 test('visiting /organization', function(assert) {
-  stubOrganization({ id: 42 });
-  stubBillingDetail({ id: 42 });
+  stubOrganization({ id: 'o1' });
+  stubBillingDetail({ id: 'o1' });
   setFeature('organization-settings', true);
-  signInAndVisit('/organizations/42');
+  signInAndVisit('/organizations/o1');
   andThen(function() {
     assert.equal(currentPath(), 'dashboard.organization.members.index');
-
-    // sidebar
-    expectLink('/organizations/42/members');
-    expectLink('/organizations/42/roles');
+    expectLink('/organizations/o1/members');
+    expectLink('/organizations/o1/roles');
   });
 });
