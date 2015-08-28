@@ -1,12 +1,7 @@
 <div class="btn-group {{if isOpen 'open'}}">
-
-  {{#if app}}
-    {{#link-to-aptible app=app path=defaultPath class='btn btn-link' active=false}}
-      {{title}}
-    {{/link-to-aptible}}
-  {{else}}
-    {{link-to title defaultPath class="btn btn-link" active=false}}
-  {{/if}}
+  <a href="#" class="btn btn-link" {{action "toggle"}}>
+    {{title}}
+  </a>
 
   <a href="#" class="btn btn-link dropdown-toggle" {{action "toggle"}}>
     <i class="fa fa-chevron-down"></i>
