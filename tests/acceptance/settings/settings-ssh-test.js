@@ -12,6 +12,8 @@ module('Acceptance: User Settings: Ssh', {
   beforeEach: function() {
     App = startApp();
     stubStacks();
+    stubOrganizations();
+    stubOrganization({ id: 'o1'});
   },
   afterEach: function() {
     Ember.run(App, 'destroy');

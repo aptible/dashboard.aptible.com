@@ -7,7 +7,7 @@ import startApp from 'diesel/tests/helpers/start-app';
 import { stubRequest } from 'diesel/tests/helpers/fake-server';
 
 let application;
-let orgId = 'big-co';
+let orgId = 'o1';
 let orgName = 'big company';
 let roles = [{
   id: 'r1',

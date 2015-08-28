@@ -1,18 +1,47 @@
-<nav class="layout-sidebar">
-  <ul class='nav sidebar-nav'>
+{{#each session.currentUser.organizations as |organization|}}
+  <ul class="nav sidebar-nav">
     <li class="title">
-      {{session.currentUser.name}} Settings
+      {{organization.name}} Settings
     </li>
-    {{#activating-item currentWhen='settings.profile' tagName='li'}}
-      {{link-to 'Profile' 'settings.profile'}}
-    {{/activating-item}}
+    {{#link-to 'organization.members' organization tagName="li"}}
+      {{link-to "Members" "organization.members" organization bubbles=false}}
+    {{/link-to}}
+    {{#link-to 'organization.roles' organization tagName="li"}}
+      {{link-to "Roles" "organization.roles" organization bubbles=false}}
+    {{/link-to}}
+    {{#link-to 'organization.environments' organization tagName="li"}}
+      {{link-to "Environments" "organization.environments" organization bubbles=false}}
+    {{/link-to}}
 
-    {{#activating-item currentWhen='settings.admin' tagName='li'}}
-      {{link-to 'Account Settings' 'settings.admin'}}
-    {{/activating-item}}
+    {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
+      {{#if hasAbility}}
+        {{#link-to 'organization.contact-settings' organization tagName="li"}}
+          {{link-to "Contact Settings" "organization.contact-settings" organization bubbles=false}}
+        {{/link-to}}
+      {{/if}}
 
-    {{#activating-item currentWhen='settings.ssh' tagName='li'}}
-      {{link-to 'SSH Keys' 'settings.ssh'}}
-    {{/activating-item}}
+      {{#if features.organizationBillingSettings}}
+        {{#link-to 'organization.billing' organization tagName="li"}}
+          {{link-to "Billing" "organization.billing" organization bubbles=false}}
+        {{/link-to}}
+      {{/if}}
+    {{/aptible-ability}}
   </ul>
-</nav>
+{{/each}}
+
+<ul class='nav sidebar-nav'>
+  <li class="title">
+    {{session.currentUser.name}} Settings
+  </li>
+  {{#activating-item currentWhen='settings.profile' tagName='li'}}
+    {{link-to 'Profile' 'settings.profile'}}
+  {{/activating-item}}
+
+  {{#activating-item currentWhen='settings.admin' tagName='li'}}
+    {{link-to 'Account Settings' 'settings.admin'}}
+  {{/activating-item}}
+
+  {{#activating-item currentWhen='settings.ssh' tagName='li'}}
+    {{link-to 'SSH Keys' 'settings.ssh'}}
+  {{/activating-item}}
+</ul>
