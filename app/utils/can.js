@@ -7,10 +7,8 @@ export default function can(user, scope, permittablePromise){
 
   let permittable;
 
-  return new Ember.RSVP.Promise(function(resolve) {
-    // Ensure permittable is resolved as a model and not a promise
-    resolve(permittablePromise);
-  }).then(function(resolvedPermittable) {
+  return new Ember.RSVP.resolve(permittablePromise)
+  .then(function(resolvedPermittable) {
     Ember.assert('Must pass a parameter that implements `permitsRole`', !!resolvedPermittable.permitsRole);
     permittable = resolvedPermittable;
     return user.get('roles');
