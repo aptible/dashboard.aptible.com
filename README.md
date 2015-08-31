@@ -1,4 +1,4 @@
-# ![Aptible](http://aptible-media-assets-manual.s3.amazonaws.com/tiny-github-icon.png) dashboard.aptible.com
+![dashboard.aptible.com](/screenshot.png?raw=true "dashboard.aptible.com - Built with Ember.js")
 
 [![Build Status](https://travis-ci.org/aptible/dashboard.aptible.com.svg?branch=master)](https://travis-ci.org/aptible/dashboard.aptible.com) [![Stories in Ready](https://badge.waffle.io/aptible/dashboard.aptible.com.svg?label=ready&title=Ready)](http://waffle.io/aptible/dashboard.aptible.com)
 
