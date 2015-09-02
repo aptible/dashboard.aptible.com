@@ -23,6 +23,10 @@ export function provisionDatabases(user, store){
 
   return store.find('database').then( function(databases) {
     let promises = databases.map(function(database){
+      if(!database.get('isPending')) {
+        return Ember.RSVP.resolve();
+      }
+
       let op = store.createRecord('operation', {
         type: 'provision',
         diskSize: database.get('initialDiskSize') || '10',
