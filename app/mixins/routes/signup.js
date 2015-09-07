@@ -9,7 +9,7 @@ export default Ember.Mixin.create({
 
       user.save().then(() => {
         let credentials = buildCredentials(email, password);
-        return this.get('session').open('aptible', credentials);
+        return this.get('session').open('application', credentials);
       }).then(() => {
 
         if (organization) {

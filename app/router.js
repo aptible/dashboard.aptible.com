@@ -14,7 +14,7 @@ var Router = Ember.Router.extend({
 });
 
 export default Router.map(function() {
-  this.route("dashboard", { path: '/' }, function() {
+  this.authenticatedRoute("dashboard", { path: '/' }, function() {
 
     this.route("index", { path: '', resetNamespace: true });
 
@@ -108,7 +108,7 @@ export default Router.map(function() {
     });
   });
 
-  this.route("welcome", {
+  this.authenticatedRoute("welcome", {
     resetNamespace: true
   }, function() {
     this.route("first-app");
@@ -125,7 +125,7 @@ export default Router.map(function() {
     this.route('new', {path: 'new/:reset_code/:user_id'});
   });
 
-  this.route("verify", {
+  this.authenticatedRoute("verify", {
     path: "verify/:verification_code"
   });
 
