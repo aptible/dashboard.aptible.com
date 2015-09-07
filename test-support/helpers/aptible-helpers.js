@@ -2,6 +2,7 @@ import Ember from 'ember';
 import { stubRequest } from 'ember-cli-fake-server';
 import MockLocation from './mock-location';
 import MockTitle from './mock-title';
+import { stubValidSession } from './torii'; // provided by Torii
 
 Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData){
   userData = userData || {};
@@ -40,16 +41,13 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData){
   userData = Ember.$.extend(true, defaultUserData, userData);
   roleData = Ember.$.extend(true, defaultRoleData, roleData);
 
-  let session = app.__container__.lookup('torii:session');
-  let sm = session.get('stateMachine');
-
-  Ember.run(function(){
+  let currentUser = Ember.run(function(){
     let store = app.__container__.lookup('store:main');
-    let user = store.push('user', userData);
-
-    sm.transitionTo('authenticated');
-    session.set('content.currentUser', user);
-    session.set('content.token', Ember.Object.create({id: 'stubbed-token-id'}));
+    return store.push('user', userData);
+  });
+  stubValidSession(app, {
+    currentUser,
+    token: Ember.Object.create({id: 'stubbed-token-id'})
   });
 });
 
