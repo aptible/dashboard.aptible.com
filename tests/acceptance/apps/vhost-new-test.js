@@ -305,7 +305,7 @@ test(`visit ${appVhostsNewUrl} and create vhost with existing certificates`, fun
     return this.success({id: 'new-op-id'});
   });
 
-  signInAndVisit(appVhostsNewUrl);
+  visit(appVhostsNewUrl);
   andThen(function(){
     clickButton('Save VHost');
   });
@@ -367,7 +367,7 @@ test(`visit ${appVhostsNewUrl} and create vhost with new certificate`, function(
     return this.success({id: 'new-op-id'});
   });
 
-  signInAndVisit(appVhostsNewUrl);
+  visit(appVhostsNewUrl);
   andThen(function(){
     fillInput('certificate-body', 'my long cert');
     fillInput('private-key', 'my long pk');

@@ -63,7 +63,6 @@ test(`visiting ${url} shows role edit fields`, (assert)=> {
 });
 
 test(`visiting ${url} lists permissions by stack`, (assert)=> {
-  doSetup();
   let stackHandle = 'stack1-handle';
   let scopes = ['Read', 'Manage'];
   let stackId = 'stack1';
@@ -74,13 +73,13 @@ test(`visiting ${url} lists permissions by stack`, (assert)=> {
       organization: { href: orgUrl }
     }
   }];
-  stubStacks({}, stacks);
-  signIn(null, {
+  doSetup({roleData: {
     id: roleId,
     privileged: false,
     name: roleName,
     _links: { self: { href: apiRoleUrl } }
-  });
+  }});
+  stubStacks({}, stacks);
 
   let postedPermission;
   let createPermissionUrl = `/accounts/${stackId}/permissions`;
