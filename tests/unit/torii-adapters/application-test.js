@@ -17,7 +17,7 @@ class MockAnalytics {
   page() {}
 }
 
-moduleFor('torii-adapter:aptible', 'Torii Adapter: Aptible', {
+moduleFor('torii-adapter:application', 'Torii Adapter: Aptible', {
   needs: modelDeps,
 
   setup: function(){

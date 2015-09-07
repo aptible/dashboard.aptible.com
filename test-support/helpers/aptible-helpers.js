@@ -19,17 +19,23 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData){
   };
 
   roleData = roleData || {};
+  roleData.id = roleData.id || 'r1';
   const defaultRoleData = {
-    id: 'r1',
+    id: roleData.id,
     privileged: true,
     _links: {
-      self: { href: `/roles/r1` },
+      self: { href: `/roles/${roleData.id}` },
       organization: { href: '/organizations/o1' }
     }
   };
 
-  // FIXME this makes the tests slower. If we push the role data directly
-  // into the store we'll save this roundtrip during tests
+  userData = Ember.$.extend(true, defaultUserData, userData);
+  roleData = Ember.$.extend(true, defaultRoleData, roleData);
+
+  stubRequest('get', `/roles/${roleData.id}`, function(request){
+    return this.success(roleData);
+  });
+
   stubRequest('get', '/users/user1/roles', function(request){
     return this.success({
       _embedded: {
@@ -37,9 +43,6 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData){
       }
     });
   });
-
-  userData = Ember.$.extend(true, defaultUserData, userData);
-  roleData = Ember.$.extend(true, defaultRoleData, roleData);
 
   let currentUser = Ember.run(function(){
     let store = app.__container__.lookup('store:main');

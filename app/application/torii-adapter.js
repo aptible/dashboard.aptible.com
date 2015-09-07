@@ -22,9 +22,10 @@ function pushTokenToStore(tokenPayload, store) {
 }
 
 export default Ember.Object.extend({
+  store: Ember.inject.service(),
   analytics: Ember.inject.service(),
   _authenticateWithPayload(tokenPayload) {
-    var store = this.store;
+    var store = this.get('store');
     return new Ember.RSVP.Promise(function(resolve){
       persistSession(tokenPayload.access_token);
       resolve(pushTokenToStore(tokenPayload, store));
@@ -32,6 +33,11 @@ export default Ember.Object.extend({
       return Ember.RSVP.hash({
         token,
         currentUser: token.get('user')
+      });
+    }).then((session) => {
+      // Load role eagerly
+      return session.currentUser.get('roles').then(() => {
+        return session;
       });
     }).then((session) => {
       this.identifyToAnalytics(session.currentUser);
