@@ -27,7 +27,7 @@ test('if prompt was supplied it is displayed', function(assert) {
 test('if no prompt was supplied it is not displayed', function(assert) {
   this.render(hbs('{{primitive-select}}'));
 
-  assert.equal(this.$('option').length, 0, 'prompt was found');
+  assert.equal(this.$('option').length, 0, 'prompt was not found');
 });
 
 test('provided items are displayed as options', function(assert) {
@@ -38,6 +38,17 @@ test('provided items are displayed as options', function(assert) {
   let options = this.$('option');
   assert.equal(options.length, 4);
   assert.equal(options.text().trim(), 'onetwo34');
+});
+
+test('provided selected item is selected', function(assert) {
+  this.set('listing', Ember.A(['one', 'two', '3', '4']));
+  this.set('selectedItem', 'two');
+
+  this.render(hbs('{{primitive-select selected=selectedItem items=listing}}'));
+
+  let selectedOption = this.$('option:selected');
+  assert.equal(selectedOption.length, 1, 'selected option found');
+  assert.equal(selectedOption.text().trim(), 'two', 'correct option is selected');
 });
 
 test('when changed fires update action with new value', function(assert) {
