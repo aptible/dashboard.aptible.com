@@ -2,6 +2,7 @@ import Ember from 'ember';
 import { stubRequest } from 'ember-cli-fake-server';
 import MockLocation from './mock-location';
 import MockTitle from './mock-title';
+import { stubValidSession } from './torii'; // provided by Torii
 
 Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData){
   userData = userData || {};
@@ -18,17 +19,23 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData){
   };
 
   roleData = roleData || {};
+  roleData.id = roleData.id || 'r1';
   const defaultRoleData = {
-    id: 'r1',
+    id: roleData.id,
     privileged: true,
     _links: {
-      self: { href: `/roles/r1` },
+      self: { href: `/roles/${roleData.id}` },
       organization: { href: '/organizations/o1' }
     }
   };
 
-  // FIXME this makes the tests slower. If we push the role data directly
-  // into the store we'll save this roundtrip during tests
+  userData = Ember.$.extend(true, defaultUserData, userData);
+  roleData = Ember.$.extend(true, defaultRoleData, roleData);
+
+  stubRequest('get', `/roles/${roleData.id}`, function(request){
+    return this.success(roleData);
+  });
+
   stubRequest('get', '/users/user1/roles', function(request){
     return this.success({
       _embedded: {
@@ -37,19 +44,13 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData){
     });
   });
 
-  userData = Ember.$.extend(true, defaultUserData, userData);
-  roleData = Ember.$.extend(true, defaultRoleData, roleData);
-
-  let session = app.__container__.lookup('torii:session');
-  let sm = session.get('stateMachine');
-
-  Ember.run(function(){
+  let currentUser = Ember.run(function(){
     let store = app.__container__.lookup('store:main');
-    let user = store.push('user', userData);
-
-    sm.transitionTo('authenticated');
-    session.set('content.currentUser', user);
-    session.set('content.token', Ember.Object.create({id: 'stubbed-token-id'}));
+    return store.push('user', userData);
+  });
+  stubValidSession(app, {
+    currentUser,
+    token: Ember.Object.create({id: 'stubbed-token-id'})
   });
 });
 
