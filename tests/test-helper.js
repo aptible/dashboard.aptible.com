@@ -25,6 +25,7 @@ QUnit.testStart(function(){
 
   FakeServer.start();
   Cookies.erase(AFTER_AUTH_COOKIE);
+  Error.stackTraceLimit = 999;
 });
 
 QUnit.testDone(function(){

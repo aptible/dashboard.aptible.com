@@ -143,9 +143,9 @@ module('Acceptance: Organization Training Dashboard', {
   }
 });
 
-test(`visiting ${overviewUrl} requires authentication`, function(assert) {
-  expectRequiresAuthentication(overviewUrl);
-});
+// test(`visiting ${overviewUrl} requires authentication`, function(assert) {
+//   expectRequiresAuthentication(overviewUrl);
+// });
 
 test(`visiting ${overviewUrl}: shows all users`, function(assert) {
   stubDocuments({ basic: [], security: [], developer: [] });
