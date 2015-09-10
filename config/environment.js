@@ -1,5 +1,7 @@
 /* jshint node: true */
 
+var detectEndpointUri = require('../lib/detect-endpoint-uri');
+
 module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'diesel',
@@ -7,13 +9,13 @@ module.exports = function(environment) {
     baseURL: '/',
     locationType: 'auto',
 
-    authBaseUri: process.env.AUTH_BASE_URI || "http://localhost:4000",
-    apiBaseUri: process.env.API_BASE_URI || "http://localhost:4001",
-    billingBaseUri: process.env.BILLING_BASE_URI || "http://localhost:4004",
+    authBaseUri: detectEndpointUri('auth', environment) || 'http://localhost:4000',
+    apiBaseUri: detectEndpointUri('api', environment) || 'http://localhost:4001',
+    billingBaseUri: detectEndpointUri('billing', environment) || 'http://localhost:4004',
     aptibleHosts: {
-      compliance: 'http://localhost:3001',
-      dashboard: "http://localhost:4200",
-      support: "https://support.aptible.com"
+      compliance: detectEndpointUri('compliance', environment) || 'http://localhost:3001',
+      dashboard: detectEndpointUri('dashboard', environment) || 'http://localhost:4200',
+      support: 'https://support.aptible.com'
     },
 
     authTokenKey: '_aptible_authToken',
@@ -65,7 +67,7 @@ module.exports = function(environment) {
       'img-src': "'self' http://www.gravatar.com https://secure.gravatar.com http://www.google-analytics.com http://p.typekit.net https://track.customer.io https://js.intercomcdn.com data: app.getsentry.com",
       'script-src': "'self' 'unsafe-inline' https://js.stripe.com https://api.stripe.com http://use.typekit.net http://cdn.segment.com https://assets.customer.io http://www.google-analytics.com http://cdn.mxpnl.com https://js.intercomcdn.com https://static.intercomcdn.com https://widget.intercom.io http://cdn.ravenjs.com",
       'font-src': "'self' data:",
-      'object-src': "http://localhost:4200"
+      'object-src': 'http://localhost:4200'
     },
 
     featureFlags: {
@@ -114,31 +116,18 @@ module.exports = function(environment) {
   }
 
   if (environment === 'staging') {
-    ENV.authBaseUri = "https://auth.aptible-staging.com";
-    ENV.apiBaseUri = "https://api.aptible-staging.com";
-    ENV.billingBaseUri = "https://billing.aptible-staging.com";
-    ENV.aptibleHosts = {
-      compliance: 'https://compliance.aptible-staging.com',
-      dashboard: "https://dashboard.aptible-staging.com",
-      support: "https://support.aptible-staging.com"
-    };
     ENV.segmentioKey = '6jZlAcweTojgXShBvn4B9Tvwr1IlqkEE';
+
     ENV.featureFlags['price-estimator'] = false;
+
     ENV.sentry.whitelistUrls = ['dashboard.aptible-staging.com'];
     ENV.sentry.development = false;
   }
 
   if (environment === 'production') {
     ENV.stripePublishableKey = 'pk_live_ujeTeUIMpUcvNsWwu7R9b3Zy';
-    ENV.authBaseUri = "https://auth.aptible.com";
-    ENV.apiBaseUri = "https://api.aptible.com";
-    ENV.billingBaseUri = "https://billing.aptible.com";
-    ENV.aptibleHosts = {
-      compliance: 'https://compliance.aptible.com',
-      dashboard: "https://dashboard.aptible.com",
-      support: "https://support.aptible.com"
-    };
     ENV.segmentioKey = '5aOlxMYapu6bQCQYFbDz7rhNvVV7B1A5';
+
     ENV.featureFlags['organization-settings'] = true;
     ENV.featureFlags['price-estimator'] = false;
     ENV.featureFlags['notifications'] = true;

@@ -9,7 +9,7 @@ module.exports = function(defaults) {
     }
   };
 
-  if (process.env.EMBER_ENV === 'staging') {
+  if (process.env.EMBER_ENV === 'staging' || process.env.EMBER_ENV === 'sandbox') {
     options.minifyCSS = {
       enabled: true
     };

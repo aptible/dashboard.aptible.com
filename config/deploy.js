@@ -1,17 +1,10 @@
 var SilentError = require('silent-error');
-
-var bucketMap = {
-  production: 'dashboard.aptible.com',
-  staging: 'dashboard.aptible-staging.com'
-};
-
-function defaultOptions() {
-}
+var detectEndpointUri = require('../lib/detect-endpoint-uri');
 
 function optionsFor(environment, type) {
   var accessKeyId = process.env['AWS_ACCESS_KEY_ID'];
   var secretAccessKey = process.env['AWS_SECRET_ACCESS_KEY'];
-  var bucket = process.env['AWS_BUCKET'] || bucketMap[environment];
+  var bucket = process.env['S3_BUCKET'] || detectEndpointUri('dashboard', environment, '');
 
   if (!bucket) {
     throw new SilentError('No bucket was found for ' + environment);
@@ -35,7 +28,7 @@ function optionsFor(environment, type) {
 }
 
 var options = {};
-var environments = ['production', 'staging'];
+var environments = ['production', 'staging', 'sandbox'];
 
 environments.forEach(function(environment) {
   options[environment] = {
