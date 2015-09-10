@@ -56,13 +56,25 @@ An addon is used to create new websites on top of S3 bucket with website hosting
 To create a new website use the following command:
 
 ```bash
-ember create-website --domain=aptible-sandbox.com --subdomain-suffix="-rwjblue"
+ember create-website --domain=aptible-sandbox.com --subdomain-suffix=rwjblue
 ```
 
 To build and deploy to this newly created bucket, use the following command:
 
 ```bash
-DOMAIN=aptible-sandbox.com SUBDOMAIN_SUFFIX="-rwjblue" ember deploy -e sandbox
+DOMAIN=aptible-sandbox.com SUBDOMAIN_SUFFIX=rwjblue ember deploy -e sandbox
+```
+
+Using the arguments from the above example, the Ember app would then be accessible at https://dashboard-rwjblue.aptible-sandbox.com, and would reference Auth, API, and Billing endoints also suffixed with "-rwjblue", i.e.:
+
+* `https://auth-rwjblue.aptible-sandbox.com`
+* `https://api-rwjblue.aptible-sandbox.com`
+* `https://billing-rwjblue.aptible-sandbox.com`
+
+If, instead, you wish to deploy a "suffixed" Dashboard but point at the non-suffixed Auth/API/Billing, you could run:
+
+```bash
+DOMAIN=aptible-sandbox.com S3_BUCKET=dashboard-rwjblue.aptible-sandbox.com ember deploy -e sandbox
 ```
 
 #### Continuous Deployment
