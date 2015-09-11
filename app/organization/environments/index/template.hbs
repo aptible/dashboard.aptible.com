@@ -16,7 +16,7 @@
         <h5 class="sort-header">Provisioned Environments</h5>
       {{/if}}
       <div class="row">
-        {{#each activatedStacks as |environment|}}
+        {{#each sortedActivatedStacks as |environment|}}
           <div class="col-xs-4">
 
             <div class="panel panel-default resource-list-item">
@@ -38,7 +38,7 @@
       <div class="sort-group">
         <h5 class="sort-header">Pending Environments</h5>
         <div class="row">
-          {{#each pendingStacks as |environment|}}
+          {{#each sortedPendingStacks as |environment|}}
             <div class="col-xs-4">
 
               <div class="panel panel-default resource-list-item">

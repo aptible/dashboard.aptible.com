@@ -6,7 +6,7 @@
         <h5 class="sort-header">Deployed Apps</h5>
       {{/if}}
       <div class="row">
-        {{#each deployedApps as |app|}}
+        {{#each sortedDeployedApps as |app|}}
           <div class="col-xs-4">
             {{partial 'stack/app'}}
           </div>
@@ -19,7 +19,7 @@
     <div class="sort-group pending-apps">
       <h5 class="sort-header">Pending Apps</h5>
       <div class="row">
-        {{#each pendingApps as |app|}}
+        {{#each sortedPendingApps as |app|}}
         <div class="col-xs-4">
           {{partial 'stack/app'}}
         </div>
@@ -32,7 +32,7 @@
     <div class="sort-group deprovisioning-apps">
       <h5 class="sort-header">Deprovisioned Apps</h5>
       <div class="row">
-        {{#each deprovisionedApps as |app|}}
+        {{#each sortedDeprovisionedApps as |app|}}
           <div class="col-xs-4">
             {{partial 'stack/app'}}
           </div>
