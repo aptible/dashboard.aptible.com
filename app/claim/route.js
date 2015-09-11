@@ -1,8 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  requireAuthentication: false,
-
   model: function(params){
     let invitationId = params.invitation_id;
     let verificationCode = params.verification_code;

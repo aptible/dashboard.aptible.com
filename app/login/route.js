@@ -42,7 +42,7 @@ export default Ember.Route.extend(DisallowAuthenticated, {
 
       this.controller.set('isLoggingIn', true);
 
-      this.session.open('aptible', credentials).then(() => {
+      this.session.open('application', credentials).then(() => {
         if (this.session.attemptedTransition) {
           this.session.attemptedTransition.retry();
           this.session.attemptedTransition = null;
