@@ -25,7 +25,7 @@
     "core-object": "^1.1.0",
     "ember-cli": "0.2.6",
     "ember-cli-app-version": "0.3.3",
-    "ember-cli-aptible-shared": "0.0.22",
+    "ember-cli-aptible-shared": "0.0.38",
     "ember-cli-babel": "^5.0.0",
     "ember-cli-content-security-policy": "0.4.0",
     "ember-cli-dependency-checker": "^1.0.0",
@@ -52,7 +52,7 @@
     "ember-validations": "^2.0.0-alpha.1",
     "express": "^4.8.5",
     "glob": "^4.0.5",
-    "torii": "0.3.2"
+    "torii": "^0.6.0-beta.4"
   },
   "ember-addon": {
     "paths": [

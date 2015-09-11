@@ -11,7 +11,7 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('organization', { path: ':organization_id'}, function() {
+  this.authenticatedRoute('organization', { path: ':organization_id'}, function() {
     this.route("training", { path: 'training', resetNamespace: true }, function() {
       this.route("criterion", { path: ':criterion_handle' }, function() {});
     });

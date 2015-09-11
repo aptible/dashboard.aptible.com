@@ -12,6 +12,6 @@ module('Acceptance: Index', {
   }
 });
 
-test('visiting / requires authentication', function() {
-  expectRequiresAuthentication('/');
-});
+// test('visiting / requires authentication', function() {
+//   expectRequiresAuthentication('/');
+// });
