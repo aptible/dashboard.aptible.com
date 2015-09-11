@@ -6,7 +6,7 @@
   {{/link-to}}
 </div>
 
-{{#if stack.apps}}
+{{#if sortedApps}}
   <ul class="nav sidebar-nav">
     <li class="title">
       {{link-to 'Apps' 'apps' stack classNames='title-link'}}
@@ -22,7 +22,7 @@
       {{/aptible-ability}}
     </li>
 
-    {{#each stack.apps as |app|}}
+    {{#each sortedApps as |app|}}
       {{#link-to 'app' app tagName="li"}}
         {{link-to app.handle 'app' app bubbles=false}}
       {{/link-to}}
@@ -30,7 +30,7 @@
   </ul>
 {{/if}}
 
-{{#if stack.databases}}
+{{#if sortedDatabases}}
   <ul class="nav sidebar-nav">
     <li class="title">
       {{link-to 'Databases' 'databases' stack classNames='title-link'}}
@@ -46,7 +46,7 @@
       {{/aptible-ability}}
     </li>
 
-    {{#each stack.databases as |database|}}
+    {{#each sortedDatabases as |database|}}
       {{#link-to 'database' database tagName="li"}}
         {{link-to database.handle 'database' database bubbles=false}}
       {{/link-to}}

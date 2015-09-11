@@ -6,7 +6,7 @@
         <h5 class="sort-header">Provisioned Databases</h5>
       {{/if}}
       <div class="row">
-        {{#each deployedDatabases as |database|}}
+        {{#each sortedDeployedDatabases as |database|}}
           <div class="col-xs-4">
             {{partial 'stack/db'}}
           </div>
@@ -19,7 +19,7 @@
     <div class="sort-group pending-databases">
       <h5 class="sort-header">Provisioning Databases</h5>
       <div class="row">
-        {{#each pendingDatabases as |database|}}
+        {{#each sortedPendingDatabases as |database|}}
           <div class="col-xs-4">
             {{partial 'stack/db'}}
           </div>
@@ -32,7 +32,7 @@
     <div class="sort-group deprovisioned-databases">
       <h5 class="sort-header">Deprovisioned Databases</h5>
       <div class="row">
-        {{#each deprovisionedDatabases as |database|}}
+        {{#each sortedDeprovisionedDatabases as |database|}}
           <div class="col-xs-4">
             {{partial 'stack/db'}}
           </div>

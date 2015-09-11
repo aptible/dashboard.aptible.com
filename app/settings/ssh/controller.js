@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  sortBy: ['name:asc'],
   error: null,
   newKey: null,
 
@@ -9,5 +10,7 @@ export default Ember.Controller.extend({
     return this.get('model').filter(function(key){
       return key.get('isLoaded') && !key.get('isDirty');
     });
-  }.property('model.@each.isLoaded', 'model.@each.isDirty')
+  }.property('model.@each.isLoaded', 'model.@each.isDirty'),
+
+  sortedKeys: Ember.computed.sort('validKeys', 'sortBy')
 });

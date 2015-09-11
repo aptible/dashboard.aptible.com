@@ -2,26 +2,41 @@
 
 <div class="layout-container">
   <div class="resource-list-grid">
-    <div class="row">
-      {{#each model as |user|}}
-        <div class="col-xs-4">
-          {{#aptible-ability user=session.currentUser scope='manage' permittable=organization as |hasAbility|}}
-            {{#if hasAbility}}
-              {{#link-to 'organization.members.edit' user classNames='panel-link'}}
+
+
+    <div class="sort-group organization-members">
+      {{#if sortedInvites}}
+        <h5 class="sort-header">Current Members</h5>
+      {{/if}}
+      <div class="row">
+        {{#each sortedMembers as |user|}}
+          <div class="col-xs-4">
+            {{#aptible-ability user=session.currentUser scope='manage' permittable=organization as |hasAbility|}}
+              {{#if hasAbility}}
+                {{#link-to 'organization.members.edit' user classNames='panel-link'}}
+                  {{partial 'organization/user'}}
+                {{/link-to}}
+              {{else}}
                 {{partial 'organization/user'}}
-              {{/link-to}}
-            {{else}}
-              {{partial 'organization/user'}}
-            {{/if}}
-          {{/aptible-ability}}
-        </div>
-      {{/each}}
-      {{#each organization.invitations as |invitation|}}
-        <div class="col-xs-4">
-          {{partial 'organization/invited-user'}}
-        </div>
-      {{/each}}
+              {{/if}}
+            {{/aptible-ability}}
+          </div>
+        {{/each}}
+      </div>
     </div>
+
+    {{#if sortedInvites}}
+      <div class="sort-group organization-invites">
+        <h5 class="sort-header">Pending Invitations</h5>
+        <div class="row">
+          {{#each sortedInvites as |invitation|}}
+            <div class="col-xs-4">
+              {{partial 'organization/invited-user'}}
+            </div>
+          {{/each}}
+        </div>
+      </div>
+    {{/if}}
 
     <div class="resource-actions">
       {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
@@ -34,3 +49,5 @@
     </div>
   </div>
 </div>
+
+
