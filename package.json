@@ -48,7 +48,7 @@
     "ember-cli-uglify": "^1.2.0",
     "ember-data": "1.0.0-beta.18",
     "ember-data-hal-9000": "0.1.7",
-    "ember-deploy-s3": "0.0.4",
+    "ember-deploy-s3": "0.0.5",
     "ember-disable-proxy-controllers": "^1.0.0",
     "ember-export-application-global": "^1.0.3",
     "ember-feature-flags": "1.0.0",
