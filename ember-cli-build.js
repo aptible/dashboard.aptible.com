@@ -30,7 +30,9 @@ module.exports = function(defaults) {
   app.import('bower_components/nouislider/distribute/jquery.nouislider.js');
 
   // tooltips, popovers
-  app.import('bower_components/bootstrap/dist/js/bootstrap.js');
+  app.import('bower_components/bootstrap-sass/assets/javascripts/bootstrap.js');
+  app.import('bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss');
+
   app.import('bower_components/animate/animate.css');
   app.import("bower_components/font-awesome/css/font-awesome.css");
   app.import("bower_components/font-awesome/fonts/fontawesome-webfont.eot", { destDir: "fonts" });
@@ -43,14 +45,6 @@ module.exports = function(defaults) {
   app.import("bower_components/zeroclipboard/dist/ZeroClipboard.swf", {
     destDir: "assets"
   });
-
-  // Should become and addon or use a tree
-  app.import('bower_components/aptible-sass/dist/images/aptible-mark.png', { destDir: "images" });
-  app.import('bower_components/aptible-sass/dist/images/aptible-mark@2x.png', { destDir: "images" });
-  app.import('bower_components/aptible-sass/dist/images/nav-logo-dark.png', { destDir: "images" });
-  app.import('bower_components/aptible-sass/dist/images/nav-logo-dark@2x.png', { destDir: "images" });
-  app.import('bower_components/aptible-sass/dist/images/nav-logo.png', { destDir: "images" });
-  app.import('bower_components/aptible-sass/dist/images/nav-logo@2x.png', { destDir: "images" });
 
   // Use `app.import` to add additional libraries to the generated
   // output files.
