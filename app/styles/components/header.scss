@@ -1,13 +1,3 @@
-header.navbar.current-user-header .navbar-header .navbar-brand {
-  background-image: url("/images/nav-logo-dark.png");
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-resolution: 192dppx) {
-  header.navbar.current-user-header .navbar-header .navbar-brand {
-    background-image: url("/images/nav-logo-dark@2x.png");
-  }
-}
-
 // Fixes a weird issue with the drop down adding an underline to an anchor
 .user-nav a:focus {
   text-decoration: none;
