@@ -1,0 +1,88 @@
+@mixin heading-font-family {
+  font-family: "proxima-nova", Helvetica, sans-serif;
+}
+
+@mixin linear-gradient($from-color, $to-color) {
+  background: $from-color;
+  background: -webkit-linear-gradient(top, $from-color 0%, $to-color 100%);
+  background: -moz-linear-gradient(top, $from-color 0%, $to-color 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, $from-color), color-stop(100%, $to-color));
+  background: -o-linear-gradient(top, $from-color 0%, $to-color 100%);
+  background: -ms-linear-gradient(top, $from-color 0%, $to-color 100%);
+  background: linear-gradient(to bottom, $from-color 0%, $to-color 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$from-color', endColorstr='$to-color', GradientType=0);
+}
+
+@mixin font-smoothing($option) {
+  @if $option == 'webkit-only' {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: auto;
+  }
+  @else if $option {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  @else {
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: auto;
+  }
+}
+
+@mixin animate-text-underline($color) {
+  @media only screen and (min-width: $screen-sm-min) {
+    &:after {
+      clear: both;
+      display: block;
+      content: '';
+      position: relative;
+      width: 0;
+      left: 50%;
+      height: 2px;
+      background: $color;
+      @include transition(width .2s, left .2s);
+      border-radius: 6px;
+    }
+
+    &:hover,
+    &:focus {
+      &:after {
+        width: 100%;
+        left: 0;
+      }
+    }
+  }
+}
+
+@mixin retina-bg($image) {
+  background: url('/ember-cli-aptible-shared/assets/images/' + $image + '.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  @media only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (min-resolution: 192dppx) {
+    background: url('/ember-cli-aptible-shared/assets/images/' + $image + '@2x.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+}
+
+%clearfix {
+  &:after {
+    clear: both;
+    content: '.';
+    display: block;
+    height: 0;
+    visibility: hidden;
+  }
+}
+
+%microheader {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: $color-light;
+  font-weight: $weight-semibold;
+  border: 1px solid #e5e5e5;
+  border-width: 1px 0;
+  padding: 8px 8px 5px;
+  @include linear-gradient($color-bg-gray, $color-border-gray);
+}

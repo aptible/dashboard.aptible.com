@@ -1,0 +1,139 @@
+a,
+a:link,
+a:visited,
+a:active {
+  color: $color-bright-blue;
+
+  &.danger {
+    color: $color-danger;
+  }
+
+  &.btn-primary,
+  &.btn-success {
+    color: #fff;
+  }
+
+  &[disabled],
+  &[disabled='disabled'],
+  &.disabled {
+    opacity: .3;
+  }
+}
+
+a:hover {
+  color: $color-dark-blue;
+
+  &.btn-primary,
+  &.btn-success {
+    color: #fff;
+  }
+}
+
+a.btn, button.btn {
+  padding: 8px 12px 6px;
+
+  &.btn-sm {
+    padding: 5px 8px;
+  }
+
+  &.btn-xs {
+    padding: 5px 8px 3px;
+    height: auto;
+  }
+
+  > i.fa:last-child {
+    margin-left: 5px;
+    margin-right: 0;
+  }
+}
+
+.btn {
+  font-size: 14px;
+  border: 0;
+  border-radius: 3px;
+  font-weight: $weight-semibold;
+  transition-duration: .25s;
+
+  &.btn-link {
+    color: $color-bright-blue;
+
+    &.btn-sm {
+      padding: 0;
+    }
+  }
+
+  &.btn-sm {
+    font-size: 14px;
+    height: 32px;
+  }
+
+  &.btn-xs {
+    font-size: 12px;
+    height: 25px;
+  }
+
+  &.btn-lg {
+    height: 40px;
+    font-size: 16px;
+  }
+
+  &.btn-primary {
+    background: $color-bright-blue;
+    border: 1px solid $color-bright-blue;
+
+    &:hover {
+      background: $color-bright-blue;
+      text-shadow: 1px 1px 2px rgba(#000, .25);
+    }
+  }
+
+  &.btn-primary-o {
+    background: none;
+    border: 1px solid $color-bright-blue;
+
+    &:hover {
+      background: $color-bright-blue;
+      color: #fff;
+    }
+  }
+
+  &.btn-success {
+    background-color: $color-success;
+  }
+
+  &.btn-default {
+    border: 1px solid #cdcdcd;
+    @include linear-gradient(#fff, #eaeaea);
+    box-shadow: 0 1px 1px 0 rgba(#000, .06);
+    color: $color-primary;
+
+    &:hover {
+      color: $color-primary;
+      @include linear-gradient(#fff, #eaeaea);
+      box-shadow: 0 1px 4px rgba(#000, 0.18);
+      border-color: #bbb;
+    }
+
+    &.active {
+      box-shadow: inset 0 0 8px rgba(black, 0.15);
+    }
+  }
+}
+
+.nav-pills {
+  li > a:hover {
+    color: #fff;
+    background: $color-bright-blue;
+  }
+
+  > li.active {
+    > a {
+      &:hover,
+      &:active,
+      &:link {
+        background: $color-bg-gray;
+        color: $color-primary;
+      }
+    }
+  }
+}
