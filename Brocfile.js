@@ -4,7 +4,7 @@
 var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
 var app = new EmberAddon();
-app.import('bower_components/bootstrap/dist/js/bootstrap.js');
+app.import('bower_components/bootstrap-sass/assets/javascripts/bootstrap.js');
 app.import("bower_components/zeroclipboard/dist/ZeroClipboard.js");
 app.import("bower_components/zeroclipboard/dist/ZeroClipboard.swf", {
   destDir: "assets"

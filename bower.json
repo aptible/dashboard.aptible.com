@@ -1,8 +1,6 @@
 {
   "name": "ember-cli-aptible-shared",
   "dependencies": {
-    "bootstrap": "~3.3.2",
-    "bootstrap-sass": "twbs/bootstrap-sass#3.3.1",
     "ember": "1.12.0",
     "ember-data": "1.0.0-beta.18",
     "ember-resolver": "~0.1.15",
@@ -16,6 +14,7 @@
     "pretender": "~0.6.0",
     "qunit": "~1.17.1",
     "zeroclipboard": "~2.2.0",
-    "JavaScript-MD5": "~1.1.0"
+    "JavaScript-MD5": "~1.1.0",
+    "bootstrap-sass": "twbs/bootstrap-sass#~3.3.5"
   }
 }
