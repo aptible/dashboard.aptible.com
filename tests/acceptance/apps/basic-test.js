@@ -91,6 +91,76 @@ test(`visiting ${url} shows list of apps`, function(assert) {
   });
 });
 
+test(`visiting ${url} shows all pages of apps`, function(assert) {
+  assert.expect(3);
+
+  let orgId = 1;
+  let stackHandle = 'my-stack-1';
+
+  let apps = [{
+    id: 1,
+    handle: 'my-app-1-stack-1',
+    status: 'provisioned',
+    _embedded: {
+      services: [{
+        id: '1',
+        handle: 'the-service',
+        container_count: 1
+      }]
+    },
+    _links: {
+      account: { href: '/accounts/my-stack-1'}
+    }
+  }, {
+    id: 2,
+    handle: 'my-app-2-stack-1',
+    status: 'provisioned',
+    _embedded: {
+      services: [{
+        id: '2',
+        handle: 'the-service-2',
+        container_count: 1
+      }]
+    },
+    _links: {
+      account: { href: '/accounts/my-stack-1'}
+    }
+  }];
+
+  stubStacks();
+
+  stubRequest('get', '/accounts/my-stack-1/apps', function(request){
+    let page = request.queryParams.page || 1;
+
+    assert.ok(true, `app request was made for page #${page}`);
+
+    return this.success({
+      _links: {},
+      _embedded: {
+        apps: [ apps[page - 1]]
+      },
+      current_page: page,
+      per_page: 1,
+      total_count: 2
+    });
+  });
+
+  stubStack({
+    id: stackId,
+    handle: stackHandle,
+    _links: {
+      apps: { href: `/accounts/${stackId}/apps` },
+      organization: { href: `/organizations/${orgId}` }
+    }
+  });
+  stubOrganization();
+  stubOrganizations();
+
+  signInAndVisit(url);
+  andThen(function() {
+    assert.equal(find('.panel.app').length, 2, '2 apps');
+  });
+});
 
 test(`visiting ${url} shows list of provisioning apps`, function(assert) {
   let orgId = 1;
