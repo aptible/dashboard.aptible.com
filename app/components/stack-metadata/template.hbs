@@ -14,12 +14,27 @@
 
     <li class="resource-metadata-item">
       <h5 class="resource-metadata-title">{{persistedApps.length}} {{plural-string "App" persistedApps.length}}</h5>
-      <h3 class="resource-metadata-value">Running on {{totalContainerCount}} {{plural-string "container" totalContainerCount}}</h3>
+      <h3 class="resource-metadata-value">Using {{totalContainerCount}} {{plural-string "container" totalContainerCount}}</h3>
     </li>
 
     <li class="resource-metadata-item">
       <h5 class="resource-metadata-title">{{persistedDatabases.length}} {{plural-string "Database" persistedDatabases.length}}</h5>
-      <h3 class="resource-metadata-value">Using {{format-disk-size totalDiskSize}} of Disk</h3>
+      <h3 class="resource-metadata-value">Using {{persistedDatabases.length}} {{plural-string "container" persistedDatabases.length}} and {{format-disk-size totalDiskSize}} of disk</h3>
+    </li>
+
+    <li class="resource-metadata-item">
+      <h5 class="resource-metadata-title">{{persistedVhosts.length}} {{plural-string "Domain" persistedVhosts.length}}</h5>
+      <h3 class="resource-metadata-value">
+        {{#if showVhostTooltip}}
+          {{vhostNamesSnippet}}
+           and
+          {{#bs-tooltip title=vhostNamesTooltip placement="bottom" bs-container=false}}
+            <u>{{vhostRemaining}} more</u>
+          {{/bs-tooltip}}
+        {{else}}
+          {{displayVhostNames}}
+        {{/if}}
+      </h3>
     </li>
 
     <li class="resource-metadata-item">
