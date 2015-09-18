@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import fetchAllPages from '../utils/fetch-all-pages';
 
 export default Ember.Route.extend({
   title: function(){
@@ -8,10 +9,12 @@ export default Ember.Route.extend({
   model: function(){
     var stack = this.modelFor('stack');
     var apps = stack.get('apps');
-    if (apps.get('isFulfilled')) {
-      return apps.reload();
-    } else {
-      return apps;
-    }
+
+    var promise = apps.get('isFulfilled') ? apps.reload() : Ember.RSVP.resolve();
+
+    return promise
+      .then(() => {
+        return fetchAllPages(this.store, stack, 'app');
+      });
   }
 });
