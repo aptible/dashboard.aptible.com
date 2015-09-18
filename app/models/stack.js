@@ -29,6 +29,7 @@ export default DS.Model.extend({
   permissions: DS.hasMany('permission', {async:true}),
   organization: DS.belongsTo('organization', {async:true}),
   logDrains: DS.hasMany('log-drain', {async:true}),
+  vhosts: DS.hasMany('vhost', {async:true}),
 
   // computed properties
   pending: Ember.computed.not('activated'),
