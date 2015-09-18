@@ -108,11 +108,11 @@ test(`visit ${url} shows basic stack info`, function(assert) {
        'Header that contains db length');
 
     // 2 + 3
-    assert.ok(find(`h3:contains(Running on 5 containers)`).length,
+    assert.ok(find(`h3:contains(Using 5 containers)`).length,
        'has containers count');
 
     // 4 + 2
-    assert.ok(find(`h3:contains(Using 6GB of Disk)`).length,
+    assert.ok(find(`h3:contains(Using 2 containers and 6GB of disk)`).length,
        'has disk size header');
   });
 });
