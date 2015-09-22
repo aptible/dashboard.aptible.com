@@ -30,6 +30,35 @@ test('if no prompt was supplied it is not displayed', function(assert) {
   assert.equal(this.$('option').length, 0, 'prompt was found');
 });
 
+test('if prompt supplied update still selects proper item', function(assert) {
+  let listing = [
+    { name: 'one', id: 1 },
+    { name: 'two', id: 2 },
+    { name: 'three', id: 3 },
+    { name: 'four', id: 4 }
+  ];
+
+  this.setProperties({
+    listing,
+    selectedItem: listing[3]
+  });
+
+
+  this.render(hbs('{{object-select update=(action (mut selectedItem)) prompt="Foo" items=listing selected=selectedItem}}'));
+
+  let select = this.$('select');
+  assert.equal(select.val(), '4', 'initial value is correct');
+  assert.equal(this.get('selectedItem'), listing[3]);
+
+  Ember.run(function() {
+    select.val('2');
+    select.trigger('change');
+  });
+
+  assert.equal(select.val(), '2', 'select value is updated properly');
+  assert.equal(this.get('selectedItem'), listing[1]);
+});
+
 test('provided items are displayed as options', function(assert) {
   this.set('listing', Ember.A([
     { name: 'one', id: 1 },
