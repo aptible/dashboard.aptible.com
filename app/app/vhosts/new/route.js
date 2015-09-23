@@ -31,6 +31,7 @@ export default Ember.Route.extend({
 
   actions: {
     save(vhost, service) {
+      this.controller.set('savingVhost', true);
       let certificatePromise;
       let stack = this.currentModel.stack;
 
@@ -63,11 +64,13 @@ export default Ember.Route.extend({
         let message = `Domain ${vhost.get('virtualDomain')} created`;
 
         this.transitionTo('app.vhosts');
+        this.controller.set('savingVhost', false);
         Ember.get(this, 'flashMessages').success(message);
       }).catch( (e) => {
         let message = Ember.get(e, 'responseJSON.message') ||
                       Ember.get(e, 'message') ||
                       `There was an error updating ${vhost.get('virtualDomain')}`;
+        this.controller.set('savingVhost', false);
         Ember.get(this, 'flashMessages').danger(message);
       });
     },
