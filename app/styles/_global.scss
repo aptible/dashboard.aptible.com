@@ -1,0 +1,4 @@
+// Fixes issue with grid cells of verying heights not wrapping correctly
+.col-xs-4:nth-child(3n+1) {
+  clear: left;
+}
