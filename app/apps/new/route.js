@@ -1,19 +1,19 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  title: function(){
+  title(){
     var stack = this.modelFor('stack');
     return `Create an App - ${stack.get('handle')}`;
   },
 
-  model: function(){
+  model(){
     var stack = this.modelFor('stack');
     return this.store.createRecord('app', {
       stack: stack
     });
   },
 
-  renderTemplate: function(controller){
+  renderTemplate(controller){
     if (!this.session.get('currentUser.verified')) {
       controller.set('resourceType', 'app');
       this.render('unverified');
@@ -23,21 +23,27 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    willTransition: function(){
+    willTransition(){
       this.currentModel.rollback();
     },
 
-    create: function(){
-      var app = this.currentModel;
-      var route = this;
+    create(){
+      this.controller.set('savingApp', true);
+
+      let app = this.currentModel;
+      let route = this;
+
       app.save({ stack: {id: app.get('stack.id')} }).then(() => {
         let message = `${app.get('handle')} app created`;
         route.transitionTo('app', app);
         Ember.get(this, 'flashMessages').success(message);
+        this.controller.set('savingApp', false);
+      }, () => {
+        this.controller.set('savingApp', false);
       });
     },
 
-    cancel: function(){
+    cancel(){
       this.transitionTo('apps.index');
     }
   }
