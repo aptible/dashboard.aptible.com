@@ -31,31 +31,32 @@
         <h3 class="resource-metadata-value">{{model.type}}</h3>
       </li>
 
-      {{#if model.disk}}
+      {{#if model.isProvisioned}}
+        {{#if model.disk}}
+          <li class="resource-metadata-item">
+            <h5 class="resource-metadata-title">Size</h5>
+            <h3 class="resource-metadata-value db-size">{{model.disk.size}} GB</h3>
+          </li>
+        {{/if}}
         <li class="resource-metadata-item">
-          <h5 class="resource-metadata-title">Size</h5>
-          <h3 class="resource-metadata-value">{{model.disk.size}} GB</h3>
+          <h5 class="resource-metadata-title">Connection URL</h5>
+          <h3 class="resource-metadata-value">
+            <span class="db-connection-url">{{model.connectionUrl}}</span>
+            {{#click-to-copy text=model.connectionUrl as |copied|}}
+              {{#if copied}}
+                Copied
+              {{else}}
+                <a href='#'>Copy</a>
+              {{/if}}
+            {{/click-to-copy}}
+          </h3>
         </li>
       {{else}}
         <li class="resource-metadata-item">
-          <h5 class="resource-metadata-title">Size</h5>
-          <h3 class="resource-metadata-value"><i class="fa fa-spin fa-spinner"></i></h3>
+          <h5 class="resource-metadata-title">Status</h5>
+          <h3 class="resource-metadata-value"><i class="fa fa-spin fa-spinner"></i> <span class="db-status">Provisioning</span></h3>
         </li>
       {{/if}}
-
-      <li class="resource-metadata-item">
-        <h5 class="resource-metadata-title">Connection URL</h5>
-        <h3 class="resource-metadata-value">
-          {{model.connectionUrl}}
-          {{#click-to-copy text=model.connectionUrl as |copied|}}
-            {{#if copied}}
-              Copied
-            {{else}}
-              <a href='#'>Copy</a>
-            {{/if}}
-          {{/click-to-copy}}
-        </h3>
-      </li>
     {{/if}}
 
     </ul>
