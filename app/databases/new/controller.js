@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   stack: Ember.inject.controller('stack'),
   showCancelButton: Ember.computed.gt('stack.persistedDatabases.length', 0),
-
+  savingDatabase: false,
   diskSize: 10,
 
   actions: {
