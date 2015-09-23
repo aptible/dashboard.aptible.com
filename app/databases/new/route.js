@@ -37,7 +37,7 @@ export default Ember.Route.extend({
           route = this,
           controller = this.controller,
           store = this.store;
-      controller.set('savingDatabase', true);
+
       db.save().then(() => {
         var op = store.createRecord('operation', {
           type: 'provision',
@@ -51,13 +51,11 @@ export default Ember.Route.extend({
 
         route.transitionTo('databases.index');
         Ember.get(this, 'flashMessages').success(message);
-        controller.set('savingDatabase', false);
       }, (e) => {
         if(db.get('isValid')) {
           let message = Ember.get(e, 'responseJSON.message') || `There was an error saving ${db.get('handle')}`;
           Ember.get(this, 'flashMessages').danger(message);
         }
-        controller.set('savingDatabase', false);
       });
     },
 

@@ -17,12 +17,14 @@ function parseUrl(url) {
 }
 
 export default Ember.Controller.extend({
+  savingLogDrain: false,
   isSyslogDrain: Ember.computed.equal('model.drainType', 'syslog_tls_tcp'),
   disableSave: Ember.computed('isSyslogDrain', 'esDatabases', function() {
     return this.get('model.isSaving') ||
            (!this.get('isSyslogDrain') &&
            this.get('esDatabases.length') === 0);
   }),
+  savingLogDrain: Ember.computed.equal('model.isSaving', true),
   actions: {
     setDrainFromDatabase(database) {
       let connectionUrl = database.get('connectionUrl');

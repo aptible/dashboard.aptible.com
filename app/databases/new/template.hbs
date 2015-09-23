@@ -74,8 +74,8 @@
       </button>
     {{/if}}
 
-    <button {{action 'create'}} class="btn btn-primary" type='submit' disabled={{savingDatabase}}>
-      {{#if savingDatabase}}
+    <button {{action 'create'}} class="btn btn-primary" type='submit' disabled={{model.isSaving}}>
+      {{#if model.isSaving}}
         <i class='fa fa-spin fa-spinner'></i> Saving...
       {{else}}
         Save Database

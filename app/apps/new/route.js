@@ -28,8 +28,6 @@ export default Ember.Route.extend({
     },
 
     create(){
-      this.controller.set('savingApp', true);
-
       let app = this.currentModel;
       let route = this;
 
@@ -37,9 +35,6 @@ export default Ember.Route.extend({
         let message = `${app.get('handle')} app created`;
         route.transitionTo('app', app);
         Ember.get(this, 'flashMessages').success(message);
-        this.controller.set('savingApp', false);
-      }, () => {
-        this.controller.set('savingApp', false);
       });
     },
 

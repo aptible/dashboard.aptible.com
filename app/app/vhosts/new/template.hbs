@@ -54,8 +54,8 @@
 
   <div class="resource-actions">
     <button class="btn btn-default" type="reset" {{action 'cancel'}}>Cancel</button>
-    <button class="btn btn-primary" type="submit" {{action 'save' model vhostService}} disabled={{savingVhost}}>
-      {{#if savingVhost}}
+    <button class="btn btn-primary" type="submit" {{action 'save' model vhostService}} disabled={{model.isSaving}}>
+      {{#if model.isSaving}}
         <i class='fa fa-spin fa-spinner'></i> Saving...
       {{else}}
         Save VHost
