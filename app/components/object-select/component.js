@@ -6,7 +6,8 @@ export default Ember.Component.extend({
       const selectedEl = this.$('select')[0];
       const selectedIndex = selectedEl.selectedIndex;
       const items = Ember.A(this.get('items'));
-      const selected = items.objectAt(selectedIndex);
+      const promptOffset = this.get('prompt') ? 1 : 0;
+      const selected = items.objectAt(selectedIndex - promptOffset);
 
       if(selected) {
         this.attrs.update(selected);
