@@ -5,6 +5,10 @@ let attempts = 0;
 export default function monkeyPatchRaven() {
   var originalCaptureMessage;
 
+  if(!config.sentry) {
+    return ;
+  }
+
   if (config.sentry.skipCdn) {
     return;
   }

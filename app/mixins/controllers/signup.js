@@ -3,6 +3,7 @@ import EmberValidationsMixin from "ember-validations/mixin";
 import config from "../../config/environment";
 
 export default Ember.Mixin.create(EmberValidationsMixin, {
+  isSaving: false,
   hasSubmitted: false,
 
   validateOrganization(){

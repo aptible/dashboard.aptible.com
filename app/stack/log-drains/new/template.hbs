@@ -63,7 +63,7 @@
         <button {{action 'cancel' model}} class='btn btn-lg-text btn-default' type="reset">Cancel</button>
         <button {{action 'createLog' model}} disabled={{disableSave}} class='btn btn-primary' type="submit">
           {{#if model.isSaving}}
-            Saving
+            <i class='fa fa-spin fa-spinner'></i> Saving...
           {{else}}
             Save Log Drain
           {{/if}}

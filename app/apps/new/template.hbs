@@ -33,8 +33,12 @@
         Cancel
       </button>
     {{/if}}
-    <button class="btn btn-primary" type="submit" {{action 'create'}}>
-      Save App
+    <button class="btn btn-primary" type="submit" {{action 'create'}} disabled={{model.isSaving}}>
+      {{#if model.isSaving}}
+        <i class='fa fa-spin fa-spinner'></i> Saving...
+      {{else}}
+        Save App
+      {{/if}}
     </button>
   </div>
 </form>

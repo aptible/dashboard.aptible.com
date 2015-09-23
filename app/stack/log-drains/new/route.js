@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import DS from 'ember-data';
 
 export default Ember.Route.extend({
 
@@ -48,11 +47,8 @@ export default Ember.Route.extend({
       }).then( () => {
         this.transitionTo('stack.log-drains.index');
       }).catch( (e) => {
-        if (e instanceof DS.InvalidError) {
-          // no-op, this will populate model.errors
-        } else {
-          throw e; // re-raise
-        }
+        let message = Ember.get(e, 'responseJSON.message') || 'There was an error saving.';
+        Ember.get(this, 'flashMessages').danger(message);
       });
     }
   }

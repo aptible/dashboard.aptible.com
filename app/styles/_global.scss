@@ -2,3 +2,7 @@
 .col-xs-4:nth-child(3n+1) {
   clear: left;
 }
+
+button > i.fa-spinner {
+  margin: 0 4px 0 0;
+}
