@@ -19,7 +19,7 @@
 
     <li class="resource-metadata-item">
       <h5 class="resource-metadata-title">{{persistedDatabases.length}} {{plural-string "Database" persistedDatabases.length}}</h5>
-      <h3 class="resource-metadata-value">Using {{persistedDatabases.length}} {{plural-string "container" persistedDatabases.length}} and {{format-disk-size totalDiskSize}} of disk</h3>
+      <h3 class="resource-metadata-value">Using {{format-disk-size totalDiskSize}} of disk</h3>
     </li>
 
     <li class="resource-metadata-item">
@@ -38,7 +38,7 @@
     </li>
 
     <li class="resource-metadata-item">
-      <h5 class="resource-metadata-title">Log Drains</h5>
+      <h5 class="resource-metadata-title">{{model.logDrains.length }} Log {{plural-string "Drain" model.logDrains.length}}</h5>
       <h3 class="resource-metadata-value">
         {{#with model.logDrains.firstObject as |logDrain|}}
           {{logDrain.drainHost}}:{{logDrain.drainPort}}

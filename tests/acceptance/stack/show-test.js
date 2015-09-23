@@ -112,7 +112,7 @@ test(`visit ${url} shows basic stack info`, function(assert) {
        'has containers count');
 
     // 4 + 2
-    assert.ok(find(`h3:contains(Using 2 containers and 6GB of disk)`).length,
+    assert.ok(find(`h3:contains(Using 6GB of disk)`).length,
        'has disk size header');
   });
 });
