@@ -40,10 +40,10 @@
     </button>
 
     <button {{action 'save'}}
-            disabled={{isUnchanged}}
+            disabled={{model.isSaving}}
             class='btn btn-primary' type='submit'>
       {{#if model.isSaving}}
-        Saving...
+        <i class='fa fa-spin fa-spinner'></i> Saving...
       {{else}}
         Save environment
       {{/if}}
