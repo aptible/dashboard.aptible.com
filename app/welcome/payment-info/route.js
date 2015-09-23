@@ -2,8 +2,12 @@ import Ember from 'ember';
 import { createStripeToken } from 'diesel/utils/stripe';
 import { provisionDatabases } from 'diesel/models/database';
 
+export const NEW_SIGNUP_EVENT_NAME = 'Account Signup';
+
 export default Ember.Route.extend({
-  setupController: function(controller, model) {
+  analytics: Ember.inject.service(),
+
+  setupController(controller, model) {
     controller.set('model', model);
     var firstApp = this.modelFor('welcome');
     controller.set('firstApp', firstApp);
@@ -11,7 +15,7 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    create: function(model) {
+    create(model) {
       var route = this;
       var store = this.store;
       var controller = this.controllerFor('welcome/payment-info');
@@ -98,7 +102,27 @@ export default Ember.Route.extend({
         let currentUser = route.session.get('currentUser');
 
         return provisionDatabases(currentUser, route.store);
-      }).then(function(){
+      }).then(function() {
+
+        let currentUser = route.session.get('currentUser');
+        let eventTraits = {
+          plan: welcomeModel.plan,
+          organization_id: organization.get('id'),
+          created_by_user_name: currentUser.get('name'),
+          created_by_user_email: currentUser.get('email'),
+          created_by_user_id: currentUser.get('id')
+        };
+
+        if(welcomeModel.appHandle) {
+          eventTraits.app_handle = welcomeModel.appHandle;
+        }
+
+        if(welcomeModel.dbHandle) {
+          eventTraits.database_handle = welcomeModel.dbHandle;
+        }
+
+        route.get('analytics').track(NEW_SIGNUP_EVENT_NAME, eventTraits);
+
         saveProgress.set('currentStep', 6);
         route.transitionTo('index');
       }, function(error) {

@@ -8,74 +8,77 @@
     {{/bs-alert}}
   {{/unless}}
 
-  <div class="panel panel-default panel-focused">
-    <div class="panel-heading">
-      <div class="panel-heading-link">
-        {{link-to "Existing user? Sign in" "login"}}
-      </div>
-      <h3>
-        {{#if invitation}}
-          Join {{invitation.organizationName}}
-        {{else}}
-          Create Your Account
-        {{/if}}
-      </h3>
-    </div>
-
-    <div class="panel-body">
-      <div class="form-group">
-        <div class="input-group">
-          {{input type="text"
-            name="name"
-            value=model.name
-            autofocus=true
-            class="form-control"
-            placeholder="Full Name"}}
-          {{validation-feedback error=errors.model.name value=model.name hasSubmitted=hasSubmitted fieldName='Name'}}
+  <form>
+    <div class="panel panel-default panel-focused">
+      <div class="panel-heading">
+        <div class="panel-heading-link">
+          {{link-to "Existing user? Sign in" "login"}}
         </div>
+        <h3>
+          {{#if invitation}}
+            Join {{invitation.organizationName}}
+          {{else}}
+            Create Your Account
+          {{/if}}
+        </h3>
       </div>
 
-      {{#if organization}}
+      <div class="panel-body">
         <div class="form-group">
           <div class="input-group">
             {{input type="text"
-              name="organization"
-              value=organization.name
+              name="name"
+              value=model.name
+              autofocus=true
               class="form-control"
-              placeholder="Organization Name"}}
-
-            {{validation-feedback error=errors.organization.name value=organization.name hasSubmitted=hasSubmitted fieldName='Organization name'}}
+              placeholder="Full Name"}}
+            {{validation-feedback error=errors.model.name value=model.name hasSubmitted=hasSubmitted fieldName='Name'}}
           </div>
         </div>
-      {{/if}}
 
-      <div class="form-group">
-        <div class="input-group">
-          {{input type="email"
-            value=model.email
-            name="email"
-            class="form-control"
-            placeholder="Email"}}
-          {{validation-feedback error=errors.model.email value=model.email hasSubmitted=hasSubmitted fieldName='Email'}}
+        {{#if organization}}
+          <div class="form-group">
+            <div class="input-group">
+              {{input type="text"
+                name="organization"
+                value=organization.name
+                class="form-control"
+                placeholder="Organization Name"}}
+
+              {{validation-feedback error=errors.organization.name value=organization.name hasSubmitted=hasSubmitted fieldName='Organization name'}}
+            </div>
+          </div>
+        {{/if}}
+
+        <div class="form-group">
+          <div class="input-group">
+            {{input type="email"
+              value=model.email
+              name="email"
+              class="form-control"
+              placeholder="Email"}}
+            {{validation-feedback error=errors.model.email value=model.email hasSubmitted=hasSubmitted fieldName='Email'}}
+          </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <div class="input-group">
-          {{input type="password"
-            value=model.password
-            name="password"
-            class="form-control"
-            placeholder="Password"}}
-          {{validation-feedback error=errors.model.password value=model.password hasSubmitted=hasSubmitted fieldName='Password'}}
+        <div class="form-group">
+          <div class="input-group">
+            {{input type="password"
+              value=model.password
+              name="password"
+              class="form-control"
+              placeholder="Password"}}
+            {{validation-feedback error=errors.model.password value=model.password hasSubmitted=hasSubmitted fieldName='Password'}}
+          </div>
         </div>
-      </div>
 
-      <div class="panel-submit">
-        <button class="btn btn-primary btn-block btn-lg" {{action "validateAndSignup"}}>
-          Create account
-        </button>
+        <div class="panel-submit">
+          <button class="btn btn-primary btn-block btn-lg" {{action "validateAndSignup"}}>
+            Create account
+          </button>
+        </div>
       </div>
     </div>
-  </div>
+  </form>
+
 </div>
