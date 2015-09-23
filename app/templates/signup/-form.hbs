@@ -73,8 +73,13 @@
         </div>
 
         <div class="panel-submit">
-          <button class="btn btn-primary btn-block btn-lg" {{action "validateAndSignup"}}>
-            Create account
+          <button class="btn btn-primary btn-block btn-lg" {{action "validateAndSignup"}}
+          disabled={{isSaving}}>
+            {{#if isSaving}}
+              <i class="fa fa-spin fa-spinner"></i> Creating account...
+            {{else}}
+              Create account
+            {{/if}}
           </button>
         </div>
       </div>
