@@ -42,7 +42,7 @@
     "ember-cli-pretender": "^0.3.1",
     "ember-cli-qunit": "^1.0.0",
     "ember-cli-release": "^0.2.5",
-    "ember-cli-sentry": "damiencaselli/ember-cli-sentry#2bcea789ebab6a93700c6edcb67282e0960cfad7",
+    "ember-cli-sentry": "damiencaselli/ember-cli-sentry#a72f285324f5f6875c28a66528ff98bd9629c0a8",
     "ember-cli-sri": "^1.0.3",
     "ember-cli-template-lint": "0.1.1",
     "ember-cli-uglify": "^1.2.0",
