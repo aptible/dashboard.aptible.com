@@ -65,7 +65,8 @@
     "paths": [
       "lib/bootstrap-sass",
       "lib/ember-deploy-s3-static-index",
-      "lib/create-website"
+      "lib/create-website",
+      "lib/dns-prefetch"
     ]
   }
 }

@@ -36,6 +36,16 @@ module.exports = function(environment) {
       injectionFactories : ['route', 'router', 'controller', 'view']
     },
 
+    prefetch: ['use.typekit.net', 'www.gravatar.com', 'js.stripe.com',
+               'api.stripe.com', 'cdn.segment.com', 'support.aptible.com',
+               'assets.customer.io', 'track.customer.io',
+               'www.google-analytics.com', 'js.intercomcdn.com',
+               'app.getsentry.com', 'cdn.mxpnl.com', 'js.intercomcdn.com',
+               'static.intercomcdn.com', 'widget.intercom.io',
+               'cdn.ravenjs.com', 'api.mixpanel.com', 'api.segment.io',
+               'api-ping.intercom.io', 'intercom.io', 'p.typekit.net',
+               'secure.gravatar.com'],
+
     sentry: {
       skipCdn: false,
       cdn: '//cdn.ravenjs.com',
@@ -122,6 +132,10 @@ module.exports = function(environment) {
 
     ENV.sentry.whitelistUrls = ['dashboard.aptible-staging.com'];
     ENV.sentry.development = false;
+    var stagingHosts = ['api.aptible-staging.com', 'auth.aptible-staging.com',
+                        'billing.aptible-staging.com', 'www.aptible-staging.com',
+                        'compliance.aptible-staging.com'];
+    ENV.prefetch = ENV.prefetch.concat(stagingHosts);
   }
 
   if (environment === 'production') {
@@ -136,6 +150,10 @@ module.exports = function(environment) {
     ENV.sentry.whitelistUrls = ['dashboard.aptible.com'];
     ENV.sentry.development = false;
     ENV.sentry.dsn = 'https://2dc5b29fd35e408cbadf581f9a167074@app.getsentry.com/22629';
+    var productionHosts = ['api.aptible.com', 'auth.aptible.com',
+                           'billing.aptible.com', 'www.aptible.com',
+                           'compliance.aptible.com'];
+    ENV.prefetch = ENV.prefetch.concat(productionHosts);
   }
 
   return ENV;
