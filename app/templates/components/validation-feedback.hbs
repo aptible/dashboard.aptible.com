@@ -1,11 +1,17 @@
-{{#if shouldShowFeedback}}
-  {{#if errorText}}
-    {{#bs-tooltip placement="right" title=errorText bs-trigger="immediate" bs-container=false}}
-      <i class="fa fa-times-circle"></i>
-    {{/bs-tooltip}}
-  {{else}}
-    <i class="fa fa-check-circle"></i>
-  {{/if}}
+{{#if isValidating}}
+  <i class="fa fa-spin fa-spinner"></i>
 {{else}}
-  <i class="fa visibility-hidden"></i>
+
+  {{#if shouldShowFeedback}}
+    {{#if errorText}}
+      {{#bs-tooltip placement="right" title=errorText bs-trigger="immediate" bs-container=false}}
+        <i class="fa fa-times-circle"></i>
+      {{/bs-tooltip}}
+    {{else}}
+      <i class="fa fa-check-circle"></i>
+    {{/if}}
+  {{else}}
+    <i class="fa visibility-hidden"></i>
+  {{/if}}
+
 {{/if}}
