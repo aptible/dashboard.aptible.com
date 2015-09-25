@@ -20,7 +20,22 @@
               App handle
               <span class="label-helper">Lowercase alphanumerics, periods, and dashes only</span>
             </label>
-            {{handle-input class="form-control" update=(action (mut model.handle)) value=model.handle name='handle' autofocus=true}}
+
+            <div class="input-group">
+              {{handle-input class="app-name form-control sanitize-handler"
+                placeholder="e.g., app-prod"
+                name="app-handle"
+                update=(action (mut model.handle))
+                value=model.handle
+                autofocus="true"
+              }}
+              {{validation-feedback
+                error=errors.model.handle
+                value=model.handle
+                fieldName='App handle'
+                isValidating=model.isValidating
+              }}
+            </div>
           </div>
         </div>
       </div>
@@ -33,7 +48,7 @@
         Cancel
       </button>
     {{/if}}
-    <button class="btn btn-primary" type="submit" {{action 'create'}} disabled={{model.isSaving}}>
+    <button class="btn btn-primary" type="submit" {{action 'create'}} disabled={{disableSave}}>
       {{#if model.isSaving}}
         <i class='fa fa-spin fa-spinner'></i> Saving...
       {{else}}
