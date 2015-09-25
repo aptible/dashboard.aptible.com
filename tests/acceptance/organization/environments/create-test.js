@@ -58,6 +58,10 @@ test(`visiting ${url} and creating new environment`, (assert) => {
     });
   });
 
+  stubRequest('post', '/claims/account', function(){
+    return this.success({});
+  });
+
   signInAndVisit(url);
   andThen(() => {
     fillInput('environment-handle', handle);
@@ -65,6 +69,46 @@ test(`visiting ${url} and creating new environment`, (assert) => {
   });
   andThen(() => {
     assert.equal(currentPath(), 'dashboard.organization.environments.index');
+  });
+});
+
+test(`visiting ${url} and with duplicate handle`, (assert) => {
+  const handle = 'some-handle';
+
+  stubRequest('get', `/accounts`, function(){
+    return this.success({
+      _embedded: {
+      }
+    });
+  });
+
+  stubRequest('post', `/accounts`, function(request){
+    assert.ok(true, 'posts to /accounts');
+    let json = this.json(request);
+    assert.equal(json.handle, handle, 'has handle');
+    assert.equal(json.type, 'development', 'dev env');
+    return this.success({
+      id: handle,
+      handle
+    });
+  });
+
+  stubRequest('post', '/claims/account', function(){
+    return this.error();
+  });
+
+  signInAndVisit(url);
+  andThen(() => { fillInput('environment-handle', handle); });
+  andThen(() => {
+    let submitButton = find('button:contains(Save environment)');
+    assert.ok(submitButton.length, 'has submit button');
+    assert.ok(submitButton.is(':disabled'), 'submit is disabled');
+
+    clickButton('Save environment');
+  });
+  andThen(() => {
+    //Still on new page
+    assert.equal(currentPath(), 'dashboard.organization.environments.new');
   });
 });
 
@@ -87,6 +131,10 @@ test(`visiting ${url} and creating new prod environment`, (assert) => {
       id: handle,
       handle
     });
+  });
+
+  stubRequest('post', '/claims/account', function(){
+    return this.success({});
   });
 
   signInAndVisit(url);
