@@ -2,9 +2,11 @@ import Ember from "ember";
 import Base from 'ember-validations/validators/base';
 import ajax from "../utils/ajax";
 
+// Note: this.model here refers to the parent controller that instantiated this
+// validator. https://github.com/dockyard/ember-validations/blob/master/addon/mixin.js#L119
+
 export default Base.extend({
   _validate: Ember.on('init', function() {
-    this.errors.clear();
     return this.call();
   }),
 
@@ -42,14 +44,25 @@ export default Base.extend({
   fetch(resolve) {
     let options = this._options;
     let errors = this.errors;
+    let model = this.model.get('model'); // See note above
+
     options.data[this.getDataPropertyName()] = this.model.get(this.property);
 
+    if(model) {
+      Ember.set(model, 'isValidating', true);
+    }
+
     return ajax(options.url, Ember.$.extend({}, options)).then(() => {
+      errors.clear();
       resolve(true);
     }, () => {
       errors.clear();
       errors.pushObject(options.message);
       resolve(false);
+    }).finally(() => {
+      if(model) {
+        Ember.set(model, 'isValidating', false);
+      }
     });
   }
 });

@@ -1,0 +1,51 @@
+.input-group {
+  width: 100%;
+  position: relative;
+  border-collapse: separate;
+  display: table;
+
+  .form-control:first-child {
+    border-radius: 3px;
+    width: 100%;
+    padding-right: 40px;
+  }
+
+  .input-group-addon {
+    background: none;
+    position: absolute;
+    right: 20px;
+    top: 13px;
+    z-index: 2;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+
+    .fa {
+      font-size: 15px;
+      margin: 0;
+
+      &.visibility-hidden {
+        visibility: hidden;
+      }
+
+      &.fa-check-circle {
+        color: $color-success;;
+      }
+
+      &.fa-spinner {
+        color: $color-light;
+      }
+
+      &.fa-times-circle {
+        color: $color-danger;
+      }
+    }
+
+    .tooltip {
+      .tooltip-inner {
+        width: 200px;
+        white-space: normal;
+      }
+    }
+  }
+}
