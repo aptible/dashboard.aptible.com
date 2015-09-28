@@ -162,6 +162,10 @@ test(`visit ${url} and create`, function(assert) {
     });
   });
 
+  stubRequest('post', '/claims/database', function(){
+    return this.success({});
+  });
+
   signInAndVisit(url);
 
   andThen(function(){
@@ -178,6 +182,62 @@ test(`visit ${url} and create`, function(assert) {
 
     assert.ok( findDatabase(dbHandle).length,
         'db list shows new db' );
+  });
+});
+
+test(`visit ${url} with duplicate handle`, function(assert) {
+  assert.expect(3);
+
+  var dbHandle = 'my-new-db',
+      dbId = 'mydb-id';
+
+  // Just needed to stub /stack/my-stack-1/databases
+  stubStacks({ includeDatabases: true });
+  stubStack({ id: stackId, handle: 'stack-1'});
+
+  // get account (aka stack)
+  stubRequest('get', '/accounts', function(){
+    return this.success({
+      _embedded: {
+        accounts: [{
+          id: 'my-stack-1',
+          handle: 'stack-1',
+          _links: {
+            databases: { href: '/accounts/my-stack-1/databases' }
+          }
+        }]
+      }
+    });
+  });
+
+  // get DB
+  stubRequest('get', '/accounts/my-stack-1/databases', function(){
+    return this.success({
+      _embedded: {
+        databases: [{
+          id: dbId,
+          handle: dbHandle,
+          status: 'provisioned'
+        }]
+      }
+    });
+  });
+
+  stubRequest('post', '/claims/database', function(){
+    return this.error();
+  });
+
+  signInAndVisit(url);
+
+  andThen(() => { fillInput('handle', dbHandle); });
+
+  andThen(function(){
+    let submitButton = find('button:contains(Save Database)');
+    assert.ok(submitButton.length, 'has submit button');
+    assert.ok(submitButton.is(':disabled'), 'submit button is disabled');
+
+    submitButton.click();
+    assert.equal(currentPath(), 'dashboard.stack.databases.new');
   });
 });
 

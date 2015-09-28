@@ -153,8 +153,13 @@ test(`visit ${url} and create an app`, function(assert) {
     return this.success({ _embedded: { ssh_keys: [] } });
   });
 
+  stubRequest('post', '/claims/app', function(){
+    return this.success({});
+  });
+
   signInAndVisit(url);
   fillInput('handle', appHandle);
+
   clickButton('Save App');
   andThen(function(){
     assert.equal(currentPath(), 'dashboard.app.deploy');
@@ -163,6 +168,31 @@ test(`visit ${url} and create an app`, function(assert) {
         'lists new app on index' );
   });
 });
+
+test(`visit ${url} and with duplicate handle`, function(assert) {
+  stubOrganization();
+  stubOrganizations();
+  assert.expect(3);
+  let appHandle = 'abc-my-app-handle';
+
+
+  stubRequest('post', '/claims/app', function(){
+    return this.error();
+  });
+
+  signInAndVisit(url);
+  andThen(() => { fillInput('handle', appHandle); });
+
+  andThen(function(){
+    let submitButton = find('button:contains(Save App)');
+    assert.ok(submitButton.length, 'has submit button');
+    assert.ok(submitButton.is(':disabled'), 'submit is disabled');
+
+    clickButton('Save App');
+    assert.equal(currentPath(), 'dashboard.stack.apps.new');
+  });
+});
+
 
 test(`visit ${url} when user is not verified shows "Cannot create" message`, function(assert) {
   let userData = {verified: false};
