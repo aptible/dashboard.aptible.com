@@ -2,14 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function() {
-    let stacks = this.store.find('stack');
-
-    if (stacks.get('isFulfilled')) {
-      stacks = stacks.reload();
-    }
-
     return Ember.RSVP.hash({
-      stacks: stacks,
+      stacks: this.store.find('stack'),
       organizations: this.store.find('organization')
     });
   },
@@ -24,12 +18,12 @@ export default Ember.Route.extend({
     } else {
       this.transitionTo('stack.activate', stack);
     }
-  },
-  renderTemplate() {
-    this._super.apply(this, arguments);
-    this.render('sidebars/organizations-stacks', {
-      into: 'dashboard',
-      outlet: 'sidebar'
-    });
   }
+  // renderTemplate() {
+  //   this._super.apply(this, arguments);
+  //   this.render('sidebars/organizations-stacks', {
+  //     into: 'dashboard',
+  //     outlet: 'sidebar'
+  //   });
+  // }
 });

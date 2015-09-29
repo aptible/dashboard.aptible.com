@@ -2,30 +2,22 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   title(tokens) {
-    if (tokens.length === 0) {
-      tokens.push(this.currentModel.get('handle'));
-    }
-
-    // org is a PromiseProxy, pre-populated because it was
-    // fetched in `afterModel`
-    let organization = this.currentModel.get('organization');
-    tokens.push( organization.get('name') );
-
-    return tokens.join(' - ');
+    var stack = this.modelFor('stack');
+    return `${stack.get('handle')} Environment`;
   },
 
-  afterModel(model){
-    return Ember.RSVP.hash({
-      apps: model.get('apps'),
-      databases: model.get('databases'),
-      organization: model.get('organization')
-    });
+  model(params) {
+    // TODO: [ember-data-upgrade] This shouldn't be necessary, but we're way
+    // but we this prevents re-fetching an organization that is already loaded
+    let stacks = this.modelFor('dashboard').stacks;
+    return stacks.findBy('id', params.stack_id);
   },
 
   setupController(controller, model) {
     controller.set('model', model);
-    controller.set('organizations', this.store.find('organization'));
-    controller.set('stacks', this.store.find('stack'));
+    controller.set('organizations', this.modelFor('dashboard').organizations);
+    // Use store.all here to load stack listing from store
+    controller.set('stacks', this.store.all('stack'));
   },
 
   renderTemplate() {

@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   titleToken: function() {
     let stack = this.modelFor('stack');
-    return `${stack.get('handle')} Logging`;
+    return `${stack.get('handle')} Log Drains`;
   },
 
   model: function(){
