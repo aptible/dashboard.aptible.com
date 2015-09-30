@@ -5,6 +5,6 @@ export default Ember.Route.extend({
     return Ember.RSVP.hash({
       stacks: this.store.find('stack'),
       organizations: this.store.find('organization')
-    })
+    });
   }
 });

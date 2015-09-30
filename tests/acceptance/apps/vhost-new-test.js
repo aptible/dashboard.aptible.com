@@ -13,6 +13,8 @@ let appVhostsNewUrl = '/apps/' + appId + '/vhosts/new';
 module('Acceptance: App Vhost New', {
   beforeEach: function() {
     App = startApp();
+    stubStacks();
+    stubOrganizations();
     stubOrganization();
   },
   afterEach: function() {

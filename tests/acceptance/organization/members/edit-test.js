@@ -51,6 +51,8 @@ let user = {
 module('Acceptance: Organization Members: Member', {
   beforeEach: function() {
     application = startApp();
+    stubStacks();
+    stubOrganizations();
     stubOrganization({
       id: orgId,
       name: orgName,

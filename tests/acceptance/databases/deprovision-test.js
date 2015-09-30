@@ -9,6 +9,7 @@ module('Acceptance: Database Deprovision', {
   beforeEach: function() {
     App = startApp();
     stubOrganizations();
+    stubStacks();
   },
   afterEach: function() {
     Ember.run(App, 'destroy');

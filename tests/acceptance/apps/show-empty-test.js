@@ -19,6 +19,8 @@ module('Acceptance: Apps Show - Never deployed (app.status === "pending")', {
     assert.expectTab = expectTab;
     assert.expectNoTab = expectNoTab;
     assert.expectNoTabs = expectNoTabs;
+    stubStacks();
+    stubOrganizations();
   },
 
   afterEach: function() {

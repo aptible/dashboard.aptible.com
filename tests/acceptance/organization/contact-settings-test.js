@@ -44,6 +44,8 @@ function buildOrganizationData(data){
 module('Acceptance: OrganizationContactSettings', {
   beforeEach: function() {
     application = startApp();
+    stubOrganizations();
+    stubStacks();
   },
 
   afterEach: function() {

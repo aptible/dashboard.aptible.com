@@ -13,6 +13,7 @@ let url = `/organizations/${orgId}/environments/new`;
 module('Acceptance: Organizations: Environments: New', {
   beforeEach: function() {
     application = startApp();
+    stubOrganizations();
     stubOrganization({ id:orgId });
     stubBillingDetail({ id:orgId, plan: 'production'});
   },
@@ -27,6 +28,7 @@ test(`visiting ${url} requires authentication`, () => {
 });
 
 test(`visiting ${url} shows form to create new environment`, (assert) => {
+  stubStacks();
   signInAndVisit(url);
   andThen(() => {
     assert.equal(currentPath(), 'dashboard.organization.environments.new');

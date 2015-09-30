@@ -27,6 +27,7 @@ module('Acceptance: Organizations: Billing', {
   beforeEach: function() {
     application = startApp();
     stubOrganization();
+    stubOrganizations();
     stubStacks();
   },
 

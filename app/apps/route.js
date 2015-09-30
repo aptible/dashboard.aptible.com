@@ -6,10 +6,9 @@ export default Ember.Route.extend({
     var stack = this.modelFor('stack');
     return `${stack.get('handle')} Apps`;
   },
+
   model: function(){
     var stack = this.modelFor('stack');
-    var apps = stack.get('apps');
-
     return fetchAllPages(this.store, stack, 'app');
   }
 });

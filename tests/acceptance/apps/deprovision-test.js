@@ -31,7 +31,7 @@ test('/apps/:id/deprovision will not deprovision without confirmation', function
       account: { href: `/accounts/${stackHandle}` }
     }
   });
-
+  stubStacks();
   stubStack({
     id: stackHandle,
     handle: stackHandle
@@ -49,7 +49,7 @@ test('/apps/:id/deprovision will deprovision with confirmation', function(assert
   var appId = 1;
   var appName = 'foo-bar';
   var didDeprovision = false;
-
+  stubStacks();
   stubStack({id: '1'});
 
   stubApp({
@@ -91,7 +91,7 @@ test('/apps/:id/deprovision will show deprovision error', function(assert) {
   var appId = 1;
   var appName = 'foo-bar';
   var errorMessage = 'Some bad error';
-
+  stubStacks();
   stubStack({id: '1'});
   stubOrganizations();
 

@@ -18,6 +18,8 @@ let apiUsersUrl = `/organizations/${orgId}/users`;
 module('Acceptance: Organizations: Roles Show', {
   beforeEach: function() {
     application = startApp();
+    stubOrganizations();
+    stubStacks();
   },
 
   afterEach: function() {
@@ -33,13 +35,19 @@ let orgUrl = `/organizations/${orgId}`;
 let apiOrgUsersUrl = `/organizations/${orgId}/users`;
 function doSetup(options={}){
   let roleData = options.roleData || {id: roleId, name: roleName};
-  stubOrganization({
+  let orgData = {
     id: orgId,
     _links: {
       self: { href: orgUrl },
       users: { href: apiOrgUsersUrl }
     }
+  };
+
+  stubRequest('get', '/organizations', function() {
+    return this.success({ _embedded: [orgData]});
   });
+  stubOrganization(orgData);
+
   stubStacks({}, options.stacks || []);
   stubRequest('get', apiOrgUsersUrl, function(){
     return this.success({ _embedded: {users: options.users || []} });

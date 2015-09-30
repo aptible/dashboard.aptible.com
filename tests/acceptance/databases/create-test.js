@@ -7,12 +7,11 @@ var App;
 let url = '/stacks/my-stack-1/databases/new';
 let dbIndexUrl = '/stacks/my-stack-1/databases';
 let stackId = 'my-stack-1';
-let stackHandle = 'my-stack-handle';
+let stackHandle = 'my-stack-1';
 
 module('Acceptance: Database Create', {
   beforeEach: function() {
     App = startApp();
-    stubStacks({ includeDatabases: true });
     stubStack({
       id: stackId,
       handle: stackHandle,
@@ -38,7 +37,9 @@ test(`visit ${url} requires authentication`, function() {
 });
 
 test(`visiting /stacks/:stack_id/databases without any databases redirects to ${url}`, function(assert) {
-  stubStack({ id: stackId });
+  let stack = { id: stackId };
+  stubStacks({}, [stack]);
+  stubStack(stack);
   stubOrganization();
   signInAndVisit(`/stacks/${stackId}/databases`);
 
@@ -48,7 +49,9 @@ test(`visiting /stacks/:stack_id/databases without any databases redirects to ${
 });
 
 test(`visit ${url} when stack has no databases does not show cancel`, function(assert) {
-  stubStack({ id: stackId }); // stubs a stack with no databases
+  let stack = { id: stackId };
+  stubStacks({}, [stack]);
+  stubStack(stack);
   stubRequest('get', '/accounts/my-stack-1/databases', function(){
     return this.success({
       _links: {},
@@ -68,6 +71,9 @@ test(`visit ${url} when stack has no databases does not show cancel`, function(a
 });
 
 test(`visit ${url} shows basic info`, function(assert) {
+  let stack = { id: stackId, handle: stackHandle };
+  stubStacks({ includeDatabases: true });
+  stubStack(stack);
   stubOrganization();
   signInAndVisit(url);
 
@@ -243,7 +249,7 @@ test(`visit ${url} with duplicate handle`, function(assert) {
 
 test(`visit ${url} and click cancel button`, function(assert) {
   assert.expect(2);
-
+  stubStacks({ includeDatabases: true});
   var dbHandle = 'my-new-db';
 
   signInAndVisit(url);
@@ -261,7 +267,7 @@ test(`visit ${url} and click cancel button`, function(assert) {
 
 test(`diskSize is reset when leaving ${url} (#372)`, function(assert) {
   assert.expect(1);
-
+  stubStacks({ includeDatabases: true});
   var diskSize = 30;
 
   signInAndVisit(url);
@@ -280,7 +286,7 @@ test(`diskSize is reset when leaving ${url} (#372)`, function(assert) {
 
 test(`visit ${url} and transition away`, function(assert) {
   assert.expect(2);
-
+  stubStacks({ includeDatabases: true});
   var dbHandle = 'a-new-db-handle';
 
   signInAndVisit(url);
@@ -298,6 +304,7 @@ test(`visit ${url} and transition away`, function(assert) {
 
 test(`visit ${url} when user is not verified shows "Cannot create" message`, function(assert) {
   let userData = {verified: false};
+  stubStacks({ includeDatabases: true});
   signInAndVisit(url, userData);
   andThen( () => {
     expectNoButton('Save Database');

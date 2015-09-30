@@ -24,6 +24,8 @@ let invitations = [];
 module('Acceptance: Organizations: Invite Member', {
   beforeEach: function() {
     application = startApp();
+    stubStacks();
+    stubOrganizations();
     stubOrganization({
       id: orgId,
       _links: {

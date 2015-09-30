@@ -16,7 +16,6 @@ module('Acceptance: Apps', {
   }
 });
 
-
 test(`visiting ${url} requires authentication`, function() {
   expectRequiresAuthentication(url);
 });
@@ -64,7 +63,7 @@ test(`visiting ${url}`, function(assert) {
 
   andThen(function() {
     assert.equal(currentPath(), 'dashboard.stack.apps.index');
-    expectTitle(`${stackHandle} Apps - ${orgName}`);
+    expectTitle(`${stackHandle} Apps`);
   });
 });
 
@@ -277,71 +276,18 @@ test(`visiting ${url} then clicking on an app visits the app`, function(assert) 
   });
 });
 
-test(`${url} requests apps, databases on each visit`, function(assert) {
-  var appRequestCount = 0;
-  var databaseRequestCount = 0;
-  stubOrganization();
-  stubOrganizations();
-  stubStacks();
-  stubStack({
-    id: stackId,
-    _links: {
-      databases: {href: `/accounts/${stackId}/databases`},
-      apps: {href: `/accounts/${stackId}/apps`}
-    }
-  });
-
-  stubRequest('get', `/accounts/${stackId}/databases`, function(){
-    databaseRequestCount++;
-    return this.success({
-      _embedded: { databases: [] }
-    });
-  });
-
-  stubRequest('get', `/accounts/${stackId}/apps`, function(){
-    appRequestCount++;
-    return this.success({
-      _embedded: { apps: [] }
-    });
-  });
-
-  var lastAppRequestCount, lastDatabaseRequestCount;
-
-  // Unfortunately, what routes are entered when is very messy when
-  // the first url is loaded in a test app. So let's ignore the initial
-  // values and just confirm the requests are made on subsequent navigation.
-  signInAndVisit(url);
-
-  andThen(function() {
-    lastAppRequestCount = appRequestCount;
-    lastDatabaseRequestCount = databaseRequestCount;
-  });
-
-  visit(`/stacks/${stackId}/databases`);
-
-  andThen(function() {
-    assert.equal(databaseRequestCount, lastDatabaseRequestCount + 1, 'did one more database request');
-    assert.equal(appRequestCount, lastAppRequestCount, 'no new app request');
-  });
-
-  visit(`/stacks/${stackId}/apps`);
-
-  andThen(function() {
-    assert.equal(databaseRequestCount, lastDatabaseRequestCount + 1, 'still one database request');
-    assert.equal(appRequestCount, lastAppRequestCount + 1, 'one new app request');
-  });
-});
-
 test(`visit ${url} shows create app button if user is verified`, function() {
-  stubOrganization();
-  stubOrganizations();
-  stubStacks({ includeApps: true });
-  stubStack({
+  let stack = {
     id: stackId,
     _links: {
-      apps: { href: `/accounts/${stackId}/apps` }
+      apps: { href: `/accounts/${stackId}/apps` },
+      permissions: { href: `/accounts/${stackId}/permissions` }
     }
-  });
+  };
+  stubOrganization();
+  stubOrganizations();
+  stubStacks({ includeApps: true }, [stack]);
+  stubStack(stack);
 
   let userData = {id: 'user1', verified: true};
   signInAndVisit(url, userData);

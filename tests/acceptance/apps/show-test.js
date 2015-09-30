@@ -9,7 +9,8 @@ var App;
 module('Acceptance: Apps Show', {
   beforeEach: function() {
     App = startApp();
-
+    stubStacks();
+    stubOrganizations();
     stubRequest('get', '/users/user1/ssh_keys', function(){
       return this.success({
         _embedded: {
