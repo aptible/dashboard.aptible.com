@@ -40,29 +40,44 @@ export default HalSerializer.extend({
   normalize: function(type, hash, property) {
     var payload = this._super(...arguments);
 
-    if (payload.links && payload.links.account) {
+    if(payload.links) {
+      payload = this._convertStacks(payload);
+      payload = this._transposeLinks(payload, type);
+    }
+
+    return payload;
+  },
+
+  _convertStacks(payload) {
+    // Stacks in Diesel === Accounts in API.
+    if(payload.links.account) {
       payload.links.stack = payload.links.account;
       delete payload.links.account;
     }
 
-    if (payload.links && payload.links.accounts) {
+    if(payload.links.accounts) {
       payload.links.stacks = payload.links.accounts;
       delete payload.links.accounts;
     }
 
-    if(payload.links) {
-      type.eachRelationship((modelName, modelClass) => {
-        if(!modelClass.kind !== 'belongsTo') {
-          return;
-        }
+    return payload;
+  },
 
-        let relationHref = payload.links[modelName];
+  _transposeLinks(payload, type) {
+    // TODO: Upgrading ED and HAL9000 should remove the need for this function.
+    // The below fixes issues with ED resolving relationships correctly by
+    // manually setting relationships from _links onto the payload body.
+    type.eachRelationship((modelName, modelClass) => {
+      if(modelClass.kind !== 'belongsTo') {
+        return;
+      }
 
-        if(relationHref && !payload[modelName]) {
-          payload[modelName] = this._idFromHref(relationHref);
-        }
-      });
-    }
+      let relationHref = payload.links[modelName];
+      if(relationHref && !payload[modelName]) {
+        payload[modelName] = this._idFromHref(relationHref);
+      }
+
+    });
 
     return payload;
   },
