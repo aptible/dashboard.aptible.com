@@ -2,6 +2,7 @@ import HalAdapter from "ember-data-hal-9000/adapter";
 import DS from "ember-data";
 import Ember from "ember";
 import config from "../config/environment";
+import { modelNameFromPayloadKey } from '../serializers/application';
 
 let accessToken;
 
@@ -60,10 +61,7 @@ export default HalAdapter.extend({
     let modelName = Ember.String.singularize(segments[segments.length - 2]);
     let payload;
 
-    if(modelName === 'account') {
-      modelName = 'stack';
-    }
-
+    modelName = modelNameFromPayloadKey(modelName);
     payload = this._payloadFromCache(modelName, id, store);
 
     if(payload) {
