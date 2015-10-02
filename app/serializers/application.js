@@ -48,6 +48,14 @@ export default HalSerializer.extend({
     return payload;
   },
 
+  // Add a reference to the original un-modified payload to the payload itself
+  // The unmodified payload can then be used when attempting to fetch from cache
+  extractSingle: function(store, primaryType, rawPayload, recordId) {
+    let payload = rawPayload;
+    payload.rawPayload = Ember.$.extend(true, {}, payload);
+    return this._super(store, primaryType, payload, recordId);
+  },
+
   _convertStacks(payload) {
     // Stacks in Diesel === Accounts in API.
     if(payload.links.account) {
