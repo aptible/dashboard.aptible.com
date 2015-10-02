@@ -1,4 +1,14 @@
 import HalSerializer from "ember-data-hal-9000/serializer";
+import Ember from 'ember';
+
+export const MODEL_NAME_MAP = {
+  account: 'stack',
+  criterium: 'criterion'
+};
+
+export function modelNameFromPayloadKey(key) {
+  return Ember.get(MODEL_NAME_MAP, key) || key;
+}
 
 export default HalSerializer.extend({
   /*
@@ -18,15 +28,7 @@ export default HalSerializer.extend({
 
   modelNameFromPayloadKey(key){
     var result = this._super(key);
-    if (result === 'account') {
-      result = 'stack';
-    }
-
-    if (result === 'criterium') {
-      result = 'criterion';
-    }
-
-    return result;
+    return modelNameFromPayloadKey(result);
   },
 
   extractArray: function(store, primaryType, rawPayload) {
@@ -48,8 +50,16 @@ export default HalSerializer.extend({
     return payload;
   },
 
+  // Add a reference to the original pre-normalized payload to the payload
+  // itself.  The pre-normalized payload can then be used when attempting to
+  // fetch from cache
+  extractSingle: function(store, primaryType, rawPayload, recordId) {
+    let payload = rawPayload;
+    payload.rawPayload = Ember.$.extend(true, {}, payload);
+    return this._super(store, primaryType, payload, recordId);
+  },
+
   _convertStacks(payload) {
-    // Stacks in Diesel === Accounts in API.
     if(payload.links.account) {
       payload.links.stack = payload.links.account;
       delete payload.links.account;
