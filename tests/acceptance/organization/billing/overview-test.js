@@ -13,6 +13,8 @@ const url = overviewUrl;
 module('Acceptance: Organizations: Billing: Overview', {
   beforeEach: function() {
     application = startApp();
+    stubOrganizations();
+    stubStacks();
   },
 
   afterEach: function() {
@@ -29,6 +31,7 @@ test(`visiting ${url} requires authentication`, () => {
 test(`visiting ${url} shows current plan and resource usage`, (assert) => {
   stubStacks();
   stubOrganization();
+  stubOrganizations();
   stubBillingDetail();
   signInAndVisit(url);
   andThen(function() {

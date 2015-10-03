@@ -18,6 +18,8 @@ module('Acceptance: Organization', {
 });
 
 test('visiting /organization', function(assert) {
+  stubOrganizations();
+  stubStacks();
   stubOrganization({ id: 'o1' });
   stubBillingDetail({ id: 'o1' });
   setFeature('organization-settings', true);

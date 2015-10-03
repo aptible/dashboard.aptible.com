@@ -3,12 +3,14 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   sortBy: ['handle:asc'],
 
-  tooltipTitle: function() {
+  tooltipTitle: Ember.computed('organization.name', function() {
     return `${this.get('organization.name')} Settings`;
-  }.property('organization.name'),
-  organizationStacks: function() {
-    return this.get('stacks').filterBy('organization.id', this.get('organization.id'));
-  }.property('stacks.@each.organization.id', 'organization.id'),
+  }),
+
+  organizationStacks: Ember.computed('stacks.[]', function() {
+    return this.get('stacks').filterBy('data.links.organization', this.get('organization.data.links.self'));
+  }),
 
   sortedStacks: Ember.computed.sort('organizationStacks', 'sortBy')
 });
+

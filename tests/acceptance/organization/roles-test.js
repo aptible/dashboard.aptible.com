@@ -14,6 +14,7 @@ let rolesUrl = url;
 module('Acceptance: Organizations: Roles', {
   beforeEach: function() {
     application = startApp();
+    stubOrganizations();
   },
 
   afterEach: function() {

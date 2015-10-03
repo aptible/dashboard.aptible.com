@@ -21,6 +21,8 @@ let url = `/apps/${appId}/vhosts/${vhostId}/edit`;
 module('Acceptance: App Vhost Edit', {
   beforeEach: function() {
     App = startApp();
+    stubStacks();
+    stubOrganizations();
     stubApp({
       id: appId,
       handle: appHandle,

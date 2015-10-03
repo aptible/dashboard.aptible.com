@@ -24,6 +24,7 @@ module('Acceptance: Organizations: Billing: Plan', {
   beforeEach: function() {
     application = startApp();
     stubStacks();
+    stubOrganizations();
   },
 
   afterEach: function() {
