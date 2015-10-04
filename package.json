@@ -14,7 +14,7 @@
   },
   "repository": "https://github.com/aptible/dashboard.aptible.com",
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 0.12.7"
   },
   "author": "",
   "license": "MIT",
