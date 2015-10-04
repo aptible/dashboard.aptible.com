@@ -3,7 +3,7 @@ import sum from '../../utils/sum';
 
 export default Ember.Component.extend({
   tagName: '',
-  maxVisibleDomainNames: 2,
+  maxVisibleDomainNames: 1,
 
   persistedApps: Ember.computed.filterBy('model.apps', 'isNew', false),
   persistedDatabases: Ember.computed.filterBy('model.databases', 'isNew', false),
