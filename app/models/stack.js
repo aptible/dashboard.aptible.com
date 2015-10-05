@@ -19,7 +19,11 @@ export default DS.Model.extend({
   organizationUrl: DS.attr('string'),
   activated: DS.attr('boolean'),
   containerCount: DS.attr('number'),
+  appContainerCount: DS.attr('number'),
+  databaseContainerCount: DS.attr('number'),
   domainCount: DS.attr('number'),
+  totalAppCount: DS.attr('number'),
+  totalDatabaseCount: DS.attr('number'),
   totalDiskSize: DS.attr('number'),
 
   // relationships
