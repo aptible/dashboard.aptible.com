@@ -13,13 +13,13 @@
     {{/if}}
 
     <li class="resource-metadata-item">
-      <h5 class="resource-metadata-title">{{persistedApps.length}} {{plural-string "App" persistedApps.length}}</h5>
-      <h3 class="resource-metadata-value">Using {{totalContainerCount}} {{plural-string "container" totalContainerCount}}</h3>
+      <h5 class="resource-metadata-title">{{model.totalAppCount}} {{plural-string "App" model.totalAppCount}}</h5>
+      <h3 class="resource-metadata-value">Using {{model.appContainerCount}} {{plural-string "container" totalContainerCount}}</h3>
     </li>
 
     <li class="resource-metadata-item">
-      <h5 class="resource-metadata-title">{{persistedDatabases.length}} {{plural-string "Database" persistedDatabases.length}}</h5>
-      <h3 class="resource-metadata-value">Using {{format-disk-size totalDiskSize}} of disk</h3>
+      <h5 class="resource-metadata-title">{{model.totalDatabaseCount}} {{plural-string "Database" model.totalDatabaseCount}}</h5>
+      <h3 class="resource-metadata-value">Using {{format-disk-size model.totalDiskSize}} of disk</h3>
     </li>
 
     <li class="resource-metadata-item">

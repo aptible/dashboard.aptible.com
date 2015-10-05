@@ -24,6 +24,10 @@ test(`visit ${url} shows basic stack info`, function(assert) {
   let stackData = {
     id: stackId,
     handle: stackHandle,
+    total_app_count: 2,
+    total_database_count: 2,
+    total_disk_size: 6,
+    app_container_count: 5,
     _links: {
       apps: { href: appsURL },
       databases: { href: databasesURL }
@@ -52,36 +56,11 @@ test(`visit ${url} shows basic stack info`, function(assert) {
     }
   }];
 
-  let databaseData = [{
-    id: 'db-1',
-    _embedded: {
-      disk: {
-        id: 'disk-1',
-        size: 4
-      }
-    }
-  }, {
-    id: 'db-2',
-    _embedded: {
-      disk: {
-        id: 'disk-2',
-        size: 2
-      }
-    }
-  }];
 
   stubRequest('get', appsURL, function(){
     return this.success({
       _embedded: {
         apps: appData
-      }
-    });
-  });
-
-  stubRequest('get', databasesURL, function(){
-    return this.success({
-      _embedded: {
-        databases: databaseData
       }
     });
   });
@@ -104,7 +83,7 @@ test(`visit ${url} shows basic stack info`, function(assert) {
     assert.ok(find(`h5:contains(${appData.length} Apps)`).length,
        'Header that contains app length');
 
-    assert.ok(find(`h5:contains(${databaseData.length} Databases)`).length,
+    assert.ok(find(`h5:contains(2 Databases)`).length,
        'Header that contains db length');
 
     // 2 + 3
