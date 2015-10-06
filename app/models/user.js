@@ -18,7 +18,7 @@ export default DS.Model.extend({
   passwordConfirmation: null,
 
   // relationships
-  token: DS.belongsTo('token', {async: true}),
+  token: DS.belongsTo('token', { async: true, requireReload: true }),
   roles: DS.hasMany('role', {async:true}),
   sshKeys: DS.hasMany('ssh-key', {async:true}),
 

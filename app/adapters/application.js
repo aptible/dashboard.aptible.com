@@ -54,17 +54,16 @@ export default HalAdapter.extend({
   // directly from the server.  This patch changes that behavior to first
   // see if the record is already loaded in store.  If so, that record is
   // resolved immediately and a request is never made.
-  findBelongsTo(store, link, relationshipPath) {
-    // relationshipPath: users/id
+  findBelongsTo(store, snapshot, relationshipPath, metaForProperty) {
     let segments = relationshipPath.split('/');
     let id = segments[segments.length - 1];
-    let modelName = Ember.String.singularize(segments[segments.length - 2]);
+    let modelName = metaForProperty.type.modelName;
     let payload;
 
     modelName = modelNameFromPayloadKey(modelName);
     payload = this._payloadFromCache(modelName, id, store);
 
-    if(payload) {
+    if(!metaForProperty.requireReload && payload) {
       return Ember.RSVP.resolve(payload);
     } else {
       return this._super(...arguments);
@@ -84,3 +83,4 @@ export default HalAdapter.extend({
     return payload;
   }
 });
+
