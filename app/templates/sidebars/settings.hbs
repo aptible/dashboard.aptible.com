@@ -18,12 +18,12 @@
         {{#link-to 'organization.contact-settings' organization tagName="li"}}
           {{link-to "Contact Settings" "organization.contact-settings" organization bubbles=false}}
         {{/link-to}}
-      {{/if}}
 
-      {{#if features.organizationBillingSettings}}
-        {{#link-to 'organization.billing' organization tagName="li"}}
-          {{link-to "Billing" "organization.billing" organization bubbles=false}}
-        {{/link-to}}
+        {{#if features.organizationBillingSettings}}
+          {{#link-to 'organization.billing' organization tagName="li"}}
+            {{link-to "Billing" "organization.billing" organization bubbles=false}}
+          {{/link-to}}
+        {{/if}}
       {{/if}}
     {{/aptible-ability}}
   </ul>
