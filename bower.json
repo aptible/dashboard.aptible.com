@@ -12,7 +12,7 @@
     "jquery": "^1.11.1",
     "loader.js": "ember-cli/loader.js#3.2.0",
     "nouislider": "~7.0.9",
-    "pretender": "~0.6.0",
+    "pretender": "~0.10.1",
     "qunit": "~1.18.0",
     "zeroclipboard": "~2.2.0",
     "JavaScript-MD5": "~1.1.0",
@@ -20,6 +20,7 @@
     "bootstrap-sass": "twbs/bootstrap-sass#~3.3.5"
   },
   "resolutions": {
-    "ember": "1.13.9"
+    "ember": "1.13.9",
+    "FakeXMLHttpRequest": "~1.2.1"
   }
 }
