@@ -10,7 +10,7 @@ module.exports = function(defaults) {
   };
 
     options.minifyJS = {
-      enabled: false
+      enabled: true
     };
 
     options.sourcemaps = {
