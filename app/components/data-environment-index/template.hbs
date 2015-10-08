@@ -1,0 +1,30 @@
+<div class="panel white-panel">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Provider</th>
+        <th class="toggle-small align-right">Selected</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each dataEnvironments as |env|}}
+        <tr>
+          <td><strong>{{env.name}}</strong></td>
+          <td>
+            {{#if env.provider}}
+
+              <div class="data-environment-provider sm {{env.provider}}">
+                <img src="/assets/images/data-environments/{{env.provider}}.png" alt="{{env.provider}}"/>
+              </div>
+            {{/if}}
+          </td>
+          <td class="toggle-small align-right">
+            {{x-toggle size='small' value=env.selected showLabels=false toggled=env.selected}}
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

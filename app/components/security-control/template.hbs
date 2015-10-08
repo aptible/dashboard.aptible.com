@@ -1,0 +1,16 @@
+<div class='options'>
+  <select class="form-control">
+    <option>None/Not required</option>
+  </select>
+</div>
+
+{{#if provider}}
+  <div class="data-environment-provider sm {{provider}}">
+    <img src="/assets/images/data-environments/{{provider}}.png" alt="{{provider}}"/>
+  </div>
+{{/if}}
+
+<div class="info">
+  <h4 class="title">{{title}}</h4>
+  <div class="description">{{description}}</div>
+</div>

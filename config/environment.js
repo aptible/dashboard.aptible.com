@@ -30,6 +30,16 @@ module.exports = function(environment) {
       { name: 'Contract Management', path: 'contracts', app: 'compliance' }
     ],
 
+    'ember-cli-toggle': {
+      includedThemes: ['light', 'default', 'flip', 'ios'],
+      excludedThemes: ['flip'],
+      defaultShowLabels: true, // defaults to false
+      defaultTheme: 'light',   // defaults to 'default'
+      defaultSize: 'small',    // defaults to 'medium'
+      defaultOff: 'False',     // defaults to 'Off'
+      defaultOn: 'True'        // defaults to 'On'
+    },
+
     authTokenKey: '_aptible_authToken',
     stripePublishableKey: 'pk_test_eiw5HXHTAgTwyNnV9I5ruCrA',
     replaceLocation: true,

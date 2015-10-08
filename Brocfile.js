@@ -44,14 +44,6 @@ app.import("bower_components/zeroclipboard/dist/ZeroClipboard.swf", {
   destDir: "assets"
 });
 
-// Should become and addon or use a tree
-app.import('bower_components/aptible-sass/dist/images/aptible-circle-logo.png', { destDir: "/" });
-app.import('bower_components/aptible-sass/dist/images/aptible-mark.png', { destDir: "/" });
-app.import('bower_components/aptible-sass/dist/images/aptible-mark@2x.png', { destDir: "/" });
-app.import('bower_components/aptible-sass/dist/images/nav-logo-dark.png', { destDir: "/" });
-app.import('bower_components/aptible-sass/dist/images/nav-logo-dark@2x.png', { destDir: "/" });
-app.import('bower_components/aptible-sass/dist/images/nav-logo.png', { destDir: "/" });
-app.import('bower_components/aptible-sass/dist/images/nav-logo@2x.png', { destDir: "/" });
 
 // Use `app.import` to add additional libraries to the generated
 // output files.

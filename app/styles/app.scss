@@ -1,6 +1,12 @@
-@import "bower_components/aptible-sass/dist/styles/aptible";
+@import "aptible";
+@import "components/add-location-form";
 @import "components/dashboard";
-@import "components/organization-switcher";
+@import "components/data-environment-index";
 @import "components/compliance-icon";
 @import "components/progress-radial";
+@import "components/organization-switcher";
+@import "components/security-control";
+@import "components/setup-step";
+@import "components/spd";
+@import "components/spd-nav";
 @import "components/user-training-status";

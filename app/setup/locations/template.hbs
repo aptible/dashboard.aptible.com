@@ -1,0 +1,32 @@
+<div class="setup-step">
+  <h1 class="setup-step-title">Locations</h1>
+
+  <nav class="panel-nav">
+    <ul class="tabs">
+      <li class="active">
+        <a href="">Locations <span class="badge">1</span></a>
+      </li>
+    </ul>
+  </nav>
+
+  {{location-index}}
+
+  <div class="panel panel-striped">
+    <div class="panel-section">
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="panel-section-title">Add a new location</div>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet purus ornare condimentum malesuada. Pellentesque diam mi, fermentum ut sapien eu, vehicula dictum elit. Integer cursus sagittis ullamcorper.
+          </p>
+        </div>
+        <div class="col-xs-6">
+          {{add-location-form}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    {{link-to "Continue →" 'setup.team' class="btn btn-primary btn-lg"}}
+  </div>
+</div>
