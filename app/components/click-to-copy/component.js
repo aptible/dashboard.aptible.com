@@ -1,29 +1,42 @@
-/*global ZeroClipboard*/
+/*global Clipboard*/
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  actionLabel: 'Copy',
+  classNames: ['click-to-copy'],
+  Clipboard: Clipboard,
+  errorMessage: 'Press ⌘+C to copy',
+  isTooltipped: false,
+  message: null,
+  successMessage: 'Copied!',
   tagName: 'span',
-  copied: false,
   text: null,
-  title: "Click to copy",
 
-  'data-clipboard-text': Ember.computed.alias('text'),
+  dataClipboardText: Ember.computed.alias('text'),
 
-  attributeBindings: ['data-clipboard-text', 'title'],
+  attributeBindings: ['dataClipboardText:data-clipboard-text',
+                      'message:data-message'],
+
+  classNameBindings: ['isTooltipped:tooltipped'],
 
   setupClipboard: Ember.on('didInsertElement', function(){
-    this.clipboard = new ZeroClipboard( this.$() );
-    this.clipboard.on('aftercopy', Ember.run.bind(this, 'afterCopy'));
+    this.clipboard = new this.Clipboard('#' + this.elementId);
+    this.clipboard.on('success', Ember.run.bind(this, 'success'));
+    this.clipboard.on('error', Ember.run.bind(this, 'error'));
   }),
 
-  afterCopy: function(){
-    this.set('copied', true);
-    Ember.run.later(this, 'set', 'copied', false, 1500);
+  success: function(){
+    this.set('message', this.successMessage);
+    this.showMessage();
   },
 
-  teardownClipboard: Ember.on('willDestroyElement', function(){
-    if (this.clipboard) {
-      this.clipboard.destroy();
-    }
-  })
+  error: function(){
+    this.set('message', this.errorMessage);
+    this.showMessage();
+  },
+
+  showMessage: function() {
+    this.set('isTooltipped', true);
+    Ember.run.later(this, 'set', 'isTooltipped', false, 3000);
+  }
 });

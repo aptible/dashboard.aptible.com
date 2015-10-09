@@ -21,7 +21,6 @@ moduleFor('torii-adapter:application', 'Torii Adapter: Aptible', {
   needs: modelDeps,
 
   setup: function(){
-    DS._setupContainer(this.container);
     originalWrite = storage.write;
     originalRead = storage.read;
   },
@@ -29,21 +28,15 @@ moduleFor('torii-adapter:application', 'Torii Adapter: Aptible', {
     storage.write = originalWrite;
     storage.read = originalRead;
     setAccessToken(null);
-  },
-  subject: function() {
-    var store = this.container.lookup('store:main');
-    var klass = this.container.lookupFactory(this.subjectName);
-    return klass.create({
-      store: store,
-      analytics: new MockAnalytics()
-    });
   }
 });
 
 test('#close destroys token, storage', function(assert){
   assert.expect(4);
   const done = assert.async();
-  var adapter = this.subject();
+  var adapter = this.subject({
+    analytics: new MockAnalytics()
+  });
   var tokenId = 'some-token-id';
 
   var removedKey;
