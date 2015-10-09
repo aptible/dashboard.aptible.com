@@ -30,13 +30,7 @@
           <h5 class="resource-metadata-title">Git Remote</h5>
           <h3 class="resource-metadata-value">
             {{model.gitRepo}}
-            {{#click-to-copy text=model.gitRepo as |copied|}}
-              {{#if copied}}
-                Copied
-              {{else}}
-                <a href='#'>Copy</a>
-              {{/if}}
-            {{/click-to-copy}}
+            {{click-to-copy text=model.gitRepo}}
           </h3>
         </li>
 

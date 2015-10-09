@@ -2,12 +2,4 @@
   <span>{{shortenedRef}}</span>
 {{/bs-tooltip}}
 
-{{#click-to-copy text=gitRef as |copied|}}
-  {{#if copied}}
-    Copied
-  {{else}}
-    <a href='#'>Copy</a>
-  {{/if}}
-{{/click-to-copy}}
-
-
+{{click-to-copy text=gitRef}}
