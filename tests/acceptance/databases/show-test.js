@@ -9,6 +9,7 @@ module('Acceptance: Databases Show', {
   beforeEach: function() {
     App = startApp();
     stubOrganizations();
+    stubStacks();
   },
   afterEach: function() {
     Ember.run(App, 'destroy');

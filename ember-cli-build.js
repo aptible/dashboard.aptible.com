@@ -9,6 +9,14 @@ module.exports = function(defaults) {
     }
   };
 
+    options.minifyJS = {
+      enabled: true
+    };
+
+    options.sourcemaps = {
+      enabled: false
+    };
+
   if (process.env.EMBER_ENV === 'staging' || process.env.EMBER_ENV === 'sandbox') {
     options.minifyCSS = {
       enabled: true

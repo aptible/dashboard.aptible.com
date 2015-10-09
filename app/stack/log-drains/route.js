@@ -1,16 +1,16 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  titleToken: function() {
+  title: function() {
     let stack = this.modelFor('stack');
-    return `${stack.get('handle')} Logging`;
+    return `${stack.get('handle')} Log Drains`;
   },
 
   model: function(){
     let stack = this.modelFor('stack');
-
     return stack.get('logDrains');
   },
+
   redirect: function() {
     var stack = this.modelFor('stack');
     if(stack.get('logDrains.length') === 0) {

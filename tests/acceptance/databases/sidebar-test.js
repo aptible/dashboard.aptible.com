@@ -57,7 +57,7 @@ test('includes breadcrumb to parent stack', function(assert) {
   });
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.stack.apps.new');
+    assert.equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 

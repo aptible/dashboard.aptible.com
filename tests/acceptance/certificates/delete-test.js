@@ -37,15 +37,15 @@ function stubCertificatesAndVhosts() {
 module('Acceptance: Certificate Delete', {
   beforeEach: function() {
     App = startApp();
-    stubStacks();
-    stubStack({
+    let stack = {
       id: stackId,
       handle: stackId,
       _links: {
         certificates: { href: `/accounts/${stackId}/certificates` },
         organization: { href: `/organizations/${orgId}` }
       }
-    });
+    };
+    stubStacks({}, [stack]);
     stubOrganization();
     stubOrganizations();
     stubCertificatesAndVhosts();

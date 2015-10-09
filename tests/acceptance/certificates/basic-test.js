@@ -11,15 +11,15 @@ let url = `/stacks/${stackId}/certificates`;
 module('Acceptance: Certificates', {
   beforeEach: function() {
     App = startApp();
-    stubStacks();
-    stubStack({
+    let stack = {
       id: stackId,
       handle: stackId,
       _links: {
         certificates: { href: `/accounts/${stackId}/certificates` },
         organization: { href: `/organizations/${orgId}` }
       }
-    });
+    };
+    stubStacks({}, [stack]);
     stubOrganization();
     stubOrganizations();
   },

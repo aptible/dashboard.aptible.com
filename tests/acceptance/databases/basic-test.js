@@ -10,16 +10,17 @@ let url = `/stacks/${stackId}/databases`;
 module('Acceptance: Databases', {
   beforeEach: function() {
     App = startApp();
-    // Just needed to stub /stack/my-stack-1/databases
-    stubStacks({includeDatabases:true});
-    stubStack({
+    let stack = {
       id: stackId,
       handle: 'my-stack-1',
       _links: {
         databases: { href: '/accounts/my-stack-1/databases' },
+        permissions: { href: '/accounts/my-stack-1/permissions' },
         organization: { href: '/organizations/1' },
       }
-    });
+    };
+    stubStack(stack);
+    stubStacks({includeDatabases:true}, [stack]);
     stubOrganization();
     stubOrganizations();
   },
@@ -37,7 +38,7 @@ test('visiting /stacks/:stack_id/databases', function(assert) {
 
   andThen(function() {
     assert.equal(currentPath(), 'dashboard.stack.databases.index');
-    expectTitle('my-stack-1 Databases - Sprocket Co');
+    expectTitle('my-stack-1 Databases');
   });
 });
 

@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   title() {
     var stack = this.modelFor('stack');
-    return `${stack.get('handle')} Certificates - ${stack.get('organization.name')}`;
+    return `${stack.get('handle')} Certificates`;
   },
 
   model() {

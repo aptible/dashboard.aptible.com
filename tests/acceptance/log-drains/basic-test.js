@@ -90,7 +90,7 @@ test(`visit ${url} shows basic info`, function(assert){
           'shows drain host');
       assert.ok( logDrainEl.text().indexOf( logDrain.drain_port ) > -1,
           'shows drain port');
-      expectTitle(`${stackHandle} Logging - ${orgName}`);
+      expectTitle(`${stackHandle} Log Drains`);
     });
 
     assert.ok(find('h5:contains(Provisioned Log Drains)').length, 'has a provisioned header');

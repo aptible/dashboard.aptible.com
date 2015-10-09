@@ -16,6 +16,8 @@ let membersUrl = `/organizations/${orgId}/users`;
 module('Acceptance: OrganizationMembers', {
   beforeEach: function() {
     application = startApp();
+    stubStacks();
+    stubOrganizations();
     stubOrganization({
       id: orgId,
       _links: { users: { href: membersUrl } }
