@@ -36,6 +36,9 @@ export const DOMAIN_ALLOWANCES = {
 
 export default DS.Model.extend({
   plan: DS.attr('string'),
+  containerAllowance: DS.attr('number'),
+  diskAllowance: DS.attr('number'),
+  domainAllowance: DS.attr('number'),
   paymentMethodName: DS.attr('string'),
   paymentMethodDisplay: DS.attr('string'),
   nextInvoiceDate: DS.attr('iso-8601-timestamp'),
@@ -46,7 +49,7 @@ export default DS.Model.extend({
   paymentExpYear: DS.attr('number'),
   billingContact: DS.belongsTo('user', {async:true}),
   organization: DS.belongsTo('organization', {async:true}),
-  allowPHI: Ember.computed.match('plan', /production|platform/),
+  allowPHI: Ember.computed.match('plan', /pilot|production|platform/),
   hasStripeSubscription: Ember.computed.bool('stripeSubscriptionId'),
   hasStripeCustomer: Ember.computed.bool('stripeCustomerId'),
   hasStripe: Ember.computed.and('hasStripeCustomer', 'hasStripeSubscription'),
@@ -59,13 +62,28 @@ export default DS.Model.extend({
   planRate: Ember.computed('plan', function() {
     return PLAN_RATES[this.get('plan')];
   }),
-  containerAllowance: Ember.computed('plan', function() {
-    return CONTAINER_ALLOWANCES[this.get('plan')];
+
+  containersInPlan: Ember.computed('containerAllowance', 'plan', function() {
+    var plan = this.get('plan');
+    if (plan === 'development' || !CONTAINER_ALLOWANCES.hasOwnProperty(plan)) {
+      return 0;
+    }
+    return this.get('containerAllowance') || CONTAINER_ALLOWANCES[plan];
   }),
-  diskAllowance: Ember.computed('plan', function() {
-    return DISK_ALLOWANCES[this.get('plan')];
+
+  diskSpaceInPlan: Ember.computed('diskAllowance', 'plan', function() {
+    var plan = this.get('plan');
+    if (plan === 'development' || !DISK_ALLOWANCES.hasOwnProperty(plan)) {
+      return 0;
+    }
+    return this.get('diskAllowance') || DISK_ALLOWANCES[plan];
   }),
-  domainAllowance: Ember.computed('plan', function() {
-    return DOMAIN_ALLOWANCES[this.get('plan')];
+
+  domainsInPlan: Ember.computed('domainAllowance', 'plan', function() {
+    var plan = this.get('plan');
+    if (plan === 'development' || !DOMAIN_ALLOWANCES.hasOwnProperty(plan)) {
+      return 0;
+    }
+    return this.get('domainAllowance') || DOMAIN_ALLOWANCES[plan];
   })
 });
