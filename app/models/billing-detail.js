@@ -64,26 +64,14 @@ export default DS.Model.extend({
   }),
 
   containersInPlan: Ember.computed('containerAllowance', 'plan', function() {
-    var plan = this.get('plan');
-    if (plan === 'development' || !CONTAINER_ALLOWANCES.hasOwnProperty(plan)) {
-      return 0;
-    }
-    return this.get('containerAllowance') || CONTAINER_ALLOWANCES[plan];
+    return this.get('containerAllowance') || CONTAINER_ALLOWANCES[this.get('plan')] || 0;
   }),
 
   diskSpaceInPlan: Ember.computed('diskAllowance', 'plan', function() {
-    var plan = this.get('plan');
-    if (plan === 'development' || !DISK_ALLOWANCES.hasOwnProperty(plan)) {
-      return 0;
-    }
-    return this.get('diskAllowance') || DISK_ALLOWANCES[plan];
+    return this.get('diskAllowance') || DISK_ALLOWANCES[this.get('plan')] || 0;
   }),
 
   domainsInPlan: Ember.computed('domainAllowance', 'plan', function() {
-    var plan = this.get('plan');
-    if (plan === 'development' || !DOMAIN_ALLOWANCES.hasOwnProperty(plan)) {
-      return 0;
-    }
-    return this.get('domainAllowance') || DOMAIN_ALLOWANCES[plan];
+    return this.get('domainAllowance') || DOMAIN_ALLOWANCES[this.get('plan')] || 0;
   })
 });
