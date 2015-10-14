@@ -13,14 +13,14 @@ export default Ember.Component.extend({
   grossDisk: Ember.computed.sum('disk'),
 
   // Net sums
-  netContainers: Ember.computed('grossContainers', 'billingDetail.containerAllowance', function() {
-    return Math.max((this.get('grossContainers') - this.get('billingDetail.containerAllowance')), 0);
+  netContainers: Ember.computed('grossContainers', 'billingDetail.containersInPlan', function() {
+    return Math.max((this.get('grossContainers') - this.get('billingDetail.containersInPlan')), 0);
   }),
-  netDomains: Ember.computed('grossDomains', 'billingDetail.domainAllowance', function() {
-    return Math.max((this.get('grossDomains') - this.get('billingDetail.domainAllowance')), 0);
+  netDomains: Ember.computed('grossDomains', 'billingDetail.domainsInPlan', function() {
+    return Math.max((this.get('grossDomains') - this.get('billingDetail.domainsInPlan')), 0);
   }),
-  netDisk: Ember.computed('grossDisk', 'billingDetail.diskAllowance', function() {
-    return Math.max((this.get('grossDisk') - this.get('billingDetail.diskAllowance')), 0);
+  netDisk: Ember.computed('grossDisk', 'billingDetail.diskSpaceInPlan', function() {
+    return Math.max((this.get('grossDisk') - this.get('billingDetail.diskSpaceInPlan')), 0);
   }),
 
   // Total value

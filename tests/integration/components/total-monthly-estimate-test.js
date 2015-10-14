@@ -9,8 +9,8 @@ moduleForComponent('total-monthly-estimate', {
 test('sums usage correctly', function(assert) {
   let stack1 = Ember.Object.create({ handle: 'stack1',  containerCount: 11, domainCount: 8, totalDiskSize: 2000 });
   let stack2 = Ember.Object.create({ handle: 'stack2',  containerCount: 3, domainCount: 1, totalDiskSize: 1000 });
-  let billingDetail = Ember.Object.create({ containerAllowance: 6, domainAllowance: 4,
-                                            diskAllowance: 1000, containerCentsPerHour: 8,
+  let billingDetail = Ember.Object.create({ containersInPlan: 6, domainsInPlan: 4,
+                                            diskSpaceInPlan: 1000, containerCentsPerHour: 8,
                                             domainCentsPerHour: 5, diskCentsPerHour: 0.0507, planRate: 0 });
 
   // Net container rate: (11 + 3 - 6) * 8 * 730 = 46720
@@ -29,8 +29,8 @@ test('sums usage correctly', function(assert) {
 test('sums usage with base plan rate correctly', function(assert) {
   let stack1 = Ember.Object.create({ handle: 'stack1',  containerCount: 11, domainCount: 8, totalDiskSize: 2000 });
   let stack2 = Ember.Object.create({ handle: 'stack2',  containerCount: 3, domainCount: 1, totalDiskSize: 1000 });
-  let billingDetail = Ember.Object.create({ containerAllowance: 6, domainAllowance: 4,
-                                            diskAllowance: 1000, containerCentsPerHour: 8,
+  let billingDetail = Ember.Object.create({ containersInPlan: 6, domainsInPlan: 4,
+                                            diskSpaceInPlan: 1000, containerCentsPerHour: 8,
                                             domainCentsPerHour: 5, diskCentsPerHour: 0.0507, planRate: 349900 });
 
   // Net container rate: (11 + 3 - 6) * 8 * 730 = 46720

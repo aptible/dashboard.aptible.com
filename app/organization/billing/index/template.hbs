@@ -18,9 +18,9 @@
         <li class="usage-quote-item">
           <div class="usage-label">
             Includes
-            {{billingDetail.containerAllowance}} containers,
-            {{billingDetail.domainAllowance}} domains, and
-            {{billingDetail.diskAllowance}}GB of disk
+            {{billingDetail.containersInPlan}} containers,
+            {{billingDetail.domainsInPlan}} domains, and
+            {{billingDetail.diskSpaceInPlan}}GB of disk
           </div>
         </li>
       </ul>
@@ -34,7 +34,7 @@
 
     {{usage-quote-by-resource
       stacks=model
-      allowance=billingDetail.containerAllowance
+      allowance=billingDetail.containersInPlan
       hourlyRate=billingDetail.containerCentsPerHour
       plan=billingDetail.plan
       resource='container'
@@ -42,7 +42,7 @@
 
     {{usage-quote-by-resource
       stacks=model
-      allowance=billingDetail.diskAllowance
+      allowance=billingDetail.diskSpaceInPlan
       hourlyRate=billingDetail.diskCentsPerHour
       plan=billingDetail.plan
       resource='disk'
@@ -50,7 +50,7 @@
 
     {{usage-quote-by-resource
       stacks=model
-      allowance=billingDetail.domainAllowance
+      allowance=billingDetail.domainsInPlan
       hourlyRate=billingDetail.domainCentsPerHour
       plan=billingDetail.plan
       resource='domain'
