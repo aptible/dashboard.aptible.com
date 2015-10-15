@@ -80,6 +80,57 @@ test(`on plan "development": highlights the current plan, shows upgrade button`,
   });
 });
 
+test(`on plan "development": shows default allowances for "platform" upgrade`, (assert) => {
+  let plan = 'development';
+  stubOrganization();
+  stubBillingDetail({plan: plan, containerAllowance: 15, diskAllowance: 2500, domainAllowance: 10});
+  signInAndVisit(url);
+
+  andThen(() => {
+    let containers = find('.platform-plan .plan-items li:eq(1)');
+    let diskSpace = find('.platform-plan .plan-items li:eq(2)');
+    let domains = find('.platform-plan .plan-items li:eq(3)');
+
+    assert.equal(containers.text().trim(), '6 x 1GB Containers included');
+    assert.equal(diskSpace.text().trim(), '1TB Disk, Encryption & Backups included');
+    assert.equal(domains.text().trim(), '4 Domains included');
+  });
+});
+
+test(`on plan "platform": shows custom allowances`, (assert) => {
+  let plan = 'platform';
+  stubOrganization();
+  stubBillingDetail({plan: plan, containerAllowance: 15, diskAllowance: 2500, domainAllowance: 10});
+  signInAndVisit(url);
+
+  andThen(() => {
+    let containers = find('.platform-plan .plan-items li:eq(1)');
+    let diskSpace = find('.platform-plan .plan-items li:eq(2)');
+    let domains = find('.platform-plan .plan-items li:eq(3)');
+
+    assert.equal(containers.text().trim(), '15 x 1GB Containers included');
+    assert.equal(diskSpace.text().trim(), '2.5TB Disk, Encryption & Backups included');
+    assert.equal(domains.text().trim(), '10 Domains included');
+  });
+});
+
+test(`on plan "production": shows custom allowances`, (assert) => {
+  let plan = 'production';
+  stubOrganization();
+  stubBillingDetail({plan: plan, containerAllowance: 15, diskAllowance: 2500, domainAllowance: 10});
+  signInAndVisit(url);
+
+  andThen(() => {
+    let containers = find('.platform-plan .plan-items li:eq(1)');
+    let diskSpace = find('.platform-plan .plan-items li:eq(2)');
+    let domains = find('.platform-plan .plan-items li:eq(3)');
+
+    assert.equal(containers.text().trim(), '15 x 1GB Containers included');
+    assert.equal(diskSpace.text().trim(), '2.5TB Disk, Encryption & Backups included');
+    assert.equal(domains.text().trim(), '10 Domains included');
+  });
+});
+
 test(`on plan "platform": highlights the current plan, shows "contact support to downgrade" button`, (assert) => {
   let plan = 'platform';
   stubOrganization();

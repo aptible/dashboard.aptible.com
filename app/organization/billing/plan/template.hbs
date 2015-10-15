@@ -45,15 +45,27 @@
             <li>
               {{fa-icon "check" classNames="primary"}} HIPAA-compliant: PHI-ready
             </li>
-            <li>
-              {{fa-icon "check" classNames="primary"}} {{ternary model.containerAllowance 6}} x 1GB Containers included
-            </li>
-            <li>
-              {{fa-icon "check" classNames="primary"}} {{gb-to-tb (ternary model.diskAllowance 1000)}}TB Disk, Encryption &amp; Backups included
-            </li>
-            <li>
-              {{fa-icon "check" classNames="primary"}} {{ternary model.domainAllowance 4}} Domains included
-            </li>
+            {{#if (eq model.plan "development")}}
+              <li>
+                {{fa-icon "check" classNames="primary"}} 6 x 1GB Containers included
+              </li>
+              <li>
+                {{fa-icon "check" classNames="primary"}} {{gb-to-tb 1000}}TB Disk, Encryption &amp; Backups included
+              </li>
+              <li>
+                {{fa-icon "check" classNames="primary"}} 4 Domains included
+              </li>
+            {{else}}
+              <li>
+                {{fa-icon "check" classNames="primary"}} {{if model.containerAllowance model.containerAllowance 6}} x 1GB Containers included
+              </li>
+              <li>
+                {{fa-icon "check" classNames="primary"}} {{gb-to-tb (if model.diskAllowance model.diskAllowance 1000)}}TB Disk, Encryption &amp; Backups included
+              </li>
+              <li>
+                {{fa-icon "check" classNames="primary"}} {{if model.domainAllowance model.domainAllowance 4}} Domains included
+              </li>
+            {{/if}}
             <li>
               {{fa-icon "check" classNames="primary"}} 3-month no-risk trial
             </li>
