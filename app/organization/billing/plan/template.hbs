@@ -46,13 +46,13 @@
               {{fa-icon "check" classNames="primary"}} HIPAA-compliant: PHI-ready
             </li>
             <li>
-              {{fa-icon "check" classNames="primary"}} 6 x 1GB Containers included
+              {{fa-icon "check" classNames="primary"}} {{ternary model.containerAllowance 6}} x 1GB Containers included
             </li>
             <li>
-              {{fa-icon "check" classNames="primary"}} 1TB Disk, Encryption &amp; Backups included
+              {{fa-icon "check" classNames="primary"}} {{gb-to-tb (ternary model.diskAllowance 1000)}}TB Disk, Encryption &amp; Backups included
             </li>
             <li>
-              {{fa-icon "check" classNames="primary"}} 4 Domains included
+              {{fa-icon "check" classNames="primary"}} {{ternary model.domainAllowance 4}} Domains included
             </li>
             <li>
               {{fa-icon "check" classNames="primary"}} 3-month no-risk trial
@@ -94,7 +94,7 @@
 
     <div class="col-xs-4">
       <div class='panel plan-panel production-plan {{if (eq model.plan "production") "active"}}'>
-        <div class="panel-heading"><h5>Production</h5></div>
+        <div class="panel-heading"><h5>Managed</h5></div>
         <div class='plan-cost'>
           <span class='plan-cost-amount'>$ Custom</span> per month
         </div>
@@ -139,7 +139,7 @@
           {{#unless (eq model.plan "production")}}
             <div class="plan-hero">
               <div>
-                Contact us about managed HIPAA compliance
+                Ask about our managed HIPAA compliant plans
               </div>
             </div>
           {{/unless}}
@@ -151,7 +151,7 @@
             </button>
           {{else}}
             <button class="btn plan-btn btn-primary" {{action 'requestUpgrade'}}>
-              Ask about our HIPAA compliant plans
+              Contact Aptible
             </button>
           {{/if}}
         </div>
@@ -159,5 +159,3 @@
     </div>
   </div>
 </div>
-
-
