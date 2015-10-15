@@ -18,7 +18,7 @@ const planUrl = `/organizations/${organizationId}/billing/plan`;
 const url = planUrl;
 const apiOrganizationUrl = `/billing_details/${organizationId}`;
 const activePanelClass = 'active';
-const askAboutHIPAAButtonName = 'Ask about our HIPAA compliant plans';
+const contactAptibleButtonName = 'Contact Aptible';
 
 module('Acceptance: Organizations: Billing: Plan', {
   beforeEach: function() {
@@ -46,7 +46,7 @@ function findPlanPanel(assert, planType){
   return find(`.panel .panel-heading:contains(${planType})`).parent('.panel');
 }
 
-test(`shows 3 plan types: development, platform and Production`, (assert) => {
+test(`shows 3 plan types: development, platform and managed`, (assert) => {
   stubOrganization();
   stubBillingDetail();
   signInAndVisit(url);
@@ -54,8 +54,8 @@ test(`shows 3 plan types: development, platform and Production`, (assert) => {
   andThen(() => {
     expectDisplayedPlanType(assert, 'Development');
     expectDisplayedPlanType(assert, 'Platform');
-    expectDisplayedPlanType(assert, 'Production');
-    expectButton(askAboutHIPAAButtonName);
+    expectDisplayedPlanType(assert, 'Managed');
+    expectButton(contactAptibleButtonName);
   });
 });
 
@@ -77,6 +77,57 @@ test(`on plan "development": highlights the current plan, shows upgrade button`,
               'platform panel is not active');
 
     expectButton('Upgrade to Platform', {context:otherPanel});
+  });
+});
+
+test(`on plan "development": shows default allowances for "platform" upgrade`, (assert) => {
+  let plan = 'development';
+  stubOrganization();
+  stubBillingDetail({plan: plan, containerAllowance: 15, diskAllowance: 2500, domainAllowance: 10});
+  signInAndVisit(url);
+
+  andThen(() => {
+    let containers = find('.platform-plan .plan-items li:eq(1)');
+    let diskSpace = find('.platform-plan .plan-items li:eq(2)');
+    let domains = find('.platform-plan .plan-items li:eq(3)');
+
+    assert.equal(containers.text().trim(), '6 x 1GB Containers included');
+    assert.equal(diskSpace.text().trim(), '1TB Disk, Encryption & Backups included');
+    assert.equal(domains.text().trim(), '4 Domains included');
+  });
+});
+
+test(`on plan "platform": shows custom allowances`, (assert) => {
+  let plan = 'platform';
+  stubOrganization();
+  stubBillingDetail({plan: plan, containerAllowance: 15, diskAllowance: 2500, domainAllowance: 10});
+  signInAndVisit(url);
+
+  andThen(() => {
+    let containers = find('.platform-plan .plan-items li:eq(1)');
+    let diskSpace = find('.platform-plan .plan-items li:eq(2)');
+    let domains = find('.platform-plan .plan-items li:eq(3)');
+
+    assert.equal(containers.text().trim(), '15 x 1GB Containers included');
+    assert.equal(diskSpace.text().trim(), '2.5TB Disk, Encryption & Backups included');
+    assert.equal(domains.text().trim(), '10 Domains included');
+  });
+});
+
+test(`on plan "production": shows custom allowances`, (assert) => {
+  let plan = 'production';
+  stubOrganization();
+  stubBillingDetail({plan: plan, containerAllowance: 15, diskAllowance: 2500, domainAllowance: 10});
+  signInAndVisit(url);
+
+  andThen(() => {
+    let containers = find('.platform-plan .plan-items li:eq(1)');
+    let diskSpace = find('.platform-plan .plan-items li:eq(2)');
+    let domains = find('.platform-plan .plan-items li:eq(3)');
+
+    assert.equal(containers.text().trim(), '15 x 1GB Containers included');
+    assert.equal(diskSpace.text().trim(), '2.5TB Disk, Encryption & Backups included');
+    assert.equal(domains.text().trim(), '10 Domains included');
   });
 });
 
@@ -108,9 +159,9 @@ test(`on plan "production": highlights the current plan, shows "contact support 
   signInAndVisit(url);
 
   andThen(() => {
-    let panel = findPlanPanel(assert, 'Production');
+    let panel = findPlanPanel(assert, 'Managed');
     assert.ok(panel.hasClass(activePanelClass),
-              'panel "Production" is active');
+              'panel "Managed" is active');
 
     expectButton('Current Plan', {context:panel});
 
@@ -177,12 +228,12 @@ test(`on plan "development": clicking the upgrade platform updates organization'
   });
 });
 
-test(`clicking "${askAboutHIPAAButtonName}" triggers a tracking event, shows modal`, (assert) => {
+test(`clicking "${contactAptibleButtonName}" triggers a tracking event, shows modal`, (assert) => {
   let organizationName = 'the organization';
   stubOrganization({name: organizationName});
   stubBillingDetail();
   signInAndVisit(url);
-  clickButton(askAboutHIPAAButtonName);
+  clickButton(contactAptibleButtonName);
 
   andThen(() => {
     assert.ok(didTrackEventWith(UPGRADE_PLAN_REQUEST_EVENT, 'organization_id', organizationId),

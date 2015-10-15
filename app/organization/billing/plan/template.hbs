@@ -45,15 +45,27 @@
             <li>
               {{fa-icon "check" classNames="primary"}} HIPAA-compliant: PHI-ready
             </li>
-            <li>
-              {{fa-icon "check" classNames="primary"}} 6 x 1GB Containers included
-            </li>
-            <li>
-              {{fa-icon "check" classNames="primary"}} 1TB Disk, Encryption &amp; Backups included
-            </li>
-            <li>
-              {{fa-icon "check" classNames="primary"}} 4 Domains included
-            </li>
+            {{#if (eq model.plan "development")}}
+              <li>
+                {{fa-icon "check" classNames="primary"}} 6 x 1GB Containers included
+              </li>
+              <li>
+                {{fa-icon "check" classNames="primary"}} {{gb-to-tb 1000}}TB Disk, Encryption &amp; Backups included
+              </li>
+              <li>
+                {{fa-icon "check" classNames="primary"}} 4 Domains included
+              </li>
+            {{else}}
+              <li>
+                {{fa-icon "check" classNames="primary"}} {{if model.containerAllowance model.containerAllowance 6}} x 1GB Containers included
+              </li>
+              <li>
+                {{fa-icon "check" classNames="primary"}} {{gb-to-tb (if model.diskAllowance model.diskAllowance 1000)}}TB Disk, Encryption &amp; Backups included
+              </li>
+              <li>
+                {{fa-icon "check" classNames="primary"}} {{if model.domainAllowance model.domainAllowance 4}} Domains included
+              </li>
+            {{/if}}
             <li>
               {{fa-icon "check" classNames="primary"}} 3-month no-risk trial
             </li>
@@ -94,7 +106,7 @@
 
     <div class="col-xs-4">
       <div class='panel plan-panel production-plan {{if (eq model.plan "production") "active"}}'>
-        <div class="panel-heading"><h5>Production</h5></div>
+        <div class="panel-heading"><h5>Managed</h5></div>
         <div class='plan-cost'>
           <span class='plan-cost-amount'>$ Custom</span> per month
         </div>
@@ -139,7 +151,7 @@
           {{#unless (eq model.plan "production")}}
             <div class="plan-hero">
               <div>
-                Contact us about managed HIPAA compliance
+                Ask about our managed HIPAA compliant plans
               </div>
             </div>
           {{/unless}}
@@ -151,7 +163,7 @@
             </button>
           {{else}}
             <button class="btn plan-btn btn-primary" {{action 'requestUpgrade'}}>
-              Ask about our HIPAA compliant plans
+              Contact Aptible
             </button>
           {{/if}}
         </div>
@@ -159,5 +171,3 @@
     </div>
   </div>
 </div>
-
-
