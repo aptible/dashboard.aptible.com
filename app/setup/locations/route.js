@@ -10,7 +10,7 @@ export default Ember.Route.extend({
 
   setupController(controller, model) {
     let properties = this._schema.itemProperties;
-    debugger;
+
     controller.set('model', model);
     controller.set('locationProperties', properties);
   },

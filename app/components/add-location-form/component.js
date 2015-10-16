@@ -11,7 +11,7 @@ export default Ember.Component.extend({
     description: "Home",
     streetAddress: "8544 Preservation Way",
     city: "Indianapolis",
-    state: "IN",
+    state: "Indiana",
     zip: "46278"
   },
 
