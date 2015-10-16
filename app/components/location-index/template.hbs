@@ -12,36 +12,26 @@
     </thead>
 
     <tbody>
-      <tr>
-        <td><strong>Aptible Headquarters</strong></td>
-        <td>155 Water St</td>
-        <td>Brooklyn</td>
-        <td>NY</td>
-        <td>11201</td>
-        <td class="row-actions one-action">
-          <ul class="row-action-nav">
-            <li>
-              <a><i class="fa fa-times danger"></i></a>
-            </li>
-          </ul>
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>Skylar's House</strong></td>
-        <td>8544 Preservation Way</td>
-        <td>Indianapolis</td>
-        <td>IN</td>
-        <td>46278</td>
-
-        <td class="row-actions one-action">
-          <ul class="row-action-nav">
-            <li>
-              <a><i class="fa fa-times danger"></i></a>
-            </li>
-          </ul>
-        </td>
-      </tr>
+      {{#each locations as |location|}}
+        <tr>
+          <td><strong>{{location.description}}</strong></td>
+          <td>{{location.streetAddress}}</td>
+          <td>{{location.city}}</td>
+          <td>{{location.state}}</td>
+          <td>{{location.zip}}</td>
+          <td class="row-actions one-action">
+            <ul class="row-action-nav">
+              <li>
+                <a><i class="fa fa-times danger"></i></a>
+              </li>
+            </ul>
+          </td>
+        </tr>
+      {{else}}
+        <tr>
+          <td class="empty-row" colspan="6">No Locations</td>
+        </tr>
+      {{/each}}
     </tbody>
   </table>
 </div>

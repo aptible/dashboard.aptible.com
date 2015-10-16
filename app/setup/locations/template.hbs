@@ -9,7 +9,7 @@
     </ul>
   </nav>
 
-  {{location-index}}
+  {{location-index locations=locations}}
 
   <div class="panel panel-striped">
     <div class="panel-section">
@@ -20,7 +20,7 @@
           </p>
         </div>
         <div class="col-xs-6">
-          {{add-location-form}}
+          {{add-location-form document=model locationProperties=properties action='addLocation'}}
         </div>
       </div>
     </div>
