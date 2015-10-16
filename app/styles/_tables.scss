@@ -102,3 +102,11 @@ td.toggle-small, th.toggle-small {
     display: block;
   }
 }
+
+td.empty-row {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: $weight-semibold;
+  color: $color-light;
+}
