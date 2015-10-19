@@ -1,42 +1,18 @@
-$overlayColor: #fff;
-$backColor: #f0f0f0;
-
-@mixin radial-progress($color) {
-  @for $i from 0 through $loops {
-    .progress-#{$i * $step} {
-      @if $i < $half {
-        $nextdeg: 90deg + $increment * $i;
-        background-image: linear-gradient(90deg, $backColor 50%, transparent 50%, transparent), linear-gradient($nextdeg, $color 50%, $backColor 50%, $backColor);
-      }
-      @else {
-        $nextdeg: -90deg + $increment * ($i - $half);
-        background-image: linear-gradient($nextdeg, $color 50%, transparent 50%, transparent), linear-gradient(270deg, $color 50%, $backColor 50%, $backColor);
-      }
-    }
-  }
-}
-
 .progress-radial {
   margin: 0 auto;
   position: relative;
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  text-align: center;
 
   .overlay {
-    position: absolute;
-    width: 88px;
-    height: 88px;
-    background-color: $overlayColor;
+    // height, line-height, width set inline
     border-radius: 50%;
-    margin-left: 6px;
-    margin-top: 6px;
-    text-align: center;
-    line-height: 90px;
+    color: $color-primary;
     font-size: 16px;
     font-weight: $weight-semibold;
-    color: $color-primary;
+    position: absolute;
+    text-align: center;
   }
 }
 
@@ -49,10 +25,8 @@ $backColor: #f0f0f0;
 
   > a {
     display: block;
-
     &:active, &:hover {
       text-decoration:none;
-
       * {
         text-deocration: none;
       }
@@ -85,30 +59,42 @@ $backColor: #f0f0f0;
   }
 }
 
-
-
-
-$step: 5;
-$loops: round(100 / $step);
-$increment: 360 / $loops;
-$half: round($loops / 2);
-
 .green-progress-radial {
-  @include radial-progress($color-success);
-
+  .progress-radial-guage-path {
+    stroke: $color-success;
+  }
   .overlay {
     color: $color-success;
   }
 }
 
 .red-progress-radial {
-  @include radial-progress($color-danger);
-
+  .progress-radial-guage-path {
+    stroke: $color-danger;
+  }
   .overlay {
     color: $color-danger;
   }
-
 }
 
+.progress-radial-guage {
+  margin-left: -50%;
+  position: absolute;
+}
 
+.progress-radial-guage-guide {
+  fill: none;
+  stroke: #f0f0f0;
+}
 
+.progress-radial-guage-path {
+  // stroke-dasharray 2πrand stroke-dashoffset are set inline to
+  // 2πr and (2πr - (2πr * percentComplete)) respectively
+  fill: none;
+  stroke: black;
+  stroke-linecap: butt;
+  // Reflect the path to go clockwise from 12 o'clock
+  transform: scaleY(-1);
+  transform-origin: 50px 50px;
+  transition: stroke-dashoffset 2s ease-in-out;
+}

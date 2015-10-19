@@ -1,7 +1,8 @@
 {{#link-to 'training.criterion' criterion.handle bubbles=false}}
   {{progress-radial
-    completed=compliantSubjectCount
-    total=subjectCount
-    label=criterion.friendlyName
-    stepSize=5}}
+      completed=compliantSubjectCount
+      label=criterion.friendlyName
+      radius=44
+      strokeWidth=6
+      total=subjectCount}}
 {{/link-to}}
