@@ -104,6 +104,38 @@ test(`visit ${url} shows basic info`, function(assert){
   });
 });
 
+test(`visit ${url} shows pending and provisioning`, function(assert){
+  let logDrains = [{
+    id: 'drain-1',
+    handle: 'first-drain',
+    drain_host: 'abcdef.com',
+    drain_port: 123,
+    status: 'pending'
+  }, {
+    id: 'drain-2',
+    handle: 'second-drain',
+    drain_host: 'second.com',
+    drain_port: 456,
+    status: 'provisioning'
+  }];
+
+  this.prepareStubs({logDrains});
+
+  signInAndVisit(url);
+
+  andThen(function(){
+    assert.equal(currentPath(), 'dashboard.stack.log-drains.index');
+
+    expectButton('Add Log');
+
+    let logDrainEls = find('.log-drain');
+    assert.equal( logDrainEls.length, logDrains.length );
+
+    assert.ok(find('h5:contains(Provisioning Log Drains)').length, 'has a pending header');
+    assert.equal(find('.pending-log-drains .log-drain').length, 2, 'has one pending log drain');
+  });
+});
+
 test(`visit ${url} with no log drains will redirect to new log drains`, function(assert) {
   this.prepareStubs({logDrains:[]});
   signInAndVisit(url);

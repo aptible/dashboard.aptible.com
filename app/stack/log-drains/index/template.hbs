@@ -17,7 +17,7 @@
   <div class="sort-group pending-log-drains">
     <h5 class="sort-header">Provisioning Log Drains</h5>
     <div class="row">
-      {{#each pendingLogDrains as |logDrain|}}
+      {{#each pendingOrProvisioningLogDrains as |logDrain|}}
         <div class="col-xs-12">
           {{partial 'stack/log-drain'}}
         </div>
