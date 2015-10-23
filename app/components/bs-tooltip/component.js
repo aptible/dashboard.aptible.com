@@ -25,5 +25,9 @@ export default Ember.Component.extend(BootstrapComponentOptions, {
     if(options.trigger === 'immediate') {
       tooltip.tooltip('show');
     }
+  }),
+
+  teardownTooltip: Ember.on('willDestroyElement', function(){
+    this.$(':first-child').tooltip('destroy');
   })
 });
