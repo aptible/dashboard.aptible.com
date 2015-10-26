@@ -42,6 +42,6 @@ export default Ember.Component.extend({
       if (!this.isDestroying && !this.isDestroyed) {
         this.set('isTooltipped', false);
       }
-    });
+    }, 3000);
   }
 });
