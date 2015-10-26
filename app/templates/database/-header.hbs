@@ -42,13 +42,7 @@
           <h5 class="resource-metadata-title">Connection URL</h5>
           <h3 class="resource-metadata-value">
             <span class="db-connection-url">{{model.connectionUrl}}</span>
-            {{#click-to-copy text=model.connectionUrl as |copied|}}
-              {{#if copied}}
-                Copied
-              {{else}}
-                <a href='#'>Copy</a>
-              {{/if}}
-            {{/click-to-copy}}
+            {{click-to-copy text=model.connectionUrl}}
           </h3>
         </li>
       {{else}}
