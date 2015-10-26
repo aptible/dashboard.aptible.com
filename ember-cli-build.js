@@ -41,10 +41,8 @@ module.exports = function(defaults) {
   app.import("bower_components/font-awesome/fonts/fontawesome-webfont.woff", { destDir: "fonts" });
   app.import("bower_components/font-awesome/fonts/FontAwesome.otf", { destDir: "fonts" });
 
-  app.import("bower_components/zeroclipboard/dist/ZeroClipboard.js");
-  app.import("bower_components/zeroclipboard/dist/ZeroClipboard.swf", {
-    destDir: "assets"
-  });
+  // Copy to clipboard
+  app.import("bower_components/clipboard/dist/clipboard.js");
 
   // Use `app.import` to add additional libraries to the generated
   // output files.

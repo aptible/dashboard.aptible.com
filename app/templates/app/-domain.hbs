@@ -46,15 +46,8 @@
         </h5>
         <h3 class="resource-metadata-value">
           <div class="external-host">
-
             {{vhost.displayHost}}
-            {{#click-to-copy text=vhost.displayHost as |copied|}}
-              {{#if copied}}
-                Copied.
-              {{else}}
-                <a href='#'>Copy</a>
-              {{/if}}
-            {{/click-to-copy}}
+            {{click-to-copy text=vhost.displayHost}}
           </div>
         </h3>
       {{else}}
