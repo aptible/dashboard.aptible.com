@@ -37,6 +37,11 @@ export default Ember.Component.extend({
 
   showMessage: function() {
     this.set('isTooltipped', true);
-    Ember.run.later(this, 'set', 'isTooltipped', false, 3000);
+
+    Ember.run.later(() => {
+      if (!this.isDestroying && !this.isDestroyed) {
+        this.set('isTooltipped', false);
+      }
+    });
   }
 });
