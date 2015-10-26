@@ -4,7 +4,6 @@ import {
 } from 'ember-qunit';
 import { stubRequest } from 'ember-cli-fake-server';
 import modelDeps from '../../support/common-model-dependencies';
-import DS from "ember-data";
 import Ember from "ember";
 import can from "dummy/utils/can";
 
@@ -222,7 +221,7 @@ test('stack has multiple permissions, some match user\'s role', function(assert)
         role: '/roles/r2'
       }
     });
-    var otherRole    = store.push('role', {id:'r2'});
+    store.push('role', {id:'r2'});
   });
 
   return Ember.run(function(){

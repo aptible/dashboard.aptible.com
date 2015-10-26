@@ -2,12 +2,11 @@ import {
   test,
   moduleFor
 } from 'ember-qunit';
-import DS from "ember-data";
 import Ember from "ember";
 import { stubRequest } from 'ember-cli-fake-server';
 import modelDeps from '../../support/common-model-dependencies';
 
-var container, store;
+var store;
 
 moduleFor('adapter:database', 'DatabaseAdapter', {
   needs: modelDeps.concat([

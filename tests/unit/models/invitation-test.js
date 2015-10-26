@@ -23,7 +23,7 @@ test('creating POSTS to a url prefixed with roles/:id', function(assert) {
   let model = Ember.run(store, 'createRecord', 'invitation', {role});
   let url = `/roles/${roleId}/invitations`;
 
-  stubRequest('post', url, function(request){
+  stubRequest('post', url, function(){
     assert.ok(true, `posts to "${url}`);
     return this.success();
   });
@@ -44,7 +44,7 @@ test('deletes by DELETEing to /invitations/:id', function(assert){
     invitation = store.push('invitation',{id:'i1', role});
   });
 
-  stubRequest('delete', '/invitations/i1', function(request){
+  stubRequest('delete', '/invitations/i1', function(){
     assert.ok(true);
     return this.noContent();
   });

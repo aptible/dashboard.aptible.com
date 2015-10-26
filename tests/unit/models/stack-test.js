@@ -14,7 +14,7 @@ moduleForModel('stack', 'model:stack', {
 test('findAll works', function(assert) {
   var store = this.store();
 
-  stubRequest('get', '/accounts', function(request){
+  stubRequest('get', '/accounts', function(){
     return this.success({
       _links: {
         self: { href: '/accounts' },

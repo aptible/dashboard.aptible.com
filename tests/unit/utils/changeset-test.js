@@ -14,7 +14,7 @@ module('Unit: Changeset', {
       key(keyData) {
         return JSON.stringify(keyData);
       },
-      initialValue(keyData) {
+      initialValue() {
         return false;
       }
     });
@@ -62,7 +62,7 @@ test('value can change from true to false', (assert) => {
     key(keyData) {
       return JSON.stringify(keyData);
     },
-    initialValue(keyData) {
+    initialValue() {
       return true;
     }
   });
@@ -163,19 +163,17 @@ test('initialValue hook is called with keyData when read', (assert) => {
 });
 
 test('forEachValue returns values that are read but not set', (assert) => {
-  let passedKeyData;
-
   changeset = Changeset.create({
     key(keyData) {
       return JSON.stringify(keyData);
     },
-    initialValue(keyData) {
+    initialValue() {
       return false;
     }
   });
 
   let keyData = {};
-  let result = changeset.value(keyData);
+  changeset.value(keyData);
 
   changeset.forEachValue((_keyData) => {
     assert.equal(_keyData, keyData, 'forEachValue yields for the keyData that was read');

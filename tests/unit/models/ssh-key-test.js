@@ -22,7 +22,7 @@ test('posts to /users/:id/ssh_keys', function(assert){
     user = store.push('user',{id:'u1'});
   });
 
-  stubRequest('post', '/users/u1/ssh_keys', function(request){
+  stubRequest('post', '/users/u1/ssh_keys', function(){
     assert.ok(true, 'posts to correct url');
     return this.success({id:'k1'});
   });
@@ -43,7 +43,7 @@ test('deletes to /ssh_keys/:id', function(assert){
     key = store.push('ssh-key',{id:'k1',user});
   });
 
-  stubRequest('delete', '/ssh_keys/k1', function(request){
+  stubRequest('delete', '/ssh_keys/k1', function(){
     assert.ok(true, 'deletes to correct url');
     return this.noContent();
   });

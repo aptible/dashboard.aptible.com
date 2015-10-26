@@ -26,7 +26,7 @@ test('to create, it POSTs to /accounts/:id/permissions', function(assert){
     });
   });
 
-  stubRequest('post', `/accounts/${stackId}/permissions`, function(request){
+  stubRequest('post', `/accounts/${stackId}/permissions`, function(){
     assert.ok(true, 'posts to correct url');
     return this.noContent();
   });
@@ -47,7 +47,7 @@ test('deletes by DELETEing to /permissions/:id', function(assert){
     permission = store.push('permission',{id:'p1', stack});
   });
 
-  stubRequest('delete', '/permissions/p1', function(request){
+  stubRequest('delete', '/permissions/p1', function(){
     assert.ok(true);
     return this.noContent();
   });

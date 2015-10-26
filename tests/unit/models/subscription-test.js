@@ -38,7 +38,7 @@ test('data is posted upon save', function(assert) {
     plan: 'development'
   });
 
-  return Ember.run(subscription, 'save').then(function(s){
+  return Ember.run(subscription, 'save').then(function(){
     assert.ok(true, 'subscription was saved');
   });
 });

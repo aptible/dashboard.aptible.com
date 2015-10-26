@@ -2,9 +2,7 @@ import {
   moduleForModel,
   test
 } from 'ember-qunit';
-import { skip } from 'qunit';
 import { stubRequest } from 'ember-cli-fake-server';
-import DS from "ember-data";
 import Ember from "ember";
 import fetchAllPages from "dummy/utils/fetch-all-pages";
 
@@ -55,7 +53,7 @@ function buildAppPage(page, {perPage, totalCount }) {
 }
 
 function stubAccounts() {
-  stubRequest('get', '/accounts', function(request){
+  stubRequest('get', '/accounts', function(){
     return this.success({
       _links: {},
       _embedded: {

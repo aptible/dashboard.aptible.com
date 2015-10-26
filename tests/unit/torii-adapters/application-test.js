@@ -6,7 +6,6 @@ import config from "../../../config/environment";
 import { getAccessToken, setAccessToken } from '../../../adapters/application';
 import storage from 'dummy/utils/storage';
 import { stubRequest } from 'ember-cli-fake-server';
-import DS from "ember-data";
 import Ember from "ember";
 import modelDeps from '../../support/common-model-dependencies';
 
