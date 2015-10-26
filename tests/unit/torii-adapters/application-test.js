@@ -67,7 +67,9 @@ test('#open stores payload, set currentUser', function(assert){
   const done = assert.async();
   assert.expect();
 
-  var adapter = this.subject();
+  var adapter = this.subject({
+    analytics: new MockAnalytics()
+  });
   var token = 'some-token';
   var tokenId = 'some-token-id';
   var userId = 'some-user-id';
@@ -112,7 +114,9 @@ test('#fetch fetches current_token, stores payload, set currentUser', function(a
   const done = assert.async();
   assert.expect(6);
 
-  var adapter = this.subject();
+  var adapter = this.subject({
+    analytics: new MockAnalytics()
+  });
   var token = 'some-token';
   var tokenId = 'some-token-id';
   var userId = 'some-user-id';
