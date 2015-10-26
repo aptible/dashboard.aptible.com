@@ -2,12 +2,11 @@ import {
   test,
   moduleFor
 } from 'ember-qunit';
-import DS from "ember-data";
 import Ember from "ember";
 import { stubRequest } from 'ember-cli-fake-server';
 import modelDeps from '../../support/common-model-dependencies';
 
-var container, store;
+var store;
 
 moduleFor('adapter:app', 'AppAdapter', {
   needs: modelDeps.concat([
@@ -15,8 +14,7 @@ moduleFor('adapter:app', 'AppAdapter', {
     'serializer:application'
   ]),
   setup: function(){
-    var container = this.container;
-    store = container.lookup('store:application');
+    store = this.container.lookup('store:application');
   }
 });
 

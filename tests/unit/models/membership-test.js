@@ -43,7 +43,7 @@ test('destroy DELETEs to /memberships/:id', function(assert){
     membership = store.push('membership', {id:'m1', role});
   });
 
-  stubRequest('delete', `/memberships/m1`, function(request){
+  stubRequest('delete', `/memberships/m1`, function(){
     assert.ok(true, 'deletes to correct url');
     return this.noContent();
   });

@@ -18,7 +18,7 @@ test('finding uses correct url', function(assert){
 
   let certificateId = 'my-cert-id';
 
-  stubRequest('get', `/certificates/${certificateId}`, function(request){
+  stubRequest('get', `/certificates/${certificateId}`, function(){
     assert.ok(true, 'calls with correct URL');
 
     return this.success({
@@ -48,7 +48,7 @@ test('reloading certificate with stack uses correct url', function(assert){
   let certificate = Ember.run(store, 'push', 'certificate', {id:'c1'});
   let stack = Ember.run(store, 'push', 'stack', {id:'stack1'});
 
-  stubRequest('get', `/certificates/c1`, function(request){
+  stubRequest('get', `/certificates/c1`, function(){
     assert.ok(true, 'gets correct url');
     return this.success({id:'c1'});
   });
@@ -71,7 +71,7 @@ test('creating POSTs to correct url', function(assert) {
     certificate = store.createRecord('certificate', {body:'cert', stack:stack});
   });
 
-  stubRequest('post', '/accounts/1/certificates', function(request){
+  stubRequest('post', '/accounts/1/certificates', function(){
     assert.ok(true, 'calls with correct URL');
 
     return this.success(201, {

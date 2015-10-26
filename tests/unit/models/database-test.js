@@ -21,7 +21,7 @@ test('finding uses correct url', function(assert) {
   assert.expect(2);
   var dbId = 'my-db-id';
 
-  stubRequest('get', '/databases/' + dbId, function(request){
+  stubRequest('get', '/databases/' + dbId, function(){
     assert.ok(true, 'calls with correct URL');
 
     return this.success({
@@ -51,7 +51,7 @@ test('reloading uses correct url', function(assert){
   let db = Ember.run(store, 'push', 'database', {id:dbId});
   let stack = Ember.run(store, 'push', 'stack', {id:'stackid'});
 
-  stubRequest('get', `/databases/${dbId}`, function(request){
+  stubRequest('get', `/databases/${dbId}`, function(){
     assert.ok(true, 'calls with correct URL');
     return this.success({id: dbId});
   });
@@ -72,7 +72,7 @@ test('creating POSTs to correct url', function(assert) {
     db = store.createRecord('database', {handle:'my-cool-db', stack:stack});
   });
 
-  stubRequest('post', '/accounts/1/databases', function(request){
+  stubRequest('post', '/accounts/1/databases', function(){
     assert.ok(true, 'calls with correct URL');
 
     return this.success(201, {
@@ -95,7 +95,7 @@ test('reloads while provisioning', function(assert){
   let store = this.store();
   let dbId = 'db-id';
 
-  stubRequest('get', `/databases/${dbId}`, function(request) {
+  stubRequest('get', `/databases/${dbId}`, function() {
     assert.ok(true, 'calls with correct URL');
 
     return this.success({id: dbId, status: 'provisioning'});
@@ -111,7 +111,7 @@ test('reloads while provisioning', function(assert){
     db.set('_reloadRetryDelay', TEST_RELOAD_RETRY_DELAY);
   });
 
-  stubRequest('get', `/databases/${dbId}`, function(request) {
+  stubRequest('get', `/databases/${dbId}`, function() {
     assert.ok(true, 'calls with correct URL');
 
     done();

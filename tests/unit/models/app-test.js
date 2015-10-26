@@ -19,7 +19,7 @@ test('finding uses correct url', function(assert){
 
   let appId = 'my-app-id';
 
-  stubRequest('get', `/apps/${appId}`, function(request){
+  stubRequest('get', `/apps/${appId}`, function(){
     assert.ok(true, 'calls with correct URL');
 
     return this.success({
@@ -48,7 +48,7 @@ test('reloading app with stack uses correct url', function(assert){
   let app = Ember.run(store, 'push', 'app', {id:'app1'});
   let stack = Ember.run(store, 'push', 'stack', {id:'stack1'});
 
-  stubRequest('get', `/apps/app1`, function(request){
+  stubRequest('get', `/apps/app1`, function(){
     assert.ok(true, 'gets correct url');
     return this.success({id:'app1'});
   });
@@ -69,7 +69,7 @@ test('creating POSTs to correct url', function(assert) {
     app = store.createRecord('app', {handle:'my-cool-app', stack:stack});
   });
 
-  stubRequest('post', '/accounts/1/apps', function(request){
+  stubRequest('post', '/accounts/1/apps', function(){
     assert.ok(true, 'calls with correct URL');
 
     return this.success(201, {

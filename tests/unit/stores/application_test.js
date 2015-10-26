@@ -28,7 +28,7 @@ test('#findStacksBy', function(assert) {
 
   var organization = service.getById('organization', '111');
 
-  stubRequest('get', `/accounts`, function(request){
+  stubRequest('get', `/accounts`, function(){
     assert.ok(true, 'posts to correct url');
     return this.success({
       _embedded: {
