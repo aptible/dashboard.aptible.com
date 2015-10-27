@@ -32,7 +32,7 @@
     "ember-cli-release": "^0.2.5",
     "ember-cli-uglify": "^1.2.0",
     "ember-data": "1.0.0-beta.18",
-    "ember-data-hal-9000": "0.1.7",
+    "ember-data-hal-9000": "~0.2.0",
     "ember-disable-proxy-controllers": "^1.0.0",
     "ember-export-application-global": "^1.0.3",
     "ember-try": "0.0.8",
