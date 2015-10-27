@@ -4,12 +4,13 @@
   <nav class="panel-nav">
     <ul class="tabs">
       <li class="active">
-        <a href="">Locations <span class="badge">1</span></a>
+        {{plural-string "Location" validLocations.length}}
+        <span class="badge">{{validLocations.length}}</span>
       </li>
     </ul>
   </nav>
 
-  {{location-index locations=locations}}
+  {{location-index locations=validLocations}}
 
   <div class="panel panel-striped">
     <div class="panel-section">
@@ -19,8 +20,9 @@
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet purus ornare condimentum malesuada. Pellentesque diam mi, fermentum ut sapien eu, vehicula dictum elit. Integer cursus sagittis ullamcorper.
           </p>
         </div>
+
         <div class="col-xs-6">
-          {{add-location-form document=model locationProperties=properties action='addLocation'}}
+          {{add-location-form document=model schema=locationSchema}}
         </div>
       </div>
     </div>

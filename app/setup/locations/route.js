@@ -1,6 +1,10 @@
 import Ember from 'ember';
 import Schema from 'ember-json-schema/models/schema';
+import Property from 'ember-json-schema/models/property';
 import locationsSchema from 'sheriff/schemas/locations';
+
+// Use schema as property for validation
+export var locationProperty = new Property(locationsSchema.items);
 
 export default Ember.Route.extend({
   model() {
@@ -9,16 +13,13 @@ export default Ember.Route.extend({
   },
 
   setupController(controller, model) {
-    let properties = this._schema.itemProperties;
-
     controller.set('model', model);
-    controller.set('locationProperties', properties);
+    controller.set('locationSchema', this._schema);
   },
 
   actions: {
-    addLocation(locationData) {
-      let locations = this.currentModel;
-      this.controller.notifyPropertyChange('locations');
+    continue() {
+
     }
   }
 });

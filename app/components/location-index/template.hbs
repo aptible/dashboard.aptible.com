@@ -14,11 +14,11 @@
     <tbody>
       {{#each locations as |location|}}
         <tr>
-          <td><strong>{{location.description}}</strong></td>
-          <td>{{location.streetAddress}}</td>
-          <td>{{location.city}}</td>
-          <td>{{location.state}}</td>
-          <td>{{location.zip}}</td>
+          <td><strong>{{location.values.description}}</strong></td>
+          <td>{{location.values.streetAddress}}</td>
+          <td>{{location.values.city}}</td>
+          <td>{{location.values.state}}</td>
+          <td>{{location.values.zip}}</td>
           <td class="row-actions one-action">
             <ul class="row-action-nav">
               <li>
@@ -29,7 +29,7 @@
         </tr>
       {{else}}
         <tr>
-          <td class="empty-row" colspan="6">No Locations</td>
+          <td class="empty-row" colspan="6">No Locations.  Add one below.</td>
         </tr>
       {{/each}}
     </tbody>

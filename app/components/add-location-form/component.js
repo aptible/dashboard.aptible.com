@@ -1,37 +1,41 @@
 import Ember from 'ember';
+import { locationProperty } from 'sheriff/setup/locations/route';
 
 export default Ember.Component.extend({
-  setup: function() {
-    let document = this.get('document');
-    let newLocation = document.addItem();
-    this.set('location', newLocation);
-  }.on('didInsertElement'),
+  classNames: ['add-location-form'],
+  errors: null,
 
-  values: {
-    description: "Home",
-    streetAddress: "8544 Preservation Way",
-    city: "Indianapolis",
-    state: "Indiana",
-    zip: "46278"
+  init() {
+    this._super(...arguments);
+
+    let { document, schema } = this.getProperties('document', 'schema');
+    let newLocation = document.addItem();
+
+    this.set('location', newLocation);
+    this.set('locationProperties', schema.itemProperties);
   },
 
-  classNames: ['add-location-form'],
   actions: {
-    addLocation() {
-      let location = this.get('location');
-      let values = this.get('values');
-      let document = this.get('document');
+    clearMessages() {
+      this.set('errors', null);
+    },
 
-      for(let key in values) {
-        location.set(key, values[key]);
+    addLocation() {
+      this.set('errors', null);
+      let { location, document } = this.getProperties('location', 'document');
+
+      if(!locationProperty.isValid(location.values)) {
+        this.set('errors', `Error: ${locationProperty.required.join(', ')} are required fields`);
+        return;
       }
 
       this.sendAction('action', location);
 
       Ember.run.later(() => {
         this.set('location', document.addItem());
-        this.set('values', {});
+        this.rerender();
       });
     }
   }
 });
+

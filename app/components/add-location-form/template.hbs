@@ -1,7 +1,16 @@
-{{#each locationProperties as |property|}}
-  <div>
-    {{component (concat 'schema-field-' property.inputType) property=property document=values}}
-  </div>
-{{/each}}
+<form>
+  {{#if errors}}
+    <div class="alert alert-danger">
+      {{errors}}
+      <button {{action "clearMessages"}} type="button" class="close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  {{/if}}
 
-<button class="btn btn-primary" type="submit" {{action "addLocation" location}}>Add</button>
+  {{#each-property properties=locationProperties as |key property type|}}
+    {{component (concat 'schema-field-' type) key=key property=property document=location}}
+  {{/each-property}}
+
+  <button class="btn btn-primary" type="submit" {{action "addLocation" location}}>Add</button>
+</form>
