@@ -12,8 +12,7 @@ moduleForModel('app', 'Utils - fetch-all-pages', {
   integration: true,
 
   setup: function(){
-    store = this.container.lookup('store:main');
-
+    store = this.store();
   },
 
   teardown: function(){

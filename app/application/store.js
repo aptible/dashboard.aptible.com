@@ -11,16 +11,23 @@ export default DS.Store.extend({
     });
   },
 
-  recordWasInvalid: function(record, errors) {
-    this._super(record, errors);
+  recordWasInvalid: function(internalModel, errors) {
+    // TODO: private
+
+    this._super(...arguments);
     if (errors && errors.message) {
+      let record = internalModel.getRecord();
+
       record.get('errors').add('message', errors.message);
     }
   },
 
-  didSaveRecord: function(record, data) {
+  didSaveRecord: function(internalModel, data) {
+    // TODO: private
+
+    let record = internalModel.getRecord();
     record.get('errors').remove('message');
-    return this._super(record, data);
+    return this._super(...arguments);
   }
 
 });

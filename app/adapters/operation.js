@@ -11,6 +11,7 @@ export default ApplicationAdapter.extend({
   }),
 
   findQuery: function(store, type, query){
+    // TODO: type should be a string here?
     let url = this.buildURL(type.modelName, null, null, 'findQuery');
 
     if (this.sortQueryParams) {

@@ -57,7 +57,7 @@ export default HalAdapter.extend({
   findBelongsTo(store, snapshot, relationshipPath, metaForProperty) {
     let segments = relationshipPath.split('/');
     let id = segments[segments.length - 1];
-    let modelName = metaForProperty.type.modelName;
+    let modelName = metaForProperty.type;
     let payload;
 
     modelName = modelNameFromPayloadKey(modelName);
@@ -83,4 +83,3 @@ export default HalAdapter.extend({
     return payload;
   }
 });
-
