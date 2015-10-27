@@ -3,14 +3,12 @@ import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
-var App;
-
 module('Acceptance: PasswordNew', {
   beforeEach: function() {
-    App = startApp();
+    this.application = startApp();
   },
   afterEach: function() {
-    Ember.run(App, 'destroy');
+    Ember.run(this.application, 'destroy');
   }
 });
 
@@ -121,5 +119,19 @@ test('visiting /password/new/:reset_code/:user_id and submitting a password hand
     assert.equal(currentPath(), 'password.new');
     var errors = find(':contains(error resetting your password)');
     assert.notEqual(errors.length, 0, 'errors are on the page');
+  });
+
+  andThen(() => {
+    // TODO: remove this when on Ember Data 2.x
+
+    try {
+      Ember.run(this.application, 'destroy');
+    } catch(e) {
+      // swallow error from Ember Data 1.0.0-beta.19.2:
+      // You can only unload a record which is not inFlight. `<verification:null>`
+      //
+      // this is happening because the errored request leaves the model in `inflight`
+      // state
+    }
   });
 });
