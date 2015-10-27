@@ -12,7 +12,7 @@ let store;
 moduleForModel('user', 'Utils - #can', {
   needs: modelDeps,
   setup: function(){
-    store = this.container.lookup('store:main');
+    store = this.store();
   },
   teardown: function(){
     Ember.run(store, 'destroy');
