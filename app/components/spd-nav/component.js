@@ -66,5 +66,19 @@ export default Ember.Component.extend({
     }
 
     return this.get('steps')[index - 1];
-  })
+  }),
+
+  actions: {
+    next(nextPath) {
+      this.sendAction('onNext', nextPath);
+    },
+
+    previous(previousPath) {
+      this.sendAction('onPrevious', previousPath);
+    },
+
+    finish() {
+      this.sendAction('onFinish');
+    }
+  }
 });

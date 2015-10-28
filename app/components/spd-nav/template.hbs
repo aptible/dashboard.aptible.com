@@ -5,16 +5,32 @@
     <ul class="spd-nav">
       {{#if previous}}
         <li>
-          {{link-to "Back" previous.path class="btn btn-default btn-sm"}}
+          <button {{action 'previous' previous.path}} class="btn btn-default btn-sm">
+            Back
+          </button>
         </li>
       {{/if}}
       {{#if next}}
         <li>
-          {{link-to "Continue →" next.path class="btn btn-primary btn-sm"}}
+
+          {{#if preventContinueMessage}}
+            {{#bs-tooltip title=preventContinueMessage}}
+              <div>
+                <button class="btn btn-primary btn-sm" disabled="disabled">Continue →</button>
+              </div>
+            {{/bs-tooltip}}
+          {{else}}
+            <button {{action 'next' next.path}} class="btn btn-primary btn-sm">
+              Continue →
+            </button>
+          {{/if}}
+
         </li>
       {{else}}
         <li>
-          {{link-to "Finish" 'organization' class="btn btn-primary btn-sm"}}
+          <button {{action 'finish'}} class="btn btn-primary btn-sm">
+            Finish
+          </button>
         </li>
       {{/if}}
     </ul>

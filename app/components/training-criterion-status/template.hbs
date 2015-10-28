@@ -9,7 +9,9 @@
 {{#if subjects}}
   <div class="panel compliance-status-table-panel white-panel criterion-subjects {{criterion.handle}}">
     {{#each subjects as |user|}}
+      Name: {{user.name}}
       {{user-training-criterion-status user=user criterion=criterion organization=organization}}
+
     {{/each}}
   </div>
 {{else}}

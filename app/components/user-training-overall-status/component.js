@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   complianceValidator: Ember.inject.service(),
   classNames: ['panel-row', 'user-training-status'],
+
   requiredCriteria: Ember.computed('user', 'criteria.[]', 'organization.developers.[]', function() {
     return this.get('criteria').filter((c) => {
       return this.isSubjectTo(c);

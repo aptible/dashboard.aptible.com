@@ -8,18 +8,35 @@ export var locationProperty = new Property(locationsSchema.items);
 
 export default Ember.Route.extend({
   model() {
-    this._schema = new Schema(locationsSchema);
-    return this._schema.buildDocument();
+    let schema = new Schema(locationsSchema);
+    let attestation = this.store.createRecord('attestation', { handle: 'locations'});
+
+    return {
+      schema: schema,
+      schemaDocument: schema.buildDocument(),
+      attestation: attestation
+    };
   },
 
   setupController(controller, model) {
-    controller.set('model', model);
-    controller.set('locationSchema', this._schema);
+    let { schemaDocument, schema } = model;
+
+    controller.set('model', schemaDocument);
+    controller.set('locationSchema', schema);
   },
 
   actions: {
-    continue() {
+    onPrevious(previousPath) {
+      this.transitionTo(previousPath);
+    },
 
+    onNext(nextPath) {
+      let { schemaDocument, attestation } = this.currentModel;
+
+      attestation.set('document', schemaDocument);
+      attestation.save().then(() => {
+        this.transitionTo(nextPath);
+      });
     }
   }
 });

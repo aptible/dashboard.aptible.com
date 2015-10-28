@@ -19,3 +19,4 @@ test('it renders', function(assert) {
   this.render();
   assert.equal(component._state, 'inDOM');
 });
+
