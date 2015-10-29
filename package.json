@@ -46,7 +46,7 @@
     "ember-cli-template-lint": "0.1.1",
     "ember-cli-toggle": "^0.6.0",
     "ember-cli-uglify": "^1.2.0",
-    "ember-data": "1.0.0-beta.18",
+    "ember-data": "1.0.0-beta.19.2",
     "ember-data-hal-9000": "0.1.7",
     "ember-deploy-s3": "0.0.4",
     "ember-disable-proxy-controllers": "^1.0.0",
