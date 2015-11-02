@@ -2,7 +2,7 @@ import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from 'sheriff/tests/helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
-import { orgId, rolesHref, usersHref, securityOfficerId } from '../../helpers/organization-stub';
+import { orgId, rolesHref, usersHref, securityOfficerId, securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
 
@@ -13,9 +13,6 @@ let developerRoleId = 'developer-role-2';
 let trainingCriterionId = 'training-criterion-1';
 let developerCriterionId = 'developer-criterion-2';
 let securityCriterionId = 'training-criterion-3';
-
-
-let securityOfficerHref = `/users/${securityOfficerId}`;
 let overviewUrl = `/${orgId}/training`;
 let basicUrl = `/${orgId}/training/training_log`;
 let developerUrl = `/${orgId}/training/developer_training_log`;
@@ -149,7 +146,7 @@ test(`visiting ${overviewUrl}: all users list basic training`, function(assert) 
   stubDocuments({ basic: [], security: [], developer: [] });
   stubRequests();
   signInAndVisit(overviewUrl);
-  return pauseTest();
+
   andThen(function() {
     assert.equal(currentPath(), 'organization.engines.training.index');
     ok(find('.user-training-status .subject-checklist .training_log').length === 3,
@@ -394,15 +391,15 @@ function stubRequests() {
     return this.success({ _embedded: { users }});
   });
 
+  stubRequest('get', securityOfficerHref, function(request) {
+    return this.success(users[2]);
+  });
+
   stubRequest('get', '/permissions', function(request) {
     return this.success({ _embedded: { permissions }});
   });
 
   stubRequest('get', '/criteria', function(request) {
     return this.success({ _embedded: { criteria }});
-  });
-
-  stubRequest('get', securityOfficerHref, function(request) {
-    return this.success(users[2]);
   });
 }

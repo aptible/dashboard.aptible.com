@@ -5,6 +5,7 @@ export var orgId = 'o1';
 export var rolesHref = `/organizations/${orgId}/roles`;
 export var usersHref = `/organizations/${orgId}/users`;
 export var securityOfficerId = 'security-officer-3';
+export var securityOfficerHref = `/users/${securityOfficerId}`;
 
 Ember.Test.registerHelper('stubValidOrganization', function(app) {
   let organization = {

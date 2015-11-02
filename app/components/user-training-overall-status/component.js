@@ -4,7 +4,7 @@ export default Ember.Component.extend({
   complianceValidator: Ember.inject.service(),
   classNames: ['panel-row', 'user-training-status'],
 
-  requiredCriteria: Ember.computed('user', 'criteria.[]', 'organization.developers.[]', function() {
+  requiredCriteria: Ember.computed('user', 'criteria.[]', 'organization.users.[]', 'organization.developers.[]', function() {
     return this.get('criteria').filter((c) => {
       return this.isSubjectTo(c);
     });
@@ -20,6 +20,11 @@ export default Ember.Component.extend({
   }),
 
   isSubjectTo(criterion) {
+    // Everyone is subject to basic training
+    if(criterion.get('handle') === 'training_log') {
+      return true;
+    }
+
     let organization = this.get('organization');
     let subjects = organization.getCriterionSubjects(criterion);
     let userHref = this.get('user.data.links.self');

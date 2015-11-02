@@ -18,6 +18,14 @@ export default Ember.Route.extend({
     };
   },
 
+  afterModel() {
+    let profile = this.modelFor('setup');
+
+    if(!profile.isReadyForStep('locations')) {
+      return this.transitionTo(`setup.${profile.get('currentStep')}`);
+    }
+  },
+
   setupController(controller, model) {
     let { schemaDocument, schema } = model;
 
