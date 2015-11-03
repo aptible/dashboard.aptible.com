@@ -19,23 +19,21 @@ export default Ember.Component.extend({
 
   // Animate the completed count and radial guage when the element is in the DOM.
   didInsertElement: function() {
-    let circumference = this.get('circumference');
-    let completed = this.get('completed');
+    let { circumference, completed, total } = this.getProperties('circumference', 'completed', 'total');
     let dashOffset = 0;
     let intervalMS = Math.ceil(2000 / completed);
     let percent = 0;
-    let total = this.get('total');
 
     // jQuery wrapped element references
-    let $completed = $('.completed', this.element);
-    let $svgGuagePath = $('.progress-radial-guage-path', this.element);
+    let $completed = this.$('.completed');
+    let $svgGuagePath = this.$('.progress-radial-guage-path');
 
     // Skip animating initial values.
     if (completed === 0) { return; }
 
     // Update the completed amount to count up as the radial guage animates.
     for (let i = 1; i <= completed; i++) {
-      let $completed = $('.completed', this.element);
+      let $completed = this.$('.completed');
       let val = parseInt($completed.text()) + i;
       Ember.run.later(() => {
         $completed.text(val);
