@@ -34,16 +34,25 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    onPrevious(previousPath) {
-      this.transitionTo(previousPath);
+    onPrevious() {
+      let profile = this.modelFor('setup');
+
+      profile.previous();
+      profile.save().then(() => {
+        let previousPath = `setup.${profile.get('currentStep')}`;
+        this.transitionTo(previousPath);
+      });
     },
 
-    onNext(nextPath) {
+    onNext() {
       let { schemaDocument, attestation } = this.currentModel;
+      let profile = this.modelFor('setup');
+
+      profile.next();
 
       attestation.set('document', schemaDocument);
       attestation.save().then(() => {
-        this.transitionTo(nextPath);
+        this.transitionTo(`setup.${profile.get('currentStep')}`);
       });
     }
   }

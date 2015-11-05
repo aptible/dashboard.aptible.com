@@ -47,7 +47,7 @@ test('Locations page basic UI', function(assert) {
   signInAndVisit(locationsUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.locations');
+    assert.equal(currentPath(), 'organization.setup.locations', 'remains on locations step');
     assert.ok(find('.empty-row:contains(No Locations.  Add one below.)').length,
               'shows empty row with no locations');
     assert.ok(find('button:disabled:contains(Continue)').length,
@@ -71,10 +71,7 @@ test('Adding location adds to location index', function(assert) {
     fillInLocation({ description: 'Headquarters' });
   });
 
-  andThen(() => {
-    let addButton = findWithAssert('button[type="submit"]:contains(Add)');
-    addButton.click();
-  });
+  andThen(clickAddButton);
 
   andThen(() => {
     assert.ok(find('tr td:contains(Headquarters)').length, 'Adds a new row');
@@ -82,14 +79,60 @@ test('Adding location adds to location index', function(assert) {
   });
 });
 
-test('Visiting location page without completing previous step should return to previous step', function() {
+test('Visiting location page without completing previous step should return to previous step', function(assert) {
   stubProfile({ currentStep: 'organization' });
   stubRequests();
   signInAndVisit(locationsUrl);
+
+  andThen(() => {
+    assert.equal(currentPath(), 'organization.setup.organization', 'returned to organization step');
+  });
 });
 
-skip('Adding an incomplete location shows an error message');
-skip('Clicking continue creates locations attestation');
+test('Adding an incomplete location shows an error message', function(assert) {
+  stubProfile({ currentStep: 'locations' });
+  stubRequests();
+  signInAndVisit(locationsUrl);
+
+  andThen(() => {
+    assert.equal(currentPath(), 'organization.setup.locations', 'remains on location step');
+    fillInLocation()
+  });
+
+  andThen(() => {
+    fillInput('description', ''); // Unset a field
+  });
+
+  andThen(clickAddButton);
+
+  andThen(() => {
+    assert.ok(find('.alert-danger:contains(Error:)'));
+  });
+});
+
+test('Clicking continue creates locations attestation', function(assert) {
+  expect(3);
+
+  stubRequest('post', '/attestations', function(request) {
+    let json = this.json(request);
+
+    assert.ok(true, 'posts to /attestations');
+    assert.equal(json.handle, 'locations');
+
+    return this.success({ id: 1 });
+  });
+
+  stubProfile({ currentStep: 'locations'});
+  stubRequests();
+  signInAndVisit(locationsUrl);
+
+  andThen(() => { fillInLocation(); });
+  andThen(clickAddButton);
+  andThen(clickContinueButton);
+  andThen(() => {
+    assert.equal(currentPath(), 'organization.setup.team', 'on next setup step');
+  });
+});
 
 function fillInLocation(locationData) {
   let defaultLocation = {
@@ -108,6 +151,11 @@ function fillInLocation(locationData) {
   }
 
   selectState(locationData.state);
+}
+
+function clickAddButton() {
+  let addButton = findWithAssert('button[type="submit"]:contains(Add)');
+  addButton.click();
 }
 
 function selectState(state) {
@@ -129,12 +177,5 @@ function stubRequests() {
 
   stubRequest('get', securityOfficerHref, function(request) {
     return this.success(users[0]);
-  });
-}
-
-function stubProfile(profileData) {
-  stubRequest('get', `/organizationProfiles/${orgId}`, function(request) {
-    profileData.id = orgId;
-    return this.success(profileData);
   });
 }

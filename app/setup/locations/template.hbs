@@ -39,7 +39,7 @@
         </span>
       {{/bs-tooltip}}
     {{else}}
-      {{link-to "Continue →" 'setup.team' class="btn btn-primary btn-lg"}}
+      <button class="btn btn-primary btn-lg" {{action "onNext"}}>Continue →</button>
     {{/if}}
 
   </div>
