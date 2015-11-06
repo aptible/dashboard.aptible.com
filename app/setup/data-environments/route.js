@@ -3,7 +3,7 @@ import Schema from 'ember-json-schema/models/schema';
 import Property from 'ember-json-schema/models/property';
 import locationsSchema from 'sheriff/schemas/locations';
 
-export const DATA_ENVIRONMENTS = new Ember.A([
+export const DATA_ENVIRONMENTS = [
   { name: 'Aptible PaaS', provider: 'aptible', handle: 'aptible', selected: true },
   { name: 'EC2', provider: 'aws', handle: 'ec2', selected: false },
   { name: 'S3', provider: 'aws', handle: 's3', selected: false },
@@ -20,7 +20,7 @@ export const DATA_ENVIRONMENTS = new Ember.A([
   { name: 'Paper', provider: false, handle: 'paper', selected: false },
   { name: 'Portable media(USB drives)', provider: false, handle: 'usb', selected: false },
   { name: 'Portable devices(phone or tablet)', provider: false, handle: 'phone', selected: false }
-]);
+];
 
 export default Ember.Route.extend({
   model() {
@@ -49,7 +49,7 @@ export default Ember.Route.extend({
     onNext() {
       let { schemaDocument, attestation } = this.currentModel;
       let profile = this.modelFor('setup');
-      let selectedDataEnvironments = this.controller.get('selectedDataEnvironments');
+      let selectedDataEnvironments = this.currentModel.filterBy('selected');
 
       profile.set('selectedDataEnvironments', selectedDataEnvironments);
       profile.next();
