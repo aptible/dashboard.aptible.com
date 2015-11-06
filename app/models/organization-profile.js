@@ -9,6 +9,7 @@ export default DS.Model.extend({
   hasCompletedSetup: DS.attr('boolean'),
   aboutOrganization: DS.attr('string'),
   aboutProduct: DS.attr('string'),
+  selectedDataEnvironments: DS.attr(),
 
   indexOfCurrentStep: Ember.computed('currentStep', function() {
     return this.indexOfStep(this.get('currentStep'));

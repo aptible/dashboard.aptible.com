@@ -99,3 +99,13 @@
     }
   }
 }
+
+.disabled-tooltip-wrapper {
+  display: inline-block;
+  padding-left: 10px;
+  pointer-events: auto;
+
+  [disabled="disabled"], * {
+    pointer-events: auto !important;
+  }
+}

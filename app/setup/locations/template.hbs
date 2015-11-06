@@ -33,8 +33,8 @@
   <div>
 
     {{#if preventContinueMessage}}
-      {{#bs-tooltip title=preventContinueMessage}}
-        <span style="display:inline-block;">
+      {{#bs-tooltip placement="bottom" title=preventContinueMessage bs-container=false}}
+        <span class="disabled-tooltip-wrapper">
           <button class="btn btn-primary btn-lg" disabled="disabled">Continue →</button>
         </span>
       {{/bs-tooltip}}

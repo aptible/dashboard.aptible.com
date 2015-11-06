@@ -1,3 +1,5 @@
+{{spd-nav preventContinueMessage=preventContinueMessage onNext="onNext" onPrevious="onPrevious"}}
+
 <div class="setup-step">
   <h1 class="setup-step-title">Data Environments</h1>
 
@@ -19,10 +21,10 @@
   </nav>
 
   <div class="panels">
-    {{data-environment-index}}
+    {{data-environment-index dataEnvironments=model}}
   </div>
 
   <div>
-    {{link-to "Continue →" 'setup.security-controls' class="btn btn-primary btn-lg"}}
+    <button class="btn btn-primary btn-lg" {{action "onNext"}}>Continue →</button>
   </div>
 </div>
