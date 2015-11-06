@@ -13,25 +13,9 @@
     </thead>
 
     <tbody>
-      <tr>
-        <td class="gravatar-col sm">
-          <div class="gravatar sm">
-            {{gravatar-image email="skylar@aptible.com"}}
-          </div>
-        </td>
-        <td><strong>Skylar Anderson</strong></td>
-        <td>skylar@aptible.com</td>
-        <td>Yes</td>
-        <td>Yes</td>
-        <td>Yes</td>
-        <td class="row-actions one-action">
-          <ul class="row-action-nav">
-            <li>
-              <a><i class="fa fa-times danger"></i></a>
-            </li>
-          </ul>
-        </td>
-      </tr>
+      {{#each teamMembers as |teamMember|}}
+        {{edit-team-member user=teamMember.user document=teamMember.document}}
+      {{/each}}
     </tbody>
   </table>
 </div>

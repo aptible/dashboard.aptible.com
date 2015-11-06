@@ -48,11 +48,12 @@ export default Ember.Route.extend({
       let { schemaDocument, attestation } = this.currentModel;
       let profile = this.modelFor('setup');
 
-      profile.next();
-
       attestation.set('document', schemaDocument);
       attestation.save().then(() => {
-        this.transitionTo(`setup.${profile.get('currentStep')}`);
+        profile.next();
+        profile.save().then(() => {
+          this.transitionTo(`setup.${profile.get('currentStep')}`);
+        });
       });
     }
   }

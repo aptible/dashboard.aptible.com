@@ -9,7 +9,7 @@ export default Ember.Route.extend({
     onNext(nextPath) {
       let profile = this.currentModel;
 
-      profile.next()
+      profile.next();
       profile.save().then(() => {
         this.transitionTo(`setup.${profile.get('currentStep')}`);
       });

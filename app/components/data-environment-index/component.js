@@ -20,6 +20,6 @@ export const DATA_ENVIRONMENTS = [
 ];
 
 export default Ember.Component.extend({
- classNames: ['data-environment-index'],
- dataEnvironments: DATA_ENVIRONMENTS
+  classNames: ['data-environment-index'],
+  dataEnvironments: DATA_ENVIRONMENTS
 });

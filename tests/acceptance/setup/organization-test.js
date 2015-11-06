@@ -65,7 +65,7 @@ test('Clicking continue saves organization profile and moves to next step', func
   signInAndVisit(organizationUrl);
 
   stubRequest('get', `organization_profiles/${orgId}`, function(request) {
-    assert.ok(true, 'attempts loads organization profile')
+    assert.ok(true, 'attempts loads organization profile');
     return this.error(404);
   });
 
@@ -90,7 +90,7 @@ test('Clicking continue saves organization profile and moves to next step', func
 
   andThen(() => {
     assert.equal(currentPath(), 'organization.setup.locations');
-  })
+  });
 });
 
 function stubRequests() {

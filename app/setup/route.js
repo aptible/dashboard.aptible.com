@@ -7,7 +7,7 @@ export default Ember.Route.extend({
 
     return new Ember.RSVP.Promise(function(resolve, reject) {
       store.find('organization-profile', organization.get('id'))
-        .then((profile) => { resolve(profile) })
+        .then((profile) => { resolve(profile); })
         .catch(() => {
           let newProfile = store.createRecord('organization-profile', { id: organization.get('id') });
           resolve(newProfile);

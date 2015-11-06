@@ -1,4 +1,5 @@
 import DS from 'ember-data';
+import Ember from 'ember';
 
 export const SETUP_STEPS = ['organization', 'locations', 'team',
                             'data-environments', 'security-controls'];

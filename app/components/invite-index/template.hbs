@@ -10,21 +10,27 @@
     </thead>
 
     <tbody>
-      <tr>
-        <td><strong>skylar@aptible.com</strong></td>
-        <td>Workforce</td>
-        <td>June 16, 2015</td>
-        <td class="row-actions two-actions">
-          <ul class="row-action-nav">
-            <li>
-              <a><i class="fa fa-refresh"></i></a>
-            </li>
-            <li>
-              <a><i class="fa fa-times danger"></i></a>
-            </li>
-          </ul>
-        </td>
-      </tr>
+      {{#each invitations as |invitation|}}
+        <tr>
+          <td><strong>{{invitation.email}}</strong></td>
+          <td>{{invitation.role.name}}</td>
+          <td>{{format-date invitation.createdAt}}</td>
+          <td class="row-actions two-actions">
+            <ul class="row-action-nav">
+              <li>
+                <a><i class="fa fa-refresh"></i></a>
+              </li>
+              <li>
+                <a><i class="fa fa-times danger"></i></a>
+              </li>
+            </ul>
+          </td>
+        </tr>
+      {{else}}
+        <tr>
+          <td class="empty-row" colspan="4">No Pending Invitations.  Add one below.</td>
+        </tr>
+      {{/each}}
     </tbody>
   </table>
 </div>

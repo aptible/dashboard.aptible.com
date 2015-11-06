@@ -2,7 +2,8 @@ import Ember from 'ember';
 import { module, test, skip } from 'qunit';
 import startApp from 'sheriff/tests/helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
-import { orgId, rolesHref, usersHref, securityOfficerId, securityOfficerHref } from '../../helpers/organization-stub';
+import { orgId, rolesHref, usersHref, invitationsHref, securityOfficerId,
+         securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
 let locationsUrl = `${orgId}/setup/locations`;
@@ -96,7 +97,7 @@ test('Adding an incomplete location shows an error message', function(assert) {
 
   andThen(() => {
     assert.equal(currentPath(), 'organization.setup.locations', 'remains on location step');
-    fillInLocation()
+    fillInLocation();
   });
 
   andThen(() => {
@@ -111,7 +112,7 @@ test('Adding an incomplete location shows an error message', function(assert) {
 });
 
 test('Clicking continue creates locations attestation', function(assert) {
-  expect(3);
+  expect(5);
 
   stubRequest('post', '/attestations', function(request) {
     let json = this.json(request);
@@ -120,6 +121,16 @@ test('Clicking continue creates locations attestation', function(assert) {
     assert.equal(json.handle, 'locations');
 
     return this.success({ id: 1 });
+  });
+
+  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
+    let json = this.json(request);
+    json.id = orgId;
+
+    assert.ok(true, 'updates organization profile');
+    assert.equal(json.current_step, 'team');
+
+    return this.success(json);
   });
 
   stubProfile({ currentStep: 'locations'});
@@ -173,6 +184,10 @@ function stubRequests() {
 
   stubRequest('get', usersHref, function(request) {
     return this.success({ _embedded: { users }});
+  });
+
+  stubRequest('get', invitationsHref, function(request) {
+    return this.success({ _embedded: { invitations: [] }});
   });
 
   stubRequest('get', securityOfficerHref, function(request) {

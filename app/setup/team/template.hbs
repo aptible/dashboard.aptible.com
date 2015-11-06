@@ -1,4 +1,4 @@
-{{spd-nav preventContinueMessage=preventContinueMessage}}
+{{spd-nav preventContinueMessage=preventContinueMessage onNext="onNext" onPrevious="onPrevious"}}
 
 <div class="setup-step">
   <h1 class="setup-step-title">Team Members</h1>
@@ -6,21 +6,21 @@
   <nav class="panel-nav">
     <ul class="tabs">
       <li class="{{if (eq panel 'team') 'active' null}}">
-        <a {{action 'setPanel' 'team'}}>Team <span class="badge">14</span></a>
+        <a {{action 'setPanel' 'team'}}>Team <span class="badge user-count">{{users.length}}</span></a>
       </li>
       <li class="{{if (eq panel 'invites') 'active' null}}">
-        <a {{action 'setPanel' 'invites'}}>Pending Invitations <span class="badge">4</span></a>
+        <a {{action 'setPanel' 'invites'}}>Pending Invitations <span class="badge invitation-count">{{invitations.length}}</span></a>
       </li>
     </ul>
   </nav>
 
   <div class="panels">
     {{#if (eq panel 'team')}}
-      {{team-index}}
+      {{team-index users=users teamDocument=schemaDocument}}
     {{/if}}
 
     {{#if (eq panel 'invites')}}
-      {{invite-index}}
+      {{invite-index invitations=invitations}}
     {{/if}}
   </div>
 
@@ -40,6 +40,6 @@
   </div>
 
   <div>
-    {{link-to "Continue →" 'setup.data-environments' class="btn btn-primary btn-lg"}}
+    <button class="btn btn-primary btn-lg" {{action "onNext"}}>Continue →</button>
   </div>
 </div>
