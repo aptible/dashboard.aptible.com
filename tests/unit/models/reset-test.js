@@ -18,7 +18,6 @@ test('posts to /resets when there is an invitation', function(assert){
   let done = assert.async();
   let invitationId = 'invite1';
 
-  let store = this.store();
   let model = this.subject({
     type: 'invitation',
     invitationId

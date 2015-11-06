@@ -28,7 +28,7 @@ test('creating POSTs to correct url', function(assert) {
     vhost = store.createRecord('vhost', {status:'provisioned', service:service});
   });
 
-  stubRequest('post', '/services/1/vhosts', function(request){
+  stubRequest('post', '/services/1/vhosts', function(){
     assert.ok(true, 'calls with correct URL');
 
     return this.noContent();
@@ -52,7 +52,7 @@ test('updating PUTs to correct url', function(assert) {
     vhost = store.push('vhost', {id: vhostId, status:'provisioned', service:service});
   });
 
-  stubRequest('put', `/vhosts/${vhostId}`, function(request){
+  stubRequest('put', `/vhosts/${vhostId}`, function(){
     assert.ok(true, 'calls with correct URL');
 
     return this.success({
@@ -75,7 +75,7 @@ test('reloads while provisioning', function(assert) {
   let vhost, service;
   let vhostId = 'vhost-id';
 
-  stubRequest('get', `/vhosts/${vhostId}`, function(request){
+  stubRequest('get', `/vhosts/${vhostId}`, function(){
     assert.ok(true, 'calls with correct URL');
 
     return this.success({
@@ -95,7 +95,7 @@ test('reloads while provisioning', function(assert) {
     vhost.set('_reloadRetryDelay', TEST_RELOAD_RETRY_DELAY);
   });
 
-  stubRequest('get', `/vhosts/${vhostId}`, function(request){
+  stubRequest('get', `/vhosts/${vhostId}`, function(){
     assert.ok(true, 'calls with correct URL');
 
     done();

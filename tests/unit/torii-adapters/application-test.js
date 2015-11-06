@@ -6,7 +6,6 @@ import config from "../../../config/environment";
 import { getAccessToken, setAccessToken } from '../../../adapters/application';
 import storage from 'dummy/utils/storage';
 import { stubRequest } from 'ember-cli-fake-server';
-import DS from "ember-data";
 import Ember from "ember";
 import modelDeps from '../../support/common-model-dependencies';
 
@@ -21,7 +20,6 @@ moduleFor('torii-adapter:application', 'Torii Adapter: Aptible', {
   needs: modelDeps,
 
   setup: function(){
-    DS._setupContainer(this.container);
     originalWrite = storage.write;
     originalRead = storage.read;
   },
@@ -29,21 +27,15 @@ moduleFor('torii-adapter:application', 'Torii Adapter: Aptible', {
     storage.write = originalWrite;
     storage.read = originalRead;
     setAccessToken(null);
-  },
-  subject: function() {
-    var store = this.container.lookup('store:main');
-    var klass = this.container.lookupFactory(this.subjectName);
-    return klass.create({
-      store: store,
-      analytics: new MockAnalytics()
-    });
   }
 });
 
 test('#close destroys token, storage', function(assert){
   assert.expect(4);
   const done = assert.async();
-  var adapter = this.subject();
+  var adapter = this.subject({
+    analytics: new MockAnalytics()
+  });
   var tokenId = 'some-token-id';
 
   var removedKey;
@@ -75,7 +67,9 @@ test('#open stores payload, set currentUser', function(assert){
   const done = assert.async();
   assert.expect();
 
-  var adapter = this.subject();
+  var adapter = this.subject({
+    analytics: new MockAnalytics()
+  });
   var token = 'some-token';
   var tokenId = 'some-token-id';
   var userId = 'some-user-id';
@@ -120,7 +114,9 @@ test('#fetch fetches current_token, stores payload, set currentUser', function(a
   const done = assert.async();
   assert.expect(6);
 
-  var adapter = this.subject();
+  var adapter = this.subject({
+    analytics: new MockAnalytics()
+  });
   var token = 'some-token';
   var tokenId = 'some-token-id';
   var userId = 'some-user-id';

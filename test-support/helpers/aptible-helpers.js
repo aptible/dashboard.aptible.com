@@ -45,7 +45,7 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData){
   });
 
   let currentUser = Ember.run(function(){
-    let store = app.__container__.lookup('store:main');
+    let store = app.__container__.lookup('store:application');
     return store.push('user', userData);
   });
   stubValidSession(app, {

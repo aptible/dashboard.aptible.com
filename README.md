@@ -22,8 +22,4 @@ This README outlines the details of collaborating on this Ember addon.
 
 * `ember build`
 
-## Releasing
-
-* `ember release`
-
 For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).

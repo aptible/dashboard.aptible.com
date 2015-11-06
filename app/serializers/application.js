@@ -1,4 +1,14 @@
 import HalSerializer from "ember-data-hal-9000/serializer";
+import Ember from 'ember';
+
+export const MODEL_NAME_MAP = {
+  account: 'stack',
+  criterium: 'criterion'
+};
+
+export function modelNameFromPayloadKey(key) {
+  return Ember.get(MODEL_NAME_MAP, key) || key;
+}
 
 export default HalSerializer.extend({
   /*
@@ -18,15 +28,7 @@ export default HalSerializer.extend({
 
   modelNameFromPayloadKey(key){
     var result = this._super(key);
-    if (result === 'account') {
-      result = 'stack';
-    }
-
-    if (result === 'criterium') {
-      result = 'criterion';
-    }
-
-    return result;
+    return modelNameFromPayloadKey(result);
   },
 
   extractArray: function(store, primaryType, rawPayload) {
@@ -38,17 +40,60 @@ export default HalSerializer.extend({
   },
 
   normalize: function(type, hash, property) {
-    var payload = this._super(type, hash, property);
+    var payload = this._super(...arguments);
 
-    if (payload.links && payload.links.account) {
-      payload.links.stack = payload.links.account;
-      delete payload.links.account;
+    if(payload.links) {
+      payload = this._convertStacks(payload);
+      payload = this._transposeLinks(payload, type);
     }
-    if (payload.links && payload.links.accounts) {
-      payload.links.stacks = payload.links.accounts;
-      delete payload.links.accounts;
-    }
+
     return payload;
   },
 
+  // Add a reference to the original pre-normalized payload to the payload
+  // itself.  The pre-normalized payload can then be used when attempting to
+  // fetch from cache
+  extractSingle: function(store, primaryType, rawPayload, recordId) {
+    let payload = rawPayload;
+    payload.rawPayload = Ember.$.extend(true, {}, payload);
+    return this._super(store, primaryType, payload, recordId);
+  },
+
+  _convertStacks(payload) {
+    if(payload.links.account) {
+      payload.links.stack = payload.links.account;
+      delete payload.links.account;
+    }
+
+    if(payload.links.accounts) {
+      payload.links.stacks = payload.links.accounts;
+      delete payload.links.accounts;
+    }
+
+    return payload;
+  },
+
+  _transposeLinks(payload, type) {
+    // TODO: Upgrading ED and HAL9000 should remove the need for this function.
+    // The below fixes issues with ED resolving relationships correctly by
+    // manually setting relationships from _links onto the payload body.
+    type.eachRelationship((modelName, modelClass) => {
+      if(modelClass.kind !== 'belongsTo') {
+        return;
+      }
+
+      let relationHref = payload.links[modelName];
+      if(relationHref && !payload[modelName]) {
+        payload[modelName] = this._idFromHref(relationHref);
+      }
+
+    });
+
+    return payload;
+  },
+
+  _idFromHref(href) {
+    let parts = href.split('/');
+    return parts[parts.length - 1];
+  }
 });

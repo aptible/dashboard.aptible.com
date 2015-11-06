@@ -21,7 +21,7 @@ test('creates by POSTing to /organizations/:org_id/roles', function(assert){
   let store = this.store();
   let organization = Ember.run(store, 'push', 'organization', {id:orgId});
 
-  stubRequest('post', `/organizations/${orgId}/roles`, function(request){
+  stubRequest('post', `/organizations/${orgId}/roles`, function(){
     assert.ok(true, 'posts to correct url');
     return this.noContent();
   });
@@ -69,7 +69,7 @@ test('destroy DELETEs to /roles/:id', function(assert){
     role = store.push('role', {id:'r1', organization});
   });
 
-  stubRequest('delete', `/roles/r1`, function(request){
+  stubRequest('delete', `/roles/r1`, function(){
     assert.ok(true, 'deletes to correct url');
     return this.noContent();
   });

@@ -21,7 +21,7 @@ test('A valid response should add no error messages', function(assert) {
   let validator;
   let done = assert.async();
 
-  stubRequest('post', claimUrl, function(request) {
+  stubRequest('post', claimUrl, function() {
     assert.ok(true, 'request was made');
     return [204, {}, ''];
   });
@@ -46,7 +46,7 @@ test('An error response should add an error message', function(assert) {
   let validator;
   let done = assert.async();
 
-  stubRequest('post', claimUrl, function(request) {
+  stubRequest('post', claimUrl, function() {
     assert.ok(true, 'request was made');
     return [400, {}, ''];
   });

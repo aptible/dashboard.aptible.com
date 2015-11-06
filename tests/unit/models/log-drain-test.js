@@ -22,7 +22,7 @@ test('posts to /accounts/:stack_id/log_drains', function(assert){
     stack = store.push('stack',{id:'s1'});
   });
 
-  stubRequest('post', '/accounts/s1/log_drains', function(request){
+  stubRequest('post', '/accounts/s1/log_drains', function(){
     assert.ok(true, 'posts to correct url');
     return this.success({id:'ld1'});
   });
@@ -32,4 +32,3 @@ test('posts to /accounts/:stack_id/log_drains', function(assert){
     drain.save().finally(done);
   });
 });
-

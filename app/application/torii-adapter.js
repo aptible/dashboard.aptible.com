@@ -60,7 +60,7 @@ export default Ember.Object.extend({
       } else if (jqXHR.responseText) {
         throw new Error(jqXHR.responseText);
       } else {
-        throw new Error("Unknown error from the server.");
+        throw jqXHR;
       }
     });
   },

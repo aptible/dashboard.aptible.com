@@ -7,7 +7,7 @@ import Ember from "ember";
 moduleForComponent('with-active-class', 'WithActiveClassComponent');
 
 test('it renders active when within', function(assert) {
-  var component = this.subject({
+  this.subject({
     route: 'apps',
     applicationController: Ember.Object.create({currentPath: 'apps.new'})
   });
@@ -16,7 +16,7 @@ test('it renders active when within', function(assert) {
 });
 
 test('it does not render active with not within', function(assert) {
-  var component = this.subject({
+  this.subject({
     route: 'databases',
     applicationController: Ember.Object.create({currentPath: 'apps.new'})
   });

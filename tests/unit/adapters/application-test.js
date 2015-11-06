@@ -8,7 +8,7 @@ import { stubRequest } from 'ember-cli-fake-server';
 
 var Moose = DS.Model.extend();
 
-var container, store;
+var store;
 
 moduleFor('adapter:application', 'ApplicationAdapter', {
   needs: ['store:application', 'serializer:application'],

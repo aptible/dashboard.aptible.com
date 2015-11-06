@@ -39,7 +39,7 @@ test('when creating an operation for a db, POSTs to /databases/:id/operations', 
   });
 
   return Ember.run(function(){
-    return op.save().then(function(_op){
+    return op.save().then(function(){
       assert.ok(true, 'operation saved');
     });
   });
@@ -165,7 +165,7 @@ test(`when creating an operation for a vhost, POSTs to ${vhostOperationURL}`, fu
   });
 
   return Ember.run(function(){
-    return op.save().then(function(_op){
+    return op.save().then(function(){
       assert.ok(true, 'operation saved');
     });
   });
@@ -197,7 +197,7 @@ test(`creating an operation for a log drain POSTS to ${logDrainOperationURL}`, f
   });
 
   return Ember.run(function(){
-    return op.save().then(function(_op){
+    return op.save().then(function(){
       assert.ok(true, 'operation saved');
     });
   });
@@ -229,7 +229,7 @@ test(`creating an operation for a service POSTS to ${serviceOperationURL}`, func
   });
 
   return Ember.run(function(){
-    return op.save().then(function(_op){
+    return op.save().then(function(){
       assert.ok(true, 'operation saved');
     });
   });

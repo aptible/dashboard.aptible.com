@@ -19,9 +19,9 @@ test('DELETEs to /organizations/:org_id/users/:id', function(assert) {
   let store = this.store();
 
   let user = Ember.run(store, 'push', 'user', {id:'userId'});
-  let organization = Ember.run(store, 'push', 'organization', {id:'orgId'});
+  Ember.run(store, 'push', 'organization', {id:'orgId'});
 
-  stubRequest('delete', '/organizations/orgId/users/userId', function(request){
+  stubRequest('delete', '/organizations/orgId/users/userId', function(){
     assert.ok(true, 'deletes to correct url');
     return this.noContent();
   });

@@ -17,9 +17,7 @@ export default DS.Model.extend(ProvisionableMixin, {
 
   reloadWhileProvisioning: true,
 
-  commonName: Ember.computed('certificate.commonName', 'virtualDomain', function() {
-    return this.get('certificate.commonName') || this.get('virtualDomain')
-  }),
+  commonName: Ember.computed.alias('virtualDomain'),
   displayHost: Ember.computed('isDefault', 'externalHost', 'virtualDomain', function() {
     if(this.get('isDefault')) {
       return this.get('virtualDomain');
