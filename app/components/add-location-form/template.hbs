@@ -9,7 +9,10 @@
   {{/if}}
 
   {{#each-property properties=locationProperties as |key property type|}}
-    {{component (concat 'schema-field-' type) key=key property=property document=location}}
+    <div class="form-group">
+      <label>{{property.title}}</label>
+      {{component (concat 'schema-field-' type) key=key property=property document=location}}
+    </div>
   {{/each-property}}
 
   <button class="btn btn-primary" type="submit" {{action "addLocation" location}}>Add</button>

@@ -11,3 +11,8 @@
 @import "components/spd-nav";
 @import "components/user-training-status";
 @import "components/x-toggle";
+
+
+#ember-testing-container {
+  width: 1200px !important;
+}

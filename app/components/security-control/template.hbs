@@ -4,13 +4,13 @@
   </select>
 </div>
 
-{{#if provider}}
-  <div class="data-environment-provider sm {{provider}}">
-    <img src="/assets/images/data-environments/{{provider}}.png" alt="{{provider}}"/>
+{{#if dataEnvironment.provider}}
+  <div class="data-environment-provider sm {{dataEnvironment.provider}}">
+    <img src="/assets/images/data-environments/{{dataEnvironment.provider}}.png" alt="{{dataEnvironment.provider}}"/>
   </div>
 {{/if}}
 
 <div class="info">
-  <h4 class="title">{{title}}</h4>
-  <div class="description">{{description}}</div>
+  <h4 class="title">{{property.title}}</h4>
+  <div class="description">{{property.description}}</div>
 </div>

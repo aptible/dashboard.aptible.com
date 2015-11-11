@@ -1,5 +1,5 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
- classNames: ['panel-section security-control']
+ classNames: ['security-control-group']
 });

@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import Schema from 'ember-json-schema/models/schema';
 
 // For now, just import schemas statically and map the selected DEs and providers
 // When Gridiron is able to serve schemas, this will be replaced with API calls
@@ -54,42 +55,56 @@ function selectedProviders(dataEnvironments) {
          .without('aptible');
 }
 
-function selectedDataEnvironmentsToSchemaArray(dataEnvironments) {
+function getSecurityControlGroups(dataEnvironments) {
   // Given a collection of data environments, collect DEs by provider, flatten,
   // and map to imported schemas
-  let requiredSchemas = [];
+  let securityControlGroups = [];
   let providers = selectedProviders(dataEnvironments);
 
-    providers.forEach((provider) => {
-      let providerDataEnvironments = dataEnvironments.filter((de) => {
-        de.provider == provider
-      }).map((de) => {
-        schemaMap.dataEnvironments[de.handle];
-      });
-
-      requiredSchemas.push(schemaMap.providers[provider]);
-      requiredSchemas.concat(providerDataEnvironments)
+  providers.forEach((provider) => {
+    let providerDataEnvironments = dataEnvironments.filter((de) => {
+      return de.provider === provider
+    }).map((dataEnvironment) => {
+      return {
+        schema: schemaMap.dataEnvironments[dataEnvironment.handle],
+        dataEnvironment
+      };
     });
 
-  return requiredSchemas;
+    securityControlGroups.push({
+      schema: schemaMap.providers[provider],
+    });
+
+    securityControlGroups = securityControlGroups.concat(providerDataEnvironments);
+  });
+
+  securityControlGroups.push({ schema: schemaMap.providers.aptible });
+  securityControlGroups.map((controlGroup) => {
+    let schema = new Schema(controlGroup.schema);
+    let document = schema.buildDocument();
+    let dataEnvironment = controlGroup.dataEnvironment || false;
+
+    return { schema, document, dataEnvironment };
+  });
+
+  return securityControlGroups;
 }
 
 export default Ember.Route.extend({
   beforeModel() {
     let profile = this.modelFor('setup');
     let selectedDataEnvironments = profile.get('selectedDataEnvironments');
-    debugger;
+
     if(!selectedDataEnvironments || !selectedDataEnvironments.length) {
       return this.transitionTo('setup.data-environments');
     }
   },
+
   model() {
     let profile = this.modelFor('setup');
     let selectedDataEnvironments = profile.get('selectedDataEnvironments');
 
-    let schemas =  selectedDataEnvironmentsToSchemaArray(selectedDataEnvironments)
-    debugger;
-    return schemas
+    return getSecurityControlGroups(selectedDataEnvironments);
   }
 });
 

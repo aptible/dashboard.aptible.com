@@ -1,116 +1,14 @@
+{{spd-nav preventContinueMessage=preventContinueMessage onNext="onNext" onPrevious="onPrevious"}}
+
 <div class="setup-step">
   <h1 class="setup-step-title">Security Controls</h1>
 
-  <h3 class="panel-title">Amazon Web Services</h3>
-  <div class="panel white-panel security-controls">
-    <div class="panel-section">
-      {{security-control
-        title="How do you manage AWS Console access?"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        provider="aws"}}
-    </div>
-    <div class="panel-section">
-      {{security-control
-        title="Is MFA required for all accounts?"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        provider="aws"}}
-    </div>
-    <div class="panel-section">
-      {{security-control
-        title="How are you managing encryption for PHI stored in S3?"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        provider="aws"}}
-    </div>
-  </div>
-
-  <h3 class="panel-title">Google Apps</h3>
-  <div class="panel white-panel security-controls">
-    <div class="panel-section">
-      {{security-control
-        title="How do you manage AWS Console access?"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        provider="google"}}
-    </div>
-    <div class="panel-section">
-      {{security-control
-        title="Is MFA required for all accounts?"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        provider="google"}}
-    </div>
-    <div class="panel-section">
-      {{security-control
-        title="How are you managing encryption for PHI stored in S3?"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        provider="google"}}
-    </div>
-  </div>
-
-  <h3 class="panel-title">Workstation Controls</h3>
-  <div class="panel white-panel security-controls">
-    <div class="panel-section">
-      {{security-control
-        title="Password Manager"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."}}
-    </div>
-    <div class="panel-section">
-      {{security-control
-        title="Anti-virus"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."}}
-    </div>
-    <div class="panel-section">
-      {{security-control
-        title="Mobile device management"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."}}
-    </div>
-    <div class="panel-section">
-      {{security-control
-        title="Laptop audits"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."}}
-    </div>
-  </div>
-
-  <h3 class="panel-title">Security Procedures</h3>
-  <div class="panel white-panel security-controls">
-    <div class="panel-section">
-      {{security-control
-        title="Internal security reviews"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."}}
-    </div>
-    <div class="panel-section">
-      {{security-control
-        title="Penetration testing"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."}}
-    </div>
-    <div class="panel-section">
-      {{security-control
-        title="Vulnerability scans"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."}}
-    </div>
-    <div class="panel-section">
-      {{security-control
-        title="External security assessments"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."}}
-    </div>
-  </div>
-
-  <h3 class="panel-title">Workforce controls</h3>
-  <div class="panel white-panel security-controls">
-    <div class="panel-section">
-      {{security-control
-        title="Background checks"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."}}
-    </div>
-    <div class="panel-section">
-      {{security-control
-        title="Reference checks"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."}}
-    </div>
-    <div class="panel-section">
-      {{security-control
-        title="Training"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."}}
-    </div>
-  </div>
+  {{#each model as |securityControlGroup|}}
+    {{security-control-group
+      schema=securityControlGroup.schema
+      document=securityControlGroup.document
+      dataEnvironment=dataEnvironment}}
+  {{/each}}
 
   <div>
     {{link-to "Continue →" 'setup.finish' class="btn btn-primary btn-lg"}}

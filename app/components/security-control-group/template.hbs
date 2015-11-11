@@ -1,0 +1,10 @@
+<h3 class="panel-title">{{schema.title}}</h3>
+
+<div class="panel white-panel security-controls">
+  {{#each-property properties=schema.properties as |key property type|}}
+    {{security-control
+      property=property
+      provider=dataEnvironment.provider
+    }}
+  {{/each-property}}
+</div>
