@@ -56,12 +56,18 @@ test('Selected data environments are used to draw security control questionnaire
   signInAndVisit(securityControlsUrl);
 
   andThen(() => {
-    return pauseTest();
-    // Should show Aptible Provider questions
+    //return pauseTest();
     // Should show AWS Provider questions
+    assert.ok(find('.data-environment-provider.sm.aws').length, 'Has an AWS provider logo');
+    assert.ok(find('.title:contains(AWS Console Access)').length, 'Has an AWS provider question');
+    assert.ok(find('.panel-title:contains(EC2)').length, 'Has Google Drive DE panel');
+
     // Should show Google Provider questions
-    // Should show EC2 and S3 Data Environment questions
+    assert.ok(find('.data-environment-provider.sm.google').length, 'Has an Google provider logo');
+    assert.ok(find('.title:contains(Multi-factor Authentication (MFA))').length, 'Has a Google provider question');
+    assert.ok(find('.panel-title:contains(Google Drive)').length, 'Has Google Drive DE panel');
     // Should show Google Drive Data Environment questions
+    // Should show Aptible Provider questions
     // Should show provider-less (Workstations) Data Environment questions
   });
 

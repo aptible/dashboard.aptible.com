@@ -76,7 +76,7 @@ test('Lists all data environments', function(assert) {
 });
 
 test('Clicking continue saves data environment selections to organization profile', function(assert) {
-  expect(4);
+  expect(6);
 
   let expectedDataEnvironmentPayload = [
     { name: 'Aptible PaaS', provider: 'aptible', handle: 'aptible', selected: true },
@@ -94,10 +94,19 @@ test('Clicking continue saves data environment selections to organization profil
     json.id = orgId;
 
     assert.ok(true, 'updates organization profile');
-    assert.deepEqual(json.selected_data_environments, expectedDataEnvironmentPayload, 'includes selected data environments');
     assert.equal(json.current_step, 'security-controls', 'updates current step');
 
     return this.success(json);
+  });
+
+  stubRequest('post', '/attestations', function(request) {
+    let json = this.json(request);
+
+    assert.ok(true, 'posts to /attestations');
+    assert.equal(json.handle, 'selected-data-environments', 'includes attestation handle');
+    assert.deepEqual(json.document, expectedDataEnvironmentPayload, 'includes selected data environments as a document payload');
+
+    return this.success({ id: 1 });
   });
 
   andThen(() => {

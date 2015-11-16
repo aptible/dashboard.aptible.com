@@ -8,7 +8,6 @@
   h3 {
     font-size: 16px;
     float: left;
-    width: 400px;
     margin: 14px 0 0 0;
   }
 }
@@ -16,24 +15,9 @@
 .spd-progress {
   text-align: center;
   list-style-type: none;
-  margin: 0;
+  margin: 10px 0 0;
   padding: 0;
   position: relative;
-  float: left;
-
-  &:after {
-    border-top: 4px dashed #e0e0e0;
-    content: '.';
-    width: 470px;
-    left: 50%;
-    margin-left: -235px;
-    margin-top: -2px;
-    height: 0;
-    position: absolute;
-    top: 50%;
-    display: block;
-    z-index: 1;
-  }
 
   .spd-progress-step {
     display: inline-block;
@@ -46,10 +30,18 @@
     }
 
     .spd-progress-step-title {
-      display: none;
+      font-size: 11px;
+      color: $color-light;
+      font-weight: $weight-semibold;
+      text-transform: uppercase;
     }
 
     &.active {
+      .spd-progress-step-title {
+        font-size: 11px;
+        color: $color-primary;
+      }
+
       .spd-progress-step-image {
         border-color: $color-bright-blue;
 
@@ -71,6 +63,7 @@
   }
 
   .spd-progress-step-image {
+    display: none;
     background: #fff;
     border: 1px solid #d0d0d0;
     padding: 3px;

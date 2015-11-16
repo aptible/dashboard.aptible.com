@@ -24,7 +24,15 @@ export const DATA_ENVIRONMENTS = [
 
 export default Ember.Route.extend({
   model() {
-    return DATA_ENVIRONMENTS.map((de) => Ember.Object.create(de));
+    let dataEnvironments = DATA_ENVIRONMENTS.map((de) => Ember.Object.create(de));
+    let attestation = this.store.createRecord('attestation', { handle: 'selected-data-environments' });
+
+    return { dataEnvironments, attestation};
+  },
+
+  setupController(controller, model) {
+    controller.set('model', model.dataEnvironments);
+    controller.set('attestation', model.attestation);
   },
 
   afterModel() {
@@ -47,15 +55,17 @@ export default Ember.Route.extend({
     },
 
     onNext() {
-      let { schemaDocument, attestation } = this.currentModel;
+      let { attestation, dataEnvironments } = this.currentModel;
       let profile = this.modelFor('setup');
-      let selectedDataEnvironments = this.currentModel.filterBy('selected');
+      let selectedDataEnvironments = dataEnvironments.filterBy('selected');
 
-      profile.set('selectedDataEnvironments', selectedDataEnvironments);
-      profile.next();
-
-      profile.save().then(() => {
-        this.transitionTo(`setup.${profile.get('currentStep')}`);
+      profile.setProperties({ selectedDataEnvironments });
+      attestation.set('document', selectedDataEnvironments);
+      attestation.save().then(() => {
+        profile.next();
+        profile.save().then(() => {
+          this.transitionTo(`setup.${profile.get('currentStep')}`);
+        });
       });
     }
   }

@@ -1,10 +1,13 @@
-<h3 class="panel-title">{{schema.title}}</h3>
+<h3 class="panel-title">{{securityControlGroup.title}}</h3>
 
 <div class="panel white-panel security-controls">
-  {{#each-property properties=schema.properties as |key property type|}}
+
+  {{#each-property properties=properties as |key property type|}}
     {{security-control
       property=property
-      provider=dataEnvironment.provider
-    }}
+      provider=provider
+      key=key
+      document=securityControlGroup.document
+      type=type}}
   {{/each-property}}
 </div>

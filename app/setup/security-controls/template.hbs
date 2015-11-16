@@ -5,9 +5,9 @@
 
   {{#each model as |securityControlGroup|}}
     {{security-control-group
-      schema=securityControlGroup.schema
-      document=securityControlGroup.document
-      dataEnvironment=dataEnvironment}}
+      securityControlGroup=securityControlGroup
+      provider=securityControlGroup.provider
+      dataEnvironment=securityControlGroup.dataEnvironment}}
   {{/each}}
 
   <div>

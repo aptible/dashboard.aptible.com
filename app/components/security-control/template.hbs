@@ -1,12 +1,10 @@
 <div class='options'>
-  <select class="form-control">
-    <option>None/Not required</option>
-  </select>
+  {{component (concat 'schema-field-' type) key=key property=property document=document}}
 </div>
 
-{{#if dataEnvironment.provider}}
-  <div class="data-environment-provider sm {{dataEnvironment.provider}}">
-    <img src="/assets/images/data-environments/{{dataEnvironment.provider}}.png" alt="{{dataEnvironment.provider}}"/>
+{{#if provider}}
+  <div class="data-environment-provider sm {{provider}}">
+    <img src="/assets/images/data-environments/{{provider}}.png" alt="{{provider}}"/>
   </div>
 {{/if}}
 
