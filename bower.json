@@ -10,7 +10,7 @@
     "ember-qunit-notifications": "0.1.0",
     "font-awesome": "~4.4.0",
     "jquery": "^1.11.1",
-    "loader.js": "ember-cli/loader.js#3.2.1",
+    "loader.js": "ember-cli/loader.js#3.4.0",
     "nouislider": "~7.0.9",
     "pretender": "~0.10.1",
     "qunit": "~1.20.0",
