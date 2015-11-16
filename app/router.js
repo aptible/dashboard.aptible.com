@@ -1,7 +1,7 @@
 import Ember from "ember";
 import config from "./config/environment";
 
-var Router = Ember.Router.extend({
+const Router = Ember.Router.extend({
   analytics: Ember.inject.service(),
   location: config.locationType,
   onTransition: function() {
@@ -13,7 +13,7 @@ var Router = Ember.Router.extend({
   }.on('didTransition')
 });
 
-export default Router.map(function() {
+Router.map(function() {
   this.authenticatedRoute("dashboard", { path: '/' }, function() {
 
     this.route("index", { path: '', resetNamespace: true });
@@ -135,3 +135,5 @@ export default Router.map(function() {
 
   this.route('not-found', {path: '/*wildcard'});
 });
+
+export default Router;
