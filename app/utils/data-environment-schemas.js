@@ -12,8 +12,9 @@ import ec2Schema from 'sheriff/schemas/data-environments/ec2';
 import elbSchema from 'sheriff/schemas/data-environments/elb';
 import glacierSchema from 'sheriff/schemas/data-environments/glacier';
 import gmailSchema from 'sheriff/schemas/data-environments/gmail';
-import googleDocsSchema from 'sheriff/schemas/data-environments/google-docs';
+import googleCalendarSchema from 'sheriff/schemas/data-environments/google-calendar';
 import googleDriveSchema from 'sheriff/schemas/data-environments/google-drive';
+import googleVaultSchema from 'sheriff/schemas/data-environments/vault';
 import laptopsSchema from 'sheriff/schemas/data-environments/laptops';
 import onPremiseSchema from 'sheriff/schemas/data-environments/on-premise';
 import paperSchema from 'sheriff/schemas/data-environments/paper';
@@ -38,8 +39,9 @@ export var schemaMap = {
     ec2: ec2Schema,
     glacier: glacierSchema,
     gmail: gmailSchema,
-    'google-docs': googleDocsSchema,
+    'google-calendar': googleCalendarSchema,
     'google-drive': googleDriveSchema,
+    'google-vault': googleVaultSchema,
     laptops: laptopsSchema,
     'on-premise': onPremiseSchema,
     paper: paperSchema,

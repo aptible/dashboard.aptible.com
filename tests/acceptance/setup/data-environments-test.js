@@ -80,8 +80,8 @@ test('Clicking continue saves data environment selections to organization profil
 
   let expectedDataEnvironmentPayload = [
     { name: 'Aptible PaaS', provider: 'aptible', handle: 'aptible', selected: true },
-    { name: 'S3', provider: 'aws', handle: 's3', selected: true },
-    { name: 'GMail', provider: 'google', handle: 'gmail', selected: true },
+    { name: 'Amazon S3', provider: 'aws', handle: 's3', selected: true },
+    { name: 'Gmail', provider: 'google', handle: 'gmail', selected: true },
     { name: 'Laptops', provider: false, handle: 'laptops', selected: true }
   ];
 
@@ -110,8 +110,8 @@ test('Clicking continue saves data environment selections to organization profil
   });
 
   andThen(() => {
-    enableDataEnvironment('S3');
-    enableDataEnvironment('GMail');
+    enableDataEnvironment('Amazon S3');
+    enableDataEnvironment('Gmail');
     enableDataEnvironment('Laptops');
   });
 
