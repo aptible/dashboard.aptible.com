@@ -54,6 +54,7 @@
     "expectRedirectsWhenLoggedIn",
     "stubOrganizations",
     "stubOrganization",
+    "stubValidOrganization",
     "stubApp",
     "stubDatabase",
     "stubDatabases",

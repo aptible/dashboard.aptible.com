@@ -1,0 +1,29 @@
+<td class="gravatar-col sm">
+  <div class="gravatar sm">
+    {{gravatar-image email=user.email}}
+  </div>
+</td>
+<td><strong>{{user.name}}</strong></td>
+<td>{{user.email}}</td>
+<td>
+  <div class="toggle-developer">
+    {{x-toggle size='small' toggle='toggleDeveloper' showLabels=false }}
+  </div>
+</td>
+<td>
+  <div class="toggle-security-officer">
+    {{x-toggle size='small' toggle='toggleSecurityOfficer' showLabels=false }}
+  </div>
+</td>
+<td>
+  <div class="toggle-privacy-officer">
+    {{x-toggle size='small' toggle='togglePrivacyOfficer' showLabels=false }}
+  </div>
+</td>
+<td class="row-actions one-action">
+  <ul class="row-action-nav">
+    <li>
+      <a><i class="fa fa-times danger"></i></a>
+    </li>
+  </ul>
+</td>

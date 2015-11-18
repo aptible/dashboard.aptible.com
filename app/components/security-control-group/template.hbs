@@ -1,0 +1,12 @@
+<h3 class="panel-title">{{securityControlGroup.title}}</h3>
+
+<div class="panel white-panel security-controls provider-{{provider}}">
+  {{#each-property properties=properties as |key property type|}}
+    {{security-control
+      property=property
+      provider=provider
+      key=key
+      document=securityControlGroup.document
+      type=type}}
+  {{/each-property}}
+</div>

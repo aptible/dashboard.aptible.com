@@ -1,0 +1,22 @@
+<div class="panel white-panel">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th class="gravatar-col sm"></th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Developer</th>
+        <th>Security Officer</th>
+        <th>Privacy Officer</th>
+        <th class="one-action"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each teamMembers as |teamMember|}}
+        {{edit-team-member user=teamMember.user document=teamMember.document}}
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+

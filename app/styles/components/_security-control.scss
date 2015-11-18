@@ -1,0 +1,38 @@
+.security-control {
+  @extend %clearfix;
+
+  .options {
+    float: right;
+    width: 277px;
+  }
+
+  .radio {
+    margin: 0
+  }
+
+  .data-environment-provider {
+    float: left;
+    margin-right: 25px;
+  }
+
+  .info {
+    margin-right: 300px;
+
+    .title {
+      font-size: 14px;
+      font-weight: $weight-semibold;
+      margin: 0 0 6px;
+    }
+
+    .description {
+      font-size: 13px;
+      color: $color-light;
+    }
+  }
+}
+
+.panel.security-controls {
+  .panel-section {
+    padding: 20px
+  }
+}

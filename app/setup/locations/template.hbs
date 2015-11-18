@@ -1,0 +1,45 @@
+{{spd-nav preventContinueMessage=preventContinueMessage onNext="onNext" onPrevious="onPrevious"}}
+
+<div class="setup-step">
+  <h1 class="setup-step-title">Locations</h1>
+
+  <nav class="panel-nav">
+    <ul class="tabs">
+      <li class="active">
+        {{plural-string "Location" validLocations.length}}
+        <span class="badge">{{validLocations.length}}</span>
+      </li>
+    </ul>
+  </nav>
+
+  {{location-index locations=validLocations}}
+
+  <div class="panel panel-striped">
+    <div class="panel-section">
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="panel-section-title">Add a new location</div>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet purus ornare condimentum malesuada. Pellentesque diam mi, fermentum ut sapien eu, vehicula dictum elit. Integer cursus sagittis ullamcorper.
+          </p>
+        </div>
+
+        <div class="col-xs-6">
+          {{add-location-form document=model schema=locationSchema}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+
+    {{#if preventContinueMessage}}
+      {{#bs-tooltip placement="bottom" title=preventContinueMessage bs-container=false}}
+        <span class="disabled-tooltip-wrapper">
+          <button class="btn btn-primary btn-lg" disabled="disabled">Continue →</button>
+        </span>
+      {{/bs-tooltip}}
+    {{else}}
+      <button class="btn btn-primary btn-lg" {{action "onNext"}}>Continue →</button>
+    {{/if}}
+  </div>
+</div>

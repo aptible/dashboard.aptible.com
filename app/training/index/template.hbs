@@ -4,7 +4,7 @@
   </header>
 
   <div class="panel compliance-status-table-panel white-panel criterion-subjects {{criterion.handle}}">
-    {{#each organization.users as |user|}}
+    {{#each model as |user|}}
       {{user-training-overall-status
         user=user
         criteria=criteria
