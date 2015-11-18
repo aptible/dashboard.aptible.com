@@ -55,7 +55,7 @@ export var schemaMap = {
   globals: {
     securityProcedures: securityProceduresSchema,
     workforceControls: workforceControlsSchema,
-    workstationConrols: workstationControlsSchema
+    workstationControls: workstationControlsSchema
   }
 };
 
@@ -75,15 +75,15 @@ export function getSecurityControlGroups(dataEnvironments) {
   let providers = selectedProviders(dataEnvironments);
 
   providers.forEach((provider) => {
-    securityControlGroups.push({ schema: schemaMap.providers[provider], provider });
+    securityControlGroups.push({ schema: schemaMap.providers[provider], provider, handle: `provider-${provider}` });
     securityControlGroups = securityControlGroups.concat(getDataEnvironmentsByProvider(provider, dataEnvironments));
   });
 
-  securityControlGroups.push({ schema: schemaMap.providers.aptible });
+  securityControlGroups.push({ schema: schemaMap.providers.aptible, provider: 'aptible', handle: 'provider-aptible' });
 
   // Push all globals schemas
   for(var globalSchema in schemaMap.globals) {
-    securityControlGroups.push({ schema: schemaMap.globals[globalSchema] });
+    securityControlGroups.push({ schema: schemaMap.globals[globalSchema], provider: 'global', handle: `global-${globalSchema}` });
   }
 
   return mapAndCreateSchemaDocuments(securityControlGroups);
@@ -95,6 +95,7 @@ function getDataEnvironmentsByProvider(provider, dataEnvironments) {
   }).map((dataEnvironment) => {
     return {
       schema: schemaMap.dataEnvironments[dataEnvironment.handle],
+      handle: `data-environment-${dataEnvironment.handle}`,
       dataEnvironment,
       provider
     };
@@ -108,8 +109,9 @@ function mapAndCreateSchemaDocuments(controlGroups) {
     let dataEnvironment = controlGroup.dataEnvironment || false;
     let title = schema.schema.title;
     let provider = controlGroup.provider;
+    let handle = controlGroup.handle;
 
-    return { schema, document, dataEnvironment, title, provider };
+    return { schema, document, dataEnvironment, title, provider, handle };
   });
 }
 

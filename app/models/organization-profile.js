@@ -2,7 +2,7 @@ import DS from 'ember-data';
 import Ember from 'ember';
 
 export const SETUP_STEPS = ['organization', 'locations', 'team',
-                            'data-environments', 'security-controls'];
+                            'data-environments', 'security-controls', 'finish'];
 
 export default DS.Model.extend({
   currentStep: DS.attr('string', { defaultValue: SETUP_STEPS[0] }),

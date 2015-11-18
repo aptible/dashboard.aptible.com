@@ -18,6 +18,29 @@ export default Ember.Route.extend({
     let selectedDataEnvironments = profile.get('selectedDataEnvironments');
 
     return getSecurityControlGroups(selectedDataEnvironments);
+  },
+
+  actions: {
+    onNext() {
+      let profile = this.modelFor('setup');
+
+      let promises = this.currentModel.map((securityGroup) => {
+        // REVIEW: This creates an attestation for each provider, data
+        // environment, and global.  Should these be consolodated?
+        let attestation = { handle: securityGroup.handle,
+                            document: securityGroup.document };
+        return this.store.createRecord('attestation', attestation).save();
+      });
+
+      Ember.RSVP.all(promises).then(() => {
+        profile.next();
+        profile.set('hasCompletedSetup', true);
+
+        profile.save().then(() => {
+          this.transitionTo(`setup.${profile.get('currentStep')}`);
+        });
+      });
+    }
   }
 });
 

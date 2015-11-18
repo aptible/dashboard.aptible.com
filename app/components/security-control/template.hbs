@@ -2,13 +2,13 @@
   {{component (concat 'schema-field-' type) key=key property=property document=document}}
 </div>
 
-{{#if provider}}
+{{#if showProvider}}
   <div class="data-environment-provider sm {{provider}}">
     <img src="/assets/images/data-environments/{{provider}}.png" alt="{{provider}}"/>
   </div>
 {{/if}}
 
 <div class="info">
-  <h4 class="title">{{property.title}}</h4>
-  <div class="description">{{property.description}}</div>
+  <h4 class="title">{{property.displayProperties.title}}</h4>
+  <div class="description">{{property.displayProperties.description}}</div>
 </div>
