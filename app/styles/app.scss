@@ -1,4 +1,5 @@
 @import "aptible";
+@import "setup";
 @import "components/add-location-form";
 @import "components/dashboard";
 @import "components/data-environment-index";
@@ -11,8 +12,3 @@
 @import "components/spd-nav";
 @import "components/user-training-status";
 @import "components/x-toggle";
-
-
-#ember-testing-container {
-  width: 1200px !important;
-}

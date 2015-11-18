@@ -19,8 +19,6 @@ export default Ember.Route.extend({
     let profile = this.modelFor('setup');
     let currentStep = profile.get('currentStep');
 
-    if(currentStep !== 'organization') {
-      return this.transitionTo(`setup.${currentStep}`);
-    }
+    return this.transitionTo(`setup.${currentStep}`);
   }
 });
