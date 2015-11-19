@@ -25,7 +25,6 @@ export default Ember.Component.extend({
     let percent = 0;
 
     // jQuery wrapped element references
-    let $completed = this.$('.completed');
     let $svgGuagePath = this.$('.progress-radial-guage-path');
 
     // Skip animating initial values.
