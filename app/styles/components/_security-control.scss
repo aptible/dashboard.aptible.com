@@ -29,6 +29,22 @@
       color: $color-light;
     }
   }
+
+  .toggle {
+    text-align: right;
+    margin-top: 11px;
+  }
+
+  .toggle-text {
+    text-transform: uppercase;
+    font-weight: $weight-semibold;
+    color: $color-light;
+
+    &.small {
+      font-size: 11px;
+      margin-top: -3px;
+    }
+  }
 }
 
 .panel.security-controls {
@@ -36,3 +52,4 @@
     padding: 20px
   }
 }
+
