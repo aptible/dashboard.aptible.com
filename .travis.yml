@@ -19,5 +19,5 @@ install:
 script:
 - npm test
 - script/travis-deploy.sh
-env:
-  secure: j8l+i3KlZyE5jibY1+zb+UYeDq5/nmiP2JA2Z3bqKIMDUyA5VNVtpShwWsPEzhTwFliEpFPpveDJt/nIv0Mb0FC03S9MB/WYt58DK6JCKpvji9KuVjKer6viTc0Pt0olwDN/fc+hoUPHyOCv3xNtInPrUaGCHh0ToXM9N8ShgAc=
+env: # IAM: travis-s3
+  secure: sEfhhd7cnuYr6OpFmtJQ4mj9iwEAhayWJuPRKo4xh8mUYv+X3hAkA3N5dy53UCLIKERnYNBzZzzZREJo0AuS9idMZAW/yMBQr4SLU42leM1nLuMKSqilMBgu7ooXH9bUw1NE8BCI83cRalOGEjVIlvMYDH5+MkhvvrbhotNvbVc=
