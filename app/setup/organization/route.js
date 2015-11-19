@@ -6,7 +6,7 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    onNext(nextPath) {
+    onNext() {
       let profile = this.currentModel;
 
       profile.next();

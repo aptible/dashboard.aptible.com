@@ -1,5 +1,4 @@
 import GridironAdapter from './gridiron';
-import buildURLWithPrefixMap from '../utils/build-url-with-prefix-map';
 import Ember from "ember";
 import Inflector from 'ember-inflector';
 

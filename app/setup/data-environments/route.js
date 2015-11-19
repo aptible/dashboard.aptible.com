@@ -1,7 +1,4 @@
 import Ember from 'ember';
-import Schema from 'ember-json-schema/models/schema';
-import Property from 'ember-json-schema/models/property';
-import locationsSchema from 'sheriff/schemas/locations';
 
 export const DATA_ENVIRONMENTS = [
   { name: 'Aptible PaaS', provider: 'aptible', handle: 'aptible', selected: true },

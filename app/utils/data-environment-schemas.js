@@ -9,7 +9,6 @@ import awsSchema from 'sheriff/schemas/providers/aws';
 import googleSchema from 'sheriff/schemas/providers/google';
 import ebsSchema from 'sheriff/schemas/data-environments/ebs';
 import ec2Schema from 'sheriff/schemas/data-environments/ec2';
-import elbSchema from 'sheriff/schemas/data-environments/elb';
 import glacierSchema from 'sheriff/schemas/data-environments/glacier';
 import gmailSchema from 'sheriff/schemas/data-environments/gmail';
 import googleCalendarSchema from 'sheriff/schemas/data-environments/google-calendar';

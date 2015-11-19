@@ -1,6 +1,4 @@
 import Ember from 'ember';
-import Schema from 'ember-json-schema/models/schema';
-import aptibleSchemaJson from 'sheriff/schemas/providers/aptible';
 import { getSecurityControlGroups } from 'sheriff/utils/data-environment-schemas';
 
 export default Ember.Route.extend({
@@ -43,4 +41,3 @@ export default Ember.Route.extend({
     }
   }
 });
-
