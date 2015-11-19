@@ -1,6 +1,6 @@
 import Ember from 'ember';
 export const STEPS = [
-  { key: 'organization',      name: 'Organization Settings' },
+  { key: 'organization',      name: 'Organization' },
   { key: 'locations',         name: 'Locations' },
   { key: 'team',              name: 'Team' },
   { key: 'data-environments', name: 'Data Environments' },

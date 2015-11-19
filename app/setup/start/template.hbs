@@ -1,12 +1,23 @@
-{{spd-nav preventContinueMessage=preventContinueMessage}}
-
 <div class="getting-started">
   <h1>Design Your Compliance Program in 6 Steps</h1>
 
-  <p>
+  <ul class="spd-progress">
+    <li class="background-track"></li>
+    {{#each model as |step|}}
+      <li class="spd-progress-step">
+        <div class="spd-progress-step-image">
+          <img src="/images/icons/{{step.key}}.svg" />
+        </div>
+        <div class="spd-progress-step-title">{{step.name}}</div>
+      </li>
+    {{/each}}
+  </ul>
+
+  <div class="intro-text">
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet purus ornare condimentum malesuada. Pellentesque diam mi, fermentum ut sapien eu, vehicula dictum elit. Integer cursus sagittis ullamcorper.
-  </p>
+  </div>
+
   <div>
-    {{link-to "Ok, let's get started →" 'setup.organization' class="btn btn-primary btn-xl"}}
+    <button class="btn btn-primary btn-lg" {{action "onNext"}}>Ok, let's get started →</button>
   </div>
 </div>

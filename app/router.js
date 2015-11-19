@@ -17,6 +17,11 @@ Router.map(function() {
       this.route("training", { path: 'training', resetNamespace: true }, function() {
         this.route("criterion", { path: ':criterion_handle' }, function() {});
       });
+      this.route('risk');
+      this.route('policies');
+      this.route('security');
+      this.route('contracts');
+      this.route('incidents');
     });
 
     this.route('setup', { path: 'setup', resetNamespace: true}, function() {

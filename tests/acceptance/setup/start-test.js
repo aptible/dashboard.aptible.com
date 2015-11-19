@@ -7,7 +7,7 @@ import { orgId, rolesHref, usersHref, invitationsHref, securityOfficerId,
 import { DATA_ENVIRONMENTS } from 'sheriff/setup/data-environments/route';
 
 let application;
-let dataEnvironmentsUrl = `${orgId}/setup/start`;
+let startUrl = `${orgId}/setup/start`;
 let userId = 'basic-user-1';
 let developerId = 'developer-user-2';
 let basicRoleId = 'basic-role-1';
@@ -46,7 +46,7 @@ let permissions = [
   }
 ];
 
-module('Acceptance: Setup: Data Environments', {
+module('Acceptance: Setup: Getting Started', {
   beforeEach() {
     application = startApp();
   },
@@ -57,20 +57,63 @@ module('Acceptance: Setup: Data Environments', {
 });
 
 test('Basic setup start page UI', function(assert) {
+  expect(6);
+
   stubProfile({ currentStep: 'start' });
   stubRequests();
   signInAndVisit(startUrl);
 
+  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
+    let json = this.json(request);
+    json.id = orgId;
+
+    assert.ok(true, 'updates organization profile');
+    assert.equal(json.current_step, 'organization');
+
+    return this.success(json);
+  });
+
   andThen(() => {
-    assert.ok(find('h1:contains(Design Your Compliance Program in 6 Steps)'));
-    assert.ok(find('p:contains(Lorem ipsum)'));
-    // Title
-    // Description
-    // Step Icons
-    // Continue button to next step
+    let continueButton = find('button:contains(get started)');
+
+    assert.ok(find('h1:contains(Design Your Compliance Program in 6 Steps)').length, 'has a title');
+    assert.ok(find('p:contains(Lorem ipsum)').length, 'has a descriptive paragraph');
+    assert.ok(continueButton.length, 'has a continue button');
+    continueButton.click();
+  });
+
+  andThen(() => {
+    assert.equal(currentPath(), 'organization.setup.organization', 'moved to next step');
   });
 });
 
 test('Existing organization profiles should redirect to future step', function(assert) {
-  assert.ok(true);
+  stubProfile({ currentStep: 'locations' });
+  stubRequests();
+  signInAndVisit(startUrl);
+
+  andThen(() => {
+    assert.equal(currentPath(), 'organization.setup.locations', 'redirected to current step');
+  });
 });
+
+
+function stubRequests() {
+  stubValidOrganization();
+
+  stubRequest('get', rolesHref, function(request) {
+    return this.success({ _embedded: { roles } });
+  });
+
+  stubRequest('get', usersHref, function(request) {
+    return this.success({ _embedded: { users }});
+  });
+
+  stubRequest('get', securityOfficerHref, function(request) {
+    return this.success(users[0]);
+  });
+
+  stubRequest('get', '/permissions', function(request) {
+    return this.success({ _embedded: { permissions }});
+  });
+}
