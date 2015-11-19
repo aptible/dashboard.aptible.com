@@ -77,7 +77,7 @@ test('Basic setup start page UI', function(assert) {
     let continueButton = find('button:contains(get started)');
 
     assert.ok(find('h1:contains(Design Your Compliance Program in 6 Steps)').length, 'has a title');
-    assert.ok(find('p:contains(Lorem ipsum)').length, 'has a descriptive paragraph');
+    assert.ok(find('.intro-text:contains(Lorem ipsum)').length, 'has a descriptive paragraph');
     assert.ok(continueButton.length, 'has a continue button');
     continueButton.click();
   });
