@@ -1,7 +1,7 @@
-{{#if isOnAStep}}
-  <div class="spd-nav-body">
-    <h3>Design Your Security Program</h3>
+<div class="spd-nav-body">
+  <h3>Design Your Security Program</h3>
 
+  {{#if isOnAStep}}
     <ul class="spd-nav">
       {{#if previous}}
         <li>
@@ -10,9 +10,9 @@
           </button>
         </li>
       {{/if}}
+
       {{#if next}}
         <li>
-
           {{#if preventContinueMessage}}
             {{#bs-tooltip title=preventContinueMessage}}
               <div>
@@ -24,7 +24,6 @@
               Continue →
             </button>
           {{/if}}
-
         </li>
       {{else}}
         <li>
@@ -45,6 +44,5 @@
         </li>
       {{/each}}
     </ul>
-
-  </div>
-{{/if}}
+  {{/if}}
+</div>

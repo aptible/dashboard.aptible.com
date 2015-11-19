@@ -6,6 +6,7 @@ import { orgId, rolesHref, usersHref, securityOfficerId, securityOfficerHref } f
 
 let application;
 let organizationUrl = `${orgId}/setup/organization`;
+let startUrl = `${orgId}/setup/start`;
 let roleId = 'owners-role';
 let userId = 'u1';
 let roles = [
@@ -56,21 +57,18 @@ test('Organization settings page basic UI', function(assert) {
 });
 
 test('Clicking continue saves organization profile and moves to next step', function(assert) {
-  expect(7);
+  expect(6);
 
   let expectedAboutOrganization = 'Secure, private cloud deployment for digital health.';
   let expectedAboutProduct = 'Seamlessly integrate advanced compliance tools';
 
+  stubProfile({ currentStep: 'organization', id: orgId });
   stubRequests();
   signInAndVisit(organizationUrl);
 
-  stubRequest('get', `organization_profiles/${orgId}`, function(request) {
-    assert.ok(true, 'attempts loads organization profile');
-    return this.error(404);
-  });
-
-  stubRequest('post', `/organization_profiles/`, function(request) {
+  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
     let json = this.json(request);
+    json.id = orgId;
 
     assert.ok(true, 'puts to update organization profile');
     assert.equal(json.id, orgId);

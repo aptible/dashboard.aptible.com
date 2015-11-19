@@ -1,1 +1,40 @@
-<h1>All done!</h1>
+{{spd-nav}}
+
+<div class="row">
+  <div class="col-xs-10 col-xs-offset-1">
+    <div class="finished">
+      <img src="/assets/images/award.svg" class="award" />
+
+      <h3>Great job, {{session.currentUser.name}}! Your Security Program is complete.</h3>
+
+      <div class="intro-text">
+        You can return to your Compliance Dashboard or jump to the next step towards HIPAA compliance:
+      </div>
+
+      <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+          <div class="checklist panel panel-default white-panel">
+            <div class="step completed-step">
+              <div class="step-step"><i class="fa fa-check success"></i></div>
+              <div class="step-title">Design your Security Program</div>
+            </div>
+
+            {{#each model as |step|}}
+              <div class="step {{if step.current 'current-step' null}}">
+                <div class="step-step">{{step.step}}</div>
+                <div class="step-title">{{step.title}}</div>
+                {{#if step.current}}
+                  <div class="step-cta">
+                    {{link-to step.cta (concat 'engines.' step.key) class="btn btn-primary btn-sm"}}
+                  </div>
+                {{/if}}
+              </div>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+

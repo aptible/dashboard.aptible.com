@@ -1,0 +1,128 @@
+$step-height: 80px;
+
+.getting-started {
+  text-align: center;
+  margin: 100px 0 0;
+
+  h1 {
+    font-size: 24px;
+    font-weight: $weight-normal;
+  }
+
+  h1, .intro-text {
+    max-width: 550px;
+    margin: 0 auto;
+  }
+
+  .btn {
+    height: 49px;
+    margin: 50px 0;
+  }
+
+  .spd-progress {
+    margin: 50px 0;
+    display: inline-block;
+    position: relative;
+
+    .background-track {
+      width: 80%;
+      height: 9px;
+      margin: 36px 10% 0;
+      position: absolute;
+      background-image: url(/assets/images/dotted.png);
+      background-size: 38px 9px;
+      background-repeat: repeat-x;
+      z-index: 1;
+    }
+
+    .spd-progress-step-image {
+      display: block;
+    }
+  }
+}
+
+.intro-text {
+  color: $color-light;
+  font-size: 16px;
+}
+
+.finished {
+  margin: 50px 0 0 0;
+  text-align: center;
+
+  .award {
+    margin-bottom: 40px;
+  }
+}
+
+.checklist {
+  text-align: left;
+  margin: 50px 0 0;
+
+  .step {
+    height: $step-height;
+    line-height: $step-height;
+    border-bottom: 1px solid $color-border-gray;
+    z-index: 1;
+  }
+
+  .step-step {
+    z-index: 1;
+    float: left;
+    width: 110px;
+    float: left;
+    height: $step-height;
+    background: $color-bg-gray;
+    text-align: center;
+    font-weight: $weight-semibold;
+    font-size: 24px;
+    border-right: 1px solid $color-border-gray;
+    border-bottom: 1px solid $color-border-gray;
+    color: $color-light;
+  }
+
+  .step-title {
+    float: left;
+    font-size: 20px;
+    line-height: $step-height;
+    color: $color-light;
+    margin-left: 23px;
+  }
+
+  .step-cta {
+    float: right;
+    margin-right: 15px;
+  }
+
+  .step.completed-step {
+    .step-step {}
+    .step-title {
+      color: $color-primary;
+      text-decoration: line-through;
+    }
+  }
+
+  .step.current-step {
+    box-sizing: content-box;
+    width: 100%;
+    padding: 0 20px;
+    margin-left: -20px;
+    box-shadow: 0 1px 4px rgba(#000, 0.3);
+    z-index: 2;
+    background: #fff;
+    border: 0;
+    height: $step-height -1px;
+    border-radius: 3px;
+    position: relative;
+
+    .step-step {
+      border: 0;
+      background: none;
+      color: $color-bright-blue;
+    }
+
+    .step-title {
+      color: $color-primary;
+    }
+  }
+}

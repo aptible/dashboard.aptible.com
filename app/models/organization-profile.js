@@ -1,7 +1,7 @@
 import DS from 'ember-data';
 import Ember from 'ember';
 
-export const SETUP_STEPS = ['organization', 'locations', 'team',
+export const SETUP_STEPS = ['start', 'organization', 'locations', 'team',
                             'data-environments', 'security-controls', 'finish'];
 
 export default DS.Model.extend({
