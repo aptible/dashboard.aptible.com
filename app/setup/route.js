@@ -5,7 +5,7 @@ export default Ember.Route.extend({
     let organization = this.modelFor('organization');
     let store = this.store;
 
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new Ember.RSVP.Promise(function(resolve) {
       store.find('organization-profile', organization.get('id'))
         .then((profile) => { resolve(profile); })
         .catch(() => {

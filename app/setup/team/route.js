@@ -25,7 +25,7 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    onNext(nextPath) {
+    onNext() {
       let { schemaDocument, attestation } = this.currentModel;
       let profile = this.modelFor('setup');
 
