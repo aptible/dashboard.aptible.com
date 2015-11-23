@@ -1,38 +1,19 @@
+import { SETUP_STEPS } from 'sheriff/models/organization-profile';
+
+export function buildSPDTransition(context, from, to) {
+  context.transition(
+    context.fromRoute(from),
+    context.toRoute(to),
+    context.use('toLeft'),
+    context.reverse('toRight')
+  );
+}
+
 export default function() {
-  this.transition(
-    this.fromRoute('setup.start'),
-    this.toRoute('setup.organization'),
-    this.use('toLeft'),
-    this.reverse('toRight')
-  );
-  this.transition(
-    this.fromRoute('setup.organization'),
-    this.toRoute('setup.locations'),
-    this.use('toLeft'),
-    this.reverse('toRight')
-  );
-  this.transition(
-    this.fromRoute('setup.locations'),
-    this.toRoute('setup.team'),
-    this.use('toLeft'),
-    this.reverse('toRight')
-  );
-  this.transition(
-    this.fromRoute('setup.team'),
-    this.toRoute('setup.data-environments'),
-    this.use('toLeft'),
-    this.reverse('toRight')
-  );
-  this.transition(
-    this.fromRoute('setup.data-environments'),
-    this.toRoute('setup.security-controls'),
-    this.use('toLeft'),
-    this.reverse('toRight')
-  );
-  this.transition(
-    this.fromRoute('setup.security-controls'),
-    this.toRoute('setup.finish'),
-    this.use('toLeft'),
-    this.reverse('toRight')
-  );
+  SETUP_STEPS.forEach((current, index) => {
+    if(index < SETUP_STEPS.length) {
+      let next = SETUP_STEPS[index + 1];
+      buildSPDTransition(this, `setup.${current}`, `setup.${next}`);
+    }
+  });
 };
