@@ -16,4 +16,4 @@ export default function() {
       buildSPDTransition(this, `setup.${current}`, `setup.${next}`);
     }
   });
-};
+}

@@ -138,6 +138,10 @@ function stubRequests() {
     return this.success({ _embedded: { users }});
   });
 
+  stubRequest('get', invitationsHref, function(request) {
+    return this.success({ _embedded: { invitations: [] }});
+  });
+
   stubRequest('get', securityOfficerHref, function(request) {
     return this.success(users[0]);
   });
