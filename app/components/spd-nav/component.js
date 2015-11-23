@@ -13,7 +13,7 @@ function getStepIndex(currentPath) {
   let i;
 
   STEPS.forEach((step, index) => {
-    if(`${STEP_PREFIX}.${step.key}` === currentPath) {
+    if(currentPath.indexOf(step.key) >= 0) {
       i = index;
     }
   });

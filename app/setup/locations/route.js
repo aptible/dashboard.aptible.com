@@ -31,6 +31,9 @@ export default Ember.Route.extend({
 
     controller.set('model', schemaDocument);
     controller.set('locationSchema', schema);
+
+    controller.set('schema', schema);
+    controller.set('document', schemaDocument);
   },
 
   actions: {
@@ -55,6 +58,12 @@ export default Ember.Route.extend({
           this.transitionTo(`setup.${profile.get('currentStep')}`);
         });
       });
+    },
+
+    onAddLocation() {
+      let newLocation = this.controller.get('model').addItem();
+      this.controller.setProperties({ newLocation });
     }
   }
 });
+//{{add-location-form document=model schema=locationSchema}}

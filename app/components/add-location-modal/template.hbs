@@ -11,9 +11,10 @@
   {{#each-property properties=locationProperties as |key property type|}}
     <div class="form-group">
       <label>{{property.displayProperties.title}}</label>
-      {{component (concat 'schema-field-' type) key=key property=property document=location}}
+      {{component (concat 'schema-field-' type) key=key property=property document=newLocation}}
     </div>
   {{/each-property}}
 
-  <button class="btn btn-primary" type="submit" {{action "addLocation" location}}>Add</button>
+  <button class="btn btn-primary" type="submit" {{action "addLocation" newLocation}}>Add</button>
+  <button class="btn btn-default" type="reset" {{action "onDismiss"}}>Cancel</button>
 </form>

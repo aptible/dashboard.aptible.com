@@ -2,6 +2,8 @@ import Ember from 'ember';
 import { locationProperty } from './route';
 
 export default Ember.Controller.extend({
+  newLocation: null,
+
   locations: Ember.computed('model', function() {
     return this.get('model.values');
   }),
