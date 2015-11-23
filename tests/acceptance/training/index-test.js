@@ -2,7 +2,8 @@ import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from 'sheriff/tests/helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
-import { orgId, rolesHref, usersHref, securityOfficerId, securityOfficerHref } from '../../helpers/organization-stub';
+import { orgId, rolesHref, usersHref, securityOfficerId, invitationsHref,
+         securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
 
@@ -389,6 +390,10 @@ function stubRequests() {
 
   stubRequest('get', usersHref, function(request) {
     return this.success({ _embedded: { users }});
+  });
+
+  stubRequest('get', invitationsHref, function(request) {
+    return this.success({ _embedded: { invitations: [] }});
   });
 
   stubRequest('get', securityOfficerHref, function(request) {

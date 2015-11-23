@@ -12,7 +12,6 @@ export default Ember.Route.extend({
       users: organization.get('users'),
       invitations: organization.get('invitations'),
       securityOfficer: organization.get('securityOfficer'),
-      schema: schema,
       schemaDocument: schema.buildDocument(),
       attestation: attestation
     });

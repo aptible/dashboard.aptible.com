@@ -5,7 +5,8 @@ export default Ember.Route.extend({
     return Ember.RSVP.hash({
       users: model.get('users'),
       securityOfficer: model.get('securityOfficer'),
-      roles: model.get('roles')
+      roles: model.get('roles'),
+      invitations: model.get('invitations')
     });
   },
 
