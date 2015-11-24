@@ -5,6 +5,14 @@ export default Ember.Route.extend({
     return this.modelFor('setup');
   },
 
+  afterModel() {
+    let profile = this.modelFor('setup');
+
+    if(!profile.isReadyForStep('organization')) {
+      return this.transitionTo(`setup.${profile.get('currentStep')}`);
+    }
+  },
+
   actions: {
     onNext() {
       let profile = this.currentModel;

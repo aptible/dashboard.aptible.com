@@ -27,7 +27,13 @@ Router.map(function() {
     this.route('setup', { path: 'setup', resetNamespace: true}, function() {
       this.route('start');
       this.route('organization');
-      this.route('locations');
+      this.route('locations', {}, function() {
+        this.modal('add-location-modal', {
+          withParams: ['newLocation'],
+          otherParams: ['document', 'schema', 'newLocation'],
+          dismissWithOutsideClick: false
+        });
+      });
       this.route('team');
       this.route('data-environments');
       this.route('security-controls');

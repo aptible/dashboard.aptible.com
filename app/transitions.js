@@ -16,4 +16,9 @@ export default function() {
       buildSPDTransition(this, `setup.${current}`, `setup.${next}`);
     }
   });
+
+  this.transition(
+    this.inHelper('liquid-modal'),
+    this.use('fade')
+  );
 }

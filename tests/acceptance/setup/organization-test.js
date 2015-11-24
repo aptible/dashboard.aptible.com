@@ -88,7 +88,7 @@ test('Clicking continue saves organization profile and moves to next step', func
   andThen(clickContinueButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.locations');
+    assert.equal(currentPath(), 'organization.setup.locations.index');
   });
 });
 
