@@ -1,0 +1,19 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <div class="modal-dismiss" {{action "onDismiss"}}>
+      <span class="modal-esc">
+        ESC
+      </span>
+      <span class="modal-times">
+        &times;
+      </span>
+    </div>
+
+    <h1 class="modal-title">{{title}}</h1>
+    <div class="modal-description">{{description}}</div>
+  </div>
+
+  <div class="modal-body">
+    {{yield}}
+  </div>
+</div>
