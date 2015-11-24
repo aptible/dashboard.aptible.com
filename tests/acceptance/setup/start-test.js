@@ -93,7 +93,7 @@ test('Existing organization profiles should redirect to future step', function(a
   signInAndVisit(startUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.locations', 'redirected to current step');
+    assert.equal(currentPath(), 'organization.setup.locations.index', 'redirected to current step');
   });
 });
 

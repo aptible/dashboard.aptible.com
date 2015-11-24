@@ -13,7 +13,7 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
 
-    let { document, schema } = this.getProperties('document', 'schema');
+    let { schema } = this.getProperties('schema');
 
     this.set('locationProperties', schema.itemProperties);
     this.set('description', description);
@@ -26,9 +26,8 @@ export default Ember.Component.extend({
 
     onDismiss() {
       let { newLocation, document } = this.getProperties('newLocation', 'document');
-      let currentLocation = this.get('newLocation');
 
-      document.removeObject(currentLocation);
+      document.removeObject(newLocation);
 
       this.set('errors', null);
       this.sendAction('dismiss');

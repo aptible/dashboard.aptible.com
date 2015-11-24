@@ -48,11 +48,16 @@ test('Locations page basic UI', function(assert) {
   signInAndVisit(locationsUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.locations', 'remains on locations step');
+    assert.equal(currentPath(), 'organization.setup.locations.index', 'remains on locations step');
     assert.ok(find('.empty-row:contains(No Locations.  Add one below.)').length,
               'shows empty row with no locations');
     assert.ok(find('button:disabled:contains(Continue)').length,
               'Continue button is disabled');
+  });
+
+  andThen(openLocationDialog);
+
+  andThen(() => {
     ['description', 'streetAddress', 'city', 'zip'].forEach(function(field) {
       assert.ok(find(`input[name="${field}"]`).length, `has a ${field} field`);
     });
@@ -67,6 +72,8 @@ test('Adding location adds to location index', function(assert) {
   stubProfile({ currentStep: 'locations' });
   stubRequests();
   signInAndVisit(locationsUrl);
+
+  andThen(openLocationDialog);
 
   andThen(() => {
     fillInLocation({ description: 'Headquarters' });
@@ -95,8 +102,10 @@ test('Adding an incomplete location shows an error message', function(assert) {
   stubRequests();
   signInAndVisit(locationsUrl);
 
+  andThen(openLocationDialog);
+
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.locations', 'remains on location step');
+    assert.equal(currentPath(), 'organization.setup.locations.index', 'remains on location step');
     fillInLocation();
   });
 
@@ -137,6 +146,7 @@ test('Clicking continue creates locations attestation', function(assert) {
   stubRequests();
   signInAndVisit(locationsUrl);
 
+  andThen(openLocationDialog);
   andThen(() => { fillInLocation(); });
   andThen(clickAddButton);
   andThen(clickContinueButton);
@@ -164,8 +174,13 @@ function fillInLocation(locationData) {
   selectState(locationData.state);
 }
 
+function openLocationDialog() {
+  let openButton = findWithAssert('button:contains(Add new location)');
+  openButton.click();
+}
+
 function clickAddButton() {
-  let addButton = findWithAssert('button[type="submit"]:contains(Add)');
+  let addButton = findWithAssert('button[type="submit"]:contains(Add Location)');
   addButton.click();
 }
 

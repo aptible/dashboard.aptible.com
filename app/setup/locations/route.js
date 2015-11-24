@@ -29,9 +29,6 @@ export default Ember.Route.extend({
   setupController(controller, model) {
     let { schemaDocument, schema } = model;
 
-    controller.set('model', schemaDocument);
-    controller.set('locationSchema', schema);
-
     controller.set('schema', schema);
     controller.set('document', schemaDocument);
   },
@@ -61,7 +58,7 @@ export default Ember.Route.extend({
     },
 
     onAddLocation() {
-      let newLocation = this.controller.get('model').addItem();
+      let newLocation = this.controller.get('document').addItem();
       this.controller.setProperties({ newLocation });
     }
   }
