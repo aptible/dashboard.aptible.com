@@ -30,7 +30,8 @@ Router.map(function() {
       this.route('locations', {}, function() {
         this.modal('add-location-modal', {
           withParams: ['newLocation'],
-          otherParams: ['document', 'schema', 'newLocation']
+          otherParams: ['document', 'schema', 'newLocation'],
+          dismissWithOutsideClick: false
         });
       });
       this.route('team');

@@ -1,6 +1,11 @@
 import Ember from 'ember';
 import { locationProperty } from 'sheriff/setup/locations/route';
 
+var description = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                   Donec aliquet purus ornare condimentum malesuada.
+                   Pellentesque diam mi, fermentum ut sapien eu, vehicula
+                   dictum elit. Integer cursus sagittis ullamcorper`;
+
 export default Ember.Component.extend({
   classNames: ['add-location-form'],
   errors: null,
@@ -11,6 +16,7 @@ export default Ember.Component.extend({
     let { document, schema } = this.getProperties('document', 'schema');
 
     this.set('locationProperties', schema.itemProperties);
+    this.set('description', description);
   },
 
   actions: {
@@ -43,7 +49,9 @@ export default Ember.Component.extend({
         this.set('newLocation', document.addItem());
         this.sendAction('dismiss');
       });
-    }
+    },
+
+    outsideClick: Ember.K
   }
 });
 

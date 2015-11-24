@@ -66,4 +66,3 @@ export default Ember.Route.extend({
     }
   }
 });
-//{{add-location-form document=model schema=locationSchema}}
