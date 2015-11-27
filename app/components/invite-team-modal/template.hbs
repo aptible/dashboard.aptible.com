@@ -17,10 +17,7 @@
             <option disabled>Select role...</option>
             {{#each roles as |role|}}
               <option selected={{if (eq selected.id role.id) true null}} value="{{role.id}}">
-                {{#if role.privileged}}
-                  (Admin) 
-                {{/if}}
-                {{role.name}}
+                {{if role.privileged "(Admin)" ''}} {{role.name}}
               </option>
             {{/each}}
           </select>
@@ -33,15 +30,15 @@
         <div class="form-group">
           <label>Email addresses</label>
 
-          {{textarea value=invitesList class="form-control" rows="5"}}
+          {{textarea value=invitesList class="form-control email-addresses" rows="5"}}
 
           <div class="form-tip">
             Tip: you can invite multiple users at once by separating email addresses with commas or semicolons.
           </div>
         </div>
 
-        <button class="btn btn-default btn-lg pull-right" type="reset" {{action "onDismiss"}}>Cancel</button>
-        <button class="btn btn-primary btn-lg" type="submit" {{action "sendInvitations"}}>Invite</button>
+        <button class="btn btn-default btn-lg pull-right cancel-invites" type="reset" {{action "onDismiss"}}>Cancel</button>
+        <button class="btn btn-primary btn-lg send-invites" type="submit" {{action "sendInvitations"}}>Invite</button>
       </form>
     </div>
   </div>
