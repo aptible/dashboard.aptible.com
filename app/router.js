@@ -34,7 +34,16 @@ Router.map(function() {
           dismissWithOutsideClick: false
         });
       });
-      this.route('team');
+      this.route('team', {}, function() {
+        this.modal('invite-team-modal', {
+          withParams: ['showInviteModal'],
+          otherParams: ['organization', 'roles'],
+          dismissWithOutsideClick: false,
+          actions: {
+            inviteTeam: 'inviteTeam'
+          }
+        });
+      });
       this.route('data-environments');
       this.route('security-controls');
       this.route('finish');

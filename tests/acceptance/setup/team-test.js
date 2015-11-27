@@ -113,6 +113,16 @@ module('Acceptance: Setup: Team', {
   }
 });
 
+test('You are redirected to correct step if not ready for team step', function(assert) {
+  stubProfile({ currentStep: 'organization' });
+  stubRequests();
+  signInAndVisit(teamUrl);
+
+  andThen(() => {
+    assert.equal(currentPath(), 'organization.setup.organization', 'redirected to organization step');
+  })
+});
+
 test('Team shows all organization users', function(assert) {
   stubProfile({ currentStep: 'team' });
   stubRequests();
