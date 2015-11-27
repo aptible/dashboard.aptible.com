@@ -56,7 +56,8 @@ export default Ember.Route.extend({
     inviteTeam(inviteList, roleId) {
       let organization = this.modelFor('organization');
       let role = organization.get('roles').findBy('id', roleId);
-      let promises = inviteList.map((email) => {
+
+      inviteList.map((email) => {
         let inviteParams = { organization, role, email };
         return this.store.createRecord('invitation', inviteParams).save();
       });

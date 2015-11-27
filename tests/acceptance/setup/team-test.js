@@ -130,7 +130,7 @@ test('You are redirected to correct step if not ready for team step', function(a
 
   andThen(() => {
     assert.equal(currentPath(), 'organization.setup.organization', 'redirected to organization step');
-  })
+  });
 });
 
 test('Team shows all organization users', function(assert) {
@@ -265,6 +265,53 @@ test('Invite new member modal basic UI', function(assert) {
   });
 });
 
+test('Invite modal creates invitation record for each email', function(assert) {
+  expect(17);
+
+  let emailAddresses = 'skylar+1@aptible.com;skylar+2@aptible.com\nskylar+3@aptible.com skylar+4@aptible.com';
+  let roleId = basicRoleId;
+  let id = 1;
+
+  stubRequest('post', `/roles/${roleId}/invitations`, function(request) {
+    let json = this.json(request);
+    json.id = id++;
+
+    assert.ok(true, 'creates invitation');
+    assert.equal(json.role_id, roleId);
+    assert.equal(json.organization_id, orgId);
+
+    return this.success(json);
+  });
+
+  stubProfile({ currentStep: 'team' });
+  stubRequests();
+  signInAndVisit(teamUrl);
+
+  andThen(openInviteModal);
+  andThen(() => {
+    selectRole(roleId);
+    fillIn('textarea.email-addresses', emailAddresses);
+  });
+
+  andThen(() => {
+    let submitButton = findWithAssert('button.send-invites');
+    submitButton.click();
+  });
+
+  andThen(() => {
+    assert.equal(find('.lf-dialog').length, 0, 'dialog is closed');
+  });
+
+  andThen(clickInvitesTab);
+
+  andThen(() => {
+    assert.equal(find('td:contains(skylar+1@aptible.com)').length, 1, 'has new invite');
+    assert.equal(find('td:contains(skylar+2@aptible.com)').length, 1, 'has new invite');
+    assert.equal(find('td:contains(skylar+3@aptible.com)').length, 1, 'has new invite');
+    assert.equal(find('td:contains(skylar+4@aptible.com)').length, 1, 'has new invite');
+  });
+});
+
 // We can ship without these
 skip('Clicking re-invite button sends new invitation');
 skip('Clicking X button deletes pending invitation');
@@ -278,6 +325,12 @@ function clickInvitesTab() {
 function openInviteModal() {
   let button = findWithAssert('button:contains(Invite more users)');
   button.click();
+}
+
+function selectRole(roleId) {
+  let select = findWithAssert('select.select-role');
+  select.val(basicRoleId);
+  select.trigger('change');
 }
 
 function stubRequests() {

@@ -25,7 +25,7 @@ export default Ember.Component.extend({
   }),
 
   validEmails: Ember.computed.filter('splitInviteList', function(email) {
-    return VALID_EMAIL_REGEX.exec(email)
+    return VALID_EMAIL_REGEX.exec(email);
   }),
 
   invalidEmails: Ember.computed.setDiff('splitInviteList', 'validEmails'),
