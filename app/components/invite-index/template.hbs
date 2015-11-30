@@ -4,6 +4,7 @@
       <tr>
         <th>Email</th>
         <th>Role</th>
+        <th>Invited by</th>
         <th>Invited on</th>
         <th class="two-actions"></th>
       </tr>
@@ -14,6 +15,7 @@
         <tr>
           <td><strong>{{invitation.email}}</strong></td>
           <td>{{invitation.role.name}}</td>
+          <td>{{invitation.inviterName}}</td>
           <td>{{format-date invitation.createdAt}}</td>
           <td class="row-actions two-actions">
             <ul class="row-action-nav">

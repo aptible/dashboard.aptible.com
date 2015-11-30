@@ -151,7 +151,7 @@ test('Clicking continue creates locations attestation', function(assert) {
   andThen(clickAddButton);
   andThen(clickContinueButton);
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.team', 'on next setup step');
+    assert.equal(currentPath(), 'organization.setup.team.index', 'on next setup step');
   });
 });
 

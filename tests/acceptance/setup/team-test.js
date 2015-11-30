@@ -11,6 +11,7 @@ let userId = 'basic-user-1';
 let developerId = 'developer-user-2';
 let basicRoleId = 'basic-role-1';
 let developerRoleId = 'developer-role-2';
+let adminRoleId = 'admin-role-3';
 let users = [
   {
     id: userId,
@@ -55,6 +56,15 @@ let roles = [
     _links: {
       self: { href: `/roles/${developerRoleId}` },
       users: { href: `/roles/${developerRoleId}/users`}
+    }
+  },
+  {
+    id: adminRoleId,
+    privileged: true,
+    name: 'Admin Role',
+    _links: {
+      self: { href: `/roles/${adminRoleId}` },
+      users: { href: `/roles/${adminRoleId}/users`}
     }
   }
 ];
@@ -111,6 +121,16 @@ module('Acceptance: Setup: Team', {
   afterEach() {
     Ember.run(application, 'destroy');
   }
+});
+
+test('You are redirected to correct step if not ready for team step', function(assert) {
+  stubProfile({ currentStep: 'organization' });
+  stubRequests();
+  signInAndVisit(teamUrl);
+
+  andThen(() => {
+    assert.equal(currentPath(), 'organization.setup.organization', 'redirected to organization step');
+  });
 });
 
 test('Team shows all organization users', function(assert) {
@@ -210,9 +230,89 @@ test('Toggling user roles and clicking continue saves team attestation with corr
 
 });
 
+test('Invite new member modal basic UI', function(assert) {
+  stubProfile({ currentStep: 'team' });
+  stubRequests();
+  signInAndVisit(teamUrl);
+
+  andThen(openInviteModal);
+
+  andThen(() => {
+    assert.equal(find('h1:contains(Invite your workforce)').length, 1, 'has a modal title');
+
+    let roleSelect = find('select.select-role');
+
+    // It should have a dropdown with roles
+    assert.equal(roleSelect.length, 1, 'has a role select');
+    assert.equal(roleSelect.find('option').length, 4, 'role select has 3 options');
+    assert.ok(roleSelect.find('option:first').is(':disabled'), 'first option is disabled');
+    assert.equal(roleSelect.find('option:contains((Admin) Admin Role)').length, 1, 'Admin roles have (Admin) prefix');
+
+    // It should have a text area
+    assert.equal(find('textarea.email-addresses').length, 1, 'has an email address text area');
+
+    // It should have an Invite button and a Cancel button
+    assert.equal(find('button.cancel-invites:contains(Cancel)').length, 1, 'has a cancel button');
+    assert.equal(find('button.send-invites:contains(Invite)').length, 1, 'has an invite button');
+
+    // Clicking cancel should close the dialog
+    let cancelButton = find('button.cancel-invites');
+    cancelButton.click();
+  });
+
+  andThen(() => {
+    assert.equal(find('.lf-dialog').length, 0, 'dialog is closed');
+  });
+});
+
+test('Invite modal creates invitation record for each email', function(assert) {
+  expect(17);
+
+  let emailAddresses = 'skylar+1@aptible.com;skylar+2@aptible.com\nskylar+3@aptible.com skylar+4@aptible.com';
+  let roleId = basicRoleId;
+  let id = 1;
+
+  stubRequest('post', `/roles/${roleId}/invitations`, function(request) {
+    let json = this.json(request);
+    json.id = id++;
+
+    assert.ok(true, 'creates invitation');
+    assert.equal(json.role_id, roleId);
+    assert.equal(json.organization_id, orgId);
+
+    return this.success(json);
+  });
+
+  stubProfile({ currentStep: 'team' });
+  stubRequests();
+  signInAndVisit(teamUrl);
+
+  andThen(openInviteModal);
+  andThen(() => {
+    selectRole(roleId);
+    fillIn('textarea.email-addresses', emailAddresses);
+  });
+
+  andThen(() => {
+    let submitButton = findWithAssert('button.send-invites');
+    submitButton.click();
+  });
+
+  andThen(() => {
+    assert.equal(find('.lf-dialog').length, 0, 'dialog is closed');
+  });
+
+  andThen(clickInvitesTab);
+
+  andThen(() => {
+    assert.equal(find('td:contains(skylar+1@aptible.com)').length, 1, 'has new invite');
+    assert.equal(find('td:contains(skylar+2@aptible.com)').length, 1, 'has new invite');
+    assert.equal(find('td:contains(skylar+3@aptible.com)').length, 1, 'has new invite');
+    assert.equal(find('td:contains(skylar+4@aptible.com)').length, 1, 'has new invite');
+  });
+});
+
 // We can ship without these
-skip('Inviting new users modal');
-skip('Clicking continue saves team attestation');
 skip('Clicking re-invite button sends new invitation');
 skip('Clicking X button deletes pending invitation');
 skip('Clicking X button removes user from organization');
@@ -220,6 +320,17 @@ skip('Clicking X button removes user from organization');
 function clickInvitesTab() {
   let tab = findWithAssert('a:contains(Pending Invitations)');
   tab.click();
+}
+
+function openInviteModal() {
+  let button = findWithAssert('button:contains(Invite more users)');
+  button.click();
+}
+
+function selectRole(roleId) {
+  let select = findWithAssert('select.select-role');
+  select.val(basicRoleId);
+  select.trigger('change');
 }
 
 function stubRequests() {

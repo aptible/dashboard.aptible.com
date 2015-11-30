@@ -17,8 +17,20 @@ export default Ember.Route.extend({
     });
   },
 
+  afterModel() {
+    let profile = this.modelFor('setup');
+
+    if(!profile.isReadyForStep('team')) {
+      return this.transitionTo(`setup.${profile.get('currentStep')}`);
+    }
+  },
+
   setupController(controller, model) {
+    let organization = this.modelFor('organization');
+
     controller.set('users', model.users);
+    controller.set('roles', organization.get('roles'));
+    controller.set('organization', organization);
     controller.set('invitations', model.invitations);
     controller.set('schemaDocument', model.schemaDocument);
   },
@@ -28,13 +40,26 @@ export default Ember.Route.extend({
       let { schemaDocument, attestation } = this.currentModel;
       let profile = this.modelFor('setup');
 
-
       attestation.set('document', schemaDocument);
       attestation.save().then(() => {
         profile.next();
         profile.save().then(() => {
           this.transitionTo(`setup.${profile.get('currentStep')}`);
         });
+      });
+    },
+
+    showInviteModal() {
+      this.controller.set('showInviteModal', true);
+    },
+
+    inviteTeam(inviteList, roleId) {
+      let organization = this.modelFor('organization');
+      let role = organization.get('roles').findBy('id', roleId);
+
+      inviteList.map((email) => {
+        let inviteParams = { organization, role, email };
+        return this.store.createRecord('invitation', inviteParams).save();
       });
     }
   }
