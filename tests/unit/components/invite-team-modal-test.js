@@ -26,7 +26,7 @@ testCases.forEach((testCase) => {
       }
     };
 
-    var component = this.subject({
+    let component = this.subject({
       invitesList: testCase,
       role: 'r1',
       targetObject: targetObject,
@@ -36,4 +36,31 @@ testCases.forEach((testCase) => {
     this.render();
     this.$('button.send-invites').click();
   });
+});
+
+test('splitInviteList spits emails using delimiter', function(assert) {
+  let testCase = 'skylar@aptible.com; s@ap.it; zergrush gogo';
+  let expected = ['skylar@aptible.com', 's@ap.it', 'zergrush', 'gogo'];
+  let component = this.subject({ invitesList: testCase, role: 'r1' });
+
+  assert.deepEqual(component.get('splitInviteList'), expected,
+                   'splitInviteList is correct');
+});
+
+test('validEmails only includes valid emails', function(assert) {
+  let testCase = 'skylar@aptible.com; zergrush;s@ap.it; gogo';
+  let expected = ['skylar@aptible.com', 's@ap.it'];
+  let component = this.subject({ invitesList: testCase, role: 'r1' });
+
+  assert.deepEqual(component.get('validEmails'), expected,
+                   'validEmails is correct');
+});
+
+test('invalidEmails includes invalid emails', function(assert) {
+  let testCase = 'skylar@aptible.com; zergrush;s@ap.it; gogo';
+  let expected = ['zergrush', 'gogo'];
+  let component = this.subject({ invitesList: testCase, role: 'r1' });
+
+  assert.deepEqual(component.get('invalidEmails'), expected,
+                   'invalidEmails is correct');
 });
