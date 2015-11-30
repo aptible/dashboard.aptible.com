@@ -7,7 +7,7 @@ var description = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                    Pellentesque diam mi, fermentum ut sapien eu, vehicula
                    dictum elit. Integer cursus sagittis ullamcorper`;
 
-export const EMAIL_STRING_DELIMITER = /,|;|\s/;
+export const EMAIL_STRING_DELIMITER = /[,|;|\s]+/;
 
 export default Ember.Component.extend({
   classNames: ['invite-team'],
