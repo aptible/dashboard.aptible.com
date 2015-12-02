@@ -128,7 +128,7 @@ module.exports = function(environment) {
   if (environment === 'staging') {
     ENV.segmentioKey = '6jZlAcweTojgXShBvn4B9Tvwr1IlqkEE';
 
-    ENV.featureFlags['price-estimator'] = false;
+    ENV.featureFlags['price-estimator'] = true;
 
     ENV.sentry.whitelistUrls = ['dashboard.aptible-staging.com'];
     ENV.sentry.development = false;
@@ -143,7 +143,7 @@ module.exports = function(environment) {
     ENV.segmentioKey = '5aOlxMYapu6bQCQYFbDz7rhNvVV7B1A5';
 
     ENV.featureFlags['organization-settings'] = true;
-    ENV.featureFlags['price-estimator'] = false;
+    ENV.featureFlags['price-estimator'] = true;
     ENV.featureFlags['notifications'] = true;
     ENV.featureFlags['organization-billing-settings'] = true;
 
