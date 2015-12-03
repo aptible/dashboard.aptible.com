@@ -44,7 +44,6 @@ module('Acceptance: Setup: Security Controls', {
 
 let selectedDataEnvironments = [
   { name: 'Aptible PaaS', provider: 'aptible', handle: 'aptible' },
-  { name: 'EC2', provider: 'aws', handle: 'ec2', },
   { name: 'S3', provider: 'aws', handle: 's3' },
   { name: 'Google Drive', provider: 'google', handle: 'google-drive' }
 ];
@@ -56,9 +55,10 @@ test('Selected data environments are used to draw security control questionnaire
 
   andThen(() => {
     // Should show AWS Provider questions
+
     assert.ok(find('.data-environment-provider.sm.aws').length, 'Has an AWS provider logo');
     assert.ok(find('.title:contains(AWS Console Access)').length, 'Has an AWS provider question');
-    assert.ok(find('.panel-title:contains(EC2)').length, 'Has Google Drive DE panel');
+    assert.ok(find('.panel-title:contains(S3)').length, 'Has an S3 panel');
 
     // Should show Google Provider questions
     assert.ok(find('.data-environment-provider.sm.google').length, 'Has an Google provider logo');
@@ -82,7 +82,7 @@ test('Selected data environments are used to draw security control questionnaire
 });
 
 test('Clicking continue saves attestation for each global, provider, and data environment', function(assert) {
-  expect(22);
+  expect(20);
   let attestationId = 0;
   let expectedAttestationHandles = ['provider-aptible', 'provider-aws',
                                     'provider-google', 'data-environment-ec2',
