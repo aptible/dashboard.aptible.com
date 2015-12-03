@@ -12,11 +12,14 @@
 
   .data-environment-provider {
     float: left;
-    margin-right: 25px;
   }
 
   .info {
     margin-right: 300px;
+
+    &.show-provider-image {
+      margin-left: 125px;
+    }
 
     .title {
       font-size: 14px;
@@ -33,6 +36,10 @@
   .toggle {
     text-align: right;
     margin-top: 11px;
+  }
+
+  .x-toggle-container-disabled {
+    opacity: .33;
   }
 
   .toggle-text {
@@ -53,3 +60,11 @@
   }
 }
 
+.locked-property {
+  display: block;
+  float: right;
+  width: 20px;
+  margin-top: 12px;
+  text-align: right;
+  color: #ddd;
+}

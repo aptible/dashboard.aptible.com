@@ -1,21 +1,7 @@
 .data-environment-provider {
   &.sm {
-    &.aptible {
-      img {
-        height: 30px;
-      }
-    }
-
-    &.google {
-      img {
-        height: 30px;
-      }
-    }
-
-    &.aws {
-      img {
-        height: 38px;
-      }
+    img {
+      height: 30px;
     }
   }
 }

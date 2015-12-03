@@ -82,7 +82,7 @@ test('Clicking continue saves data environment selections to organization profil
     { name: 'Aptible PaaS', provider: 'aptible', handle: 'aptible', selected: true },
     { name: 'Amazon S3', provider: 'aws', handle: 's3', selected: true },
     { name: 'Gmail', provider: 'google', handle: 'gmail', selected: true },
-    { name: 'Laptops', provider: false, handle: 'laptops', selected: true }
+    { name: 'Mailgun', provider: 'mailgun', handle: 'mailgun', selected: true }
   ];
 
   stubProfile({ currentStep: 'data-environments' });
@@ -112,7 +112,7 @@ test('Clicking continue saves data environment selections to organization profil
   andThen(() => {
     enableDataEnvironment('Amazon S3');
     enableDataEnvironment('Gmail');
-    enableDataEnvironment('Laptops');
+    enableDataEnvironment('Mailgun');
   });
 
   andThen(clickContinueButton);

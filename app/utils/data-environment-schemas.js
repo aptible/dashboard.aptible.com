@@ -1,28 +1,18 @@
 import Schema from 'ember-json-schema/models/schema';
 
-// For now, just import schemas statically and map the selected DEs and providers
-// When Gridiron is able to serve schemas, this will be replaced with API calls
-// to load previous step's selections
-
+// Provider Schemas
 import aptibleSchema from 'sheriff/schemas/providers/aptible';
 import awsSchema from 'sheriff/schemas/providers/aws';
 import googleSchema from 'sheriff/schemas/providers/google';
-import ebsSchema from 'sheriff/schemas/data-environments/ebs';
-import ec2Schema from 'sheriff/schemas/data-environments/ec2';
-import elbSchema from 'sheriff/schemas/data-environments/elb';
-import glacierSchema from 'sheriff/schemas/data-environments/glacier';
+
+// Data Environment Schemas
 import gmailSchema from 'sheriff/schemas/data-environments/gmail';
 import googleCalendarSchema from 'sheriff/schemas/data-environments/google-calendar';
 import googleDriveSchema from 'sheriff/schemas/data-environments/google-drive';
-import googleVaultSchema from 'sheriff/schemas/data-environments/vault';
-import laptopsSchema from 'sheriff/schemas/data-environments/laptops';
-import onPremiseSchema from 'sheriff/schemas/data-environments/on-premise';
-import paperSchema from 'sheriff/schemas/data-environments/paper';
-import phoneSchema from 'sheriff/schemas/data-environments/phone';
-import redshiftSchema from 'sheriff/schemas/data-environments/redshift';
+import mailgunSchema from 'sheriff/schemas/data-environments/mailgun';
 import s3Schema from 'sheriff/schemas/data-environments/s3';
-import usbSchema from 'sheriff/schemas/data-environments/usb';
-import workstationsSchema from 'sheriff/schemas/data-environments/workstations';
+
+// Global Schemas
 import securityProceduresSchema from 'sheriff/schemas/global/security-procedures';
 import workforceControlsSchema from 'sheriff/schemas/global/workforce-controls';
 import workstationControlsSchema from 'sheriff/schemas/global/workstation-controls';
@@ -35,22 +25,11 @@ export var schemaMap = {
   },
 
   dataEnvironments: {
-    ebs: ebsSchema,
-    ec2: ec2Schema,
-    elb: elbSchema,
-    glacier: glacierSchema,
     gmail: gmailSchema,
     'google-calendar': googleCalendarSchema,
     'google-drive': googleDriveSchema,
-    'google-vault': googleVaultSchema,
-    laptops: laptopsSchema,
-    'on-premise': onPremiseSchema,
-    paper: paperSchema,
-    phone: phoneSchema,
-    redshift: redshiftSchema,
+    mailgun: mailgunSchema,
     s3: s3Schema,
-    usb: usbSchema,
-    workstations: workstationsSchema
   },
 
   globals: {
@@ -76,16 +55,31 @@ export function getSecurityControlGroups(dataEnvironments) {
   let providers = selectedProviders(dataEnvironments);
 
   providers.forEach((provider) => {
-    securityControlGroups.push({ schema: schemaMap.providers[provider], provider, handle: `provider-${provider}` });
-    securityControlGroups = securityControlGroups.concat(getDataEnvironmentsByProvider(provider, dataEnvironments));
+    if(schemaMap.providers[provider]) {
+      // If the schema map has a schema for this provider, push that schema
+      // Not all data environments have a provider
+      securityControlGroups.push({
+        schema: schemaMap.providers[provider], handle: `provider-${provider}`,
+        provider
+      });
+    }
+
+    // Push all data environments that refer to this provider
+    securityControlGroups = securityControlGroups.concat(
+      getDataEnvironmentsByProvider(provider, dataEnvironments)
+    );
   });
 
-  securityControlGroups.push({ schema: schemaMap.providers.aptible, provider: 'aptible', handle: 'provider-aptible' });
-
-  // Push all globals schemas
+  // Loop over all global schemas and push them
   for(var globalSchema in schemaMap.globals) {
     securityControlGroups.push({ schema: schemaMap.globals[globalSchema], provider: 'global', handle: `global-${globalSchema}` });
   }
+
+  // Push aptible provider schema
+  securityControlGroups.push({
+    schema: schemaMap.providers.aptible, provider: 'aptible',
+    handle: 'provider-aptible'
+  });
 
   return mapAndCreateSchemaDocuments(securityControlGroups);
 }
