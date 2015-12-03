@@ -1,4 +1,9 @@
 <div class='options'>
+  {{#if property.displayProperties.disabled}}
+    <div class="locked-property">
+      <i class="fa fa-lock"></i>
+    </div>
+  {{/if}}
   {{component (concat 'schema-field-' type) key=key property=property document=document}}
 </div>
 
@@ -8,7 +13,7 @@
   </div>
 {{/if}}
 
-<div class="info">
+<div class="info {{if showProvider "show-provider-image"}}">
   <h4 class="title">{{property.displayProperties.title}}</h4>
   <div class="description">{{property.displayProperties.description}}</div>
 </div>
