@@ -12,7 +12,11 @@ export const DATA_ENVIRONMENTS = [
 export default Ember.Route.extend({
   model() {
     let dataEnvironments = DATA_ENVIRONMENTS.map((de) => Ember.Object.create(de));
-    let attestation = this.store.createRecord('attestation', { handle: 'selected-data-environments' });
+    let organization = this.modelFor('organization');
+    let attestation = this.store.createRecord('attestation', {
+      handle: 'selected-data-environments',
+      organization: organization.get('data.links.self')
+    });
 
     return { dataEnvironments, attestation};
   },

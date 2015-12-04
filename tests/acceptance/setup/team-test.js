@@ -169,6 +169,7 @@ test('Toggling user roles and clicking continue saves team attestation with corr
   expect(4);
   let expectedAttestation = {
     handle: 'team',
+    organization: `/organizations/${orgId}`,
     document: [
       {
         email: 'basicuser@asdf.com',

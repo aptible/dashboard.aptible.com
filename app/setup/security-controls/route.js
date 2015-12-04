@@ -21,12 +21,11 @@ export default Ember.Route.extend({
   actions: {
     onNext() {
       let profile = this.modelFor('setup');
-
+      let organization = this.modelFor('organization');
       let promises = this.currentModel.map((securityGroup) => {
-        // REVIEW: This creates an attestation for each provider, data
-        // environment, and global.  Should these be consolodated?
         let attestation = { handle: securityGroup.handle,
-                            document: securityGroup.document };
+                            document: securityGroup.document,
+                            organization: organization.get('data.links.self') };
         return this.store.createRecord('attestation', attestation).save();
       });
 
