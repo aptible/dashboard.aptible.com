@@ -1,8 +1,9 @@
 import Ember from 'ember';
 import Schema from 'ember-json-schema/models/schema';
 import teamSchema from 'sheriff/schemas/team';
+import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(SPDRouteMixin, {
   model() {
     let schema = new Schema(teamSchema);
     let organization = this.modelFor('organization');
@@ -44,7 +45,7 @@ export default Ember.Route.extend({
 
       attestation.set('document', schemaDocument);
       attestation.save().then(() => {
-        profile.next();
+        profile.next(this.get('stepName'));
         profile.save().then(() => {
           this.transitionTo(`setup.${profile.get('currentStep')}`);
         });

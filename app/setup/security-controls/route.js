@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import { getSecurityControlGroups } from 'sheriff/utils/data-environment-schemas';
+import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(SPDRouteMixin, {
   beforeModel() {
     let profile = this.modelFor('setup');
     let selectedDataEnvironments = profile.get('selectedDataEnvironments');
@@ -10,6 +11,8 @@ export default Ember.Route.extend({
       return this.transitionTo('setup.data-environments');
     }
   },
+
+  afterModel() {},
 
   model() {
     let profile = this.modelFor('setup');
@@ -30,7 +33,7 @@ export default Ember.Route.extend({
       });
 
       Ember.RSVP.all(promises).then(() => {
-        profile.next();
+        profile.next(this.get('stepName'));
         profile.set('hasCompletedSetup', true);
 
         profile.save().then(() => {

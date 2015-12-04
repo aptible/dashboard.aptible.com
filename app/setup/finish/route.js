@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
 
 export const NEXT_STEPS = [
   { key: 'risk', title: 'Complete a Risk Analysis', cta: 'Begin Risk Analysis', current: true, step: 2 },
@@ -7,7 +8,7 @@ export const NEXT_STEPS = [
   { key: 'contracts', title: 'Upload your Business Associate Agreements', cta: 'Upload BAAs', step: 5 }
 ];
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(SPDRouteMixin, {
   model() {
     return NEXT_STEPS;
   }

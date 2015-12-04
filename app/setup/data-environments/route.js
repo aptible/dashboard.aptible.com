@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
 
 export const DATA_ENVIRONMENTS = [
   { name: 'Aptible PaaS', provider: 'aptible', handle: 'aptible', selected: true },
@@ -9,7 +10,7 @@ export const DATA_ENVIRONMENTS = [
   { name: 'Mailgun', provider: 'mailgun', handle: 'mailgun', selected: false }
 ];
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(SPDRouteMixin, {
   model() {
     let dataEnvironments = DATA_ENVIRONMENTS.map((de) => Ember.Object.create(de));
     let organization = this.modelFor('organization');
@@ -26,25 +27,7 @@ export default Ember.Route.extend({
     controller.set('attestation', model.attestation);
   },
 
-  afterModel() {
-    let profile = this.modelFor('setup');
-
-    if(!profile.isReadyForStep('data-environments')) {
-      return this.transitionTo(`setup.${profile.get('currentStep')}`);
-    }
-  },
-
   actions: {
-    onPrevious() {
-      let profile = this.modelFor('setup');
-
-      profile.previous();
-      profile.save().then(() => {
-        let previousPath = `setup.${profile.get('currentStep')}`;
-        this.transitionTo(previousPath);
-      });
-    },
-
     onNext() {
       let { attestation, dataEnvironments } = this.currentModel;
       let profile = this.modelFor('setup');
@@ -53,7 +36,7 @@ export default Ember.Route.extend({
       profile.setProperties({ selectedDataEnvironments });
       attestation.set('document', selectedDataEnvironments);
       attestation.save().then(() => {
-        profile.next();
+        profile.next(this.get('stepName'));
         profile.save().then(() => {
           this.transitionTo(`setup.${profile.get('currentStep')}`);
         });

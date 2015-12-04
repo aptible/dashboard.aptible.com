@@ -18,6 +18,7 @@
   margin: 8px 0 0;
   padding: 0;
   position: relative;
+  z-index: 1;
 
   .spd-progress-step {
     display: inline-block;
@@ -81,7 +82,9 @@
   margin: 0;
   padding: 0;
   float: right;
+  position: relative;
   list-style-type: none;
+  z-index: 2;
 
   li {
     display: inline-block;

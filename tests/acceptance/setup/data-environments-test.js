@@ -75,6 +75,26 @@ test('Lists all data environments', function(assert) {
   });
 });
 
+test('Clicking back should return you to previous step', function(assert) {
+  stubProfile({ currentStep: 'data-environments' });
+  stubRequests();
+  signInAndVisit(dataEnvironmentsUrl);
+
+  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
+    let json = this.json(request);
+    json.id = orgId;
+    return this.success(json);
+  });
+
+  andThen(() => {
+    find('button:contains(Back)').click();
+  });
+
+  andThen(() => {
+    assert.equal(currentPath(), 'organization.setup.team.index', 'returned to team step');
+  });
+});
+
 test('Clicking continue saves data environment selections to organization profile', function(assert) {
   expect(6);
 
