@@ -133,6 +133,26 @@ test('You are redirected to correct step if not ready for team step', function(a
   });
 });
 
+test('Clicking back should return you to previous step', function(assert) {
+  stubProfile({ currentStep: 'team' });
+  stubRequests();
+  signInAndVisit(teamUrl);
+
+  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
+    let json = this.json(request);
+    json.id = orgId;
+    return this.success(json);
+  });
+
+  andThen(() => {
+    find('button:contains(Back)').click();
+  });
+
+  andThen(() => {
+    assert.equal(currentPath(), 'organization.setup.locations.index', 'returned to locations step');
+  });
+});
+
 test('Team shows all organization users', function(assert) {
   stubProfile({ currentStep: 'team' });
   stubRequests();

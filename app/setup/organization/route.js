@@ -1,26 +1,8 @@
 import Ember from 'ember';
+import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(SPDRouteMixin, {
   model() {
     return this.modelFor('setup');
-  },
-
-  afterModel() {
-    let profile = this.modelFor('setup');
-
-    if(!profile.isReadyForStep('organization')) {
-      return this.transitionTo(`setup.${profile.get('currentStep')}`);
-    }
-  },
-
-  actions: {
-    onNext() {
-      let profile = this.currentModel;
-
-      profile.next();
-      profile.save().then(() => {
-        this.transitionTo(`setup.${profile.get('currentStep')}`);
-      });
-    }
   }
 });

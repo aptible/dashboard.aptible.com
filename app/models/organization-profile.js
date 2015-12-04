@@ -31,15 +31,15 @@ export default DS.Model.extend({
     return this.indexOfStep(step) <= this.get('indexOfCurrentStep');
   },
 
-  next() {
-    let currentStepIndex = this.get('indexOfCurrentStep');
+  next(currentStep) {
+    let currentStepIndex = this.indexOfStep(currentStep);
     this.set('currentStep', SETUP_STEPS[currentStepIndex + 1]);
 
     return this;
   },
 
-  previous() {
-    let currentStepIndex = this.get('indexOfCurrentStep');
+  previous(currentStep) {
+    let currentStepIndex = this.indexOfStep(currentStep);
     this.set('currentStep', SETUP_STEPS[(currentStepIndex - 1) || 0]);
 
     return this;

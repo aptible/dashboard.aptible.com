@@ -68,6 +68,26 @@ test('Locations page basic UI', function(assert) {
   });
 });
 
+test('Clicking back should return you to previous step', function(assert) {
+  stubProfile({ currentStep: 'locations' });
+  stubRequests();
+  signInAndVisit(locationsUrl);
+
+  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
+    let json = this.json(request);
+    json.id = orgId;
+    return this.success(json);
+  });
+
+  andThen(() => {
+    find('button:contains(Back)').click();
+  });
+
+  andThen(() => {
+    assert.equal(currentPath(), 'organization.setup.organization', 'returned to organization step');
+  });
+});
+
 test('Adding location adds to location index', function(assert) {
   stubProfile({ currentStep: 'locations' });
   stubRequests();
