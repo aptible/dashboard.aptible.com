@@ -5,8 +5,10 @@ import teamSchema from 'sheriff/schemas/team';
 export default Ember.Route.extend({
   model() {
     let schema = new Schema(teamSchema);
-    let attestation = this.store.createRecord('attestation', { handle: 'team' });
     let organization = this.modelFor('organization');
+    let attestation = this.store.createRecord('attestation', {
+      handle: 'team', organization: organization.get('data.links.self')
+    });
 
     return Ember.RSVP.hash({
       users: organization.get('users'),

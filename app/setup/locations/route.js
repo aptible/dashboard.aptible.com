@@ -9,7 +9,10 @@ export var locationProperty = new Property(locationsSchema.items);
 export default Ember.Route.extend({
   model() {
     let schema = new Schema(locationsSchema);
-    let attestation = this.store.createRecord('attestation', { handle: 'locations'});
+    let organization = this.modelFor('organization');
+    let attestation = this.store.createRecord('attestation', {
+      handle: 'locations', organization: organization.get('data.links.self')
+    });
 
     return {
       schema: schema,
