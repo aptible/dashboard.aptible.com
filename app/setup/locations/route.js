@@ -15,11 +15,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
       handle: 'locations', organization: organization.get('data.links.self')
     });
 
-    return {
-      schema: schema,
-      schemaDocument: schema.buildDocument(),
-      attestation: attestation
-    };
+    return { schema, attestation, schemaDocument: schema.buildDocument() };
   },
 
   setupController(controller, model) {

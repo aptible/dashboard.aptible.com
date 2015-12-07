@@ -1,4 +1,8 @@
+import Ember from 'ember';
 import Schema from 'ember-json-schema/models/schema';
+
+// Import data environment schema
+import dataEnvironmentsSchemaJson from 'sheriff/schemas/data-environments';
 
 // Provider Schemas
 import aptibleSchema from 'sheriff/schemas/providers/aptible';
@@ -26,10 +30,10 @@ export var schemaMap = {
 
   dataEnvironments: {
     gmail: gmailSchema,
-    'google-calendar': googleCalendarSchema,
-    'google-drive': googleDriveSchema,
+    googleCalendar: googleCalendarSchema,
+    googleDrive: googleDriveSchema,
     mailgun: mailgunSchema,
-    s3: s3Schema,
+    amazonS3: s3Schema,
   },
 
   globals: {
@@ -39,27 +43,20 @@ export var schemaMap = {
   }
 };
 
-export function selectedProviders(dataEnvironments) {
-  // From a set of provided DEs, determine which providers are being used
-  return dataEnvironments
-         .filter((d) => d.provider)
-         .map((d) => d.provider)
-         .uniq()
-         .without('aptible');
-}
 
 export function getSecurityControlGroups(dataEnvironments) {
   // Given a collection of data environments, collect DEs by provider, flatten,
   // and map to imported schemas
   let securityControlGroups = [];
-  let providers = selectedProviders(dataEnvironments);
+  let providers = getSelectedProviders(dataEnvironments);
 
   providers.forEach((provider) => {
     if(schemaMap.providers[provider]) {
       // If the schema map has a schema for this provider, push that schema
       // Not all data environments have a provider
       securityControlGroups.push({
-        schema: schemaMap.providers[provider], handle: `provider-${provider}`,
+        schema: schemaMap.providers[provider],
+        handle: `provider-${provider}`,
         provider
       });
     }
@@ -85,12 +82,14 @@ export function getSecurityControlGroups(dataEnvironments) {
 }
 
 function getDataEnvironmentsByProvider(provider, dataEnvironments) {
-  return dataEnvironments.filter((de) => {
-    return de.provider === provider;
-  }).map((dataEnvironment) => {
+  return dataEnvironments.filter((deName) => {
+    return getDataEnvironmentProvider(deName) === provider;
+  }).map((dataEnvironmentName) => {
+    let dataEnvironment = getDataEnvironmentByName(dataEnvironmentName);
+
     return {
-      schema: schemaMap.dataEnvironments[dataEnvironment.handle],
-      handle: `data-environment-${dataEnvironment.handle}`,
+      schema: schemaMap.dataEnvironments[dataEnvironmentName],
+      handle: `data-environment-${dataEnvironmentName}`,
       dataEnvironment,
       provider
     };
@@ -108,6 +107,29 @@ function mapAndCreateSchemaDocuments(controlGroups) {
 
     return { schema, document, dataEnvironment, title, provider, handle };
   });
+}
+
+export function getDataEnvironmentByName(dataEnvironmentName) {
+  return Ember.get(dataEnvironmentsSchemaJson.properties,
+                   `${dataEnvironmentName}.displayProperties`);
+}
+
+export function getDataEnvironmentProvider(dataEnvironmentName) {
+  return getDataEnvironmentByName(dataEnvironmentName).provider || false;
+}
+
+export function getSelectedProviders(dataEnvironments) {
+  // From a set of provided DEs, determine which providers are being used
+  let selectedProviders = [];
+
+  dataEnvironments.forEach((deName) => {
+    let provider = getDataEnvironmentProvider(deName);
+    if (provider) {
+      selectedProviders.push(provider);
+    }
+  });
+
+  return selectedProviders.uniq().without('aptible');
 }
 
 export default getSecurityControlGroups;

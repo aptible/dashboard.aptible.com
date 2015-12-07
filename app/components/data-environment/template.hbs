@@ -1,0 +1,20 @@
+<td>
+  <strong>{{property.displayProperties.title}}</strong>
+</td>
+
+<td>
+  {{#if provider}}
+    {{provider-logo size="sm" provider=provider}}
+  {{/if}}
+</td>
+
+<td class="toggle-small align-right">
+  <div class='options'>
+    {{#if property.displayProperties.disabled}}
+      <div class="locked-property">
+        <i class="fa fa-lock"></i>
+      </div>
+    {{/if}}
+    {{schema-field-toggle key=handle property=property document=document}}
+  </div>
+</td>
