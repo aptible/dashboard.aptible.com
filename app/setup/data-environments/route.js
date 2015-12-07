@@ -1,37 +1,32 @@
 import Ember from 'ember';
 import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
-
-export const DATA_ENVIRONMENTS = [
-  { name: 'Aptible PaaS', provider: 'aptible', handle: 'aptible', selected: true },
-  { name: 'Amazon S3', provider: 'aws', handle: 's3', selected: false },
-  { name: 'Google Calendar', provider: 'google', handle: 'google-calendar', selected: false },
-  { name: 'Google Drive', provider: 'google', handle: 'google-drive', selected: false },
-  { name: 'Gmail', provider: 'google', handle: 'gmail', selected: false },
-  { name: 'Mailgun', provider: 'mailgun', handle: 'mailgun', selected: false }
-];
+import Schema from 'ember-json-schema/models/schema';
+import dataEnvironmentsSchemaJson from 'sheriff/schemas/data-environments';
 
 export default Ember.Route.extend(SPDRouteMixin, {
   model() {
-    let dataEnvironments = DATA_ENVIRONMENTS.map((de) => Ember.Object.create(de));
+    let dataEnvironmentsSchema = new Schema(dataEnvironmentsSchemaJson);
+    let schemaDocument = dataEnvironmentsSchema.buildDocument();
     let organization = this.modelFor('organization');
     let attestation = this.store.createRecord('attestation', {
-      handle: 'selected-data-environments',
+      handle: 'data-environments',
       organization: organization.get('data.links.self')
     });
 
-    return { dataEnvironments, attestation};
+    return { dataEnvironmentsSchema, attestation, schemaDocument };
   },
 
   setupController(controller, model) {
-    controller.set('model', model.dataEnvironments);
+    controller.set('model', model.dataEnvironmentsSchema);
+    controller.set('schemaDocument', model.schemaDocument);
     controller.set('attestation', model.attestation);
   },
 
   actions: {
     onNext() {
-      let { attestation, dataEnvironments } = this.currentModel;
+      let { attestation, schemaDocument } = this.currentModel;
       let profile = this.modelFor('setup');
-      let selectedDataEnvironments = dataEnvironments.filterBy('selected');
+      let selectedDataEnvironments = schemaDocument.toJSON();
 
       profile.setProperties({ selectedDataEnvironments });
       attestation.set('document', selectedDataEnvironments);

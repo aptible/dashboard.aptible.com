@@ -42,11 +42,7 @@ module('Acceptance: Setup: Security Controls', {
   }
 });
 
-let selectedDataEnvironments = [
-  { name: 'Aptible PaaS', provider: 'aptible', handle: 'aptible' },
-  { name: 'S3', provider: 'aws', handle: 's3' },
-  { name: 'Google Drive', provider: 'google', handle: 'google-drive' }
-];
+let selectedDataEnvironments = { aptible: true, amazonS3: true, googleDrive: true };
 
 test('Selected data environments are used to draw security control questionnaire', function(assert) {
   stubProfile({ currentStep: 'security-controls', selectedDataEnvironments });
@@ -108,8 +104,8 @@ test('Clicking continue saves attestation for each global, provider, and data en
   let attestationId = 0;
   let expectedAttestationHandles = ['provider-aptible', 'provider-aws',
                                     'provider-google', 'data-environment-ec2',
-                                    'data-environment-s3',
-                                    'data-environment-google-drive',
+                                    'data-environment-amazonS3',
+                                    'data-environment-googleDrive',
                                     'global-securityProcedures',
                                     'global-workforceControls',
                                     'global-workstationControls'];

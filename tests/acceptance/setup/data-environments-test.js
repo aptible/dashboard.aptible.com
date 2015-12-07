@@ -4,7 +4,6 @@ import startApp from 'sheriff/tests/helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
 import { orgId, rolesHref, usersHref, invitationsHref, securityOfficerId,
          securityOfficerHref } from '../../helpers/organization-stub';
-import { DATA_ENVIRONMENTS } from 'sheriff/setup/data-environments/route';
 
 let application;
 let dataEnvironmentsUrl = `${orgId}/setup/data-environments`;
@@ -12,7 +11,8 @@ let userId = 'basic-user-1';
 let developerId = 'developer-user-2';
 let basicRoleId = 'basic-role-1';
 let developerRoleId = 'developer-role-2';
-
+let dataEnvironments = ['Aptible', 'Amazon Simple Storage Service (Amazon S3)',
+                        'Google Calendar', 'Google Drive', 'Gmail', 'Mailgun'];
 let users = [
   {
     id: userId,
@@ -64,8 +64,8 @@ test('Lists all data environments', function(assert) {
   andThen(() => {
     let aptibleRow = findWithAssert('tr:contains(Aptible)');
 
-    DATA_ENVIRONMENTS.forEach(function(env) {
-      assert.ok(find(`td:contains(${env.name})`), `${env.name} is rendered`);
+    dataEnvironments.forEach(function(de) {
+      assert.ok(find(`td:contains(${de})`), `${de} is rendered`);
     });
 
     assert.ok(aptibleRow.find('td:last input[type="checkbox"]').is(':disabled'),
@@ -98,12 +98,14 @@ test('Clicking back should return you to previous step', function(assert) {
 test('Clicking continue saves data environment selections to organization profile', function(assert) {
   expect(6);
 
-  let expectedDataEnvironmentPayload = [
-    { name: 'Aptible PaaS', provider: 'aptible', handle: 'aptible', selected: true },
-    { name: 'Amazon S3', provider: 'aws', handle: 's3', selected: true },
-    { name: 'Gmail', provider: 'google', handle: 'gmail', selected: true },
-    { name: 'Mailgun', provider: 'mailgun', handle: 'mailgun', selected: true }
-  ];
+  let expectedDataEnvironmentPayload = {
+    amazonS3: true,
+    aptible: true,
+    gmail: true,
+    googleCalendar: false,
+    googleDrive: false,
+    mailgun: true
+  };
 
   stubProfile({ currentStep: 'data-environments' });
   stubRequests();
@@ -123,7 +125,7 @@ test('Clicking continue saves data environment selections to organization profil
     let json = this.json(request);
 
     assert.ok(true, 'posts to /attestations');
-    assert.equal(json.handle, 'selected-data-environments', 'includes attestation handle');
+    assert.equal(json.handle, 'data-environments', 'includes attestation handle');
     assert.deepEqual(json.document, expectedDataEnvironmentPayload, 'includes selected data environments as a document payload');
 
     return this.success({ id: 1 });

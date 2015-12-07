@@ -2,12 +2,28 @@ import Ember from 'ember';
 import { getSecurityControlGroups } from 'sheriff/utils/data-environment-schemas';
 import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
 
+export function getSelectedDataEnvironments(dataEnvironments) {
+  let selectedDataEnvironments = [];
+
+  for (var deName in dataEnvironments) {
+    if (dataEnvironments[deName]) {
+      selectedDataEnvironments.push(deName);
+    }
+  }
+
+  return selectedDataEnvironments;
+}
+
 export default Ember.Route.extend(SPDRouteMixin, {
   beforeModel() {
-    let profile = this.modelFor('setup');
-    let selectedDataEnvironments = profile.get('selectedDataEnvironments');
+    // TODO: Selected data environments should actually be loaded by attestaion
+    // and not as a field on organizationProfile.  Requires attestion fetch API
 
-    if(!selectedDataEnvironments || !selectedDataEnvironments.length) {
+    let profile = this.modelFor('setup');
+    let dataEnvironments = profile.get('selectedDataEnvironments') || {};
+    let selectedDataEnvironments = getSelectedDataEnvironments(dataEnvironments);
+
+    if(selectedDataEnvironments.length === 0) {
       return this.transitionTo('setup.data-environments');
     }
   },
@@ -16,7 +32,8 @@ export default Ember.Route.extend(SPDRouteMixin, {
 
   model() {
     let profile = this.modelFor('setup');
-    let selectedDataEnvironments = profile.get('selectedDataEnvironments');
+    let dataEnvironments = profile.get('selectedDataEnvironments');
+    let selectedDataEnvironments = getSelectedDataEnvironments(dataEnvironments);
 
     return getSecurityControlGroups(selectedDataEnvironments);
   },

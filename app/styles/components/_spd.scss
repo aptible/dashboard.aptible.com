@@ -4,4 +4,25 @@
   .panel {
     margin-bottom: 30px;
   }
+
+  .x-toggle-container-disabled {
+    opacity: .33;
+  }
+}
+
+.panel-striped {
+  background: #fff;
+
+  .panel-section:nth-child(even),
+  .data-environment:nth-child(even) td {
+    background: #fbfbfb;
+  }
+
+  .data-environment > td {
+    border-top-color: #f9f9f9 !important;
+  }
+
+  .panel-section {
+    border-bottom-color: #f9f9f9;
+  }
 }
