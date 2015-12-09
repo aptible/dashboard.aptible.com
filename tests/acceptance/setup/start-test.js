@@ -88,6 +88,7 @@ test('Basic setup start page UI', function(assert) {
 });
 
 test('Existing organization profiles should redirect to future step', function(assert) {
+  stubCurrentAttestation('locations', []);
   stubProfile({ currentStep: 'locations' });
   stubRequests();
   signInAndVisit(startUrl);

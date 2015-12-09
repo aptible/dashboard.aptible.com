@@ -4,7 +4,7 @@ import Ember from 'ember';
 export const SETUP_STEPS = ['start', 'organization', 'locations', 'team',
                             'data-environments', 'security-controls', 'finish'];
 
-export default DS.Model.extend({
+let OrganizationProfile = DS.Model.extend({
   currentStep: DS.attr('string', { defaultValue: SETUP_STEPS[0] }),
   hasCompletedSetup: DS.attr('boolean'),
   aboutOrganization: DS.attr('string'),
@@ -45,3 +45,20 @@ export default DS.Model.extend({
     return this;
   }
 });
+
+OrganizationProfile.reopenClass({
+  create(organization, store) {
+    let newProfileParams = { id: organization.get('id') };
+    return store.createRecord('organization-profile', newProfileParams);
+  },
+
+  findOrCreate(organization, store) {
+    return new Ember.RSVP.Promise((resolve) => {
+      store.find('organization-profile', organization.get('id'))
+        .then((profile) => { resolve(profile); })
+        .catch(() => { resolve(this.create(organization, store)); });
+    });
+  }
+});
+
+export default OrganizationProfile;

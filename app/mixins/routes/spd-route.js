@@ -11,6 +11,14 @@ export default Ember.Mixin.create({
     if(!profile.isReadyForStep(this.get('stepName'))) {
       return this.transitionTo(`setup.${profile.get('currentStep')}`);
     }
+
+    if(this.currentModel) {
+      let { schemaDocument, attestation } = this.currentModel;
+
+      if(schemaDocument && attestation && !attestation.get('isNew')) {
+        schemaDocument.load(attestation.get('document'));
+      }
+    }
   },
 
   actions: {

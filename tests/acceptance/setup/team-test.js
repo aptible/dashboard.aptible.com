@@ -134,6 +134,7 @@ test('You are redirected to correct step if not ready for team step', function(a
 });
 
 test('Clicking back should return you to previous step', function(assert) {
+  stubCurrentAttestation('locations', []);
   stubProfile({ currentStep: 'team' });
   stubRequests();
   signInAndVisit(teamUrl);
