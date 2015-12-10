@@ -8,7 +8,7 @@ export const DOMAIN_CENTS_PER_HOUR = 5;
 // All monetary calculations are done in cents
 export const PLAN_RATES = {
   development: 0,
-  platform: 49900,
+  platform: 99900,
   pilot: 99900,
   production: 349900
 };
