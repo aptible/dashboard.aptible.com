@@ -36,7 +36,7 @@ test(`visiting ${url} shows current plan and resource usage`, (assert) => {
   signInAndVisit(url);
   andThen(function() {
     assert.ok(find('h3:contains(Platform)').length, 'has a plan');
-    assert.ok(find('.resource-usage-total .usage-value:contains($499)').length, 'has a base rate');
+    assert.ok(find('.resource-usage-total .usage-value:contains($999)').length, 'has a base rate');
     assert.ok(find('.resource-label:contains(Containers)').length, 'has a containers quote');
     assert.ok(find('.resource-label:contains(Disk)').length, 'has a disk quote');
     assert.ok(find('.resource-label:contains(Domains)').length, 'has a domains quote');
