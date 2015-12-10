@@ -76,6 +76,7 @@ test('Lists all data environments', function(assert) {
 });
 
 test('Clicking back should return you to previous step', function(assert) {
+  stubCurrentAttestation('team', []);
   stubProfile({ currentStep: 'data-environments' });
   stubRequests();
   signInAndVisit(dataEnvironmentsUrl);

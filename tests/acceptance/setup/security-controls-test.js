@@ -78,6 +78,7 @@ test('Selected data environments are used to draw security control questionnaire
 });
 
 test('Clicking back should return you to previous step', function(assert) {
+  stubCurrentAttestation('team', []);
   stubProfile({ currentStep: 'security-controls' });
   stubRequests();
   signInAndVisit(securityControlsUrl);

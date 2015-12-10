@@ -1,3 +1,5 @@
+import Ember from 'ember';
+
 // Need to build a new document from scratch, even if one already exists
 // Users can be added/removed at any time, so first loop over all users.
 // For each user, determine if a document already exists, if so load that

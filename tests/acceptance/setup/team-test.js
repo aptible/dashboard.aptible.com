@@ -248,7 +248,7 @@ test('Toggling user roles and clicking continue saves team attestation with corr
 });
 
 test('Team page with existing team attestation', function(assert) {
-  expect(4);
+  expect(13);
   let currentTeamAttestation = [
     {
       email: 'basicuser@asdf.com',
@@ -287,7 +287,7 @@ test('Team page with existing team attestation', function(assert) {
         name: 'Basic User',
         isDeveloper: true,
         isPrivacyOfficer: false,
-        isSecurityOfficer: false,
+        isSecurityOfficer: true,
         href: `/users/${userId}`,
       },
       {
@@ -338,9 +338,10 @@ test('Team page with existing team attestation', function(assert) {
 
     currentTeamAttestation.forEach((user, index) => {
       let row = findWithAssert('table tbody tr')[index];
-      let developerToggle = row.find('.toggle-developer input.x-toggle');
-      let soToggle = row.find('.toggle-security-officer input.x-toggle');
-      let poToggle = row.find('.toggle-privacy-officer input.x-toggle');
+
+      let developerToggle = find('.toggle-developer input.x-toggle', row);
+      let soToggle = find('.toggle-security-officer input.x-toggle', row);
+      let poToggle = find('.toggle-privacy-officer input.x-toggle', row);
 
       assert.equal(developerToggle.is(':checked'), user.isDeveloper, 'is developer is checked');
       assert.equal(soToggle.is(':checked'), user.isSecurityOfficer, 'security officer is checked');
