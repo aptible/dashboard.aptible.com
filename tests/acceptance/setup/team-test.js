@@ -103,16 +103,6 @@ let permissions = [
   }
 ];
 
-module('Acceptance: Setup: Locations', {
-  beforeEach() {
-    application = startApp();
-  },
-
-  afterEach() {
-    Ember.run(application, 'destroy');
-  }
-});
-
 module('Acceptance: Setup: Team', {
   beforeEach() {
     application = startApp();
@@ -124,6 +114,7 @@ module('Acceptance: Setup: Team', {
 });
 
 test('You are redirected to correct step if not ready for team step', function(assert) {
+  stubCurrentAttestation('team', []);
   stubProfile({ currentStep: 'organization' });
   stubRequests();
   signInAndVisit(teamUrl);
@@ -134,6 +125,7 @@ test('You are redirected to correct step if not ready for team step', function(a
 });
 
 test('Clicking back should return you to previous step', function(assert) {
+  stubCurrentAttestation('team', []);
   stubCurrentAttestation('locations', []);
   stubProfile({ currentStep: 'team' });
   stubRequests();
@@ -155,6 +147,7 @@ test('Clicking back should return you to previous step', function(assert) {
 });
 
 test('Team shows all organization users', function(assert) {
+  stubCurrentAttestation('team', []);
   stubProfile({ currentStep: 'team' });
   stubRequests();
   signInAndVisit(teamUrl);
@@ -169,6 +162,7 @@ test('Team shows all organization users', function(assert) {
 });
 
 test('Invitations tab shows all pending invitations', function(assert) {
+  stubCurrentAttestation('team', []);
   stubProfile({ currentStep: 'team' });
   stubRequests();
   signInAndVisit(teamUrl);
@@ -188,6 +182,7 @@ test('Invitations tab shows all pending invitations', function(assert) {
 
 test('Toggling user roles and clicking continue saves team attestation with correct values', function(assert) {
   expect(4);
+  stubCurrentAttestation('team', []);
   let expectedAttestation = {
     handle: 'team',
     organization: `/organizations/${orgId}`,
@@ -252,7 +247,127 @@ test('Toggling user roles and clicking continue saves team attestation with corr
 
 });
 
+test('Team page with existing team attestation', function(assert) {
+  expect(4);
+  let currentTeamAttestation = [
+    {
+      email: 'basicuser@asdf.com',
+      name: 'Basic User',
+      isDeveloper: false,
+      isPrivacyOfficer: false,
+      isSecurityOfficer: false,
+      href: `/users/${userId}`,
+    },
+    {
+      email: 'developeruser@asdf.com',
+      name: 'Developer User',
+      isDeveloper: true,
+      isPrivacyOfficer: false,
+      isSecurityOfficer: false,
+      href: `/users/${developerId}`,
+    },
+    {
+      email: 'securityofficeruser@asdf.com',
+      name: 'Security Officer User',
+      isDeveloper: false,
+      isPrivacyOfficer: true,
+      isSecurityOfficer: true,
+      href: `/users/${securityOfficerId}`,
+    }
+  ];
+
+  stubCurrentAttestation('team', currentTeamAttestation);
+
+  let expectedAttestation = {
+    handle: 'team',
+    organization: `/organizations/${orgId}`,
+    document: [
+      {
+        email: 'basicuser@asdf.com',
+        name: 'Basic User',
+        isDeveloper: true,
+        isPrivacyOfficer: false,
+        isSecurityOfficer: false,
+        href: `/users/${userId}`,
+      },
+      {
+        email: 'developeruser@asdf.com',
+        name: 'Developer User',
+        isDeveloper: false,
+        isPrivacyOfficer: false,
+        isSecurityOfficer: false,
+        href: `/users/${developerId}`,
+      },
+      {
+        email: 'securityofficeruser@asdf.com',
+        name: 'Security Officer User',
+        isDeveloper: true,
+        isPrivacyOfficer: true,
+        isSecurityOfficer: true,
+        href: `/users/${securityOfficerId}`,
+      }
+    ]
+  };
+
+  stubProfile({ currentStep: 'team' });
+  stubRequests();
+
+  stubRequest('post', '/attestations', function(request) {
+    let json = this.json(request);
+
+    assert.ok(true, 'posts to create attestation');
+    assert.deepEqual(json, expectedAttestation, 'correct attestation payload');
+
+    return this.success({ id: 1 });
+  });
+
+  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
+    let json = this.json(request);
+    json.id = orgId;
+
+    assert.ok(true, 'updates organization profile');
+    assert.equal(json.current_step, 'data-environments');
+
+    return this.success(json);
+  });
+
+  signInAndVisit(teamUrl);
+
+  andThen(() => {
+    // Existing attestation is use to render toggles in correct state
+
+    currentTeamAttestation.forEach((user, index) => {
+      let row = findWithAssert('table tbody tr')[index];
+      let developerToggle = row.find('.toggle-developer input.x-toggle');
+      let soToggle = row.find('.toggle-security-officer input.x-toggle');
+      let poToggle = row.find('.toggle-privacy-officer input.x-toggle');
+
+      assert.equal(developerToggle.is(':checked'), user.isDeveloper, 'is developer is checked');
+      assert.equal(soToggle.is(':checked'), user.isSecurityOfficer, 'security officer is checked');
+      assert.equal(poToggle.is(':checked'), user.isPrivacyOfficer, 'privacy officer is checked');
+    });
+  });
+
+  andThen(() => {
+    // Change toggle values
+
+    // Basic user changes
+    findWithAssert('.toggle-developer label')[0].click();
+    findWithAssert('.toggle-security-officer label')[0].click();
+
+    // Developer user changes
+    findWithAssert('.toggle-developer label')[1].click();
+
+    // Security user changes
+    findWithAssert('.toggle-developer label')[2].click();
+  });
+
+  // Continue to save and inspect assertions
+  andThen(clickContinueButton);
+});
+
 test('Invite new member modal basic UI', function(assert) {
+  stubCurrentAttestation('team', []);
   stubProfile({ currentStep: 'team' });
   stubRequests();
   signInAndVisit(teamUrl);
@@ -288,6 +403,7 @@ test('Invite new member modal basic UI', function(assert) {
 });
 
 test('Invite modal creates invitation record for each email', function(assert) {
+  stubCurrentAttestation('team', []);
   expect(17);
 
   let emailAddresses = 'skylar+1@aptible.com;skylar+2@aptible.com\nskylar+3@aptible.com skylar+4@aptible.com';
@@ -334,9 +450,11 @@ test('Invite modal creates invitation record for each email', function(assert) {
   });
 });
 
-// We can ship without these
+
 skip('Clicking re-invite button sends new invitation');
 skip('Clicking X button deletes pending invitation');
+
+// Not sure if we ever want to do this here?
 skip('Clicking X button removes user from organization');
 
 function clickInvitesTab() {

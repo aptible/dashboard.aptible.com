@@ -22,8 +22,6 @@ export default Ember.Route.extend(SPDRouteMixin, {
   setupController(controller, model) {
     let { schemaDocument, schema } = model;
 
-    schemaDocument.load(model.attestation.get('document'));
-
     controller.set('schema', schema);
     controller.set('document', schemaDocument);
   },
