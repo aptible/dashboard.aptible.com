@@ -9,6 +9,7 @@ let OrganizationProfile = DS.Model.extend({
   hasCompletedSetup: DS.attr('boolean'),
   aboutOrganization: DS.attr('string'),
   aboutProduct: DS.attr('string'),
+  organization: DS.attr('string'),
   selectedDataEnvironments: DS.attr(),
 
   indexOfCurrentStep: Ember.computed('currentStep', function() {
@@ -48,7 +49,8 @@ let OrganizationProfile = DS.Model.extend({
 
 OrganizationProfile.reopenClass({
   create(organization, store) {
-    let newProfileParams = { id: organization.get('id') };
+    let newProfileParams = { id: organization.get('id'),
+                             organization: organization.get('data.links.self') };
     return store.createRecord('organization-profile', newProfileParams);
   },
 
