@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
 import Schema from 'ember-json-schema/models/schema';
+import Attestation from 'sheriff/models/attestation';
 import dataEnvironmentsSchemaJson from 'sheriff/schemas/data-environments';
 
 export default Ember.Route.extend(SPDRouteMixin, {
@@ -8,12 +9,11 @@ export default Ember.Route.extend(SPDRouteMixin, {
     let dataEnvironmentsSchema = new Schema(dataEnvironmentsSchemaJson);
     let schemaDocument = dataEnvironmentsSchema.buildDocument();
     let organization = this.modelFor('organization');
-    let attestation = this.store.createRecord('attestation', {
-      handle: 'data-environments',
-      organization: organization.get('data.links.self')
-    });
-
-    return { dataEnvironmentsSchema, attestation, schemaDocument };
+    let store = this.store
+    let attestation = Attestation.findOrCreate('data-environments',
+                                               organization, [], store);
+    return Ember.RSVP.hash({ dataEnvironmentsSchema, attestation,
+                             schemaDocument });
   },
 
   setupController(controller, model) {
