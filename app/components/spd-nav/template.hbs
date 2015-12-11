@@ -1,0 +1,48 @@
+<div class="spd-nav-body">
+  <h3>Design Your Security Program</h3>
+
+  {{#if isOnAStep}}
+    <ul class="spd-nav">
+      {{#if previous}}
+        <li>
+          <button {{action 'previous' previous.path}} class="btn btn-default btn-sm">
+            Back
+          </button>
+        </li>
+      {{/if}}
+
+      {{#if next}}
+        <li>
+          {{#if preventContinueMessage}}
+            {{#bs-tooltip title=preventContinueMessage}}
+              <div>
+                <button class="btn btn-primary btn-sm" disabled="disabled">Continue →</button>
+              </div>
+            {{/bs-tooltip}}
+          {{else}}
+            <button {{action 'next' next.path}} class="btn btn-primary btn-sm">
+              Continue →
+            </button>
+          {{/if}}
+        </li>
+      {{else}}
+        <li>
+          <button {{action 'finish'}} class="btn btn-primary btn-sm">
+            Finish
+          </button>
+        </li>
+      {{/if}}
+    </ul>
+
+    <ul class="spd-progress">
+      {{#each steps as |step|}}
+        <li class="spd-progress-step {{if step.current 'active'}} {{if step.completed 'completed'}}">
+          <div class="spd-progress-step-image">
+            <img src="/images/icons/{{step.key}}.svg" />
+          </div>
+          <div class="spd-progress-step-title">{{step.name}}</div>
+        </li>
+      {{/each}}
+    </ul>
+  {{/if}}
+</div>

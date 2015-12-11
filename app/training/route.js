@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-function isTrainingCriterion(criterion) {
+export function isTrainingCriterion(criterion) {
   return /training_log/.test(criterion.get('handle'));
 }
 

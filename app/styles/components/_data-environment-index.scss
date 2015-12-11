@@ -1,0 +1,17 @@
+.data-environment-provider {
+  &.sm {
+    img {
+      height: 30px;
+    }
+  }
+}
+
+.data-environment {
+  .toggle {
+    margin-top: 5px;
+  }
+
+  .locked-property {
+    margin-top: 0;
+  }
+}

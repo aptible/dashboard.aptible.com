@@ -1,0 +1,16 @@
+{{spd-nav preventContinueMessage=preventContinueMessage onNext="onNext" onPrevious="onPrevious"}}
+
+<div class="setup-step">
+  <h1 class="setup-step-title">Security Controls</h1>
+
+  {{#each model as |securityControlGroup|}}
+    {{security-control-group
+      securityControlGroup=securityControlGroup
+      provider=securityControlGroup.provider
+      dataEnvironment=securityControlGroup.dataEnvironment}}
+  {{/each}}
+
+  <div>
+    <button class="btn btn-primary btn-lg" {{action "onNext"}}>Continue →</button>
+  </div>
+</div>

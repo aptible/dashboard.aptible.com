@@ -1,43 +1,23 @@
 import Ember from 'ember';
-import {
-  module,
-  test
-} from 'qunit';
+import { module, test } from 'qunit';
 import startApp from 'sheriff/tests/helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
+import { orgId, rolesHref, usersHref, securityOfficerId, invitationsHref,
+         securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
 
-let orgId = 'o1';
-let orgName = 'my org';
-
 let userId = 'basic-user-1';
 let developerId = 'developer-user-2';
-let securityOfficerId = 'security-officer-3';
 let basicRoleId = 'basic-role-1';
 let developerRoleId = 'developer-role-2';
 let trainingCriterionId = 'training-criterion-1';
 let developerCriterionId = 'developer-criterion-2';
 let securityCriterionId = 'training-criterion-3';
-
-let rolesHref = `/organizations/${orgId}/roles`;
-let usersHref = `/organizations/${orgId}/users`;
-let securityOfficerHref = `/users/${securityOfficerId}`;
 let overviewUrl = `/${orgId}/training`;
 let basicUrl = `/${orgId}/training/training_log`;
 let developerUrl = `/${orgId}/training/developer_training_log`;
 let securityUrl = `/${orgId}/training/security_officer_training_log`;
-
-let organization = {
-  id: orgId,
-  name: 'my-org',
-  _links: {
-    roles: { href: rolesHref },
-    users: { href: usersHref },
-    security_officer: { href: `/users/${securityOfficerId}` },
-    self: { href: `/organizations/${orgId}` }
-  }
-};
 
 let criteria = [
 {
@@ -153,7 +133,7 @@ test(`visiting ${overviewUrl}: shows all users`, function(assert) {
   signInAndVisit(overviewUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.index');
+    assert.equal(currentPath(), 'organization.engines.training.index');
     ok(find('.user-training-status .name:contains(Basic User)'),
             'shows basic user');
     ok(find('.user-training-status .name:contains(Developer User)'),
@@ -169,7 +149,7 @@ test(`visiting ${overviewUrl}: all users list basic training`, function(assert) 
   signInAndVisit(overviewUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.index');
+    assert.equal(currentPath(), 'organization.engines.training.index');
     ok(find('.user-training-status .subject-checklist .training_log').length === 3,
             'all 3 users list basic training');
   });
@@ -181,7 +161,7 @@ test(`visiting ${overviewUrl}: all developers list developer training`, function
   signInAndVisit(overviewUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.index');
+    assert.equal(currentPath(), 'organization.engines.training.index');
     ok(find('.developer_training_log:contains(Developer Training)').length === 1,
             'only one developer training log');
   });
@@ -193,7 +173,7 @@ test(`visiting ${overviewUrl}: security officer shows security officer training`
   signInAndVisit(overviewUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.index');
+    assert.equal(currentPath(), 'organization.engines.training.index');
     ok(find('.security_officer_training_log:contains(Security Officer Training)').length === 1,
             'only one security officer training log');
   });
@@ -205,7 +185,7 @@ test(`visiting ${basicUrl} shows all users under basic training criterion`, func
   signInAndVisit(basicUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.criterion.index');
+    assert.equal(currentPath(), 'organization.engines.training.criterion.index');
 
     let el = find('.criterion-subjects.training_log');
     ok(el.find('.user-training-status').length === 3,
@@ -219,7 +199,7 @@ test(`visiting ${developerUrl} shows all developers under developer training cri
   signInAndVisit(developerUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.criterion.index');
+    assert.equal(currentPath(), 'organization.engines.training.criterion.index');
 
     let el = find('.criterion-subjects.developer_training_log');
     ok(el.find('.user-training-status').length === 1,
@@ -236,7 +216,7 @@ test(`visiting ${securityUrl} shows security officer under security officer trai
   signInAndVisit(securityUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.criterion.index');
+    assert.equal(currentPath(), 'organization.engines.training.criterion.index');
 
     let el = find('.criterion-subjects.security_officer_training_log');
     ok(el.find('.user-training-status').length === 1,
@@ -252,7 +232,7 @@ test(`visiting ${basicUrl} with an untrained user shows a red x`, function(asser
   signInAndVisit(basicUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.criterion.index');
+    assert.equal(currentPath(), 'organization.engines.training.criterion.index');
 
     let el = find('.criterion-subjects.training_log');
     let user = el.find('.user-training-status:contains(Basic User)');
@@ -269,7 +249,7 @@ test(`visiting ${developerUrl} with an untrained developer shows a red x`, funct
   signInAndVisit(developerUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.criterion.index');
+    assert.equal(currentPath(), 'organization.engines.training.criterion.index');
 
     let el = find('.criterion-subjects.developer_training_log');
     let user = el.find('.user-training-status:contains(Developer User)');
@@ -286,7 +266,7 @@ test(`visiting ${securityUrl} with an untrained security officer shows a red x`,
   signInAndVisit(securityUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.criterion.index');
+    assert.equal(currentPath(), 'organization.engines.training.criterion.index');
 
     let el = find('.criterion-subjects.security_officer_training_log');
     let user = el.find('.user-training-status:contains(Security Officer User)');
@@ -312,7 +292,7 @@ test(`visiting ${basicUrl} with trained user shows a green check`, function(asse
   signInAndVisit(basicUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.criterion.index');
+    assert.equal(currentPath(), 'organization.engines.training.criterion.index');
 
     let el = find('.criterion-subjects.training_log');
     let user = el.find('.user-training-status:contains(Basic User)');
@@ -339,7 +319,7 @@ test(`visiting ${developerUrl} with trained developer shows a green check`, func
   signInAndVisit(developerUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.criterion.index');
+    assert.equal(currentPath(), 'organization.engines.training.criterion.index');
 
     let el = find('.criterion-subjects.developer_training_log');
     let user = el.find('.user-training-status:contains(Developer User)');
@@ -366,7 +346,7 @@ test(`visiting ${securityUrl} with trained security officer shows a green check`
   signInAndVisit(securityUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.training.criterion.index');
+    assert.equal(currentPath(), 'organization.engines.training.criterion.index');
 
     let el = find('.criterion-subjects.security_officer_training_log');
     let user = el.find('.user-training-status:contains(Security Officer User)');
@@ -398,14 +378,10 @@ function stubDocuments(opts = {}) {
 }
 
 function stubRequests() {
-  stubOrganization(organization);
+  stubValidOrganization();
 
   stubRequest('get', `/roles/${developerRoleId}/users`, function() {
     return this.success({ _embedded: { users: [users[1]] }});
-  });
-
-  stubRequest('get', '/organizations', function(request) {
-    return this.success({ _embedded: { organizations: [organization] }});
   });
 
   stubRequest('get', rolesHref, function(request) {
@@ -416,15 +392,19 @@ function stubRequests() {
     return this.success({ _embedded: { users }});
   });
 
+  stubRequest('get', invitationsHref, function(request) {
+    return this.success({ _embedded: { invitations: [] }});
+  });
+
+  stubRequest('get', securityOfficerHref, function(request) {
+    return this.success(users[2]);
+  });
+
   stubRequest('get', '/permissions', function(request) {
     return this.success({ _embedded: { permissions }});
   });
 
   stubRequest('get', '/criteria', function(request) {
     return this.success({ _embedded: { criteria }});
-  });
-
-  stubRequest('get', securityOfficerHref, function(request) {
-    return this.success(users[2]);
   });
 }

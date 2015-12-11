@@ -1,0 +1,19 @@
+<div class='options'>
+  {{#if property.displayProperties.disabled}}
+    <div class="locked-property">
+      <i class="fa fa-lock"></i>
+    </div>
+  {{/if}}
+  {{schema-field-toggle key=key property=property document=document}}
+</div>
+
+{{#if showProvider}}
+  <div class="data-environment-provider sm {{provider}}">
+    <img src="/assets/images/data-environments/{{provider}}.png" alt="{{provider}}"/>
+  </div>
+{{/if}}
+
+<div class="info {{if showProvider "show-provider-image"}}">
+  <h4 class="title">{{property.displayProperties.title}}</h4>
+  <div class="description">{{property.displayProperties.description}}</div>
+</div>

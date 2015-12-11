@@ -1,0 +1,70 @@
+.security-control {
+  @extend %clearfix;
+
+  .options {
+    float: right;
+    width: 277px;
+  }
+
+  .radio {
+    margin: 0
+  }
+
+  .data-environment-provider {
+    float: left;
+  }
+
+  .info {
+    margin-right: 300px;
+
+    &.show-provider-image {
+      margin-left: 125px;
+    }
+
+    .title {
+      font-size: 14px;
+      font-weight: $weight-semibold;
+      margin: 0 0 6px;
+    }
+
+    .description {
+      font-size: 13px;
+      color: $color-light;
+    }
+  }
+
+  .toggle {
+    text-align: right;
+    margin-top: 11px;
+  }
+
+  .x-toggle-container-disabled {
+    opacity: .33;
+  }
+
+  .toggle-text {
+    text-transform: uppercase;
+    font-weight: $weight-semibold;
+    color: $color-light;
+
+    &.small {
+      font-size: 11px;
+      margin-top: -3px;
+    }
+  }
+}
+
+.panel.security-controls {
+  .panel-section {
+    padding: 20px
+  }
+}
+
+.locked-property {
+  display: block;
+  float: right;
+  width: 20px;
+  margin-top: 12px;
+  text-align: right;
+  color: #ddd;
+}

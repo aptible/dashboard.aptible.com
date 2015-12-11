@@ -1,0 +1,38 @@
+<td class="gravatar-col sm">
+  <div class="gravatar sm">
+    {{gravatar-image email=document.values.email}}
+  </div>
+</td>
+<td><strong>{{document.values.name}}</strong></td>
+<td>{{document.values.email}}</td>
+<td>
+  <div class="toggle-developer">
+    {{schema-field-toggle
+      key='isDeveloper'
+      property=properties.isDeveloper
+      document=document}}
+  </div>
+</td>
+<td>
+  <div class="toggle-security-officer">
+    {{schema-field-toggle
+      key='isSecurityOfficer'
+      property=properties.isSecurityOfficer
+      document=document}}
+  </div>
+</td>
+<td>
+  <div class="toggle-privacy-officer">
+    {{schema-field-toggle
+      key='isPrivacyOfficer'
+      property=properties.isPrivacyOfficer
+      document=document}}
+  </div>
+</td>
+<td class="row-actions one-action">
+  <ul class="row-action-nav">
+    <li>
+      <a><i class="fa fa-times danger"></i></a>
+    </li>
+  </ul>
+</td>

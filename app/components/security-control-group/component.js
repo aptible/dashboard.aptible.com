@@ -1,0 +1,6 @@
+import Ember from 'ember';
+
+export default Ember.Component.extend({
+ classNames: ['security-control-group'],
+ properties: Ember.computed.alias('securityControlGroup.schema.properties')
+});
