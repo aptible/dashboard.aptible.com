@@ -10,7 +10,6 @@ let OrganizationProfile = DS.Model.extend({
   aboutOrganization: DS.attr('string'),
   aboutProduct: DS.attr('string'),
   organization: DS.attr('string'),
-  selectedDataEnvironments: DS.attr(),
 
   indexOfCurrentStep: Ember.computed('currentStep', function() {
     return this.indexOfStep(this.get('currentStep'));
