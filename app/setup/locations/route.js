@@ -3,6 +3,7 @@ import Schema from 'ember-json-schema/models/schema';
 import Property from 'ember-json-schema/models/property';
 import locationsSchema from 'sheriff/schemas/locations';
 import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
+import Attestation from 'sheriff/models/attestation';
 
 // Use schema as property for validation
 export var locationProperty = new Property(locationsSchema.items);
@@ -11,11 +12,11 @@ export default Ember.Route.extend(SPDRouteMixin, {
   model() {
     let schema = new Schema(locationsSchema);
     let organization = this.modelFor('organization');
-    let attestation = this.store.createRecord('attestation', {
-      handle: 'locations', organization: organization.get('data.links.self')
-    });
+    let store = this.store;
+    let attestation = Attestation.findOrCreate('locations', organization, [], store);
 
-    return { schema, attestation, schemaDocument: schema.buildDocument() };
+    return Ember.RSVP.hash({ schema, attestation,
+                             schemaDocument: schema.buildDocument() });
   },
 
   setupController(controller, model) {

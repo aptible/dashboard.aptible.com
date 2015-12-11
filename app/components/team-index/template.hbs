@@ -13,8 +13,8 @@
     </thead>
 
     <tbody>
-      {{#each teamMembers as |teamMember|}}
-        {{edit-team-member user=teamMember.user document=teamMember.document}}
+      {{#each teamMembers as |teamMemberDocument|}}
+        {{edit-team-member document=teamMemberDocument properties=properties}}
       {{/each}}
     </tbody>
   </table>

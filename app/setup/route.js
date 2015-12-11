@@ -1,18 +1,10 @@
 import Ember from 'ember';
+import OrganizationProfile from 'sheriff/models/organization-profile';
 
 export default Ember.Route.extend({
   model() {
     let organization = this.modelFor('organization');
-    let store = this.store;
-
-    return new Ember.RSVP.Promise(function(resolve) {
-      store.find('organization-profile', organization.get('id'))
-        .then((profile) => { resolve(profile); })
-        .catch(() => {
-          let newProfile = store.createRecord('organization-profile', { id: organization.get('id') });
-          resolve(newProfile);
-        });
-    });
+    return OrganizationProfile.findOrCreate(organization, this.store);
   },
 
   afterModel() {

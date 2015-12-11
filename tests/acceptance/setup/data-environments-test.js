@@ -57,6 +57,7 @@ module('Acceptance: Setup: Data Environments', {
 });
 
 test('Lists all data environments', function(assert) {
+  stubCurrentAttestation('data-environments', []);
   stubProfile({ currentStep: 'data-environments' });
   stubRequests();
   signInAndVisit(dataEnvironmentsUrl);
@@ -76,6 +77,8 @@ test('Lists all data environments', function(assert) {
 });
 
 test('Clicking back should return you to previous step', function(assert) {
+  stubCurrentAttestation('data-environments', []);
+  stubCurrentAttestation('team', []);
   stubProfile({ currentStep: 'data-environments' });
   stubRequests();
   signInAndVisit(dataEnvironmentsUrl);
@@ -97,7 +100,7 @@ test('Clicking back should return you to previous step', function(assert) {
 
 test('Clicking continue saves data environment selections to organization profile', function(assert) {
   expect(6);
-
+  stubCurrentAttestation('data-environments', { aptible: true });
   let expectedDataEnvironmentPayload = {
     amazonS3: true,
     aptible: true,
@@ -132,9 +135,9 @@ test('Clicking continue saves data environment selections to organization profil
   });
 
   andThen(() => {
-    enableDataEnvironment('Amazon S3');
-    enableDataEnvironment('Gmail');
-    enableDataEnvironment('Mailgun');
+    toggleDataEnvironment('Amazon S3');
+    toggleDataEnvironment('Gmail');
+    toggleDataEnvironment('Mailgun');
   });
 
   andThen(clickContinueButton);
@@ -144,7 +147,72 @@ test('Clicking continue saves data environment selections to organization profil
   });
 });
 
-function enableDataEnvironment(environment) {
+test('Should load existing selections when attestation already exists', function(assert) {
+  expect(12);
+  let existingSelection = {
+    amazonS3: false,
+    aptible: true,
+    gmail: false,
+    googleCalendar: true,
+    googleDrive: false,
+    mailgun: true
+  };
+
+  let expectedDataEnvironmentPayload = {
+    amazonS3: false,
+    aptible: true,
+    gmail: true,
+    googleCalendar: true,
+    googleDrive: false,
+    mailgun: true
+  };
+
+  stubCurrentAttestation('data-environments', existingSelection);
+  stubProfile({ currentStep: 'data-environments' });
+  stubRequests();
+  signInAndVisit(dataEnvironmentsUrl);
+
+  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
+    let json = this.json(request);
+    json.id = orgId;
+
+    assert.ok(true, 'updates organization profile');
+    assert.equal(json.current_step, 'security-controls', 'updates current step');
+
+    return this.success(json);
+  });
+
+  stubRequest('post', '/attestations', function(request) {
+    let json = this.json(request);
+
+    assert.ok(true, 'posts to /attestations');
+    assert.equal(json.handle, 'data-environments', 'includes attestation handle');
+    assert.deepEqual(json.document, expectedDataEnvironmentPayload, 'includes selected data environments as a document payload');
+
+    return this.success({ id: 1 });
+  });
+
+  andThen(() => {
+    // For each DE verify toggle state matches existing attestation
+    for(var deName in existingSelection) {
+      assert.equal(find(`input[name="${deName}"]`).is(':checked'), existingSelection[deName]);
+    }
+  });
+
+  andThen(() => {
+    // Toggle Gmail
+    toggleDataEnvironment('Gmail');
+  });
+
+  // Save and inspect attestation for updated values
+  andThen(clickContinueButton);
+
+  andThen(() => {
+    assert.equal(currentPath(), 'organization.setup.security-controls', 'proceeds to next step');
+  });
+});
+
+function toggleDataEnvironment(environment) {
   let toggle = findWithAssert(`tr:contains(${environment}) td:last input[type="checkbox"]`);
   toggle.click();
 }

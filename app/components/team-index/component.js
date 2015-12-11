@@ -2,11 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
  classNames: ['team-index'],
- teamMembers: Ember.computed('users.[]', function() {
+ teamMembers: Ember.computed('teamDocument', function() {
     let teamDocument = this.get('teamDocument');
-
-    return this.get('users').map(function(user) {
-      return { user: user,document: teamDocument.addItem() };
-    });
+    return teamDocument.values;
   })
 });

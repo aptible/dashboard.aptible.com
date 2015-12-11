@@ -7,6 +7,7 @@ export var usersHref = `/organizations/${orgId}/users`;
 export var invitationsHref = `/organizations/${orgId}/invitations`;
 export var securityOfficerId = 'security-officer-3';
 export var securityOfficerHref = `/users/${securityOfficerId}`;
+export var attestationId = 0;
 
 Ember.Test.registerHelper('stubValidOrganization', function(app) {
   let organization = {
@@ -40,4 +41,17 @@ Ember.Test.registerHelper('stubProfile', function(app, profileData) {
 Ember.Test.registerHelper('clickContinueButton', function(app) {
   let continueButton = findWithAssert('button.btn-lg:contains(Continue)').first();
   continueButton.click();
+});
+
+Ember.Test.registerHelper('stubCurrentAttestation', function(app, handle, documentData) {
+  stubRequest('get', '/attestations', function(request) {
+    let attestations = [{
+      id: attestationId++,
+      handle,
+      document: documentData,
+      organization_url: `/organizations/${orgId}`
+    }];
+
+    return this.success({ _embedded: { attestations } });
+  });
 });

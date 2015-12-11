@@ -42,8 +42,9 @@ module('Acceptance: Setup: Locations', {
   }
 });
 
-test('Locations page basic UI', function(assert) {
+test('Locations page basic UI, with no existing locations', function(assert) {
   stubProfile({ currentStep: 'locations' });
+  stubCurrentAttestation('locations', []);
   stubRequests();
   signInAndVisit(locationsUrl);
 
@@ -68,8 +69,46 @@ test('Locations page basic UI', function(assert) {
   });
 });
 
+test('Locations page, with existing location attestation', function(assert) {
+  let existingAttestationData = [
+    {
+      description: 'HQ', streetAddress: '155 Water', city: 'Brooklyn',
+      state: 'New York', zip: '10000'
+    },
+    {
+      description: 'Satellite', streetAddress: '100 Fire', city: 'SF',
+      state: 'California', zip: '20000'
+    }
+  ];
+
+  stubProfile({ currentStep: 'locations' });
+  stubCurrentAttestation('locations', existingAttestationData);
+  stubRequests();
+  signInAndVisit(locationsUrl);
+
+  andThen(() => {
+    assert.equal(currentPath(), 'organization.setup.locations.index', 'remains on locations step');
+    assert.equal(find('.locations-index table tbody tr').length, 2, 'has two locations');
+    assert.ok(find('td:contains(HQ)').length, 'Has first location');
+    assert.ok(find('td:contains(Satellite)').length, 'Has second location');
+  });
+
+  andThen(openLocationDialog);
+
+  andThen(() => {
+    ['description', 'streetAddress', 'city', 'zip'].forEach(function(field) {
+      assert.ok(find(`input[name="${field}"]`).length, `has a ${field} field`);
+    });
+    assert.ok(find('select[name="state"] option').length, 50,
+              'has state select with 50 options');
+    assert.ok(find('button[type="submit"]:contains(Add)').length,
+              'has a submit button');
+  });
+});
+
 test('Clicking back should return you to previous step', function(assert) {
   stubProfile({ currentStep: 'locations' });
+  stubCurrentAttestation('locations', []);
   stubRequests();
   signInAndVisit(locationsUrl);
 
@@ -90,6 +129,7 @@ test('Clicking back should return you to previous step', function(assert) {
 
 test('Adding location adds to location index', function(assert) {
   stubProfile({ currentStep: 'locations' });
+  stubCurrentAttestation('locations', []);
   stubRequests();
   signInAndVisit(locationsUrl);
 
@@ -109,6 +149,7 @@ test('Adding location adds to location index', function(assert) {
 
 test('Visiting location page without completing previous step should return to previous step', function(assert) {
   stubProfile({ currentStep: 'organization' });
+  stubCurrentAttestation('locations', []);
   stubRequests();
   signInAndVisit(locationsUrl);
 
@@ -119,6 +160,7 @@ test('Visiting location page without completing previous step should return to p
 
 test('Adding an incomplete location shows an error message', function(assert) {
   stubProfile({ currentStep: 'locations' });
+  stubCurrentAttestation('locations', []);
   stubRequests();
   signInAndVisit(locationsUrl);
 
@@ -142,7 +184,7 @@ test('Adding an incomplete location shows an error message', function(assert) {
 
 test('Clicking continue creates locations attestation', function(assert) {
   expect(5);
-
+  stubCurrentAttestation('locations', []);
   stubRequest('post', '/attestations', function(request) {
     let json = this.json(request);
 

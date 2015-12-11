@@ -16,7 +16,7 @@
 
   <div class="panels">
     {{#if (eq panel 'team')}}
-      {{team-index users=users teamDocument=schemaDocument}}
+      {{team-index teamDocument=schemaDocument properties=properties}}
     {{/if}}
 
     {{#if (eq panel 'invites')}}

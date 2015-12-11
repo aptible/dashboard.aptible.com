@@ -5,11 +5,17 @@ export default Ember.Mixin.create({
     return this.get('routeName').split('.').get('lastObject');
   }),
 
-  afterModel() {
+  beforeModel() {
     let profile = this.modelFor('setup');
 
     if(!profile.isReadyForStep(this.get('stepName'))) {
       return this.transitionTo(`setup.${profile.get('currentStep')}`);
+    }
+  },
+
+  afterModel(model) {
+    if(model.schemaDocument && model.attestation) {
+      model.schemaDocument.load(model.attestation.get('document'));
     }
   },
 

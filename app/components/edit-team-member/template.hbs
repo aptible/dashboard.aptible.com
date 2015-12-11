@@ -1,23 +1,32 @@
 <td class="gravatar-col sm">
   <div class="gravatar sm">
-    {{gravatar-image email=user.email}}
+    {{gravatar-image email=document.values.email}}
   </div>
 </td>
-<td><strong>{{user.name}}</strong></td>
-<td>{{user.email}}</td>
+<td><strong>{{document.values.name}}</strong></td>
+<td>{{document.values.email}}</td>
 <td>
   <div class="toggle-developer">
-    {{x-toggle size='small' toggle='toggleDeveloper' showLabels=false }}
+    {{schema-field-toggle
+      key='isDeveloper'
+      property=properties.isDeveloper
+      document=document}}
   </div>
 </td>
 <td>
   <div class="toggle-security-officer">
-    {{x-toggle size='small' toggle='toggleSecurityOfficer' showLabels=false }}
+    {{schema-field-toggle
+      key='isSecurityOfficer'
+      property=properties.isSecurityOfficer
+      document=document}}
   </div>
 </td>
 <td>
   <div class="toggle-privacy-officer">
-    {{x-toggle size='small' toggle='togglePrivacyOfficer' showLabels=false }}
+    {{schema-field-toggle
+      key='isPrivacyOfficer'
+      property=properties.isPrivacyOfficer
+      document=document}}
   </div>
 </td>
 <td class="row-actions one-action">

@@ -57,6 +57,7 @@
     "stubOrganization",
     "stubProfile",
     "stubValidOrganization",
+    "stubCurrentAttestation",
     "stubApp",
     "stubDatabase",
     "stubDatabases",
