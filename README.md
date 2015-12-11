@@ -1,6 +1,7 @@
 ![dashboard.aptible.com](/screenshot.png?raw=true "dashboard.aptible.com - Built with Ember.js")
 
-[![Build Status](https://travis-ci.org/aptible/dashboard.aptible.com.svg?branch=master)](https://travis-ci.org/aptible/dashboard.aptible.com) [![Stories in Ready](https://badge.waffle.io/aptible/dashboard.aptible.com.svg?label=ready&title=Ready)](http://waffle.io/aptible/dashboard.aptible.com)
+[![Build Status](https://travis-ci.org/aptible/dashboard.aptible.com.svg?branch=master)](https://travis-ci.org/aptible/dashboard.aptible.com) [![Stories in Ready](https://badge.waffle.io/aptible/dashboard.aptible.com.svg?label=ready&title=Ready)](http://waffle.io/aptible/dashboard.aptible.com) [![](https://ember-cli-deploy.github.io/ember-cli-deploy-version-badges/plugins/dashboard.aptible.com.svg)](http://ember-cli-deploy.github.io/ember-cli-deploy-version-badges/)
+
 
 Aptible's customer dashboard (aka **Diesel**). It allows users to manage organizations, access controls, and ops.
 
