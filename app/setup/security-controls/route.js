@@ -1,41 +1,37 @@
 import Ember from 'ember';
 import { getSecurityControlGroups } from 'sheriff/utils/data-environment-schemas';
+import Attestation from 'sheriff/models/attestation';
 import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
 
 export function getSelectedDataEnvironments(dataEnvironments) {
-  let selectedDataEnvironments = [];
-
-  for (var deName in dataEnvironments) {
-    if (dataEnvironments[deName]) {
-      selectedDataEnvironments.push(deName);
-    }
-  }
-
-  return selectedDataEnvironments;
+  return Ember.keys(dataEnvironments).filter((deName) => {
+    return dataEnvironments[deName];
+  });
 }
 
 export default Ember.Route.extend(SPDRouteMixin, {
-  beforeModel() {
-    // TODO: Selected data environments should actually be loaded by attestaion
-    // and not as a field on organizationProfile.  Requires attestion fetch API
-
-    let profile = this.modelFor('setup');
-    let dataEnvironments = profile.get('selectedDataEnvironments') || {};
-    let selectedDataEnvironments = getSelectedDataEnvironments(dataEnvironments);
+  afterModel(attestation) {
+    let selectedDataEnvironments = getSelectedDataEnvironments(attestation.get('document'));
 
     if(selectedDataEnvironments.length === 0) {
       return this.transitionTo('setup.data-environments');
     }
   },
 
-  afterModel() {},
-
   model() {
-    let profile = this.modelFor('setup');
-    let dataEnvironments = profile.get('selectedDataEnvironments');
-    let selectedDataEnvironments = getSelectedDataEnvironments(dataEnvironments);
+    let organization = this.modelFor('organization');
+    let store = this.store;
 
-    return getSecurityControlGroups(selectedDataEnvironments);
+    return Attestation.findOrCreate('data-environments', organization, {}, store);
+  },
+
+  setupController(controller, model) {
+    let dataEnvironments = model.get('document');
+    let selectedDataEnvironments = getSelectedDataEnvironments(dataEnvironments);
+    let securityControlGroups = getSecurityControlGroups(selectedDataEnvironments);
+
+    controller.set('model', securityControlGroups);
+    controller.set('dataEnvironments', dataEnvironments);
   },
 
   actions: {
