@@ -100,7 +100,7 @@ test('Clicking back should return you to previous step', function(assert) {
 
 test('Clicking continue saves data environment selections to organization profile', function(assert) {
   expect(6);
-  stubCurrentAttestation('data-environments', []);
+  stubCurrentAttestation('data-environments', { aptible: true });
   let expectedDataEnvironmentPayload = {
     amazonS3: true,
     aptible: true,

@@ -9,7 +9,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
     let dataEnvironmentsSchema = new Schema(dataEnvironmentsSchemaJson);
     let schemaDocument = dataEnvironmentsSchema.buildDocument();
     let organization = this.modelFor('organization');
-    let store = this.store
+    let store = this.store;
     let attestation = Attestation.findOrCreate('data-environments',
                                                organization, [], store);
     return Ember.RSVP.hash({ dataEnvironmentsSchema, attestation,

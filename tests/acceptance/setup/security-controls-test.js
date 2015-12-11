@@ -45,7 +45,8 @@ module('Acceptance: Setup: Security Controls', {
 let selectedDataEnvironments = { aptible: true, amazonS3: true, googleDrive: true };
 
 test('Selected data environments are used to draw security control questionnaire', function(assert) {
-  stubProfile({ currentStep: 'security-controls', selectedDataEnvironments });
+  stubCurrentAttestation('data-environments', selectedDataEnvironments);
+  stubProfile({ currentStep: 'security-controls' });
   stubRequests();
   signInAndVisit(securityControlsUrl);
 
@@ -78,7 +79,7 @@ test('Selected data environments are used to draw security control questionnaire
 });
 
 test('Clicking back should return you to previous step', function(assert) {
-  stubCurrentAttestation('team', []);
+  stubCurrentAttestation('data-environments', selectedDataEnvironments);
   stubProfile({ currentStep: 'security-controls' });
   stubRequests();
   signInAndVisit(securityControlsUrl);
@@ -94,9 +95,9 @@ test('Clicking back should return you to previous step', function(assert) {
   });
 
   andThen(() => {
-    // FIXME: saved data environments are not reloaded so data environments
-    // route transitions back to team.
-    assert.equal(currentPath(), 'organization.setup.team.index', 'returned to team step');
+    assert.equal(currentPath(),
+                 'organization.setup.data-environments',
+                 'returned to data environments step');
   });
 });
 
@@ -110,7 +111,8 @@ test('Clicking continue saves attestation for each global, provider, and data en
                                     'global-securityProcedures',
                                     'global-workforceControls',
                                     'global-workstationControls'];
-  stubProfile({ currentStep: 'security-controls', selectedDataEnvironments });
+  stubCurrentAttestation('data-environments', selectedDataEnvironments);
+  stubProfile({ currentStep: 'security-controls' });
   stubRequests();
   signInAndVisit(securityControlsUrl);
 

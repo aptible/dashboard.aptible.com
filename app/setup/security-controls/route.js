@@ -38,7 +38,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
     onNext() {
       let profile = this.modelFor('setup');
       let organization = this.modelFor('organization');
-      let promises = this.currentModel.map((securityGroup) => {
+      let promises = this.controller.get('model').map((securityGroup) => {
         let attestation = { handle: securityGroup.handle,
                             document: securityGroup.document,
                             organization: organization.get('data.links.self') };
