@@ -13,7 +13,7 @@
 
         {{#each-property properties=locationProperties as |key property type|}}
           <div class="form-group">
-            <label>{{property.displayProperties.title}}</label>
+            <label>{{property.title}}</label>
             {{component (concat 'schema-field-' type) key=key property=property document=newLocation}}
           </div>
         {{/each-property}}

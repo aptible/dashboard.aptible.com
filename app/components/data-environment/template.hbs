@@ -1,5 +1,5 @@
 <td>
-  <strong>{{property.displayProperties.title}}</strong>
+  <strong>{{property.title}}</strong>
 </td>
 
 <td>
@@ -10,7 +10,7 @@
 
 <td class="toggle-small align-right">
   <div class='options'>
-    {{#if property.displayProperties.disabled}}
+    {{#if property.readonly}}
       <div class="locked-property">
         <i class="fa fa-lock"></i>
       </div>
