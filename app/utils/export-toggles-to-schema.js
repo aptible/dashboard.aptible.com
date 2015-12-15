@@ -8,9 +8,9 @@ export default function exportTogglesToSchema(toggleProperties, schema) {
 
     schema.properties[key] = {
       type: 'boolean',
+      title: property.title,
+      description: property.description,
       displayProperties: {
-        title: property.title,
-        description: property.description,
         useToggle: true,
         showLabels: true,
         labels: {

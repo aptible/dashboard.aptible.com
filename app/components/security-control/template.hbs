@@ -1,10 +1,10 @@
 <div class='options'>
-  {{#if property.displayProperties.disabled}}
+  {{#if property.readonly}}
     <div class="locked-property">
       <i class="fa fa-lock"></i>
     </div>
   {{/if}}
-  {{schema-field-toggle key=key property=property document=document}}
+  {{component (concat 'schema-field-' type) key=key property=property document=document}}
 </div>
 
 {{#if showProvider}}
@@ -14,6 +14,6 @@
 {{/if}}
 
 <div class="info {{if showProvider "show-provider-image"}}">
-  <h4 class="title">{{property.displayProperties.title}}</h4>
-  <div class="description">{{property.displayProperties.description}}</div>
+  <h4 class="title">{{property.title}}</h4>
+  <div class="description">{{property.description}}</div>
 </div>
