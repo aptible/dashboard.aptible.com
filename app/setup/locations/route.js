@@ -1,22 +1,26 @@
 import Ember from 'ember';
-import Schema from 'ember-json-schema/models/schema';
 import Property from 'ember-json-schema/models/property';
-import locationsSchema from 'sheriff/schemas/locations';
 import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
 import Attestation from 'sheriff/models/attestation';
+import loadSchema from 'sheriff/utils/load-schema';
 
 // Use schema as property for validation
-export var locationProperty = new Property(locationsSchema.items);
+export var locationProperty
 
 export default Ember.Route.extend(SPDRouteMixin, {
   model() {
-    let schema = new Schema(locationsSchema);
+    let handle = 'workforce_locations';
     let organization = this.modelFor('organization');
     let store = this.store;
-    let attestation = Attestation.findOrCreate('locations', organization, [], store);
 
-    return Ember.RSVP.hash({ schema, attestation,
-                             schemaDocument: schema.buildDocument() });
+    return loadSchema(handle).then((schema) => {
+      debugger;
+      locationProperty = new Property(schema._schema.items);
+      let attestation = Attestation.findOrCreate(handle, organization, [], store);
+      let schemaDocument = schema.buildDocument();
+
+      return Ember.RSVP.hash({ schema, attestation, schemaDocument });
+    });
   },
 
   setupController(controller, model) {

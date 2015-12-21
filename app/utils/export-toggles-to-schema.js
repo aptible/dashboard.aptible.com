@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-export default function exportTogglesToSchema(toggleProperties, schema) {
+export default function(toggleProperties, schema) {
   schema = Ember.$.extend(true, {}, schema);
 
   for(var key in toggleProperties) {
