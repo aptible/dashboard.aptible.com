@@ -28,6 +28,48 @@
 
   </div>
 </div>
+
+{{#if billingDetail.hasDiscounts}}
+  <div class="row">
+    <div class="col-xs-12 sort-group">
+      <div class="sort-header">Discounts</div>
+
+      {{#if billingDetail.hasCredit}}
+        <div class="panel panel-default resource-usage">
+          <div class="panel-heading with-actions">
+            <h3>Credit</h3>
+            <div class="resource-usage-total">
+              <span class="usage-label">Remaining:</span>
+              <span class="usage-value">
+                {{format-currency billingDetail.accountCredit}}
+              </span>
+            </div>
+          </div>
+          <ul class="usage-quote-items">
+            <li class="usage-quote-item">
+              <div class="usage-label">Remaining credit on your account.</div>
+            </li>
+          </ul>
+        </div>
+      {{/if}}
+
+      {{#if billingDetail.coupon}}
+        <div class="panel panel-default resource-usage">
+          <div class="panel-heading with-actions">
+            <h3>{{billingDetail.coupon.id}}</h3>
+          </div>
+          <ul class="usage-quote-items">
+            <li class="usage-quote-item">
+              <div class="usage-label">{{billingDetail.coupon.id}}</div>
+            </li>
+          </ul>
+        </div>
+      {{/if}}
+
+    </div>
+  </div>
+{{/if}}
+
 <div class="row">
   <div class="col-xs-12 sort-group">
     <h5 class="sort-header">Current Platform Usage</h5>
