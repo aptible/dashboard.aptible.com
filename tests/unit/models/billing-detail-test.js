@@ -85,3 +85,28 @@ test('it correctly sets domainsInPlan', function(assert) {
   setupModel(model, { plan: 'platform', domainAllowance: 20 });
   assert.equal(model.get('domainsInPlan'), 20);
 });
+
+test('it correctly determines hasCredit', function(assert) {
+  var model = this.subject();
+  setupModel(model, { accountBalance: -50000 });
+  assert.strictEqual(model.get('hasCredit'), true);
+
+  setupModel(model, { accountBalance: 0 });
+  assert.strictEqual(model.get('hasCredit'), false);
+
+  setupModel(model, { accountBalance: 10000 });
+  assert.strictEqual(model.get('hasCredit'), false);
+});
+
+test('it correctly determines hasDiscounts', function(assert) {
+  var model = this.subject();
+
+  setupModel(model, { accountBalance: -50000 });
+  assert.strictEqual(model.get('hasDiscounts'), true);
+
+  setupModel(model, { accountBalance: 10000 });
+  assert.strictEqual(model.get('hasDiscounts'), false);
+
+  setupModel(model, { accountBalance: 0, coupon: { amountOff: 10000 } });
+  assert.strictEqual(model.get('hasDiscounts'), true);
+});
