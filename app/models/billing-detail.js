@@ -79,14 +79,14 @@ export default DS.Model.extend({
     return this.get('accountBalance') < 0;
   }),
 
-  accountCredit: Ember.computed('accountBalance', function() {
+  accountCredit: Ember.computed('accountBalance', 'hasCredit', function() {
     if (this.get('hasCredit')) {
       return -1 * this.get('accountBalance');
     }
     return 0;
   }),
 
-  hasDiscounts: Ember.computed('accountBalance', 'coupon', function() {
+  hasDiscounts: Ember.computed('hasCredit', 'coupon', function() {
     return this.get('hasCredit') || !!this.get('coupon');
   })
 });

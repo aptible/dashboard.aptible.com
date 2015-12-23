@@ -86,6 +86,18 @@ test('it correctly sets domainsInPlan', function(assert) {
   assert.equal(model.get('domainsInPlan'), 20);
 });
 
+test('it inverts accountBalance for accountCredit', function(assert) {
+  var model = this.subject();
+  setupModel(model, { accountBalance: -50000 });
+  assert.strictEqual(model.get('accountCredit'), 50000);
+
+  setupModel(model, { accountBalance: 0 });
+  assert.strictEqual(model.get('accountCredit'), 0);
+
+  setupModel(model, { accountBalance: 10000 });
+  assert.strictEqual(model.get('accountCredit'), 0);
+});
+
 test('it correctly determines hasCredit', function(assert) {
   var model = this.subject();
   setupModel(model, { accountBalance: -50000 });
