@@ -41,6 +41,15 @@
           {{total-monthly-estimate billingDetail=billingDetail stacks=stacks}}
         </h3>
       </li>
+
+      <li class="resource-metadata-item">
+        <h5 class="resource-metadata-title">
+          Current Balance
+        </h5>
+        <h3 class="resource-metadata-value">
+          {{format-currency billingDetail.accountBalance}}
+        </h3>
+      </li>
     </ul>
   </div>
 </header>
