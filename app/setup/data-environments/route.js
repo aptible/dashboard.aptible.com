@@ -1,23 +1,25 @@
 import Ember from 'ember';
 import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
-import Schema from 'ember-json-schema/models/schema';
 import Attestation from 'sheriff/models/attestation';
-import dataEnvironmentsSchemaJson from 'sheriff/schemas/data-environments';
+import loadSchema from 'sheriff/utils/load-schema';
 
 export default Ember.Route.extend(SPDRouteMixin, {
   model() {
-    let dataEnvironmentsSchema = new Schema(dataEnvironmentsSchemaJson);
-    let schemaDocument = dataEnvironmentsSchema.buildDocument();
-    let organization = this.modelFor('organization');
-    let store = this.store;
-    let attestation = Attestation.findOrCreate('data-environments',
-                                               organization, [], store);
-    return Ember.RSVP.hash({ dataEnvironmentsSchema, attestation,
-                             schemaDocument });
+    let handle = 'selected_data_environments';
+    let organization = this.modelFor('organization').get('data.links.self');
+
+    return loadSchema(handle).then((schema) => {
+      let attestationParams = { handle, schemaId: schema.id, organization,
+                                document: {} };
+      let attestation = Attestation.findOrCreate(attestationParams, this.store);
+      let schemaDocument = schema.buildDocument();
+
+      return Ember.RSVP.hash({ schema, attestation, schemaDocument });
+    });
   },
 
   setupController(controller, model) {
-    controller.set('model', model.dataEnvironmentsSchema);
+    controller.set('model', model.schema);
     controller.set('schemaDocument', model.schemaDocument);
     controller.set('attestation', model.attestation);
   },
@@ -26,9 +28,8 @@ export default Ember.Route.extend(SPDRouteMixin, {
     onNext() {
       let { attestation, schemaDocument } = this.currentModel;
       let profile = this.modelFor('setup');
-      let selectedDataEnvironments = schemaDocument.toJSON();
+      let selectedDataEnvironments = schemaDocument.dump({ excludeInvalid: true });
 
-      profile.setProperties({ selectedDataEnvironments });
       attestation.set('document', selectedDataEnvironments);
       attestation.save().then(() => {
         profile.next(this.get('stepName'));

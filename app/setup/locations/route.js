@@ -5,19 +5,20 @@ import Attestation from 'sheriff/models/attestation';
 import loadSchema from 'sheriff/utils/load-schema';
 
 // Use schema as property for validation
-export var locationProperty
+export var locationProperty;
 
 export default Ember.Route.extend(SPDRouteMixin, {
   model() {
     let handle = 'workforce_locations';
-    let organization = this.modelFor('organization');
-    let store = this.store;
+    let organization = this.modelFor('organization').get('data.links.self');
 
     return loadSchema(handle).then((schema) => {
-      debugger;
-      locationProperty = new Property(schema._schema.items);
-      let attestation = Attestation.findOrCreate(handle, organization, [], store);
+      let attestationParams = { handle, schemaId: schema.id, organization,
+                                document: [] };
+      let attestation = Attestation.findOrCreate(attestationParams, this.store);
       let schemaDocument = schema.buildDocument();
+
+      locationProperty = new Property(schema._schema.items);
 
       return Ember.RSVP.hash({ schema, attestation, schemaDocument });
     });
@@ -35,7 +36,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
       let { schemaDocument, attestation } = this.currentModel;
       let profile = this.modelFor('setup');
 
-      attestation.set('document', schemaDocument);
+      attestation.set('document', schemaDocument.dump({ excludeInvalid: true }));
       attestation.save().then(() => {
         profile.next(this.get('stepName'));
         profile.save().then(() => {
