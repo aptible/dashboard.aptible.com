@@ -40,6 +40,16 @@ module('Acceptance: Log Drains', {
      }
     });
 
+    stubRequest('get', 'log_drains/:id', function(request) {
+      let matchedLogDrain = {};
+      options.logDrains.forEach(function(logDrain, i){
+        if (options.logDrains[i].id === request.params.id) {
+          matchedLogDrain = options.logDrains[i];
+        }
+      });
+      return this.success(matchedLogDrain);
+    });
+
     databasesPayload = databasesPayload || [{id: 'db-1', type: 'elasticsearch'}];
     stubStackDatabases(stackId, databasesPayload);
     stubOrganization({id: orgId, name: orgName});
@@ -63,8 +73,7 @@ test(`visit ${url} shows basic info`, function(assert){
     drain_host: 'second.com',
     drain_port: 456,
     status: 'pending'
-  },
-   {
+  }, {
     id: 'drain-3',
     handle: 'second-drain',
     drain_host: 'second.com',
