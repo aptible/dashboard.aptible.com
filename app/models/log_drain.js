@@ -9,5 +9,7 @@ export default DS.Model.extend(ProvisionableMixin, {
   drainUsername: DS.attr('string'),
   drainPassword: DS.attr('string'),
 
-  stack: DS.belongsTo('stack', {async:true})
+  stack: DS.belongsTo('stack', {async:true}),
+
+  reloadWhileProvisioning: true
 });
