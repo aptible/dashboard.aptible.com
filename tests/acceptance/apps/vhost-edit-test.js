@@ -155,7 +155,7 @@ test(`visit ${url} shows form without certificates`, function(assert) {
 
 test(`visit ${url} click save`, function(assert) {
   stubStack({id: 'stubbed-stack'});
-  assert.expect(9);
+  assert.expect(10);
 
   let newCert = 'abc-new-cert';
   let newPk = 'abc-new-pk';
@@ -175,6 +175,13 @@ test(`visit ${url} click save`, function(assert) {
 
     return this.success(Ember.merge(json, {id:vhostId, status: 'provisioned' }));
   });
+
+  stubRequest('get', `/vhosts/${vhostId}`, function(request){
+    assert.ok(true, 'reloads the updated vhost');
+    let json = this.json(request);
+    return this.success(Ember.merge(json, {id:vhostId, status: 'provisioned' }));
+  });
+
 
   stubRequest('post', `/vhosts/${vhostId}/operations`, function(request){
     assert.ok(true, 'posts to create vhost operation');

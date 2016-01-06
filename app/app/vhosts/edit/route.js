@@ -68,6 +68,8 @@ export default Ember.Route.extend({
         let message = `Domain ${vhost.get('virtualDomain')} updated.`;
         Ember.get(this, 'flashMessages').success(message);
 
+        return vhost.reload();
+      }).then( () => {
         this.transitionTo('app.vhosts.index');
       }).catch( (e) => {
         let message = Ember.get(e, 'responseJSON.message') ||
