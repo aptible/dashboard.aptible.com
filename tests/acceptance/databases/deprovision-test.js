@@ -47,11 +47,11 @@ test('/databases/:id/deprovision will not deprovision without confirmation', fun
 });
 
 test('/databases/:id/deprovision will deprovision with confirmation', function(assert) {
-  var databaseId = 1;
-  var databaseName = 'foo-bar';
-  var didDeprovision = false;
+  let databaseId = 1;
+  let databaseName = 'foo-bar';
+  let didDeprovision = false;
 
-  stubStack({id: '1'});
+  stubStack({ id: '1' });
 
   stubDatabase({
     id: databaseId,
@@ -74,15 +74,19 @@ test('/databases/:id/deprovision will deprovision with confirmation', function(a
   stubStacks();
   stubOrganization();
 
-  signInAndVisit('/databases/'+databaseId+'/deprovision');
-  fillIn('input[type=text]', databaseName);
+  signInAndVisit(`/databases/${databaseId}/deprovision`);
+
+  andThen(function(){
+    fillIn('input[type=text]', databaseName);
+  });
   andThen(function(){
     $('input[type=text]').trigger('input');
   });
   click('button:contains(Deprovision)');
-  andThen(function(){
-    assert.ok(didDeprovision, 'deprovisioned');
-    assert.equal(currentPath(), 'dashboard.stack.databases.index');
+  andThen(() => {
+    assert.ok(didDeprovision, 'deprovisioned', 'received successful response');
+    assert.equal(currentPath(), 'dashboard.stack.databases.new',
+      'with no dbs, user is routed to create one');
   });
 });
 

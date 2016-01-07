@@ -1,4 +1,4 @@
-import Ember from "ember";
+import Ember from 'ember';
 
 export default Ember.Route.extend({
   titleToken: function(){
@@ -8,10 +8,11 @@ export default Ember.Route.extend({
 
   actions: {
     deprovision: function(){
-      var database = this.currentModel;
-      var route = this;
-      var controller = this.controller;
-      var store = this.store;
+      let database = this.currentModel;
+      let route = this;
+      let controller = this.controller;
+      let store = this.store;
+      let message = `${database.get('handle')} has been deprovisioned`;
       controller.set('error', null);
 
       database.get('stack').then(function(stack) {
@@ -19,10 +20,10 @@ export default Ember.Route.extend({
           type: 'deprovision',
           database: database
         });
-        return op.save().then(function(){
-          return database.reload();
-        }).then(function(){
+        op.save().then(function(){
+          database.deleteRecord();
           route.transitionTo('databases', stack);
+          Ember.get(route, 'flashMessages').success(message);
         }, function(e){
           controller.set('error', e);
         });
