@@ -50,7 +50,6 @@ test('/databases/:id/deprovision will deprovision with confirmation', function(a
   let databaseId = 1;
   let databaseName = 'foo-bar';
   let didDeprovision = false;
-  // let successMessage = `${databaseName} has been deprovisioned`
 
   stubStack({ id: '1' });
 
@@ -89,12 +88,6 @@ test('/databases/:id/deprovision will deprovision with confirmation', function(a
     assert.equal(currentPath(), 'dashboard.stack.databases.new',
       'with no dbs, user is routed to create one');
   });
-  // TODO: Figure out why the success message isn't showing up
-  // andThen(function(){
-  //   alert = findWithAssert('.alert-success', 'success message shown');
-  //   assert.ok(alert.text().indexOf(successMessage) > -1,
-  //     `expect "${successMessage}" as success message`);
-  // });
 });
 
 test('/databases/:id/deprovision will show deprovision error', function(assert) {
