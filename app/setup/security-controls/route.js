@@ -2,6 +2,7 @@ import Ember from 'ember';
 import { getSecurityControlGroups } from 'sheriff/utils/data-environment-schemas';
 import Attestation from 'sheriff/models/attestation';
 import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
+import BuildSecurityControlGroups from 'sheriff/utils/build-security-control-groups';
 
 export function getSelectedDataEnvironments(dataEnvironments) {
   return Ember.keys(dataEnvironments).filter((deName) => {
@@ -13,36 +14,41 @@ export default Ember.Route.extend(SPDRouteMixin, {
   afterModel(attestation) {
     let selectedDataEnvironments = getSelectedDataEnvironments(attestation.get('document'));
 
-    if(selectedDataEnvironments.length === 0) {
+    // If an attestation was created in model hook or the attestation has no
+    // selected data environments, we should go back and create a new
+    // attestation
+
+    if(attestation.get('isNew') || selectedDataEnvironments.length === 0) {
       return this.transitionTo('setup.data-environments');
     }
   },
 
   model() {
-    let organization = this.modelFor('organization');
-    let store = this.store;
+    let handle = 'selected_data_environments';
+    let organizationUrl = this.modelFor('organization').get('data.links.self');
+    let attestationParams = { handle, organizationUrl, document: [] };
 
-    return Attestation.findOrCreate('data-environments', organization, {}, store);
+    return Attestation.findOrCreate(attestationParams, this.store);
   },
 
   setupController(controller, model) {
     let dataEnvironments = model.get('document');
+    let organization = this.modelFor('organization').get('data.links.self');
     let selectedDataEnvironments = getSelectedDataEnvironments(dataEnvironments);
-    let securityControlGroups = getSecurityControlGroups(selectedDataEnvironments);
 
-    controller.set('model', securityControlGroups);
-    controller.set('dataEnvironments', dataEnvironments);
+    controller.set('model',
+      BuildSecurityControlGroups(selectedDataEnvironments, organization, this.store)
+    );
   },
 
   actions: {
     onNext() {
       let profile = this.modelFor('setup');
-      let organization = this.modelFor('organization');
-      let promises = this.controller.get('model').map((securityGroup) => {
-        let attestation = { handle: securityGroup.handle,
-                            document: securityGroup.document,
-                            organization: organization.get('data.links.self') };
-        return this.store.createRecord('attestation', attestation).save();
+      let securityControlGroups = this.controller.get('model');
+      let promises = securityControlGroups.map((securityControlGroup) => {
+        let { document, attestation } = securityControlGroup;
+        attestation.set('document', document.dump({ excludeInvalid: true }));
+        return attestation.save();
       });
 
       Ember.RSVP.all(promises).then(() => {

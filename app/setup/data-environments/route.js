@@ -6,10 +6,10 @@ import loadSchema from 'sheriff/utils/load-schema';
 export default Ember.Route.extend(SPDRouteMixin, {
   model() {
     let handle = 'selected_data_environments';
-    let organization = this.modelFor('organization').get('data.links.self');
+    let organizationUrl = this.modelFor('organization').get('data.links.self');
 
     return loadSchema(handle).then((schema) => {
-      let attestationParams = { handle, schemaId: schema.id, organization,
+      let attestationParams = { handle, schemaId: schema.id, organizationUrl,
                                 document: {} };
       let attestation = Attestation.findOrCreate(attestationParams, this.store);
       let schemaDocument = schema.buildDocument();

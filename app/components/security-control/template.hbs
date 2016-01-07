@@ -4,7 +4,11 @@
       <i class="fa fa-lock"></i>
     </div>
   {{/if}}
-  {{component (concat 'schema-field-' type) key=key property=property document=document}}
+  {{component (concat 'schema-field-' type)
+    key=key
+    property=property
+    document=document
+    changed="onChange"}}
 </div>
 
 {{#if showProvider}}

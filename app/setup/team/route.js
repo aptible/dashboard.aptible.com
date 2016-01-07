@@ -8,11 +8,11 @@ export default Ember.Route.extend(SPDRouteMixin, {
   model() {
     let handle = 'workforce_roles';
     let organization = this.modelFor('organization');
-    let organizationHref = organization.get('data.links.self');
+    let organizationUrl = organization.get('data.links.self');
 
     return loadSchema(handle).then((schema) => {
       let attestationParams = { handle, schemaId: schema.id, document: [],
-                                organization: organizationHref };
+                                organizationUrl };
 
       let attestation = Attestation.findOrCreate(attestationParams, this.store);
 
