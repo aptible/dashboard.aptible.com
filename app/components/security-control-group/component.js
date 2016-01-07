@@ -1,5 +1,7 @@
 import Ember from 'ember';
 import { DISABLE_PROVIDER_LOGO } from '../security-control/component';
+import loadSchema from 'sheriff/utils/load-schema';
+import Attestation from 'sheriff/models/attestation';
 
 export const LOADING_STATES_LABELS = {
   securityControls: 'Loading Security Controls',
@@ -7,6 +9,8 @@ export const LOADING_STATES_LABELS = {
 };
 
 export default Ember.Component.extend({
+  store: Ember.inject.service(),
+
   classNames: ['security-control-group'],
   classNameBindings: ['loading'],
   loading: true,
@@ -41,23 +45,27 @@ export default Ember.Component.extend({
     this._super(...arguments);
     let securityControlGroup = this.get('securityControlGroup');
 
-    // Schema is a promise created by the route
-    securityControlGroup.schema.then(() => this.onSchemaLoad());
+    loadSchema(securityControlGroup.handle).then((s) => this.onSchemaLoad(s));
   },
 
-  onSchemaLoad() {
+  onSchemaLoad(schema) {
+    let store = this.get('store');
+    let organizationUrl = this.get('organizationUrl');
     let securityControlGroup = this.get('securityControlGroup');
-    let schema = securityControlGroup.schema;
+    let attestationParams = { handle: securityControlGroup.handle,
+                              schemaId: schema.id, organizationUrl, document: {} };
+
+    securityControlGroup.attestation = Attestation.findOrCreate(attestationParams, store)
+                                                  .then((a) => this.onAttestationLoad(a));
 
     this.setProperties({ schema, progressPercent: '50',
                          progressMessage: LOADING_STATES_LABELS.answers });
-
-    securityControlGroup.attestation.then((a) => this.onAttestationLoad(a));
   },
 
+
   onAttestationLoad(attestation) {
-    let securityControlGroup = this.get('securityControlGroup');
-    let document = securityControlGroup.schema.buildDocument();
+    let { securityControlGroup, schema } = this.getProperties('securityControlGroup', 'schema');
+    let document = schema.buildDocument();
 
     // Export attestation and document, used when saving from route
     securityControlGroup.attestation = attestation;

@@ -1,6 +1,4 @@
 import Ember from 'ember';
-import Attestation from 'sheriff/models/attestation';
-import loadSchema from 'sheriff/utils/load-schema';
 
 export const dataEnvironmentProviderMap = {
   aptible: 'aptible',
@@ -9,10 +7,14 @@ export const dataEnvironmentProviderMap = {
   googleDrive: 'google',
   gmail: 'google',
   mailgun: 'mailgun'
+
 };
 
-export default function(dataEnvironments, organization, store) {
-  let dataEnvironmentNames = dataEnvironments || [];
+export default function(dataEnvironments) {
+  let dataEnvironmentNames = Ember.keys(dataEnvironments).filter((deName) => {
+    return dataEnvironments[deName];
+  });
+
   let securityControlGroups = [];
 
   dataEnvironmentNames.without('aptible').forEach((deName) => {
@@ -33,17 +35,6 @@ export default function(dataEnvironments, organization, store) {
     { handle: 'workstation_security_controls', provider: 'global' },
     { handle: 'aptible_security_controls', provider: 'aptible' }
   ]);
-
-  securityControlGroups.forEach((securityControlGroup) => {
-    securityControlGroup.schema = loadSchema(securityControlGroup.handle).then((schema) => {
-      let attestationParams = { handle: securityControlGroup.handle,
-                                schemaId: schema.id, organizationUrl: organization, document: {} };
-      securityControlGroup.attestation = Attestation.findOrCreate(attestationParams, store);
-      securityControlGroup.schema = schema;
-
-      return this;
-    });
-  });
 
   return securityControlGroups;
 }

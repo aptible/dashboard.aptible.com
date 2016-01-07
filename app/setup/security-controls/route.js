@@ -1,24 +1,15 @@
 import Ember from 'ember';
-import { getSecurityControlGroups } from 'sheriff/utils/data-environment-schemas';
 import Attestation from 'sheriff/models/attestation';
 import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
 import BuildSecurityControlGroups from 'sheriff/utils/build-security-control-groups';
 
-export function getSelectedDataEnvironments(dataEnvironments) {
-  return Ember.keys(dataEnvironments).filter((deName) => {
-    return dataEnvironments[deName];
-  });
-}
-
 export default Ember.Route.extend(SPDRouteMixin, {
   afterModel(attestation) {
-    let selectedDataEnvironments = getSelectedDataEnvironments(attestation.get('document'));
-
     // If an attestation was created in model hook or the attestation has no
     // selected data environments, we should go back and create a new
     // attestation
 
-    if(attestation.get('isNew') || selectedDataEnvironments.length === 0) {
+    if (attestation.get('isNew')) {
       return this.transitionTo('setup.data-environments');
     }
   },
@@ -33,12 +24,10 @@ export default Ember.Route.extend(SPDRouteMixin, {
 
   setupController(controller, model) {
     let dataEnvironments = model.get('document');
-    let organization = this.modelFor('organization').get('data.links.self');
-    let selectedDataEnvironments = getSelectedDataEnvironments(dataEnvironments);
+    let organizationUrl = this.modelFor('organization').get('data.links.self');
 
-    controller.set('model',
-      BuildSecurityControlGroups(selectedDataEnvironments, organization, this.store)
-    );
+    controller.set('model', BuildSecurityControlGroups(dataEnvironments));
+    controller.set('organizationUrl', organizationUrl);
   },
 
   actions: {

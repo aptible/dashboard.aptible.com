@@ -4,7 +4,10 @@
   <h1 class="setup-step-title">Security Controls</h1>
 
   {{#each model as |securityControlGroup|}}
-    {{security-control-group securityControlGroup=securityControlGroup}}
+    {{security-control-group
+      securityControlGroup=securityControlGroup
+      organizationUrl=organizationUrl
+    }}
   {{/each}}
 
   <div>
