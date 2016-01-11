@@ -6,13 +6,13 @@ import { orgId, rolesHref, usersHref, invitationsHref, securityOfficerId,
          securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
+let attestationHandle = 'selected_data_environments';
 let dataEnvironmentsUrl = `${orgId}/setup/data-environments`;
 let userId = 'basic-user-1';
 let developerId = 'developer-user-2';
 let basicRoleId = 'basic-role-1';
 let developerRoleId = 'developer-role-2';
-let dataEnvironments = ['Aptible', 'Amazon Simple Storage Service (Amazon S3)',
-                        'Google Calendar', 'Google Drive', 'Gmail', 'Mailgun'];
+let dataEnvironments = ['Aptible', 'Amazon Simple Storage Service (Amazon S3)', 'Gmail'];
 let users = [
   {
     id: userId,
@@ -57,7 +57,7 @@ module('Acceptance: Setup: Data Environments', {
 });
 
 test('Lists all data environments', function(assert) {
-  stubCurrentAttestation('data-environments', []);
+  stubCurrentAttestations(attestationHandle, []);
   stubProfile({ currentStep: 'data-environments' });
   stubRequests();
   signInAndVisit(dataEnvironmentsUrl);
@@ -77,8 +77,7 @@ test('Lists all data environments', function(assert) {
 });
 
 test('Clicking back should return you to previous step', function(assert) {
-  stubCurrentAttestation('data-environments', []);
-  stubCurrentAttestation('team', []);
+  stubCurrentAttestations({ selected_data_environments: {}, team: [] });
   stubProfile({ currentStep: 'data-environments' });
   stubRequests();
   signInAndVisit(dataEnvironmentsUrl);
@@ -100,14 +99,11 @@ test('Clicking back should return you to previous step', function(assert) {
 
 test('Clicking continue saves data environment selections to organization profile', function(assert) {
   expect(6);
-  stubCurrentAttestation('data-environments', { aptible: true });
+  stubCurrentAttestations({ selected_data_environments: { aptible: true }, team: [] });
   let expectedDataEnvironmentPayload = {
     amazonS3: true,
     aptible: true,
-    gmail: true,
-    googleCalendar: false,
-    googleDrive: false,
-    mailgun: true
+    gmail: true
   };
 
   stubProfile({ currentStep: 'data-environments' });
@@ -128,7 +124,7 @@ test('Clicking continue saves data environment selections to organization profil
     let json = this.json(request);
 
     assert.ok(true, 'posts to /attestations');
-    assert.equal(json.handle, 'data-environments', 'includes attestation handle');
+    assert.equal(json.handle, attestationHandle, 'includes attestation handle');
     assert.deepEqual(json.document, expectedDataEnvironmentPayload, 'includes selected data environments as a document payload');
 
     return this.success({ id: 1 });
@@ -137,7 +133,6 @@ test('Clicking continue saves data environment selections to organization profil
   andThen(() => {
     toggleDataEnvironment('Amazon S3');
     toggleDataEnvironment('Gmail');
-    toggleDataEnvironment('Mailgun');
   });
 
   andThen(clickContinueButton);
@@ -148,26 +143,20 @@ test('Clicking continue saves data environment selections to organization profil
 });
 
 test('Should load existing selections when attestation already exists', function(assert) {
-  expect(12);
+  expect(9);
   let existingSelection = {
     amazonS3: false,
     aptible: true,
     gmail: false,
-    googleCalendar: true,
-    googleDrive: false,
-    mailgun: true
   };
 
   let expectedDataEnvironmentPayload = {
     amazonS3: false,
     aptible: true,
     gmail: true,
-    googleCalendar: true,
-    googleDrive: false,
-    mailgun: true
   };
 
-  stubCurrentAttestation('data-environments', existingSelection);
+  stubCurrentAttestations({ selected_data_environments: existingSelection });
   stubProfile({ currentStep: 'data-environments' });
   stubRequests();
   signInAndVisit(dataEnvironmentsUrl);
@@ -186,7 +175,7 @@ test('Should load existing selections when attestation already exists', function
     let json = this.json(request);
 
     assert.ok(true, 'posts to /attestations');
-    assert.equal(json.handle, 'data-environments', 'includes attestation handle');
+    assert.equal(json.handle, attestationHandle, 'includes attestation handle');
     assert.deepEqual(json.document, expectedDataEnvironmentPayload, 'includes selected data environments as a document payload');
 
     return this.success({ id: 1 });
@@ -219,6 +208,7 @@ function toggleDataEnvironment(environment) {
 
 function stubRequests() {
   stubValidOrganization();
+  stubSchemasAPI();
 
   stubRequest('get', rolesHref, function(request) {
     return this.success({ _embedded: { roles } });

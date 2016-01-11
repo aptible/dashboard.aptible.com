@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Attestation from 'sheriff/models/attestation';
 import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
-import BuildSecurityControlGroups from 'sheriff/utils/build-security-control-groups';
+import buildSecurityControlGroups from 'sheriff/utils/build-security-control-groups';
 
 export default Ember.Route.extend(SPDRouteMixin, {
   afterModel(attestation) {
@@ -26,7 +26,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
     let dataEnvironments = model.get('document');
     let organizationUrl = this.modelFor('organization').get('data.links.self');
 
-    controller.set('model', BuildSecurityControlGroups(dataEnvironments));
+    controller.set('model', buildSecurityControlGroups(dataEnvironments));
     controller.set('organizationUrl', organizationUrl);
   },
 

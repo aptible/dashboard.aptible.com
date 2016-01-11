@@ -98,7 +98,7 @@ export default Ember.Component.extend({
     this.set('saveMessage', 'Saved successfully!');
 
     Ember.run.later(this, () => {
-      this.setProperties({ showSave: false, saveMessage: null})
+      this.setProperties({ showSave: false, saveMessage: null });
     }, 1500);
   },
 

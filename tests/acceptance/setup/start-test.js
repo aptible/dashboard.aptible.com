@@ -88,7 +88,7 @@ test('Basic setup start page UI', function(assert) {
 });
 
 test('Existing organization profiles should redirect to future step', function(assert) {
-  stubCurrentAttestation('locations', []);
+  stubCurrentAttestations({ workforce_locations: [] });
   stubProfile({ currentStep: 'locations' });
   stubRequests();
   signInAndVisit(startUrl);
@@ -101,6 +101,7 @@ test('Existing organization profiles should redirect to future step', function(a
 
 function stubRequests() {
   stubValidOrganization();
+  stubSchemasAPI();
 
   stubRequest('get', rolesHref, function(request) {
     return this.success({ _embedded: { roles } });

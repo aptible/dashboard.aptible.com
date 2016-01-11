@@ -44,7 +44,7 @@ module('Acceptance: Setup: Locations', {
 
 test('Locations page basic UI, with no existing locations', function(assert) {
   stubProfile({ currentStep: 'locations' });
-  stubCurrentAttestation('locations', []);
+  stubCurrentAttestations({ workforce_locations: [] });
   stubRequests();
   signInAndVisit(locationsUrl);
 
@@ -82,7 +82,7 @@ test('Locations page, with existing location attestation', function(assert) {
   ];
 
   stubProfile({ currentStep: 'locations' });
-  stubCurrentAttestation('locations', existingAttestationData);
+  stubCurrentAttestations({ workforce_locations: existingAttestationData });
   stubRequests();
   signInAndVisit(locationsUrl);
 
@@ -108,7 +108,7 @@ test('Locations page, with existing location attestation', function(assert) {
 
 test('Clicking back should return you to previous step', function(assert) {
   stubProfile({ currentStep: 'locations' });
-  stubCurrentAttestation('locations', []);
+  stubCurrentAttestations({ workforce_locations: [] });
   stubRequests();
   signInAndVisit(locationsUrl);
 
@@ -129,7 +129,7 @@ test('Clicking back should return you to previous step', function(assert) {
 
 test('Adding location adds to location index', function(assert) {
   stubProfile({ currentStep: 'locations' });
-  stubCurrentAttestation('locations', []);
+  stubCurrentAttestations({ workforce_locations: [] });
   stubRequests();
   signInAndVisit(locationsUrl);
 
@@ -149,7 +149,7 @@ test('Adding location adds to location index', function(assert) {
 
 test('Visiting location page without completing previous step should return to previous step', function(assert) {
   stubProfile({ currentStep: 'organization' });
-  stubCurrentAttestation('locations', []);
+  stubCurrentAttestations({ workforce_locations: [] });
   stubRequests();
   signInAndVisit(locationsUrl);
 
@@ -160,7 +160,7 @@ test('Visiting location page without completing previous step should return to p
 
 test('Adding an incomplete location shows an error message', function(assert) {
   stubProfile({ currentStep: 'locations' });
-  stubCurrentAttestation('locations', []);
+  stubCurrentAttestations({ workforce_locations: [] });
   stubRequests();
   signInAndVisit(locationsUrl);
 
@@ -184,12 +184,12 @@ test('Adding an incomplete location shows an error message', function(assert) {
 
 test('Clicking continue creates locations attestation', function(assert) {
   expect(5);
-  stubCurrentAttestation('locations', []);
+  stubCurrentAttestations({ workforce_locations: [] });
   stubRequest('post', '/attestations', function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to /attestations');
-    assert.equal(json.handle, 'locations');
+    assert.equal(json.handle, 'workforce_locations');
 
     return this.success({ id: 1 });
   });
@@ -254,6 +254,7 @@ function selectState(state) {
 
 function stubRequests() {
   stubValidOrganization();
+  stubSchemasAPI();
 
   stubRequest('get', rolesHref, function(request) {
     return this.success({ _embedded: { roles } });

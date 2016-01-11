@@ -114,7 +114,7 @@ module('Acceptance: Setup: Team', {
 });
 
 test('You are redirected to correct step if not ready for team step', function(assert) {
-  stubCurrentAttestation('team', []);
+  stubCurrentAttestations({ workforce_roles: [] });
   stubProfile({ currentStep: 'organization' });
   stubRequests();
   signInAndVisit(teamUrl);
@@ -125,8 +125,7 @@ test('You are redirected to correct step if not ready for team step', function(a
 });
 
 test('Clicking back should return you to previous step', function(assert) {
-  stubCurrentAttestation('team', []);
-  stubCurrentAttestation('locations', []);
+  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
   stubProfile({ currentStep: 'team' });
   stubRequests();
   signInAndVisit(teamUrl);
@@ -147,7 +146,7 @@ test('Clicking back should return you to previous step', function(assert) {
 });
 
 test('Team shows all organization users', function(assert) {
-  stubCurrentAttestation('team', []);
+  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
   stubProfile({ currentStep: 'team' });
   stubRequests();
   signInAndVisit(teamUrl);
@@ -162,7 +161,7 @@ test('Team shows all organization users', function(assert) {
 });
 
 test('Invitations tab shows all pending invitations', function(assert) {
-  stubCurrentAttestation('team', []);
+  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
   stubProfile({ currentStep: 'team' });
   stubRequests();
   signInAndVisit(teamUrl);
@@ -182,10 +181,13 @@ test('Invitations tab shows all pending invitations', function(assert) {
 
 test('Toggling user roles and clicking continue saves team attestation with correct values', function(assert) {
   expect(4);
-  stubCurrentAttestation('team', []);
+  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
   let expectedAttestation = {
-    handle: 'team',
+    handle: 'workforce_roles',
+    organization_url: `/organizations/${orgId}`,
     organization: `/organizations/${orgId}`,
+    id: '0',
+    schema_id: 'workforce_roles/1',
     document: [
       {
         email: 'basicuser@asdf.com',
@@ -276,11 +278,13 @@ test('Team page with existing team attestation', function(assert) {
     }
   ];
 
-  stubCurrentAttestation('team', currentTeamAttestation);
-
+  stubCurrentAttestations({ workforce_roles: currentTeamAttestation, workforce_locations: [] });
   let expectedAttestation = {
-    handle: 'team',
+    handle: 'workforce_roles',
+    id: '0',
+    schema_id: 'workforce_roles/1',
     organization: `/organizations/${orgId}`,
+    organization_url: `/organizations/${orgId}`,
     document: [
       {
         email: 'basicuser@asdf.com',
@@ -368,7 +372,7 @@ test('Team page with existing team attestation', function(assert) {
 });
 
 test('Invite new member modal basic UI', function(assert) {
-  stubCurrentAttestation('team', []);
+  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
   stubProfile({ currentStep: 'team' });
   stubRequests();
   signInAndVisit(teamUrl);
@@ -404,7 +408,7 @@ test('Invite new member modal basic UI', function(assert) {
 });
 
 test('Invite modal creates invitation record for each email', function(assert) {
-  stubCurrentAttestation('team', []);
+  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
   expect(17);
 
   let emailAddresses = 'skylar+1@aptible.com;skylar+2@aptible.com\nskylar+3@aptible.com skylar+4@aptible.com';
@@ -476,6 +480,7 @@ function selectRole(roleId) {
 
 function stubRequests() {
   stubValidOrganization();
+  stubSchemasAPI();
 
   stubRequest('get', `/roles/${developerRoleId}/users`, function() {
     return this.success({ _embedded: { users: [users[1]] }});
