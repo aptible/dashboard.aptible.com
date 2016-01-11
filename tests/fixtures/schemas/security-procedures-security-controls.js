@@ -5,10 +5,10 @@ export default {
   "title":"Security Procedures",
   "description": "Organizational Security Procedures",
   "properties":{
-    "identifyAllComponentsAndDependencies":{
+    "secureProcedure0":{
       "type":"boolean",
-      "title":"Identify all Components and Dependencies",
-      "description":"Do you maintain an easily-accessible list of all application components and dependencies, to facilitate security audits?",
+      "title":"Do you secure?",
+      "description":"??",
       "displayProperties":{
         "useToggle":true,
         "showLabels":true,
