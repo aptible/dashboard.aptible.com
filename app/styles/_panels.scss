@@ -24,6 +24,10 @@
     .panel-section:nth-child(1) {
       background: #fff;
     }
+
+    .panel-section:last-child {
+      border: 0;
+    }
   }
 
   > .panel-heading {
@@ -235,4 +239,9 @@ h3.panel-title {
   color: $color-light;
   font-weight: $weight-semibold;
   margin: 0 0 10px;
+}
+
+.panel-footer {
+  border-top-color: #eaeaea;
+  background: $color-bg-gray;
 }
