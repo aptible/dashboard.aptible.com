@@ -1,6 +1,6 @@
 import resolver from './helpers/resolver';
 import {
-  setResolver,
+  setResolver
 } from 'ember-qunit';
 import config from "../config/environment";
 import FakeServer from 'ember-cli-fake-server';
