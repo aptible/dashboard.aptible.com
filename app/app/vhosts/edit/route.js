@@ -80,15 +80,12 @@ export default Ember.Route.extend({
     },
 
     cancel() {
-      this.transitionTo('app.vhosts.index');
-    },
-
-    willTransition() {
       this.currentModel.vhost.set(
         'certificate',
         this.controller.get('originalCertificate')
       );
       this.currentModel.vhost.rollback();
+      this.transitionTo('app.vhosts.index');
     }
   }
 });
