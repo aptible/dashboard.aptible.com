@@ -8,17 +8,18 @@ import monkeyPatchRaven from './ext/raven';
 Ember.Route.reopen(RouteExtension);
 Ember.Router.reopen(RouterExtension);
 
-Ember.MODEL_FACTORY_INJECTIONS = true;
-
 let App;
+
+Ember.MODEL_FACTORY_INJECTIONS = true;
 
 App = Ember.Application.extend({
   modulePrefix: config.modulePrefix,
   podModulePrefix: config.podModulePrefix,
-  Resolver: Resolver
+  Resolver
 });
 
 loadInitializers(App, config.modulePrefix);
+
 monkeyPatchRaven();
 
 export default App;
