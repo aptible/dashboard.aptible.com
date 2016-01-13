@@ -21,6 +21,7 @@
   "author": "Aptible",
   "license": "MIT",
   "devDependencies": {
+    "ember-resolver": "~2.0.3",
     "broccoli-asset-rev": "^2.2.0",
     "ember-cli": "1.13.14",
     "ember-cli-app-version": "^1.0.0",
