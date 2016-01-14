@@ -8,7 +8,7 @@ export const DOMAIN_CENTS_PER_HOUR = 5;
 // All monetary calculations are done in cents
 export const PLAN_RATES = {
   development: 0,
-  platform: 49900,
+  platform: 99900,
   pilot: 99900,
   production: 349900
 };
@@ -53,15 +53,15 @@ export default DS.Model.extend({
   hasStripeSubscription: Ember.computed.bool('stripeSubscriptionId'),
   hasStripeCustomer: Ember.computed.bool('stripeCustomerId'),
   hasStripe: Ember.computed.and('hasStripeCustomer', 'hasStripeSubscription'),
+  accountBalance: DS.attr('number'),
+  planRate: DS.attr('number'),
+  coupon: DS.attr(),
 
   // Temporary rate and allowance stubs until these are fulfilled with
   // customer-specific values from Billing API
   containerCentsPerHour: CONTAINER_CENTS_PER_HOUR,
   diskCentsPerHour: DISK_CENTS_PER_HOUR,
   domainCentsPerHour: DOMAIN_CENTS_PER_HOUR,
-  planRate: Ember.computed('plan', function() {
-    return PLAN_RATES[this.get('plan')];
-  }),
 
   containersInPlan: Ember.computed('containerAllowance', 'plan', function() {
     return this.get('containerAllowance') || CONTAINER_ALLOWANCES[this.get('plan')] || 0;
@@ -73,5 +73,20 @@ export default DS.Model.extend({
 
   domainsInPlan: Ember.computed('domainAllowance', 'plan', function() {
     return this.get('domainAllowance') || DOMAIN_ALLOWANCES[this.get('plan')] || 0;
+  }),
+
+  hasCredit: Ember.computed('accountBalance', function() {
+    return this.get('accountBalance') < 0;
+  }),
+
+  accountCredit: Ember.computed('accountBalance', 'hasCredit', function() {
+    if (this.get('hasCredit')) {
+      return -1 * this.get('accountBalance');
+    }
+    return 0;
+  }),
+
+  hasDiscounts: Ember.computed('hasCredit', 'coupon', function() {
+    return this.get('hasCredit') || !!this.get('coupon');
   })
 });

@@ -36,9 +36,11 @@ export default DS.Model.extend({
   vhosts: DS.hasMany('vhost', {async:true}),
 
   // computed properties
-  pending: Ember.computed.not('activated'),
   allowPHI: Ember.computed.match('type', /production/),
   appContainerCentsPerHour: 8,
+  pending: Ember.computed.not('activated'),
+  persistedVhosts: Ember.computed.filterBy('vhosts', 'isNew', false),
+  vhostNames: Ember.computed.mapBy('persistedVhosts', 'virtualDomain'),
 
   getUsageByResourceType(type) {
     let usageAttr = { container: 'containerCount', disk: 'totalDiskSize',
