@@ -22,8 +22,10 @@ export default Ember.Mixin.create({
   actions: {
     onPrevious() {
       let profile = this.modelFor('setup');
+
       profile.previous(this.get('stepName'));
       profile.save();
+
       this.transitionTo(`setup.${profile.get('currentStep')}`);
     },
 

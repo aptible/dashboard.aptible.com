@@ -7,7 +7,6 @@ export var usersHref = `/organizations/${orgId}/users`;
 export var invitationsHref = `/organizations/${orgId}/invitations`;
 export var securityOfficerId = 'security-officer-3';
 export var securityOfficerHref = `/users/${securityOfficerId}`;
-export var attestationId = 0;
 
 Ember.Test.registerHelper('stubValidOrganization', function(app) {
   let organization = {
@@ -43,14 +42,22 @@ Ember.Test.registerHelper('clickContinueButton', function(app) {
   continueButton.click();
 });
 
-Ember.Test.registerHelper('stubCurrentAttestation', function(app, handle, documentData) {
+Ember.Test.registerHelper('stubCurrentAttestations', function(app, attestationPayloads) {
+  var attestationId = 0;
+
   stubRequest('get', '/attestations', function(request) {
-    let attestations = [{
-      id: attestationId++,
-      handle,
-      document: documentData,
-      organization_url: `/organizations/${orgId}`
-    }];
+    let requestHandle = request.url.replace(/.+handle=(\S+)\&.+/, '$1');
+    let attestations = [];
+
+    if (requestHandle && attestationPayloads[requestHandle]) {
+      attestations = [{
+        id: attestationId++,
+        schema_id: `${requestHandle}/1`,
+        handle: requestHandle,
+        document: attestationPayloads[requestHandle] || {},
+        organization_url: `/organizations/${orgId}`
+      }];
+    }
 
     return this.success({ _embedded: { attestations } });
   });

@@ -21,4 +21,9 @@ export default function() {
     this.inHelper('liquid-modal'),
     this.use('fade')
   );
+
+  this.transition(
+    this.hasClass('fadeIn'),
+    this.use('fade')
+  );
 }

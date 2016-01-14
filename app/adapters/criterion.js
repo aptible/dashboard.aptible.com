@@ -8,13 +8,5 @@ export default GridironAdapter.extend({
     let organizationHref = this.get('currentOrganization.organizationHref');
     url = url.replace(/\{\?organization\}/, `?organization=${organizationHref}`);
     return this._super(store, record, url);
-  },
-
-  pathForType: function(type){
-    if(type === 'criterion') {
-      return 'criteria';
-    }
-
-    return this._super(type);
   }
 });

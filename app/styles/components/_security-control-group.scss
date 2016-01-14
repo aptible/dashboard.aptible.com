@@ -1,0 +1,54 @@
+.loading-security-controls {
+  width: 400px;
+  margin: 30px auto;
+
+  .data-environment-provider {
+    text-align: center;
+    opacity: .5;
+  }
+
+  .loading-progress {
+    .progress {
+      height: 3px;
+      border-radius: 3px;
+      background: $color-bg-gray;
+      box-shadow: none;
+      margin: 20px 0;
+    }
+
+    .progress-bar {
+      color: $color-bright-blue;
+    }
+  }
+
+  .progress-message {
+    text-align: center;
+    font-size: 11px;
+    color: $color-light;
+  }
+}
+
+.panel-footer {
+  @extend %clearfix;
+
+  .save-message {
+    color: $color-light;
+    font-size: 12px;
+    margin: 7px 10px 0 0;
+
+    .fa-check {
+      color: $color-success;
+    }
+  }
+
+  .error-message {
+    color: $color-danger;
+    font-weight: $weight-semibold;
+    font-size: 12px;
+    margin: 7px 10px 0 0;
+
+    .fa-exclamation-circle {
+      color: $color-danger;
+    }
+  }
+}

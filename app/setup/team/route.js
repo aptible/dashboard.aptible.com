@@ -1,23 +1,27 @@
 import Ember from 'ember';
-import Schema from 'ember-json-schema/models/schema';
-import teamSchema from 'sheriff/schemas/team';
 import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
 import Attestation from 'sheriff/models/attestation';
 import buildTeamDocument from 'sheriff/utils/build-team-document';
+import loadSchema from 'sheriff/utils/load-schema';
 
 export default Ember.Route.extend(SPDRouteMixin, {
   model() {
-    let schema = new Schema(teamSchema);
+    let handle = 'workforce_roles';
     let organization = this.modelFor('organization');
-    let store = this.store;
-    let attestation = Attestation.findOrCreate('team', organization, [], store);
+    let organizationUrl = organization.get('data.links.self');
 
-    return Ember.RSVP.hash({
-      users: organization.get('users'),
-      invitations: organization.get('invitations'),
-      securityOfficer: organization.get('securityOfficer'),
-      schema,
-      attestation: attestation
+    return loadSchema(handle).then((schema) => {
+      let attestationParams = { handle, schemaId: schema.id, document: [],
+                                organizationUrl };
+
+      let attestation = Attestation.findOrCreate(attestationParams, this.store);
+
+      return Ember.RSVP.hash({
+        schema, attestation,
+        users: organization.get('users'),
+        invitations: organization.get('invitations'),
+        securityOfficer: organization.get('securityOfficer')
+      });
     });
   },
 
@@ -39,9 +43,9 @@ export default Ember.Route.extend(SPDRouteMixin, {
     onNext() {
       let { attestation } = this.currentModel;
       let profile = this.modelFor('setup');
-      let document = this.controller.get('schemaDocument').dump();
+      let schemaDocument = this.controller.get('schemaDocument');
 
-      attestation.set('document', document);
+      attestation.set('document', schemaDocument.dump());
       attestation.save().then(() => {
         profile.next(this.get('stepName'));
         profile.save().then(() => {

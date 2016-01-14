@@ -6,8 +6,8 @@
   {{#each model as |securityControlGroup|}}
     {{security-control-group
       securityControlGroup=securityControlGroup
-      provider=securityControlGroup.provider
-      dataEnvironment=securityControlGroup.dataEnvironment}}
+      organizationUrl=organizationUrl
+    }}
   {{/each}}
 
   <div>

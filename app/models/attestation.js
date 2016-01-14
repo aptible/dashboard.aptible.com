@@ -3,36 +3,33 @@ import Ember from 'ember';
 
 let Attestation = DS.Model.extend({
   handle: DS.attr('string'),
-  organization: DS.attr('string'),
+  organizationUrl: DS.attr('string'),
+  schemaId: DS.attr('string'),
   document: DS.attr({ defaultValue: {} })
 });
 
 Attestation.reopenClass({
-  create(handle, organization, document, store) {
-    let params = { handle, document,
-                   organization: organization.get('data.links.self') };
-    return store.createRecord('attestation', params);
-  },
+  findOrCreate(params, store) {
+    if (!(params.handle && params.organizationUrl)) {
+      throw new Error('You must provide both a `handle` and an `organizationUrl` to `Attestation.findOrCreate`');
+    }
 
-  findOrCreate(handle, organization, defaultDocument, store) {
+    let handle = params.handle;
+    let organization = params.organizationUrl;
+    let findParams = { current: true, handle, organization };
+
     return new Ember.RSVP.Promise((resolve) => {
-      let findParams = { handle: handle, current: true,
-                         organization: organization.get('data.links.self') };
       store.find('attestation', findParams)
         .then((attestations) => {
-          if (attestations.get('length') === 1) {
-            // Create a new attestation using the existing current attestation
-            // as a template.
-
-            // TODO: Replace this clone functionality with a different
-            // updateRecord method in the Adapter.  Just need to strip ID and use
-            // POST rather than PUT
-            defaultDocument = attestations.get('firstObject.document');
-          }
-
-          resolve(this.create(handle, organization, defaultDocument, store));
+          // Resolve any attestation returned (should be limited to 1), otherwise
+          // instantiate a new attestation and return it
+          let attestation = attestations.get('firstObject') ||
+                            store.createRecord('attestation', params);
+          resolve(attestation);
         })
-        .catch(() => { resolve(this.create(handle, organization, defaultDocument, store)); });
+
+        // In case of error, just create new attestation
+        .catch(() => { resolve( store.createRecord('attestation', params)); });
     });
   }
 });

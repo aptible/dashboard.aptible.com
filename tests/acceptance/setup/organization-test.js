@@ -64,7 +64,7 @@ test('Clicking continue saves organization profile and moves to next step', func
   let expectedAboutProduct = 'Seamlessly integrate advanced compliance tools';
 
   stubProfile({ currentStep: 'organization', id: orgId });
-  stubCurrentAttestation('locations', []);
+  stubCurrentAttestations({ locations: [] });
   stubRequests();
   signInAndVisit(organizationUrl);
 
@@ -95,6 +95,7 @@ test('Clicking continue saves organization profile and moves to next step', func
 
 function stubRequests() {
   stubValidOrganization();
+  stubSchemasAPI();
 
   stubRequest('get', rolesHref, function(request) {
     return this.success({ _embedded: { roles } });

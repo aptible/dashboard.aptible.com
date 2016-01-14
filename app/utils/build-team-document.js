@@ -6,7 +6,7 @@ import Ember from 'ember';
 // document.  If not, create a new blank document
 // Return the new schema document
 
-export default function buildTeamDocument(users, documents, schema) {
+export default function(users, documents, schema) {
   let schemaDocument = schema.buildDocument();
   users.forEach((user) => {
     let { name, email } = user.getProperties('name', 'email');
