@@ -246,7 +246,6 @@ test('Toggling user roles and clicking continue saves team attestation with corr
   });
 
   andThen(clickContinueButton);
-
 });
 
 test('Team page with existing team attestation', function(assert) {
@@ -455,6 +454,24 @@ test('Invite modal creates invitation record for each email', function(assert) {
   });
 });
 
+test('Developer and Security Officer groups are validated to include at least on user each', function(assert) {
+  expect(2);
+  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
+  stubProfile({ currentStep: 'team' });
+  stubRequests();
+  signInAndVisit(teamUrl);
+
+  stubRequest('post', '/attestations', function(request) {
+    assert.ok(false, 'does not save an attestation');
+    return this.success({ id: 1 });
+  });
+
+  andThen(clickContinueButton);
+  andThen(() => {
+    assert.ok(find('.alert-danger:contains(at least one Developer is required, at least one Security Officer is required.)').length === 1, 'shows an error');
+    assert.equal(currentPath(), 'organization.setup.team.index', 'remains on team step');
+  });
+});
 
 skip('Clicking re-invite button sends new invitation');
 skip('Clicking X button deletes pending invitation');
