@@ -1,0 +1,112 @@
+.panel {
+  .table {
+    font-size: 14px;
+
+    th {
+      font-size: 14px;
+      padding: 25px 16px 16px;
+      border-bottom: 4px solid $color-border-gray;
+
+      &:first-child {
+        padding-left: 30px;
+      }
+    }
+
+    td {
+      padding: 18px 16px 19px;
+
+      &:first-child {
+        padding-left: 30px;
+      }
+
+      &.row-actions {
+        background: $color-bg-gray;
+        border-left: 1px solid $color-border-gray;
+        vertical-align: middle;
+        padding: 0;
+      }
+    }
+  }
+
+  .gravatar-col {
+    &.sm {
+      width: 25px;
+      padding-top: 15px;
+      padding-bottom: 10px;
+      padding-right: 0;
+    }
+  }
+}
+
+/* Overriding bootstrap specificity is a blast */
+.table > tbody > tr > td {
+  border-top: 1px solid $color-border-gray;
+}
+
+ul.row-action-nav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    margin: 0;
+    padding:0;
+    width: 50px;
+    text-align: center;
+    display: inline-block;
+  }
+
+  a {
+    display: block;
+    padding: 10px 0;
+  }
+
+  a i.fa {
+    color: $color-light;
+  }
+
+  a:hover i {
+    color: $color-primary;
+  }
+
+  a:hover i.danger {
+    color: $color-danger;
+  }
+}
+
+.table-hover > tbody > tr:hover {
+  background-color: $color-bg-gray;
+}
+
+.one-action {
+  width: 50px;
+}
+
+.two-actions {
+  width: 105px;
+}
+
+.three-actions {
+  width: 150px;
+}
+
+td.align-right, th.align-right {
+  text-align: right;
+}
+
+td.toggle-small, th.toggle-small {
+  width: 100px;
+
+  .x-toggle-container {
+    height: 20px;
+    display: block;
+  }
+}
+
+td.empty-row {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: $weight-semibold;
+  color: $color-light;
+}
