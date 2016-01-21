@@ -193,7 +193,7 @@ test('Toggling user roles and clicking continue saves team attestation with corr
         email: 'basicuser@asdf.com',
         name: 'Basic User',
         isDeveloper: true,
-        isPrivacyOfficer: false,
+        isRobot: false,
         isSecurityOfficer: true,
         href: `/users/${userId}`,
       },
@@ -201,7 +201,7 @@ test('Toggling user roles and clicking continue saves team attestation with corr
         email: 'developeruser@asdf.com',
         name: 'Developer User',
         isDeveloper: false,
-        isPrivacyOfficer: false,
+        isRobot: false,
         isSecurityOfficer: false,
         href: `/users/${developerId}`,
       },
@@ -209,7 +209,7 @@ test('Toggling user roles and clicking continue saves team attestation with corr
         email: 'securityofficeruser@asdf.com',
         name: 'Security Officer User',
         isDeveloper: false,
-        isPrivacyOfficer: true,
+        isRobot: true,
         isSecurityOfficer: false,
         href: `/users/${securityOfficerId}`,
       }
@@ -242,7 +242,7 @@ test('Toggling user roles and clicking continue saves team attestation with corr
   andThen(() => {
     findWithAssert('.toggle-developer:first label').click();
     findWithAssert('.toggle-security-officer:first label').click();
-    findWithAssert('.toggle-privacy-officer:last label').click();
+    findWithAssert('.toggle-robot:last label').click();
   });
 
   andThen(clickContinueButton);
@@ -255,7 +255,7 @@ test('Team page with existing team attestation', function(assert) {
       email: 'basicuser@asdf.com',
       name: 'Basic User',
       isDeveloper: false,
-      isPrivacyOfficer: false,
+      isRobot: false,
       isSecurityOfficer: false,
       href: `/users/${userId}`,
     },
@@ -263,7 +263,7 @@ test('Team page with existing team attestation', function(assert) {
       email: 'developeruser@asdf.com',
       name: 'Developer User',
       isDeveloper: true,
-      isPrivacyOfficer: false,
+      isRobot: false,
       isSecurityOfficer: false,
       href: `/users/${developerId}`,
     },
@@ -271,7 +271,7 @@ test('Team page with existing team attestation', function(assert) {
       email: 'securityofficeruser@asdf.com',
       name: 'Security Officer User',
       isDeveloper: false,
-      isPrivacyOfficer: true,
+      isRobot: true,
       isSecurityOfficer: true,
       href: `/users/${securityOfficerId}`,
     }
@@ -289,7 +289,7 @@ test('Team page with existing team attestation', function(assert) {
         email: 'basicuser@asdf.com',
         name: 'Basic User',
         isDeveloper: true,
-        isPrivacyOfficer: false,
+        isRobot: false,
         isSecurityOfficer: true,
         href: `/users/${userId}`,
       },
@@ -297,7 +297,7 @@ test('Team page with existing team attestation', function(assert) {
         email: 'developeruser@asdf.com',
         name: 'Developer User',
         isDeveloper: false,
-        isPrivacyOfficer: false,
+        isRobot: false,
         isSecurityOfficer: false,
         href: `/users/${developerId}`,
       },
@@ -305,7 +305,7 @@ test('Team page with existing team attestation', function(assert) {
         email: 'securityofficeruser@asdf.com',
         name: 'Security Officer User',
         isDeveloper: true,
-        isPrivacyOfficer: true,
+        isRobot: true,
         isSecurityOfficer: true,
         href: `/users/${securityOfficerId}`,
       }
@@ -344,11 +344,11 @@ test('Team page with existing team attestation', function(assert) {
 
       let developerToggle = find('.toggle-developer input.x-toggle', row);
       let soToggle = find('.toggle-security-officer input.x-toggle', row);
-      let poToggle = find('.toggle-privacy-officer input.x-toggle', row);
+      let robotToggle = find('.toggle-robot input.x-toggle', row);
 
       assert.equal(developerToggle.is(':checked'), user.isDeveloper, 'is developer is checked');
       assert.equal(soToggle.is(':checked'), user.isSecurityOfficer, 'security officer is checked');
-      assert.equal(poToggle.is(':checked'), user.isPrivacyOfficer, 'privacy officer is checked');
+      assert.equal(robotToggle.is(':checked'), user.isRobot, 'robot is checked');
     });
   });
 

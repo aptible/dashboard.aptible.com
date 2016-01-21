@@ -19,8 +19,8 @@ export default function(users, documents, schema) {
     item.set('href', href);
 
     if(document) {
-      let { isDeveloper, isSecurityOfficer, isPrivacyOfficer } = Ember.getProperties(
-        document, ['isDeveloper', 'isSecurityOfficer', 'isPrivacyOfficer']
+      let { isDeveloper, isSecurityOfficer, isRobot } = Ember.getProperties(
+        document, ['isDeveloper', 'isSecurityOfficer', 'isRobot']
       );
 
       if(typeof isDeveloper !== 'undefined') {
@@ -31,8 +31,8 @@ export default function(users, documents, schema) {
         item.set('isSecurityOfficer', isSecurityOfficer);
       }
 
-      if(typeof isPrivacyOfficer !== 'undefined') {
-        item.set('isPrivacyOfficer', isPrivacyOfficer);
+      if(typeof isRobot !== 'undefined') {
+        item.set('isRobot', isRobot);
       }
 
     }
