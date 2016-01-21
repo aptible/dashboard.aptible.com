@@ -33,7 +33,7 @@ export default DS.Model.extend({
     let subjectUrl = subject.get('data.links.self');
     let organizationUrl = organization.get('data.links.self');
 
-    let subjectDocuments = this.get('documents').filter((d) => {
+    let subjectDocuments = this.get('documents.content').filter((d) => {
       if(d.get('organizationUrl') !== organizationUrl) {
         // Users can belong to multiple organizations, so be sure to only
         // include documents related to the current organization
