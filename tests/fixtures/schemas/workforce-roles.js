@@ -17,7 +17,7 @@ export default {
         "type":"boolean",
         "default": false
       },
-      "isPrivacyOfficer":{
+      "isRobot":{
         "type":"boolean",
         "default": false
       },
@@ -29,7 +29,7 @@ export default {
       "href",
       "isDeveloper",
       "isSecurityOfficer",
-      "isPrivacyOfficer"
+      "isRobot"
     ]
   },
   "required":[

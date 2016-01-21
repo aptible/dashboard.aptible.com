@@ -5,10 +5,26 @@
         <th class="gravatar-col sm"></th>
         <th>Name</th>
         <th>Email</th>
-        <th>Developer</th>
-        <th>Security Officer</th>
-        <th>Privacy Officer</th>
-        <th class="one-action"></th>
+        <th>
+          {{properties.isDeveloper.title}}
+          {{more-info-icon
+            title=properties.isDeveloper.title
+            body=properties.isDeveloper.description}}
+        </th>
+
+        <th>
+          {{properties.isSecurityOfficer.title}}
+          {{more-info-icon
+            title=properties.isSecurityOfficer.title
+            body=properties.isSecurityOfficer.description}}
+        </th>
+
+        <th>
+          {{properties.isRobot.title}}
+          {{more-info-icon
+            title=properties.isRobot.title
+            body=properties.isRobot.description}}
+        </th>
       </tr>
     </thead>
 
@@ -19,4 +35,3 @@
     </tbody>
   </table>
 </div>
-

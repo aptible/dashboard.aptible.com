@@ -5,6 +5,7 @@ import buildTeamDocument from 'sheriff/utils/build-team-document';
 import loadSchema from 'sheriff/utils/load-schema';
 
 export default Ember.Route.extend(SPDRouteMixin, {
+  attestationValidator: Ember.inject.service(),
   model() {
     let handle = 'workforce_roles';
     let organization = this.modelFor('organization');
@@ -39,13 +40,28 @@ export default Ember.Route.extend(SPDRouteMixin, {
     controller.set('properties', schema.itemProperties);
   },
 
+  validateAttestation(schemaDocument) {
+    let { attestation } = this.currentModel;
+    let errors = this.get('attestationValidator').validate(attestation, schemaDocument);
+
+    this.controller.set('errors', errors);
+
+    return errors;
+  },
+
   actions: {
     onNext() {
       let { attestation } = this.currentModel;
       let profile = this.modelFor('setup');
-      let schemaDocument = this.controller.get('schemaDocument');
+      let schemaDocument = this.controller.get('schemaDocument').dump();
 
-      attestation.set('document', schemaDocument.dump());
+      this.validateAttestation(schemaDocument);
+
+      if (this.controller.get('errors.length') > 0) {
+        return;
+      }
+
+      attestation.set('document', schemaDocument);
       attestation.save().then(() => {
         profile.next(this.get('stepName'));
         profile.save().then(() => {

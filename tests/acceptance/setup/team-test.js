@@ -193,7 +193,7 @@ test('Toggling user roles and clicking continue saves team attestation with corr
         email: 'basicuser@asdf.com',
         name: 'Basic User',
         isDeveloper: true,
-        isPrivacyOfficer: false,
+        isRobot: false,
         isSecurityOfficer: true,
         href: `/users/${userId}`,
       },
@@ -201,7 +201,7 @@ test('Toggling user roles and clicking continue saves team attestation with corr
         email: 'developeruser@asdf.com',
         name: 'Developer User',
         isDeveloper: false,
-        isPrivacyOfficer: false,
+        isRobot: false,
         isSecurityOfficer: false,
         href: `/users/${developerId}`,
       },
@@ -209,7 +209,7 @@ test('Toggling user roles and clicking continue saves team attestation with corr
         email: 'securityofficeruser@asdf.com',
         name: 'Security Officer User',
         isDeveloper: false,
-        isPrivacyOfficer: true,
+        isRobot: true,
         isSecurityOfficer: false,
         href: `/users/${securityOfficerId}`,
       }
@@ -242,11 +242,10 @@ test('Toggling user roles and clicking continue saves team attestation with corr
   andThen(() => {
     findWithAssert('.toggle-developer:first label').click();
     findWithAssert('.toggle-security-officer:first label').click();
-    findWithAssert('.toggle-privacy-officer:last label').click();
+    findWithAssert('.toggle-robot:last label').click();
   });
 
   andThen(clickContinueButton);
-
 });
 
 test('Team page with existing team attestation', function(assert) {
@@ -256,7 +255,7 @@ test('Team page with existing team attestation', function(assert) {
       email: 'basicuser@asdf.com',
       name: 'Basic User',
       isDeveloper: false,
-      isPrivacyOfficer: false,
+      isRobot: false,
       isSecurityOfficer: false,
       href: `/users/${userId}`,
     },
@@ -264,7 +263,7 @@ test('Team page with existing team attestation', function(assert) {
       email: 'developeruser@asdf.com',
       name: 'Developer User',
       isDeveloper: true,
-      isPrivacyOfficer: false,
+      isRobot: false,
       isSecurityOfficer: false,
       href: `/users/${developerId}`,
     },
@@ -272,7 +271,7 @@ test('Team page with existing team attestation', function(assert) {
       email: 'securityofficeruser@asdf.com',
       name: 'Security Officer User',
       isDeveloper: false,
-      isPrivacyOfficer: true,
+      isRobot: true,
       isSecurityOfficer: true,
       href: `/users/${securityOfficerId}`,
     }
@@ -290,7 +289,7 @@ test('Team page with existing team attestation', function(assert) {
         email: 'basicuser@asdf.com',
         name: 'Basic User',
         isDeveloper: true,
-        isPrivacyOfficer: false,
+        isRobot: false,
         isSecurityOfficer: true,
         href: `/users/${userId}`,
       },
@@ -298,7 +297,7 @@ test('Team page with existing team attestation', function(assert) {
         email: 'developeruser@asdf.com',
         name: 'Developer User',
         isDeveloper: false,
-        isPrivacyOfficer: false,
+        isRobot: false,
         isSecurityOfficer: false,
         href: `/users/${developerId}`,
       },
@@ -306,7 +305,7 @@ test('Team page with existing team attestation', function(assert) {
         email: 'securityofficeruser@asdf.com',
         name: 'Security Officer User',
         isDeveloper: true,
-        isPrivacyOfficer: true,
+        isRobot: true,
         isSecurityOfficer: true,
         href: `/users/${securityOfficerId}`,
       }
@@ -345,11 +344,11 @@ test('Team page with existing team attestation', function(assert) {
 
       let developerToggle = find('.toggle-developer input.x-toggle', row);
       let soToggle = find('.toggle-security-officer input.x-toggle', row);
-      let poToggle = find('.toggle-privacy-officer input.x-toggle', row);
+      let robotToggle = find('.toggle-robot input.x-toggle', row);
 
       assert.equal(developerToggle.is(':checked'), user.isDeveloper, 'is developer is checked');
       assert.equal(soToggle.is(':checked'), user.isSecurityOfficer, 'security officer is checked');
-      assert.equal(poToggle.is(':checked'), user.isPrivacyOfficer, 'privacy officer is checked');
+      assert.equal(robotToggle.is(':checked'), user.isRobot, 'robot is checked');
     });
   });
 
@@ -455,6 +454,24 @@ test('Invite modal creates invitation record for each email', function(assert) {
   });
 });
 
+test('Developer and Security Officer groups are validated to include at least on user each', function(assert) {
+  expect(2);
+  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
+  stubProfile({ currentStep: 'team' });
+  stubRequests();
+  signInAndVisit(teamUrl);
+
+  stubRequest('post', '/attestations', function(request) {
+    assert.ok(false, 'does not save an attestation');
+    return this.success({ id: 1 });
+  });
+
+  andThen(clickContinueButton);
+  andThen(() => {
+    assert.ok(find('.alert-danger:contains(at least one Developer is required, at least one Security Officer is required.)').length === 1, 'shows an error');
+    assert.equal(currentPath(), 'organization.setup.team.index', 'remains on team step');
+  });
+});
 
 skip('Clicking re-invite button sends new invitation');
 skip('Clicking X button deletes pending invitation');
