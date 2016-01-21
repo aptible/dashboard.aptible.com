@@ -41,11 +41,19 @@ export default DS.Model.extend({
   },
 
   getCriterionSubjects(criterion) {
-    let prop = { training_log: 'users',
-                 developer_training_log: 'developers',
-                 security_officer_training_log: 'securityOfficer'}[criterion.get('handle')];
+    switch(criterion.get('handle')) {
+      case 'training_log':
+        if( this.get('users.isFulfilled')) {
+          return this.get('users.content');
+        }
+        break;
+      case 'developer_training_log':
+        return this.get('developers');
+      case 'security_officer_training_log':
+        return [this.get('securityOfficer.content')];
+    }
 
-    return Ember.makeArray(this.get(prop));
+    return [];
   },
 
   developerRoles: Ember.computed('roles.@each.privileged', 'managePermissions', function() {
