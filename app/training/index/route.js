@@ -6,7 +6,7 @@ export default Ember.Route.extend({
   },
 
   afterModel(model) {
-    return model.map(c => c.get('documents'));
+    return Ember.RSVP.all(model.map(c => c.get('documents')));
   },
 
   setupController(controller, model) {

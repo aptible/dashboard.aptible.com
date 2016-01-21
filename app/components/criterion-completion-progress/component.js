@@ -3,10 +3,13 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   classNames: ['panel', 'white-panel', 'progress-radial-panel'],
   classNameBindings: ['isComplete:green-progress-radial', 'isIncomplete:red-progress-radial'],
+
   isIncomplete: Ember.computed.not('isComplete'),
+
   isComplete: Ember.computed('subjectCount', 'compliantSubjectCount', function() {
     return this.get('subjectCount') === this.get('compliantSubjectCount');
   }),
+
   subjects: Ember.computed('criterion', 'organization.developers.[]', 'organization.securityOfficer', 'organization.users.[]', function() {
     let criterion = this.get('criterion');
     let organization = this.get('organization');
@@ -14,7 +17,7 @@ export default Ember.Component.extend({
     return organization.getCriterionSubjects(criterion);
   }),
 
-  compliantSubjects: Ember.computed('criterion.documents.[]', 'subjects', function() {
+  compliantSubjects: Ember.computed('criterion.documents.[]', 'subjects.[]', function() {
     let criterion = this.get('criterion');
     let subjects = this.get('subjects');
     let organization = this.get('organization');
@@ -23,6 +26,10 @@ export default Ember.Component.extend({
       return criterion.getSubjectStatus(subject, organization).green;
     });
 
+  }),
+
+  d: Ember.computed('criterion.documents.content.[]', function() {
+    console.log(this.get('criterion.documents.length'));
   }),
 
   subjectCount: Ember.computed.reads('subjects.length'),

@@ -6,8 +6,14 @@ export default Ember.Route.extend({
     return trainingCriteria.findBy('handle', params.criterion_handle);
   },
 
-  afterModel(model) {
-    return model.get('documents');
+  afterModel() {
+    let organization = this.modelFor('organization');
+    let criteria = this.modelFor('training').criteria;
+
+    return Ember.RSVP.hash({
+      documents: Ember.RSVP.all(criteria.map(c => c.get('criteria'))),
+      users: organization.get('users')
+    });
   },
 
   setupController(controller, model) {

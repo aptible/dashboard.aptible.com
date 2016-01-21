@@ -11,7 +11,9 @@ export default Ember.Component.extend({
   }),
 
   overallTrainingStatus: Ember.computed('criteria.@each.documents', 'user', 'organization', function() {
-    let criteria = this.get('criteria');
+    let criteria = this.get('criteria').filter((c) => {
+      return this.isSubjectTo(c);
+    });
     let subject = this.get('user');
     let organization = this.get('organization');
     let green = this.get('complianceValidator').areAllCriteriaCompliant(criteria, subject, organization);
