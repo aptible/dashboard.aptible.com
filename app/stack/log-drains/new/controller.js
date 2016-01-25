@@ -18,9 +18,13 @@ function parseUrl(url) {
 
 export default Ember.Controller.extend({
   isSyslogDrain: Ember.computed.equal('model.drainType', 'syslog_tls_tcp'),
-  disableSave: Ember.computed('isSyslogDrain', 'esDatabases', function() {
+  isHttpsDrain: Ember.computed.equal('model.drainType', 'https'),
+  isHostPortDrain: Ember.computed('isSyslogDrain', 'isHttpsDrain', function () {
+    return this.get('isSyslogDrain') || this.get('isHttpsDrain');
+  }),
+  disableSave: Ember.computed('isHostPortDrain', 'esDatabases', function() {
     return this.get('model.isSaving') ||
-           (!this.get('isSyslogDrain') &&
+           (!this.get('isHostPortDrain') &&
            this.get('esDatabases.length') === 0);
   }),
   actions: {
@@ -33,6 +37,13 @@ export default Ember.Controller.extend({
       model.set('drainPort', a.port);
       model.set('drainUsername', a.username);
       model.set('drainPassword', a.password);
+    },
+    httpsSelected () {
+      // Set default port to HTTPS if no port is currently set
+      let model = this.get('model');
+      if (!model.get('drainPort')) {
+        model.set('drainPort', '443');
+      }
     }
   }
 });

@@ -33,10 +33,15 @@
                   Elasticsearch
                 {{/radio-button}}
               </div>
+              <div>
+                {{#radio-button value="https" groupValue=model.drainType name="drain-type" changed="httpsSelected"}}
+                  HTTPS
+                {{/radio-button}}
+              </div>
             </div>
           </div>
 
-          {{#if isSyslogDrain }}
+          {{#if isHostPortDrain }}
             <div class="form-group">
               <label class="block" for="drain-host">Host</label>
               {{input name='drain-host' value=model.drainHost class="form-control"}}
