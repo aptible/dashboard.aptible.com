@@ -305,7 +305,6 @@ test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
     assert.equal(json.drain_password, drainPassword);
     assert.equal(json.drain_username, drainUser);
 
-    json.status = 'provistioning';
     json.id = logDrainId;
     return this.success(json);
   });
