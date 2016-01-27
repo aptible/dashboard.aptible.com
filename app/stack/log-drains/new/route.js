@@ -37,6 +37,7 @@ export default Ember.Route.extend({
 
     createLog(log) {
       log.set('stack', this.modelFor('stack'));
+      log.set('status', 'provisioning'); // Ensures polling for status updates
 
       log.save().then( () => {
         let op = this.store.createRecord('operation', {

@@ -196,24 +196,26 @@ test(`visit ${addLogUrl} and cancel`, function(assert){
 });
 
 test(`visit ${addLogUrl} and create log success`, function(assert){
-  assert.expect(7);
-
-  this.prepareStubs();
+  assert.expect(10, 'passes 10 assertions');
 
   let drainHost = 'abc-host.com',
       drainPort = '1234',
       handle = 'my-log-name',
       drainType = 'syslog_tls_tcp',
-      logDrainId = 'log-id-1';
+      logDrainId = 'log-id-1',
+      status = 'provisioning';
+
+  this.prepareStubs();
 
   stubRequest('post', '/accounts/:stack_id/log_drains', function(request){
     assert.ok(true, 'posts to log_drains');
 
     let json = this.json(request);
-    assert.equal(json.drain_host, drainHost);
-    assert.equal(json.drain_port, drainPort);
-    assert.equal(json.drain_type, drainType);
-    assert.equal(json.handle, handle);
+    assert.equal(json.drain_host, drainHost, 'sets drain host');
+    assert.equal(json.drain_port, drainPort, 'sets drain port');
+    assert.equal(json.drain_type, drainType, 'sets drain type');
+    assert.equal(json.handle, handle, 'sets drain handle');
+    assert.equal(json.status, status, 'sets drain status');
 
     json.id = logDrainId;
     return this.success(json);
@@ -225,17 +227,26 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
     return this.success();
   });
 
+  stubRequest('get', 'log_drains/:id', function(request) {
+    return this.success({
+      drainHost: drainHost,
+      drainPort: drainPort,
+      handle: handle,
+      drainType: drainType,
+      id: request.params.id,
+      status: status
+    });
+  });
+
   signInAndVisit(addLogUrl);
   andThen(function(){
     let formEl = find('form.create-log');
     let context = formEl;
-
     fillInput('drain-host', drainHost, {context});
     fillInput('drain-port', drainPort, {context});
     fillInput('handle', handle, {context});
     clickButton('Save Log Drain', {context});
   });
-
   andThen(function(){
     assert.equal(currentPath(), 'dashboard.stack.log-drains.index');
   });
@@ -258,7 +269,7 @@ test(`visit ${addLogUrl} without elasticsearch databases`, function(assert){
 });
 
 test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
-  assert.expect(7);
+  assert.expect(8);
 
   let drainUser = 'someUser',
       drainPassword = 'somePw',
@@ -300,6 +311,17 @@ test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
 
   stubRequest('post', `/log_drains/${logDrainId}/operations`, function(){
     return this.success();
+  });
+
+  stubRequest('get', 'log_drains/:id', function(request) {
+    return this.success({
+      id: request.params.id,
+      drainHost: drainHost,
+      drainPort: drainPort,
+      handle: logDrainId,
+      drainType: drainType,
+      databaseHandle: databaseHandle
+    });
   });
 
   signInAndVisit(addLogUrl);
