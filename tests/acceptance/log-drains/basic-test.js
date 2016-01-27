@@ -215,7 +215,7 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
     assert.equal(json.drain_port, drainPort, 'sets drain port');
     assert.equal(json.drain_type, drainType, 'sets drain type');
     assert.equal(json.handle, handle, 'sets drain handle');
-    assert.equal(json.status, status, 'sets darin status');
+    assert.equal(json.status, status, 'sets drain status');
 
     json.id = logDrainId;
     return this.success(json);
@@ -233,7 +233,7 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
       drainPort: drainPort,
       handle: handle,
       drainType: drainType,
-      logDrainId: request.params.id,
+      id: request.params.id,
       status: status
     });
   });
@@ -269,7 +269,7 @@ test(`visit ${addLogUrl} without elasticsearch databases`, function(assert){
 });
 
 test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
-  assert.expect(7);
+  assert.expect(8);
 
   let drainUser = 'someUser',
       drainPassword = 'somePw',
@@ -311,6 +311,17 @@ test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
 
   stubRequest('post', `/log_drains/${logDrainId}/operations`, function(){
     return this.success();
+  });
+
+  stubRequest('get', 'log_drains/:id', function(request) {
+    return this.success({
+      id: request.params.id,
+      drainHost: drainHost,
+      drainPort: drainPort,
+      handle: logDrainId,
+      drainType: drainType,
+      databaseHandle: databaseHandle
+    });
   });
 
   signInAndVisit(addLogUrl);
