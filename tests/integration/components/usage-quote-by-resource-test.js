@@ -107,7 +107,6 @@ test('disk usage exceeding allowance results in overage billing', function(asser
   let total = this.$('.resource-usage-total .usage-value');
   let allowance = this.$('.allowance');
   let net = this.$('.net-usage');
-  console.log(this.$('.panel').html());
   assert.equal($.trim(total.text()), '$259.08', 'has overage billing total');
   assert.equal(allowance.text(), '-1000', 'has an allowance');
   assert.equal(net.text(), '700', 'has 700 net usage');

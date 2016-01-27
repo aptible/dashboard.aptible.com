@@ -1,0 +1,8 @@
+<div class="panel-heading-actions">
+  {{#unless logDrain.isDeprovisioning}}
+    {{#unless logDrain.isProvisioning}}
+      <button class="btn btn-default btn-xs" {{action "restart" logDrain}}>Restart</button>
+    {{/unless}}
+    <button class="btn btn-default btn-xs" {{action "deprovision" logDrain}}>Deprovision</button>
+  {{/unless}}
+</div>
