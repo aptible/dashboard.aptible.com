@@ -14,8 +14,7 @@ let logDrain = Ember.Object.create({
   logDrainId: 'provisioned-drain-1',
 });
 
-let failedAction, completedAction = function(message) {
-};
+let failedAction, completedAction = function() { };
 
 test('shows reset and deprovisioned actions for provisioned log drains', function(assert) {
   logDrain.status = 'provisioned';
