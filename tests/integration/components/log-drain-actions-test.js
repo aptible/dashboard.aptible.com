@@ -20,7 +20,7 @@ test('shows reset and deprovisioned actions for provisioned log drains', functio
   this.render(hbs('{{log-drain-actions logDrain=logDrain completedAction="completedAction" failedAction="failedAction"}}'));
 
   assert.equal(this.$('.panel-heading-actions button').length, 2);
-  assert.equal(this.$('.panel-heading-actions button:contains("Deprovision")').length, 1);
+  assert.equal(this.$('.panel-heading-actions button:contains("Delete")').length, 1);
   assert.equal(this.$('.panel-heading-actions button:contains("Restart")').length, 1);
 });
 
@@ -30,7 +30,7 @@ test('shows only deprovisioned action for provisioning log drains', function(ass
   this.render(hbs('{{log-drain-actions logDrain=logDrain completedAction="completedAction" failedAction="failedAction"}}'));
 
   assert.equal(this.$('.panel-heading-actions button').length, 1);
-  assert.equal(this.$('.panel-heading-actions button:contains("Deprovision")').length, 1);
+  assert.equal(this.$('.panel-heading-actions button:contains("Delete")').length, 1);
   assert.equal(this.$('.panel-heading-actions button:contains("Restart")').length, 0);
 });
 
@@ -40,6 +40,6 @@ test('shows no actions for deprovisioning log drains', function(assert) {
   this.render(hbs('{{log-drain-actions logDrain=logDrain completedAction="completedAction" failedAction="failedAction"}}'));
 
   assert.equal(this.$('.panel-heading-actions button').length, 0);
-  assert.equal(this.$('.panel-heading-actions button:contains("Deprovision")').length, 0);
+  assert.equal(this.$('.panel-heading-actions button:contains("Delete")').length, 0);
   assert.equal(this.$('.panel-heading-actions button:contains("Restart")').length, 0);
 });

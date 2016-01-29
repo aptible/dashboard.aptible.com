@@ -234,7 +234,9 @@ test(`visit ${url} with log drains and deprovisions one`, function(assert){
   signInAndVisit(url);
 
   andThen(function(){
-    clickButton('Deprovision');
+    // Clobber window confirm to accept delete.
+    window.confirm = () => { return true; };
+    clickButton('Delete');
   });
   andThen(function() {
     assert.equal(find('.alert-success').length, 1, 'displays a success message');

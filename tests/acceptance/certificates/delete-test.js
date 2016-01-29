@@ -79,6 +79,8 @@ test(`visiting ${url} and deleting a certificate should delete the certificate`,
   signInAndVisit(url);
   andThen(function() {
     let deleteButton = find('button:contains(Delete)');
+    // Clobber window confirm to accept delete.
+    window.confirm = () => { return true; };
     deleteButton.click();
   });
 
