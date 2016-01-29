@@ -26,7 +26,8 @@ module('Acceptance: Log Drains', {
       id: 'drain-1',
       handle: 'first-drain',
       drain_host: 'abcdef.com',
-      drain_port: 123
+      drain_port: 123,
+      status: 'provisioning'
     }];
     options = options || {logDrains: defaultLogDrains};
 
@@ -181,6 +182,66 @@ test(`visit ${url} with log drains and click add log shows form`, function(asser
   });
 });
 
+test(`visit ${url} with log drains and restart one`, function(assert){
+  let defaultLogDrains = { logDrains: [{
+    id: 'drain-1',
+    handle: 'first-drain',
+    drain_host: 'abcdef.com',
+    drain_port: 123,
+    status: 'provisioned'
+  }]};
+  this.prepareStubs(defaultLogDrains);
+
+  stubRequest('post', `/log_drains/:id/operations`, function(request){
+    let json = this.json(request);
+    assert.equal(json.type, 'configure', 'creates a configure operation');
+    return this.success();
+  });
+
+  stubRequest('put', `/log_drains/:id`, function(request){
+    let drain = this.json(request);
+    assert.equal(drain.status, 'provisioning', 'sets status to provisioning for polling');
+    drain.id = request.params.id;
+    return this.success(drain);
+  });
+
+  signInAndVisit(url);
+
+  andThen(function(){
+    clickButton('Restart');
+  });
+  andThen(function() {
+    assert.equal(find('.alert-success').length, 1, 'displays a success message');
+  });
+});
+
+test(`visit ${url} with log drains and deprovisions one`, function(assert){
+  this.prepareStubs();
+
+  stubRequest('post', `/log_drains/:id/operations`, function(request){
+    let json = this.json(request);
+    assert.equal(json.type, 'deprovision', 'creates a deprovision operation');
+    return this.success();
+  });
+
+  stubRequest('put', `/log_drains/:id`, function(request){
+    let drain = this.json(request);
+    assert.equal(drain.status, 'deprovisioning', 'sets status to deprovisioning');
+    drain.id = request.params.id;
+    return this.success(drain);
+  });
+
+  signInAndVisit(url);
+
+  andThen(function(){
+    clickButton('Deprovision');
+  });
+  andThen(function() {
+    assert.equal(find('.alert-success').length, 1, 'displays a success message');
+    assert.equal(find('.panel.log-drain').length, 0, 'locally removes the deprovisioning log drain');
+  });
+});
+
 test(`visit ${addLogUrl} and cancel`, function(assert){
   this.prepareStubs();
   signInAndVisit(addLogUrl);
@@ -196,7 +257,7 @@ test(`visit ${addLogUrl} and cancel`, function(assert){
 });
 
 test(`visit ${addLogUrl} and create log success`, function(assert){
-  assert.expect(7);
+  assert.expect(9);
 
   this.prepareStubs();
 
@@ -217,6 +278,16 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
 
     json.id = logDrainId;
     return this.success(json);
+  });
+
+  stubRequest('get', '/log_drains/:id', function(request){
+    assert.ok(true, 'polls for updates');
+    return this.success({
+      id: request.params.id,
+      handle: handle,
+      drain_host: drainHost,
+      drain_port: drainPort
+    });
   });
 
   stubRequest('post', `/log_drains/${logDrainId}/operations`, function(request){
@@ -258,7 +329,7 @@ test(`visit ${addLogUrl} without elasticsearch databases`, function(assert){
 });
 
 test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
-  assert.expect(7);
+  assert.expect(9);
 
   let drainUser = 'someUser',
       drainPassword = 'somePw',
@@ -300,6 +371,18 @@ test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
 
   stubRequest('post', `/log_drains/${logDrainId}/operations`, function(){
     return this.success();
+  });
+
+  stubRequest('get', '/log_drains/:id', function(request){
+    assert.ok(true, 'polls for updates');
+    return this.success({
+      id: request.params.id,
+      drainHost: drainHost,
+      drainPort: drainPort,
+      handle: logDrainId,
+      drainType: drainType,
+      databaseHandle: databaseHandle
+    });
   });
 
   signInAndVisit(addLogUrl);

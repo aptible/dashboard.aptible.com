@@ -1,0 +1,8 @@
+<div class="panel-heading-actions">
+  {{#if logDrain.isProvisioned}}
+    <button class="btn btn-default btn-xs" {{action "restart" logDrain}}>Restart</button>
+  {{/if}}
+  {{#unless logDrain.hasBeenDeprovisioned}}
+    <button class="btn btn-default btn-xs" {{action "deprovision" logDrain}}>Deprovision</button>
+  {{/unless}}
+</div>
