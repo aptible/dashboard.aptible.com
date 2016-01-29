@@ -17,6 +17,10 @@ export default Ember.Route.extend({
 
   actions: {
     delete: function(model){
+      // Confirm...
+      let confirmMsg = `\nAre you sure you want to delete ${model.get('commonName')}?\n`;
+      if (!confirm(confirmMsg)) { return false; }
+
       let stack = model.get('stack');
 
       model.deleteRecord();
@@ -29,4 +33,3 @@ export default Ember.Route.extend({
     }
   }
 });
-

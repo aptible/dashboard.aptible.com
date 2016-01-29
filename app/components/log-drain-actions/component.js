@@ -28,6 +28,11 @@ export default Ember.Component.extend({
     },
 
     deprovision(){
+      // Confirm...
+      let confirmMsg = `\nDeprovisioning will remove ${this.logDrain.get('handle')} and CANNOT be undone.\n\n`;
+      confirmMsg += 'Are you sure you want to continue?\n';
+      if (!confirm(confirmMsg)) { return false; }
+
       let message = `Successfully deprovisioned ${this.logDrain.get('handle')}`;
       let errorMessage = `There was an error restarting ${this.logDrain.get('handle')}.`;
       let component = this;
