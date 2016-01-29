@@ -26,7 +26,8 @@ module('Acceptance: Log Drains', {
       id: 'drain-1',
       handle: 'first-drain',
       drain_host: 'abcdef.com',
-      drain_port: 123
+      drain_port: 123,
+      status: 'provisioning'
     }];
     options = options || {logDrains: defaultLogDrains};
 
@@ -182,7 +183,14 @@ test(`visit ${url} with log drains and click add log shows form`, function(asser
 });
 
 test(`visit ${url} with log drains and restart one`, function(assert){
-  this.prepareStubs();
+  let defaultLogDrains = { logDrains: [{
+    id: 'drain-1',
+    handle: 'first-drain',
+    drain_host: 'abcdef.com',
+    drain_port: 123,
+    status: 'provisioned'
+  }]};
+  this.prepareStubs(defaultLogDrains);
 
   stubRequest('post', `/log_drains/:id/operations`, function(request){
     let json = this.json(request);
@@ -204,7 +212,6 @@ test(`visit ${url} with log drains and restart one`, function(assert){
   });
   andThen(function() {
     assert.equal(find('.alert-success').length, 1, 'displays a success message');
-    assert.equal(find(".capitalize:contains('provisioning')").length, 1, 'sets status to provisionging');
   });
 });
 
@@ -250,7 +257,7 @@ test(`visit ${addLogUrl} and cancel`, function(assert){
 });
 
 test(`visit ${addLogUrl} and create log success`, function(assert){
-  assert.expect(8);
+  assert.expect(9);
 
   this.prepareStubs();
 
@@ -322,7 +329,7 @@ test(`visit ${addLogUrl} without elasticsearch databases`, function(assert){
 });
 
 test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
-  assert.expect(8);
+  assert.expect(9);
 
   let drainUser = 'someUser',
       drainPassword = 'somePw',
