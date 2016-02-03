@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Property from 'ember-json-schema/models/property';
+import Property from 'ember-json-schema-document/models/property';
 import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
 import Attestation from 'sheriff/models/attestation';
 import loadSchema from 'sheriff/utils/load-schema';
