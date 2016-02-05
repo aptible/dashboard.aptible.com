@@ -37,7 +37,7 @@ Router.map(function() {
       this.route('team', {}, function() {
         this.modal('invite-team-modal', {
           withParams: ['showInviteModal'],
-          otherParams: ['organization', 'roles'],
+          otherParams: ['organization', 'roles', 'schemaDocument'],
           dismissWithOutsideClick: false,
           actions: {
             inviteTeam: 'inviteTeam'
