@@ -39,7 +39,7 @@
     "aws-sdk": "^2.1.34",
     "broccoli-sass": "^0.6.6",
     "core-object": "^1.1.0",
-    "ember-cli-aptible-shared": "0.0.55",
+    "ember-cli-aptible-shared": "0.0.56",
     "ember-cli-deploy": "^0.4.2",
     "ember-deploy-s3": "0.0.4",
     "ember-cli-deprecation-workflow": "^0.1.4",
