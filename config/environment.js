@@ -39,11 +39,8 @@ module.exports = function(environment) {
     prefetch: ['use.typekit.net', 'www.gravatar.com', 'js.stripe.com',
                'api.stripe.com', 'cdn.segment.com', 'support.aptible.com',
                'assets.customer.io', 'track.customer.io',
-               'www.google-analytics.com', 'js.intercomcdn.com',
-               'app.getsentry.com', 'cdn.mxpnl.com', 'js.intercomcdn.com',
-               'static.intercomcdn.com', 'widget.intercom.io',
-               'cdn.ravenjs.com', 'api.mixpanel.com', 'api.segment.io',
-               'api-ping.intercom.io', 'intercom.io', 'p.typekit.net',
+               'www.google-analytics.com', 'app.getsentry.com',
+               'cdn.ravenjs.com', 'api.segment.io', 'p.typekit.net',
                'secure.gravatar.com'],
 
     sentry: {
@@ -72,10 +69,10 @@ module.exports = function(environment) {
     },
 
     contentSecurityPolicy: {
-      'connect-src': "'self' http://localhost:4004 https://billing.aptible-staging.com https://api.aptible-staging.com https://auth.aptible-staging.com http://localhost:4000 http://localhost:4001 ws://localhost:35729 ws://0.0.0.0:35729 http://api.mixpanel.com http://api.segment.io http://auth.aptible.foundry.io http://api.aptible.foundry.io https://api-ping.intercom.io wss://*.intercom.io https://*.intercom.io",
+      'connect-src': "'self' http://localhost:4004 https://billing.aptible-staging.com https://api.aptible-staging.com https://auth.aptible-staging.com http://localhost:4000 http://localhost:4001 ws://localhost:35729 ws://0.0.0.0:35729 http://api.segment.io http://auth.aptible.foundry.io http://api.aptible.foundry.io",
       'style-src': "'self' 'unsafe-inline' http://use.typekit.net",
-      'img-src': "'self' http://www.gravatar.com https://secure.gravatar.com http://www.google-analytics.com http://p.typekit.net https://track.customer.io https://js.intercomcdn.com data: app.getsentry.com",
-      'script-src': "'self' 'unsafe-inline' https://js.stripe.com https://api.stripe.com http://use.typekit.net http://cdn.segment.com https://assets.customer.io http://www.google-analytics.com http://cdn.mxpnl.com https://js.intercomcdn.com https://static.intercomcdn.com https://widget.intercom.io http://cdn.ravenjs.com",
+      'img-src': "'self' http://www.gravatar.com https://secure.gravatar.com http://www.google-analytics.com http://p.typekit.net https://track.customer.io data: app.getsentry.com",
+      'script-src': "'self' 'unsafe-inline' https://js.stripe.com https://api.stripe.com http://use.typekit.net http://cdn.segment.com https://assets.customer.io http://www.google-analytics.com http://cdn.ravenjs.com",
       'font-src': "'self' data:",
       'object-src': 'http://localhost:4200'
     },
