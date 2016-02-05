@@ -160,22 +160,16 @@ test('Team shows all organization users', function(assert) {
   });
 });
 
-test('Invitations tab shows all pending invitations', function(assert) {
+test('Shows all pending invitations', function(assert) {
   stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
   stubProfile({ currentStep: 'team' });
   stubRequests();
   signInAndVisit(teamUrl);
 
-  andThen(clickInvitesTab);
-
   andThen(() => {
     invitations.forEach((invite) => {
-      assert.ok(find(`td strong:contains(${invite.email})`).length, 'has invite');
+      assert.ok(find(`td:contains(${invite.email})`).length, 'has invite row');
     });
-
-    assert.equal(find('td:contains(November 3, 2015)').length, 2, 'shows invited date');
-    assert.equal(find('td:contains(Basic Role)').length, 2, 'shows role name');
-    assert.equal(find('.invitation-count').text(), invitations.length, 'invitation count badge is correct');
   });
 });
 
@@ -192,6 +186,7 @@ test('Toggling user roles and clicking continue saves team attestation with corr
       {
         email: 'basicuser@asdf.com',
         name: 'Basic User',
+        hasAptibleAccount: true,
         isDeveloper: true,
         isRobot: false,
         isSecurityOfficer: true,
@@ -200,6 +195,7 @@ test('Toggling user roles and clicking continue saves team attestation with corr
       {
         email: 'developeruser@asdf.com',
         name: 'Developer User',
+        hasAptibleAccount: true,
         isDeveloper: false,
         isRobot: false,
         isSecurityOfficer: false,
@@ -208,10 +204,25 @@ test('Toggling user roles and clicking continue saves team attestation with corr
       {
         email: 'securityofficeruser@asdf.com',
         name: 'Security Officer User',
+        hasAptibleAccount: true,
         isDeveloper: false,
-        isRobot: true,
+        isRobot: false,
         isSecurityOfficer: false,
         href: `/users/${securityOfficerId}`,
+      },
+      {
+        email: "newuser1@aptible.com",
+        hasAptibleAccount: false,
+        isDeveloper: false,
+        isRobot: false,
+        isSecurityOfficer: false
+      },
+      {
+        email: "newuser2@aptible.com",
+        hasAptibleAccount: false,
+        isDeveloper: false,
+        isRobot: true,
+        isSecurityOfficer: false
       }
     ]
   };
@@ -219,6 +230,150 @@ test('Toggling user roles and clicking continue saves team attestation with corr
   stubProfile({ currentStep: 'team' });
   stubRequests();
   signInAndVisit(teamUrl);
+
+  stubRequest('post', '/attestations', function(request) {
+    let json = this.json(request);
+
+    assert.ok(true, 'posts to create attestation');
+    assert.deepEqual(json, expectedAttestation, 'correct attestation payload');
+
+    return this.success({ id: 1 });
+  });
+
+  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
+    let json = this.json(request);
+    json.id = orgId;
+
+    assert.ok(true, 'updates organization profile');
+    assert.equal(json.current_step, 'data-environments');
+
+    return this.success(json);
+  });
+
+  andThen(() => {
+    findWithAssert('.toggle-developer:first label').click();
+    findWithAssert('.toggle-security-officer:first label').click();
+    findWithAssert('.toggle-robot:last label').click();
+  });
+
+  andThen(clickContinueButton);
+});
+
+test('Pending invitations are included in attestation payload', function(assert) {
+  expect(17);
+  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
+  let emailAddresses = 'skylar+1@aptible.com;skylar+2@aptible.com\nskylar+3@aptible.com skylar+4@aptible.com';
+  let roleId = basicRoleId;
+  let id = 1;
+
+  stubRequest('post', `/roles/${roleId}/invitations`, function(request) {
+    let json = this.json(request);
+    json.id = id++;
+
+    assert.ok(true, 'creates invitation');
+    assert.equal(json.role_id, roleId);
+    assert.equal(json.organization_id, orgId);
+
+    return this.success(json);
+  });
+
+  let expectedAttestation = {
+    handle: 'workforce_roles',
+    organization_url: `/organizations/${orgId}`,
+    organization: `/organizations/${orgId}`,
+    id: '0',
+    schema_id: 'workforce_roles/1',
+    document: [
+      {
+        email: 'basicuser@asdf.com',
+        name: 'Basic User',
+        hasAptibleAccount: true,
+        isDeveloper: true,
+        isRobot: false,
+        isSecurityOfficer: true,
+        href: `/users/${userId}`,
+      },
+      {
+        email: 'developeruser@asdf.com',
+        name: 'Developer User',
+        hasAptibleAccount: true,
+        isDeveloper: false,
+        isRobot: false,
+        isSecurityOfficer: false,
+        href: `/users/${developerId}`,
+      },
+      {
+        email: 'securityofficeruser@asdf.com',
+        name: 'Security Officer User',
+        hasAptibleAccount: true,
+        isDeveloper: false,
+        isRobot: false,
+        isSecurityOfficer: false,
+        href: `/users/${securityOfficerId}`,
+      },
+      {
+        email: "newuser1@aptible.com",
+        hasAptibleAccount: false,
+        isDeveloper: false,
+        isRobot: false,
+        isSecurityOfficer: false
+      },
+      {
+        email: "newuser2@aptible.com",
+        hasAptibleAccount: false,
+        isDeveloper: false,
+        isRobot: false,
+        isSecurityOfficer: false
+      },
+      {
+        email: 'skylar+1@aptible.com',
+        hasAptibleAccount: false,
+        isDeveloper: false,
+        isRobot: false,
+        isSecurityOfficer: false
+      },
+      {
+        email: 'skylar+2@aptible.com',
+        hasAptibleAccount: false,
+        isDeveloper: false,
+        isRobot: false,
+        isSecurityOfficer: false
+      },
+      {
+        email: 'skylar+3@aptible.com',
+        hasAptibleAccount: false,
+        isDeveloper: false,
+        isRobot: false,
+        isSecurityOfficer: false
+      },
+      {
+        email: 'skylar+4@aptible.com',
+        hasAptibleAccount: false,
+        isDeveloper: false,
+        isRobot: true,
+        isSecurityOfficer: false
+      }
+    ]
+  };
+
+  stubProfile({ currentStep: 'team' });
+  stubRequests();
+  signInAndVisit(teamUrl);
+
+  andThen(openInviteModal);
+  andThen(() => {
+    selectRole(roleId);
+    fillIn('textarea.email-addresses', emailAddresses);
+  });
+
+  andThen(() => {
+    let submitButton = findWithAssert('button.send-invites');
+    submitButton.click();
+  });
+
+  andThen(() => {
+    assert.equal(find('.lf-dialog').length, 0, 'dialog is closed');
+  });
 
   stubRequest('post', '/attestations', function(request) {
     let json = this.json(request);
@@ -288,6 +443,7 @@ test('Team page with existing team attestation', function(assert) {
       {
         email: 'basicuser@asdf.com',
         name: 'Basic User',
+        hasAptibleAccount: true,
         isDeveloper: true,
         isRobot: false,
         isSecurityOfficer: true,
@@ -296,6 +452,7 @@ test('Team page with existing team attestation', function(assert) {
       {
         email: 'developeruser@asdf.com',
         name: 'Developer User',
+        hasAptibleAccount: true,
         isDeveloper: false,
         isRobot: false,
         isSecurityOfficer: false,
@@ -304,10 +461,25 @@ test('Team page with existing team attestation', function(assert) {
       {
         email: 'securityofficeruser@asdf.com',
         name: 'Security Officer User',
+        hasAptibleAccount: true,
         isDeveloper: true,
         isRobot: true,
         isSecurityOfficer: true,
         href: `/users/${securityOfficerId}`,
+      },
+      {
+        email: "newuser1@aptible.com",
+        hasAptibleAccount: false,
+        isDeveloper: false,
+        isRobot: false,
+        isSecurityOfficer: false
+      },
+      {
+        email: "newuser2@aptible.com",
+        hasAptibleAccount: false,
+        isDeveloper: false,
+        isRobot: false,
+        isSecurityOfficer: false
       }
     ]
   };
@@ -444,8 +616,6 @@ test('Invite modal creates invitation record for each email', function(assert) {
     assert.equal(find('.lf-dialog').length, 0, 'dialog is closed');
   });
 
-  andThen(clickInvitesTab);
-
   andThen(() => {
     assert.equal(find('td:contains(skylar+1@aptible.com)').length, 1, 'has new invite');
     assert.equal(find('td:contains(skylar+2@aptible.com)').length, 1, 'has new invite');
@@ -478,11 +648,6 @@ skip('Clicking X button deletes pending invitation');
 
 // Not sure if we ever want to do this here?
 skip('Clicking X button removes user from organization');
-
-function clickInvitesTab() {
-  let tab = findWithAssert('a:contains(Pending Invitations)');
-  tab.click();
-}
 
 function openInviteModal() {
   let button = findWithAssert('button:contains(Invite more users)');
