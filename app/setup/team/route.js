@@ -29,8 +29,8 @@ export default Ember.Route.extend(SPDRouteMixin, {
   setupController(controller, model) {
     let organization = this.modelFor('organization');
     let { schema, attestation, invitations, users } = model;
-    let schemaDocument = buildTeamDocument(users, attestation.get('document'),
-                                           schema);
+    let schemaDocument = buildTeamDocument(users, invitations,
+                                           attestation.get('document'), schema);
 
     controller.set('users', model.users);
     controller.set('roles', organization.get('roles'));
@@ -82,6 +82,14 @@ export default Ember.Route.extend(SPDRouteMixin, {
         let inviteParams = { organization, role, email };
         return this.store.createRecord('invitation', inviteParams).save();
       });
+
+      let existingDocument = this.controller.get('schemaDocument').dump();
+      let newSchemaDocument = buildTeamDocument(organization.get('users'),
+                                                organization.get('invitations'),
+                                                existingDocument,
+                                                this.currentModel.schema);
+      this.controller.set('schemaDocument', newSchemaDocument);
+      this.controller.set('showInviteMOdal', false);
     }
   }
 });

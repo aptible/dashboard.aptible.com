@@ -3,7 +3,15 @@
     {{gravatar-image email=document.values.email}}
   </div>
 </td>
-<td><strong>{{document.values.name}}</strong></td>
+<td>
+  {{#if document.values.hasAptibleAccount}}
+    <strong>{{document.values.name}}</strong>
+  {{else}}
+    <div class="pending-invite">
+      Pending Invite
+    </div>
+  {{/if}}
+</td>
 <td>{{document.values.email}}</td>
 <td>
   <div class="toggle-developer">

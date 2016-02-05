@@ -2,27 +2,21 @@
 
 <div class="setup-step">
   {{spd-errors errors=errors}}
-  <h1 class="setup-step-title">Team Members</h1>
+  <h1 class="setup-step-title">Workforce</h1>
 
   <nav class="panel-nav">
     <ul class="tabs">
-      <li class="{{if (eq panel 'team') 'active' null}}">
-        <a {{action 'setPanel' 'team'}}>Team <span class="badge user-count">{{users.length}}</span></a>
-      </li>
-      <li class="{{if (eq panel 'invites') 'active' null}}">
-        <a {{action 'setPanel' 'invites'}}>Pending Invitations <span class="badge invitation-count">{{invitations.length}}</span></a>
+      <li class="active">
+        Team
+        <span class="badge user-count">{{users.length}}</span>
       </li>
     </ul>
   </nav>
 
   <div class="panels">
-    {{#if (eq panel 'team')}}
-      {{team-index teamDocument=schemaDocument properties=properties}}
-    {{/if}}
-
-    {{#if (eq panel 'invites')}}
-      {{invite-index invitations=invitations}}
-    {{/if}}
+    {{team-index
+      teamDocument=schemaDocument
+      properties=properties}}
   </div>
 
   <div class="panel panel-striped">
