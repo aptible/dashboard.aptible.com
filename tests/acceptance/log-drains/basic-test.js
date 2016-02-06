@@ -403,6 +403,52 @@ test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
   });
 });
 
+test(`visit ${addLogUrl} and create log to HTTPS`, function(assert){
+  assert.expect(7);
+
+  this.prepareStubs();
+
+  let drainHost = 'abc-host.com',
+      drainPort = '443',
+      drainType = 'https',
+      handle    = 'https-test',
+      logDrainId = 'log-drain-bar';
+
+  stubRequest('post', '/accounts/:stack_id/log_drains', function(request){
+    assert.ok(true, 'posts to log_drains');
+
+    let json = this.json(request);
+    assert.equal(json.drain_host, drainHost);
+    assert.equal(json.drain_port, drainPort);
+    assert.equal(json.drain_type, drainType);
+    assert.equal(json.handle, handle);
+
+    json.id = logDrainId;
+    return this.success(json);
+  });
+
+  stubRequest('post', `/log_drains/${logDrainId}/operations`, function(request){
+    let json = this.json(request);
+    assert.equal(json.type, 'configure', 'creates configure operation');
+    return this.success();
+  });
+
+  signInAndVisit(addLogUrl);
+  andThen(function(){
+    let formEl = find('form.create-log');
+    let context = formEl;
+
+    click( find('label:contains(HTTPS)')); // click HTTPS radio button
+    fillInput('drain-host', drainHost, {context});  // Port should default to 443
+    fillInput('handle', handle, {context});
+    clickButton('Save Log Drain', {context});
+  });
+
+  andThen(function(){
+    assert.equal(currentPath(), 'dashboard.stack.log-drains.index');
+  });
+});
+
 test(`visit ${addLogUrl} and create log failure`, function(assert){
   this.prepareStubs();
   let errorMessage = 'The log drain is invalid';
