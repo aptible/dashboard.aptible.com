@@ -427,6 +427,15 @@ test(`visit ${addLogUrl} and create log to HTTPS`, function(assert){
     return this.success(json);
   });
 
+  stubRequest('get', '/log_drains/:id', function(request){
+    return this.success({
+      id: request.params.id,
+      handle: handle,
+      drain_host: drainHost,
+      drain_port: drainPort
+    });
+  });
+
   stubRequest('post', `/log_drains/${logDrainId}/operations`, function(request){
     let json = this.json(request);
     assert.equal(json.type, 'configure', 'creates configure operation');
