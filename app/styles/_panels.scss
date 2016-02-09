@@ -32,10 +32,12 @@
 
   > .panel-heading {
     @extend %clearfix;
+    border: 0;
+    box-shadow: none;
 
     padding: 9px 20px;
-    border-bottom: 1px solid #e5e5e5;
-    box-shadow: 0 1px 3px rgba(#000, .08);
+    /*border-bottom: 1px solid #e5e5e5;
+    box-shadow: 0 1px 3px rgba(#000, .08);*/
     background: #fff;
 
     h5 {
