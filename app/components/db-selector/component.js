@@ -18,6 +18,7 @@ export default Ember.Component.extend({
     { value: 'redis', imageSrc: '/assets/images/db-logos/redis.png', title: 'Redis'},
     { value: 'mysql', imageSrc: '/assets/images/db-logos/mysql.png', title: 'MySQL'},
     { value: 'couchdb', imageSrc: '/assets/images/db-logos/couchdb.png', title: 'CouchDB'},
-    { value: 'elasticsearch', imageSrc: '/assets/images/db-logos/elasticsearch.png', title: 'Elastic Search'}
+    { value: 'elasticsearch', imageSrc: '/assets/images/db-logos/elasticsearch.png', title: 'Elastic Search'},
+    { value: 'rabbitmq', imageSrc: '/assets/images/db-logos/rabbitmq.png', title: 'RabbitMQ'}
   ]
 });

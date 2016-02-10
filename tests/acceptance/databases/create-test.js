@@ -91,7 +91,7 @@ test(`visit ${url} shows basic info`, function(assert) {
     var dbTypes = find('.select-option', dbTypeSelector);
     assert.ok(dbTypes.length > 1, 'has at least 1 selectable db type');
 
-    ['Redis', 'MySQL', 'PostgreSQL'].forEach(function(dbType){
+    ['Redis', 'MySQL', 'PostgreSQL', 'RabbitMQ'].forEach(function(dbType){
       assert.ok( find('.select-option[title="' + dbType + '"]', dbTypeSelector).length,
           'has db type selector for ' + dbType);
     });
