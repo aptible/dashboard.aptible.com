@@ -11,7 +11,8 @@ var types = {
   tunnel: 'fa-exchange',
   clone: 'fa-copy',
   deprovision: 'fa-remove',
-  reprovision: 'fa-refresh'
+  reprovision: 'fa-refresh',
+  replicate: 'fa-clone'
 };
 
 var statuses = {
