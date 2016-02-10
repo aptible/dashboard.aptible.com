@@ -1,0 +1,31 @@
+<div class="info">
+  <div class="name">{{invitationSettings.email}}</div>
+    <ul class="training-enrollment">
+      <li>
+        <span class="badge">
+          <i class="fa fa-check"></i>
+          <i class="fa fa-exclamation-circle"></i>
+          Basic
+        </span>
+      </li>
+      {{#if invitationSettings.isDeveloper}}
+      <li>
+        <span class="badge">
+          <i class="fa fa-check"></i>
+          <i class="fa fa-exclamation-circle"></i>
+          Developer
+        </span>
+      </li>
+      {{/if}}
+
+      {{#if invitationSettings.isSecurityOfficer}}
+      <li>
+        <span class="badge">
+          <i class="fa fa-check"></i>
+          <i class="fa fa-exclamation-circle"></i>
+          Security
+        </span>
+      </li>
+      {{/if}}
+    </ul>
+</div>

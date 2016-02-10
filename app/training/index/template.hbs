@@ -3,12 +3,47 @@
     <span class="header-title">{{organization.name}} Training Overview</span>
   </header>
 
-  <div class="panel compliance-status-table-panel white-panel criterion-subjects {{criterion.handle}}">
-    {{#each model as |user|}}
-      {{user-training-overall-status
-        user=user
-        criteria=criteria
-        organization=organization}}
-    {{/each}}
+  <div class="resource-list-grid">
+    <div class="row">
+      {{#each model as |userTrainingStatus|}}
+        {{#unless userTrainingStatus.settings.isRobot}}
+          <div class="col-xs-4">
+            {{user-training-item status=userTrainingStatus}}
+          </div>
+        {{/unless}}
+      {{/each}}
+    </div>
   </div>
 </section>
+
+{{#if pendingInvitations}}
+  <section class="compliance-section">
+    <header>
+      <span class="header-title">Pending Invitations</span>
+    </header>
+    <div class="panel compliance-status-table-panel white-panel pending-invitations">
+      {{#each pendingInvitations as |invitationSettings|}}
+        <div class="panel-row">
+          {{pending-invitation invitationSettings=invitationSettings}}
+        </div>
+      {{/each}}
+    </div>
+  </section>
+{{/if}}
+
+{{#if robots}}
+  <section class="compliance-section">
+    <header>
+      <span class="header-title">Robot Users</span>
+    </header>
+    <div class="panel compliance-status-table-panel white-panel pending-invitations">
+      {{#each robots as |robot|}}
+        <div class="panel-row">
+          <div class="info">
+            <div class="name">{{robot.email}}</div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </section>
+{{/if}}
