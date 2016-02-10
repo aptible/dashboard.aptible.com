@@ -39,6 +39,7 @@ Router.map(function() {
       path: "databases/:database_id"
     }, function() {
       this.route("activity");
+      this.route("replicate");
       this.route("deprovision");
     });
 

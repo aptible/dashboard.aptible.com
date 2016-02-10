@@ -3,7 +3,14 @@
 
     <div class="resource-title">
       <i class="resource-icon resource-db"></i>
-      <h1>{{model.handle}}</h1>
+      <h1>
+        {{model.handle}}
+        {{#if model.initializeFrom}}
+          <span class="resource-affix">
+            replicates {{#link-to 'database' model.initializeFrom}}{{ model.initializeFrom.handle }}{{/link-to}}
+          </span>
+        {{/if}}
+      </h1>
     </div>
 
     <ul class="resource-metadata">
