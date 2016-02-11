@@ -50,7 +50,7 @@ export default Ember.Component.extend({
       let $column = $(column);
       let showLabel = $column.width() >= LABEL_VISIBLE_WIDTH;
 
-      $column.toggleClass('show-label', showLabel)
+      $column.toggleClass('show-label', showLabel);
     });
   }
 });

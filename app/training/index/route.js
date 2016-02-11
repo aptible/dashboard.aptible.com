@@ -9,9 +9,9 @@ export default Ember.Route.extend({
 
     // Map all users into a TrainingEnrollmentStatus object
     let activeUsers = organization.get('users').map((user) => {
-      let settings = findUserBy(workforceAttestation, 'email', user.get('email'))
+      let settings = findUserBy(workforceAttestation, 'email', user.get('email'));
       let documentQuery = { user: user.get('data.links.self'),
-                            organization: organization.get('data.links.self') }
+                            organization: organization.get('data.links.self') };
       let documents = this.store.find('document', documentQuery);
 
       return new TrainingEnrollmentStatus({ user, settings, documents });

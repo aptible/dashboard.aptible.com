@@ -2,24 +2,8 @@ import {
   moduleFor,
   test
 } from 'ember-qunit';
-
-function fromNow(params, direction = 1) {
-  let years = params.years || 0;
-  let months = params.months || 0;
-  let days = params.days || 0;
-  let date = new Date();
-
-  date.setYear(date.getFullYear() + (direction * years));
-  date.setMonth(date.getMonth() + (direction * months));
-  date.setDate(date.getDate() + (direction * days));
-
-  return date;
-}
-
-function ago(params) {
-  return fromNow(params, -1);
-}
-
+import Ember from 'ember';
+import { fromNow, ago } from '../../helpers/date';
 import TrainingEnrollmentStatus from 'sheriff/utils/training-enrollment-status';
 
 module('Unit: TrainingEnrollmentStatus');
@@ -28,7 +12,7 @@ let user = Ember.Object.create({});
 
 test('it throws if not initialized correctly', function(assert) {
   assert.throws(function() {
-    new TrainingEnrollmentStatus({})
+    new TrainingEnrollmentStatus({});
   }, /must be included/);
 });
 
