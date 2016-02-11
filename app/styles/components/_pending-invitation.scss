@@ -1,0 +1,16 @@
+.pending-invitation, .robot-user {
+  .info .name {
+    font-size: 12px;
+    float: left;
+    margin: 0 10px 0 0;
+    font-weight: $weight-semibold;
+  }
+
+  .training-enrollment {
+    float: left;
+
+    .badge, li {
+      margin: 0;
+    }
+  }
+}

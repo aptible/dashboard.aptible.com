@@ -4,6 +4,8 @@ import startApp from 'sheriff/tests/helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
 import { orgId, rolesHref, usersHref, securityOfficerId, invitationsHref,
          securityOfficerHref } from '../../helpers/organization-stub';
+import { fromNow, ago } from '../../helpers/date';
+
 
 let application;
 
@@ -123,243 +125,81 @@ module('Acceptance: Organization Training Dashboard', {
   }
 });
 
-// test(`visiting ${overviewUrl} requires authentication`, function(assert) {
-//   expectRequiresAuthentication(overviewUrl);
-// });
+test(`visiting ${overviewUrl}: basic UI`, function(assert) {
+  let documents = {};
 
-test(`visiting ${overviewUrl}: shows all users`, function(assert) {
-  stubDocuments({ basic: [], security: [], developer: [] });
+  documents[userId] = [];
+  documents[developerId] = [];
+  documents[securityOfficerId] = [];
+
+  stubUserDocuments(documents);
   stubRequests();
   signInAndVisit(overviewUrl);
 
   andThen(function() {
     assert.equal(currentPath(), 'organization.engines.training.index');
-    ok(find('.user-training-status .name:contains(Basic User)'),
-            'shows basic user');
-    ok(find('.user-training-status .name:contains(Developer User)'),
-            'shows developer user');
-    ok(find('.user-training-status .name:contains(Security Officer User)'),
-            'shows security officer user');
+    assert.equal(find('.workforce-members .user').length, 3, 'shows all 3 active users');
+
+    // user 1 is only enrolled in basic
+    let user1 = find('.workforce-members .user').eq(0);
+    assert.equal(user1.find('.user-name').text(), users[0].name, 'shows user name');
+    assert.equal(user1.find('.status-overdue').length, 1, 'user 1 has one overdue');
+    assert.equal(user1.find('.status-notEnrolled').length, 2, 'user 1 has two not_enrolled');
+
+    // user 2 is enrolled in basic and developer
+    let user2 = find('.workforce-members .user').eq(1);
+    assert.equal(user2.find('.status-overdue').length, 2, 'user 2 has two overdue');
+    assert.equal(user2.find('.status-notEnrolled').length, 1, 'user 2 has one not_enrolled');
+
+    // user 3 is enrolled in all 3
+    let user3 = find('.workforce-members .user').eq(2);
+    assert.equal(user3.find('.status-overdue').length, 3, 'user 3 has three overdue');
+    assert.equal(user3.find('.status-notEnrolled').length, 0, 'user 3 has no not_enrolled');
+
+    assert.equal(find('.robot-users .robot-user').length, 1, 'shows 1 robot user');
+    assert.equal(find('.pending-invitations .pending-invitation').length, 2, 'shows 2 pending invitations');
+    assert.equal($.trim(find('.column.overdue .label').text()), '6 Overdue', 'progress bar shows overdue');
   });
 });
 
-test(`visiting ${overviewUrl}: all users list basic training`, function(assert) {
-  stubDocuments({ basic: [], security: [], developer: [] });
+test(`visiting ${overviewUrl}: training documents`, function(assert) {
+  let documents = {};
+  let trainingCriterion = { criterion: { href: `/criteria/${trainingCriterionId}` }};
+  let developerCriterion = { criterion: { href: `/criteria/${developerCriterionId}` }};
+
+  documents[userId] = [{ id: 1, _links: trainingCriterion, createdAt: ago({ months: 1}).toISOString(), expiresAt: fromNow({ years: 1}).toISOString() }];
+  documents[developerId] = [{ id: 2, _links: trainingCriterion, createdAt: ago({ months: 1}).toISOString(), expiresAt: fromNow({ years: 1}).toISOString() },
+                            { id: 3, _links: developerCriterion, createdAt: ago({ years: 2}).toISOString(), expiresAt: ago({ years: 1}).toISOString() }];
+  documents[securityOfficerId] = [{ id: 4, _links: trainingCriterion, createdAt: ago({ months: 1}).toISOString(), expiresAt: fromNow({ years: 1}).toISOString() }];
+
+  stubUserDocuments(documents);
   stubRequests();
   signInAndVisit(overviewUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.engines.training.index');
-    ok(find('.user-training-status .subject-checklist .training_log').length === 3,
-            'all 3 users list basic training');
+    // User 1 has basic completed
+    let user1 = find('.workforce-members .user').eq(0);
+    assert.equal($.trim(user1.find('.status-complete').text()), 'Basic', 'basic is completed');
+    assert.equal(user1.find('.status-notEnrolled').text().replace(/\s/g, ''), 'DeveloperSecurity', 'developer and security are not enrolled');
+
+    // User 2 has basic completed, but developer is expired
+    let user2 = find('.workforce-members .user').eq(1);
+    assert.equal($.trim(user2.find('.status-complete').text()), 'Basic', 'basic is completed');
+    assert.equal($.trim(user2.find('.status-expired').text()), 'Developer', 'developer is expired');
+
+    // User 3 has basic completed, but developer and security officer are overdue
+    let user3 = find('.workforce-members .user').eq(2);
+    assert.equal($.trim(user3.find('.status-complete').text()), 'Basic', 'basic is completed');
+    assert.equal(user3.find('.status-overdue').text().replace(/\s/g, ''), 'DeveloperSecurity', 'developer and security are not enrolled');
+
+    // Progress bar should read: 3 complete, 1 expired, 2 overdue
+    assert.equal($.trim(find('.column.completed .label').text()), '3 Completed', 'progress bar shows complete');
+    assert.equal($.trim(find('.column.expired .label').text()), '1 Expired', 'progress bar shows expired');
+    assert.equal($.trim(find('.column.overdue .label').text()), '2 Overdue', 'progress bar shows overdue');
   });
 });
 
-test(`visiting ${overviewUrl}: all developers list developer training`, function(assert) {
-  stubDocuments({ basic: [], security: [], developer: [] });
-  stubRequests();
-  signInAndVisit(overviewUrl);
-
-  andThen(function() {
-    assert.equal(currentPath(), 'organization.engines.training.index');
-    ok(find('.developer_training_log:contains(Developer Training)').length === 1,
-            'only one developer training log');
-  });
-});
-
-test(`visiting ${overviewUrl}: security officer shows security officer training`, function(assert) {
-  stubDocuments({ basic: [], security: [], developer: [] });
-  stubRequests();
-  signInAndVisit(overviewUrl);
-
-  andThen(function() {
-    assert.equal(currentPath(), 'organization.engines.training.index');
-    ok(find('.security_officer_training_log:contains(Security Officer Training)').length === 1,
-            'only one security officer training log');
-  });
-});
-
-test(`visiting ${basicUrl} shows all users under basic training criterion`, function(assert) {
-  stubDocuments({ basic: [], security: [], developer: [] });
-  stubRequests();
-  signInAndVisit(basicUrl);
-
-  andThen(function() {
-    assert.equal(currentPath(), 'organization.engines.training.criterion.index');
-
-    let el = find('.criterion-subjects.training_log');
-    ok(el.find('.user-training-status').length === 3,
-               'all 3 users appear in basic training log');
-  });
-});
-
-test(`visiting ${developerUrl} shows all developers under developer training criterion`, function(assert) {
-  stubDocuments({ basic: [], security: [], developer: [] });
-  stubRequests();
-  signInAndVisit(developerUrl);
-
-  andThen(function() {
-    assert.equal(currentPath(), 'organization.engines.training.criterion.index');
-
-    let el = find('.criterion-subjects.developer_training_log');
-    ok(el.find('.user-training-status').length === 1,
-               'one developer appears in developer training log');
-    ok(el.find(':contains(Developer User)'),
-               'developer user appears in developer training log');
-  });
-});
-
-
-test(`visiting ${securityUrl} shows security officer under security officer training criterion`, function(assert) {
-  stubDocuments({ basic: [], security: [], developer: [] });
-  stubRequests();
-  signInAndVisit(securityUrl);
-
-  andThen(function() {
-    assert.equal(currentPath(), 'organization.engines.training.criterion.index');
-
-    let el = find('.criterion-subjects.security_officer_training_log');
-    ok(el.find('.user-training-status').length === 1,
-               'security officer appears in security officer training log');
-    ok(el.find(':contains(Security Officer User)'),
-               'security officer user appears in security officer training log');
-  });
-});
-
-test(`visiting ${basicUrl} with an untrained user shows a red x`, function(assert) {
-  stubDocuments({ basic: [], security: [], developer: [] });
-  stubRequests();
-  signInAndVisit(basicUrl);
-
-  andThen(function() {
-    assert.equal(currentPath(), 'organization.engines.training.criterion.index');
-
-    let el = find('.criterion-subjects.training_log');
-    let user = el.find('.user-training-status:contains(Basic User)');
-
-    ok(user.length, 'basic user is visible in basic training log');
-    ok(user.find('.is-compliant-false').length, 'is not compliant');
-    ok(user.find('.fa-times-circle').length, 'has red x icon');
-  });
-});
-
-test(`visiting ${developerUrl} with an untrained developer shows a red x`, function(assert) {
-  stubDocuments({ basic: [], security: [], developer: [] });
-  stubRequests();
-  signInAndVisit(developerUrl);
-
-  andThen(function() {
-    assert.equal(currentPath(), 'organization.engines.training.criterion.index');
-
-    let el = find('.criterion-subjects.developer_training_log');
-    let user = el.find('.user-training-status:contains(Developer User)');
-
-    ok(user.length, 'developer is visible in developer training log');
-    ok(user.find('.is-compliant-false').length, 'is not compliant');
-    ok(user.find('.fa-times-circle').length, 'has red x icon');
-  });
-});
-
-test(`visiting ${securityUrl} with an untrained security officer shows a red x`, function(assert) {
-  stubDocuments({ basic: [], security: [], developer: [] });
-  stubRequests();
-  signInAndVisit(securityUrl);
-
-  andThen(function() {
-    assert.equal(currentPath(), 'organization.engines.training.criterion.index');
-
-    let el = find('.criterion-subjects.security_officer_training_log');
-    let user = el.find('.user-training-status:contains(Security Officer User)');
-
-    ok(user.length, 'security officer is visible in security officer training log');
-    ok(user.find('.is-compliant-false').length, 'is not compliant');
-    ok(user.find('.fa-times-circle').length, 'has red x icon');
-  });
-});
-
-test(`visiting ${basicUrl} with trained user shows a green check`, function(assert) {
-  let trainingDocument = {
-    id: 'basic-training-document',
-    created_at: '2015-05-27T17:47:13.287Z',
-    data: {},
-    expires_at: null,
-    organization_url: `/organizations/${orgId}`,
-    user_url: `/users/${userId}`
-  };
-
-  stubDocuments({ basic: [trainingDocument], security: [], developer: [] });
-  stubRequests();
-  signInAndVisit(basicUrl);
-
-  andThen(function() {
-    assert.equal(currentPath(), 'organization.engines.training.criterion.index');
-
-    let el = find('.criterion-subjects.training_log');
-    let user = el.find('.user-training-status:contains(Basic User)');
-
-    ok(user.length, 'basic user is visible in basic training log');
-    ok(user.find('.is-compliant-true  ').length, 'is compliant');
-    ok(user.find('.fa-check-circle').length, 'has green check icon');
-    ok(user.find(':contains(May 27, 2015)').length, 'shows completed date');
-  });
-});
-
-test(`visiting ${developerUrl} with trained developer shows a green check`, function(assert) {
-  let trainingDocument = {
-    id: 'developer-training-document',
-    created_at: '2015-05-27T17:47:13.287Z',
-    data: {},
-    expires_at: null,
-    organization_url: `/organizations/${orgId}`,
-    user_url: `/users/${developerId}`
-  };
-
-  stubDocuments({ basic: [], security: [], developer: [trainingDocument] });
-  stubRequests();
-  signInAndVisit(developerUrl);
-
-  andThen(function() {
-    assert.equal(currentPath(), 'organization.engines.training.criterion.index');
-
-    let el = find('.criterion-subjects.developer_training_log');
-    let user = el.find('.user-training-status:contains(Developer User)');
-
-    ok(user.length, 'developer is visible in developer training log');
-    ok(user.find('.is-compliant-true ').length, 'is compliant');
-    ok(user.find('.fa-check-circle').length, 'has green check icon');
-    ok(user.find(':contains(May 27, 2015)').length, 'shows completed date');
-  });
-});
-
-test(`visiting ${securityUrl} with trained security officer shows a green check`, function(assert) {
-  let trainingDocument = {
-    id: 'security-officer-training-document',
-    created_at: '2015-05-27T17:47:13.287Z',
-    data: {},
-    expires_at: null,
-    organization_url: `/organizations/${orgId}`,
-    user_url: `/users/${securityOfficerId}`
-  };
-
-  stubDocuments({ basic: [], security: [trainingDocument], developer: [] });
-  stubRequests();
-  signInAndVisit(securityUrl);
-
-  andThen(function() {
-    assert.equal(currentPath(), 'organization.engines.training.criterion.index');
-
-    let el = find('.criterion-subjects.security_officer_training_log');
-    let user = el.find('.user-training-status:contains(Security Officer User)');
-
-    ok(user.length, 'security officer is visible in security training log');
-    ok(user.find('.is-compliant-true ').length, 'is compliant');
-    ok(user.find('.fa-check-circle').length, 'has green check icon');
-    ok(user.find(':contains(May 27, 2015)').length, 'shows completed date');
-  });
-});
-
-
-function stubDocuments(opts = {}) {
+function stubCriterionDocuments(opts = {}) {
   if(!opts.basic) { opts.basic = []; }
   if(!opts.developer) { opts.developer = []; }
   if(!opts.security) { opts.security = []; }
@@ -377,8 +217,47 @@ function stubDocuments(opts = {}) {
   });
 }
 
+function stubUserDocuments(userDocuments) {
+  stubRequest('get', '/documents', function(request) {
+    let requestUser = extractUserIdFromRequestURL(request.url);
+    return this.success({ _embedded: { documents: userDocuments[requestUser] } });
+  });
+}
+
+function extractUserIdFromRequestURL(url) {
+  let userPath = url.replace(/.+user=(\S+)$/, '$1');
+  return decodeURIComponent(userPath).replace('/users/', '');
+}
+
 function stubRequests() {
   stubValidOrganization();
+
+  stubRequest('get', `/criteria/${trainingCriterionId}`, function(request) {
+    return this.success({ id: 'criterion-1', handle: 'training_log' });
+  });
+
+  stubRequest('get', `/criteria/${developerCriterionId}`, function(request) {
+    return this.success({ id: 'criterion-2', handle: 'developer_training_log' });
+  });
+
+  stubRequest('get', `/criteria/${securityCriterionId}`, function(request) {
+    return this.success({ id: 'criterion-3', handle: 'security_officer_training_log' });
+  });
+
+  stubCurrentAttestations({
+    workforce_roles: [
+      { email: users[0].email, isDeveloper: false, isSecurityOfficer: false, isRobot: false, hasAptibleAccount: true },
+      { email: users[1].email, isDeveloper: true, isSecurityOfficer: false, isRobot: false, hasAptibleAccount: true },
+      { email: users[2].email, isDeveloper: true, isSecurityOfficer: true, isRobot: false, hasAptibleAccount: true },
+      { email: 'circle@aptible.com', isDeveloper: false, isSecurityOfficer: false, isRobot: true, hasAptibleAccount: true },
+      { email: 'pendingBasic@aptible.com', isDeveloper: false, isSecurityOfficer: false, isRobot: false, hasAptibleAccount: false },
+      { email: 'pendingDeveloper@aptible.com', isDeveloper: true, isSecurityOfficer: false, isRobot: false, hasAptibleAccount: false }
+    ]
+  });
+
+  stubRequest('get', securityOfficerHref, function(request) {
+    return this.success(users[2]);
+  });
 
   stubRequest('get', `/roles/${developerRoleId}/users`, function() {
     return this.success({ _embedded: { users: [users[1]] }});
@@ -394,14 +273,6 @@ function stubRequests() {
 
   stubRequest('get', invitationsHref, function(request) {
     return this.success({ _embedded: { invitations: [] }});
-  });
-
-  stubRequest('get', securityOfficerHref, function(request) {
-    return this.success(users[2]);
-  });
-
-  stubRequest('get', '/permissions', function(request) {
-    return this.success({ _embedded: { permissions }});
   });
 
   stubRequest('get', '/criteria', function(request) {

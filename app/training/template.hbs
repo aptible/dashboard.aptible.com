@@ -2,9 +2,9 @@
   <div class="layout-container">
 
     <div class="pull-right">
-      {{#link-to-aptible app='support' path='contact' classNames="btn btn-default"}}
-        Schedule Training
-      {{/link-to-aptible}}
+      {{#link-to 'setup.team' classNames='btn btn-default'}}
+        Manage Workforce
+      {{/link-to}}
     </div>
 
     <div class="resource-title">
@@ -16,7 +16,5 @@
 </header>
 
 <div class="layout-container">
-  {{partial 'training/nav'}}
-
   {{outlet}}
 </div>

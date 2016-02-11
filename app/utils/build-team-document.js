@@ -58,7 +58,7 @@ function addInviteToDocument(invite, documents, schemaDocument) {
   }
 }
 
-function findUserBy(documents, field, value) {
+export function findUserBy(documents, field, value) {
   return documents.find((userDocument) => {
     return Ember.get(userDocument, field) === value;
   });
