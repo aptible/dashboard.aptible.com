@@ -1,0 +1,205 @@
+.resource-list-grid {
+  .panel {
+    .panel-heading {
+      padding: 11px;
+
+      .panel-icon {
+        float: left;
+        margin-right: 6px;
+        color: $color-bright-blue;
+
+        i.fa {
+          vertical-align: -4px;
+        }
+      }
+
+      .nav {
+        float: right;
+        margin: 0;
+
+        > li {
+          display: inline-block;
+          margin-right: 4px;
+
+          &:last-child {
+            margin-right: -4px;
+          }
+
+          .button-label {
+            display: none;
+          }
+
+          > a {
+            height: 25px;
+            width: 25px;
+            padding: 5px;
+            color: $color-light;
+
+            &:hover {
+              color: $color-primary;
+            }
+          }
+        }
+
+        i.fa {
+          vertical-align: 2px;
+          margin: 0;
+        }
+      }
+    }
+
+    .panel-body {
+      padding: 11px;
+      color: $color-light;
+    }
+
+    &.invitation.user {
+      .user-title {
+        margin: 0;
+      }
+
+      .user-gravatar {
+        height: 30px;
+        width: 30px;
+        background: #fafafa;
+      }
+
+      .user-name {
+        margin: 4px 0 3px;
+      }
+    }
+
+    &.user {
+      .panel-heading {
+        padding: 7px 11px;
+        @extend %clearfix;
+      }
+
+      .user-gravatar {
+        float: left;
+        margin: 4px 0 0;
+
+        img {
+          height: 30px;
+          width: 30px;
+          border-radius: 5px;
+        }
+      }
+
+      .user-title {
+        float: left;
+        margin: 0 0 0 10px;
+      }
+
+      .user-name {
+        margin: 4px 0 3px;
+      }
+
+      .user-email {
+        color: $color-light;
+        font-weight: $weight-normal;
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+.resource-actions {
+  .btn {
+    margin-right: 10px;
+  }
+
+  > .btn:last-child {
+    margin-right: 0;
+  }
+}
+
+.resource-list-item {
+  .resource-metadata {
+    padding: 0;
+    margin: 0;
+  }
+
+  .resource-metadata-item {
+    margin: 0 0 20px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .resource-metadata-title,
+  .resource-metadata-value {
+    font-size: 12px;
+
+    a {
+      margin-left: 0;
+    }
+  }
+
+  .panel-body {
+    .success,
+    .danger {
+      font-size: 11px;
+    }
+  }
+
+  .empty-service {
+    color: $color-light;
+    font-size: 11px;
+    display: block;
+    margin: 3px 0 7px;
+  }
+}
+
+.app.resource-list-item, .database.resource-list-item {
+  .panel-body {
+    padding-bottom: 4px;
+  }
+}
+
+.panel {
+  .panel-heading {
+    .fa.fa-spinner {
+      font-size: 12px;
+      margin: 0 10px 0 0;
+    }
+
+    h3 {
+      float: left;
+    }
+  }
+
+  .fa-arrow-right {
+    font-size: 11px;
+    margin: 0 8px;
+    vertical-align: 2px;
+    color: $color-subdued;
+  }
+
+  .resource-subtitle {
+    color: $color-light;
+  }
+
+  .panel-heading-actions {
+    float: right;
+    margin-top: 4px;
+
+    .label {
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    button {
+      margin-left: 5px;
+    }
+  }
+
+  &.default-true .panel-heading-actions {
+    margin-top: 9px;
+  }
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
