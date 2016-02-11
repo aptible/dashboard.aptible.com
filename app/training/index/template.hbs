@@ -1,6 +1,11 @@
 <section class="compliance-section">
+  <header><span class="header-title">{{organization.name}} Training Overview</span></header>
+  {{training-progress-bar users=model}}
+</section>
+
+<section class="compliance-section">
   <header>
-    <span class="header-title">{{organization.name}} Training Overview</span>
+    <span class="header-title">Training Status By User</span>
   </header>
 
   <div class="resource-list-grid">

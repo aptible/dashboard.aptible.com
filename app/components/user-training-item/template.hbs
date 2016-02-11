@@ -8,24 +8,18 @@
     <div class="user-email">{{status.user.email}}</div>
     <ul class="training-enrollment">
       {{training-enrollment-badge
-          handle="training_log"
           user=status.user
-          required=true
-          documents=status.documents
+          courseStatus=status.courses.training_log
           tagName="li"}}
 
       {{training-enrollment-badge
-          handle="developer_training_log"
           user=status.user
-          required=status.settings.isDeveloper
-          documents=status.documents
+          courseStatus=status.courses.developer_training_log
           tagName="li"}}
 
       {{training-enrollment-badge
-          handle="security_officer_training_log"
           user=status.user
-          settings=status.settings.isSecurityOfficer
-          documents=status.documents
+          courseStatus=status.courses.security_officer_training_log
           tagName="li"}}
     </ul>
   </div>

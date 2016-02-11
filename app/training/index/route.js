@@ -1,18 +1,20 @@
 import Ember from 'ember';
 import { findUserBy } from 'sheriff/utils/build-team-document';
+import TrainingEnrollmentStatus from 'sheriff/utils/training-enrollment-status';
 
 export default Ember.Route.extend({
   model() {
     let organization = this.modelFor('organization');
     let workforceAttestation = this.modelFor('training').attestation.get('document');
 
-
+    // Map all users into a TrainingEnrollmentStatus object
     let activeUsers = organization.get('users').map((user) => {
       let settings = findUserBy(workforceAttestation, 'email', user.get('email'))
-      let findDocuments = { user: user.get('data.links.self'),
+      let documentQuery = { user: user.get('data.links.self'),
                             organization: organization.get('data.links.self') }
-      return { user, settings,
-               documents: this.store.find('document', findDocuments) };
+      let documents = this.store.find('document', documentQuery);
+
+      return new TrainingEnrollmentStatus({ user, settings, documents });
     });
 
     let robots = workforceAttestation.filterBy('isRobot', true);
