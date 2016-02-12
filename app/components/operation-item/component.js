@@ -6,10 +6,10 @@ export default Ember.Component.extend({
     var type = this.get('operation.type');
     if(type === 'execute') {
       return 'SSHed';
-    } else if (type === 'configure') {
-      return 'configured';
-    } else {
-      return `${type}ed`;
     }
+    if (type.slice(-1) === 'e') {
+      return `${type}d`;
+    }
+    return `${type}ed`;
   }.property('operation.type')
 });

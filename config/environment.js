@@ -26,7 +26,8 @@ module.exports = function(environment) {
     segmentioKey: 'Jp74HTqG03zhS4cAJK4pueo2FL1Z6bM3',
 
     externalUrls: {
-      gettingStartedDocs: 'https://support.aptible.com/quickstart'
+      gettingStartedDocs: 'https://support.aptible.com/quickstart',
+      supportPortal: 'https://aptible.zendesk.com/hc/en-us/requests/new'
     },
 
     flashMessageDefaults: {

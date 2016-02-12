@@ -3,6 +3,12 @@
     {{link-to "Activity" "database.activity"}}
   {{/activating-item}}
 
+  {{#if model.supportsReplication}}
+    {{#activating-item currentWhen="database.replicate" tagName="li"}}
+      {{link-to "Replicate" "database.replicate"}}
+    {{/activating-item}}
+  {{/if}}
+
   {{#unless model.hasBeenDeprovisioned}}
     {{#activating-item currentWhen="database.deprovision" tagName="li"}}
       {{link-to "Deprovision" "database.deprovision"}}
