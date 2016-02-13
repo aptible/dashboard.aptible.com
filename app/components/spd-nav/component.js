@@ -9,7 +9,7 @@ export const STEPS = [
 ];
 export const STEP_PREFIX = 'organization.setup';
 
-function getStepIndex(currentPath) {
+export function getStepIndex(currentPath) {
   let i;
 
   STEPS.forEach((step, index) => {

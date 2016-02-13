@@ -3,7 +3,7 @@
 {{/if}}
 
 <ul class="nav sidebar-nav">
-  <li class="title">Compliance Engines</li>
+  <li class="title">Engines</li>
   {{#each complianceEngines as |engine| }}
     {{#if engine.app}}
       <li>
@@ -20,7 +20,7 @@
 </ul>
 
 <ul class="nav sidebar-nav">
-  <li class="title">Compliance Tools</li>
+  <li class="title">Tools</li>
   {{#each complianceTools as |tool| }}
     <li>
       {{#link-to-aptible app='compliance' path=tool.path}}
@@ -31,8 +31,17 @@
 </ul>
 
 <ul class="nav sidebar-nav">
-  <li class="title">Compliance Alerts</li>
+  <li class="title">Alerts</li>
   <li>
     {{#link-to-aptible app='compliance' path='/'}}Alerts{{/link-to-aptible}}
   </li>
+</ul>
+
+<ul class="nav sidebar-nav">
+  <li class="title">Settings</li>
+  {{#each steps as |step|}}
+    <li class="{{if step.current 'active'}}">
+      {{link-to step.name step.path}}
+    </li>
+  {{/each}}
 </ul>
