@@ -2,15 +2,24 @@ import Ember from 'ember';
 export const STEPS = [
   { key: 'organization',      name: 'Organization' },
   { key: 'locations',         name: 'Locations' },
-  { key: 'team',              name: 'Team' },
+  { key: 'team',              name: 'Workforce' },
   { key: 'data-environments', name: 'Data Environments' },
   { key: 'security-controls', name: 'Security Controls' },
   { key: 'finish',            name: 'Finish' }
 ];
-export const STEP_PREFIX = 'organization.setup';
+
 
 export function getStepIndex(currentPath) {
+  let prefix = /^organization/ig;
   let i;
+
+  if (!currentPath) {
+    Ember.warn("`getStepIndex` called without a valid path");
+    return null;
+  }
+
+  // Remove initial segment to prevent hits on organization SPD step erroneously
+  currentPath = currentPath.replace(prefix, '');
 
   STEPS.forEach((step, index) => {
     if(currentPath.indexOf(step.key) >= 0) {

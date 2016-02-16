@@ -1,32 +1,26 @@
-{{spd-nav preventContinueMessage=preventContinueMessage onNext="onNext" onPrevious="onPrevious"}}
+{{#spd-nav
+  preventContinueMessage=preventContinueMessage
+  onNext="onNext"
+  onPrevious="onPrevious"
+  stepName="Data Environments"
+}}
+  <div class="description">
+    <p>
+      A data environment is any information system your company uses to store or transmited protected health information (PHI).
+    </p>
 
-<div class="setup-step">
-  <h1 class="setup-step-title">Data Environments</h1>
-
-  <div class="panel panel-striped">
-    <div class="panel-section">
-      <div class="panel-section-title">Select all data environments your company uses to store or transmit PHI</div>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet purus ornare condimentum malesuada. Pellentesque diam mi, fermentum ut sapien eu, vehicula dictum elit. Integer cursus sagittis ullamcorper.
-      </p>
-    </div>
+    <p>
+      Don't see a system that you use here? <a href="http://contact.aptible.com">Contact Support</a>
+    </p>
   </div>
+{{/spd-nav}}
 
-
-  <nav class="panel-nav">
-    <ul class="tabs">
-      <li class="active">
-        <a>Data Environments<span class="badge">14</span></a>
-      </li>
-    </ul>
-  </nav>
-
+<div class="container main-body">
   <div class="panels">
     {{data-environment-index
       dataEnvironmentSchema=model
       dataEnvironmentDocument=schemaDocument}}
   </div>
-
-  <div>
-    <button class="btn btn-primary btn-lg" {{action "onNext"}}>Continue →</button>
-  </div>
 </div>
+
+

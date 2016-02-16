@@ -89,7 +89,7 @@ test('Clicking back should return you to previous step', function(assert) {
   });
 
   andThen(() => {
-    find('button:contains(Back)').click();
+    find('.spd-back-button').click();
   });
 
   andThen(() => {

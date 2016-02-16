@@ -1,34 +1,11 @@
-<div class="setup-step">
-  {{spd-errors errors=errors}}
+{{spd-errors errors=errors}}
 
-  <h1 class="setup-step-title">Workforce</h1>
-
-  <nav class="panel-nav">
-    <ul class="tabs">
-      <li class="active">
-        Team<span class="badge user-count">{{users.length}}</span>
-      </li>
-    </ul>
-  </nav>
-
-  <div class="panels">
-    {{team-index
-      teamDocument=schemaDocument
-      properties=properties}}
-  </div>
-
-  <div class="panel panel-striped">
-    <div class="panel-section">
-      <div class="row">
-        <div class="col-xs-8">
-          <div class="panel-section-title">Invite your entire workforce</div>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet purus ornare condimentum malesuada. Pellentesque diam mi, fermentum ut sapien eu, vehicula dictum elit. Integer cursus sagittis ullamcorper.
-          </p>
-        </div>
-        <div class="col-xs-4">
-          <button class="btn btn-xl btn-primary" {{action "showInviteModal"}}>Invite more users</button>
-        </div>
-      </div>
-    </div>
+<div class="spd-filterbar">
+  <div class="pull-right">
+    <button class="btn btn-xl btn-primary" {{action "showInviteModal"}}>Invite more users</button>
   </div>
 </div>
+
+{{team-index
+  teamDocument=schemaDocument
+  properties=properties}}

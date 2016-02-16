@@ -51,7 +51,6 @@ export default Ember.Route.extend({
   actions: {
     save() {
       let { attestation } = this.currentModel;
-      let profile = this.modelFor('setup');
       let schemaDocument = this.controller.get('schemaDocument').dump();
 
       this.validateAttestation(schemaDocument);
@@ -62,8 +61,6 @@ export default Ember.Route.extend({
 
       attestation.set('document', schemaDocument);
       attestation.save();
-
-      alert("Saved!");
     },
 
     showInviteModal() {
