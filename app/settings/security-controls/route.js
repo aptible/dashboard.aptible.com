@@ -27,5 +27,16 @@ export default Ember.Route.extend({
 
     controller.set('model', buildSecurityControlGroups(dataEnvironments));
     controller.set('organizationUrl', organizationUrl);
+  },
+
+  actions: {
+    save() {
+      let securityControlGroups = this.controller.get('model');
+      securityControlGroups.forEach((securityControlGroup) => {
+        let { document, attestation } = securityControlGroup;
+        attestation.set('document', document.dump({ excludeInvalid: true }));
+        attestation.save();
+      });
+    }
   }
 });

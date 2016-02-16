@@ -4,13 +4,15 @@
       <h2 class="sub-title">Security Program</h2>
       <h1 class="title">Workforce</h1>
     </div>
-    <div class="header-right">
-      <ul class="header-actions">
-        <li>
-          <button {{action 'save'}} class="btn btn-default btn-sm">Save</button>
-        </li>
-      </ul>
-    </div>
+    {{#if model.isDirty}}
+      <div class="header-right">
+        <ul class="header-actions">
+          <li>
+            <button {{action 'save'}} class="btn btn-default btn-sm save-settings">Save</button>
+          </li>
+        </ul>
+      </div>
+    {{/if}}
   </div>
 </header>
 
