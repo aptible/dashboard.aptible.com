@@ -39,6 +39,12 @@ export default Ember.Route.extend({
     controller.set('properties', schema.itemProperties);
   },
 
+  afterModel(model) {
+    if(model.schemaDocument && model.attestation) {
+      model.schemaDocument.load(model.attestation.get('document'));
+    }
+  },
+
   validateAttestation(schemaDocument) {
     let { attestation } = this.currentModel;
     let errors = this.get('attestationValidator').validate(attestation, schemaDocument);

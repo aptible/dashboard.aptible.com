@@ -15,7 +15,7 @@ function spdSteps() {
   this.route('locations', {}, function() {
     this.modal('add-location-modal', {
       withParams: ['newLocation'],
-      otherParams: ['document', 'schema', 'newLocation'],
+      otherParams: ['document', 'schema', 'newLocation', 'locationProperty'],
       dismissWithOutsideClick: false
     });
   });

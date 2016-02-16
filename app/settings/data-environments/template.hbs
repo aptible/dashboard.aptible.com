@@ -2,7 +2,7 @@
   <div class="container">
     <div class='header-left'>
       <h2 class="sub-title">Security Program</h2>
-      <h1 class="title">Workforce</h1>
+      <h1 class="title">Data Environments</h1>
     </div>
     <div class="header-right">
       <ul class="header-actions">
@@ -17,13 +17,7 @@
 <div class="container main-body">
   {{spd-errors errors=errors}}
 
-  <div class="spd-filterbar">
-    <div class="pull-right">
-      <button class="btn btn-xl btn-primary" {{action "showInviteModal"}}>Invite more users</button>
-    </div>
-  </div>
-
-  {{team-index
-    teamDocument=schemaDocument
-    properties=properties}}
+  {{data-environment-index
+    dataEnvironmentSchema=model
+    dataEnvironmentDocument=schemaDocument}}
 </div>

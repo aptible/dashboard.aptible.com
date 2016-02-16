@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import { locationProperty } from './route';
 
 export default Ember.Controller.extend({
   newLocation: null,
@@ -9,6 +8,7 @@ export default Ember.Controller.extend({
   }),
 
   validLocations: Ember.computed('locations.[]', function() {
+    let locationProperty = this.get('locationProperty');
     return this.get('locations').filter((location) => {
       return locationProperty.isValid(location.values);
     });

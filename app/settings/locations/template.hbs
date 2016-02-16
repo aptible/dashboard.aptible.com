@@ -2,7 +2,7 @@
   <div class="container">
     <div class='header-left'>
       <h2 class="sub-title">Security Program</h2>
-      <h1 class="title">Workforce</h1>
+      <h1 class="title">Locations</h1>
     </div>
     <div class="header-right">
       <ul class="header-actions">
@@ -19,11 +19,8 @@
 
   <div class="spd-filterbar">
     <div class="pull-right">
-      <button class="btn btn-xl btn-primary" {{action "showInviteModal"}}>Invite more users</button>
+      <button class="btn btn-primary" {{action "onAddLocation"}}>Add new location</button>
     </div>
   </div>
-
-  {{team-index
-    teamDocument=schemaDocument
-    properties=properties}}
+  {{location-index locations=validLocations}}
 </div>
