@@ -1,0 +1,11 @@
+<ul class="spd-steps">
+  <li class="background-track"></li>
+  {{#each model as |step|}}
+    <li class="spd-step">
+      <div class="spd-step-image">
+        <img src="/images/icons/{{step.key}}.svg" />
+      </div>
+      <div class="spd-step-title">{{step.name}}</div>
+    </li>
+  {{/each}}
+</ul>

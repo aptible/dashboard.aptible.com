@@ -1,25 +1,16 @@
 <div class="container main-body">
   <div class="getting-started">
-    <h1>Design Your Compliance Program in 6 Steps</h1>
+    <h1>Design Security Program</h1>
 
-    <ul class="spd-progress">
-      <li class="background-track"></li>
-      {{#each model as |step|}}
-        <li class="spd-progress-step">
-          <div class="spd-progress-step-image">
-            <img src="/images/icons/{{step.key}}.svg" />
-          </div>
-          <div class="spd-progress-step-title">{{step.name}}</div>
-        </li>
-      {{/each}}
-    </ul>
+    {{partial 'spd/steps'}}
 
     <div class="intro-text">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet purus ornare condimentum malesuada. Pellentesque diam mi, fermentum ut sapien eu, vehicula dictum elit. Integer cursus sagittis ullamcorper.
+      Your Security Program reflects how you manage information security for your organization. This tool will help you design and update a program.
     </div>
 
     <div>
-      <button class="btn btn-primary btn-lg" {{action "onNext"}}>Ok, let's get started →</button>
+      <button class="btn btn-primary btn-lg" {{action "onNext"}}>Get Started →</button>
     </div>
   </div>
 </div>
+

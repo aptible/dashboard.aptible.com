@@ -1,0 +1,58 @@
+.getting-started {
+  .spd-steps {
+    text-align: center;
+    list-style-type: none;
+    padding: 0;
+    z-index: 1;
+    margin: 50px 0;
+    display: inline-block;
+    position: relative;
+
+    .background-track {
+      width: 80%;
+      height: 9px;
+      margin: 36px 10% 0;
+      position: absolute;
+      background-image: url(/assets/images/dotted.png);
+      background-size: 38px 9px;
+      background-repeat: repeat-x;
+      z-index: 1;
+    }
+
+    .spd-step {
+      display: inline-block;
+      position: relative;
+      margin: 0 40px 0 0;
+      z-index: 2;
+      width: 130px;
+      text-align: center;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      .spd-step-title {
+        font-size: 11px;
+        margin: 20px 0 0;
+        color: $color-light;
+        font-weight: $weight-semibold;
+        text-transform: uppercase;
+      }
+    }
+
+    .spd-step-image {
+      background: #fff;
+      border: 1px solid #d0d0d0;
+      border-radius: 50%;
+      width: 80px;
+      padding: 4px;
+      margin: 0 auto;
+
+      img {
+        height: 70px;
+        width: 70px;
+        opacity: 1;
+      }
+    }
+  }
+}

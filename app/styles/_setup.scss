@@ -18,27 +18,6 @@ $step-height: 80px;
     height: 49px;
     margin: 50px 0;
   }
-
-  .spd-progress {
-    margin: 50px 0;
-    display: inline-block;
-    position: relative;
-
-    .background-track {
-      width: 80%;
-      height: 9px;
-      margin: 36px 10% 0;
-      position: absolute;
-      background-image: url(/assets/images/dotted.png);
-      background-size: 38px 9px;
-      background-repeat: repeat-x;
-      z-index: 1;
-    }
-
-    .spd-progress-step-image {
-      display: block;
-    }
-  }
 }
 
 .intro-text {

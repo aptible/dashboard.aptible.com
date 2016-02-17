@@ -74,10 +74,10 @@ test('Basic setup start page UI', function(assert) {
   });
 
   andThen(() => {
-    let continueButton = find('button:contains(get started)');
+    let continueButton = find('button:contains(Get Started)');
 
-    assert.ok(find('h1:contains(Design Your Compliance Program in 6 Steps)').length, 'has a title');
-    assert.ok(find('.intro-text:contains(Lorem ipsum)').length, 'has a descriptive paragraph');
+    assert.ok(find('h1:contains(Design Security Program)').length, 'has a title');
+    assert.ok(find('.intro-text:contains(Your Security Program)').length, 'has a descriptive paragraph');
     assert.ok(continueButton.length, 'has a continue button');
     continueButton.click();
   });
