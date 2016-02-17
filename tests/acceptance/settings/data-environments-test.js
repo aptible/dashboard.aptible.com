@@ -166,6 +166,7 @@ function clickSaveButton() {
 function stubRequests() {
   stubValidOrganization();
   stubSchemasAPI();
+  stubProfile({ hasCompletedSetup: true });
 
   stubRequest('get', rolesHref, function(request) {
     return this.success({ _embedded: { roles } });

@@ -597,6 +597,7 @@ function selectRole(roleId) {
 function stubRequests() {
   stubValidOrganization();
   stubSchemasAPI();
+  stubProfile({ hasCompletedSetup: true });
 
   stubRequest('get', `/roles/${developerRoleId}/users`, function() {
     return this.success({ _embedded: { users: [users[1]] }});
