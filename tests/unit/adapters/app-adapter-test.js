@@ -22,7 +22,7 @@ test('findQuery uses correct URL', function(assert) {
   var done = assert.async();
   assert.expect(1);
 
-  stubRequest('get', '/accounts/my-stack-1/databases', function() {
+  stubRequest('get', '/accounts/my-stack-1/apps', function() {
     assert.ok(true, 'uses correct URL');
     done();
     return this.success({});
