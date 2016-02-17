@@ -231,6 +231,7 @@ function extractUserIdFromRequestURL(url) {
 
 function stubRequests() {
   stubValidOrganization();
+  stubProfile({ hasCompletedSetup: true });
 
   stubRequest('get', `/criteria/${trainingCriterionId}`, function(request) {
     return this.success({ id: 'criterion-1', handle: 'training_log' });
