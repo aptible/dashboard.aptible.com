@@ -6,7 +6,7 @@ import { orgId, rolesHref, usersHref, invitationsHref, securityOfficerId,
          securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
-let locationsUrl = `${orgId}/setup/locations`;
+let locationsUrl = `${orgId}/settings/locations`;
 let roleId = 'owners-role';
 let userId = 'u1';
 let roles = [
@@ -32,7 +32,7 @@ let users = [
   }
 ];
 
-module('Acceptance: Setup: Locations', {
+module('Acceptance: Security Program Settings: Locations', {
   beforeEach() {
     application = startApp();
   },
@@ -40,33 +40,6 @@ module('Acceptance: Setup: Locations', {
   afterEach() {
     Ember.run(application, 'destroy');
   }
-});
-
-test('Locations page basic UI, with no existing locations', function(assert) {
-  stubProfile({ currentStep: 'locations' });
-  stubCurrentAttestations({ workforce_locations: [] });
-  stubRequests();
-  signInAndVisit(locationsUrl);
-
-  andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.locations.index', 'remains on locations step');
-    assert.ok(find('.empty-row:contains(No Locations.  Add one below.)').length,
-              'shows empty row with no locations');
-    assert.ok(find('button:disabled:contains(Continue)').length,
-              'Continue button is disabled');
-  });
-
-  andThen(openLocationDialog);
-
-  andThen(() => {
-    ['description', 'streetAddress', 'city', 'zip'].forEach(function(field) {
-      assert.ok(find(`input[name="${field}"]`).length, `has a ${field} field`);
-    });
-    assert.ok(find('select[name="state"] option').length, 50,
-              'has state select with 50 options');
-    assert.ok(find('button[type="submit"]:contains(Add)').length,
-              'has a submit button');
-  });
 });
 
 test('Locations page, with existing location attestation', function(assert) {
@@ -87,7 +60,7 @@ test('Locations page, with existing location attestation', function(assert) {
   signInAndVisit(locationsUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.locations.index', 'remains on locations step');
+    assert.equal(currentPath(), 'organization.engines.settings.locations.index', 'remains on locations step');
     assert.equal(find('.locations-index table tbody tr').length, 2, 'has two locations');
     assert.ok(find('td:contains(HQ)').length, 'Has first location');
     assert.ok(find('td:contains(Satellite)').length, 'Has second location');
@@ -103,27 +76,6 @@ test('Locations page, with existing location attestation', function(assert) {
               'has state select with 50 options');
     assert.ok(find('button[type="submit"]:contains(Add)').length,
               'has a submit button');
-  });
-});
-
-test('Clicking back should return you to previous step', function(assert) {
-  stubProfile({ currentStep: 'locations' });
-  stubCurrentAttestations({ workforce_locations: [] });
-  stubRequests();
-  signInAndVisit(locationsUrl);
-
-  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
-    let json = this.json(request);
-    json.id = orgId;
-    return this.success(json);
-  });
-
-  andThen(() => {
-    find('.spd-back-button').click();
-  });
-
-  andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.organization', 'returned to organization step');
   });
 });
 
@@ -147,17 +99,6 @@ test('Adding location adds to location index', function(assert) {
   });
 });
 
-test('Visiting location page without completing previous step should return to previous step', function(assert) {
-  stubProfile({ currentStep: 'organization' });
-  stubCurrentAttestations({ workforce_locations: [] });
-  stubRequests();
-  signInAndVisit(locationsUrl);
-
-  andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.organization', 'returned to organization step');
-  });
-});
-
 test('Adding an incomplete location shows an error message', function(assert) {
   stubProfile({ currentStep: 'locations' });
   stubCurrentAttestations({ workforce_locations: [] });
@@ -167,7 +108,7 @@ test('Adding an incomplete location shows an error message', function(assert) {
   andThen(openLocationDialog);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.locations.index', 'remains on location step');
+    assert.equal(currentPath(), 'organization.engines.settings.locations.index', 'remains on location step');
     fillInLocation();
   });
 
@@ -182,26 +123,25 @@ test('Adding an incomplete location shows an error message', function(assert) {
   });
 });
 
-test('Clicking continue creates locations attestation', function(assert) {
-  expect(5);
+test('Clicking Save creates locations attestation', function(assert) {
+  expect(3);
+
+  let expectedDocumentItem = [{
+    city: 'Brooklyn',
+    description: 'HQ',
+    state: 'New York',
+    streetAddress: '155 Water St',
+    zip: '11201'
+  }];
+
   stubCurrentAttestations({ workforce_locations: [] });
   stubRequest('post', '/attestations', function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to /attestations');
     assert.equal(json.handle, 'workforce_locations');
-
+    assert.deepEqual(json.document, expectedDocumentItem);
     return this.success({ id: 1 });
-  });
-
-  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
-    let json = this.json(request);
-    json.id = orgId;
-
-    assert.ok(true, 'updates organization profile');
-    assert.equal(json.current_step, 'team');
-
-    return this.success(json);
   });
 
   stubProfile({ currentStep: 'locations'});
@@ -211,10 +151,7 @@ test('Clicking continue creates locations attestation', function(assert) {
   andThen(openLocationDialog);
   andThen(() => { fillInLocation(); });
   andThen(clickAddButton);
-  andThen(clickContinueButton);
-  andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.team.index', 'on next setup step');
-  });
+  andThen(clickSaveButton);
 });
 
 function fillInLocation(locationData) {
@@ -244,6 +181,11 @@ function openLocationDialog() {
 function clickAddButton() {
   let addButton = findWithAssert('button[type="submit"]:contains(Add Location)');
   addButton.click();
+}
+
+function clickSaveButton() {
+  let button = findWithAssert('button.save-settings');
+  button.click();
 }
 
 function selectState(state) {

@@ -1,0 +1,1 @@
+export { default } from 'sheriff/setup/team/controller';

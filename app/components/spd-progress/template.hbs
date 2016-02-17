@@ -1,0 +1,18 @@
+<div class="spd-progress-body">
+  {{#each steps as |step|}}
+    <div class="spd-progress-step {{if step.current 'active'}} {{if step.completed 'completed'}}">
+      <div class="spd-progress-step-image">
+        <img src="/images/icons/{{step.key}}.svg" />
+      </div>
+      <div class="spd-progress-step-title">{{step.name}}</div>
+    </div>
+  {{/each}}
+</div>
+
+<div class="spd-progress-bar">
+  <div class="spd-progress-bar-container">
+    {{#each steps as |step|}}
+      <div class="spd-progress-bar-step {{if step.current 'active'}} {{if step.completed 'completed'}}">&nbsp;</div>
+    {{/each}}
+  </div>
+</div>

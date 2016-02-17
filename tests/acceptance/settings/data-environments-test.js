@@ -7,7 +7,7 @@ import { orgId, rolesHref, usersHref, invitationsHref, securityOfficerId,
 
 let application;
 let attestationHandle = 'selected_data_environments';
-let dataEnvironmentsUrl = `${orgId}/setup/data-environments`;
+let dataEnvironmentsUrl = `${orgId}/settings/data-environments`;
 let userId = 'basic-user-1';
 let developerId = 'developer-user-2';
 let basicRoleId = 'basic-role-1';
@@ -46,7 +46,7 @@ let permissions = [
   }
 ];
 
-module('Acceptance: Setup: Data Environments', {
+module('Acceptance: Security Program Settings: Data Environments', {
   beforeEach() {
     application = startApp();
   },
@@ -76,29 +76,9 @@ test('Lists all data environments', function(assert) {
   });
 });
 
-test('Clicking back should return you to previous step', function(assert) {
-  stubCurrentAttestations({ selected_data_environments: {}, workforce_roles: [] });
-  stubProfile({ currentStep: 'data-environments' });
-  stubRequests();
-  signInAndVisit(dataEnvironmentsUrl);
 
-  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
-    let json = this.json(request);
-    json.id = orgId;
-    return this.success(json);
-  });
-
-  andThen(() => {
-    find('.spd-back-button').click();
-  });
-
-  andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.team.index', 'returned to team step');
-  });
-});
-
-test('Clicking continue saves data environment selections to organization profile', function(assert) {
-  expect(6);
+test('Clicking Save saves data environment selections to attestation', function(assert) {
+  expect(3);
   stubCurrentAttestations({ selected_data_environments: { aptible: true }, team: [] });
   let expectedDataEnvironmentPayload = {
     amazonS3: true,
@@ -109,16 +89,6 @@ test('Clicking continue saves data environment selections to organization profil
   stubProfile({ currentStep: 'data-environments' });
   stubRequests();
   signInAndVisit(dataEnvironmentsUrl);
-
-  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
-    let json = this.json(request);
-    json.id = orgId;
-
-    assert.ok(true, 'updates organization profile');
-    assert.equal(json.current_step, 'security-controls', 'updates current step');
-
-    return this.success(json);
-  });
 
   stubRequest('post', '/attestations', function(request) {
     let json = this.json(request);
@@ -135,15 +105,11 @@ test('Clicking continue saves data environment selections to organization profil
     toggleDataEnvironment('Gmail');
   });
 
-  andThen(clickContinueButton);
-
-  andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.security-controls', 'proceeds to next step');
-  });
+  andThen(clickSaveButton);
 });
 
 test('Should load existing selections when attestation already exists', function(assert) {
-  expect(9);
+  expect(6);
   let existingSelection = {
     amazonS3: false,
     aptible: true,
@@ -160,16 +126,6 @@ test('Should load existing selections when attestation already exists', function
   stubProfile({ currentStep: 'data-environments' });
   stubRequests();
   signInAndVisit(dataEnvironmentsUrl);
-
-  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
-    let json = this.json(request);
-    json.id = orgId;
-
-    assert.ok(true, 'updates organization profile');
-    assert.equal(json.current_step, 'security-controls', 'updates current step');
-
-    return this.success(json);
-  });
 
   stubRequest('post', '/attestations', function(request) {
     let json = this.json(request);
@@ -194,16 +150,17 @@ test('Should load existing selections when attestation already exists', function
   });
 
   // Save and inspect attestation for updated values
-  andThen(clickContinueButton);
-
-  andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.security-controls', 'proceeds to next step');
-  });
+  andThen(clickSaveButton);
 });
 
 function toggleDataEnvironment(environment) {
   let toggle = findWithAssert(`tr:contains(${environment}) td:last input[type="checkbox"]`);
   toggle.click();
+}
+
+function clickSaveButton() {
+  let button = findWithAssert('button.save-settings');
+  button.click();
 }
 
 function stubRequests() {

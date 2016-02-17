@@ -1,48 +1,45 @@
-<div class="spd-nav-body">
-  <h3>Design Your Security Program</h3>
+<header class="new-header">
+  <div class="container">
 
-  {{#if isOnAStep}}
-    <ul class="spd-nav">
-      {{#if previous}}
-        <li>
-          <button {{action 'previous' previous.path}} class="btn btn-default btn-sm">
-            Back
-          </button>
-        </li>
-      {{/if}}
+    {{#if previous}}
+      <a {{action 'previous' previous.path}} class="spd-back-button">←</a>
+    {{/if}}
 
+    {{#if isOnAStep}}
+      {{spd-progress steps=steps}}
+    {{/if}}
+
+    {{#if next}}
+      <div class='header-left'>
+        <h2 class="sub-title">Security Program Design</h2>
+        <h1 class="title">{{stepName}}</h1>
+        {{yield}}
+      </div>
+    {{/if}}
+
+    {{#if isOnAStep}}
       {{#if next}}
-        <li>
-          {{#if preventContinueMessage}}
-            {{#bs-tooltip title=preventContinueMessage}}
-              <div>
-                <button class="btn btn-primary btn-sm" disabled="disabled">Continue →</button>
-              </div>
-            {{/bs-tooltip}}
-          {{else}}
-            <button {{action 'next' next.path}} class="btn btn-primary btn-sm">
-              Continue →
-            </button>
-          {{/if}}
-        </li>
-      {{else}}
-        <li>
-          <button {{action 'finish'}} class="btn btn-primary btn-sm">
-            Finish
-          </button>
-        </li>
+        <div class="header-right">
+          <ul class="header-actions">
+            <li>
+              <button {{action 'save'}} class="btn btn-default btn-sm">Save</button>
+            </li>
+            <li>
+              {{#if preventContinueMessage}}
+                {{#bs-tooltip title=preventContinueMessage}}
+                  <div>
+                    <button class="btn btn-primary btn-sm" disabled="disabled">Continue →</button>
+                  </div>
+                {{/bs-tooltip}}
+              {{else}}
+                <button {{action 'next' next.path}} class="btn btn-primary btn-sm top-continue-button">
+                  Continue →
+                </button>
+              {{/if}}
+            </li>
+          </ul>
+        </div>
       {{/if}}
-    </ul>
-
-    <ul class="spd-progress">
-      {{#each steps as |step|}}
-        <li class="spd-progress-step {{if step.current 'active'}} {{if step.completed 'completed'}}">
-          <div class="spd-progress-step-image">
-            <img src="/images/icons/{{step.key}}.svg" />
-          </div>
-          <div class="spd-progress-step-title">{{step.name}}</div>
-        </li>
-      {{/each}}
-    </ul>
-  {{/if}}
-</div>
+    {{/if}}
+  </div>
+</header>

@@ -6,7 +6,7 @@ import { orgId, rolesHref, usersHref, invitationsHref, securityOfficerId,
          securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
-let teamUrl = `${orgId}/setup/team`;
+let teamUrl = `${orgId}/settings/team`;
 let userId = 'basic-user-1';
 let developerId = 'developer-user-2';
 let basicRoleId = 'basic-role-1';
@@ -103,7 +103,7 @@ let permissions = [
   }
 ];
 
-module('Acceptance: Setup: Team', {
+module('Acceptance: Security Program Settings: Team', {
   beforeEach() {
     application = startApp();
   },
@@ -111,38 +111,6 @@ module('Acceptance: Setup: Team', {
   afterEach() {
     Ember.run(application, 'destroy');
   }
-});
-
-test('You are redirected to correct step if not ready for team step', function(assert) {
-  stubCurrentAttestations({ workforce_roles: [] });
-  stubProfile({ currentStep: 'organization' });
-  stubRequests();
-  signInAndVisit(teamUrl);
-
-  andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.organization', 'redirected to organization step');
-  });
-});
-
-test('Clicking back should return you to previous step', function(assert) {
-  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
-  stubProfile({ currentStep: 'team' });
-  stubRequests();
-  signInAndVisit(teamUrl);
-
-  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
-    let json = this.json(request);
-    json.id = orgId;
-    return this.success(json);
-  });
-
-  andThen(() => {
-    find('.spd-back-button').click();
-  });
-
-  andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.locations.index', 'returned to locations step');
-  });
 });
 
 test('Team shows all organization users', function(assert) {
@@ -172,7 +140,7 @@ test('Shows all pending invitations', function(assert) {
 });
 
 test('Toggling user roles and clicking continue saves team attestation with correct values', function(assert) {
-  expect(4);
+  expect(2);
   stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
   let expectedAttestation = {
     handle: 'workforce_roles',
@@ -238,27 +206,17 @@ test('Toggling user roles and clicking continue saves team attestation with corr
     return this.success({ id: 1 });
   });
 
-  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
-    let json = this.json(request);
-    json.id = orgId;
-
-    assert.ok(true, 'updates organization profile');
-    assert.equal(json.current_step, 'data-environments');
-
-    return this.success(json);
-  });
-
   andThen(() => {
     findWithAssert('.toggle-developer:first label').click();
     findWithAssert('.toggle-security-officer:first label').click();
     findWithAssert('.toggle-robot:last label').click();
   });
 
-  andThen(clickContinueButton);
+  andThen(clickSaveButton);
 });
 
 test('Pending invitations are included in attestation payload', function(assert) {
-  expect(17);
+  expect(15);
   stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
   let emailAddresses = 'skylar+1@aptible.com;skylar+2@aptible.com\nskylar+3@aptible.com skylar+4@aptible.com';
   let roleId = basicRoleId;
@@ -382,27 +340,17 @@ test('Pending invitations are included in attestation payload', function(assert)
     return this.success({ id: 1 });
   });
 
-  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
-    let json = this.json(request);
-    json.id = orgId;
-
-    assert.ok(true, 'updates organization profile');
-    assert.equal(json.current_step, 'data-environments');
-
-    return this.success(json);
-  });
-
   andThen(() => {
     findWithAssert('.toggle-developer:first label').click();
     findWithAssert('.toggle-security-officer:first label').click();
     findWithAssert('.toggle-robot:last label').click();
   });
 
-  andThen(clickContinueButton);
+  andThen(clickSaveButton);
 });
 
 test('Team page with existing team attestation', function(assert) {
-  expect(13);
+  expect(11);
   let currentTeamAttestation = [
     {
       email: 'basicuser@asdf.com',
@@ -494,16 +442,6 @@ test('Team page with existing team attestation', function(assert) {
     return this.success({ id: 1 });
   });
 
-  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
-    let json = this.json(request);
-    json.id = orgId;
-
-    assert.ok(true, 'updates organization profile');
-    assert.equal(json.current_step, 'data-environments');
-
-    return this.success(json);
-  });
-
   signInAndVisit(teamUrl);
 
   andThen(() => {
@@ -537,7 +475,7 @@ test('Team page with existing team attestation', function(assert) {
   });
 
   // Continue to save and inspect assertions
-  andThen(clickContinueButton);
+  andThen(clickSaveButton);
 });
 
 test('Invite new member modal basic UI', function(assert) {
@@ -623,7 +561,7 @@ test('Invite modal creates invitation record for each email', function(assert) {
 });
 
 test('Developer and Security Officer groups are validated to include at least on user each', function(assert) {
-  expect(2);
+  expect(1);
   stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
   stubProfile({ currentStep: 'team' });
   stubRequests();
@@ -634,18 +572,16 @@ test('Developer and Security Officer groups are validated to include at least on
     return this.success({ id: 1 });
   });
 
-  andThen(clickContinueButton);
+  andThen(clickSaveButton);
   andThen(() => {
     assert.ok(find('.alert-danger:contains(at least one Developer is required, at least one Security Officer is required.)').length === 1, 'shows an error');
-    assert.equal(currentPath(), 'organization.setup.team.index', 'remains on team step');
   });
 });
 
-skip('Clicking re-invite button sends new invitation');
-skip('Clicking X button deletes pending invitation');
-
-// Not sure if we ever want to do this here?
-skip('Clicking X button removes user from organization');
+function clickSaveButton() {
+  let button = findWithAssert('button.save-settings');
+  button.click();
+}
 
 function openInviteModal() {
   let button = findWithAssert('button:contains(Invite more users)');

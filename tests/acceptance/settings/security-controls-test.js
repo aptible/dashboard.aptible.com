@@ -6,7 +6,7 @@ import { orgId, rolesHref, usersHref, invitationsHref, securityOfficerId,
          securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
-let securityControlsUrl = `${orgId}/setup/security-controls`;
+let securityControlsUrl = `${orgId}/settings/security-controls`;
 let roleId = 'owners-role';
 let userId = 'u1';
 let roles = [
@@ -32,7 +32,7 @@ let users = [
   }
 ];
 
-module('Acceptance: Setup: Security Controls', {
+module('Acceptance: Security Program Settings: Security Controls', {
   beforeEach() {
     application = startApp();
   },
@@ -79,31 +79,8 @@ test('Selected data environments are used to draw security control questionnaire
   });
 });
 
-test('Clicking back should return you to previous step', function(assert) {
-  stubCurrentAttestations({ selected_data_environments: selectedDataEnvironments });
-  stubProfile({ currentStep: 'security-controls' });
-  stubRequests();
-  signInAndVisit(securityControlsUrl);
-
-  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
-    let json = this.json(request);
-    json.id = orgId;
-    return this.success(json);
-  });
-
-  andThen(() => {
-    find('.spd-back-button').click();
-  });
-
-  andThen(() => {
-    assert.equal(currentPath(),
-                 'organization.setup.data-environments',
-                 'returned to data environments step');
-  });
-});
-
-test('Clicking continue saves attestation for each global, provider, and data environment', function(assert) {
-  expect(22);
+test('Clicking Save saves attestation for each global, provider, and data environment', function(assert) {
+  expect(18);
   let attestationId = 0;
   let expectedAttestationHandles = ['aptible_security_controls',
                                     'aws_security_controls',
@@ -120,17 +97,6 @@ test('Clicking continue saves attestation for each global, provider, and data en
   stubRequests();
   signInAndVisit(securityControlsUrl);
 
-  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
-    let json = this.json(request);
-    json.id = orgId;
-
-    assert.ok(true, 'updates organization profile');
-    assert.equal(json.current_step, 'finish', 'updates current step');
-    assert.equal(json.has_completed_setup, true, 'updates has completed setup');
-
-    return this.success(json);
-  });
-
   // Expect attestions to be posted to for each global, provider, and data environment
   stubRequest('post', '/attestations', function(request) {
     let json = this.json(request);
@@ -145,10 +111,7 @@ test('Clicking continue saves attestation for each global, provider, and data en
     $('.x-toggle-container:not(.x-toggle-container-checked) label').click();
   });
 
-  andThen(clickContinueButton);
-  andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.finish', 'on finish setup step');
-  });
+  andThen(clickSaveButton);
 });
 
 test('Previous attestations are used to load existing security control answers', function(assert) {
@@ -194,18 +157,6 @@ test('Previous attestations are used to load existing security control answers',
   stubRequests();
   signInAndVisit(securityControlsUrl);
 
-
-  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
-    let json = this.json(request);
-    json.id = orgId;
-
-    assert.ok(true, 'updates organization profile');
-    assert.equal(json.current_step, 'finish', 'updates current step');
-    assert.equal(json.has_completed_setup, true, 'updates has completed setup');
-
-    return this.success(json);
-  });
-
   // Expect attestions to be posted to for each global, provider, and data environment
   stubRequest('post', '/attestations', function(request) {
     let json = this.json(request);
@@ -227,14 +178,8 @@ test('Previous attestations are used to load existing security control answers',
     setEnumSecurityControl('encryption', 'Encrypt some securities');
   });
 
-  andThen(clickContinueButton);
-  andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.finish', 'on finish setup step');
-  });
+  andThen(clickSaveButton);
 });
-
-skip('With no data environments configured it redirects back to data environment step');
-
 
 function assertTrueSecurityControls(controls, assert) {
   controls.forEach((control) => {
@@ -253,6 +198,11 @@ function assertEnumSecurityControls(controls, assert) {
 function toggleSecurityControl(controlName) {
   let toggle = findWithAssert(`input[name="${controlName}"]`);
   toggle.click();
+}
+
+function clickSaveButton() {
+  let button = findWithAssert('button.save-settings');
+  button.click();
 }
 
 function setEnumSecurityControl(controlName, controlVal) {

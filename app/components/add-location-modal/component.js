@@ -1,6 +1,4 @@
 import Ember from 'ember';
-import { locationProperty } from 'sheriff/setup/locations/route';
-
 var description = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                    Donec aliquet purus ornare condimentum malesuada.
                    Pellentesque diam mi, fermentum ut sapien eu, vehicula
@@ -35,7 +33,7 @@ export default Ember.Component.extend({
 
     addLocation() {
       this.set('errors', null);
-      let { newLocation, document } = this.getProperties('newLocation', 'document');
+      let { newLocation, document, locationProperty } = this.getProperties('newLocation', 'document', 'locationProperty');
 
       if(!locationProperty.isValid(newLocation.values)) {
         this.set('errors', `Error: ${locationProperty.required.join(', ')} are required fields`);

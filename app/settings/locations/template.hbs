@@ -1,0 +1,26 @@
+<header class="new-header">
+  <div class="container">
+    <div class='header-left'>
+      <h2 class="sub-title">Security Program</h2>
+      <h1 class="title">Locations</h1>
+    </div>
+    <div class="header-right">
+      <ul class="header-actions">
+        <li>
+          <button {{action 'save'}} class="btn btn-default btn-sm save-settings">Save</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<div class="container main-body">
+  {{spd-errors errors=errors}}
+
+  <div class="spd-filterbar">
+    <div class="pull-right">
+      <button class="btn btn-primary" {{action "onAddLocation"}}>Add new location</button>
+    </div>
+  </div>
+  {{location-index locations=validLocations}}
+</div>

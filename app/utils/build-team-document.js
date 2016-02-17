@@ -18,7 +18,7 @@ export default function(users, invitations, documents, schema) {
 function addUserToDocument(user, documents, schemaDocument) {
   let { name, email } = user.getProperties('name', 'email');
   let href = user.get('data.links.self');
-  let document = findUserBy(documents, 'href', href) || {};
+  let userDocument = findUserBy(documents, 'href', href) || {};
   let item = schemaDocument.addItem();
 
   item.set('name', name);
@@ -26,35 +26,25 @@ function addUserToDocument(user, documents, schemaDocument) {
   item.set('href', href);
   item.set('hasAptibleAccount', true);
 
-  if (document) {
-    let { isDeveloper, isSecurityOfficer, isRobot } = Ember.getProperties(
-      document, ['isDeveloper', 'isSecurityOfficer', 'isRobot']
-    );
-
-    if(typeof isDeveloper !== 'undefined') {
-      item.set('isDeveloper', isDeveloper);
-    }
-
-    if(typeof isSecurityOfficer !== 'undefined') {
-      item.set('isSecurityOfficer', isSecurityOfficer);
-    }
-
-    if(typeof isRobot !== 'undefined') {
-      item.set('isRobot', isRobot);
-    }
+  if (userDocument) {
+    ['isRobot', 'isDeveloper', 'isSecurityOfficer'].forEach((role) => {
+      item.set(role, Ember.get(userDocument, role) || false);
+    });
   }
 }
 
 function addInviteToDocument(invite, documents, schemaDocument) {
   let email = invite.get('email');
-  let document = findUserBy(documents, 'email', email) || {};
+  let userDocument = findUserBy(documents, 'email', email) || {};
   let item = schemaDocument.addItem();
 
   item.set('email', email);
   item.set('hasAptibleAccount', false);
 
-  if (document) {
-    item.set('isRobot', Ember.get(document, 'isRobot') || false);
+  if (userDocument) {
+    ['isRobot', 'isDeveloper', 'isSecurityOfficer'].forEach((role) => {
+      item.set(role, Ember.get(userDocument, role) || false);
+    });
   }
 }
 

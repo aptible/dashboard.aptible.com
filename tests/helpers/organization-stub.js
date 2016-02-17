@@ -38,7 +38,7 @@ Ember.Test.registerHelper('stubProfile', function(app, profileData) {
 });
 
 Ember.Test.registerHelper('clickContinueButton', function(app) {
-  let continueButton = findWithAssert('button.btn-lg:contains(Continue)').first();
+  let continueButton = findWithAssert('button.top-continue-button:contains(Continue)').first();
   continueButton.click();
 });
 
