@@ -228,3 +228,62 @@ header.resource-header {
   text-transform: uppercase;
   margin: 0 0 20px;
 }
+
+/* This will replace resource-header */
+header.new-header {
+  @extend %clearfix;
+  background: white;
+  padding: 26px 0;
+
+  .sub-title {
+    color: $color-light;
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: $weight-semibold;
+    margin: 0 0 10px;
+  }
+
+  .title {
+    font-size: 20px;
+    margin: 0;
+    font-weight: $weight-semibold;
+  }
+
+  .description {
+    color: $color-light;
+    margin: 24px 0 0;
+
+    p {
+      margin: 0 0 15px;
+    }
+
+    strong {
+      color: $color-primary;
+    }
+  }
+
+  .header-left {
+    float: left;
+    width: 50%;
+  }
+
+  .header-right {
+    float: right;
+  }
+
+  .header-actions {
+    list-style-type: none;
+    margin: 5px 0 0;
+    padding: 0;
+
+    li {
+      display: inline-block;
+      margin-left: 10px;
+    }
+  }
+}
+
+.main-body {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
