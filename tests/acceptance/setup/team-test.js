@@ -641,8 +641,54 @@ test('Developer and Security Officer groups are validated to include at least on
   });
 });
 
-skip('Clicking re-invite button sends new invitation');
-skip('Clicking X button deletes pending invitation');
+test('Clicking re-invite button sends new invitation', function(assert) {
+  expect(2);
+  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
+  stubProfile({ currentStep: 'team' });
+  stubRequests();
+  stubRequest('post', '/resets', function(request) {
+    assert.ok(true, 'posts a reset for the invitation');
+    return this.success();
+  });
+
+  signInAndVisit(teamUrl);
+
+  andThen(() => {
+    let refreshBtn = findWithAssert('.two-actions:first .fa-refresh');
+    refreshBtn.click();
+  });
+
+  andThen(() => {
+    assert.ok(find('.alert-success'));
+  });
+});
+
+
+test('Clicking X button deletes pending invitation', function(assert) {
+  expect(4);
+  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
+  stubProfile({ currentStep: 'team' });
+  stubRequests();
+  stubRequest('delete', `/invitations/${invitations[0].id}`, function(request) {
+    assert.ok(true, 'deletes the invitation');
+    return this.success();
+  });
+
+  signInAndVisit(teamUrl);
+
+  andThen(() => {
+    // Clobber window confirm to accept delete.
+    window.confirm = () => { return true; };
+    let refreshBtn = findWithAssert('.two-actions:first .danger');
+    refreshBtn.click();
+  });
+
+  andThen(() => {
+    assert.ok(find('.alert-success'));
+    assert.equal(find('.two-actions').length, 1, 'removes the deleted row');
+  });
+});
+
 
 // Not sure if we ever want to do this here?
 skip('Clicking X button removes user from organization');

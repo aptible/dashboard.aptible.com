@@ -37,3 +37,13 @@
       document=document}}
   </div>
 </td>
+{{#if document.values.hasAptibleAccount}}
+  <td></td>
+{{else}}
+  <td class="row-actions two-actions">
+    <ul class="row-action-nav">
+      <li><a {{action (action this.attrs.resendInvitation document.values.email)}}><i class="fa fa-refresh"></i></a></li>
+      <li><a {{action (action this.attrs.removeInvitation document.values.email)}}><i class="fa fa-times danger"></i></a></li>
+    </ul>
+  </td>
+{{/if}}
