@@ -67,6 +67,7 @@
     min-width: 970px;
     -webkit-flex: 1;
     flex: 1;
+    background: #fafafa;
   }
 
   .layout-sidebar {
@@ -96,4 +97,5 @@
 
 .container {
   min-width: 970px;
+  max-width: 1200px;
 }
