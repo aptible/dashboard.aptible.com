@@ -36,7 +36,13 @@ export default Ember.Route.extend({
     let { schemaDocument, attestation } = this.currentModel;
 
     attestation.set('document', schemaDocument.dump({ excludeInvalid: true }));
-    attestation.save();
+    attestation.save().then(() => {
+        let message = 'Locations saved!';
+        Ember.get(this, 'flashMessages').success(message);
+      }, (e) => {
+        let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
+        Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
+      });
   },
 
   actions: {

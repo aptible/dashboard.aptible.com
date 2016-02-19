@@ -93,6 +93,42 @@ test('Clicking continue saves organization profile and moves to next step', func
   });
 });
 
+test('Save progress', function(assert) {
+  expect(4);
+
+  let expectedAboutOrganization = 'Secure, private cloud deployment for digital health.';
+  let expectedAboutProduct = 'Seamlessly integrate advanced compliance tools';
+
+  stubProfile({ currentStep: 'organization', id: orgId });
+  stubCurrentAttestations({ locations: [] });
+  stubRequests();
+  signInAndVisit(organizationUrl);
+
+  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
+    let json = this.json(request);
+    json.id = orgId;
+
+    assert.ok(true, 'puts to update organization profile');
+    assert.equal(json.id, orgId);
+    assert.equal(json.about_organization, expectedAboutOrganization);
+    assert.equal(json.about_product, expectedAboutProduct);
+
+    return request.ok(json);
+  });
+
+  andThen(() => {
+    fillIn('textarea[name="aboutOrganization"]', expectedAboutOrganization);
+    fillIn('textarea[name="aboutProduct"]', expectedAboutProduct);
+  });
+
+  andThen(clickSaveButton);
+});
+
+function clickSaveButton() {
+  let button = findWithAssert('button.spd-nav-save');
+  button.click();
+}
+
 function stubRequests() {
   stubValidOrganization();
   stubSchemasAPI();

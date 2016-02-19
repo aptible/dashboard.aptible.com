@@ -217,6 +217,33 @@ test('Clicking continue creates locations attestation', function(assert) {
   });
 });
 
+test('Saving progress', function(assert) {
+  expect(2);
+  stubCurrentAttestations({ workforce_locations: [] });
+  stubRequest('post', '/attestations', function(request) {
+    let json = this.json(request);
+
+    assert.ok(true, 'posts to /attestations');
+    assert.equal(json.handle, 'workforce_locations');
+
+    return this.success({ id: 1 });
+  });
+
+  stubProfile({ currentStep: 'locations'});
+  stubRequests();
+  signInAndVisit(locationsUrl);
+
+  andThen(openLocationDialog);
+  andThen(() => { fillInLocation(); });
+  andThen(clickAddButton);
+  andThen(clickSaveButton);
+});
+
+function clickSaveButton() {
+  let button = findWithAssert('button.spd-nav-save');
+  button.click();
+}
+
 function fillInLocation(locationData) {
   let defaultLocation = {
     description: 'HQ',

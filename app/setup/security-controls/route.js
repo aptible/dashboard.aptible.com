@@ -31,6 +31,23 @@ export default Ember.Route.extend(SPDRouteMixin, {
   },
 
   actions: {
+    onSave() {
+      let securityControlGroups = this.controller.get('model');
+      let promises = securityControlGroups.map((securityControlGroup) => {
+        let { document, attestation } = securityControlGroup;
+        attestation.set('document', document.dump({ excludeInvalid: true }));
+        return attestation.save();
+      });
+
+      Ember.RSVP.all(promises).then(() => {
+        let message = `All Security Control Groups saved.`;
+        Ember.get(this, 'flashMessages').success(message);
+      }, (e) => {
+        let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
+        Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
+      });
+    },
+
     onNext() {
       let profile = this.modelFor('setup');
       let securityControlGroups = this.controller.get('model');
@@ -44,9 +61,12 @@ export default Ember.Route.extend(SPDRouteMixin, {
         profile.next(this.get('stepName'));
         profile.set('hasCompletedSetup', true);
 
-        profile.save().then(() => {
+        return profile.save().then(() => {
           this.transitionTo(`setup.${profile.get('currentStep')}`);
         });
+      }).catch((e) => {
+        let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
+        Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
       });
     }
   }
