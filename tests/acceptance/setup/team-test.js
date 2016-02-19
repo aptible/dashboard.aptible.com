@@ -665,13 +665,13 @@ test('Clicking re-invite button sends new invitation', function(assert) {
 
 
 test('Clicking X button deletes pending invitation', function(assert) {
-  expect(4);
+  expect(3);
   stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
   stubProfile({ currentStep: 'team' });
   stubRequests();
   stubRequest('delete', `/invitations/${invitations[0].id}`, function(request) {
     assert.ok(true, 'deletes the invitation');
-    return this.success();
+    return this.noContent();
   });
 
   signInAndVisit(teamUrl);

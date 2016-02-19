@@ -68,8 +68,8 @@ export default Ember.Component.extend({
 
       let { validEmails, role } = this.getProperties('validEmails', 'role');
 
-      this.sendAction('inviteTeam', validEmails, role);
       this.sendAction('dismiss');
+      this.sendAction('inviteTeam', validEmails, role);
     },
 
     outsideClick: Ember.K
