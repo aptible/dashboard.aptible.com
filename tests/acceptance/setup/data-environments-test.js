@@ -201,6 +201,56 @@ test('Should load existing selections when attestation already exists', function
   });
 });
 
+test('Save progress', function(assert) {
+  expect(6);
+  let existingSelection = {
+    amazonS3: false,
+    aptible: true,
+    gmail: false,
+  };
+
+  let expectedDataEnvironmentPayload = {
+    amazonS3: false,
+    aptible: true,
+    gmail: true,
+  };
+
+  stubCurrentAttestations({ selected_data_environments: existingSelection });
+  stubProfile({ currentStep: 'data-environments' });
+  stubRequests();
+  signInAndVisit(dataEnvironmentsUrl);
+
+  stubRequest('post', '/attestations', function(request) {
+    let json = this.json(request);
+
+    assert.ok(true, 'posts to /attestations');
+    assert.equal(json.handle, attestationHandle, 'includes attestation handle');
+    assert.deepEqual(json.document, expectedDataEnvironmentPayload, 'includes selected data environments as a document payload');
+
+    return this.success({ id: 1 });
+  });
+
+  andThen(() => {
+    // For each DE verify toggle state matches existing attestation
+    for(var deName in existingSelection) {
+      assert.equal(find(`input[name="${deName}"]`).is(':checked'), existingSelection[deName]);
+    }
+  });
+
+  andThen(() => {
+    // Toggle Gmail
+    toggleDataEnvironment('Gmail');
+  });
+
+  // Save and inspect attestation for updated values
+  andThen(clickSaveButton);
+});
+
+function clickSaveButton() {
+  let button = findWithAssert('button.spd-nav-save');
+  button.click();
+}
+
 function toggleDataEnvironment(environment) {
   let toggle = findWithAssert(`tr:contains(${environment}) td:last input[type="checkbox"]`);
   toggle.click();

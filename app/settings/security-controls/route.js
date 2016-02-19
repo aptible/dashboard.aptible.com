@@ -39,7 +39,7 @@ export default Ember.Route.extend({
       });
 
       Ember.RSVP.all(promises).then(() => {
-        let message = 'Security Control Groups saved.'
+        let message = 'Security Control Groups saved.';
         Ember.get(this, 'flashMessages').success(message);
       }, (e) => {
         let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');

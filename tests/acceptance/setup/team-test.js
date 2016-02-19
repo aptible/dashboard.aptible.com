@@ -641,11 +641,150 @@ test('Developer and Security Officer groups are validated to include at least on
   });
 });
 
+test('Saving progress', function(assert) {
+  expect(15);
+  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
+  let emailAddresses = 'skylar+1@aptible.com;skylar+2@aptible.com\nskylar+3@aptible.com skylar+4@aptible.com';
+  let roleId = basicRoleId;
+  let id = 1;
+
+  stubRequest('post', `/roles/${roleId}/invitations`, function(request) {
+    let json = this.json(request);
+    json.id = id++;
+
+    assert.ok(true, 'creates invitation');
+    assert.equal(json.role_id, roleId);
+    assert.equal(json.organization_id, orgId);
+
+    return this.success(json);
+  });
+
+  let expectedAttestation = {
+    handle: 'workforce_roles',
+    organization_url: `/organizations/${orgId}`,
+    organization: `/organizations/${orgId}`,
+    id: '0',
+    schema_id: 'workforce_roles/1',
+    document: [
+      {
+        email: 'basicuser@asdf.com',
+        name: 'Basic User',
+        hasAptibleAccount: true,
+        isDeveloper: true,
+        isRobot: false,
+        isSecurityOfficer: true,
+        href: `/users/${userId}`,
+      },
+      {
+        email: 'developeruser@asdf.com',
+        name: 'Developer User',
+        hasAptibleAccount: true,
+        isDeveloper: false,
+        isRobot: false,
+        isSecurityOfficer: false,
+        href: `/users/${developerId}`,
+      },
+      {
+        email: 'securityofficeruser@asdf.com',
+        name: 'Security Officer User',
+        hasAptibleAccount: true,
+        isDeveloper: false,
+        isRobot: false,
+        isSecurityOfficer: false,
+        href: `/users/${securityOfficerId}`,
+      },
+      {
+        email: "newuser1@aptible.com",
+        hasAptibleAccount: false,
+        isDeveloper: false,
+        isRobot: false,
+        isSecurityOfficer: false
+      },
+      {
+        email: "newuser2@aptible.com",
+        hasAptibleAccount: false,
+        isDeveloper: false,
+        isRobot: false,
+        isSecurityOfficer: false
+      },
+      {
+        email: 'skylar+1@aptible.com',
+        hasAptibleAccount: false,
+        isDeveloper: false,
+        isRobot: false,
+        isSecurityOfficer: false
+      },
+      {
+        email: 'skylar+2@aptible.com',
+        hasAptibleAccount: false,
+        isDeveloper: false,
+        isRobot: false,
+        isSecurityOfficer: false
+      },
+      {
+        email: 'skylar+3@aptible.com',
+        hasAptibleAccount: false,
+        isDeveloper: false,
+        isRobot: false,
+        isSecurityOfficer: false
+      },
+      {
+        email: 'skylar+4@aptible.com',
+        hasAptibleAccount: false,
+        isDeveloper: false,
+        isRobot: true,
+        isSecurityOfficer: false
+      }
+    ]
+  };
+
+  stubProfile({ currentStep: 'team' });
+  stubRequests();
+  signInAndVisit(teamUrl);
+
+  andThen(openInviteModal);
+  andThen(() => {
+    selectRole(roleId);
+    fillIn('textarea.email-addresses', emailAddresses);
+  });
+
+  andThen(() => {
+    let submitButton = findWithAssert('button.send-invites');
+    submitButton.click();
+  });
+
+  andThen(() => {
+    assert.equal(find('.lf-dialog').length, 0, 'dialog is closed');
+  });
+
+  stubRequest('post', '/attestations', function(request) {
+    let json = this.json(request);
+
+    assert.ok(true, 'posts to create attestation');
+    assert.deepEqual(json, expectedAttestation, 'correct attestation payload');
+
+    return this.success({ id: 1 });
+  });
+
+  andThen(() => {
+    findWithAssert('.toggle-developer:first label').click();
+    findWithAssert('.toggle-security-officer:first label').click();
+    findWithAssert('.toggle-robot:last label').click();
+  });
+
+  andThen(clickSaveButton);
+});
+
 skip('Clicking re-invite button sends new invitation');
 skip('Clicking X button deletes pending invitation');
 
 // Not sure if we ever want to do this here?
 skip('Clicking X button removes user from organization');
+
+function clickSaveButton() {
+  let button = findWithAssert('button.spd-nav-save');
+  button.click();
+}
 
 function openInviteModal() {
   let button = findWithAssert('button:contains(Invite more users)');
