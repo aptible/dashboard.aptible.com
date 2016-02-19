@@ -152,7 +152,7 @@ test('Clicking continue saves attestation for each global, provider, and data en
 });
 
 test('Previous attestations are used to load existing security control answers', function(assert) {
-  //expect(22);
+  expect(38);
   let attestationId = 0;
   let expectedAttestationHandles = ['aptible_security_controls',
                                     'aws_security_controls',
@@ -233,8 +233,79 @@ test('Previous attestations are used to load existing security control answers',
   });
 });
 
+test('Saving progress', function(assert) {
+  expect(34);
+  let attestationId = 0;
+  let expectedAttestationHandles = ['aptible_security_controls',
+                                    'aws_security_controls',
+                                    'google_security_controls',
+                                    'amazon_s3_security_controls',
+                                    'gmail_security_controls',
+                                    'security_procedures_security_controls',
+                                    'workforce_security_controls',
+                                    'workstation_security_controls',
+                                    'application_security_controls'];
+
+  stubCurrentAttestations({
+    selected_data_environments: selectedDataEnvironments,
+    aptible_security_controls: { secure0: true, secure1: true, secure2: false },
+    aws_security_controls: { mfa: true },
+    google_security_controls: { security: 'Wow' },
+    amazon_s3_security_controls: { encryption: 'Encrypt no secures' },
+    gmail_security_controls: { linkSharingSettings: false },
+    security_procedures_security_controls: { secureProcedure0: false },
+    workforce_security_controls: { robots: true },
+    workstation_security_controls: { keyboardLocks: 'Deadbolt' },
+    application_security_controls: { hiddenTokens: false }
+  });
+
+  let expectedAttestationValues = {
+    selected_data_environments: selectedDataEnvironments,
+    aptible_security_controls: { secure0: true, secure1: true, secure2: false },
+    aws_security_controls: { mfa: false },
+    google_security_controls: { security: 'Wow' },
+    amazon_s3_security_controls: { encryption: 'Encrypt some securities' },
+    gmail_security_controls: { linkSharingSettings: false },
+    security_procedures_security_controls: { secureProcedure0: false },
+    workforce_security_controls: { robots: true },
+    workstation_security_controls: { keyboardLocks: 'Deadbolt' },
+    application_security_controls: { hiddenTokens: true }
+  };
+
+  stubProfile({ currentStep: 'security-controls' });
+  stubRequests();
+  signInAndVisit(securityControlsUrl);
+
+  // Expect attestions to be posted to for each global, provider, and data environment
+  stubRequest('post', '/attestations', function(request) {
+    let json = this.json(request);
+
+    assert.ok(true, 'posts to /attestations');
+    assert.ok(expectedAttestationHandles.indexOf(json.handle) >= 0, `${json.handle} is a valid attestation handle`);
+    assert.deepEqual(json.document, expectedAttestationValues[json.handle]);
+
+    return this.success({ id: attestationId++ });
+  });
+
+  andThen(() => {
+    // Verify assertion data is used to seed initial UI state
+    assertTrueSecurityControls(['mfa', 'secure0', 'secure1', 'robots'], assert);
+    assertEnumSecurityControls({ security: 'Wow', encryption: 'Encrypt no secures', keyboardLocks: 'Deadbolt' }, assert);
+
+    toggleSecurityControl('mfa');
+    toggleSecurityControl('hiddenTokens');
+    setEnumSecurityControl('encryption', 'Encrypt some securities');
+  });
+
+  andThen(clickSaveButton);
+});
+
 skip('With no data environments configured it redirects back to data environment step');
 
+function clickSaveButton() {
+  let button = findWithAssert('button.spd-nav-save');
+  button.click();
+}
 
 function assertTrueSecurityControls(controls, assert) {
   controls.forEach((control) => {

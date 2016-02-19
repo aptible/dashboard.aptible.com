@@ -20,11 +20,27 @@ export default Ember.Mixin.create({
   },
 
   actions: {
+    onSave() {
+      let { schemaDocument, attestation } = this.currentModel;
+      attestation.set('document', schemaDocument.dump({ excludeInvalid: true }));
+
+      attestation.save().then(() => {
+        let message = 'Progress saved.';
+        Ember.get(this, 'flashMessages').success(message);
+      }, (e) => {
+        let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
+        Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
+      });
+    },
+
     onPrevious() {
       let profile = this.modelFor('setup');
 
       profile.previous(this.get('stepName'));
-      profile.save();
+      profile.save().catch((e) => {
+        let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
+        Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
+      });
 
       this.transitionTo(`setup.${profile.get('currentStep')}`);
     },
@@ -33,7 +49,10 @@ export default Ember.Mixin.create({
       let profile = this.modelFor('setup');
 
       profile.next(this.get('stepName'));
-      profile.save();
+      profile.save().catch((e) => {
+        let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
+        Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
+      });
 
       this.transitionTo(`setup.${profile.get('currentStep')}`);
     }

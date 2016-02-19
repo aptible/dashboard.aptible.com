@@ -107,7 +107,13 @@ export default Ember.Route.extend({
       }
 
       attestation.set('document', schemaDocument);
-      attestation.save();
+      attestation.save().then(() => {
+        let message = 'Workforce saved.';
+        Ember.get(this, 'flashMessages').success(message);
+      }, (e) => {
+        let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
+        Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
+      });
     },
 
     showInviteModal() {

@@ -90,6 +90,20 @@ export default Ember.Route.extend(SPDRouteMixin, {
   },
 
   actions: {
+    onSave() {
+      let { attestation } = this.currentModel;
+      let schemaDocument = this.controller.get('schemaDocument');
+      attestation.set('document', schemaDocument.dump());
+
+      attestation.save().then(() => {
+        let message = 'Progress saved.';
+        Ember.get(this, 'flashMessages').success(message);
+      }, (e) => {
+        let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
+        Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
+      });
+    },
+
     onNext() {
       let { attestation } = this.currentModel;
       let profile = this.modelFor('setup');
@@ -104,9 +118,12 @@ export default Ember.Route.extend(SPDRouteMixin, {
       attestation.set('document', schemaDocument);
       attestation.save().then(() => {
         profile.next(this.get('stepName'));
-        profile.save().then(() => {
+        return profile.save().then(() => {
           this.transitionTo(`setup.${profile.get('currentStep')}`);
         });
+      }).catch((e) => {
+        let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
+        Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
       });
     },
 

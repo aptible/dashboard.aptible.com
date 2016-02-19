@@ -35,7 +35,13 @@ export default Ember.Route.extend({
       let selectedDataEnvironments = schemaDocument.dump({ excludeInvalid: true });
 
       attestation.set('document', selectedDataEnvironments);
-      attestation.save();
+      attestation.save().then(() => {
+        let message = 'Data Environments saved!';
+        Ember.get(this, 'flashMessages').success(message);
+      }, (e) => {
+        let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
+        Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
+      });
     }
   }
 });

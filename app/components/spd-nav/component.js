@@ -78,6 +78,10 @@ export default Ember.Component.extend({
   }),
 
   actions: {
+    save() {
+      this.sendAction('onSave');
+    },
+
     next(nextPath) {
       this.sendAction('onNext', nextPath);
     },
