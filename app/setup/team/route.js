@@ -38,6 +38,10 @@ export default Ember.Route.extend(SPDRouteMixin, {
     controller.set('invitations', invitations);
     controller.set('schemaDocument', schemaDocument);
     controller.set('properties', schema.itemProperties);
+    controller.set('actions', {
+      resendInvitation: this.resendInvitation,
+      removeInvitation: this.removeInvitation
+    });
   },
 
   validateAttestation(schemaDocument) {
@@ -47,6 +51,42 @@ export default Ember.Route.extend(SPDRouteMixin, {
     this.controller.set('errors', errors);
 
     return errors;
+  },
+
+  resendInvitation(email) {
+    let reset = this.store.createRecord('reset');
+    let invitation = this.invitations.findBy('email', email);
+    let message = `Invitation resent to ${email}`;
+    let errorMessage = 'An error occurred. Please try resending the inviation again.';
+
+    reset.setProperties({
+      type: 'invitation',
+      invitationId: invitation.get('id')
+    });
+    reset.save().then(() => {
+      Ember.get(this, 'flashMessages').success(message);
+    }).catch((e) => {
+      errorMessage = Ember.get(e, 'responseJSON.message') || errorMessage;
+      Ember.get(this, 'flashMessages').danger(errorMessage);
+    });
+  },
+
+  removeInvitation(email) {
+    let invitation = this.invitations.findBy('email', email);
+    let message = `The invitation to ${invitation.get('email')} has been removed.`;
+    let errorMessage = 'An error occurred. Please retry removing the inviation.';
+
+    // Confirm...
+    let confirmMsg = `\nAre you sure you want to delete the invitation to ${email}?\n`;
+    if (!confirm(confirmMsg)) { return false; }
+
+    invitation.destroyRecord().then(() => {
+      this.send('onRemoveInvitation', invitation);
+      Ember.get(this, 'flashMessages').success(message);
+    }).catch((e) => {
+      errorMessage = Ember.get(e, 'responseJSON.message') || errorMessage;
+      Ember.get(this, 'flashMessages').danger(errorMessage);
+    });
   },
 
   actions: {
@@ -106,7 +146,17 @@ export default Ember.Route.extend(SPDRouteMixin, {
                                                 existingDocument,
                                                 this.currentModel.schema);
       this.controller.set('schemaDocument', newSchemaDocument);
-      this.controller.set('showInviteMOdal', false);
+      this.controller.set('showInviteModal', false);
+    },
+
+    onRemoveInvitation() {
+      let organization = this.modelFor('organization');
+      let existingDocument = this.controller.get('schemaDocument').dump();
+      let newSchemaDocument = buildTeamDocument(organization.get('users'),
+                                                organization.get('invitations'),
+                                                existingDocument,
+                                                this.currentModel.schema);
+      this.controller.set('schemaDocument', newSchemaDocument);
     }
   }
 });
