@@ -33,9 +33,12 @@ export default Ember.Route.extend(SPDRouteMixin, {
       attestation.set('document', selectedDataEnvironments);
       attestation.save().then(() => {
         profile.next(this.get('stepName'));
-        profile.save().then(() => {
+        return profile.save().then(() => {
           this.transitionTo(`setup.${profile.get('currentStep')}`);
         });
+      }).catch((e) => {
+        let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
+        Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
       });
     }
   }

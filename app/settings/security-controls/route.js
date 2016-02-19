@@ -32,10 +32,18 @@ export default Ember.Route.extend({
   actions: {
     save() {
       let securityControlGroups = this.controller.get('model');
-      securityControlGroups.forEach((securityControlGroup) => {
+      let promises = securityControlGroups.map((securityControlGroup) => {
         let { document, attestation } = securityControlGroup;
         attestation.set('document', document.dump({ excludeInvalid: true }));
         attestation.save();
+      });
+
+      Ember.RSVP.all(promises).then(() => {
+        let message = 'Security Control Groups saved.'
+        Ember.get(this, 'flashMessages').success(message);
+      }, (e) => {
+        let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
+        Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
       });
     }
   }
