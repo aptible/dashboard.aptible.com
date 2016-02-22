@@ -7,7 +7,8 @@ module.exports = function(defaults) {
     emberCliFontAwesome: { includeFontAwesomeAssets: false },
     vendorFiles: {
       'handlebars.js': null
-    }
+    },
+    fingerprint: { exclude: ['assets/images/data-environments'] }
   };
 
   if (EmberApp.env() === 'staging') {
