@@ -1,0 +1,33 @@
+<div class="row">
+<div class="col-xs-9">
+  <div class="panel panel-default">
+  {{#if model.initializeFrom}}
+    <div class="panel-heading">
+      <h3>Cluster membership</h3>
+    </div>
+    <div class="panel-body">
+      <p>
+        {{model.handle}} is a member of
+        {{#link-to 'database' model.initializeFrom}}{{ model.initializeFrom.handle }}{{/link-to}}'s
+        cluster.
+      </p>
+    </div>
+  {{else}}
+    {{partial 'database/replicate'}}
+  {{/if}}
+  </div>
+
+  {{#if model.dependents}}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>Cluster members for {{model.handle}}</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+        {{partial 'database/dependents'}}
+        </p>
+      </div>
+    </div>
+  {{/if}}
+</div>
+</div>

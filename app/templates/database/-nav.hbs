@@ -9,6 +9,12 @@
     {{/activating-item}}
   {{/if}}
 
+  {{#if model.supportsClustering}}
+    {{#activating-item currentWhen="database.cluster" tagName="li"}}
+      {{link-to "Cluster" "database.cluster"}}
+    {{/activating-item}}
+  {{/if}}
+
   {{#unless model.hasBeenDeprovisioned}}
     {{#activating-item currentWhen="database.deprovision" tagName="li"}}
       {{link-to "Deprovision" "database.deprovision"}}

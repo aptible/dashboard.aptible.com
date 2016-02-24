@@ -40,6 +40,7 @@ Router.map(function() {
     }, function() {
       this.route("activity");
       this.route("replicate");
+      this.route("cluster");
       this.route("deprovision");
     });
 

@@ -1,18 +1,7 @@
 <div class="row">
 <div class="col-xs-9">
   <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3>Submit a support request</h3>
-    </div>
-    <div class="panel-body">
-      <p>
-      Replication is currently in beta.
-      To request a new replica for this database, <a href="{{supportPortal}}">please contact support</a>.
-      </p>
-      <p>
-      Make sure you include the database handle in your request.
-      </p>
-    </div>
+    {{partial 'database/replicate'}}
   </div>
 
   {{#if model.dependents}}
@@ -22,7 +11,7 @@
       </div>
       <div class="panel-body">
         <p>
-        {{partial 'database/replicas'}}
+        {{partial 'database/dependents'}}
         </p>
       </div>
     </div>
