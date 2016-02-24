@@ -15,7 +15,8 @@ module.exports = function(environment) {
     aptibleHosts: {
       compliance: detectEndpointUri('compliance', environment) || 'http://localhost:3001',
       dashboard: detectEndpointUri('dashboard', environment) || 'http://localhost:4200',
-      support: 'https://support.aptible.com'
+      support: 'https://support.aptible.com',
+      contact: 'http://contact.aptible.com'
     },
 
     authTokenKey: '_aptible_authToken',
@@ -26,8 +27,7 @@ module.exports = function(environment) {
     segmentioKey: 'Jp74HTqG03zhS4cAJK4pueo2FL1Z6bM3',
 
     externalUrls: {
-      gettingStartedDocs: 'https://support.aptible.com/quickstart',
-      supportPortal: 'https://aptible.zendesk.com/hc/en-us/requests/new'
+      gettingStartedDocs: 'https://support.aptible.com/quickstart'
     },
 
     flashMessageDefaults: {
