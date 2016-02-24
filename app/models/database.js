@@ -24,7 +24,9 @@ export default DS.Model.extend(ProvisionableMixin, {
     return (type === 'redis' ||
             type === 'postgresql' ||
             type === 'mysql');
-  })
+  }),
+
+  supportsClustering: Ember.computed.equal('type', 'mongodb')
 });
 
 export function provisionDatabases(user, store){
