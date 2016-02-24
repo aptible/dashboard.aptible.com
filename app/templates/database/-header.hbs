@@ -7,7 +7,9 @@
         {{model.handle}}
         {{#if model.initializeFrom}}
           <span class="resource-affix">
-            replicates {{#link-to 'database' model.initializeFrom}}{{ model.initializeFrom.handle }}{{/link-to}}
+            {{#if model.supportsReplication}}replicates{{/if}}
+            {{#if model.supportsClustering}}clustered with{{/if}}
+            {{#link-to 'database' model.initializeFrom}}{{ model.initializeFrom.handle }}{{/link-to}}
           </span>
         {{/if}}
       </h1>
