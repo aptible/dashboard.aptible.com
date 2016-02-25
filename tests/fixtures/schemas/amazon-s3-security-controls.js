@@ -1,6 +1,6 @@
 export default {
   "$schema":"http://json-schema.org/draft-04/schema#",
-  "id": "https://gridiron.aptible.com/schemas/amazon_s3_security_controls/0.0.1",
+  "id": "amazon_s3_security_controls/1",
   "type":"object",
   "title":"Amazon Simple Storage Service (Amazon S3)",
   "description": "Amazon Simple Storage Service security controls",

@@ -1,6 +1,6 @@
 export default {
   "$schema":"http://json-schema.org/draft-04/schema#",
-  "id": "https://gridiron.aptible.com/schemas/application_security_controls/0.0.1",
+  "id": "application_security_controls/1",
   "type":"object",
   "title":"Global Application Security Controls",
   "description": "Global application security controls",

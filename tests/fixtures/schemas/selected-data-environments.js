@@ -1,6 +1,6 @@
 export default {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "https://gridiron.aptible.com/schemas/selected_data_environments/0.0.1",
+  "id": "selected_data_environments/1",
   "type":"object",
   "title":"Data Environments",
   "description": "Data environments you use to handle PHI",

@@ -1,6 +1,6 @@
 export default {
   "$schema":"http://json-schema.org/draft-04/schema#",
-  "id": "https://gridiron.aptible.com/schemas/aptible_security_controls/0.0.1",
+  "id": "aptible_security_controls/1",
   "type":"object",
   "title":"Aptible",
   "description": "Aptible security controls",

@@ -9,7 +9,7 @@
     </thead>
 
     <tbody>
-      {{#each-property properties=dataEnvironmentSchema.properties as |key property type|}}
+      {{#each-property properties=dataEnvironmentSchema.properties document=dataEnvironmentDocument as |key property type|}}
         {{data-environment
           handle=key
           property=property
@@ -18,3 +18,4 @@
     </tbody>
   </table>
 </div>
+

@@ -1,6 +1,6 @@
 export default {
   "$schema":"http://json-schema.org/draft-04/schema#",
-  "id":"https://gridiron.aptible.com/schemas/workstation_security_controls/0.0.1",
+  "id":"workstation_security_controls/1",
   "type":"object",
   "title":"Workstation Security Controls",
   "description": "Workstation security controls",

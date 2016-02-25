@@ -1,6 +1,6 @@
 export default {
   "$schema":"http://json-schema.org/draft-04/schema#",
-  "id": "https://gridiron.aptible.com/schemas/workforce_locations/0.0.1",
+  "id": "workforce_locations/1",
   "type":"array",
   "title":"Workforce Locations",
   "description": "Workforce locations",

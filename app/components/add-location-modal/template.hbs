@@ -11,7 +11,7 @@
           </div>
         {{/if}}
 
-        {{#each-property properties=locationProperties as |key property type|}}
+        {{#each-property properties=locationProperties document=newLocation as |key property type|}}
           <div class="form-group">
             <label>{{property.title}}</label>
             {{component (concat 'schema-field-' type) key=key property=property document=newLocation}}
