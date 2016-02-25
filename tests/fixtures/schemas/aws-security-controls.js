@@ -1,6 +1,6 @@
 export default {
   "$schema":"http://json-schema.org/draft-04/schema#",
-  "id": "https://gridiron.aptible.com/schemas/aws_security_controls/0.0.1",
+  "id": "aws_security_controls/1",
   "type":"object",
   "title":"Amazon Web Services",
   "description":"Amazon Web Services security controls",

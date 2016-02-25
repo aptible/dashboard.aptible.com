@@ -88,7 +88,13 @@ export default Ember.Component.extend({
     // PATCH:
     // Load entire document as is.
 
-    securityControlGroup.document.load(attestation.get('document'));
+    // For now, we'll just start with a blank attestation if the versions
+    // don't match.
+    if (schema.id === attestation.get('schemaId')) {
+      securityControlGroup.document.load(attestation.get('document'));
+    }
+
+    attestation.set('schemaId', schema.id);
 
     this.setProperties({ attestation, progressPercent: '100', loading: false,
                          document: securityControlGroup.document });

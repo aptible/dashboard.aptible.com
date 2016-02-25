@@ -1,6 +1,6 @@
 export default {
   "$schema":"http://json-schema.org/draft-04/schema#",
-  "id": "https://gridiron.aptible.com/schemas/workforce_roles/1.0.0",
+  "id": "workforce_roles/1",
   "type":"array",
   "title":"Workforce",
   "describe": "Organizational workforce and assigned roles.",
