@@ -20,7 +20,14 @@ let adminUserUrl = `/users/${adminUserId}`;
 
 let adminUserData = {
   id: adminUserId,
-  name: adminUserName
+  name: adminUserName,
+  superuser: true
+};
+
+let targetUserData = {
+  id: targetUserId,
+  email: targetUserEmail,
+  name: targetUserName,
 };
 
 let adminTokenData = {
@@ -37,18 +44,11 @@ module('Acceptance: Impersonation', {
     stubOrganizations();
 
     stubRequest('get', adminUserUrl, function (request) {
-      request.ok({
-        id: adminUserId,
-        name: adminUserName,
-      });
+      request.ok(adminUserData);
     });
 
     stubRequest('get', targetUserUrl, function (request) {
-      request.ok({
-        id: targetUserId,
-        name: targetUserName,
-        email: targetUserEmail
-      });
+      request.ok(targetUserData);
     });
   },
   afterEach: function() {
@@ -122,5 +122,20 @@ test('Impersonation fails', function(assert) {
     findWithAssert("div:contains('Error: Invalid grant')");
     assert.equal(find(`header.navbar:contains('${targetUserName}')`).length, 0, 'user is not in navbar');
     assert.equal(currentPath(), 'dashboard.settings.impersonate', 'remained in impersonation settings');
+  });
+});
+
+test('Impersonate link is shown to superusers', function() {
+  signInAndVisit('/settings', adminUserData, {}, adminTokenData);
+
+  andThen(() => {
+    expectLink(impersonateUrl);
+  });
+});
+
+test('Impersonate link is not shown to regular users', function() {
+  signInAndVisit('/settings', targetUserData);
+  andThen(() => {
+    expectNoLink(impersonateUrl);
   });
 });
