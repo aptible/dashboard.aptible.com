@@ -17,7 +17,8 @@ function pushTokenToStore(tokenPayload, store) {
     accessToken: tokenPayload.access_token,
     rawPayload: JSON.stringify(tokenPayload),
     links: {
-      user: tokenPayload._links.user.href
+      user: tokenPayload._links.user.href,
+      actor: tokenPayload._links.actor && tokenPayload._links.actor.href
     }
   });
 }
@@ -33,7 +34,8 @@ export default Ember.Object.extend({
     }).then((token) => {
       return Ember.RSVP.hash({
         token,
-        currentUser: token.get('user')
+        currentUser: token.get('user'),
+        currentActor: token.get('actor')
       });
     }).then((session) => {
       // Load role eagerly

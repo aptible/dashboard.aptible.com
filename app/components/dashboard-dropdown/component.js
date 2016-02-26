@@ -4,6 +4,15 @@ export default Ember.Component.extend({
   className: ['dashboard-dropdown'],
   isOpen: false,
 
+  title: Ember.computed('user.name', 'actor.name',  function () {
+    let userName = this.get('user.name'),
+        actorName = this.get('actor.name');
+    if (actorName) {
+      return `${actorName} (as ${userName})`;
+    }
+    return userName;
+  }),
+
   init: function(){
     this._super();
     this.eventName = 'click.'+Ember.guidFor(this);

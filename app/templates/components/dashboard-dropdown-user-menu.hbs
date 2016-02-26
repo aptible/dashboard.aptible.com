@@ -20,6 +20,14 @@
   {{/link-to-aptible}}
 {{/dashboard-dropdown-item}}
 
+{{#if user.superuser}}
+{{#dashboard-dropdown-item}}
+  {{#link-to-aptible path='settings/impersonate' app='dashboard'}}
+    Impersonate
+  {{/link-to-aptible}}
+{{/dashboard-dropdown-item}}
+{{/if}}
+
 {{dashboard-dropdown-divider}}
 
 <div>
