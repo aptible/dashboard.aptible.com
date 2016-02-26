@@ -10,7 +10,8 @@ export function buildCredentials(email, password) {
     username: email,
     password,
     grant_type: 'password',
-    scope: 'manage'
+    scope: 'manage',
+    expires_in: 12 * 60 * 60  // 12 hours
   };
 }
 
