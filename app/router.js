@@ -107,6 +107,7 @@ Router.map(function() {
       this.route('admin');
       this.route('profile');
       this.route('ssh');
+      this.route('impersonate');
     });
   });
 
