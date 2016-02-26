@@ -15,6 +15,7 @@ function pushTokenToStore(tokenPayload, store) {
   return store.push('token', {
     id: tokenPayload.id,
     accessToken: tokenPayload.access_token,
+    rawPayload: JSON.stringify(tokenPayload),
     links: {
       user: tokenPayload._links.user.href
     }
@@ -74,15 +75,22 @@ export default Ember.Object.extend({
       `A token must be passed: session.close('aptible', /*token*/);`,
       !!token
     );
-    return ajax(config.authBaseUri+`/tokens/${token.get('id')}`, {
-      type: 'DELETE',
-      headers: {
-        'Authorization': 'Bearer ' + getAccessToken()
-      },
-      xhrFields: { withCredentials: true }
-    }).then(() => {
-      clearSession();
-    });
+
+    let promise;
+
+    if (!!token.noDelete) {
+      promise = new Ember.RSVP.Promise((resolve, _) => resolve());
+    } else {
+      promise = ajax(config.authBaseUri+`/tokens/${token.get('id')}`, {
+        type: 'DELETE',
+        headers: {
+          'Authorization': 'Bearer ' + getAccessToken()
+        },
+        xhrFields: { withCredentials: true }
+      });
+    }
+
+    return promise.then(() => { clearSession(); });
   },
 
   identifyToAnalytics(user) {

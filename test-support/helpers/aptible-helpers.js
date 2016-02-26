@@ -4,7 +4,7 @@ import MockLocation from './mock-location';
 import MockTitle from './mock-title';
 import { stubValidSession } from './torii'; // provided by Torii
 
-Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData){
+Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData, tokenData){
   userData = userData || {};
   let defaultUserData = {
     id: 'user1',
@@ -32,6 +32,22 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData){
   userData = Ember.$.extend(true, defaultUserData, userData);
   roleData = Ember.$.extend(true, defaultRoleData, roleData);
 
+  tokenData = tokenData || {};
+  let defaultTokenData = {
+    id: "stubbed-token-id",
+    access_token: 'my-token',
+    token_type: 'bearer',
+    expires_in: 2,
+    scope: 'manage',
+    type: 'token',
+    _links: {
+      user: {
+        href: userData.links.self
+      }
+    }
+  }
+  tokenData = Ember.$.extend(true, defaultTokenData, tokenData);
+
   stubRequest('get', `/roles/${roleData.id}`, function(request){
     return this.success(roleData);
   });
@@ -48,14 +64,21 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData){
     let store = app.__container__.lookup('store:application');
     return store.push('user', userData);
   });
-  stubValidSession(app, {
-    currentUser,
-    token: Ember.Object.create({id: 'stubbed-token-id'})
+
+  let token = Ember.run(function() {
+    let store = app.__container__.lookup('store:application');
+    return store.push('token', {
+      id: tokenData.id,
+      accessToken: tokenData.access_token,
+      rawPayload: JSON.stringify(tokenData),
+      links: { user: tokenData._links.user.href }
+    });
   });
+  stubValidSession(app, {currentUser, token});
 });
 
-Ember.Test.registerAsyncHelper('signInAndVisit', function(app, url, userData){
-  signIn(userData);
+Ember.Test.registerAsyncHelper('signInAndVisit', function(app, url, userData, roleData, tokenData){
+  signIn(userData, roleData, tokenData);
   visit(url);
 });
 
