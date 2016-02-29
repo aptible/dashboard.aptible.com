@@ -6,14 +6,15 @@ import { stubRequest } from '../helpers/fake-server';
 let App;
 let impersonateUrl = '/settings/impersonate';
 
-let targetUserId = 'user2';
-let targetUserEmail = 'user@email.com';
+let targetUserId = 'test-user-id';
+let targetUserEmail = 'testUser@email.com';
 let targetUserName = 'Test User';
 let targetUserUrl = `/users/${targetUserId}`;
 
-let adminUserTokenId = 'stubbed-token-id';
-let adminUserToken = 'my-token';
-let adminUserId = 'user1';
+let adminTokenId = 'admin-token-id';
+let adminTokenValue = 'admin-token-value';
+
+let adminUserId = 'admin-user-id';
 let adminUserName = 'Admin User';
 let adminUserUrl = `/users/${adminUserId}`;
 
@@ -23,8 +24,8 @@ let adminUserData = {
 };
 
 let adminTokenData = {
-  id: adminUserTokenId,
-  access_token: adminUserToken
+  id: adminTokenId,
+  access_token: adminTokenValue
 };
 
 
@@ -65,7 +66,7 @@ test('Impersonation succeeds', function(assert) {
   stubRequest('post', '/tokens', function(request) {
     let params = this.json(request);
     assert.equal(params.grant_type, 'urn:ietf:params:oauth:grant-type:token-exchange');
-    assert.equal(params.actor_token, adminUserToken);
+    assert.equal(params.actor_token, adminTokenValue);
     assert.equal(params.actor_token_type, 'urn:ietf:params:oauth:token-type:jwt');
     assert.equal(params.subject_token, targetUserEmail);
     assert.equal(params.subject_token_type, 'aptible:user:email');
@@ -88,8 +89,8 @@ test('Impersonation succeeds', function(assert) {
     });
   });
 
-  stubRequest('delete', `/tokens/${adminUserTokenId}`, function(request) {
-    assert.equal(request.requestHeaders.Authorization, `Bearer ${adminUserToken}`, 'DELETEd admin token as admin user');
+  stubRequest('delete', `/tokens/${adminTokenId}`, function(request) {
+    assert.equal(request.requestHeaders.Authorization, `Bearer ${adminTokenValue}`, 'DELETEd admin token as admin user');
     deletedAdminToken = true;
     return this.success();
   });
