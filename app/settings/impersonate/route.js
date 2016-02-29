@@ -5,7 +5,8 @@ import config from 'diesel/config/environment';
 export default Ember.Route.extend({
   model: function() {
     return Ember.Object.create({
-      email: ''
+      email: '',
+      manage: false
     });
   },
 
@@ -19,7 +20,7 @@ export default Ember.Route.extend({
           actor_token_type: 'urn:ietf:params:oauth:token-type:jwt',
           subject_token: authAttempt.get('email'),
           subject_token_type: 'aptible:user:email',
-          scope: 'manage'
+          scope: authAttempt.get('manage') ? 'manage' : 'read'
       };
 
       this.controller.set('inProgress', true);

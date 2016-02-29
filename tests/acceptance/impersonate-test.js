@@ -35,6 +35,22 @@ let adminTokenData = {
   access_token: adminTokenValue
 };
 
+let userTokenData = {
+  id: 'new-token-id',
+  access_token: 'new-token',
+  token_type: 'bearer',
+  expires_in: 2,
+  scope: 'read',
+  type: 'token',
+  _links: {
+    user: {
+      href: targetUserUrl
+    },
+    actor: {
+      href: adminUserUrl
+    }
+  }
+};
 
 module('Acceptance: Impersonation', {
   beforeEach: function() {
@@ -60,7 +76,7 @@ test(`${impersonateUrl} requires authentication`, function() {
   expectRequiresAuthentication(impersonateUrl);
 });
 
-test('Impersonation succeeds', function(assert) {
+test('Impersonation succeeds with RO access', function(assert) {
   var deletedAdminToken = false;
 
   stubRequest('post', '/tokens', function(request) {
@@ -70,23 +86,8 @@ test('Impersonation succeeds', function(assert) {
     assert.equal(params.actor_token_type, 'urn:ietf:params:oauth:token-type:jwt');
     assert.equal(params.subject_token, targetUserEmail);
     assert.equal(params.subject_token_type, 'aptible:user:email');
-
-    return this.success({
-      id: 'new-token-id',
-      access_token: 'new-token',
-      token_type: 'bearer',
-      expires_in: 2,
-      scope: 'manage',
-      type: 'token',
-      _links: {
-        user: {
-          href: targetUserUrl
-        },
-        actor: {
-          href: adminUserUrl
-        }
-      }
-    });
+    assert.equal(params.scope, 'read', 'Token is read-only');
+    return this.success(userTokenData);
   });
 
   stubRequest('delete', `/tokens/${adminTokenId}`, function(request) {
@@ -100,6 +101,27 @@ test('Impersonation succeeds', function(assert) {
   clickButton('Impersonate');
   andThen(() => {
     assert.ok(deletedAdminToken, 'admin token was deleted');
+    findWithAssert(`header.navbar:contains('${adminUserName} (as ${targetUserName})')`);
+    assert.equal(currentPath(), 'dashboard.stack.apps.index', 'redirected to index');
+  });
+});
+
+test('Impersonation succeeds with R/W access', function(assert) {
+  stubRequest('post', '/tokens', function(request) {
+    let params = this.json(request);
+    assert.equal(params.scope, 'manage', 'Token is read-write');
+    return this.success(userTokenData);
+  });
+
+  stubRequest('delete', `/tokens/${adminTokenId}`, function() {
+    return this.success();
+  });
+
+  signInAndVisit(impersonateUrl, adminUserData, {}, adminTokenData);
+  fillInput('email', targetUserEmail);
+  check('read-write');
+  clickButton('Impersonate');
+  andThen(() => {
     findWithAssert(`header.navbar:contains('${adminUserName} (as ${targetUserName})')`);
     assert.equal(currentPath(), 'dashboard.stack.apps.index', 'redirected to index');
   });
