@@ -6,22 +6,21 @@ import { stubValidSession } from './torii'; // provided by Torii
 
 Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData, tokenData){
   userData = userData || {};
-  let defaultUserData = {
-    id: 'user1',
+  userData.id = userData.id || 'user1';
+  const defaultUserData = {
     name: 'stubbed user',
     email: 'stubbed-user@gmail.com',
     verified: true,
-    links: {
-      sshKeys: '/users/user1/ssh_keys',
-      roles:  '/users/user1/roles',
-      self: '/users/user1'
+    _links: {
+      ssh_keys: { href: `/users/${userData.id}/ssh_keys` },
+      roles:  { href: `/users/${userData.id}/roles` },
+      self: { href: `/users/${userData.id}` }
     }
   };
 
   roleData = roleData || {};
   roleData.id = roleData.id || 'r1';
   const defaultRoleData = {
-    id: roleData.id,
     privileged: true,
     _links: {
       self: { href: `/roles/${roleData.id}` },
@@ -33,17 +32,15 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData, token
   roleData = Ember.$.extend(true, defaultRoleData, roleData);
 
   tokenData = tokenData || {};
-  let defaultTokenData = {
-    id: "stubbed-token-id",
+  tokenData.id = tokenData.id || 'stubbed-token-id';
+  const defaultTokenData = {
     access_token: 'my-token',
     token_type: 'bearer',
     expires_in: 2,
     scope: 'manage',
     type: 'token',
     _links: {
-      user: {
-        href: userData.links.self
-      }
+      user: { href: userData._links.self.href }
     }
   }
   tokenData = Ember.$.extend(true, defaultTokenData, tokenData);
@@ -52,7 +49,7 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData, token
     return this.success(roleData);
   });
 
-  stubRequest('get', '/users/user1/roles', function(request){
+  stubRequest('get', `/users/${userData.id}/roles`, function(request){
     return this.success({
       _embedded: {
         roles: [roleData]
@@ -62,7 +59,13 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData, token
 
   let currentUser = Ember.run(function(){
     let store = app.__container__.lookup('store:application');
-    return store.push('user', userData);
+    return store.push('user', Ember.$.extend(true, userData, {
+      links: {
+        sshKeys: userData._links.ssh_keys.href,
+        roles: userData._links.roles.href,
+        self: userData._links.self.href
+      }
+    }));
   });
 
   let token = Ember.run(function() {
@@ -74,6 +77,7 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData, token
       links: { user: tokenData._links.user.href }
     });
   });
+
   stubValidSession(app, {currentUser, token});
 });
 
