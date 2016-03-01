@@ -8,5 +8,10 @@ export default DS.Model.extend({
   handle: DS.attr('string'),
   command: DS.attr('string'),
   containerCount: DS.attr('number'),
-  processType: DS.attr('string')
+  containerMemoryLimitMb: DS.attr('number'),
+  processType: DS.attr('string'),
+
+  containerSize: Ember.computed('containerMemoryLimitMb', function() {
+    return this.get('containerMemoryLimitMb') || 1024;
+  })
 });

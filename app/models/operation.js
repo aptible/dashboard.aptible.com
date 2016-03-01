@@ -12,7 +12,8 @@ export default DS.Model.extend({
   diskSize: DS.attr('number'),
 
   // scaling services
-  containerCount: DS.attr('number'), // when scaling a service
+  containerSize: DS.attr('number'), // when scaling size of container
+  containerCount: DS.attr('number'), // when scaling number of containers
 
   // vhosts
   certificate: DS.attr(),

@@ -17,6 +17,7 @@ export default DS.Model.extend({
   syslogHost: DS.attr('string'),
   syslogPort: DS.attr('string'),
   organizationUrl: DS.attr('string'),
+  sweetnessStackVersion: DS.attr('string'),
   activated: DS.attr('boolean'),
   containerCount: DS.attr('number'),
   appContainerCount: DS.attr('number'),
