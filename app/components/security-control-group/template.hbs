@@ -26,7 +26,7 @@
   {{else}}
     <div class="security-controls">
       {{#each-property properties=schema.properties document=document as |key property type options|}}
-        {{#liquid-if options.isVisible class="fadeIn"}}
+        {{#if options.isVisible class="fadeIn"}}
         {{security-control
           key=key
           property=property
@@ -35,7 +35,7 @@
           document=document
           onChange="onChange"
         }}
-        {{/liquid-if}}
+        {{/if}}
       {{/each-property}}
     </div>
 
