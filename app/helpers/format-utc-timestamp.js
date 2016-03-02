@@ -16,7 +16,7 @@ export function formatUtcTimestamp(date, excludeTime = false) {
   Ember.assert('format-utc-timestamp must be given an instanceof Date',
                date instanceof Date);
 
-  let month = monthNames[ date.getMonth() ];
+  let month = monthNames[ date.getUTCMonth() ];
   let day   = date.getUTCDate();
   let year  = date.getUTCFullYear();
   let hours = date.getUTCHours();
