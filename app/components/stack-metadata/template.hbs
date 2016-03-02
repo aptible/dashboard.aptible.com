@@ -19,7 +19,11 @@
 
     <li class="resource-metadata-item">
       <h5 class="resource-metadata-title">{{model.totalDatabaseCount}} {{plural-string "Database" model.totalDatabaseCount}}</h5>
-      <h3 class="resource-metadata-value">Using {{format-disk-size model.totalDiskSize}} of disk</h3>
+      <h3 class="resource-metadata-value">
+        Using {{format-disk-size model.totalDiskSize}} of disk and
+        {{model.totalDatabaseCount}}
+        {{plural-string "container" model.totalDatabaseCount}}
+      </h3>
     </li>
 
     <li class="resource-metadata-item">
