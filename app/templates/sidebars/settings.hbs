@@ -44,4 +44,10 @@
   {{#activating-item currentWhen='settings.ssh' tagName='li'}}
     {{link-to 'SSH Keys' 'settings.ssh'}}
   {{/activating-item}}
+
+  {{#if session.currentUser.superuser}}
+    {{#activating-item currentWhen='settings.impersonate' tagName='li'}}
+      {{link-to 'Impersonate' 'settings.impersonate'}}
+    {{/activating-item}}
+  {{/if}}
 </ul>
