@@ -1,11 +1,29 @@
 import Ember from 'ember';
+import Location from "diesel/utils/location";
 import ajax from "diesel/utils/ajax";
 import config from 'diesel/config/environment';
+
+function prepareSubjectParameters(email, organizationHref) {
+  if (email) {
+    return {
+      subject_token: email,
+      subject_token_type: 'aptible:user:email',
+    };
+  } else if (organizationHref) {
+    return {
+      subject_token: organizationHref,
+      subject_token_type: 'aptible:organization:href',
+    };
+  } else {
+    return {};
+  }
+}
 
 export default Ember.Route.extend({
   model: function() {
     return Ember.Object.create({
       email: '',
+      organizationHref: '',
       manage: false
     });
   },
@@ -18,10 +36,10 @@ export default Ember.Route.extend({
           grant_type: 'urn:ietf:params:oauth:grant-type:token-exchange',
           actor_token: adminToken.get('accessToken'),
           actor_token_type: 'urn:ietf:params:oauth:token-type:jwt',
-          subject_token: authAttempt.get('email'),
-          subject_token_type: 'aptible:user:email',
           scope: authAttempt.get('manage') ? 'manage' : 'read'
       };
+
+      Ember.merge(credentials, prepareSubjectParameters(authAttempt.email, authAttempt.organizationHref));
 
       this.controller.set('inProgress', true);
       this.currentModel.set('error', null);
@@ -42,9 +60,13 @@ export default Ember.Route.extend({
         return this.session.open('application', {token: adminToken}).then(() => {throw e;});
       })
       .then(() => {
-        return this.transitionTo('index');
+        // At this point we know impersonation has succeeded. Merely transitioning to 'index'
+        // may or may not work, depending on whether some data has been loaded as the superuser
+        // and has stuck around in the store. We can't really clear out the store either, considering
+        // our session data is stored in there. So: we just reload the page to get a clean slate.
+        return Location.replaceAndWait('/');
       }, (e) => {
-        this.currentModel.set('error', `Error: ${e.message || JSON.stringify()}`);
+        this.currentModel.set('error', `Error: ${e.message || JSON.stringify(e)}`);
       })
       .finally(() => {
         this.controller.set('inProgress', false);
