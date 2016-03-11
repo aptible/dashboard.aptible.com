@@ -44,7 +44,7 @@ export default Ember.Route.extend({
       .then(() => {
         return this.transitionTo('index');
       }, (e) => {
-        this.currentModel.set('error', `Error: ${e.message || JSON.stringify()}`);
+        this.currentModel.set('error', `Error: ${e.message || JSON.stringify(e)}`);
       })
       .finally(() => {
         this.controller.set('inProgress', false);
