@@ -4,7 +4,7 @@ export default Ember.Route.extend({
   redirect() {
     let app = this.modelFor('app') ;
 
-    if(app.get('services.length') > 0) {
+    if(app.get('hasBeenDeployed')) {
       this.transitionTo('app.index');
     }
   },
