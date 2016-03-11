@@ -102,7 +102,7 @@ test('Impersonation succeeds with RO access', function(assert) {
   andThen(() => {
     assert.ok(deletedAdminToken, 'admin token was deleted');
     findWithAssert(`header.navbar:contains('${adminUserName} (as ${targetUserName})')`);
-    assert.equal(currentPath(), 'dashboard.stack.apps.index', 'redirected to index');
+    expectReplacedLocation('/');
   });
 });
 
@@ -123,7 +123,7 @@ test('Impersonation succeeds with R/W access', function(assert) {
   clickButton('Impersonate');
   andThen(() => {
     findWithAssert(`header.navbar:contains('${adminUserName} (as ${targetUserName})')`);
-    assert.equal(currentPath(), 'dashboard.stack.apps.index', 'redirected to index');
+    expectReplacedLocation('/');
   });
 });
 
