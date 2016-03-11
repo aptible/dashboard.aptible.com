@@ -1,0 +1,8 @@
+<select class="form-control {{ class }}" {{action 'update' on="change"}} name={{name}} data-stripe={{ data-stripe }}>
+{{#if prompt}}
+    <option value="" disabled selected={{if (not selected) true null}}>{{prompt}}</option>
+{{/if}}
+{{#each items as |item|}}
+    <option selected={{ if (shouldBeSelected selected item itemKey) true null }} value="{{ getItemByPropertyName item itemKey }}">{{ getItemByPropertyName item itemValue }}</option>
+{{/each}}
+</select>

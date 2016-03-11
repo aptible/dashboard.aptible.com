@@ -1,5 +1,8 @@
 import Ember from 'ember';
 
+function range(start, end) {
+  return Array(end-start).join(0).split(0).map((val, id) => id + start);
+}
 export default Ember.Component.extend({
-  years: ['2016', '2017', '2018', '2019', '2020', '2021', '2022']
+  years: range(new Date().getFullYear(), new Date().getFullYear() + 6)
 });

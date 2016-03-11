@@ -23,21 +23,12 @@
 
             <div class="form-group">
               <label>Security Officer</label>
-              {{user-select
-                autofocus=true
-                class="form-control"
-                selected=model.securityOfficer
-                name="security-officer"
-                users=model.users}}
+              {{ultimate-select class="user-select" name="security-officer" prompt="Select..." items=model.users itemKey="id" itemValue="name" update=(action (mut model.securityOfficer)) selected=model.securityOfficer}}
             </div>
 
             <div class="form-group">
               <label>Billing Contact</label>
-              {{user-select
-                class="form-control"
-                selected=billingDetail.billingContact
-                name="billing-contact"
-                users=model.users}}
+              {{ultimate-select class="user-select" name="billing-contact" prompt="Select..." items=model.users itemKey="id" itemValue="name" update=(action (mut billingDetail.billingContact)) selected=billingDetail.billingContact}}
             </div>
 
             <div class="form-group">

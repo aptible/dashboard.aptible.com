@@ -2,12 +2,12 @@ import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('object-select', {
+moduleForComponent('ultimate-select (object)', {
   integration: true
 });
 
 test('basic attributes are set', function(assert) {
-  this.render(hbs('{{object-select name="foo"}}'));
+  this.render(hbs('{{ultimate-select name="foo"}}'));
 
   let select = this.$('select');
 
@@ -16,7 +16,7 @@ test('basic attributes are set', function(assert) {
 });
 
 test('if prompt was supplied it is displayed', function(assert) {
-  this.render(hbs('{{object-select prompt="Foo"}}'));
+  this.render(hbs('{{ultimate-select prompt="Foo"}}'));
 
   let prompt = this.$('option:contains("Foo")');
 
@@ -25,7 +25,7 @@ test('if prompt was supplied it is displayed', function(assert) {
 });
 
 test('if no prompt was supplied it is not displayed', function(assert) {
-  this.render(hbs('{{object-select}}'));
+  this.render(hbs('{{ultimate-select}}'));
 
   assert.equal(this.$('option').length, 0, 'prompt was found');
 });
@@ -44,7 +44,7 @@ test('if prompt supplied update still selects proper item', function(assert) {
   });
 
 
-  this.render(hbs('{{object-select update=(action (mut selectedItem)) prompt="Foo" items=listing selected=selectedItem}}'));
+  this.render(hbs('{{ultimate-select update=(action (mut selectedItem)) prompt="Foo" items=listing selected=selectedItem itemKey="id" itemValue="name" }}'));
 
   let select = this.$('select');
   assert.equal(select.val(), '4', 'initial value is correct');
@@ -56,7 +56,7 @@ test('if prompt supplied update still selects proper item', function(assert) {
   });
 
   assert.equal(select.val(), '2', 'select value is updated properly');
-  assert.equal(this.get('selectedItem'), listing[1]);
+  assert.equal(listing[1], this.get('selectedItem'));
 });
 
 test('provided items are displayed as options', function(assert) {
@@ -67,11 +67,11 @@ test('provided items are displayed as options', function(assert) {
     { name: 'four', id: 4 }
   ]));
 
-  this.render(hbs('{{object-select items=listing}}'));
+  this.render(hbs('{{ultimate-select items=listing itemKey="id" itemValue="name" }}'));
 
   let options = this.$('option');
   assert.equal(options.length, 4);
-  assert.equal(options.text().trim(), 'onetwothreefour');
+  assert.equal('onetwothreefour', options.text().trim());
 });
 
 test('initially selected item is properly displayed', function(assert) {
@@ -87,7 +87,7 @@ test('initially selected item is properly displayed', function(assert) {
     selectedItem: listing[2]
   });
 
-  this.render(hbs('{{object-select items=listing selected=selectedItem}}'));
+  this.render(hbs('{{ultimate-select items=listing selected=selectedItem itemKey="id" itemValue="name" }}'));
 
   let select = this.$('select');
   let options;
@@ -100,7 +100,7 @@ test('initially selected item is properly displayed', function(assert) {
 
   options = this.$('option:selected');
   assert.equal(options.length, 1);
-  assert.equal(select.val(), '2', 'rerenders properly when changed upstream');
+  assert.equal('2', select.val(), 'rerenders properly when changed upstream');
 });
 
 
@@ -118,7 +118,7 @@ test('when changed fires update action with new value', function(assert) {
   });
 
 
-  this.render(hbs('{{object-select update=(action (mut selectedItem)) items=listing selected=selectedItem}}'));
+  this.render(hbs('{{ultimate-select update=(action (mut selectedItem)) items=listing selected=selectedItem itemKey="id" itemValue="name" }}'));
 
   let select = this.$('select');
   assert.equal(select.val(), '4', 'initial value is correct');
@@ -129,11 +129,11 @@ test('when changed fires update action with new value', function(assert) {
     select.trigger('change');
   });
 
-  assert.equal(select.val(), '2', 'select value is updated properly');
-  assert.equal(this.get('selectedItem'), listing[1]);
+  assert.equal('2', select.val(), 'select value is updated properly');
+  assert.equal(listing[1], this.get('selectedItem'));
 });
 
-test('update action  fired for ArrayProxy new value', function(assert) {
+test('update action fired for ArrayProxy new value', function(assert) {
   let listing = [
     { name: 'one', id: 1 },
     { name: 'two', id: 2 },
@@ -147,7 +147,7 @@ test('update action  fired for ArrayProxy new value', function(assert) {
   });
 
 
-  this.render(hbs('{{object-select update=(action (mut selectedItem)) items=listing}}'));
+  this.render(hbs('{{ultimate-select update=(action (mut selectedItem)) items=listing itemKey="id" itemValue="name" }}'));
 
   let select = this.$('select');
 
@@ -156,6 +156,6 @@ test('update action  fired for ArrayProxy new value', function(assert) {
     select.trigger('change');
   });
 
-  assert.equal(select.val(), '2', 'select value is updated properly');
-  assert.equal(this.get('selectedItem'), listing[1]);
+  assert.equal('2', select.val(), 'select value is updated properly');
+  assert.equal(listing[1], this.get('selectedItem'));
 });

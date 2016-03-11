@@ -18,7 +18,7 @@
   {{#if certificates}}
     <div class="form-group">
       <label>Certificate</label>
-      {{object-select name="certificate" items=certificates update=(action (mut vhost.certificate)) selected=selected}}
+      {{ultimate-select name="certificate" items=certificates itemKey="id" itemValue="name" update=(action (mut vhost.certificate)) selected=selected}}
     </div>
 
     <div class="form-group">
