@@ -11,14 +11,25 @@
           {{/bs-alert}}
         {{/if}}
         <div class="panel-body">
+          <p>Choose one impersonation method:</p>
           <div class="form-group">
             <label>User email </label>
             {{input type="email"
             name="email"
             value=model.email
+            disabled=model.organizationHref
             autofocus=true
             class="form-control"}}
           </div>
+          <div class="form-group">
+            <label>Organization HREF</label>
+            {{input type="url"
+            name="organizationHref"
+            value=model.organizationHref
+            disabled=model.email
+            class="form-control"}}
+          </div>
+          <p>Choose your level of access:</p>
           <div class="form-group">
             <label>Read-write access</label>
             {{input type="checkbox"

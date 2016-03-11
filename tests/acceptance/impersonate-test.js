@@ -18,6 +18,8 @@ let adminUserId = 'admin-user-id';
 let adminUserName = 'Admin User';
 let adminUserUrl = `/users/${adminUserId}`;
 
+let organizationHref = 'http://test/organizations/1';
+
 let adminUserData = {
   id: adminUserId,
   name: adminUserName,
@@ -120,6 +122,31 @@ test('Impersonation succeeds with R/W access', function(assert) {
   signInAndVisit(impersonateUrl, adminUserData, {}, adminTokenData);
   fillInput('email', targetUserEmail);
   check('read-write');
+  clickButton('Impersonate');
+  andThen(() => {
+    findWithAssert(`header.navbar:contains('${adminUserName} (as ${targetUserName})')`);
+    expectReplacedLocation('/');
+  });
+});
+
+test('Impersonation succeeds with an organization target', function(assert) {
+  stubRequest('post', '/tokens', function(request) {
+    let params = this.json(request);
+    assert.equal(params.grant_type, 'urn:ietf:params:oauth:grant-type:token-exchange');
+    assert.equal(params.actor_token, adminTokenValue);
+    assert.equal(params.actor_token_type, 'urn:ietf:params:oauth:token-type:jwt');
+    assert.equal(params.subject_token, organizationHref);
+    assert.equal(params.subject_token_type, 'aptible:organization:href');
+    assert.equal(params.scope, 'read', 'Token is read-only');
+    return this.success(userTokenData);
+  });
+
+  stubRequest('delete', `/tokens/${adminTokenId}`, function() {
+    return this.success();
+  });
+
+  signInAndVisit(impersonateUrl, adminUserData, {}, adminTokenData);
+  fillInput('organizationHref', organizationHref);
   clickButton('Impersonate');
   andThen(() => {
     findWithAssert(`header.navbar:contains('${adminUserName} (as ${targetUserName})')`);

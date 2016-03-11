@@ -3,10 +3,27 @@ import Location from "diesel/utils/location";
 import ajax from "diesel/utils/ajax";
 import config from 'diesel/config/environment';
 
+function prepareSubjectParameters(email, organizationHref) {
+  if (email) {
+    return {
+      subject_token: email,
+      subject_token_type: 'aptible:user:email',
+    };
+  } else if (organizationHref) {
+    return {
+      subject_token: organizationHref,
+      subject_token_type: 'aptible:organization:href',
+    };
+  } else {
+    return {};
+  }
+}
+
 export default Ember.Route.extend({
   model: function() {
     return Ember.Object.create({
       email: '',
+      organizationHref: '',
       manage: false
     });
   },
@@ -19,10 +36,10 @@ export default Ember.Route.extend({
           grant_type: 'urn:ietf:params:oauth:grant-type:token-exchange',
           actor_token: adminToken.get('accessToken'),
           actor_token_type: 'urn:ietf:params:oauth:token-type:jwt',
-          subject_token: authAttempt.get('email'),
-          subject_token_type: 'aptible:user:email',
           scope: authAttempt.get('manage') ? 'manage' : 'read'
       };
+
+      Ember.merge(credentials, prepareSubjectParameters(authAttempt.email, authAttempt.organizationHref));
 
       this.controller.set('inProgress', true);
       this.currentModel.set('error', null);
