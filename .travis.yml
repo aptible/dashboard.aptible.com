@@ -14,6 +14,8 @@ install:
 - npm install
 - bower install
 script:
+- npm list
+- bower list
 - npm test
 - script/travis-deploy.sh
 env: # IAM: travis-s3
