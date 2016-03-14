@@ -71,6 +71,7 @@ test(`visit ${appVhostsNewUrl} shows creation form`, function(assert) {
        'has header');
     expectInput('service', {input:'select'});
     expectFocusedInput('service', {input:'select'});
+    expectInput('domain-type', {input:'radio'});
     expectInput('certificate-body', {input:'textarea'});
     expectInput('private-key', {input:'textarea'});
     expectButton('Save VHost');
@@ -140,6 +141,7 @@ test(`visit ${appVhostsNewUrl} shows creation form with existing certificates`, 
   andThen(function(){
     assert.ok(find('.panel-heading:contains(Create a new VHost)').length,
        'has header');
+    expectInput('domain-type', {input:'radio'});
     expectInput('service', {input:'select'});
     expectFocusedInput('service', {input:'select'});
     expectInput('certificate', { input: 'select'});
@@ -219,6 +221,7 @@ test(`visit ${appVhostsNewUrl} shows creation form without certificates`, functi
   andThen(function(){
     assert.ok(find('.panel-heading:contains(Create a new VHost)').length,
        'has header');
+    expectInput('domain-type', {input:'radio'});
     expectInput('service', {input:'select'});
     expectFocusedInput('service', {input:'select'});
     expectInput('certificate-body', {input:'textarea'});
@@ -228,6 +231,154 @@ test(`visit ${appVhostsNewUrl} shows creation form without certificates`, functi
     expectTitle(`Add a domain - ${appHandle} - ${stackHandle}`);
   });
 });
+
+test(`visit ${appVhostsNewUrl} should remove certificate form if default vhost is clicked`, function(assert) {
+  let appId = 1;
+  let appHandle = 'my-app';
+  let serviceId = 'the-service-id';
+  let stackId = 'my-stack-1';
+  let stackHandle = 'my-stack-1';
+
+  stubRequest('get', `/accounts/${stackId}/certificates`, function(){
+    return this.success({
+      _links: {},
+      _embedded: {
+        certificates: []
+      }
+    });
+  });
+
+  stubStack({
+    _links: {
+      self: { href: `/accounts/${stackId}` },
+      organization: { href: '/organizations/1' },
+      certificates: { href: `/accounts/${stackId}/certificates` },
+    },
+    _embedded: {},
+    id: stackId,
+    handle: stackHandle,
+    activated: true
+  });
+
+  stubRequest('get', appVhostsApiUrl, function(){
+    return this.success({
+      _embedded: { vhosts: [] }
+    });
+  });
+
+  stubRequest('get', `/apps/${appId}`, function() {
+    return this.success({
+      id: appId,
+      handle: appHandle,
+      _embedded: {
+        services: [{ // Must have at least 1 service so that there is a service selected in the dropdown
+          id: serviceId,
+          handle: 'the-hubot-service'
+        }]
+      },
+      _links: {
+        vhosts: { href: appVhostsApiUrl },
+        account: { href: `/accounts/${stackId}` }
+      }
+    });
+  });
+
+  signInAndVisit(appVhostsNewUrl);
+
+  andThen(function(){
+    assert.ok(find('.panel-heading:contains(Create a new VHost)').length,
+      'has header');
+
+    expectInput('domain-type', {input:'radio'});
+    expectInput('service', {input:'select'});
+    expectFocusedInput('service', {input:'select'});
+    expectInput('certificate-body', {input:'textarea'});
+    expectInput('private-key', {input:'textarea'});
+    expectButton('Save VHost');
+    expectButton('Cancel');
+    expectTitle(`Add a domain - ${appHandle} - ${stackHandle}`);
+
+    click( find('label:contains(default domain name)'));
+  });
+
+  andThen(function(){
+    expectNoInput('certificate-body', {input:'textarea'});
+    expectNoInput('private-key', {input:'textarea'});
+  });
+});
+
+test(`visit ${appVhostsNewUrl} shows creation form for service with existing default vhost`, function(assert) {
+  let appId = 1;
+  let appHandle = 'my-app';
+  let serviceId = 'the-service-id';
+  let stackId = 'my-stack-1';
+  let stackHandle = 'my-stack-1';
+
+  stubRequest('get', `/accounts/${stackId}/certificates`, function(){
+    return this.success({
+      _links: {},
+      _embedded: {
+        certificates: []
+      }
+    });
+  });
+
+  stubStack({
+    _links: {
+      self: { href: `/accounts/${stackId}` },
+      organization: { href: '/organizations/1' },
+      certificates: { href: `/accounts/${stackId}/certificates` },
+    },
+    _embedded: {},
+    id: stackId,
+    handle: stackHandle,
+    activated: true
+  });
+
+  stubRequest('get', appVhostsApiUrl, function(){
+    return this.success({
+      _embedded: { vhosts: [{
+        id: '1',
+        default: 'true',
+        service_id: serviceId
+      }] }
+    });
+  });
+
+  stubRequest('get', `/apps/${appId}`, function() {
+    return this.success({
+      id: appId,
+      handle: appHandle,
+      _embedded: {
+        services: [{ // Must have at least 1 service so that there is a service selected in the dropdown
+          id: serviceId,
+          handle: 'the-hubot-service'
+        }]
+      },
+      _links: {
+        vhosts: { href: appVhostsApiUrl },
+        account: { href: `/accounts/${stackId}` }
+      }
+    });
+  });
+
+  signInAndVisit(appVhostsNewUrl);
+
+  andThen(function(){
+    assert.ok(find('.panel-heading:contains(Create a new VHost)').length,
+      'has header');
+
+    expectInput('service', {input:'select'});
+    expectFocusedInput('service', {input:'select'});
+    expectNoInput('domain-type', {input:'radio'});
+    expectInput('certificate-body', {input:'textarea'});
+    expectInput('private-key', {input:'textarea'});
+    expectButton('Save VHost');
+    expectButton('Cancel');
+    expectTitle(`Add a domain - ${appHandle} - ${stackHandle}`);
+  });
+});
+
 
 test(`visit ${appVhostsNewUrl} and create vhost with existing certificates`, function(assert) {
   assert.expect(5);
@@ -373,6 +524,59 @@ test(`visit ${appVhostsNewUrl} and create vhost with new certificate`, function(
   andThen(function(){
     fillInput('certificate-body', 'my long cert');
     fillInput('private-key', 'my long pk');
+    clickButton('Save VHost');
+  });
+});
+
+test(`visit ${appVhostsNewUrl} and create default vhost`, function(assert) {
+  assert.expect(6);
+
+  let appId = 1;
+  let serviceId = 'the-service-id';
+  let vhostId = 'new-vhost-id';
+
+  stubApp({
+    id: appId,
+    _embedded: {
+      services: [{ // Must have at least 1 service so that there is a service selected in the dropdown
+        id: serviceId,
+        handle: 'the-hubot-service'
+      }]
+    },
+    _links: {
+      vhosts: { href: appVhostsApiUrl }
+    }
+  });
+  stubStack({ id: 'stubbed-stack' });
+
+  stubRequest('get', appVhostsApiUrl, function(){
+    return this.success({
+      _embedded: { vhosts: [] }
+    });
+  });
+
+  signInAndVisit(appVhostsNewUrl);
+
+  stubRequest('post', `/services/${serviceId}/vhosts`, function(request){
+    let json = this.json(request);
+    assert.equal(json.default, false);
+    assert.equal(json.certificate, null);
+    assert.equal(json.certificate_body, null);
+    assert.equal(json.private_key, null);
+    assert.equal(json.type, 'http_proxy_protocol');
+
+    return this.success({id:vhostId});
+  });
+
+  stubRequest('post', `/vhosts/${vhostId}/operations`, function(request){
+    let json = this.json(request);
+    assert.equal(json.type, 'provision', 'posts provision operation');
+    return this.success({id: 'new-op-id'});
+  });
+
+  visit(appVhostsNewUrl);
+  andThen(function(){
+    fillInput('domain-type', true);
     clickButton('Save VHost');
   });
 });

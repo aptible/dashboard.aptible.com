@@ -21,6 +21,9 @@
     <div class="panel-heading-actions">
       {{#if vhost.isDefault}}
         <span class="label label-default">Default</span>
+        {{delete-vhost vhost=vhost startDeletion="startDeletion"
+                                  failDeletion="failDeletion"
+                                  completeDeletion="completeDeletion"}}
       {{else}}
         {{#if vhost.isProvisioned}}
           {{link-to 'Edit' 'app.vhosts.edit' vhost.id class="btn btn-default btn-xs"}}

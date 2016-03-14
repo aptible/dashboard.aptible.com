@@ -23,6 +23,8 @@ export default Ember.Route.extend({
         services = model.services,
         certificates = model.certificates;
 
+    vhost.set('isDefault', false);
+
     controller.set('model', vhost);
     controller.set('services', services);
     controller.set('certificates', certificates);
@@ -34,32 +36,41 @@ export default Ember.Route.extend({
       let certificatePromise;
       let stack = this.currentModel.stack;
 
-      if(vhost.get('certificateBody')) {
-        let certificateBody = vhost.get('certificateBody');
-        let privateKey = vhost.get('privateKey');
-        let newCertificate = this.store.createRecord(
-          'certificate',
-          { certificateBody, stack, privateKey }
-        );
+      let promise;
 
-        certificatePromise = newCertificate.save();
+      if(vhost.get('isDefault')) {
+        vhost.set('service', service);
+        promise = vhost.save();
       } else {
-        certificatePromise = new Ember.RSVP.resolve(vhost.get('certificate'));
+        if(vhost.get('certificateBody')) {
+          let certificateBody = vhost.get('certificateBody');
+          let privateKey = vhost.get('privateKey');
+          let newCertificate = this.store.createRecord(
+            'certificate',
+            { certificateBody, stack, privateKey }
+          );
+
+          certificatePromise = newCertificate.save();
+        } else {
+          certificatePromise = new Ember.RSVP.resolve(vhost.get('certificate'));
+        }
+
+        promise = certificatePromise.then((certificate) => {
+          vhost.setProperties({ service, certificate, certificateBody: null,
+            privateKey: null});
+
+          return vhost.save();
+        });
       }
 
-      certificatePromise.then((certificate) => {
-        vhost.setProperties({ service, certificate, certificateBody: null,
-                              privateKey: null});
-
-        return vhost.save();
-      }).then( () => {
+      promise.then(() => {
         let op = this.store.createRecord('operation', {
           type: 'provision',
           vhost: vhost
         });
 
         return op.save();
-      }).then( () => {
+      }).then(() => {
         let message = `Domain ${vhost.get('virtualDomain')} created`;
 
         this.transitionTo('app.vhosts');
