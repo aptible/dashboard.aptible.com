@@ -1,0 +1,26 @@
+<div class="resource-list">
+  {{#if inService}}
+    {{#each model as |service|}}
+      <div class="panel panel-default service">
+        <div class="panel-heading with-actions">
+          <h3>
+            <span class="process-type">{{service.processType}}</span> Service
+            <span class="service-command">{{service.command}}</span>
+          </h3>
+          <div class="panel-heading-actions">
+            {{link-to 'View Metrics' 'app.services.metrics' service.id class="btn btn-default btn-xs"}}
+          </div>
+        </div>
+        <div class="panel-body">
+          {{service-scaler service=service scaleService="scaleService"}}
+        </div>
+      </div>
+    {{/each}}
+  {{else}}
+    <div class="row">
+      <div class="col-xs-10">
+        {{deploy-instructions app=app sshKeys=session.currentUser.sshKeys}}
+      </div>
+    </div>
+  {{/if}}
+</div>

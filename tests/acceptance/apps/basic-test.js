@@ -272,7 +272,7 @@ test(`visiting ${url} then clicking on an app visits the app`, function(assert) 
   });
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.app.services', 'app show page is visited');
+    assert.equal(currentPath(), 'dashboard.app.services.index', 'app show page is visited');
   });
 });
 

@@ -18,6 +18,8 @@
     "animate": "daneden/animate.css#~3.4.0",
     "bootstrap-sass": "twbs/bootstrap-sass#~3.3.5",
     "qunit": "~1.20.0",
-    "FakeXMLHttpRequest": "~1.2.1"
+    "FakeXMLHttpRequest": "~1.2.1",
+    "d3": "~3.5.0",
+    "c3": "~0.4.10"
   }
 }

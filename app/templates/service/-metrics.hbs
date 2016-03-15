@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading with-actions">
+        <h3>Memory usage per container for {{model.processType}}</h3>
+        <div class="panel-heading-actions">
+          <button class="btn btn-default" {{action 'setOneHourHorizon'}} disabled={{horizonIsOneHour}}>1 hour</button>
+          <button class="btn btn-default" {{action 'setOneDayHorizon'}} disabled={{horizonIsOneDay}}>1 day</button>
+          <button class="btn btn-default" {{action 'reload'}}>Reload</button>
+        </div>
+      </div>
+
+      {{#if model.uiState.statusMessage}}
+        {{#bs-alert alert=model.uiState.statusLevel}}
+          {{model.uiState.statusMessage}}
+        {{/bs-alert}}
+      {{/if}}
+
+      <div class="panel-body">
+        {{c3-chart data=data axis=axis grid=grid}}
+
+        {{#if hasMemoryLimit}}
+        <p>
+          {{input type="checkbox" id="show-memory-limit" name="show-memory-limit" checked=model.uiState.showMemoryLimit}}
+          <label for="show-memory-limit">Compare to memory limit</label>
+        </p>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="resource-actions">
+  <button class="btn btn-default" {{action 'close'}}>Close</button>
+</div>
