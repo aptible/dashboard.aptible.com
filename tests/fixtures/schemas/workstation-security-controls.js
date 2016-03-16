@@ -6,19 +6,26 @@ export default {
   "description": "Workstation security controls",
   "properties":{
     "keyboardLocks":{
-      "type":"string",
-      "enum":[
-        "Safe",
-        "Deadbolt",
-        "No locks"
-      ],
+      "type": "object",
+      "required": ["implemented"],
       "title":"Keyboard Locks",
-      "description":"Do you lock your keyboards at night? If so, how?",
-      "displayProperties":{
-        "prompt":"Select..."
+      "properties": {
+        "implemented": {
+          "type":"boolean",
+          "description":"Do you require your workforce to lock their keyboards using a keyboard lock?",
+          "displayProperties":{
+            "useToggle":true,
+            "showLabels":true,
+            "labels":{
+              "trueLabel":"Yes",
+              "falseLabel":"No"
+            }
+          }
+        }
       }
     }
   },
+
   "required":[
     "keyboardLocks"
   ]

@@ -52,13 +52,12 @@ test('Selected data environments are used to draw security control questionnaire
 
   andThen(() => {
     // Should show AWS Provider questions
-
-    assert.ok(find('.data-environment-provider.sm.aws').length, 'Has an AWS provider logo');
+    assert.ok(find('.data-environment-provider.aws').length, 'Has an AWS provider logo');
     assert.ok(find('.title:contains(AWS Security)').length, 'Has an AWS provider question');
     assert.ok(find('.panel-title:contains(S3)').length, 'Has an S3 panel');
 
     // Should show Google Provider questions
-    assert.ok(find('.data-environment-provider.sm.google').length, 'Has an Google provider logo');
+    assert.ok(find('.data-environment-provider.google').length, 'Has an Google provider logo');
     assert.ok(find('.title:contains(How much security can your googles haz?)').length, 'Has a Google provider question');
     assert.ok(find('.panel-title:contains(Gmail)').length, 'Has Gmail DE panel');
 
@@ -73,7 +72,7 @@ test('Selected data environments are used to draw security control questionnaire
 
     // Aptible controls should be pre-selected
     ['secure0', 'secure1', 'secure2'].forEach((key) => {
-      let input = find(`.provider-aptible .${key} input[name="${key}"]`);
+      let input = find(`.provider-aptible .${key} input[name="${key}.implemented"]`);
       assert.ok(input.is(':checked'), `${key} is checked`);
     });
   });
@@ -115,7 +114,6 @@ test('Clicking Save saves attestation for each global, provider, and data enviro
 });
 
 test('Previous attestations are used to load existing security control answers', function(assert) {
-  //expect(22);
   let attestationId = 0;
   let expectedAttestationHandles = ['aptible_security_controls',
                                     'aws_security_controls',
@@ -129,28 +127,28 @@ test('Previous attestations are used to load existing security control answers',
 
   stubCurrentAttestations({
     selected_data_environments: selectedDataEnvironments,
-    aptible_security_controls: { secure0: true, secure1: true, secure2: false },
-    aws_security_controls: { mfa: true },
-    google_security_controls: { security: 'Wow' },
-    amazon_s3_security_controls: { encryption: 'Encrypt no secures' },
-    gmail_security_controls: { linkSharingSettings: false },
-    security_procedures_security_controls: { secureProcedure0: false },
-    workforce_security_controls: { robots: true },
-    workstation_security_controls: { keyboardLocks: 'Deadbolt' },
-    application_security_controls: { hiddenTokens: false }
+    aptible_security_controls: { secure0: { implemented: true }, secure1: { implemented: true }, secure2: { implemented: false } },
+    aws_security_controls: { mfa: { implemented: true } },
+    google_security_controls: { security: { implemented: true } },
+    amazon_s3_security_controls: { encryption: { implemented: true, technologies: 'Encrypt no secures' } },
+    gmail_security_controls: { linkSharingSettings: { implemented:  false } },
+    security_procedures_security_controls: { secureProcedure0: { implemented: false } },
+    workforce_security_controls: { robots: { implemented: true } },
+    workstation_security_controls: { keyboardLocks: { implemented: true } },
+    application_security_controls: { hiddenTokens: { implemented: false } }
   });
 
   let expectedAttestationValues = {
     selected_data_environments: selectedDataEnvironments,
-    aptible_security_controls: { secure0: true, secure1: true, secure2: false },
-    aws_security_controls: { mfa: false },
-    google_security_controls: { security: 'Wow' },
-    amazon_s3_security_controls: { encryption: 'Encrypt some securities' },
-    gmail_security_controls: { linkSharingSettings: false },
-    security_procedures_security_controls: { secureProcedure0: false },
-    workforce_security_controls: { robots: true },
-    workstation_security_controls: { keyboardLocks: 'Deadbolt' },
-    application_security_controls: { hiddenTokens: true }
+    aptible_security_controls: { secure0: { implemented: true }, secure1: { implemented: true }, secure2: { implemented: false } },
+    aws_security_controls: { mfa: { implemented: false } },
+    google_security_controls: { security: { implemented: true } },
+    amazon_s3_security_controls: { encryption: { implemented: true, technologies: 'Encrypt some securities' } },
+    gmail_security_controls: { linkSharingSettings: { implemented: false } },
+    security_procedures_security_controls: { secureProcedure0: { implemented: false } },
+    workforce_security_controls: { robots: {implemented: true } },
+    workstation_security_controls: { keyboardLocks: { implemented: true } },
+    application_security_controls: { hiddenTokens: { implemented: true } }
   };
 
   stubProfile({ currentStep: 'security-controls' });
@@ -171,7 +169,7 @@ test('Previous attestations are used to load existing security control answers',
   andThen(() => {
     // Verify assertion data is used to seed initial UI state
     assertTrueSecurityControls(['mfa', 'secure0', 'secure1', 'robots'], assert);
-    assertEnumSecurityControls({ security: 'Wow', encryption: 'Encrypt no secures', keyboardLocks: 'Deadbolt' }, assert);
+    assertEnumSecurityControls({ encryption: 'Encrypt no secures', }, assert);
 
     toggleSecurityControl('mfa');
     toggleSecurityControl('hiddenTokens');
@@ -183,20 +181,20 @@ test('Previous attestations are used to load existing security control answers',
 
 function assertTrueSecurityControls(controls, assert) {
   controls.forEach((control) => {
-    let controlEl = findWithAssert(`.x-toggle[name="${control}"]`);
+    let controlEl = findWithAssert(`.x-toggle[name="${control}.implemented"]`);
     assert.ok(controlEl.is(':checked'));
   });
 }
 
 function assertEnumSecurityControls(controls, assert) {
   for (var controlName in controls) {
-    let controlEl = findWithAssert(`select[name="${controlName}"]`);
+    let controlEl = findWithAssert(`select[name="${controlName}.technologies"]`);
     assert.equal(controlEl.val(), controls[controlName]);
   }
 }
 
 function toggleSecurityControl(controlName) {
-  let toggle = findWithAssert(`input[name="${controlName}"]`);
+  let toggle = findWithAssert(`input[name="${controlName}.implemented"]`);
   toggle.click();
 }
 
@@ -207,7 +205,7 @@ function clickSaveButton() {
 
 function setEnumSecurityControl(controlName, controlVal) {
   let option = findWithAssert(`option[value="${controlVal}"]`);
-  let select = findWithAssert(`select[name="${controlName}"]`);
+  let select = findWithAssert(`select[name="${controlName}.technologies"]`);
 
   Ember.run(function() {
     select.val(controlVal);

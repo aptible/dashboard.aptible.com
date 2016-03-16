@@ -1,41 +1,20 @@
 .security-control {
-  @extend %clearfix;
-
-  .options {
-    float: right;
-    width: 277px;
+  .title {
+    font-size: 15px;
+    font-weight: $weight-semibold;
+    margin: 0 0 6px;
   }
 
   .radio {
     margin: 0
   }
 
-  .data-environment-provider {
-    float: left;
-  }
-
-  .info {
-    margin-right: 300px;
-
-    &.show-provider-image {
-      margin-left: 125px;
-    }
-
-    .title {
-      font-size: 14px;
-      font-weight: $weight-semibold;
-      margin: 0 0 6px;
-    }
-
-    .description {
-      font-size: 13px;
-      color: $color-light;
-    }
+  .multiselect-checkboxes {
+    margin-top: 20px;
   }
 
   .toggle {
     text-align: right;
-    margin-top: 11px;
   }
 
   .x-toggle-container-disabled {
@@ -67,4 +46,39 @@
   margin-top: 12px;
   text-align: right;
   color: #ddd;
+}
+
+.security-control-field {
+  @extend %clearfix;
+  border-top: 1px solid $color-border-gray;
+  margin-top: 20px;
+  padding-top: 20px;
+
+  .description {
+    font-size: 14px;
+    color: $color-light;
+  }
+
+  .radio {
+    font-size: 14px;
+  }
+
+  &.implemented {
+    border: 0;
+    margin: 0;
+    padding: 0;
+
+    .description {
+      float: left;
+      margin-right: 200px;
+    }
+
+    .schema-field-wrapper {
+      float: right;
+      width: 200px;
+      margin-top: -11px;
+      position: absolute;
+      right: 20px;
+    }
+  }
 }

@@ -6,19 +6,26 @@ export default {
   "description": "Gmail security controls",
   "properties":{
     "linkSharingSettings":{
-      "type":"boolean",
+      "type": "object",
+      "required": ["implemented"],
       "title":"Is your Gmail secure??",
-      "description":"How secure is it?",
-      "displayProperties":{
-        "useToggle":true,
-        "showLabels":true,
-        "labels":{
-          "trueLabel":"Yes",
-          "falseLabel":"No"
+      "properties": {
+        "implemented": {
+          "type":"boolean",
+          "description":"How secure is it?",
+          "displayProperties":{
+            "useToggle":true,
+            "showLabels":true,
+            "labels":{
+              "trueLabel":"Yes",
+              "falseLabel":"No"
+            }
+          }
         }
       }
     }
   },
+
   "required":[
     "isSecure"
   ]
