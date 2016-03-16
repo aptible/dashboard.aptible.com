@@ -22,11 +22,19 @@
         <div class="progress-message">{{progressMessage}}</div>
       </div>
     </div>
-
   {{else}}
-    <div class="security-controls">
-      {{#each-property properties=schema.properties document=document as |key property type options|}}
-        {{#if options.isVisible class="fadeIn"}}
+
+    {{#if showProvider}}
+      <div class="security-controls-provider">
+        <div class="data-environment-provider md {{provider}}">
+          <img src="/assets/images/data-environments/{{provider}}.png" alt="{{provider}}"/>
+        </div>
+      </div>
+    {{/if}}
+
+    <div class="security-controls-list {{if showProvider 'with-provider' 'without-provider'}}">
+      {{#each-property properties=schema.properties document=document recursive=false as |key property type options|}}
+
         {{security-control
           key=key
           property=property
@@ -35,7 +43,7 @@
           document=document
           onChange="onChange"
         }}
-        {{/if}}
+
       {{/each-property}}
     </div>
 

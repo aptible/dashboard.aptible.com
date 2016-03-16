@@ -1,8 +1,8 @@
 import Ember from 'ember';
-import { DISABLE_PROVIDER_LOGO } from '../security-control/component';
 import loadSchema from 'sheriff/utils/load-schema';
 import Attestation from 'sheriff/models/attestation';
 
+export const DISABLE_PROVIDER_LOGO = ['global'];
 export const LOADING_STATES_LABELS = {
   securityControls: 'Loading Security Controls',
   answers: 'Loading Existing Answers'

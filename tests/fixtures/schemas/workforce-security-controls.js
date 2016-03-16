@@ -6,15 +6,21 @@ export default {
   "description": "Workforce security controls",
   "properties":{
     "robots":{
-      "type":"boolean",
-      "title":"Autonomous Workfroce",
-      "description":"Do you only hire robots?",
-      "displayProperties":{
-        "useToggle":true,
-        "showLabels":true,
-        "labels":{
-          "trueLabel":"Yes",
-          "falseLabel":"No"
+      "type": "object",
+      "required": ["implemented"],
+      "title":"Autonomous Workforce",
+      "properties": {
+        "implemented": {
+          "type":"boolean",
+          "description":"Do you only hire robots?",
+          "displayProperties":{
+            "useToggle":true,
+            "showLabels":true,
+            "labels":{
+              "trueLabel":"Yes",
+              "falseLabel":"No"
+            }
+          }
         }
       }
     }

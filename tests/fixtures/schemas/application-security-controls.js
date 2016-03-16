@@ -6,15 +6,21 @@ export default {
   "description": "Global application security controls",
   "properties":{
     "hiddenTokens":{
-      "type":"boolean",
+      "type": "object",
       "title":"Can haz secures?",
-      "description":"Wow",
-      "displayProperties":{
-        "useToggle":true,
-        "showLabels":true,
-        "labels":{
-          "trueLabel":"Yes",
-          "falseLabel":"No"
+      "required": ["implemented"],
+      "properties": {
+        "implemented": {
+          "type":"boolean",
+          "description":"Wow",
+          "displayProperties":{
+            "useToggle":true,
+            "showLabels":true,
+            "labels":{
+              "trueLabel":"Yes",
+              "falseLabel":"No"
+            }
+          }
         }
       }
     }

@@ -52,3 +52,23 @@
     }
   }
 }
+
+
+.security-controls-provider {
+  text-align: center;
+
+  .data-environment-provider {
+    top: 50%;
+    margin-top: -50px;
+    position: absolute;
+    width: 230px;
+    text-align: center;
+  }
+}
+
+.security-controls-list {
+  &.with-provider {
+    border-left: 1px solid $color-border-gray;
+    margin-left: 230px;
+  }
+}

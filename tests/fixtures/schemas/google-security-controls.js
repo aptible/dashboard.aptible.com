@@ -6,17 +6,21 @@ export default {
   "description": "Google security controls",
   "properties":{
     "security":{
-      "type":"string",
-      "enum":[
-        "Wow",
-        "Amaze",
-        "Such security",
-        "No securitys  here"
-      ],
+      "type": "object",
       "title":"How much security can your googles haz?",
-      "description":"Wow",
-      "displayProperties":{
-        "prompt":"Select..."
+      "properties": {
+        "implemented": {
+          "type":"boolean",
+          "description":"Wow",
+          "displayProperties":{
+            "useToggle":true,
+            "showLabels":true,
+            "labels":{
+              "trueLabel":"Yes",
+              "falseLabel":"No"
+            }
+          }
+        }
       }
     }
   },

@@ -4,6 +4,18 @@
       height: 30px;
     }
   }
+
+  &.md {
+    img {
+      height: 50px;
+    }
+  }
+
+  &.lg {
+    img {
+      height: 80px;
+    }
+  }
 }
 
 .data-environment {
