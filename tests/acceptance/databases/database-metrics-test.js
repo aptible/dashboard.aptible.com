@@ -49,6 +49,8 @@ let stack = {
 
 let service = {
   id: serviceId,
+  process_type: "elasticsearch",
+  command: null,  // No command for databases
   _links: {
     current_release: {
       href: `/releases/${releaseId}`
@@ -111,6 +113,8 @@ test("it passes a database container ID, with default horizon and auth token; sh
   signInAndVisit(databaseMetricsUrl);
 
   andThen(() => {
+    findWithAssert('h3:contains(elasticsearch)');
+
     // Check that we don't show the memory limit since none is set
     assert.equal(find("#show-memory-limit").length, 0, "Show memory limit button is shown!");
 

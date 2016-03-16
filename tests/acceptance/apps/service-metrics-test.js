@@ -68,8 +68,8 @@ let stack = {
 
 let service = {
   id: serviceId,
-  handle: "hubot",
-  command: "bin/exec hubot",
+  process_type: "web",
+  command: "./run-web.sh",
   _links: {
     current_release: {
       href: `/releases/${releaseId}`
@@ -127,6 +127,9 @@ test("it passes app container IDs, with default horizon and auth token; shows gr
   signInAndVisit(serviceMetricsUrl);
 
   andThen(() => {
+    findWithAssert('h3:contains(web)');
+    findWithAssert('h3:contains(./run-web.sh)');
+
     // Check that we don't show the memory limit since none is set
     assert.equal(find("#show-memory-limit").length, 0, "Show memory limit button is shown!");
 

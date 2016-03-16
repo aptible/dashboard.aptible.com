@@ -2,7 +2,11 @@
   <div class="col-xs-12">
     <div class="panel panel-default">
       <div class="panel-heading with-actions">
-        <h3>Memory usage per container for {{model.processType}}</h3>
+        <h3>
+          Memory usage per container for
+            <span class="process-type">{{model.service.processType}}</span>
+            <span class="service-command">{{model.service.command}}</span>
+        </h3>
         <div class="panel-heading-actions">
           <button class="btn btn-default" {{action 'setOneHourHorizon'}} disabled={{horizonIsOneHour}}>1 hour</button>
           <button class="btn btn-default" {{action 'setOneDayHorizon'}} disabled={{horizonIsOneDay}}>1 day</button>
