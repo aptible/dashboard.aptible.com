@@ -18,6 +18,8 @@ export default [
   'model:invitation',
   'model:membership',
   'model:billing-detail',
+  'model:release',
+  'model:container',
   'adapter:application',
   'serializer:application',
   'transform:iso-8601-timestamp'

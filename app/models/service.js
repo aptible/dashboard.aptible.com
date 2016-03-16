@@ -11,6 +11,8 @@ export default DS.Model.extend({
   containerMemoryLimitMb: DS.attr('number'),
   processType: DS.attr('string'),
 
+  currentRelease: DS.belongsTo('release', {async:true}),
+
   containerSize: Ember.computed('containerMemoryLimitMb', function() {
     return this.get('containerMemoryLimitMb') || 1024;
   })
