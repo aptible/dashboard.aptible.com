@@ -35,11 +35,13 @@
 
             <div class="">
               <label for="role">Role</label>
-              {{object-select
+              {{ultimate-select
                 name="role"
                 items=organization.roles
                 selected=model.role
-                update=(action (mut model.role))
+                itemKey="id"
+                itemValue="name"
+              update=(action (mut model.role))
               }}
             </div>
           </form>

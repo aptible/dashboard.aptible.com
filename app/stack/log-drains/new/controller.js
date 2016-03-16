@@ -27,8 +27,10 @@ export default Ember.Controller.extend({
            (!this.get('isHostPortDrain') &&
            this.get('esDatabases.length') === 0);
   }),
-  actions: {
-    setDrainFromDatabase(database) {
+  setDrainFromDatabase: function() {
+    let database = this.get('esDatabase');
+
+    if(database) {
       let connectionUrl = database.get('connectionUrl');
       let a = parseUrl(connectionUrl);
 
@@ -37,7 +39,10 @@ export default Ember.Controller.extend({
       model.set('drainPort', a.port);
       model.set('drainUsername', a.username);
       model.set('drainPassword', a.password);
-    },
+    }
+  }.observes('esDatabase'),
+
+  actions: {
     httpsSelected () {
       // Set default port to HTTPS if no port is currently set
       let model = this.get('model');

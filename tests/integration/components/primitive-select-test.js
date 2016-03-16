@@ -2,12 +2,12 @@ import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('primitive-select', {
+moduleForComponent('ultimate-select (primitive)', {
   integration: true
 });
 
 test('basic attributes are set', function(assert) {
-  this.render(hbs('{{primitive-select name="foo"}}'));
+  this.render(hbs('{{ultimate-select name="foo"}}'));
 
   let select = this.$('select');
 
@@ -16,7 +16,7 @@ test('basic attributes are set', function(assert) {
 });
 
 test('if prompt was supplied it is displayed', function(assert) {
-  this.render(hbs('{{primitive-select prompt="Foo"}}'));
+  this.render(hbs('{{ultimate-select prompt="Foo"}}'));
 
   let prompt = this.$('option:contains("Foo")');
 
@@ -25,7 +25,7 @@ test('if prompt was supplied it is displayed', function(assert) {
 });
 
 test('if no prompt was supplied it is not displayed', function(assert) {
-  this.render(hbs('{{primitive-select}}'));
+  this.render(hbs('{{ultimate-select}}'));
 
   assert.equal(this.$('option').length, 0, 'prompt was not found');
 });
@@ -33,7 +33,7 @@ test('if no prompt was supplied it is not displayed', function(assert) {
 test('provided items are displayed as options', function(assert) {
   this.set('listing', Ember.A(['one', 'two', '3', '4']));
 
-  this.render(hbs('{{primitive-select items=listing}}'));
+  this.render(hbs('{{ultimate-select items=listing}}'));
 
   let options = this.$('option');
   assert.equal(options.length, 4);
@@ -44,7 +44,7 @@ test('provided selected item is selected', function(assert) {
   this.set('listing', Ember.A(['one', 'two', '3', '4']));
   this.set('selectedItem', 'two');
 
-  this.render(hbs('{{primitive-select selected=selectedItem items=listing}}'));
+  this.render(hbs('{{ultimate-select selected=selectedItem items=listing}}'));
 
   let selectedOption = this.$('option:selected');
   assert.equal(selectedOption.length, 1, 'selected option found');
@@ -60,7 +60,7 @@ test('when changed fires update action with new value', function(assert) {
 
   this.set('listing', Ember.A(['one', 'two', '3', '4']));
 
-  this.render(hbs('{{primitive-select update=(action "checkValue") items=listing}}'));
+  this.render(hbs('{{ultimate-select update=(action "checkValue") items=listing}}'));
 
   let select = this.$('select');
   Ember.run(function() {

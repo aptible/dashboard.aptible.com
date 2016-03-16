@@ -68,7 +68,7 @@
             <div class="invite-user">
               <button class="btn btn-primary" {{action "inviteUser" invitedUser}} type="submit">Add</button>
               <div class="user-select-container">
-                {{user-select users=nonmembers selected=invitedUser}}
+                {{ultimate-select class="user-select" name="billing-contact" prompt="Select..." items=nonmembers itemKey="id" itemValue="name" update=(action (mut invitedUser)) selected=invitedUser}}
               </div>
             </div>
           </form>

@@ -53,7 +53,7 @@
           {{else}}
             {{#if esDatabases}}
               <label class="block" for="database-selector">Elasticsearch Database</label>
-              {{database-selector databases=esDatabases select='setDrainFromDatabase'}}
+              {{ultimate-select name="database-selector" prompt="Select database" items=esDatabases itemKey="id" itemValue="handle" update=(action (mut esDatabase))}}
             {{else}}
               <div class="no-es-databases-warning">
                 {{stack.handle}} doesn't have any Elasticsearch Databases.
