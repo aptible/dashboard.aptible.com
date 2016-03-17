@@ -12,7 +12,7 @@ module.exports = function(environment) {
     authBaseUri: detectEndpointUri('auth', environment) || 'http://localhost:4000',
     apiBaseUri: detectEndpointUri('api', environment) || 'http://localhost:4001',
     billingBaseUri: detectEndpointUri('billing', environment) || 'http://localhost:4004',
-    statsBaseUri: 'https://5euxyooii2.execute-api.eu-west-1.amazonaws.com/dev/proxy',
+    metricsBaseuri: detectEndpointUri('metrics', environment) || "http://localhost:3000/proxy",
     aptibleHosts: {
       compliance: detectEndpointUri('compliance', environment) || 'http://localhost:3001',
       dashboard: detectEndpointUri('dashboard', environment) || 'http://localhost:4200',

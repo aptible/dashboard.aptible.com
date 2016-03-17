@@ -103,7 +103,7 @@ test("it passes a database container ID, with default horizon and auth token; sh
     return this.success({_embedded: {containers: makeContainers()}});
   });
 
-  stubRequest("get", "/dev/proxy/:containers", function(request) {
+  stubRequest("get", "/proxy/:containers", function(request) {
     assert.equal(request.params.containers, "a3a3a3a3a3a3a3a3a3a3a3");
     assert.equal(request.queryParams.horizon, "1h");
     assert.equal(request.requestHeaders["Authorization"], "Bearer my-token");
@@ -134,7 +134,7 @@ test("it reloads and redraws data when reload is clicked", function(assert) {
   let metricResponses = [makeValidMetricData(), makeValidMetricData()];
   metricResponses[0].columns[1].push(99999);
 
-  stubRequest("get", "/dev/proxy/:containers", function() {
+  stubRequest("get", "/proxy/:containers", function() {
     return this.success(metricResponses.pop());
   });
 
@@ -159,7 +159,7 @@ test("it shows memory limit checkbox and memory limit line if limit exists", fun
     return this.success({_embedded: {containers: containers}});
   });
 
-  stubRequest("get", "/dev/proxy/:containers", function() {
+  stubRequest("get", "/proxy/:containers", function() {
     return this.success(makeValidMetricData());
   });
 
@@ -186,7 +186,7 @@ test("it can change the horizon", function (assert) {
     return this.success({_embedded: {containers: makeContainers()}});
   });
 
-  stubRequest("get", "/dev/proxy/:containers", function(request) {
+  stubRequest("get", "/proxy/:containers", function(request) {
     assert.equal(request.queryParams.horizon, expectedHorizons.pop());
     return this.success(makeValidMetricData());
   });
