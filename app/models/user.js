@@ -9,6 +9,7 @@ export default DS.Model.extend({
   password: DS.attr('string'),
   verified: DS.attr('boolean'),
   createdAt: DS.attr('date'),
+  superuser : DS.attr('boolean'),
 
   // used when changing a user's password. Set as an `attr` so that it
   // will be sent to the API

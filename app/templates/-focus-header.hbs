@@ -6,7 +6,7 @@
   <nav>
     <ul class="nav nav-pills navbar-right user-nav">
       <li class="dropdown current-user">
-        {{#dashboard-dropdown title=session.currentUser.name defaultPath="settings"}}
+        {{#dashboard-dropdown user=session.currentUser actor=session.currentActor defaultPath="settings"}}
 
           {{#each session.currentUser.organizations as |organization|}}
             {{dashboard-dropdown-organization-menu organization=organization}}
