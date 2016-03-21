@@ -104,7 +104,7 @@ test("it passes a database container ID, with default horizon and auth token; sh
   });
 
   stubRequest("get", "/proxy/:containers", function(request) {
-    assert.equal(request.params.containers, "a3a3a3a3a3a3a3a3a3a3a3");
+    assert.equal(request.params.containers, "2");
     assert.equal(request.queryParams.horizon, "1h");
     assert.equal(request.requestHeaders["Authorization"], "Bearer my-token");
     return this.success(makeValidMetricData());

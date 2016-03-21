@@ -7,16 +7,16 @@ export default Ember.Mixin.create({
     let accessToken = this.get("session.token").get("accessToken");
 
     let dataHorizon = this.get("model.uiState.dataHorizon");
-    let cids = this.get("targetContainers").map((container) => container.get("dockerName"));
+    let containerIds = this.get("targetContainers").map((container) => container.get("id"));
 
-    if (cids.length === 0) {
+    if (containerIds.length === 0) {
       // We did not load the containers yet (or this release has no containers).
       this.setStatus("Waiting for containers", "warning");
       return;
     }
 
     this.setStatus("Loading data...", "success");
-    return ajax(`${config.metricsBaseuri}/${cids.join(":")}?horizon=${dataHorizon}`, {
+    return ajax(`${config.metricsBaseuri}/${containerIds.join(":")}?horizon=${dataHorizon}`, {
       headers: {
         "Authorization": `Bearer ${accessToken}`
       }
