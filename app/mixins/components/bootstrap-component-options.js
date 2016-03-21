@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Mixin.create({
   title: null,
   content: null,
+  html: null,
   placement: 'bottom',
   'bs-container': 'body',
 
@@ -15,6 +16,7 @@ export default Ember.Mixin.create({
       title: () => this.get('title'),
       content: () => this.get('content'),
       placement: () => this.get('placement'),
+      html: () => this.get('html')
     };
 
     if (this.get('bs-container')) {
