@@ -17,12 +17,24 @@
 
           <div class="form-group">
             <label>Certificate</label>
-            {{textarea class="form-control" value=model.certificateBody name="body" rows=10 autofocus=true}}
+            <p>
+              Drag and drop your certificate file or paste its contents in the
+              textarea below.
+            </p>
+            <p>
+              If you have a bundled certificate chain, drag and drop all of the
+              certificate files or paste their contents in the textarea below.
+            </p>
+            {{file-textarea value=model.certificateBody name="body" rows=10 autofocus=true}}
           </div>
 
           <div class="form-group">
             <label>Private Key</label>
-            {{textarea class="form-control" value=model.privateKey name="private-key" rows=10}}
+            <p>
+              Drag and drop your private key file or paste its contents in the
+              textarea below.
+            </p>
+            {{file-textarea value=model.privateKey name="private-key" rows=10}}
           </div>
 
         </div>

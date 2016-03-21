@@ -287,10 +287,6 @@ test(`visit ${appVhostsNewUrl} and create vhost with existing certificates`, fun
 
   signInAndVisit(appVhostsNewUrl);
 
-  stubRequest('post', '/accounts/stubbed-stack/certificates', function() {
-    assert.ok(false, 'should not create a new certificate');
-  });
-
   stubRequest('post', `/services/${serviceId}/vhosts`, function(request){
     let json = this.json(request);
     assert.equal(json.certificate, certificateHref);
