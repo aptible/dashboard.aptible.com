@@ -64,6 +64,7 @@ export default Ember.Component.extend({
 
 
   onAttestationLoad(attestation) {
+    this.set('_lastSavedAttestation', JSON.stringify(attestation));
     let { securityControlGroup, schema } = this.getProperties('securityControlGroup', 'schema');
     let document = schema.buildDocument();
 
@@ -120,17 +121,16 @@ export default Ember.Component.extend({
       let documentClone = Ember.$.extend(true, {}, document.dump({ excludeInvalid: true }));
 
       attestation.set('document', documentClone);
+      this.set('_lastSavedAttestation', JSON.stringify(documentClone));
       attestation.save().then(() => this.onSuccessfulSave())
                         .catch((response) => this.onFailedSave(response));
     },
 
     onChange() {
-      let lastAttestationDocument = JSON.stringify(this.get('attestation.document'));
-      let currentDocument = JSON.stringify(this.get('document').dump());
+      let lastSavedAttestation = this.get('_lastSavedAttestation');
+      let currentAttestation = JSON.stringify(this.get('document').dump());
 
-      if(lastAttestationDocument !== currentDocument) {
-        this.set('showSave', true);
-      }
+      this.set('showSave', lastSavedAttestation !== currentAttestation);
     }
   }
 });

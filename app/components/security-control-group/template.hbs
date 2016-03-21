@@ -2,7 +2,7 @@
   <h3 class="panel-title">{{title}}</h3>
 {{/if}}
 
-<div class="panel panel-striped security-controls provider-{{securityControlGroup.provider}}">
+<div class="panel panel-striped security-controls provider-{{securityControlGroup.provider}} {{if showSave 'with-save-bar'}}">
   {{#liquid-if loading class="fadeIn loading-security-control-group"}}
 
     <div class="loading-security-controls">

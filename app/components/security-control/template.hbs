@@ -1,11 +1,39 @@
-<h4 class="title">{{property.title}}</h4>
+<div class="title">
+  {{property.title}}
+  {{#if property.displayProperties.tooltip}}
+    {{#learn-more-tooltip tip=property.displayProperties.tooltip}}
+      <i class="fa fa-question-circle"></i>
+    {{/learn-more-tooltip}}
+  {{/if}}
+</div>
+
+{{#if property.description}}
+  <div class="description">{{property.description}}</div>
+{{/if}}
 
 <div class="security-control-fields">
   {{#each-property properties=property.properties document=document as |fieldKey field fieldType fieldOptions|}}
-    {{#if fieldOptions.isVisible}}
+    {{#if fieldOptions.showProperty}}
       <div class="security-control-field {{fieldKey}}">
 
-        <div class="description">{{field.description}}</div>
+        <div class="header">
+          {{#if field.title}}
+            <div class="title">
+              {{field.title}}
+
+              {{#if field.displayProperties.tooltip}}
+                {{#learn-more-tooltip tip=field.displayProperties.tooltip}}
+                  <i class="fa fa-question-circle"></i>
+                {{/learn-more-tooltip}}
+              {{/if}}
+            </div>
+          {{/if}}
+
+          {{#if field.description}}
+            <div class="description">{{field.description}}</div>
+          {{/if}}
+        </div>
+
 
         <div class="schema-field-wrapper">
           {{#if field.readonly}}

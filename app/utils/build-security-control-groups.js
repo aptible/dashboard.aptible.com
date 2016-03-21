@@ -7,8 +7,12 @@ export const dataEnvironmentProviderMap = {
   googleDrive: 'google',
   gmail: 'google',
   mailgun: 'mailgun'
-
 };
+
+export const globalSecurityControlGroups = [
+  'application_security_controls', 'email_security_controls',
+  'security_procedures_security_controls', 'workforce_security_controls',
+  'workstation_security_controls'];
 
 export default function(dataEnvironments) {
   let dataEnvironmentNames = Ember.keys(dataEnvironments).filter((deName) => {
@@ -28,13 +32,11 @@ export default function(dataEnvironments) {
     securityControlGroups.push({ handle: `${deName.decamelize()}_security_controls`, provider: deProvider });
   });
 
-  securityControlGroups = securityControlGroups.concat([
-    { handle: 'application_security_controls', provider: 'global' },
-    { handle: 'security_procedures_security_controls', provider: 'global' },
-    { handle: 'workforce_security_controls', provider: 'global' },
-    { handle: 'workstation_security_controls', provider: 'global' },
-    { handle: 'aptible_security_controls', provider: 'aptible' }
-  ]);
+  securityControlGroups = securityControlGroups.concat(globalSecurityControlGroups.map((global) => {
+    return { handle: global, provider: 'global' };
+  }));
+
+  securityControlGroups.push({ handle: 'aptible_security_controls', provider: 'aptible' });
 
   return securityControlGroups;
 }

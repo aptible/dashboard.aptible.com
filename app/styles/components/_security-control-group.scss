@@ -53,13 +53,16 @@
   }
 }
 
+.panel.security-controls {
+  margin-bottom: 30px;
+}
 
 .security-controls-provider {
   text-align: center;
 
   .data-environment-provider {
     top: 50%;
-    margin-top: -50px;
+    margin-top: -25px;
     position: absolute;
     width: 230px;
     text-align: center;
@@ -70,5 +73,13 @@
   &.with-provider {
     border-left: 1px solid $color-border-gray;
     margin-left: 230px;
+  }
+}
+
+.security-controls.with-save-bar {
+  .security-controls-provider {
+    .data-environment-provider {
+      margin-top:-50px;
+    }
   }
 }
