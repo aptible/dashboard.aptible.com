@@ -12,7 +12,7 @@ module.exports = function(environment) {
     authBaseUri: detectEndpointUri('auth', environment) || 'http://localhost:4000',
     apiBaseUri: detectEndpointUri('api', environment) || 'http://localhost:4001',
     billingBaseUri: detectEndpointUri('billing', environment) || 'http://localhost:4004',
-    metricsBaseuri: detectEndpointUri('metrics', environment) || "http://localhost:3000/proxy",
+    metricsBaseuri: detectEndpointUri('metrics', environment) || "http://localhost:3000",
     aptibleHosts: {
       compliance: detectEndpointUri('compliance', environment) || 'http://localhost:3001',
       dashboard: detectEndpointUri('dashboard', environment) || 'http://localhost:4200',
@@ -71,7 +71,7 @@ module.exports = function(environment) {
     },
 
     contentSecurityPolicy: {
-      'connect-src': "'self' http://localhost:4004 https://billing.aptible-staging.com https://api.aptible-staging.com https://auth.aptible-staging.com http://localhost:4000 http://localhost:4001 ws://localhost:35729 ws://0.0.0.0:35729 http://api.segment.io http://auth.aptible.foundry.io http://api.aptible.foundry.io",
+      'connect-src': "'self' http://localhost:4004 https://billing.aptible-staging.com https://api.aptible-staging.com https://auth.aptible-staging.com http://localhost:4000 http://localhost:4001 ws://localhost:35729 ws://0.0.0.0:35729 http://api.segment.io http://auth.aptible.foundry.io http://api.aptible.foundry.io http://localhost:3000 http://metrics.aptible-staging.com",
       'style-src': "'self' 'unsafe-inline' http://use.typekit.net",
       'img-src': "'self' http://www.gravatar.com https://secure.gravatar.com http://www.google-analytics.com http://p.typekit.net https://track.customer.io data: app.getsentry.com",
       'script-src': "'self' 'unsafe-inline' https://js.stripe.com https://api.stripe.com http://use.typekit.net http://cdn.segment.com https://assets.customer.io http://www.google-analytics.com http://cdn.ravenjs.com",
@@ -133,7 +133,7 @@ module.exports = function(environment) {
     ENV.sentry.development = false;
     var stagingHosts = ['api.aptible-staging.com', 'auth.aptible-staging.com',
                         'billing.aptible-staging.com', 'www.aptible-staging.com',
-                        'compliance.aptible-staging.com'];
+                        'compliance.aptible-staging.com', 'metrics.aptible-staging.com'];
     ENV.prefetch = ENV.prefetch.concat(stagingHosts);
   }
 
@@ -151,7 +151,7 @@ module.exports = function(environment) {
     ENV.sentry.dsn = 'https://2dc5b29fd35e408cbadf581f9a167074@app.getsentry.com/22629';
     var productionHosts = ['api.aptible.com', 'auth.aptible.com',
                            'billing.aptible.com', 'www.aptible.com',
-                           'compliance.aptible.com'];
+                           'compliance.aptible.com', 'metrics.aptible.com'];
     ENV.prefetch = ENV.prefetch.concat(productionHosts);
   }
 

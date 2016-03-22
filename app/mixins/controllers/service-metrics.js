@@ -16,7 +16,7 @@ export default Ember.Mixin.create({
     }
 
     this.setStatus("Loading data...", "success");
-    return ajax(`${config.metricsBaseuri}/${containerIds.join(":")}?horizon=${dataHorizon}`, {
+    return ajax(`${config.metricsBaseuri}/proxy/${containerIds.join(":")}?horizon=${dataHorizon}`, {
       headers: {
         "Authorization": `Bearer ${accessToken}`
       }
