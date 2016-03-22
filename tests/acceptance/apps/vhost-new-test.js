@@ -297,7 +297,9 @@ test(`visit ${appVhostsNewUrl} should remove certificate form if default vhost i
     expectButton('Save VHost');
     expectButton('Cancel');
     expectTitle(`Add a domain - ${appHandle} - ${stackHandle}`);
+  });
 
+  andThen(function(){
     click( find('label:contains(default domain name)'));
   });
 
@@ -438,11 +440,14 @@ test(`visit ${appVhostsNewUrl} and create vhost with existing certificates`, fun
 
   signInAndVisit(appVhostsNewUrl);
 
-  stubRequest('post', '/accounts/stubbed-stack/certificates', function() {
+  // Note: This won't be hit unless something is wrong. It ensures that an
+  // existing cert is being used (and not created) for this case.
+  stubRequest('post', `/accounts/:stack-id/certificates`, function() {
     assert.ok(false, 'should not create a new certificate');
   });
 
-  stubRequest('post', `/services/${serviceId}/vhosts`, function(request){
+  // Sometimes the id is 1 and other times its 'the-service-id'
+  stubRequest('post', `/services/:service-id/vhosts`, function(request){
     let json = this.json(request);
     assert.equal(json.certificate, certificateHref);
     assert.equal(json.certificate_body, null);
