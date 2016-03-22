@@ -1,0 +1,19 @@
+{{#if uiState.statusMessage}}
+  {{#bs-alert alert=uiState.statusLevel}}
+    {{uiState.statusMessage}}
+  {{/bs-alert}}
+{{/if}}
+
+{{c3-chart data=data axis=axis grid=grid}}
+
+{{#if hasMemoryLimit}}
+  <p>
+    {{input
+      type="checkbox"
+      name=(concat elementId '-show-memory-limit')
+      id=(concat elementId '-show-memory-limit')
+      checked=uiState.showMemoryLimit}}
+
+    <label for="{{concat elementId '-show-memory-limit'}}">Compare to memory limit</label>
+  </p>
+{{/if}}

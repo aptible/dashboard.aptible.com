@@ -13,22 +13,12 @@
           <button class="btn btn-default" {{action 'reload'}}>Reload</button>
         </div>
       </div>
-
-      {{#if model.uiState.statusMessage}}
-        {{#bs-alert alert=model.uiState.statusLevel}}
-          {{model.uiState.statusMessage}}
-        {{/bs-alert}}
-      {{/if}}
-
       <div class="panel-body">
-        {{c3-chart data=data axis=axis grid=grid}}
+        {{container-metrics
+          containers=targetContainers
+          horizon=model.uiState.dataHorizon
+          lastReload=model.uiState.lastReload}}
 
-        {{#if hasMemoryLimit}}
-        <p>
-          {{input type="checkbox" id="show-memory-limit" name="show-memory-limit" checked=model.uiState.showMemoryLimit}}
-          <label for="show-memory-limit">Compare to memory limit</label>
-        </p>
-        {{/if}}
       </div>
     </div>
   </div>

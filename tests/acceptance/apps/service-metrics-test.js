@@ -182,12 +182,14 @@ test("it shows memory limit checkbox and memory limit line if limit exists", fun
   signInAndVisit(serviceMetricsUrl);
 
   andThen(() => {
-    check("show-memory-limit");
+    let checkbox = find("input[name$='show-memory-limit']");
+    checkbox.prop('checked', true);
+    checkbox.change();
   });
 
   andThen(() => {
     // Check that we don't show the memory limit since none is set
-    assert.equal(find("#show-memory-limit").length, 1, "Show memory limit button is not shown!");
+    assert.equal(find("input[name$='show-memory-limit']").length, 1, "Show memory limit button is not shown!");
 
     let chart = findWithAssert("div.c3-chart-component");
     assert.ok(chart.text().indexOf("Memory limit (99999 MB)") > -1, "Memory limit not shown!");

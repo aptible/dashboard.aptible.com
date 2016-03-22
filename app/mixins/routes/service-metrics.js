@@ -10,11 +10,8 @@ export default Ember.Mixin.create({
 
   defaultUiState: function() {
     return Ember.Object.create({
-      showMemoryLimit: false,
       dataHorizon: "1h",
-      lastReload: Date.now(),
-      statusMessage: null,
-      statusLevel: "alert"
+      lastReload: Date.now()
     });
   }
 });
