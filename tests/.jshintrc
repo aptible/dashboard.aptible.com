@@ -49,6 +49,7 @@
     "expectNoLink",
     "findInput",
     "expectInput",
+    "expectNoInput",
     "expectFocusedInput",
     "fillInput",
     "findButton",
