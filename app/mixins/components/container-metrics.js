@@ -1,18 +1,17 @@
 import Ember from 'ember';
 
-export default Ember.Component.extend({
+export default Ember.Mixin.create({
   metricsApi: Ember.inject.service(),
 
   init() {
     this._super(...arguments);
     this.set("uiState", Ember.Object.create({
-      showMemoryLimit: false,
       statusMessage: null,
       statusLevel: null
     }));
   },
 
-  data: Ember.computed("containers.@each", "horizon", "lastReload", function () {
+  data: Ember.computed("containers.@each", "horizon", "lastReload", "metric", function () {
     let horizon = this.get("horizon");
     let containers = this.get("containers");
 
@@ -24,7 +23,7 @@ export default Ember.Component.extend({
 
     this.setStatus("Loading data...", "success");
 
-    return this.get("metricsApi").fetchMetrics(containers, horizon)
+    return this.get("metricsApi").fetchMetrics(containers, horizon, this.get("metric"))
     .then((data) => {
       this.clearStatus();
       return data;
@@ -35,26 +34,15 @@ export default Ember.Component.extend({
     });
   }),
 
-  grid: Ember.computed("minMemoryLimit" , function () {
-    let grid = {
+  grid: Ember.computed("gridLines" , function () {
+    return {
       y: {
-        lines: []
+        lines: this.get("gridLines")
       }
     };
-
-    let minMemoryLimit = this.get("minMemoryLimit");
-
-    if (minMemoryLimit < Infinity) {
-      grid.y.lines.push({
-        value: minMemoryLimit,
-        text: `Memory limit (${minMemoryLimit} MB)`
-      });
-    }
-
-    return grid;
   }),
 
-  axis: Ember.computed("minMemoryLimit", "uiState.showMemoryLimit", function () {
+  axis: Ember.computed("axisLabel", "axisFormatter", "axisMax", function () {
     let axis = {
       x: {
         type: 'timeseries',
@@ -68,30 +56,23 @@ export default Ember.Component.extend({
           bottom: 0
         },
         label: {
-          text: "Memory usage",
+          text: this.get("axisLabel"),
           position: "outer-top"
         },
         tick: {
-          format: (v) => `${v} MB`
+          format: this.get("axisFormatter")
         }
       }
     };
 
-    let showMemoryLimit = this.get("uiState.showMemoryLimit"),
-        minMemoryLimit = this.get("minMemoryLimit");
+    let axisMax = this.get("axisMax");
 
-    if (showMemoryLimit && minMemoryLimit < Infinity) {
-      axis.y.max = minMemoryLimit;
+    if (axisMax) {
+      axis.y.max = axisMax;
     }
 
     return axis;
   }),
-
-  allMemoryLimits: Ember.computed.mapBy("containers", "memoryLimit"),
-  applicableMemoryLimits: Ember.computed.filter("allMemoryLimits", (memoryLimit) => (!Ember.isEmpty(memoryLimit)) && memoryLimit > 0),
-
-  minMemoryLimit: Ember.computed.min("applicableMemoryLimits"),
-  hasMemoryLimit: Ember.computed.lt("minMemoryLimit", Infinity),
 
   setStatus: function(statusMessage, statusLevel) {
     this.set("uiState.statusMessage", statusMessage);

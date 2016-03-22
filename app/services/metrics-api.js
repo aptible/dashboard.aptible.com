@@ -20,11 +20,11 @@ function errorToMessage(e) {
 export default Ember.Service.extend({
   session: Ember.inject.service(),
 
-  fetchMetrics(containers, dataHorizon) {
+  fetchMetrics(containers, horizon, metric) {
     let accessToken = this.get("session.token.accessToken");
     let containerIds = containers.map((container) => container.get("id"));
 
-    return ajax(`${config.metricsBaseuri}/proxy/${containerIds.join(":")}?horizon=${dataHorizon}`, {
+    return ajax(`${config.metricsBaseuri}/proxy/${containerIds.join(":")}?horizon=${horizon}&metric=${metric}`, {
       headers: {
         "Authorization": `Bearer ${accessToken}`
       }

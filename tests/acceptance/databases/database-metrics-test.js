@@ -116,7 +116,7 @@ test("it passes a database container ID, with default horizon and auth token; sh
     findWithAssert('h3:contains(elasticsearch)');
 
     // Check that we don't show the memory limit since none is set
-    assert.equal(find("#show-memory-limit").length, 0, "Show memory limit button is shown!");
+    assert.equal(find("input[name$='show-memory-limit']").length, 0, "Show memory limit button is shown!");
 
     // Check that we rendered the chart
     let chart = findWithAssert("div.c3-chart-component");
@@ -131,11 +131,20 @@ test("it reloads and redraws data when reload is clicked", function(assert) {
     return this.success({_embedded: {containers: makeContainers()}});
   });
 
-  let metricResponses = [makeValidMetricData(), makeValidMetricData()];
-  metricResponses[0].columns[1].push(99999);
+  let cpuMetricResponses = [makeValidMetricData(), makeValidMetricData()];
+  let memoryMetricResponses = [makeValidMetricData(), makeValidMetricData()];
+  memoryMetricResponses[0].columns[1].push(99999);
 
-  stubRequest("get", "/proxy/:containers", function() {
-    return this.success(metricResponses.pop());
+  stubRequest("get", "/proxy/:containers", function(request) {
+    if (request.queryParams.metric === "memory") {
+      return this.success(memoryMetricResponses.pop());
+    }
+
+    if (request.queryParams.metric === "cpu") {
+      return this.success(cpuMetricResponses.pop());
+    }
+
+    assert.ok(false, `Received invalid metric: ${request.queryParams.metric}`);
   });
 
   signInAndVisit(databaseMetricsUrl);
@@ -145,7 +154,8 @@ test("it reloads and redraws data when reload is clicked", function(assert) {
   });
 
   andThen(() => {
-    assert.equal(metricResponses.length, 0, "Not enough requests!");
+    assert.equal(memoryMetricResponses.length, 0, "Not enough requests!");
+    assert.equal(cpuMetricResponses.length, 0, "Not enough requests!");
     let chart = findWithAssert("div.c3-chart-component");
     // Expect the chart to resize to show the new data point
     assert.ok(chart.text().indexOf("100000 MB") > -1, "Memory not shown!");
@@ -182,7 +192,7 @@ test("it shows memory limit checkbox and memory limit line if limit exists", fun
 });
 
 test("it can change the horizon", function (assert) {
-  let expectedHorizons = ["1d", "1h"];
+  let expectedHorizons = ["1d", "1d", "1h", "1h"];
 
   stubRequest("get", `/releases/${releaseId}/containers`, function() {
     return this.success({_embedded: {containers: makeContainers()}});

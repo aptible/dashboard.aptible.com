@@ -3,9 +3,9 @@
     <div class="panel panel-default">
       <div class="panel-heading with-actions">
         <h3>
-          Memory usage per container for
-            <span class="process-type">{{model.service.processType}}</span>
-            <span class="service-command">{{model.service.command}}</span>
+          Metrics per container for
+          <span class="process-type">{{model.service.processType}}</span>
+          <span class="service-command">{{model.service.command}}</span>
         </h3>
         <div class="panel-heading-actions">
           <button class="btn btn-default" {{action 'setOneHourHorizon'}} disabled={{horizonIsOneHour}}>1 hour</button>
@@ -14,11 +14,17 @@
         </div>
       </div>
       <div class="panel-body">
-        {{container-metrics
+        <h4>Memory</h4>
+        {{container-memory-metrics
           containers=targetContainers
           horizon=model.uiState.dataHorizon
           lastReload=model.uiState.lastReload}}
 
+        <h4>CPU</h4>
+        {{container-cpu-metrics
+          containers=targetContainers
+          horizon=model.uiState.dataHorizon
+          lastReload=model.uiState.lastReload}}
       </div>
     </div>
   </div>

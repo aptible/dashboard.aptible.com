@@ -1,10 +1,4 @@
-{{#if uiState.statusMessage}}
-  {{#bs-alert alert=uiState.statusLevel}}
-    {{uiState.statusMessage}}
-  {{/bs-alert}}
-{{/if}}
-
-{{c3-chart data=data axis=axis grid=grid}}
+{{partial 'mixins/container-metrics'}}
 
 {{#if hasMemoryLimit}}
   <p>
