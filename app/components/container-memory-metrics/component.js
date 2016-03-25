@@ -38,5 +38,5 @@ export default Ember.Component.extend(ContainerMetricsComponentMixin, {
   applicableMemoryLimits: Ember.computed.filter("allMemoryLimits", (memoryLimit) => (!Ember.isEmpty(memoryLimit)) && memoryLimit > 0),
 
   minMemoryLimit: Ember.computed.min("applicableMemoryLimits"),
-  hasMemoryLimit: Ember.computed.lt("minMemoryLimit", Infinity)
+  noMemoryLimit: Ember.computed.equal("minMemoryLimit", Infinity)
 });

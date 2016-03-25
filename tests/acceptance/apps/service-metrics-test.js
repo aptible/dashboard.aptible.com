@@ -147,7 +147,7 @@ test("it reloads and redraws data when reload is clicked", function(assert) {
     return this.success({_embedded: {containers: makeContainers()}});
   });
 
-  let cpuMetricResponses = [makeValidMetricData(), makeValidMetricData()];
+  let laMetricResponses = [makeValidMetricData(), makeValidMetricData()];
   let memoryMetricResponses = [makeValidMetricData(), makeValidMetricData()];
   memoryMetricResponses[0].columns[1].push(99999);
 
@@ -156,8 +156,8 @@ test("it reloads and redraws data when reload is clicked", function(assert) {
       return this.success(memoryMetricResponses.pop());
     }
 
-    if (request.queryParams.metric === "cpu") {
-      return this.success(cpuMetricResponses.pop());
+    if (request.queryParams.metric === "la") {
+      return this.success(laMetricResponses.pop());
     }
 
     assert.ok(false, `Received invalid metric: ${request.queryParams.metric}`);
@@ -171,7 +171,7 @@ test("it reloads and redraws data when reload is clicked", function(assert) {
 
   andThen(() => {
     assert.equal(memoryMetricResponses.length, 0, "Not enough requests!");
-    assert.equal(cpuMetricResponses.length, 0, "Not enough requests!");
+    assert.equal(laMetricResponses.length, 0, "Not enough requests!");
     let chart = findWithAssert("div.c3-chart-component");
     // Expect the chart to resize to show the new data point
     assert.ok(chart.text().indexOf("100000 MB") > -1, "Memory not shown!");

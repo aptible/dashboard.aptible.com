@@ -1,13 +1,18 @@
 {{partial 'mixins/container-metrics'}}
 
-{{#if hasMemoryLimit}}
-  <p>
-    {{input
-      type="checkbox"
-      name=(concat elementId '-show-memory-limit')
-      id=(concat elementId '-show-memory-limit')
-      checked=uiState.showMemoryLimit}}
+<p>
+{{#if noMemoryLimit}}
+  Note: this app has no memory limit.
+{{else}}
+  {{input
+  type="checkbox"
+    name=(concat elementId '-show-memory-limit')
+    id=(concat elementId '-show-memory-limit')
+    checked=uiState.showMemoryLimit
+    disabled=noMemoryLimit}}
 
-    <label for="{{concat elementId '-show-memory-limit'}}">Compare to memory limit</label>
-  </p>
+  <label for="{{concat elementId '-show-memory-limit'}}">
+    Compare to memory limit ({{minMemoryLimit}} MB)
+  </label>
 {{/if}}
+</p>
