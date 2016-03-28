@@ -1,4 +1,18 @@
 .security-control {
+
+  .checkbox {
+    label {
+      padding: 0;
+    }
+  }
+  .radio-button-option {
+    margin-bottom: 10px;
+
+    .radio label {
+      padding: 0;
+    }
+  }
+
   .title {
     font-size: 15px;
     font-weight: $weight-semibold;
@@ -16,10 +30,6 @@
 
   .multiselect-checkboxes {
     margin-top: 20px;
-  }
-
-  .toggle {
-    text-align: right;
   }
 
   .x-toggle-container-disabled {
@@ -52,14 +62,29 @@
   color: #ddd;
 }
 
-.security-control-field {
-  @extend %clearfix;
-  border-top: 1px solid $color-border-gray;
-  margin-top: 20px;
-  padding-top: 20px;
+.security-control-title {
+  padding: 30px 0 0 30px;
 
   .title {
-    font-size: 14px;
+    font-size: 16px;
+  }
+}
+
+.security-control {
+  &:first-child {
+    .security-control-field:first-child {
+      border: 0;
+    }
+  }
+}
+
+.security-control-field {
+  @extend %clearfix;
+  padding: 30px 30px 30px 0;
+  border-top: 1px solid $color-border-gray;
+
+  .title {
+    font-size: 15px;
     font-weight: normal;
     margin: 0;
   }
@@ -70,12 +95,49 @@
 
   .radio {
     font-size: 14px;
+
+    label {
+      padding: 0;
+    }
   }
 
-  &.implemented {
-    border: 0;
-    margin: 0;
-    padding: 0;
+  .toggle, .form-control, .radio {
+    margin-top: 15px;
+  }
+
+  &.implemented, &.permitted {
+    .schema-field-radio [type="radio"] + span {
+      font-size: 11px;
+    }
+
+    .schema-field-radio [type="radio"] + span::before {
+      vertical-align: -7px;
+    }
+
+    .radio-button-option {
+      margin: 0;
+
+      label {
+        text-transform: uppercase;
+        color: $color-light;
+        font-weight: $weight-semibold;
+        font-size: 11px;
+      }
+    }
+
+    .toggle {
+      text-align: right;
+    }
+
+    .radio {
+      margin: 0;
+    }
+
+    .radio-button-option {
+      width: 80px;
+      float: left;
+      margin-bottom: 0;
+    }
 
     .header {
       float: left;
@@ -84,10 +146,13 @@
 
     .schema-field-wrapper {
       float: right;
-      width: 200px;
-      margin-top: -11px;
+      width: 190px;
       position: absolute;
-      right: 20px;
+      right: -18px;
+
+      .radio-button-option:first-child {
+        margin-bottom: 0;
+      }
     }
   }
 }

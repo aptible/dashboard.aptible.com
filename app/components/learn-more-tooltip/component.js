@@ -14,14 +14,18 @@ export default Ember.Component.extend({
     let { content, learnMore } = tip;
 
     if (learnMore) {
-      learnMore = `<a class="learn-more-link" href="${learnMore}" target="${target}">
-                    ${learnMoreText}
-                  </a>`;
+      learnMore = `<div class="learn-more-cta">
+                     <a class="learn-more-link" href="${learnMore}" target="${target}">
+                       ${learnMoreText}
+                     </a>
+                   </div>`;
+    } else {
+      learnMore = '';
     }
 
     return `<div class="learn-more-tooltip-wrapper">
               <div class="learn-more-content">${content}</div>
-              <div class="learn-more-cta">${learnMore}</div>
+              ${learnMore}
             </div>`;
   })
 });
