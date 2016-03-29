@@ -99,7 +99,7 @@ test(`visit ${url} lists services`, function(assert) {
 });
 
 test(`visit ${url} allows scaling of services`, function(assert) {
-  assert.expect(5);
+  assert.expect(4);
 
   let serviceId = 1;
   let services = [{id: serviceId, container_count: 2}];
@@ -112,13 +112,6 @@ test(`visit ${url} allows scaling of services`, function(assert) {
   });
 
   stubStack({id: stackId});
-
-  stubRequest('put', `/services/${serviceId}`, function(request){
-    assert.ok(true, 'PUTs to services');
-    let json = this.json(request);
-    json.id = serviceId;
-    return this.success(json);
-  });
 
   stubRequest('post', `/services/${serviceId}/operations`, function(request){
     let json = this.json(request);
