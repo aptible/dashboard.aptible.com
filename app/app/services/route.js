@@ -21,15 +21,35 @@ export default Ember.Route.extend({
 
   actions: {
     scaleService: function(service, containerCount, deferred){
-      service.set('containerCount', containerCount);
-      service.save().then( () => {
-        let op = this.store.createRecord('operation', {
-          type: 'scale',
-          containerCount: containerCount,
-          service: service
+      let reloadUntilOperationStatusChanged = (operation, maximumTimeout, timeout) => {
+        return operation.reload().then((o) => {
+          return new Ember.RSVP.Promise((resolve, reject) => {
+            if(timeout > maximumTimeout) {
+              return reject(new Error('Operation timed out.'));
+            }
+
+            let status = o.get('status');
+            if(status === 'succeeded') {
+              return resolve(o);
+            } else if(status === 'failed') {
+              return reject(new Error('Operation failed.'));
+            }
+
+            Ember.run.later(o, () => {
+              return resolve(reloadUntilOperationStatusChanged(o, maximumTimeout, timeout * 2));
+            }, timeout);
+          });
         });
-        return op.save();
-      }).then(deferred.resolve, deferred.reject);
+      };
+
+      this.store.createRecord('operation', {
+        type: 'scale',
+        containerCount: containerCount,
+        service: service
+      }).save()
+        .then((operation) => reloadUntilOperationStatusChanged(operation, 1000 * 60 * 15 /* minutes */, 1000))
+        .then(() => service.reload())
+        .then(deferred.resolve, deferred.reject);
     }
   }
 
