@@ -21,16 +21,12 @@ export default Ember.Route.extend({
 
   actions: {
     scaleService: function(service, containerCount, deferred){
-      service.set('containerCount', containerCount);
-      service.save().then( () => {
-        let op = this.store.createRecord('operation', {
-          type: 'scale',
-          containerCount: containerCount,
-          service: service
-        });
-        return op.save();
-      }).then(deferred.resolve, deferred.reject);
+      let op = this.store.createRecord('operation', {
+        type: 'scale',
+        containerCount: containerCount,
+        service: service
+      });
+      op.save().then(deferred.resolve, deferred.reject);
     }
   }
-
 });
