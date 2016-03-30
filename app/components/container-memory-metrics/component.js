@@ -10,6 +10,7 @@ export default Ember.Component.extend(ContainerMetricsComponentMixin, {
   metric: "memory",
   axisLabel: "Memory usage",
   axisFormatter: (v) => `${v} MB`,
+  axisBottomPadding: 0,  // Memory is always > 0, we don't need padding on top of it.
 
   gridLines: Ember.computed("minMemoryLimit" , function () {
     let minMemoryLimit = this.get("minMemoryLimit"),

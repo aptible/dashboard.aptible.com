@@ -42,7 +42,7 @@ export default Ember.Mixin.create({
     };
   }),
 
-  axis: Ember.computed("axisLabel", "axisFormatter", "axisMax", function () {
+  axis: Ember.computed("axisLabel", "axisFormatter", "axisBottomPadding", "axisMax", function () {
     let axis = {
       x: {
         type: 'timeseries',
@@ -53,7 +53,7 @@ export default Ember.Mixin.create({
       y: {
         min: 0,
         padding: {
-          bottom: 0
+          bottom: this.getWithDefault("axisBottomPadding", null)
         },
         label: {
           text: this.get("axisLabel"),
