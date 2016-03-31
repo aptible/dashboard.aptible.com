@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading with-actions">
+        <h3>
+          Metrics per container for
+          <span class="process-type">{{model.service.processType}}</span>
+          <span class="service-command">{{model.service.command}}</span>
+        </h3>
+        <div class="panel-heading-actions">
+          <button class="btn btn-default" {{action 'setOneHourHorizon'}} disabled={{horizonIsOneHour}}>1 hour</button>
+          <button class="btn btn-default" {{action 'setOneDayHorizon'}} disabled={{horizonIsOneDay}}>1 day</button>
+          <button class="btn btn-default" {{action 'reload'}}>Reload</button>
+        </div>
+      </div>
+      <div class="panel-body">
+        <h4>
+          Memory Usage
+          {{more-info-icon
+            title="Understanding Memory Usage"
+            body="This metric represents the amount of memory your container has requested from the host system.
+                  <br><br>
+                  If this number approaches the memory limit, you should upgrade to a bigger container or reduce the memory
+                  footprint of your app: apps that exceed their memory limit may be terminated."}}
+        </h4>
+        {{container-memory-metrics
+          containers=targetContainers
+          horizon=model.uiState.dataHorizon
+          lastReload=model.uiState.lastReload}}
+
+        <h4>
+          Load Average
+          {{more-info-icon
+            title="Understanding the Load Average"
+            body="This metric represents the number of runnable tasks (threads) in your container.
+                  <br><br>
+                  If this number is consistently high, and appears to be hitting a ceiling,
+                  you should upgrade to a bigger container or investigate your app for performance
+                  bottlenecks."}}
+        </h4>
+        {{container-la-metrics
+          containers=targetContainers
+          horizon=model.uiState.dataHorizon
+          lastReload=model.uiState.lastReload}}
+      </div>
+    </div>
+  </div>
+</div>
