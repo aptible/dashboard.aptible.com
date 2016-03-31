@@ -9,7 +9,7 @@ function errorToMessage(e) {
     case 400:
       return "Metrics server declined to serve the request";
     case 404:
-      return "No data available; please try again later";
+      return "No data available; please try again later or contact support if this condition persists";
     case 500:
       return "Metrics server is unavailable; please try again later";
     default:
