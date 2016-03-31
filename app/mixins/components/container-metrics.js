@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { formatUtcTimestamp } from 'diesel/helpers/format-utc-timestamp';
 
 export default Ember.Mixin.create({
   metricsApi: Ember.inject.service(),
@@ -47,7 +48,10 @@ export default Ember.Mixin.create({
       x: {
         type: 'timeseries',
         tick: {
-          format: '%H:%M:%S'
+          format: formatUtcTimestamp,
+          culling: {
+            max: 4
+          }
         }
       },
       y: {
