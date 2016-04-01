@@ -174,7 +174,7 @@ test("it reloads and redraws data when reload is clicked", function(assert) {
     assert.equal(laMetricResponses.length, 0, "Not enough requests!");
     let chart = findWithAssert("div.c3-chart-component");
     // Expect the chart to resize to show the new data point
-    assert.ok(chart.text().indexOf("100000 MB") > -1, "Memory not shown!");
+    assert.ok(chart.text().indexOf("10 GB") > -1, "Memory not shown!");
   });
 });
 
