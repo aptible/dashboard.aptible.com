@@ -1,6 +1,18 @@
 {{partial 'mixins/container-metrics'}}
 
 <p>
+  {{input
+  type="checkbox"
+    name=(concat elementId '-show-caches')
+    id=(concat elementId '-show-caches')
+    checked=uiState.showCaches}}
+
+  <label for="{{concat elementId '-show-caches'}}">
+    Compare RSS and RSS + buffers / caches
+  </label>
+</p>
+
+<p>
 {{#if noMemoryLimit}}
 {{else}}
   {{input

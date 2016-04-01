@@ -154,6 +154,10 @@ test("it reloads and redraws data when reload is clicked", function(assert) {
   });
 
   andThen(() => {
+    Ember.run.later(() => {}, 500);
+  });
+
+  andThen(() => {
     assert.equal(memoryMetricResponses.length, 0, "Not enough requests!");
     assert.equal(laMetricResponses.length, 0, "Not enough requests!");
     let chart = findWithAssert("div.c3-chart-component");
@@ -177,6 +181,10 @@ test("it can change the horizon", function (assert) {
   signInAndVisit(databaseMetricsUrl);
   andThen(() => {
     clickButton("1 day");
+  });
+
+  andThen(() => {
+    Ember.run.later(() => {}, 500);
   });
 
   andThen(() => {
