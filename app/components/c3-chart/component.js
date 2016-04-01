@@ -70,12 +70,13 @@ export default Ember.Component.extend({
 
   dataDidChange: Ember.observer('data', function() {
     ensurePromise(this.get('data')).then((data) => {
-      if (Ember.isEmpty(data)) {
+      if (Ember.isEmpty(data) || Ember.keys(data).length === 0) {
         return;
       }
 
       let chart = this.get('_chart');
       if (chart) {
+        data.unload = true;
         chart.load(data);
       } else {
         this.get('_submitInitialData')(data);

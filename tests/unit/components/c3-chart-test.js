@@ -152,3 +152,20 @@ test('it accepts grid line updates', function(assert) {
     assert.ok(this.$().text().indexOf('someLineOnChart') > -1);
   });
 });
+
+test('it unloads old data when when updated', function(assert) {
+  this.subject({
+    data: {columns: [["someDataOnChart", 1, 2, 3]]},
+    axis: {},
+    grid: {}
+  });
+  assert.ok(this.$().text().indexOf('someDataOnChart') > -1, "newData is absent!");
+
+  Ember.run(() => {
+    this.subject().set('data', { columns: [] });
+  });
+
+  andThen(() => {
+    assert.ok(this.$().text().indexOf('someDataOnChart') === -1, "someData is still present!");
+  });
+});
