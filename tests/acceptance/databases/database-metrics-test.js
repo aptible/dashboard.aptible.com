@@ -184,10 +184,6 @@ test("it can change the horizon", function (assert) {
   });
 
   andThen(() => {
-    Ember.run.later(() => {}, 500);
-  });
-
-  andThen(() => {
     assert.equal(expectedHorizons.length, 0, "Not enough requests!");
   });
 });

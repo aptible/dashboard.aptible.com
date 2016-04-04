@@ -8,6 +8,18 @@ function ensurePromise(x) {
     });
 }
 
+function withObservedChartAttribute(attrName, handler) {
+  return Ember.observer(attrName, function () {
+    ensurePromise(this.get(attrName)).then((attrValue) => {
+      if (Ember.isEmpty(attrValue)) {
+        return;
+      }
+
+      return handler.bind(this, attrValue)();
+    });
+  });
+}
+
 export default Ember.Component.extend({
   tagName: 'div',
   classNames: ['c3-chart-component'],
@@ -61,61 +73,84 @@ export default Ember.Component.extend({
   },
 
   willDestroyElement() {
+    /* This is not elegant, but unfortunately, it's needed. We need to delay
+     * destroying the c3 chart element (which delete all of its attributes),
+     * otherwise running transitions might crash. In practice, this is not an
+     * issue for end-users (at worst, `window.onerror` will be called, and they
+     * won't even know...), but in testing, it is an issue: tests will
+     * routinely crash when a transition attempts to complete after the object
+     * has been torn down.
+     *
+     * Ideally, we would use callbacks to ensure we don't attempt to destroy
+     * the element while transitions are running. Unfortunately, this is not
+     * possible, because c3.js exposes a single onrendered callback we can use
+     * to be notified when transitions end, but we can't differentiate between
+     * multiple transitions, so if we schedule two transitions in a short
+     * timespan (which could happen e.g. when we render memory limits), then we
+     * end up thinking all our transitions have completed although perhaps only
+     * one did.
+     *
+     * Now, we could use the same callbacks to ensure we don't schedule a
+     * transition if we already scheduled one, but at this point we're adding a
+     * substantial amount of complexity, and we run the risk of locking up the
+     * chart if for some reason the onrendered callback isn't called (which
+     * seems possible considering c3.js makes no guarantees as to when this
+     * callback will be called), which doesn't seem worth if the only upside is
+     * saving a few seconds on running tests.
+     */
+    Ember.run.later(() => {
       let chart = this.get('_chart');
       if (chart) {
         chart.destroy();
-        this.set('_chart', null);
+        if (!this.isDestroyed) {
+          this.set('_chart', null);
+        }
       }
+    }, 500);
   },
 
-  dataDidChange: Ember.observer('data', function() {
-    ensurePromise(this.get('data')).then((data) => {
-      if (Ember.isEmpty(data) || Ember.keys(data).length === 0) {
-        return;
-      }
+  dataDidChange: withObservedChartAttribute('data', function(data) {
+    if (Ember.keys(data).length === 0) {
+      // Do not attempt to render with no data (which is fine for other attributes)
+      return;
+    }
 
-      let chart = this.get('_chart');
-      if (chart) {
-        data.unload = true;
-        chart.load(data);
-      } else {
-        this.get('_submitInitialData')(data);
-      }
+    this._applyToChart(() => {
+      this.get('_submitInitialData')(data);
+    }, (chart) => {
+      data.unload = true;
+      chart.load(data);
     });
   }),
 
-  gridDidChange: Ember.observer('grid', function () {
-    ensurePromise(this.get('grid')).then((grid) => {
-      if (Ember.isEmpty(grid)) {
-        return;
-      }
-
-      let chart = this.get('_chart');
-      if (chart) {
-        ["x", "y"].forEach((axis) => {
-          if (grid[axis] && grid[axis].lines) {
-            chart[`${axis}grids`](grid[axis].lines);
-          }
-        });
-      } else {
-        this.get('_submitInitialGrid')(grid);
-      }
+  gridDidChange: withObservedChartAttribute('grid', function(grid) {
+    this._applyToChart(() => {
+      this.get('_submitInitialGrid')(grid);
+    }, (chart) => {
+      ["x", "y"].forEach((axis) => {
+        if (grid[axis] && grid[axis].lines) {
+          chart[`${axis}grids`](grid[axis].lines);
+        }
+      });
     });
   }),
 
-  axisDidChange: Ember.observer('axis', function () {
-    ensurePromise(this.get('axis')).then((axis) => {
-      if (Ember.isEmpty(axis)) {
-        return;
-      }
-
-      let chart = this.get('_chart');
-      if (chart) {
-        // TODO: Support more options?
-        chart.axis.max(axis.y.max);
-      } else {
-        this.get('_submitInitialAxis')(axis);
-      }
+  axisDidChange: withObservedChartAttribute('axis', function(axis) {
+    this._applyToChart(() => {
+      this.get('_submitInitialAxis')(axis);
+    }, (chart) => {
+      // TODO: Support more options?
+      chart.axis.max(axis.y.max);
     });
-  })
+  }),
+
+  _applyToChart(noChartCallback, updateChartCallback) {
+    let chart = this.get('_chart');
+    if (!chart) {
+      noChartCallback();
+      return;
+    }
+
+    updateChartCallback(chart);
+  }
 });

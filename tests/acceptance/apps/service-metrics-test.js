@@ -200,10 +200,6 @@ test("it can change the horizon", function (assert) {
   });
 
   andThen(() => {
-    Ember.run.later(() => {}, 500);
-  });
-
-  andThen(() => {
     assert.equal(expectedHorizons.length, 0, "Not enough requests!");
   });
 });
@@ -228,10 +224,6 @@ test("it includes a functional toggle for memory metrics (cache / buffers)", fun
     let checkbox = find("input[name$='show-caches']");
     checkbox.prop('checked', true);
     checkbox.change();
-  });
-
-  andThen(() => {
-    Ember.run.later(() => {}, 500);
   });
 
   andThen(() => {
