@@ -4,30 +4,31 @@ import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
 import buildSecurityControlGroups from 'sheriff/utils/build-security-control-groups';
 
 export default Ember.Route.extend(SPDRouteMixin, {
-  afterModel(attestation) {
-    // If an attestation was created in model hook or the attestation has no
-    // selected data environments, we should go back and create a new
-    // attestation
-
-    if (attestation.get('isNew')) {
-      return this.transitionTo('setup.data-environments');
-    }
-  },
+  stepName: 'security-controls',
 
   model() {
     let handle = 'selected_data_environments';
     let organizationUrl = this.modelFor('organization').get('data.links.self');
     let attestationParams = { handle, organizationUrl, document: [] };
 
-    return Attestation.findOrCreate(attestationParams, this.store);
-  },
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      Attestation
+        .findOrCreate(attestationParams, this.store)
+        .then((dataEnvironments) => {
+          if (dataEnvironments.get('isNew')) {
+            // No exisisting data environment attestation
+            // Redirect to set up new data environment attestation
+            reject();
+            this.transitionTo('setup.data-environments');
+          }
 
-  setupController(controller, model) {
-    let dataEnvironments = model.get('document');
-    let organizationUrl = this.modelFor('organization').get('data.links.self');
-
-    controller.set('model', buildSecurityControlGroups(dataEnvironments));
-    controller.set('organizationUrl', organizationUrl);
+          let dataEnvironmentSelections = dataEnvironments.get('document');
+          let organizationUrl = this.modelFor('organization').get('data.links.self');
+          let groups = buildSecurityControlGroups(dataEnvironmentSelections,
+                                                  organizationUrl, this.store);
+          resolve(groups);
+        }, reject)
+    });
   },
 
   actions: {

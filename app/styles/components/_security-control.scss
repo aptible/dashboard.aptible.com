@@ -1,15 +1,14 @@
 .security-control {
-
   .checkbox {
     label {
-      padding: 0;
+
     }
   }
   .radio-button-option {
     margin-bottom: 10px;
 
     .radio label {
-      padding: 0;
+
     }
   }
 
@@ -97,7 +96,7 @@
     font-size: 14px;
 
     label {
-      padding: 0;
+
     }
   }
 
@@ -148,7 +147,8 @@
       float: right;
       width: 190px;
       position: absolute;
-      right: -18px;
+      right: 0;
+      top: 19px;
 
       .radio-button-option:first-child {
         margin-bottom: 0;

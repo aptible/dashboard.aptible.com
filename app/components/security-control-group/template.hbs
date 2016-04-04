@@ -1,60 +1,40 @@
-{{#if title}}
-  <h3 class="panel-title">{{title}}</h3>
-{{/if}}
-
-<div class="panel white-panel security-controls provider-{{securityControlGroup.provider}} {{if showSave 'with-save-bar'}}">
-  {{#liquid-if loading class="fadeIn loading-security-control-group"}}
-
-    <div class="loading-security-controls">
-      <div class="loading-provider">
-        {{#if showProvider}}
-          <div class="data-environment-provider sm {{provider}}">
-            <img src="/assets/images/data-environments/{{provider}}.png" alt="{{provider}}"/>
-          </div>
-        {{/if}}
-      </div>
-
-      <div class="loading-progress">
-        <div class="progress">
-          <div class="progress-bar" role="progressbar" style={{{progressWidth}}}>
-          </div>
-        </div>
-        <div class="progress-message">{{progressMessage}}</div>
-      </div>
-    </div>
-  {{else}}
-
-    <div class="security-controls-list {{if showProvider 'with-provider' 'without-provider'}}">
-      {{#each-property properties=schema.properties document=document recursive=false as |key property type options|}}
-
-        {{security-control
-          key=key
-          property=property
-          type=type
-          provider=securityControlGroup.provider
-          document=document
-          onChange="onChange"
-        }}
-
-      {{/each-property}}
+{{#if isLoading}}
+  <div class="loading-security-controls">
+    <div class="loading-provider">
+      <i class="fa fa-spin fa-spinner"></i>
     </div>
 
-    {{#liquid-if showSave class="fadeIn"}}
-      <div class="panel-footer">
-        <button class="btn btn-primary btn-xs pull-right" {{action 'save'}} disabled={{attestation.isSaving}}>Save</button>
+    <div class="loading-progress">
+      <div class="progress-message">Loading Security Controls...</div>
+    </div>
+  </div>
+{{else}}
 
-        {{#liquid-if errorMessage class="fadeIn error-message pull-right"}}
-          <i class="fa fa-exclamation-circle"></i> {{errorMessage}}
-        {{/liquid-if}}
+  <div class="security-controls-list">
+    {{#each-property properties=schema.properties document=document recursive=false as |key property type options|}}
+      {{security-control
+        key=key
+        property=property
+        type=type
+        provider=securityControlGroup.provider
+        document=document
+      }}
+    {{/each-property}}
+  </div>
 
-        {{#liquid-if saveMessage class="fadeIn save-message pull-right"}}
-          <i class="fa fa-check"></i> {{saveMessage}}
-        {{/liquid-if}}
+  {{#liquid-if showStatusBar}}
+    <div class="panel-footer">
+      {{#liquid-if validationErrors class="fadeIn error-message"}}
+        <i class="fa fa-exclamation-circle"></i> {{validationErrors}}
+      {{/liquid-if}}
 
-        {{#liquid-if attestation.isSaving class="fadeIn save-message pull-right"}}
-          <i class="fa fa-spin fa-spinner"></i> Saving...
-        {{/liquid-if}}
-      </div>
-    {{/liquid-if}}
+      {{#liquid-if saveMessage class="fadeIn save-message"}}
+        <i class="fa fa-check"></i> {{saveMessage}}
+      {{/liquid-if}}
+
+      {{#liquid-if attestation.isSaving class="fadeIn save-message"}}
+        <i class="fa fa-spin fa-spinner"></i> Saving...
+      {{/liquid-if}}
+    </div>
   {{/liquid-if}}
-</div>
+{{/if}}

@@ -43,6 +43,17 @@ $step-height: 80px;
     line-height: $step-height;
     border-bottom: 1px solid $color-border-gray;
     z-index: 1;
+    clear: both;
+  }
+
+  .step-completed-note {
+    color: $color-light;
+    float: right;
+    margin: 0 30px 0 0;
+
+    .review-link {
+      margin: 0 0 0 5px;
+    }
   }
 
   .step-step {
@@ -70,7 +81,7 @@ $step-height: 80px;
 
   .step-cta {
     float: right;
-    margin-right: 15px;
+    margin: 22px 15px 0 0;
   }
 
   .step.completed-step {

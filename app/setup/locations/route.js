@@ -46,8 +46,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
     },
 
     onAddLocation() {
-      let newLocation = this.controller.get('document').addItem();
-      this.controller.setProperties({ newLocation });
+      this.controller.addNewLocation();
     }
   }
 });

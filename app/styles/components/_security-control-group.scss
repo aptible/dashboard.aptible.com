@@ -1,30 +1,68 @@
-.loading-security-controls {
-  width: 400px;
-  margin: 30px auto;
+.security-control-group-title {
+  font-size: 18px;
+}
 
-  .data-environment-provider {
-    text-align: center;
-    opacity: .5;
+.loading-provider {
+  margin: 50px 0;
+  text-align: center;
+  color: #c0c0c0;
+  font-size: 30px;
+}
+
+.loading-progress {
+  color: $color-light;
+  text-align:center;
+}
+
+.security-control-group {
+  display: flex;
+  order: 1;
+  flex: 1;
+  background: #fff;
+  border-right: 1px solid $color-border-gray;
+  border-radius: 3px 0 0 3px;
+  align-items: center;
+  justify-content: center;
+
+  > .liquid-container,
+  > .liquid-child {
+    width: 100%;
+  }
+}
+
+.security-controls {
+  .layout-sidebar {
+    order: 2;
+    flex: 0 0 300px;
+    border: 0;
+    background: none;
   }
 
-  .loading-progress {
-    .progress {
-      height: 3px;
-      border-radius: 3px;
-      background: $color-bg-gray;
-      box-shadow: none;
-      margin: 20px 0;
+  .sidebar-nav {
+    border: 0;
+
+    > li {
+      margin-bottom: 4px;
     }
 
-    .progress-bar {
-      color: $color-bright-blue;
-    }
-  }
+    .active {
+      margin-left: -1px;
 
-  .progress-message {
-    text-align: center;
-    font-size: 11px;
-    color: $color-light;
+      > .step {
+        font-weight: $weight-semibold;
+        color: $color-primary;
+        background: $color-border-gray;
+        border-radius: 0 5px 5px 0;
+      }
+    }
+
+    .step {
+      color: $color-light;
+      padding: 12px;
+      font-size: 13px;
+      padding: 8px 10px;
+      padding-left: 20px;
+    }
   }
 }
 
@@ -34,7 +72,6 @@
   .save-message {
     color: $color-light;
     font-size: 12px;
-    margin: 7px 10px 0 0;
 
     .fa-check {
       color: $color-success;
@@ -45,7 +82,6 @@
     color: $color-danger;
     font-weight: $weight-semibold;
     font-size: 12px;
-    margin: 7px 10px 0 0;
 
     .fa-exclamation-circle {
       color: $color-danger;
@@ -54,7 +90,8 @@
 }
 
 .panel.security-controls {
-  margin-bottom: 30px;
+  display: flex;
+  flex: 1;
 }
 
 .security-controls-provider {
@@ -70,7 +107,7 @@
 }
 
 .security-controls-list {
-
+  width: 100%;
 }
 
 .security-controls.with-save-bar {

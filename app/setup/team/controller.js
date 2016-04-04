@@ -1,6 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  setup: Ember.inject.controller(),
   showInviteModal: false,
-  panel: 'team'
+  showInviteModal() {
+    this.get('setup').set('showInviteModal', true);
+  }
 });
