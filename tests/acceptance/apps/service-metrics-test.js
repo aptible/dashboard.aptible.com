@@ -170,11 +170,15 @@ test("it reloads and redraws data when reload is clicked", function(assert) {
   });
 
   andThen(() => {
+    Ember.run.later(() => {}, 500);
+  });
+
+  andThen(() => {
     assert.equal(memoryMetricResponses.length, 0, "Not enough requests!");
     assert.equal(laMetricResponses.length, 0, "Not enough requests!");
     let chart = findWithAssert("div.c3-chart-component");
     // Expect the chart to resize to show the new data point
-    assert.ok(chart.text().indexOf("100000 MB") > -1, "Memory not shown!");
+    assert.ok(chart.text().indexOf("10 GB") > -1, "Memory not shown!");
   });
 });
 
@@ -197,5 +201,35 @@ test("it can change the horizon", function (assert) {
 
   andThen(() => {
     assert.equal(expectedHorizons.length, 0, "Not enough requests!");
+  });
+});
+
+test("it includes a functional toggle for memory metrics (cache / buffers)", function(assert) {
+  let metricsRequested = [];
+
+  stubRequest("get", `/releases/${releaseId}/containers`, function() {
+    return this.success({_embedded: {containers: makeContainers()}});
+  });
+
+  stubRequest("get", "/proxy/:containers", function(request) {
+    metricsRequested.push(request.queryParams.metric);
+    var data = makeValidMetricData();
+    data.columns[1][0] = request.queryParams.metric;
+    return this.success(data);
+  });
+
+  signInAndVisit(serviceMetricsUrl);
+
+  andThen(() => {
+    let checkbox = find("input[name$='show-caches']");
+    checkbox.prop('checked', true);
+    checkbox.change();
+  });
+
+  andThen(() => {
+    assert.equal(metricsRequested.length, 3);
+    assert.ok(metricsRequested[0] === 'memory' || metricsRequested[1] === 'memory');
+    assert.ok(metricsRequested[0] === 'la' || metricsRequested[1] === 'la');
+    assert.ok(metricsRequested[2] === 'memory_all');
   });
 });

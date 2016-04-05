@@ -5,12 +5,27 @@ export default Ember.Component.extend(ContainerMetricsComponentMixin, {
   init() {
     this._super(...arguments);
     this.set("uiState.showMemoryLimit", false);
+    this.set("uiState.showCaches", false);
   },
 
-  metric: "memory",
   axisLabel: "Memory usage",
-  axisFormatter: (v) => `${v} MB`,
+
+  axisFormatter: (v) => {
+    if (v > 1000) {
+      return `${v / 1000} GB`;
+    }
+    return `${v} MB`;
+  },
+
   axisBottomPadding: 0,  // Memory is always > 0, we don't need padding on top of it.
+
+  metric: Ember.computed("uiState.showCaches", function() {
+    if (this.get("uiState.showCaches")) {
+      return "memory_all";
+    } else {
+      return "memory";
+    }
+  }),
 
   gridLines: Ember.computed("minMemoryLimit" , function () {
     let minMemoryLimit = this.get("minMemoryLimit"),
