@@ -5,7 +5,7 @@
       <h1>{{organization.name}} Members</h1>
     </div>
 
-    <ul class="resource-metadata">
+    <ul class="resource-metadata resource-metadata--flex">
       {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
         {{#if hasAbility}}
           {{#link-to 'organization.contact-settings' tagName='li' classNames='resource-metadata-item resource-metadata-button'}}
