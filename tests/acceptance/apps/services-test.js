@@ -99,9 +99,10 @@ test(`visit ${url} lists services`, function(assert) {
 });
 
 test(`visit ${url} allows scaling of services`, function(assert) {
-  assert.expect(5);
+  assert.expect(6);
 
   let serviceId = 1;
+  let operationId = 1;
   let services = [{id: serviceId, container_count: 2}];
   let newContainerCount = 3;
 
@@ -113,8 +114,8 @@ test(`visit ${url} allows scaling of services`, function(assert) {
 
   stubStack({id: stackId});
 
-  stubRequest('put', `/services/${serviceId}`, function(request){
-    assert.ok(true, 'PUTs to services');
+  stubRequest('get', `/services/${serviceId}`, function(request){
+    assert.ok(true, 'GETs service');
     let json = this.json(request);
     json.id = serviceId;
     return this.success(json);
@@ -124,7 +125,16 @@ test(`visit ${url} allows scaling of services`, function(assert) {
     let json = this.json(request);
     assert.equal(json.type, 'scale');
     assert.equal(json.container_count, newContainerCount);
-    return this.success();
+    json.id = serviceId;
+    return this.success(json);
+  });
+
+  stubRequest('get', `/operations/${operationId}`, function(request){
+    assert.ok(true, 'GETs operation');
+    let json = this.json(request);
+    json.id = operationId;
+    json.status = 'succeeded';
+    return this.success(json);
   });
 
   signInAndVisit(url);

@@ -22,7 +22,11 @@ Router.map(function() {
       resetNamespace: true,
       path: "apps/:app_id"
     }, function() {
-      this.route("services");
+      this.route("services", function () {
+        this.route('metrics', {
+          path: ':service_id/metrics'
+        });
+      });
       this.route("vhosts", {}, function(){
         this.route('new');
         this.route('edit', {
@@ -41,6 +45,7 @@ Router.map(function() {
       this.route("activity");
       this.route("replicate");
       this.route("cluster");
+      this.route("metrics");
       this.route("deprovision");
     });
 

@@ -3,6 +3,10 @@
     {{link-to "Activity" "database.activity"}}
   {{/activating-item}}
 
+  {{#activating-item currentWhen="database.metrics" tagName="li"}}
+    {{link-to "Metrics" "database.metrics"}}
+  {{/activating-item}}
+
   {{#if model.supportsReplication}}
     {{#activating-item currentWhen="database.replicate" tagName="li"}}
       {{link-to "Replicate" "database.replicate"}}

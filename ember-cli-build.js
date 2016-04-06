@@ -45,6 +45,14 @@ module.exports = function(defaults) {
   // Copy to clipboard
   app.import("bower_components/clipboard/dist/clipboard.js");
 
+  // Charts
+  app.import('bower_components/d3/d3.js');
+  app.import('bower_components/c3/c3.js');
+  app.import('bower_components/c3/c3.css');
+
+  // Shim to load c3
+  app.import('vendor/shims/c3.js');
+
   // Use `app.import` to add additional libraries to the generated
   // output files.
   //

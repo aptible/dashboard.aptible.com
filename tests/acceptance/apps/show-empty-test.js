@@ -206,7 +206,7 @@ test(`visit ${deployStepsUrl} with app services should redirect to services page
   signInAndVisit(deployStepsUrl);
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.app.services', 'redirected to app services');
+    assert.equal(currentPath(), 'dashboard.app.services.index', 'redirected to app services');
   });
 });
 
