@@ -78,11 +78,11 @@
   margin: 10px 0 0;
 
   &.disk-size-slider {
+    display: flex;
     margin-top: 0;
 
     .slider-wrapper {
       margin-right: 0;
-      margin-left: 100px;
     }
 
     .container-count {
@@ -90,13 +90,25 @@
     }
   }
 
+  .alert {
+    margin-right: 55px;
+  }
+
+  .slider-input-wrapper--flex {
+    display: flex;
+  }
+
   .slider-actions {
-    float: right;
-    width: 60px;
+    text-align: right;
+    visibility: hidden;
+    // width: 60px;
+
+    &[data-visible='true'] {
+      visibility: visible;
+    }
 
     .btn {
       display: inline-block;
-      float: right;
     }
 
     .btn-cancel {
@@ -106,8 +118,9 @@
 
   .slider-wrapper {
     display: block;
-    margin-left: 60px;
-    margin-right: 60px;
+    flex-grow: 1;
+    margin-left: 30px;
+    margin-right: 10px;
   }
 
   .container-count {

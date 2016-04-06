@@ -20,12 +20,25 @@
         </div>
       {{/if}}
 
-      <div class="container-count">
-        {{containerCount}}
-      </div>
+      <div class="slider-input-wrapper--flex">
+        <div class="container-count">
+          {{containerCount}}
+        </div>
 
-      {{#if showActionButtons}}
-        <div class="slider-actions">
+        <div class="slider-wrapper">
+          {{no-ui-slider didSlide="setContainerCount"
+                         didSet="finishSliding"
+                         start=containerCount
+                         rangeMin=0
+                         rangeMax=10
+                         step=1}}
+          <div class="label-wrapper">
+            <div class="label pull-left">0</div>
+            <div class="label pull-right">10</div>
+          </div>
+        </div>
+
+        <div class="slider-actions" data-visible="{{showActionButtons}}">
           <button {{action "cancel"}} class="btn btn-xs btn-default btn-cancel">Cancel</button>
           <button {{action "scale"}} class="btn btn-xs btn-primary slider-confirm">
             {{#if isSaving}}
@@ -34,19 +47,6 @@
               Scale
             {{/if}}
           </button>
-        </div>
-      {{/if}}
-
-      <div class="slider-wrapper">
-        {{no-ui-slider didSlide="setContainerCount"
-                       didSet="finishSliding"
-                       start=containerCount
-                       rangeMin=0
-                       rangeMax=10
-                       step=1}}
-        <div class="label-wrapper">
-          <div class="label pull-left">0</div>
-          <div class="label pull-right">10</div>
         </div>
       </div>
     </div>
