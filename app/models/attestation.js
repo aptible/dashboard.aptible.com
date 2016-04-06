@@ -1,11 +1,37 @@
 import DS from 'ember-data';
 import Ember from 'ember';
 
+let { decamelize, capitalize } = Ember.String;
+
+export const VALIDATION_ERROR_TEST = /#\//;
+export const VALIDATION_PROPERTY_MATCH = /The property '#\/([^']+)'.+/;
+export const VALIDATION_ERROR_MATCH = /The property '#\/.+' (.+)/;
+
 let Attestation = DS.Model.extend({
   handle: DS.attr('string'),
   organizationUrl: DS.attr('string'),
   schemaId: DS.attr('string'),
-  document: DS.attr({ defaultValue: {} })
+  document: DS.attr({ defaultValue: {} }),
+  createdAt: DS.attr('iso-8601-timestamp'),
+
+  validationErrors: Ember.computed('errors.[]', function() {
+    let validationErrors = [];
+    this.get('errors').forEach((error) => {
+      let message = error.message;
+      if (VALIDATION_ERROR_TEST.test(message)) {
+        let path = message.replace(VALIDATION_PROPERTY_MATCH, '$1')
+                          .replace('/', '.');
+        let error = message.replace(VALIDATION_ERROR_MATCH, '$1')
+                           .replace('did', 'does');
+
+        let property = path.split('.').reverse()[0];
+        let propertyName = capitalize(decamelize(property).replace('_', ' '));
+
+        validationErrors.push({ path, error, propertyName });
+      }
+    });
+    return validationErrors;
+  })
 });
 
 Attestation.reopenClass({
