@@ -138,11 +138,11 @@ test(`visit ${url} allows scaling of services`, function(assert) {
   });
 
   signInAndVisit(url);
-  andThen( () => {
+  andThen(() => {
     assert.equal($('.btn:contains("Scale")').css('visibility'), 'hidden');
     triggerSlider('.slider', newContainerCount);
   });
-  andThen( () => {
+  andThen(() => {
     assert.equal($('.btn:contains("Scale")').css('visibility'), 'visible');
     clickButton('Scale');
   });
