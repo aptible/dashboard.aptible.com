@@ -29,6 +29,7 @@ test('it maps schema errors to `validationErrors` property', function(assert) {
 
   let expected = {
     path: 'alertNotifications.enabledNotifications',
+    propertyName: 'Enabled notifications',
     error: 'does not contain a minimum number of items 1'
   };
 

@@ -1,6 +1,8 @@
 import DS from 'ember-data';
 import Ember from 'ember';
 
+let { decamelize, capitalize } = Ember.String;
+
 export const VALIDATION_ERROR_TEST = /#\//;
 export const VALIDATION_PROPERTY_MATCH = /The property '#\/([^']+)'.+/;
 export const VALIDATION_ERROR_MATCH = /The property '#\/.+' (.+)/;
@@ -21,7 +23,11 @@ let Attestation = DS.Model.extend({
                           .replace('/', '.');
         let error = message.replace(VALIDATION_ERROR_MATCH, '$1')
                            .replace('did', 'does');
-        validationErrors.push({ path, error });
+
+        let property = path.split('.').reverse()[0];
+        let propertyName = capitalize(decamelize(property).replace('_', ' '));
+
+        validationErrors.push({ path, error, propertyName });
       }
     });
     return validationErrors;
