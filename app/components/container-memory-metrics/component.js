@@ -11,8 +11,9 @@ export default Ember.Component.extend(ContainerMetricsComponentMixin, {
   axisLabel: "Memory usage",
 
   axisFormatter: (v) => {
-    if (v > 1000) {
-      return `${v / 1000} GB`;
+    if (v > 10240) {
+      // Show GBs above 10GB of usage.
+      return `${v / 1024} GB`;
     }
     return `${v} MB`;
   },
