@@ -16,10 +16,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
         .findOrCreate(attestationParams, this.store)
         .then((dataEnvironments) => {
           if (dataEnvironments.get('isNew')) {
-            // No exisisting data environment attestation
-            // Redirect to set up new data environment attestation
             reject();
-            this.transitionTo('setup.data-environments');
           }
 
           let dataEnvironmentSelections = dataEnvironments.get('document');
@@ -28,6 +25,10 @@ export default Ember.Route.extend(SPDRouteMixin, {
                                                   organizationUrl, this.store);
           resolve(groups);
         }, reject)
+    }).catch(() => {
+      // No exisisting data environment attestation
+      // Redirect to set up new data environment attestation
+      this.transitionTo('setup.data-environments');
     });
   },
 

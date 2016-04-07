@@ -1,64 +1,27 @@
-<div class="row">
-  <div class="col-xs-4">
-    <div class="security-control-title">
-      <div class="title">
-        {{property.title}}
-        {{#if property.displayProperties.tooltip}}
-          {{#learn-more-tooltip tip=property.displayProperties.tooltip}}
-            <i class="fa fa-question-circle"></i>
-          {{/learn-more-tooltip}}
-        {{/if}}
-      </div>
-
-      {{#if property.description}}
-        <div class="description">{{property.description}}</div>
+<div class="security-control-fields">
+  <div class="security-control-title">
+    <div class="title">
+      {{property.title}}
+      {{#if property.displayProperties.tooltip}}
+        {{#learn-more-tooltip tip=property.displayProperties.tooltip}}
+          <i class="fa fa-question-circle"></i>
+        {{/learn-more-tooltip}}
       {{/if}}
     </div>
+
+    {{#if property.description}}
+      <div class="description">{{property.description}}</div>
+    {{/if}}
   </div>
-
-  <div class="col-xs-8">
-    <div class="security-control-fields">
-      {{#each-property properties=property.properties document=document as |fieldKey field fieldType fieldOptions|}}
-        {{#if fieldOptions.showProperty}}
-          <div class="security-control-field {{fieldKey}}">
-
-            <div class="header">
-              {{#if field.title}}
-                <div class="title">
-                  {{field.title}}
-
-                  {{#if field.displayProperties.tooltip}}
-                    {{#learn-more-tooltip tip=field.displayProperties.tooltip}}
-                      <i class="fa fa-question-circle"></i>
-                    {{/learn-more-tooltip}}
-                  {{/if}}
-                </div>
-              {{/if}}
-
-              {{#if field.description}}
-                <div class="description">{{field.description}}</div>
-              {{/if}}
-            </div>
-
-
-            <div class="schema-field-wrapper">
-              {{#if field.readonly}}
-                <div class="locked-property">
-                  <i class="fa fa-lock"></i>
-                </div>
-              {{/if}}
-
-              {{component (concat 'schema-field-' fieldType)
-                key=(concat (concat property.key '.') fieldKey)
-                property=field
-                document=document
-                changed="onChange"}}
-            </div>
-          </div>
-
-        {{/if}}
-      {{/each-property}}
-    </div>
-
-  </div>
+  {{#each-property properties=property.properties document=document as |fieldKey field fieldType fieldOptions|}}
+    {{security-control-field
+      attestation=attestation
+      parentKey=key
+      key=fieldKey
+      property=field
+      type=fieldType
+      document=document
+      options=fieldOptions}}
+  {{/each-property}}
 </div>
+

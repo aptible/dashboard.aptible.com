@@ -12,10 +12,12 @@ export default Ember.Route.extend(SPDRouteMixin, {
   },
 
   save() {
-    let { schemaDocument, attestation } = this.currentModel;
+    Ember.run(() => window.scrollTo(0, 0));
 
-    attestation.set('document', schemaDocument.dump());
-    Ember.set(this.currentModel, 'completed', true);
+    let { schemaDocument, attestation } = this.currentModel;
+    let documentClone = Ember.$.extend(true, {}, schemaDocument.dump({ excludeInvalid: true }));
+
+    attestation.set('document', documentClone);
     return attestation.save();
   },
 
@@ -50,13 +52,38 @@ export default Ember.Route.extend(SPDRouteMixin, {
     }
   },
 
+  transitionToPreviousGroup() {
+    let handle = this.currentModel.handle;
+    let securityControlGroups = this.modelFor('setup.security-controls');
+    let transition;
+
+    securityControlGroups.forEach((group, index) => {
+      let previous = securityControlGroups[index - 1];
+
+      if (group.handle === handle && previous) {
+        transition = this.transitionTo('setup.security-controls.show', previous);
+      }
+    });
+
+    if (!transition) {
+      this.transitionTo('setup.security-controls');
+    }
+  },
+
   actions: {
     onPrevious() {
-      this.transitionTo('setup.security-controls');
+      this.transitionToPreviousGroup();
     },
 
     onNext() {
-      this.save().then(() => { this.transitionToNextGroup(); });
+      this.save().then(() => {
+        this.transitionToNextGroup();
+        Ember.set(this.currentModel, 'completed', true);
+      });
+    },
+
+    onSave() {
+      this.save();
     }
   }
 });

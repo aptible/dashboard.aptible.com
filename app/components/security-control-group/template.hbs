@@ -1,3 +1,32 @@
+<header class="security-control-group-header">
+  <button class="btn btn-default btn-sm pull-right" {{action "save"}} disabled={{attestation.isSaving}}>
+    {{#if attestation.isSaving}}
+      <i class="fa fa-spin fa-spinner"></i> Saving...
+    {{else}}
+      Save
+    {{/if}}
+  </button>
+  {{provider-logo size="sm" provider=provider}}
+
+  <h1 class="security-control-group-title">
+    {{schema.schema.title}}
+  </h1>
+
+  {{#liquid-if showStatusBar class="status-bar"}}
+    {{#liquid-if validationErrors class="fadeIn error-message"}}
+      <i class="fa fa-exclamation-circle"></i> {{validationErrors}}
+    {{/liquid-if}}
+
+    {{#liquid-if saveMessage class="fadeIn save-message"}}
+      <i class="fa fa-check"></i> {{saveMessage}}
+    {{/liquid-if}}
+
+    {{#liquid-if attestation.isSaving class="fadeIn save-message"}}
+      <i class="fa fa-spin fa-spinner"></i> Saving...
+    {{/liquid-if}}
+  {{/liquid-if}}
+</header>
+
 {{#if isLoading}}
   <div class="loading-security-controls">
     <div class="loading-provider">
@@ -18,23 +47,28 @@
         type=type
         provider=securityControlGroup.provider
         document=document
+        attestation=attestation
       }}
     {{/each-property}}
   </div>
 
-  {{#liquid-if showStatusBar}}
-    <div class="panel-footer">
-      {{#liquid-if validationErrors class="fadeIn error-message"}}
-        <i class="fa fa-exclamation-circle"></i> {{validationErrors}}
-      {{/liquid-if}}
-
-      {{#liquid-if saveMessage class="fadeIn save-message"}}
-        <i class="fa fa-check"></i> {{saveMessage}}
-      {{/liquid-if}}
-
-      {{#liquid-if attestation.isSaving class="fadeIn save-message"}}
-        <i class="fa fa-spin fa-spinner"></i> Saving...
-      {{/liquid-if}}
+  <div class="security-control-group-footer">
+    <button class="btn btn-primary btn-sm pull-left" {{action "previous"}}>← Back</button>
+    <div class="pull-right">
+      <button class="btn btn-default btn-sm" style="margin-right:10px;" {{action "save"}} disabled={{attestation.isSaving}}>
+        {{#if attestation.isSaving}}
+          <i class="fa fa-spin fa-spinner"></i> Saving...
+        {{else}}
+          Save
+        {{/if}}
+      </button>
+      <button class="btn btn-primary btn-sm" {{action "next"}} disabled={{attestation.isSaving}}>
+        {{#if attestation.isSaving}}
+          <i class="fa fa-spin fa-spinner"></i> Saving...
+        {{else}}
+          Next →
+        {{/if}}
+      </button>
     </div>
-  {{/liquid-if}}
+  </div>
 {{/if}}

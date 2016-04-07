@@ -1,15 +1,9 @@
 .security-control {
-  .checkbox {
-    label {
+  border-bottom: 1px solid $color-border-gray;
+  padding: 30px;
 
-    }
-  }
-  .radio-button-option {
-    margin-bottom: 10px;
-
-    .radio label {
-
-    }
+  &:last-child {
+    border: 0;
   }
 
   .title {
@@ -47,12 +41,6 @@
   }
 }
 
-.panel.security-controls {
-  .panel-section {
-    padding: 20px
-  }
-}
-
 .locked-property {
   display: block;
   float: right;
@@ -62,25 +50,21 @@
 }
 
 .security-control-title {
-  padding: 30px 0 0 30px;
-
   .title {
-    font-size: 16px;
-  }
-}
-
-.security-control {
-  &:first-child {
-    .security-control-field:first-child {
-      border: 0;
-    }
+    font-size: 18px;
   }
 }
 
 .security-control-field {
   @extend %clearfix;
-  padding: 30px 30px 30px 0;
-  border-top: 1px solid $color-border-gray;
+  padding: 15px 0;
+
+  &.with-errors {
+    border: 1px solid #FFDBD7;
+    border-radius: 5px;
+    background: #FFEFEF;
+    padding: 15px;
+  }
 
   .title {
     font-size: 15px;
@@ -102,57 +86,5 @@
 
   .toggle, .form-control, .radio {
     margin-top: 15px;
-  }
-
-  &.implemented, &.permitted {
-    .schema-field-radio [type="radio"] + span {
-      font-size: 11px;
-    }
-
-    .schema-field-radio [type="radio"] + span::before {
-      vertical-align: -7px;
-    }
-
-    .radio-button-option {
-      margin: 0;
-
-      label {
-        text-transform: uppercase;
-        color: $color-light;
-        font-weight: $weight-semibold;
-        font-size: 11px;
-      }
-    }
-
-    .toggle {
-      text-align: right;
-    }
-
-    .radio {
-      margin: 0;
-    }
-
-    .radio-button-option {
-      width: 80px;
-      float: left;
-      margin-bottom: 0;
-    }
-
-    .header {
-      float: left;
-      margin-right: 200px;
-    }
-
-    .schema-field-wrapper {
-      float: right;
-      width: 190px;
-      position: absolute;
-      right: 0;
-      top: 19px;
-
-      .radio-button-option:first-child {
-        margin-bottom: 0;
-      }
-    }
   }
 }

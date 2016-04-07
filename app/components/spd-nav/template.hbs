@@ -1,10 +1,5 @@
 <header class="new-header">
   <div class="container">
-
-    {{#if previous}}
-      <a {{action 'previous' previous.path}} class="spd-back-button">←</a>
-    {{/if}}
-
     {{#if isOnAStep}}
       {{spd-progress steps=steps}}
     {{/if}}
@@ -21,19 +16,28 @@
       {{#if next}}
         <div class="header-right">
           <ul class="header-actions">
-            <li>
-              <button {{action 'save'}} class="btn btn-default btn-sm spd-nav-save">Save</button>
-            </li>
+            {{#if showSave}}
+              <li>
+                <button {{action 'save'}} class="btn btn-default btn-sm spd-nav-save">Save</button>
+              </li>
+            {{/if}}
+
+            {{#if showPrevious}}
+              <li>
+                <button {{action 'previous' previous.path}} class="btn btn-primary btn-sm spd-nav-save">← Back</button>
+              </li>
+            {{/if}}
+
             <li>
               {{#if preventContinueMessage}}
                 {{#bs-tooltip title=preventContinueMessage}}
                   <div>
-                    <button class="btn btn-primary btn-sm" disabled="disabled">Save &amp; Continue →</button>
+                    <button class="btn btn-primary btn-sm" disabled="disabled">Next →</button>
                   </div>
                 {{/bs-tooltip}}
               {{else}}
                 <button {{action 'next' next.path}} class="btn btn-primary btn-sm top-continue-button">
-                  Save &amp; Continue →
+                  Next →
                 </button>
               {{/if}}
             </li>

@@ -1,5 +1,27 @@
-.security-control-group-title {
-  font-size: 18px;
+.security-control-group-header {
+  @extend %clearfix;
+  padding: 45px 30px;
+  border-bottom: 1px solid $color-border-gray;
+
+  .data-environment-provider {
+    float: left;
+    margin-right: 30px;
+  }
+
+  .security-control-group-title {
+    float: left;
+    font-size: 20px;
+    margin: 6px 0 0 0;
+  }
+
+  .status-bar {
+    clear: both;
+  }
+}
+
+.security-control-group-footer {
+  @extend %clearfix;
+  padding: 30px;
 }
 
 .loading-provider {
@@ -16,12 +38,11 @@
 
 .security-control-group {
   display: flex;
-  order: 1;
+  order: 2;
   flex: 1;
   background: #fff;
-  border-right: 1px solid $color-border-gray;
+  border-left: 1px solid $color-border-gray;
   border-radius: 3px 0 0 3px;
-  align-items: center;
   justify-content: center;
 
   > .liquid-container,
@@ -32,7 +53,7 @@
 
 .security-controls {
   .layout-sidebar {
-    order: 2;
+    order: 1;
     flex: 0 0 300px;
     border: 0;
     background: none;
@@ -46,13 +67,15 @@
     }
 
     .active {
-      margin-left: -1px;
-
       > .step {
         font-weight: $weight-semibold;
         color: $color-primary;
         background: $color-border-gray;
         border-radius: 0 5px 5px 0;
+      }
+
+      i.success {
+        margin-right: 8px;
       }
     }
 
@@ -66,8 +89,12 @@
   }
 }
 
-.panel-footer {
+.status-bar {
   @extend %clearfix;
+
+  > .liquid-child {
+    padding-top: 30px;
+  }
 
   .save-message {
     color: $color-light;
@@ -114,6 +141,24 @@
   .security-controls-provider {
     .data-environment-provider {
       margin-top:-50px;
+    }
+  }
+}
+
+.security-control-group-index {
+  .checklist .step-cta {
+    margin: 22px 30px 0 0;
+  }
+
+  .step-title {
+    .data-environment-provider {
+      width: 120px;
+      display: inline-block;
+      text-align: center;
+
+      img {
+        height: 22px;
+      }
     }
   }
 }

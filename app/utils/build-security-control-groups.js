@@ -35,7 +35,7 @@ export default function(dataEnvironments, organizationUrl, store) {
   });
 
   securityControlGroups = securityControlGroups.concat(globalSecurityControlGroups.map((global) => {
-    return { handle: global, provider: 'global' };
+    return { handle: global, provider: 'aptible' };
   }));
 
   securityControlGroups.push({ handle: 'aptible_security_controls', provider: 'aptible' });
@@ -67,7 +67,6 @@ function loadSchemaAndAttestation(securityControlGroup, organizationUrl, store) 
   return securityControlGroup;
 }
 
-
 function onAttestationLoad(attestation, securityControlGroup) {
   if(!attestation.get('isLoaded')) {
     return;
@@ -75,6 +74,7 @@ function onAttestationLoad(attestation, securityControlGroup) {
 
   let { schema } = securityControlGroup;
   let schemaDocument = schema.buildDocument();
+  console.log("Building document " + securityControlGroup.handle);
   let completed = !attestation.get('isNew');
 
   if(schema.id === attestation.get('schemaId')) {

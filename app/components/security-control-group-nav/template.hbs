@@ -1,12 +1,16 @@
 <li class="title">Progress</li>
 
+<li>
+  {{link-to '← All' 'setup.security-controls'}}
+</li>
+
 {{#each groups as |securityControlGroup|}}
   <li class="{{if (eq current.handle securityControlGroup.handle) 'active' null}}">
-    <div class="step">
+    {{#link-to 'setup.security-controls.show' securityControlGroup class="step"}}
       {{#if securityControlGroup.completed}}
         <i class="fa fa-check success"></i>
       {{/if}}
       {{securityControlGroup.schema.schema.title}}
-    </div>
+    {{/link-to}}
   </li>
 {{/each}}

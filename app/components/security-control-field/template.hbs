@@ -1,0 +1,45 @@
+{{#if options.showProperty}}
+  <div class="security-control-field {{key}} {{if errors 'with-errors' null}}">
+
+  {{#if errors}}
+    {{#each errors as |error|}}
+      <div class="alert alert-danger">
+        <i class="fa fa-exclamation-circle"></i>
+        {{error.propertyName}} {{error.error}}
+      </div>
+    {{/each}}
+  {{/if}}
+
+    <div class="header">
+      {{#if property.title}}
+        <div class="title">
+          {{property.title}}
+
+          {{#if property.displayProperties.tooltip}}
+            {{#learn-more-tooltip tip=property.displayProperties.tooltip}}
+              <i class="fa fa-question-circle"></i>
+            {{/learn-more-tooltip}}
+          {{/if}}
+        </div>
+      {{/if}}
+
+      {{#if property.description}}
+        <div class="description">{{property.description}}</div>
+      {{/if}}
+    </div>
+
+
+    <div class="schema-field-wrapper">
+      {{#if property.readonly}}
+        <div class="locked-property">
+          <i class="fa fa-lock"></i>
+        </div>
+      {{/if}}
+
+      {{component (concat 'schema-field-' type)
+        key=(concat (concat parentKey '.') key)
+        property=property
+        document=document}}
+    </div>
+  </div>
+{{/if}}
