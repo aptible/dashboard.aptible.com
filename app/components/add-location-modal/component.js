@@ -40,7 +40,7 @@ export default Ember.Component.extend({
         return;
       }
 
-      this.sendAction('action', newLocation);
+      this.sendAction('onLocationCreated', newLocation);
 
       Ember.run.later(() => {
         this.set('newLocation', document.addItem());

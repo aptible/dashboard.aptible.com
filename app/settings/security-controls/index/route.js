@@ -1,10 +1,9 @@
 import Ember from 'ember';
-import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
 
-export default Ember.Route.extend(SPDRouteMixin, {
+export default Ember.Route.extend({
   stepName: 'security-controls',
   model() {
-    return this.modelFor('setup.security-controls');
+    return this.modelFor('settings.security-controls');
   },
 
   setupController(controller, model) {
@@ -20,7 +19,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
 
       this.currentModel.forEach((securityControlGroup) => {
         if (!securityControlGroup.completed && !transition) {
-          transition = this.transitionTo('setup.security-controls.show', securityControlGroup);
+          transition = this.transitionTo('settings.security-controls.show', securityControlGroup);
         }
       });
 

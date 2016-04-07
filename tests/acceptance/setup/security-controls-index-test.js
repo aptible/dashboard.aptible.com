@@ -6,7 +6,7 @@ import { orgId, rolesHref, usersHref, invitationsHref, securityOfficerId,
          securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
-let securityControlsUrl = `${orgId}/settings/security-controls`;
+let securityControlsUrl = `${orgId}/setup/security-controls`;
 let roleId = 'owners-role';
 let userId = 'u1';
 let roles = [
@@ -32,7 +32,7 @@ let users = [
   }
 ];
 
-module('Acceptance: Security Program Settings: Security Controls Index', {
+module('Acceptance: Setup: Security Controls Index', {
   beforeEach() {
     application = startApp();
   },
@@ -92,6 +92,82 @@ test('Resuming with existing attestations', function(assert) {
     assert.equal(currentPath(), 'organization.setup.security-controls.show');
 
     assert.ok(find('input[name="security.implemented"]').is(':checked'), 'Existing attestation is loaded');
+  });
+});
+
+test('Clicking next will resume to first unfinished group', function(assert) {
+  stubCurrentAttestations({
+    selected_data_environments: selectedDataEnvironments,
+    aws_security_controls: {},
+    amazon_s3_security_controls: {}
+  });
+  stubProfile({ currentStep: 'security-controls'});
+  stubRequests();
+  signInAndVisit(securityControlsUrl);
+
+  andThen(() => {
+    let awsStep = findWithAssert('.step.aws_security_controls');
+    assert.ok(awsStep.hasClass('completed-step'), 'step is completed');
+
+    let s3Step = findWithAssert('.step.amazon_s3_security_controls');
+    assert.ok(s3Step.hasClass('completed-step'), 'step is completed');
+  });
+
+  andThen(clickContinueButton);
+
+  andThen(() => {
+    assert.equal(currentPath(), 'organization.setup.security-controls.show');
+    let title = findWithAssert('.security-control-group-title');
+    assert.ok(title.is(':contains(Google)'), 'on google security control group');
+  });
+});
+
+test('Clicking next with all completed groups will finish SPD', function(assert) {
+  expect(4);
+
+  stubCurrentAttestations({
+    selected_data_environments: selectedDataEnvironments,
+    aws_security_controls: {},
+    amazon_s3_security_controls: {},
+    google_security_controls: {},
+    application_security_controls: {},
+    security_procedures_security_controls: {},
+    workforce_security_controls: {},
+    workstation_security_controls: {},
+    aptible_security_controls: {},
+    gmail_security_controls: {},
+    email_security_controls: {}
+  });
+  stubProfile({ currentStep: 'security-controls'});
+  stubRequests();
+  signInAndVisit(securityControlsUrl);
+
+  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
+    let json = this.json(request);
+    json.id = orgId;
+
+    assert.ok(true, 'updates organization profile');
+    assert.equal(json.current_step, 'finish');
+    assert.equal(json.has_completed_setup, true);
+
+    return this.success(json);
+  });
+
+  andThen(clickContinueButton);
+
+  andThen(() => {
+    assert.equal(currentPath(), 'organization.setup.finish');
+  });
+});
+
+test('With no data environments configured it redirects back to data environment step', function(assert) {
+  stubCurrentAttestations({ selected_data_environments: [] });
+  stubProfile({ currentStep: 'security-controls'});
+  stubRequests();
+  signInAndVisit(securityControlsUrl);
+
+  andThen(() => {
+    assert.equal(currentPath(), 'organization.setup.data-environments');
   });
 });
 

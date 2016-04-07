@@ -2,17 +2,17 @@ export default {
   "$schema":"http://json-schema.org/draft-04/schema#",
   "id":"workstation_security_controls/1",
   "type":"object",
-  "title":"Workstation Controls",
-  "description": "Workstation security controls",
+  "title":"Email Security Controls",
+  "description": "Email security controls",
   "properties":{
-    "keyboardLocks":{
+    "encryption":{
       "type": "object",
       "required": ["implemented"],
-      "title":"Keyboard Locks",
+      "title":"Do you encrypt?",
       "properties": {
         "implemented": {
           "type":"boolean",
-          "description":"Do you require your workforce to lock their keyboards using a keyboard lock?",
+          "description":"Do you encrypt emails?",
           "displayProperties":{
             "useToggle":true,
             "showLabels":true,
@@ -27,6 +27,6 @@ export default {
   },
 
   "required":[
-    "keyboardLocks"
+    "encryption"
   ]
 };

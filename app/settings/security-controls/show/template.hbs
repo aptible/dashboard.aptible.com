@@ -1,0 +1,8 @@
+<div class="container main-body">
+  {{link-to '← Back to All Security Controls' 'settings.security-controls.index'}}
+  <div class="panel security-controls provider-{{model.provider}}">
+    {{#liquid-bind model use="clean" class="security-control-group" as |currentModel|}}
+      {{security-control-group securityControlGroup=currentModel onSave="onSave"}}
+    {{/liquid-bind}}
+  </div>
+</div>

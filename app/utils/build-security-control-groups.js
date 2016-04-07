@@ -51,7 +51,7 @@ export default function(dataEnvironments, organizationUrl, store) {
 }
 
 function loadSchemaAndAttestation(securityControlGroup, organizationUrl, store) {
-  securityControlGroup.attestation = new Ember.RSVP.Promise((resolve, reject) => {
+  securityControlGroup.attestation = new Ember.RSVP.Promise((resolve) => {
     securityControlGroup.schema = loadSchema(securityControlGroup.handle);
     securityControlGroup.schema.then((schema) => {
       Ember.set(securityControlGroup, 'schema', schema);
@@ -59,7 +59,10 @@ function loadSchemaAndAttestation(securityControlGroup, organizationUrl, store) 
                               schemaId: schema.id, organizationUrl, document: {} };
       let loadAttestation =  Attestation
                                .findOrCreate(attestationParams, store)
-                               .then((attestation) => onAttestationLoad(attestation, securityControlGroup));
+                               .then((attestation) => {
+                                  resolve(attestation);
+                                  onAttestationLoad(attestation, securityControlGroup);
+                                });
       Ember.set(securityControlGroup, 'attestation', loadAttestation);
     });
   });

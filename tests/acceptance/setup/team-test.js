@@ -137,11 +137,11 @@ test('Clicking back should return you to previous step', function(assert) {
   });
 
   andThen(() => {
-    find('.spd-back-button').click();
+    find('.spd-nav-back').click();
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.locations.index', 'returned to locations step');
+    assert.equal(currentPath(), 'organization.setup.locations', 'returned to locations step');
   });
 });
 
@@ -637,7 +637,7 @@ test('Developer and Security Officer groups are validated to include at least on
   andThen(clickContinueButton);
   andThen(() => {
     assert.ok(find('.alert-danger:contains(at least one Developer is required, at least one Security Officer is required.)').length === 1, 'shows an error');
-    assert.equal(currentPath(), 'organization.setup.team.index', 'remains on team step');
+    assert.equal(currentPath(), 'organization.setup.team', 'remains on team step');
   });
 });
 
@@ -832,7 +832,7 @@ function clickSaveButton() {
 }
 
 function openInviteModal() {
-  let button = findWithAssert('button:contains(Invite more users)');
+  let button = findWithAssert('.invite-team-button');
   button.click();
 }
 

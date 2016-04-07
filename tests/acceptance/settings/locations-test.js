@@ -60,7 +60,7 @@ test('Locations page, with existing location attestation', function(assert) {
   signInAndVisit(locationsUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.engines.settings.locations.index', 'remains on locations step');
+    assert.equal(currentPath(), 'organization.engines.settings.locations', 'remains on locations step');
     assert.equal(find('.locations-index table tbody tr').length, 2, 'has two locations');
     assert.ok(find('td:contains(HQ)').length, 'Has first location');
     assert.ok(find('td:contains(Satellite)').length, 'Has second location');
@@ -108,7 +108,7 @@ test('Adding an incomplete location shows an error message', function(assert) {
   andThen(openLocationDialog);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.engines.settings.locations.index', 'remains on location step');
+    assert.equal(currentPath(), 'organization.engines.settings.locations', 'remains on location step');
     fillInLocation();
   });
 
@@ -174,7 +174,7 @@ function fillInLocation(locationData) {
 }
 
 function openLocationDialog() {
-  let openButton = findWithAssert('button:contains(Add new location)');
+  let openButton = findWithAssert('.add-location-button');
   openButton.click();
 }
 

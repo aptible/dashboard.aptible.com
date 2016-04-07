@@ -45,6 +45,20 @@ export default function() {
   );
 
   this.transition(
+    this.fromRoute('settings.security-controls.index'),
+    this.toRoute('settings.security-controls.show'),
+    this.use('toLeft'),
+    this.reverse('toRight')
+  );
+
+  this.transition(
+    this.fromRoute('settings.security-controls.show'),
+    this.toRoute('settings.finish'),
+    this.use('toLeft'),
+    this.reverse('toRight')
+  );
+
+  this.transition(
     this.inHelper('liquid-modal'),
     this.use('fade')
   );

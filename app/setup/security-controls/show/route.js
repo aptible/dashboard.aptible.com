@@ -1,7 +1,5 @@
 import Ember from 'ember';
-import Attestation from 'sheriff/models/attestation';
 import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
-import buildSecurityControlGroups from 'sheriff/utils/build-security-control-groups';
 
 export default Ember.Route.extend(SPDRouteMixin, {
   stepName: 'security-controls',
@@ -48,7 +46,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
 
     if (!transition) {
       // All steps complete, transition to finish step
-      this.next();
+      this.finish();
     }
   },
 

@@ -51,8 +51,7 @@ export default Ember.Route.extend({
     },
 
     onAddLocation() {
-      let newLocation = this.controller.get('document').addItem();
-      this.controller.setProperties({ newLocation });
+      this.controller.addNewLocation();
     }
   }
 });

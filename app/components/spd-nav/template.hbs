@@ -24,7 +24,7 @@
 
             {{#if showPrevious}}
               <li>
-                <button {{action 'previous' previous.path}} class="btn btn-primary btn-sm spd-nav-save">← Back</button>
+                <button {{action 'previous' previous.path}} class="btn btn-primary btn-sm spd-nav-back">← Back</button>
               </li>
             {{/if}}
 
@@ -32,11 +32,11 @@
               {{#if preventContinueMessage}}
                 {{#bs-tooltip title=preventContinueMessage}}
                   <div>
-                    <button class="btn btn-primary btn-sm" disabled="disabled">Next →</button>
+                    <button class="btn btn-primary btn-sm spd-nav-continue" disabled="disabled">Next →</button>
                   </div>
                 {{/bs-tooltip}}
               {{else}}
-                <button {{action 'next' next.path}} class="btn btn-primary btn-sm top-continue-button">
+                <button {{action 'next' next.path}} class="btn btn-primary btn-sm spd-nav-continue">
                   Next →
                 </button>
               {{/if}}

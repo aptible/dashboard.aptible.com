@@ -18,14 +18,14 @@
 
           {{#if securityControlGroup.attestation.isNew}}
             <div class="step-cta">
-              {{link-to 'Get Started →' 'setup.security-controls.show' securityControlGroup classNames="pull-right btn btn-primary start-security-control-group"}}
+              {{link-to 'Get Started →' 'settings.security-controls.show' securityControlGroup classNames="pull-right btn btn-primary start-security-control-group"}}
             </div>
           {{else}}
             <div class="step-completed-note">
               Last completed
               {{format-utc-timestamp securityControlGroup.attestation.createdAt false}}
 
-              {{link-to 'Review' 'setup.security-controls.show' securityControlGroup classNames="review-link"}}
+              {{link-to 'Review' 'settings.security-controls.show' securityControlGroup classNames="review-link"}}
             </div>
           {{/if}}
 

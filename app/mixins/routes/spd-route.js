@@ -46,6 +46,18 @@ export default Ember.Mixin.create({
     this.transitionTo(`setup.${profile.get('currentStep')}`);
   },
 
+  finish() {
+    let profile = this.modelFor('setup');
+    profile.setProperties({ hasCompletedSetup: true, currentStep: 'finish' });
+
+    profile.save().catch((e) => {
+      let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
+      Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
+    });
+
+    this.transitionTo('setup.finish');
+  },
+
   save() {
     let { schemaDocument, attestation } = this.currentModel;
     attestation.set('document', schemaDocument.dump({ excludeInvalid: true }));

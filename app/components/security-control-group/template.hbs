@@ -53,7 +53,10 @@
   </div>
 
   <div class="security-control-group-footer">
-    <button class="btn btn-primary btn-sm pull-left" {{action "previous"}}>← Back</button>
+    {{#if onPrevious}}
+      <button class="btn btn-primary btn-sm pull-left" {{action "previous"}}>← Back</button>
+    {{/if}}
+
     <div class="pull-right">
       <button class="btn btn-default btn-sm" style="margin-right:10px;" {{action "save"}} disabled={{attestation.isSaving}}>
         {{#if attestation.isSaving}}
@@ -62,13 +65,15 @@
           Save
         {{/if}}
       </button>
-      <button class="btn btn-primary btn-sm" {{action "next"}} disabled={{attestation.isSaving}}>
-        {{#if attestation.isSaving}}
-          <i class="fa fa-spin fa-spinner"></i> Saving...
-        {{else}}
-          Next →
-        {{/if}}
-      </button>
+      {{#if onNext}}
+        <button class="btn btn-primary btn-sm" {{action "next"}} disabled={{attestation.isSaving}}>
+          {{#if attestation.isSaving}}
+            <i class="fa fa-spin fa-spinner"></i> Saving...
+          {{else}}
+            Next →
+          {{/if}}
+        </button>
+      {{/if}}
     </div>
   </div>
 {{/if}}
