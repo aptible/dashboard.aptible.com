@@ -16,7 +16,9 @@ export default Ember.Route.extend(SPDRouteMixin, {
     let documentClone = Ember.$.extend(true, {}, schemaDocument.dump({ excludeInvalid: true }));
 
     attestation.set('document', documentClone);
-    return attestation.save();
+    return attestation.save().then(() => {
+      Ember.set(this.currentModel, 'completed', true);
+    });
   },
 
   setupController(controller, model) {

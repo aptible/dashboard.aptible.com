@@ -57,17 +57,17 @@ test('Basic UI', function(assert) {
 
   andThen(() => {
     expectedSecurityControlGroups.forEach((groupName) => {
-      assert.ok(find(`.step-title:contains(${groupName})`).length, `shows ${groupName}`);
+      assert.ok(find(`.info .title:contains(${groupName})`).length, `shows ${groupName}`);
     });
 
-    let googleStep = findWithAssert('.step.google_security_controls');
+    let googleStep = findWithAssert('.panel.google_security_controls');
     let getStarted = googleStep.find('.start-security-control-group');
     assert.ok(getStarted.length, 'Has get started button');
     getStarted.click();
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.security-controls.show');
+    assert.equal(currentPath(), 'organization.setup.security-controls.show', 'on show page');
   });
 });
 
@@ -81,11 +81,11 @@ test('Resuming with existing attestations', function(assert) {
   signInAndVisit(securityControlsUrl);
 
   andThen(() => {
-    let googleStep = findWithAssert('.step.google_security_controls');
-    assert.ok(googleStep.hasClass('completed-step'), 'step is completed');
-    assert.ok(googleStep.find('.fa.fa-check.success').length, 'has checkmark');
+    let googleStep = findWithAssert('.panel.google_security_controls');
+    assert.ok(googleStep.hasClass('completed'), 'step is completed');
+    assert.ok(googleStep.find('.fa.fa-check').length, 'has checkmark');
 
-    googleStep.find('.review-link').click();
+    googleStep.click();
   });
 
   andThen(() => {
