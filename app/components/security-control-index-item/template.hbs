@@ -1,0 +1,34 @@
+{{#link-to showPath securityControlGroup classNames="panel-link"}}
+  <div class="panel white-panel resource-list-item {{securityControlGroup.handle}} {{if securityControlGroup.completed 'completed' null}}">
+    {{#if securityControlGroup.completed}}
+      <div class="triangle-box">
+        <div class="triangle"></div>
+        <i class="fa fa-check"></i>
+      </div>
+    {{/if}}
+
+    <div class="provider">
+      {{provider-logo size="sm" provider=securityControlGroup.provider}}
+    </div>
+
+    <div class="info">
+      <h3 class="title">{{securityControlGroup.schema.schema.title}}</h3>
+      <div class="status">
+        {{#if securityControlGroup.attestation.isNew}}
+          Never Completed
+        {{else}}
+          Completed {{format-utc-timestamp securityControlGroup.attestation.createdAt false}}
+        {{/if}}
+      </div>
+    </div>
+
+    <div class="cta">
+      {{#unless securityControlGroup.completed}}
+        {{link-to
+          'Start'
+          showPath securityControlGroup
+          classNames="btn btn-default btn-sm start-security-control-group"}}
+      {{/unless}}
+    </div>
+  </div>
+{{/link-to}}

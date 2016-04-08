@@ -128,7 +128,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
     },
 
     showInviteModal() {
-      this.controller.set('showInviteModal', true);
+      this.controller.showInviteModal();
     },
 
     inviteTeam(inviteList, roleId) {

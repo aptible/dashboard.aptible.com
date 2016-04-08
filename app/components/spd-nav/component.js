@@ -39,6 +39,13 @@ export default Ember.Component.extend({
   }),
 
   isOnAStep: Ember.computed.gte('currentStepIndex', 0),
+  showSave: Ember.computed('onSave', function() {
+    return !!this.get('onSave');
+  }),
+
+  showPrevious: Ember.computed('onPrevious', function() {
+    return !!this.get('onPrevious');
+  }),
 
   steps: Ember.computed('routingService.currentPath', function() {
     let currentStepIndex = this.get('currentStepIndex');

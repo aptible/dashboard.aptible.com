@@ -1,0 +1,11 @@
+<div class="container main-body">
+  <div class="panel security-controls provider-{{model.provider}}">
+    <div class="panel-sidebar panel-sidebar-right layout-sidebar">
+      {{security-control-group-nav groups=securityControlGroups current=model}}
+    </div>
+
+    {{#liquid-bind model use="clean" class="security-control-group" as |currentModel|}}
+      {{security-control-group securityControlGroup=currentModel onNext="onNext" onPrevious="onPrevious" onSave="onSave"}}
+    {{/liquid-bind}}
+  </div>
+</div>

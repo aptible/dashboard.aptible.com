@@ -3,18 +3,6 @@
   onNext="onNext"
   onPrevious="onPrevious"
   stepName="Security Controls"
-  onSave="onSave"
 }}
 
-<div class="container main-body">
-  {{#each model as |securityControlGroup|}}
-    {{security-control-group
-      securityControlGroup=securityControlGroup
-      organizationUrl=organizationUrl
-    }}
-  {{/each}}
-
-  <div>
-    <button class="btn btn-primary btn-lg" {{action "onNext"}}>Continue →</button>
-  </div>
-</div>
+{{liquid-outlet}}

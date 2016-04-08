@@ -1,40 +1,104 @@
-.loading-security-controls {
-  width: 400px;
-  margin: 30px auto;
+.security-control-group-header {
+  @extend %clearfix;
+  padding: 45px 30px;
+  border-bottom: 1px solid $color-border-gray;
 
   .data-environment-provider {
-    text-align: center;
-    opacity: .5;
+    float: left;
+    margin-right: 30px;
   }
 
-  .loading-progress {
-    .progress {
-      height: 3px;
-      border-radius: 3px;
-      background: $color-bg-gray;
-      box-shadow: none;
-      margin: 20px 0;
-    }
-
-    .progress-bar {
-      color: $color-bright-blue;
-    }
+  .security-control-group-title {
+    float: left;
+    font-size: 20px;
+    margin: 6px 0 0 0;
   }
 
-  .progress-message {
-    text-align: center;
-    font-size: 11px;
-    color: $color-light;
+  .status-bar {
+    clear: both;
   }
 }
 
-.panel-footer {
+.security-control-group-footer {
   @extend %clearfix;
+  padding: 30px;
+}
+
+.loading-provider {
+  margin: 50px 0;
+  text-align: center;
+  color: #c0c0c0;
+  font-size: 30px;
+}
+
+.loading-progress {
+  color: $color-light;
+  text-align:center;
+}
+
+.security-control-group {
+  display: flex;
+  order: 2;
+  flex: 1;
+  background: #fff;
+  border-left: 1px solid $color-border-gray;
+  border-radius: 3px 0 0 3px;
+  justify-content: center;
+
+  > .liquid-container,
+  > .liquid-child {
+    width: 100%;
+  }
+}
+
+.security-controls {
+  .layout-sidebar {
+    order: 1;
+    flex: 0 0 300px;
+    border: 0;
+    background: none;
+  }
+
+  .sidebar-nav {
+    border: 0;
+
+    > li {
+      margin-bottom: 4px;
+    }
+
+    .active {
+      > .step {
+        font-weight: $weight-semibold;
+        color: $color-primary;
+        background: $color-border-gray;
+        border-radius: 0 5px 5px 0;
+      }
+
+      i.success {
+        margin-right: 8px;
+      }
+    }
+
+    .step {
+      color: $color-light;
+      padding: 12px;
+      font-size: 13px;
+      padding: 8px 10px;
+      padding-left: 20px;
+    }
+  }
+}
+
+.status-bar {
+  @extend %clearfix;
+
+  > .liquid-child {
+    padding-top: 30px;
+  }
 
   .save-message {
     color: $color-light;
     font-size: 12px;
-    margin: 7px 10px 0 0;
 
     .fa-check {
       color: $color-success;
@@ -45,7 +109,6 @@
     color: $color-danger;
     font-weight: $weight-semibold;
     font-size: 12px;
-    margin: 7px 10px 0 0;
 
     .fa-exclamation-circle {
       color: $color-danger;
@@ -53,13 +116,17 @@
   }
 }
 
+.panel.security-controls {
+  display: flex;
+  flex: 1;
+}
 
 .security-controls-provider {
   text-align: center;
 
   .data-environment-provider {
     top: 50%;
-    margin-top: -50px;
+    margin-top: -25px;
     position: absolute;
     width: 230px;
     text-align: center;
@@ -67,8 +134,13 @@
 }
 
 .security-controls-list {
-  &.with-provider {
-    border-left: 1px solid $color-border-gray;
-    margin-left: 230px;
+  width: 100%;
+}
+
+.security-controls.with-save-bar {
+  .security-controls-provider {
+    .data-environment-provider {
+      margin-top:-50px;
+    }
   }
 }

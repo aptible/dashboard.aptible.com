@@ -32,7 +32,7 @@ let users = [
   }
 ];
 
-module('Acceptance: Security Program Settings: Security Controls', {
+module('Acceptance: Security Program Settings: Security Controls Index', {
   beforeEach() {
     application = startApp();
   },
@@ -43,141 +43,62 @@ module('Acceptance: Security Program Settings: Security Controls', {
 });
 
 let selectedDataEnvironments = { aptible: true, amazonS3: true, gmail: true };
+let expectedSecurityControlGroups = ['Amazon Web Services', 'Amazon S3',
+                                     'Google', 'Gmail', 'Application Security Controls',
+                                     'Security Procedures', 'Workforce Security Controls',
+                                     'Workstation Controls', 'Aptible'];
 
-test('Selected data environments are used to draw security control questionnaire', function(assert) {
+
+test('Basic UI', function(assert) {
   stubCurrentAttestations({ selected_data_environments: selectedDataEnvironments });
-  stubProfile({ currentStep: 'security-controls' });
+  stubProfile({ currentStep: 'security-controls'});
   stubRequests();
   signInAndVisit(securityControlsUrl);
 
   andThen(() => {
-    // Should show AWS Provider questions
-    assert.ok(find('.data-environment-provider.aws').length, 'Has an AWS provider logo');
-    assert.ok(find('.title:contains(AWS Security)').length, 'Has an AWS provider question');
-    assert.ok(find('.panel-title:contains(S3)').length, 'Has an S3 panel');
-
-    // Should show Google Provider questions
-    assert.ok(find('.data-environment-provider.google').length, 'Has an Google provider logo');
-    assert.ok(find('.title:contains(How much security can your googles haz?)').length, 'Has a Google provider question');
-    assert.ok(find('.panel-title:contains(Gmail)').length, 'Has Gmail DE panel');
-
-    // Should show aptible security controls
-    assert.ok(find('.panel-title:contains(Aptible)').length, 'Aptible controls');
-
-    // Should show global security controls
-    assert.ok(find('.panel-title:contains(Security Procedures)').length, 'Has security procedures panel');
-    assert.ok(find('.panel-title:contains(Workforce Security Controls)').length, 'Has workforce controls panel');
-    assert.ok(find('.panel-title:contains(Workstation Security Controls)').length, 'Has workstation controls panel');
-    assert.ok(find('.panel-title:contains(Application Security Controls)').length, 'Has global application controls panel');
-
-    // Aptible controls should be pre-selected
-    ['secure0', 'secure1', 'secure2'].forEach((key) => {
-      let input = find(`.provider-aptible .${key} input[name="${key}.implemented"]`);
-      assert.ok(input.is(':checked'), `${key} is checked`);
+    expectedSecurityControlGroups.forEach((groupName) => {
+      assert.ok(find(`.info .title:contains(${groupName})`).length, `shows ${groupName}`);
     });
-  });
-});
 
-test('Clicking Save saves attestation for each global, provider, and data environment', function(assert) {
-  expect(18);
-  let attestationId = 0;
-  let expectedAttestationHandles = ['aptible_security_controls',
-                                    'aws_security_controls',
-                                    'google_security_controls',
-                                    'amazon_s3_security_controls',
-                                    'gmail_security_controls',
-                                    'security_procedures_security_controls',
-                                    'workforce_security_controls',
-                                    'workstation_security_controls',
-                                    'application_security_controls'];
-
-  stubCurrentAttestations({ selected_data_environments: selectedDataEnvironments });
-  stubProfile({ currentStep: 'security-controls' });
-  stubRequests();
-  signInAndVisit(securityControlsUrl);
-
-  // Expect attestions to be posted to for each global, provider, and data environment
-  stubRequest('post', '/attestations', function(request) {
-    let json = this.json(request);
-
-    assert.ok(true, 'posts to /attestations');
-    assert.ok(expectedAttestationHandles.indexOf(json.handle) >= 0, `${json.handle} is a valid attestation handle`);
-
-    return this.success({ id: attestationId++ });
+    let googleStep = findWithAssert('.panel.google_security_controls');
+    let getStarted = googleStep.find('.start-security-control-group');
+    assert.ok(getStarted.length, 'Has get started button');
+    getStarted.click();
   });
 
   andThen(() => {
-    $('.x-toggle-container:not(.x-toggle-container-checked) label').click();
+    assert.equal(currentPath(), 'organization.setup.security-controls.show', 'on show page');
   });
-
-  andThen(clickSaveButton);
 });
 
-test('Previous attestations are used to load existing security control answers', function(assert) {
-  let attestationId = 0;
-  let expectedAttestationHandles = ['aptible_security_controls',
-                                    'aws_security_controls',
-                                    'google_security_controls',
-                                    'amazon_s3_security_controls',
-                                    'gmail_security_controls',
-                                    'security_procedures_security_controls',
-                                    'workforce_security_controls',
-                                    'workstation_security_controls',
-                                    'application_security_controls'];
-
+test('Resuming with existing attestations', function(assert) {
   stubCurrentAttestations({
     selected_data_environments: selectedDataEnvironments,
-    aptible_security_controls: { secure0: { implemented: true }, secure1: { implemented: true }, secure2: { implemented: false } },
-    aws_security_controls: { mfa: { implemented: true } },
-    google_security_controls: { security: { implemented: true } },
-    amazon_s3_security_controls: { encryption: { implemented: true, technologies: 'Encrypt no secures' } },
-    gmail_security_controls: { linkSharingSettings: { implemented:  false } },
-    security_procedures_security_controls: { secureProcedure0: { implemented: false } },
-    workforce_security_controls: { robots: { implemented: true } },
-    workstation_security_controls: { keyboardLocks: { implemented: true } },
-    application_security_controls: { hiddenTokens: { implemented: false } }
+    google_security_controls: { security: { implemented: true }}
   });
-
-  let expectedAttestationValues = {
-    selected_data_environments: selectedDataEnvironments,
-    aptible_security_controls: { secure0: { implemented: true }, secure1: { implemented: true }, secure2: { implemented: false } },
-    aws_security_controls: { mfa: { implemented: false } },
-    google_security_controls: { security: { implemented: true } },
-    amazon_s3_security_controls: { encryption: { implemented: true, technologies: 'Encrypt some securities' } },
-    gmail_security_controls: { linkSharingSettings: { implemented: false } },
-    security_procedures_security_controls: { secureProcedure0: { implemented: false } },
-    workforce_security_controls: { robots: {implemented: true } },
-    workstation_security_controls: { keyboardLocks: { implemented: true } },
-    application_security_controls: { hiddenTokens: { implemented: true } }
-  };
-
-  stubProfile({ currentStep: 'security-controls' });
+  stubProfile({ currentStep: 'security-controls'});
   stubRequests();
   signInAndVisit(securityControlsUrl);
 
-  // Expect attestions to be posted to for each global, provider, and data environment
-  stubRequest('post', '/attestations', function(request) {
-    let json = this.json(request);
+  andThen(() => {
+    let googleStep = findWithAssert('.panel.google_security_controls');
+    assert.ok(googleStep.hasClass('completed'), 'step is completed');
+    assert.ok(googleStep.find('.fa.fa-check').length, 'has checkmark');
 
-    assert.ok(true, 'posts to /attestations');
-    assert.ok(expectedAttestationHandles.indexOf(json.handle) >= 0, `${json.handle} is a valid attestation handle`);
-    assert.deepEqual(json.document, expectedAttestationValues[json.handle]);
-
-    return this.success({ id: attestationId++ });
+    googleStep.click();
   });
 
   andThen(() => {
-    // Verify assertion data is used to seed initial UI state
-    assertTrueSecurityControls(['mfa', 'secure0', 'secure1', 'robots'], assert);
-    assertEnumSecurityControls({ encryption: 'Encrypt no secures', }, assert);
+    assert.equal(currentPath(), 'organization.setup.security-controls.show');
 
-    toggleSecurityControl('mfa');
-    toggleSecurityControl('hiddenTokens');
-    setEnumSecurityControl('encryption', 'Encrypt some securities');
+    assert.ok(find('input[name="security.implemented"]').is(':checked'), 'Existing attestation is loaded');
   });
-
-  andThen(clickSaveButton);
 });
+
+function clickSaveButton() {
+  let button = findWithAssert('button.spd-nav-save');
+  button.click();
+}
 
 function assertTrueSecurityControls(controls, assert) {
   controls.forEach((control) => {
@@ -198,11 +119,6 @@ function toggleSecurityControl(controlName) {
   toggle.click();
 }
 
-function clickSaveButton() {
-  let button = findWithAssert('button.save-settings');
-  button.click();
-}
-
 function setEnumSecurityControl(controlName, controlVal) {
   let option = findWithAssert(`option[value="${controlVal}"]`);
   let select = findWithAssert(`select[name="${controlName}.technologies"]`);
@@ -216,7 +132,6 @@ function setEnumSecurityControl(controlName, controlVal) {
 function stubRequests() {
   stubValidOrganization();
   stubSchemasAPI();
-  stubProfile({ hasCompletedSetup: true });
 
   stubRequest('get', rolesHref, function(request) {
     return this.success({ _embedded: { roles } });

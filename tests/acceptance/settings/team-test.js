@@ -633,7 +633,7 @@ function clickSaveButton() {
 }
 
 function openInviteModal() {
-  let button = findWithAssert('button:contains(Invite more users)');
+  let button = findWithAssert('.invite-team-button');
   button.click();
 }
 

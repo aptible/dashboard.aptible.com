@@ -117,7 +117,7 @@ export default Ember.Route.extend({
     },
 
     showInviteModal() {
-      this.controller.set('showInviteModal', true);
+      this.controller.showInviteModal();
     },
 
     inviteTeam(inviteList, roleId) {

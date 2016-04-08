@@ -49,10 +49,10 @@ test('Locations page basic UI, with no existing locations', function(assert) {
   signInAndVisit(locationsUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.locations.index', 'remains on locations step');
+    assert.equal(currentPath(), 'organization.setup.locations', 'remains on locations step');
     assert.ok(find('.empty-row:contains(No Locations.  Add one below.)').length,
               'shows empty row with no locations');
-    assert.ok(find('button:disabled:contains(Continue)').length,
+    assert.ok(find('.spd-nav-continue').is(':disabled'),
               'Continue button is disabled');
   });
 
@@ -87,7 +87,7 @@ test('Locations page, with existing location attestation', function(assert) {
   signInAndVisit(locationsUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.locations.index', 'remains on locations step');
+    assert.equal(currentPath(), 'organization.setup.locations', 'remains on locations step');
     assert.equal(find('.locations-index table tbody tr').length, 2, 'has two locations');
     assert.ok(find('td:contains(HQ)').length, 'Has first location');
     assert.ok(find('td:contains(Satellite)').length, 'Has second location');
@@ -119,7 +119,7 @@ test('Clicking back should return you to previous step', function(assert) {
   });
 
   andThen(() => {
-    find('.spd-back-button').click();
+    find('.spd-nav-back').click();
   });
 
   andThen(() => {
@@ -167,7 +167,7 @@ test('Adding an incomplete location shows an error message', function(assert) {
   andThen(openLocationDialog);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.locations.index', 'remains on location step');
+    assert.equal(currentPath(), 'organization.setup.locations', 'remains on location step');
     fillInLocation();
   });
 
@@ -213,7 +213,7 @@ test('Clicking continue creates locations attestation', function(assert) {
   andThen(clickAddButton);
   andThen(clickContinueButton);
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.team.index', 'on next setup step');
+    assert.equal(currentPath(), 'organization.setup.team', 'on next setup step');
   });
 });
 
@@ -264,7 +264,7 @@ function fillInLocation(locationData) {
 }
 
 function openLocationDialog() {
-  let openButton = findWithAssert('button:contains(Add new location)');
+  let openButton = findWithAssert('.add-location-button');
   openButton.click();
 }
 

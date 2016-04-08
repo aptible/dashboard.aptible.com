@@ -41,6 +41,7 @@
     "DS",
     "andThen",
     "clickContinueButton",
+    "clickBackButton",
     "currentURL",
     "currentPath",
     "currentRouteName",

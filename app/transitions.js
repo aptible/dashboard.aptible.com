@@ -4,8 +4,13 @@ export function buildSPDTransition(context, from, to) {
   context.transition(
     context.fromRoute(from),
     context.toRoute(to),
-    context.use('toLeft'),
-    context.reverse('toRight')
+    context.use('clean', 'toLeft', {duration: 500})
+  );
+
+  context.transition(
+    context.fromRoute(to),
+    context.toRoute(from),
+    context.use('clean', 'toRight', {duration: 500})
   );
 }
 
@@ -14,8 +19,44 @@ export default function() {
     if(index < SETUP_STEPS.length) {
       let next = SETUP_STEPS[index + 1];
       buildSPDTransition(this, `setup.${current}`, `setup.${next}`);
+      buildSPDTransition(this, `setup.${current}`, `setup.${next}.index`);
     }
   });
+
+  this.transition(
+    this.fromRoute('setup.data-environments'),
+    this.toRoute('setup.security-controls.index'),
+    this.use('toLeft'),
+    this.reverse('toRight')
+  );
+
+  this.transition(
+    this.fromRoute('setup.security-controls.index'),
+    this.toRoute('setup.security-controls.show'),
+    this.use('toLeft'),
+    this.reverse('toRight')
+  );
+
+  this.transition(
+    this.fromRoute('setup.security-controls.show'),
+    this.toRoute('setup.finish'),
+    this.use('toLeft'),
+    this.reverse('toRight')
+  );
+
+  this.transition(
+    this.fromRoute('settings.security-controls.index'),
+    this.toRoute('settings.security-controls.show'),
+    this.use('toLeft'),
+    this.reverse('toRight')
+  );
+
+  this.transition(
+    this.fromRoute('settings.security-controls.show'),
+    this.toRoute('settings.finish'),
+    this.use('toLeft'),
+    this.reverse('toRight')
+  );
 
   this.transition(
     this.inHelper('liquid-modal'),

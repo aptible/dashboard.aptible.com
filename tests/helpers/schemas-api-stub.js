@@ -20,6 +20,7 @@ import gmailSecurityControlsSchema from '../fixtures/schemas/gmail-security-cont
 import securityProceduresSecurityControlsSchema from '../fixtures/schemas/security-procedures-security-controls';
 import workforceSecurityControlsSchema from '../fixtures/schemas/workforce-security-controls';
 import workstationSecurityControlsSchema from '../fixtures/schemas/workstation-security-controls';
+import emailSecurityControlsSchema from '../fixtures/schemas/email-security-controls';
 
 Ember.Test.registerHelper('stubSchemasAPI', function(app, options = {}) {
   // accept an array of handles to exclude.  Useful for individual tests providing
@@ -36,7 +37,8 @@ Ember.Test.registerHelper('stubSchemasAPI', function(app, options = {}) {
                   security_procedures_security_controls: securityProceduresSecurityControlsSchema,
                   google_security_controls: googleSecurityControlsSchema,
                   gmail_security_controls: gmailSecurityControlsSchema,
-                  workstation_security_controls: workstationSecurityControlsSchema };
+                  workstation_security_controls: workstationSecurityControlsSchema,
+                  email_security_controls: emailSecurityControlsSchema };
 
   Ember.keys(schemas).forEach((handle) => {
     if (except.indexOf(handle) === -1) {

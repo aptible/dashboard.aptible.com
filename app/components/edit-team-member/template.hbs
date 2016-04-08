@@ -42,8 +42,20 @@
 {{else}}
   <td class="row-actions two-actions">
     <ul class="row-action-nav">
-      <li><a {{action (action this.attrs.resendInvitation document.values.email)}}><i class="fa fa-refresh"></i></a></li>
-      <li><a {{action (action this.attrs.removeInvitation document.values.email)}}><i class="fa fa-times danger"></i></a></li>
+      <li>
+        <a {{action (action this.attrs.resendInvitation document.values.email)}}>
+          {{#bs-tooltip title="Resend Invitation"}}
+            <i class="fa fa-refresh"></i>
+          {{/bs-tooltip}}
+        </a>
+      </li>
+      <li>
+        <a {{action (action this.attrs.removeInvitation document.values.email)}}>
+          {{#bs-tooltip title="Destroy Invitation"}}
+            <i class="fa fa-times danger"></i>
+          {{/bs-tooltip}}
+        </a>
+      </li>
     </ul>
   </td>
 {{/if}}

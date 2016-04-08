@@ -7,7 +7,9 @@ export default Ember.Route.extend(SPDRouteMixin, {
     let profile = this.modelFor('setup');
     let currentStep = profile.get('currentStep');
 
-    return this.transitionTo(`setup.${currentStep}`);
+    if(currentStep) {
+      return this.transitionTo(`setup.${currentStep}`);
+    }
   },
 
   model() {

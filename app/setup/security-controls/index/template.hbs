@@ -1,0 +1,11 @@
+<div class="container main-body">
+  <div class="row">
+    {{#each model as |securityControlGroup|}}
+      <div class="col-xs-4">
+        {{security-control-index-item
+          showPath="setup.security-controls.show"
+          securityControlGroup=securityControlGroup}}
+      </div>
+    {{/each}}
+  </div>
+</div>

@@ -1,7 +1,15 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  newLocation: null,
+  setup: Ember.inject.controller(),
+
+  addNewLocation() {
+    let { document, schema, locationProperty } = this.getProperties('document', 'schema', 'locationProperty');
+    let newLocation = document.addItem();
+
+    this.get('setup').setProperties({ newLocation, schema, document,
+                                      locationProperty });
+  },
 
   locations: Ember.computed('document', function() {
     return this.get('document.values');

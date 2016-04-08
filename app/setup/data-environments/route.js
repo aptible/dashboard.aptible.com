@@ -34,7 +34,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
       attestation.save().then(() => {
         profile.next(this.get('stepName'));
         return profile.save().then(() => {
-          this.transitionTo(`setup.${profile.get('currentStep')}`);
+          this.transitionTo(`setup.${profile.get('currentStep')}.index`);
         });
       }).catch((e) => {
         let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');

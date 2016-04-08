@@ -11,26 +11,28 @@ const Router = Ember.Router.extend({
 });
 
 function spdSteps() {
+  this.modal('add-location-modal', {
+    withParams: ['newLocation'],
+    otherParams: ['document', 'schema', 'newLocation', 'locationProperty'],
+    dismissWithOutsideClick: false
+  });
+
+  this.modal('invite-team-modal', {
+    withParams: ['showInviteModal'],
+    otherParams: ['organization', 'roles', 'schemaDocument'],
+    dismissWithOutsideClick: false,
+    actions: {
+      inviteTeam: 'inviteTeam'
+    }
+  });
+
   this.route('organization');
-  this.route('locations', {}, function() {
-    this.modal('add-location-modal', {
-      withParams: ['newLocation'],
-      otherParams: ['document', 'schema', 'newLocation', 'locationProperty'],
-      dismissWithOutsideClick: false
-    });
-  });
-  this.route('team', {}, function() {
-    this.modal('invite-team-modal', {
-      withParams: ['showInviteModal'],
-      otherParams: ['organization', 'roles', 'schemaDocument'],
-      dismissWithOutsideClick: false,
-      actions: {
-        inviteTeam: 'inviteTeam'
-      }
-    });
-  });
+  this.route('locations');
+  this.route('team');
   this.route('data-environments');
-  this.route('security-controls');
+  this.route('security-controls', {}, function() {
+    this.route('show', { path: ':handle' });
+  });
 }
 
 Router.map(function() {

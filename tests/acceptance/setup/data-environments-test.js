@@ -89,17 +89,17 @@ test('Clicking back should return you to previous step', function(assert) {
   });
 
   andThen(() => {
-    find('.spd-back-button').click();
+    find('.spd-nav-back').click();
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.team.index', 'returned to team step');
+    assert.equal(currentPath(), 'organization.setup.team', 'returned to team step');
   });
 });
 
 test('Clicking continue saves data environment selections to organization profile', function(assert) {
   expect(6);
-  stubCurrentAttestations({ selected_data_environments: { aptible: true }, team: [] });
+  stubCurrentAttestations({selected_data_environments: { aptible: true }, team: [] });
   let expectedDataEnvironmentPayload = {
     amazonS3: true,
     aptible: true,
@@ -138,7 +138,7 @@ test('Clicking continue saves data environment selections to organization profil
   andThen(clickContinueButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.security-controls', 'proceeds to next step');
+    assert.equal(currentPath(), 'organization.setup.security-controls.index', 'proceeds to next step');
   });
 });
 
@@ -197,7 +197,7 @@ test('Should load existing selections when attestation already exists', function
   andThen(clickContinueButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.security-controls', 'proceeds to next step');
+    assert.equal(currentPath(), 'organization.setup.security-controls.index', 'proceeds to next step');
   });
 });
 

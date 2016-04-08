@@ -2,7 +2,7 @@ export default {
   "$schema":"http://json-schema.org/draft-04/schema#",
   "id":"workstation_security_controls/1",
   "type":"object",
-  "title":"Workstation Security Controls",
+  "title":"Workstation Controls",
   "description": "Workstation security controls",
   "properties":{
     "keyboardLocks":{

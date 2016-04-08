@@ -1,3 +1,7 @@
 <main class="layout-content">
+  {{#if model.loading}}
+    <div style="position:fixed;width:200px;text-align:center;top:200px;background:green">Loading...</div>
+  {{/if}}
+
   {{liquid-outlet}}
 </main>

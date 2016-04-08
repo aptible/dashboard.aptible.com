@@ -1,0 +1,58 @@
+.security-control-index-item {
+  position: relative;
+
+  .triangle-box {
+    width: 50px;
+    height: 50px;
+    background:#fff;
+    border-radius: 0 5px 0 0;
+    overflow: hidden;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+
+    .fa {
+      color: #fff;
+      top: 8px;
+      position: absolute;
+      right: 8px;
+    }
+  }
+
+  .triangle {
+    width: 0px;
+    height: 0px;
+    border-right: 100px solid #2ECC71;
+    border-bottom: 100px solid white;
+  }
+
+  .panel {
+    padding: 30px;
+    text-align: center;
+    height: 230px;
+    border: 1px solid #fff;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+    border-radius: 5px;
+  }
+
+  .provider {
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  .info {
+    margin: 30px 0;
+
+    .title {
+      margin: 0 0 7px;
+      color: $color-primary;
+      font-weight: $weight-semibold;
+      font-size: 16px;
+    }
+
+    .status {
+      color: $color-light;
+      font-size: 13px;
+    }
+  }
+}

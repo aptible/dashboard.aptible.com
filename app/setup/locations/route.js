@@ -21,10 +21,11 @@ export default Ember.Route.extend(SPDRouteMixin, {
   },
 
   setupController(controller, model) {
-    let { schemaDocument, schema } = model;
+    let { schemaDocument, schema, attestation } = model;
 
     controller.set('schema', schema);
     controller.set('document', schemaDocument);
+    controller.set('attestation', attestation);
     controller.set('locationProperty', new Property(schema._schema.items));
   },
 
@@ -46,8 +47,14 @@ export default Ember.Route.extend(SPDRouteMixin, {
     },
 
     onAddLocation() {
-      let newLocation = this.controller.get('document').addItem();
-      this.controller.setProperties({ newLocation });
+      this.controller.addNewLocation();
+    },
+
+    onCreateLocation() {
+      let { schemaDocument, attestation } = this.currentModel;
+
+      attestation.set('document', schemaDocument.dump({ excludeInvalid: true }));
+      attestation.save();
     }
   }
 });

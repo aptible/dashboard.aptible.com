@@ -14,7 +14,7 @@
         <div class="form-group">
           <label>Role</label>
           <select class="form-control select-role" name='role' {{action 'updateRole' on="change"}}>
-            <option disabled>Select role...</option>
+            <option selected=true disabled>Select role...</option>
             {{#each roles as |role|}}
               <option selected={{if (eq selected.id role.id) true null}} value="{{role.id}}">
                 {{if role.privileged "(Admin)" ''}} {{role.name}}

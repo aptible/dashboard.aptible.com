@@ -1,8 +1,20 @@
 .security-control {
+  border-bottom: 1px solid $color-border-gray;
+  padding: 30px;
+
+  &:last-child {
+    border: 0;
+  }
+
   .title {
     font-size: 15px;
     font-weight: $weight-semibold;
-    margin: 0 0 6px;
+    margin: 0 0 15px;
+  }
+
+  .description {
+    font-size: 14px;
+    color: $color-light;
   }
 
   .radio {
@@ -11,10 +23,6 @@
 
   .multiselect-checkboxes {
     margin-top: 20px;
-  }
-
-  .toggle {
-    text-align: right;
   }
 
   .x-toggle-container-disabled {
@@ -33,52 +41,50 @@
   }
 }
 
-.panel.security-controls {
-  .panel-section {
-    padding: 20px
-  }
-}
-
 .locked-property {
   display: block;
   float: right;
   width: 20px;
-  margin-top: 12px;
   text-align: right;
   color: #ddd;
 }
 
+.security-control-title {
+  .title {
+    font-size: 18px;
+  }
+}
+
 .security-control-field {
   @extend %clearfix;
-  border-top: 1px solid $color-border-gray;
-  margin-top: 20px;
-  padding-top: 20px;
+  padding: 15px 0;
+
+  &.with-errors {
+    border: 1px solid #FFDBD7;
+    border-radius: 5px;
+    background: #FFEFEF;
+    padding: 15px;
+  }
+
+  .title {
+    font-size: 15px;
+    font-weight: normal;
+    margin: 0;
+  }
 
   .description {
-    font-size: 14px;
-    color: $color-light;
+    margin-top: 5px;
   }
 
   .radio {
     font-size: 14px;
+
+    label {
+
+    }
   }
 
-  &.implemented {
-    border: 0;
-    margin: 0;
-    padding: 0;
-
-    .description {
-      float: left;
-      margin-right: 200px;
-    }
-
-    .schema-field-wrapper {
-      float: right;
-      width: 200px;
-      margin-top: -11px;
-      position: absolute;
-      right: 20px;
-    }
+  .toggle, .form-control, .radio {
+    margin-top: 15px;
   }
 }

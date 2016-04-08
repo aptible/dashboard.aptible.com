@@ -1,0 +1,36 @@
+<div class="container main-body">
+
+  <div class="security-control-group-index">
+    <div class="checklist panel panel-default white-panel">
+      {{#each model as |securityControlGroup|}}
+        <div class="step {{if securityControlGroup.completed 'completed-step' null}} {{securityControlGroup.handle}}">
+          <div class="step-step">
+            {{#if securityControlGroup.completed}}
+              <i class="fa fa-check success"></i>
+            {{else}}
+              {{securityControlGroup.step}}
+            {{/if}}
+          </div>
+
+          <div class="step-title">
+            {{provider-logo size="sm" provider=securityControlGroup.provider}}{{securityControlGroup.schema.schema.title}}
+          </div>
+
+          {{#if securityControlGroup.attestation.isNew}}
+            <div class="step-cta">
+              {{link-to 'Get Started →' 'settings.security-controls.show' securityControlGroup classNames="pull-right btn btn-primary start-security-control-group"}}
+            </div>
+          {{else}}
+            <div class="step-completed-note">
+              Last completed
+              {{format-utc-timestamp securityControlGroup.attestation.createdAt false}}
+
+              {{link-to 'Review' 'settings.security-controls.show' securityControlGroup classNames="review-link"}}
+            </div>
+          {{/if}}
+
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</div>

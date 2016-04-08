@@ -36,13 +36,33 @@ $step-height: 80px;
 
 .checklist {
   text-align: left;
-  margin: 50px 0 0;
 
   .step {
     height: $step-height;
     line-height: $step-height;
     border-bottom: 1px solid $color-border-gray;
     z-index: 1;
+    clear: both;
+
+    &:first-child {
+      .step-step {
+        border-radius: 3px 0 0 3px;
+      }
+    }
+
+    &:last-child {
+      border: 0;
+    }
+  }
+
+  .step-completed-note {
+    color: $color-light;
+    float: right;
+    margin: 0 30px 0 0;
+
+    .review-link {
+      margin: 0 0 0 5px;
+    }
   }
 
   .step-step {
@@ -70,7 +90,6 @@ $step-height: 80px;
 
   .step-cta {
     float: right;
-    margin-right: 15px;
   }
 
   .step.completed-step {

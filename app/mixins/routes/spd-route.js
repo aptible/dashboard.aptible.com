@@ -7,9 +7,10 @@ export default Ember.Mixin.create({
 
   beforeModel() {
     let profile = this.modelFor('setup');
+    let currentStep = profile.get('currentStep') || 'start';
 
     if(!profile.isReadyForStep(this.get('stepName'))) {
-      return this.transitionTo(`setup.${profile.get('currentStep')}`);
+      return this.transitionTo(`setup.${currentStep}`);
     }
   },
 
@@ -17,44 +18,76 @@ export default Ember.Mixin.create({
     if(model.schemaDocument && model.attestation) {
       model.schemaDocument.load(model.attestation.get('document'));
     }
+
+    this.modelFor('setup').set('loading', false);
+  },
+
+  next() {
+    let profile = this.modelFor('setup');
+
+    profile.next(this.get('stepName'));
+    profile.save().catch((e) => {
+      let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
+      Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
+    });
+
+    this.transitionTo(`setup.${profile.get('currentStep')}`);
+  },
+
+  previous() {
+    let profile = this.modelFor('setup');
+
+    profile.previous(this.get('stepName'));
+    profile.save().catch((e) => {
+      let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
+      Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
+    });
+
+    this.transitionTo(`setup.${profile.get('currentStep')}`);
+  },
+
+  finish() {
+    let profile = this.modelFor('setup');
+    profile.setProperties({ hasCompletedSetup: true, currentStep: 'finish' });
+
+    profile.save().catch((e) => {
+      let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
+      Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
+    });
+
+    this.transitionTo('setup.finish');
+  },
+
+  save() {
+    let { schemaDocument, attestation } = this.currentModel;
+    attestation.set('document', schemaDocument.dump({ excludeInvalid: true }));
+
+    attestation.save().then(() => {
+      let message = 'Progress saved.';
+      Ember.get(this, 'flashMessages').success(message);
+    }, (e) => {
+      let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
+      Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
+    });
   },
 
   actions: {
-    onSave() {
-      let { schemaDocument, attestation } = this.currentModel;
-      attestation.set('document', schemaDocument.dump({ excludeInvalid: true }));
+    loading() {
+      // Prevent transitions to loading sub state and instead let setup know.
+      //this.modelFor('setup').set('loading', true);
+      return false;
+    },
 
-      attestation.save().then(() => {
-        let message = 'Progress saved.';
-        Ember.get(this, 'flashMessages').success(message);
-      }, (e) => {
-        let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
-        Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
-      });
+    onSave() {
+      this.save();
     },
 
     onPrevious() {
-      let profile = this.modelFor('setup');
-
-      profile.previous(this.get('stepName'));
-      profile.save().catch((e) => {
-        let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
-        Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
-      });
-
-      this.transitionTo(`setup.${profile.get('currentStep')}`);
+      this.previous();
     },
 
     onNext() {
-      let profile = this.modelFor('setup');
-
-      profile.next(this.get('stepName'));
-      profile.save().catch((e) => {
-        let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
-        Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
-      });
-
-      this.transitionTo(`setup.${profile.get('currentStep')}`);
+      this.next();
     }
   }
 });
