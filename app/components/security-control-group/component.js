@@ -37,7 +37,6 @@ export default Ember.Component.extend({
       });
 
       if (!this._focused) {
-        console.log("focusing...", inputs.first());
         inputs.first().focus();
         this._focused = true;
       }
