@@ -21,7 +21,9 @@ export default Ember.Component.extend({
 
   splitInviteList: Ember.computed('invitesList', function() {
     let inviteListString = this.get('invitesList');
-    return inviteListString.split(EMAIL_STRING_DELIMITER);
+    return inviteListString.split(EMAIL_STRING_DELIMITER).filter((email) => {
+      return !!Ember.$.trim(email);
+    });
   }),
 
   validEmails: Ember.computed.filter('splitInviteList', function(email) {

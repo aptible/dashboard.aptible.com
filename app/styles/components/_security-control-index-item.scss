@@ -37,7 +37,11 @@
 
   .provider {
     text-align: center;
-    margin: 10px 0;
+    margin: 30px 0;
+  }
+
+  .cta {
+    display: none;
   }
 
   .info {
@@ -54,5 +58,9 @@
       color: $color-light;
       font-size: 13px;
     }
+  }
+
+  > a:focus .panel {
+    border: 1px solid $color-bright-blue;
   }
 }

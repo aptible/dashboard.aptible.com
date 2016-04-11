@@ -1,11 +1,27 @@
 <div class="container main-body">
-  <div class="row">
-    {{#each model as |securityControlGroup|}}
-      <div class="col-xs-4">
-        {{security-control-index-item
-          showPath="setup.security-controls.show"
-          securityControlGroup=securityControlGroup}}
-      </div>
-    {{/each}}
+  <div class="sort-group data-environment-groups">
+    <h5 class="sort-header">Data Environment Security Controls</h5>
+    <div class="row">
+      {{#each dataEnvironmentGroups as |securityControlGroup|}}
+        <div class="col-xs-4">
+          {{security-control-index-item
+            showPath="setup.security-controls.show"
+            securityControlGroup=securityControlGroup}}
+        </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="sort-group data-environment-groups">
+    <h5 class="sort-header">Default Security Controls</h5>
+    <div class="row">
+      {{#each defaultGroups as |securityControlGroup|}}
+        <div class="col-xs-4">
+          {{security-control-index-item
+            showPath="setup.security-controls.show"
+            securityControlGroup=securityControlGroup}}
+        </div>
+      {{/each}}
+    </div>
   </div>
 </div>

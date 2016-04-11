@@ -564,7 +564,7 @@ test('Invite new member modal basic UI', function(assert) {
 
     // It should have an Invite button and a Cancel button
     assert.equal(find('button.cancel-invites:contains(Cancel)').length, 1, 'has a cancel button');
-    assert.equal(find('button.send-invites:contains(Invite)').length, 1, 'has an invite button');
+    assert.equal(find('button.send-invites:contains(Send Invitations)').length, 1, 'has an invite button');
 
     // Clicking cancel should close the dialog
     let cancelButton = find('button.cancel-invites');

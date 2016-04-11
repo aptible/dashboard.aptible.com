@@ -23,13 +23,27 @@ export default Ember.Component.extend({
     this.$('.liquid-container').removeData();
   },
 
-  focus: function() {
-    if (!this.get('isLoading')) {
-      Ember.run.later(() => {
-        this.$('input, select').first().focus();
-      }, 500);
+  updateTabIndex: Ember.observer('document.values._propertyUpdate', 'didInsertElement', function() {
+    // Loop over all currently viewable form elements and write a custom tab index
+    if (this.get('isLoading')) {
+      return;
     }
-  }.observes('isLoading').on('didInsertElement'),
+
+    Ember.run.later(() => {
+      let tabIndex = 1;
+      let inputs = this.$('input, select').each((index, input) => {
+        input = $(input);
+        input.attr('tabindex', tabIndex++);
+      });
+
+      if (!this._focused) {
+        console.log("focusing...", inputs.first());
+        inputs.first().focus();
+        this._focused = true;
+      }
+    }, 150);
+
+  }),
 
   actions: {
     next() {
@@ -45,4 +59,3 @@ export default Ember.Component.extend({
     }
   }
 });
-
