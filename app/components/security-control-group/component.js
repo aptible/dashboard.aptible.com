@@ -23,6 +23,14 @@ export default Ember.Component.extend({
     this.$('.liquid-container').removeData();
   },
 
+  focus: function() {
+    if (!this.get('isLoading')) {
+      Ember.run.later(() => {
+        this.$('input, select').first().focus();
+      }, 500);
+    }
+  }.observes('isLoading').on('didInsertElement'),
+
   actions: {
     next() {
       this.sendAction('onNext');

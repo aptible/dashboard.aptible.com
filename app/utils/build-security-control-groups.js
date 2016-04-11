@@ -77,7 +77,6 @@ function onAttestationLoad(attestation, securityControlGroup) {
 
   let { schema } = securityControlGroup;
   let schemaDocument = schema.buildDocument();
-  console.log("Building document " + securityControlGroup.handle);
   let completed = !attestation.get('isNew');
 
   if(schema.id === attestation.get('schemaId')) {
