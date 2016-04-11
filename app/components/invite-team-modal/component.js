@@ -2,10 +2,11 @@ import Ember from 'ember';
 import { VALID_EMAIL_REGEX } from 'sheriff/validators/email';
 
 var title = `Invite your workforce`;
-var description = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                   Donec aliquet purus ornare condimentum malesuada.
-                   Pellentesque diam mi, fermentum ut sapien eu, vehicula
-                   dictum elit. Integer cursus sagittis ullamcorper`;
+var description = `Any member of your workforce with access to PHI is required
+                   to perform Basic HIPAA Training. Use the form below to invite
+                   those individuals into your Aptible organization.  Once they
+                   accept their invitation to join you on Aptible, they will be
+                   automatically enrolled in Basic HIPAA Training`;
 
 export const EMAIL_STRING_DELIMITER = /[,|;|\s]+/;
 
@@ -21,7 +22,9 @@ export default Ember.Component.extend({
 
   splitInviteList: Ember.computed('invitesList', function() {
     let inviteListString = this.get('invitesList');
-    return inviteListString.split(EMAIL_STRING_DELIMITER);
+    return inviteListString.split(EMAIL_STRING_DELIMITER).filter((email) => {
+      return !!Ember.$.trim(email);
+    });
   }),
 
   validEmails: Ember.computed.filter('splitInviteList', function(email) {

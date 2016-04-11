@@ -146,7 +146,6 @@ export default Ember.Route.extend(SPDRouteMixin, {
                                                 existingDocument,
                                                 this.currentModel.schema);
       this.controller.set('schemaDocument', newSchemaDocument);
-      this.controller.set('showInviteModal', false);
     },
 
     onRemoveInvitation() {

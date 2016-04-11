@@ -1,8 +1,6 @@
 import Ember from 'ember';
-var description = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                   Donec aliquet purus ornare condimentum malesuada.
-                   Pellentesque diam mi, fermentum ut sapien eu, vehicula
-                   dictum elit. Integer cursus sagittis ullamcorper`;
+var description = `A remote workforce may expose you to increased risk. Use the
+                  form below to add a new workforce location.`;
 
 export default Ember.Component.extend({
   classNames: ['add-location-form'],
