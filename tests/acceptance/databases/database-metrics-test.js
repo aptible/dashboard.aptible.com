@@ -131,9 +131,10 @@ test("it reloads and redraws data when reload is clicked", function(assert) {
     return this.success({_embedded: {containers: makeContainers()}});
   });
 
-  let laMetricResponses = [makeValidMetricData(), makeValidMetricData()];
   let memoryMetricResponses = [makeValidMetricData(), makeValidMetricData()];
   memoryMetricResponses[0].columns[1].push(99999);
+  let laMetricResponses = [makeValidMetricData(), makeValidMetricData()];
+  let fsMetricResponses = [makeValidMetricData(), makeValidMetricData()];
 
   stubRequest("get", "/proxy/:containers", function(request) {
     if (request.queryParams.metric === "memory") {
@@ -142,6 +143,10 @@ test("it reloads and redraws data when reload is clicked", function(assert) {
 
     if (request.queryParams.metric === "la") {
       return this.success(laMetricResponses.pop());
+    }
+
+    if (request.queryParams.metric === "fs") {
+      return this.success(fsMetricResponses.pop());
     }
 
     assert.ok(false, `Received invalid metric: ${request.queryParams.metric}`);
@@ -160,6 +165,7 @@ test("it reloads and redraws data when reload is clicked", function(assert) {
   andThen(() => {
     assert.equal(memoryMetricResponses.length, 0, "Not enough requests!");
     assert.equal(laMetricResponses.length, 0, "Not enough requests!");
+    assert.equal(fsMetricResponses.length, 0, "Not enough requests!");
     let chart = findWithAssert("div.c3-chart-component");
     // Expect the chart to resize to show the new data point
     assert.ok(chart.text().indexOf("10000 MB") > -1, "Memory not shown!");
@@ -167,7 +173,8 @@ test("it reloads and redraws data when reload is clicked", function(assert) {
 });
 
 test("it can change the horizon", function (assert) {
-  let expectedHorizons = ["1d", "1d", "1h", "1h"];
+  // Expected requests (right to left)
+  let expectedHorizons = ["1d", "1d", "1d", "1h", "1h", "1h"];
 
   stubRequest("get", `/releases/${releaseId}/containers`, function() {
     return this.success({_embedded: {containers: makeContainers()}});

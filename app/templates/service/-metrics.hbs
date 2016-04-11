@@ -48,6 +48,24 @@
           containers=targetContainers
           horizon=model.uiState.dataHorizon
           lastReload=model.uiState.lastReload}}
+
+        {{#if showDiskMetrics}}
+          <h4>
+            Disk Usage
+            {{more-info-icon
+              title="Understanding Disk Usage"
+              body="This metric represents the amount of disk space your database is using vs. the available
+                    space. Available space will usually be a little lower than the space you provisioned: a
+                    small amount of disk space is reserved for usage by the filesystem itself.
+                    <br><br>
+                    If you anticipate that your database will run out of space, please contact Aptible
+                    support to have the volume resized."}}
+          </h4>
+          {{container-disk-metrics
+          containers=targetContainers
+          horizon=model.uiState.dataHorizon
+          lastReload=model.uiState.lastReload}}
+        {{/if}}
       </div>
     </div>
   </div>

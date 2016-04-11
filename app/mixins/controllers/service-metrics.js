@@ -23,4 +23,7 @@ export default Ember.Mixin.create({
   setHorizon: function(horizon) {
     this.set("model.uiState.dataHorizon", horizon);
   },
+
+  /* Defaults */
+  showDiskMetrics: false
 });
