@@ -19,6 +19,12 @@
     background: $color-bright-blue;
   }
 
+  [disabled].noUi-connect {
+    cursor: $cursor-disabled;
+    background: $gray-lighter;
+    opacity: .3;
+  }
+
   .noUi-horizontal .noUi-handle {
     background-image: -o-linear-gradient(-89deg, #fff 0%, #ebebeb 100%);
     background-image: -moz-linear-gradient(-89deg, #fff 0%, #ebebeb 100%);
@@ -96,12 +102,16 @@
 
   .slider-input-wrapper--flex {
     display: flex;
+    margin-bottom: 15px;
+    & + .slider-input-wrapper--flex {
+      margin-top: 20px;
+    }
   }
 
   .slider-actions {
     text-align: right;
     visibility: hidden;
-    // width: 60px;
+    min-width: 64px;
 
     &[data-visible='true'] {
       visibility: visible;

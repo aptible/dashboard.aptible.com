@@ -12,23 +12,53 @@ export default Ember.Component.extend({
 
   validateProperties: function(){
     Ember.assert('no-ui-slider must have a value for `start`',
-                 !Ember.isBlank(this.get('start')));
+      !Ember.isBlank(this.get('start')));
   }.on('init'),
 
   initializeSlider: function(){
+    var max = this.get('rangeMax');
+    var range = {
+      min: [this.get('rangeMin')],
+      max: [max]
+    };
+
+    var rangeOptions = this.get('range');
+    if (rangeOptions) {
+      var values = rangeOptions.split(',').filter(function(val) {
+        return val !== max;
+      });
+      var num = values.length;
+
+      var arr = values.map(function(e, i) {
+        var percent = ((100 / num) * i);
+        var value = {};
+        value[percent + '%'] = parseInt(values[i]);
+        return value;
+      }).reduce(function(a, b) {
+        return Ember.merge(a, b);
+      });
+
+      range = Ember.merge(range, arr);
+    }
+
     var options = {
       start: [this.get('start')],
-      range: {
-        min: [this.get('rangeMin')],
-        max: [this.get('rangeMax')]
-      },
+      range: range,
       connect: 'lower'
     };
 
     var step = this.get('step');
     if (step) { options.step = step; }
 
-    this.$().noUiSlider(options);
+    var snap = this.get('snap');
+    if (snap) { options.snap = snap; }
+
+    let element = this.$();
+    element.noUiSlider(options);
+
+    var disabled = this.get('disabled');
+    if (disabled) { element.attr('disabled', true); }
+
     this.setupEventListeners();
   }.on('didInsertElement'),
 
@@ -49,6 +79,11 @@ export default Ember.Component.extend({
       Ember.run(component, 'sendAction', 'didSet', value);
     });
   },
+
+  disabledObserver: function() {
+    let element = this.$();
+    element.attr('disabled', this.get('disabled'));
+  }.observes('disabled'),
 
   removeEventListeners: function(){
     this.$().off('slide');

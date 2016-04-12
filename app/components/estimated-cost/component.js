@@ -22,7 +22,7 @@ export default Ember.Component.extend({
 
   total: function() {
     return centsToDollars(
-      hoursPerMonth * this.get('count') * this.get('stack.appContainerCentsPerHour')
+      hoursPerMonth * (this.get('count') * (this.get('size') / 1024)) * this.get('stack.appContainerCentsPerHour')
     );
-  }.property('stack.appContainerCentsPerHour', 'count')
+  }.property('stack.appContainerCentsPerHour', 'count', 'size')
 });

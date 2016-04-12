@@ -1,6 +1,5 @@
 <div class="row">
   <div class="col-xs-7">
-    <label>Containers</label>
     <div class="slider-input-wrapper">
       {{#if error}}
         <div class="alert alert-danger">
@@ -20,6 +19,7 @@
         </div>
       {{/if}}
 
+      <label>Containers</label>
       <div class="slider-input-wrapper--flex">
         <div class="container-count">
           {{containerCount}}
@@ -31,6 +31,7 @@
                          start=containerCount
                          rangeMin=0
                          rangeMax=10
+                         disabled=isSaving
                          step=1}}
           <div class="label-wrapper">
             <div class="label pull-left">0</div>
@@ -40,20 +41,45 @@
 
         <div class="slider-actions" data-visible="{{showActionButtons}}">
           <button {{action "cancel"}} class="btn btn-xs btn-default btn-cancel">Cancel</button>
-          <button {{action "scale"}} class="btn btn-xs btn-primary slider-confirm">
+          <button {{action "scale"}} class="btn btn-xs btn-primary slider-confirm" disabled={{ isSaving }}>
             {{#if isSaving}}
-              Saving...
+              Scaling...
             {{else}}
               Scale
             {{/if}}
           </button>
         </div>
       </div>
+
+      <label>Memory size</label>
+      <div class="slider-input-wrapper--flex">
+        <div class="container-count">
+          {{containerSize}}
+        </div>
+
+        <div class="slider-wrapper">
+          {{no-ui-slider didSlide="setContainerSize"
+                         didSet="finishSliding"
+                         start=containerSize
+                         rangeMin=256
+                         rangeMax=8192
+                         snap=true
+                         disabled=shouldDisable
+                         range="256,512,1024,2048,4096"}}
+          <div class="label-wrapper">
+            <div class="label pull-left">256</div>
+            <div class="label pull-right">8192</div>
+          </div>
+        </div>
+
+        <div class="slider-actions"></div>
+      </div>
+
     </div>
   </div>
   <div class="col-xs-5">
     <div class="pull-right">
-      {{estimated-cost count=containerCount stack=service.stack}}
+      {{estimated-cost count=containerCount stack=service.stack size=containerSize}}
     </div>
   </div>
 </div>
