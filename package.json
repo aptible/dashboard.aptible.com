@@ -52,7 +52,7 @@
     "ember-export-application-global": "^1.0.4",
     "ember-feature-flags": "^1.0.0",
     "ember-json-schema-document": "0.1.5",
-    "ember-json-schema-views": "0.0.12",
+    "ember-json-schema-views": "0.0.13",
     "ember-multiselect-checkboxes": "0.8.0",
     "ember-one-way-input": "0.1.1",
     "ember-radio-button": "^0.1.3",
