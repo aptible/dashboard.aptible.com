@@ -19,9 +19,10 @@ export default Ember.Route.extend({
   },
 
   setupController(controller, model) {
-    let { schemaDocument, schema } = model;
+    let { schemaDocument, schema, attestation } = model;
 
     controller.set('schema', schema);
+    controller.set('attestation', attestation);
     controller.set('document', schemaDocument);
     controller.set('locationProperty', new Property(schema._schema.items));
   },
@@ -37,12 +38,12 @@ export default Ember.Route.extend({
 
     attestation.set('document', schemaDocument.dump({ excludeInvalid: true }));
     attestation.save().then(() => {
-        let message = 'Locations saved!';
-        Ember.get(this, 'flashMessages').success(message);
-      }, (e) => {
-        let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
-        Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
-      });
+      let message = 'Locations saved!';
+      Ember.get(this, 'flashMessages').success(message);
+    }, (e) => {
+      let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
+      Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
+    });
   },
 
   actions: {

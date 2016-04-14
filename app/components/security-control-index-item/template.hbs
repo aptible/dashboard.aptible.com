@@ -14,10 +14,14 @@
     <div class="info">
       <h3 class="title">{{securityControlGroup.schema.schema.title}}</h3>
       <div class="status">
-        {{#if securityControlGroup.attestation.isNew}}
-          Never Completed
+        {{#if securityControlGroup.isLoading}}
+          <i class="fa fa-spin fa-spinner"></i>
         {{else}}
-          Completed {{format-utc-timestamp securityControlGroup.attestation.createdAt false}}
+          {{#if securityControlGroup.attestation.isNew}}
+            Never Completed
+          {{else}}
+            Completed {{format-utc-timestamp securityControlGroup.attestation.createdAt false}}
+          {{/if}}
         {{/if}}
       </div>
     </div>

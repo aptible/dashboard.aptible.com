@@ -38,6 +38,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
     controller.set('invitations', invitations);
     controller.set('schemaDocument', schemaDocument);
     controller.set('properties', schema.itemProperties);
+    controller.set('attestation', attestation);
     controller.set('actions', {
       resendInvitation: this.resendInvitation,
       removeInvitation: this.removeInvitation

@@ -1,5 +1,11 @@
 .security-control-index-item {
   position: relative;
+  transition: opacity .3s ease-in-out;
+
+  &.is-loading {
+    opacity: .5;
+    pointer-events: none;
+  }
 
   .triangle-box {
     width: 50px;
