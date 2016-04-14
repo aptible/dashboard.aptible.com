@@ -38,5 +38,31 @@ test('it maps schema errors to `validationErrors` property', function(assert) {
       assert.deepEqual(model.get('validationErrors'), [expected]);
     }).finally(done);
   });
+});
 
+test('validation errors for required fields are mapped correctly', function(assert) {
+  let model = this.subject();
+  let done = assert.async();
+
+  stubRequest('post', '/attestations', function() {
+    assert.ok(true, 'calls with correct URL');
+
+    return this.error(422, {
+      code: 422,
+      error: 'internal_server_error',
+      message: "The property '#/separateOrganizationalUnits' did not contain a required property of 'implemented'"
+    });
+  });
+
+  let expected = {
+    path: 'separateOrganizationalUnits.implemented',
+    propertyName: 'Implemented Separate organizational units',
+    error: 'is required'
+  };
+
+  return Ember.run(() => {
+    model.save().catch(() => {
+      assert.deepEqual(model.get('validationErrors'), [expected]);
+    }).finally(done);
+  });
 });

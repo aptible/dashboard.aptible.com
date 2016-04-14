@@ -3,9 +3,48 @@ import Ember from 'ember';
 
 let { decamelize, capitalize } = Ember.String;
 
-export const VALIDATION_ERROR_TEST = /#\//;
-export const VALIDATION_PROPERTY_MATCH = /The property '#\/([^']+)'.+/;
-export const VALIDATION_ERROR_MATCH = /The property '#\/.+' (.+)/;
+const INVALID_PROPERTY_TEST = /^The property '#\//;
+const MISSING_REQUIRED_PROPERTY_TEST = /did not contain a required property/;
+const VALIDATION_PROPERTY_MATCH = /The property '#\/([^']+)'.+/;
+
+function humanize(property) {
+  return capitalize(decamelize(property).replace(/_/ig, ' '));
+}
+
+function getMissingPropertyError(message) {
+  // Example Error:
+  // "The property '#/separateOrganizationalUnits' did not contain a required
+  // property of 'implemented'"
+  "The property '#/separateOrganizationalUnits' did not contain a required property of 'implemented'"
+  const VALIDATION_ERROR_MATCH = /The property '#\/.+' (.+)/;
+  const PATH_SUFFIX_MATCH = /.*did not contain a required property of '([^']+)'$/
+
+  let initialPath = message.replace(VALIDATION_PROPERTY_MATCH, '$1')
+                          .replace('/', '.');
+  let pathSuffix = message.replace(PATH_SUFFIX_MATCH, '$1');
+  let path = `${initialPath}.${pathSuffix}`;
+  let error = 'is required';
+
+  let propertyName = `${humanize(pathSuffix)} ${humanize(initialPath)}`;
+
+  return { path, error, propertyName };
+}
+
+function getInvalidPropertyError(message) {
+  // Example Error:
+  // "The property '#/alertNotifications/enabledNotifications' did not contain
+  // a minimum number of items 1"
+  const VALIDATION_ERROR_MATCH = /The property '#\/.+' (.+)/;
+
+  let path = message.replace(VALIDATION_PROPERTY_MATCH, '$1')
+                          .replace('/', '.');
+  let error = message.replace(VALIDATION_ERROR_MATCH, '$1')
+                     .replace('did', 'does');
+  let property = path.split('.').reverse()[0];
+  let propertyName = humanize(property);
+
+  return { path, error, propertyName };
+}
 
 let Attestation = DS.Model.extend({
   handle: DS.attr('string'),
@@ -17,17 +56,10 @@ let Attestation = DS.Model.extend({
   validationErrors: Ember.computed('errors.[]', function() {
     let validationErrors = [];
     this.get('errors').forEach((error) => {
-      let message = error.message;
-      if (VALIDATION_ERROR_TEST.test(message)) {
-        let path = message.replace(VALIDATION_PROPERTY_MATCH, '$1')
-                          .replace('/', '.');
-        let error = message.replace(VALIDATION_ERROR_MATCH, '$1')
-                           .replace('did', 'does');
-
-        let property = path.split('.').reverse()[0];
-        let propertyName = capitalize(decamelize(property).replace('_', ' '));
-
-        validationErrors.push({ path, error, propertyName });
+      if(MISSING_REQUIRED_PROPERTY_TEST.test(error.message)) {
+        validationErrors.push(getMissingPropertyError(error.message));
+      } else if(INVALID_PROPERTY_TEST.test(error.message)) {
+        validationErrors.push(getInvalidPropertyError(error.message));
       }
     });
     return validationErrors;
