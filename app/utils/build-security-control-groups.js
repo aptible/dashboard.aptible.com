@@ -14,12 +14,12 @@ export const dataEnvironmentProviderMap = {
 export const globalSecurityControlGroups = [
   'application_security_controls', 'email_security_controls',
   'security_procedures_security_controls', 'workforce_security_controls',
-  'workstation_security_controls'];
+  'workstation_security_controls', 'aptible_security_controls'];
 
 export default function(dataEnvironments, organizationUrl, store) {
   let dataEnvironmentNames = Ember.keys(dataEnvironments).filter((deName) => {
     return dataEnvironments[deName];
-  });
+  }).sort();
 
   let securityControlGroups = [];
 
@@ -37,8 +37,6 @@ export default function(dataEnvironments, organizationUrl, store) {
   securityControlGroups = securityControlGroups.concat(globalSecurityControlGroups.map((global) => {
     return { handle: global, provider: 'aptible' };
   }));
-
-  securityControlGroups.push({ handle: 'aptible_security_controls', provider: 'aptible' });
 
   return securityControlGroups.map((securityControlGroup, index) => {
     securityControlGroup.step = index+1;

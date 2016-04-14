@@ -72,12 +72,6 @@ export default Ember.Mixin.create({
   },
 
   actions: {
-    loading() {
-      // Prevent transitions to loading sub state and instead let setup know.
-      //this.modelFor('setup').set('loading', true);
-      return false;
-    },
-
     onSave() {
       this.save();
     },

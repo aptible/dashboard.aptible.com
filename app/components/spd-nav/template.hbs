@@ -18,7 +18,7 @@
           <ul class="header-actions">
             {{#if showSave}}
               <li>
-                <button {{action 'save'}} class="btn btn-default btn-sm spd-nav-save">Save</button>
+                <button {{action 'save'}} class="btn btn-default btn-sm spd-nav-save" disabled={{isSaving}}>Save</button>
               </li>
             {{/if}}
 
@@ -36,9 +36,15 @@
                   </div>
                 {{/bs-tooltip}}
               {{else}}
-                <button {{action 'next' next.path}} class="btn btn-primary btn-sm spd-nav-continue">
-                  Next →
-                </button>
+                {{#if isSaving}}
+                  <button class="btn btn-primary btn-sm spd-nav-continue" disabled>
+                    <i class="fa fa-spin fa-spinner"></i> Saving...
+                  </button>
+                {{else}}
+                  <button {{action 'next' next.path}} class="btn btn-primary btn-sm spd-nav-continue">
+                    Next →
+                  </button>
+                {{/if}}
               {{/if}}
             </li>
           </ul>

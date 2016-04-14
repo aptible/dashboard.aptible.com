@@ -24,9 +24,11 @@ export default Ember.Route.extend({
   },
 
   setupController(controller, model) {
-    controller.set('model', model.schema);
-    controller.set('schemaDocument', model.schemaDocument);
-    controller.set('attestation', model.attestation);
+    let { schema, schemaDocument, attestation } = model;
+
+    controller.set('model', schema);
+    controller.set('schemaDocument', schemaDocument);
+    controller.set('attestation', attestation);
   },
 
   actions: {

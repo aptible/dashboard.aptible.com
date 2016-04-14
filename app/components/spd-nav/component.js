@@ -47,6 +47,10 @@ export default Ember.Component.extend({
     return !!this.get('onPrevious');
   }),
 
+  isSaving: Ember.computed('attestation.isSaving', 'profile.isSaving', function() {
+    return this.get('attestation.isSaving') || this.get('profile.isSaving');
+  }),
+
   steps: Ember.computed('routingService.currentPath', function() {
     let currentStepIndex = this.get('currentStepIndex');
     let steps = STEPS;
