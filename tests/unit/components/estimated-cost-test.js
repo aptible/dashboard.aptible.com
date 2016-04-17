@@ -21,6 +21,7 @@ moduleForComponent('estimated-cost', 'EstimatedCostComponent', {
     return klass.create({
       features: opts.features || mockFeaturesService(true),
       count: 5,
+      size: 2048,
       stack: Ember.Object.create({
         appContainerCentsPerHour: 10,
         type: 'production'
@@ -46,7 +47,7 @@ test('calculates accurate estimate', function(assert) {
 
   assert.equal(component.get('rateInDollars'), '$0.10');
   assert.equal(component.get('unitOfMeasure'), 'Production App Containers');
-  assert.equal(component.get('total'), '$365.50');
+  assert.equal(component.get('total'), '$731.00');
 });
 
 test('is visible with priceEstimator feature flag', function(assert) {

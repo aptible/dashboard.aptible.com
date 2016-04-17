@@ -29,6 +29,7 @@ test('it renders', function(assert) {
   // creates the component instance
   var component = this.subject({
     service: Ember.Object.create({
+      containerSize: 1024,
       containerCount: 1
     })
   });

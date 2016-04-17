@@ -47,6 +47,39 @@ test('sliding sends action didSlide with the value', function(assert) {
   var element = this.$();
 
   Ember.$(element).trigger('slide', 4);
+  var disabled = element.attr('disabled');
 
+  assert.equal(disabled, null, 'disabled attribute');
   assert.equal(slideValue, 4, 'slide action called with value');
+});
+
+test('disabling component should set disabled attribute', function(assert) {
+  var slideValue;
+
+  var MockController = Ember.Object.extend(Ember.ActionHandler, {
+    _actions: {
+      mySlideAction: function(val){
+        slideValue = val;
+      }
+    }
+  });
+
+  var mockController = MockController.create();
+
+  this.subject({
+    targetObject: mockController,
+    start: 1,
+    rangeMin: 1,
+    rangeMax: 5,
+    step: 1,
+    disabled: true,
+    didSlide: 'mySlideAction'
+  });
+
+  var element = this.$();
+  var disabled = element.attr('disabled');
+
+  Ember.$(element).trigger('slide', 4);
+
+  assert.equal(disabled, 'disabled', 'disabled attribute');
 });

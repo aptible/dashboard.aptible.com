@@ -20,7 +20,7 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    scaleService: function(service, containerCount, deferred){
+    scaleService: function(service, containerCount, containerSize, deferred) {
       let reloadUntilOperationStatusChanged = (operation, maximumTimeout, timeout) => {
         return operation.reload().then((o) => {
           return new Ember.RSVP.Promise((resolve, reject) => {
@@ -44,6 +44,7 @@ export default Ember.Route.extend({
 
       this.store.createRecord('operation', {
         type: 'scale',
+        containerSize: containerSize,
         containerCount: containerCount,
         service: service
       }).save()
@@ -52,5 +53,4 @@ export default Ember.Route.extend({
         .then(deferred.resolve, deferred.reject);
     }
   }
-
 });
