@@ -90,17 +90,18 @@ test('clicking next will finish SPD if on last group', function(assert) {
     workstation_security_controls: {},
     aptible_security_controls: {},
     gmail_security_controls: {},
-    email_security_controls: {}
+    email_security_controls: {},
+    software_development_lifecycle_security_controls: {}
   });
   stubProfile({ currentStep: 'security-controls'});
   stubRequests();
-  signInAndVisit(`${securityControlsUrl}/workstation_security_controls`);
+  signInAndVisit(`${securityControlsUrl}/software_development_lifecycle_security_controls`);
 
   stubRequest('post', '/attestations', function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to /attestations');
-    assert.equal(json.handle, 'workstation_security_controls');
+    assert.equal(json.handle, 'software_development_lifecycle_security_controls');
 
     return this.success({ id: 1 });
   });
@@ -118,7 +119,7 @@ test('clicking next will finish SPD if on last group', function(assert) {
 
   andThen(() => {
     let title = findWithAssert('.security-control-group-title');
-    assert.ok(title.is(':contains(Workstation)'), 'Workstation control group');
+    assert.ok(title.is(':contains(Software)'), 'sdlc control group');
   });
 
   andThen(clickContinueButton);

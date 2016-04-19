@@ -136,7 +136,8 @@ test('Clicking next with all completed groups will finish SPD', function(assert)
     workstation_security_controls: {},
     aptible_security_controls: {},
     gmail_security_controls: {},
-    email_security_controls: {}
+    email_security_controls: {},
+    software_development_lifecycle_security_controls: {}
   });
   stubProfile({ currentStep: 'security-controls'});
   stubRequests();
