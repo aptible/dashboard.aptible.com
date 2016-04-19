@@ -1,5 +1,6 @@
 import DS from 'ember-data';
 import Ember from 'ember';
+import User from './user';
 
 let { decamelize, capitalize } = Ember.String;
 
@@ -57,6 +58,8 @@ let Attestation = DS.Model.extend({
   createdAt: DS.attr('iso-8601-timestamp'),
 
   setUser(user) {
+    Ember.assert('user must be a User model', user instanceof User);
+
     let userUrl = user.get('data.links.self');
     let userName = user.get('name');
     let userEmail = user.get('email');
