@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  tagName: 'ul',
-  classNames: ['nav', 'sidebar-nav']
+  tagName: '',
+  dataEnvironmentGroups: Ember.computed.filterBy('groups', 'type', 'data-environment'),
+  organizationalGroups: Ember.computed.filterBy('groups', 'type', 'organization')
 });

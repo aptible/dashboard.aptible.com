@@ -41,14 +41,6 @@
   }
 }
 
-.locked-property {
-  display: block;
-  float: right;
-  width: 20px;
-  text-align: right;
-  color: #ddd;
-}
-
 .security-control-title {
   .title {
     font-size: 18px;
@@ -70,6 +62,11 @@
     font-size: 15px;
     font-weight: normal;
     margin: 0;
+
+    i.fa-lock {
+      color: $color-bright-blue;
+      margin: 0 8px 0 0;
+    }
   }
 
   .description {

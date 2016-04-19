@@ -61,7 +61,7 @@ export default Ember.Mixin.create({
   save() {
     let { schemaDocument, attestation } = this.currentModel;
     attestation.set('document', schemaDocument.dump({ excludeInvalid: true }));
-
+    attestation.setUser(this.session.get('currentUser'));
     attestation.save().then(() => {
       let message = 'Progress saved.';
       Ember.get(this, 'flashMessages').success(message);

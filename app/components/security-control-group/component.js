@@ -10,6 +10,8 @@ export default Ember.Component.extend({
   showStatusBar: Ember.computed('attestation.isSaving', 'validationErrors', 'saveMessage', function() {
     return this.get('attestation.isSaving') || this.get('validationErrors') || this.get('saveMessage');
   }),
+  isOrganizational: Ember.computed.equal('securityControlGroup.provider', 'organization'),
+  organizationName: Ember.computed.alias('securityControlGroup.organization.name'),
 
   willDestroyElement() {
     // https://github.com/ember-animation/liquid-fire/issues/310

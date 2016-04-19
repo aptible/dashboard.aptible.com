@@ -14,9 +14,10 @@ export const dataEnvironmentProviderMap = {
 export const globalSecurityControlGroups = [
   'application_security_controls', 'email_security_controls',
   'security_procedures_security_controls', 'workforce_security_controls',
-  'workstation_security_controls', 'aptible_security_controls'];
+  'workstation_security_controls'];
 
-export default function(dataEnvironments, organizationUrl, store) {
+export default function(dataEnvironments, organization, store) {
+  let organizationUrl = organization.get('data.links.self');
   let dataEnvironmentNames = Ember.keys(dataEnvironments).filter((deName) => {
     return dataEnvironments[deName];
   }).sort();
@@ -28,21 +29,30 @@ export default function(dataEnvironments, organizationUrl, store) {
     let deProviderHandle = `${deProvider}_security_controls`;
 
     if (deProvider !== deName && !securityControlGroups.findBy('handle', deProviderHandle)) {
-      securityControlGroups.push({ handle: deProviderHandle.decamelize(), provider: deProvider });
+      securityControlGroups.push({ handle: deProviderHandle.decamelize(),
+                                   provider: deProvider,
+                                   type: 'data-environment' });
     }
 
-    securityControlGroups.push({ handle: `${deName.decamelize()}_security_controls`, provider: deProvider });
+    securityControlGroups.push({
+      handle: `${deName.decamelize()}_security_controls`, provider: deProvider,
+      type: 'data-environment'
+    });
   });
 
+  securityControlGroups.push({ handle: 'aptible_security_controls',
+                               provider: 'aptible', type: 'data-environment' });
+
   securityControlGroups = securityControlGroups.concat(globalSecurityControlGroups.map((global) => {
-    return { handle: global, provider: 'aptible' };
+    return { handle: global, provider: 'organization', type: 'organization' };
   }));
 
   return securityControlGroups.map((securityControlGroup, index) => {
     securityControlGroup.step = index+1;
     Ember.setProperties(securityControlGroup, {
       step: index+1,
-      isLoading: true
+      isLoading: true,
+      organization
     });
     return loadSchemaAndAttestation(securityControlGroup, organizationUrl, store);
   });

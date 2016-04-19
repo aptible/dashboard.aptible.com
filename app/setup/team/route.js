@@ -95,7 +95,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
       let { attestation } = this.currentModel;
       let schemaDocument = this.controller.get('schemaDocument');
       attestation.set('document', schemaDocument.dump());
-
+      attestation.setUser(this.session.get('currentUser'));
       attestation.save().then(() => {
         let message = 'Progress saved.';
         Ember.get(this, 'flashMessages').success(message);
@@ -117,6 +117,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
       }
 
       attestation.set('document', schemaDocument);
+      attestation.setUser(this.session.get('currentUser'));
       attestation.save().then(() => {
         profile.next(this.get('stepName'));
         return profile.save().then(() => {

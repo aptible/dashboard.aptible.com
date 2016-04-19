@@ -37,6 +37,7 @@ export default Ember.Route.extend({
       let selectedDataEnvironments = schemaDocument.dump({ excludeInvalid: true });
 
       attestation.set('document', selectedDataEnvironments);
+      attestation.setUser(this.session.get('currentUser'));
       attestation.save().then(() => {
         let message = 'Data Environments saved!';
         Ember.get(this, 'flashMessages').success(message);

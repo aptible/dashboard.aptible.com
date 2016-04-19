@@ -1,5 +1,5 @@
 {{#if options.showProperty}}
-  <div class="security-control-field {{key}} {{if errors 'with-errors' null}}">
+  <div class="security-control-field {{key}} {{if errors 'with-errors' null}} {{if property.readonly 'readonly' null}}">
 
   {{#if errors}}
     {{#each errors as |error|}}
@@ -13,6 +13,12 @@
     <div class="header">
       {{#if property.title}}
         <div class="title">
+          {{#if property.readonly}}
+            {{#bs-tooltip title="This security control is locked because it is automatically implemented in the Aptible Platform."}}
+              <i class="fa fa-lock"></i>
+            {{/bs-tooltip}}
+          {{/if}}
+
           {{property.title}}
 
           {{#if property.displayProperties.tooltip}}
@@ -29,12 +35,6 @@
     </div>
 
     <div class="schema-field-wrapper">
-      {{#if property.readonly}}
-        <div class="locked-property">
-          <i class="fa fa-lock"></i>
-        </div>
-      {{/if}}
-
       {{component (concat 'schema-field-' type)
         key=(concat (concat parentKey '.') key)
         property=property

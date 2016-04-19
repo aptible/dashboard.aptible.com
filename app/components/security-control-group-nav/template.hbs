@@ -1,16 +1,34 @@
-<li class="title">Progress</li>
+<ul class="nav sidebar-nav">
+  <li>{{link-to '← All Security Controls' 'setup.security-controls'}}</li>
+</ul>
 
-<li>
-  {{link-to '← All Security Controls' 'setup.security-controls'}}
-</li>
+<ul class='nav sidebar-nav'>
+  <li class="title">Data Environments</li>
 
-{{#each groups as |securityControlGroup|}}
-  <li class="{{if (eq current.handle securityControlGroup.handle) 'active' null}}">
-    {{#link-to 'setup.security-controls.show' securityControlGroup class="step"}}
-      {{#if securityControlGroup.completed}}
-        <i class="fa fa-check success"></i>
-      {{/if}}
-      {{securityControlGroup.schema.schema.title}}
-    {{/link-to}}
-  </li>
-{{/each}}
+  {{#each dataEnvironmentGroups as |securityControlGroup|}}
+    <li class="{{if (eq current.handle securityControlGroup.handle) 'active' null}}">
+      {{#link-to 'setup.security-controls.show' securityControlGroup class="step"}}
+        {{#if securityControlGroup.completed}}
+          <i class="fa fa-check success"></i>
+        {{/if}}
+        {{securityControlGroup.schema.schema.title}}
+      {{/link-to}}
+    </li>
+  {{/each}}
+</ul>
+
+<ul class='nav sidebar-nav'>
+  <li class="title">Organizational</li>
+
+  {{#each organizationalGroups as |securityControlGroup|}}
+    <li class="{{if (eq current.handle securityControlGroup.handle) 'active' null}}">
+      {{#link-to 'setup.security-controls.show' securityControlGroup class="step"}}
+        {{#if securityControlGroup.completed}}
+          <i class="fa fa-check success"></i>
+        {{/if}}
+        {{securityControlGroup.schema.schema.title}}
+      {{/link-to}}
+    </li>
+  {{/each}}
+</ul>
+

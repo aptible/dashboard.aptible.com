@@ -4,8 +4,8 @@
       {{security-control-group-nav groups=securityControlGroups current=model}}
     </div>
 
-    {{#liquid-bind model use="clean" class="security-control-group" as |currentModel|}}
-      {{security-control-group securityControlGroup=currentModel onNext="onNext" onPrevious="onPrevious" onSave="onSave"}}
-    {{/liquid-bind}}
+    <div class="security-control-group">
+      {{security-control-group securityControlGroup=model onNext="onNext" onPrevious="onPrevious" onSave="onSave"}}
+    </div>
   </div>
 </div>
