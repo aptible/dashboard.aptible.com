@@ -16,7 +16,13 @@ export default Ember.Route.extend({
 
     attestation.set('document', documentClone);
     attestation.setUser(this.session.get('currentUser'));
-    return attestation.save();
+    return attestation.save().then(() => {
+      let message = 'Changes saved!';
+      Ember.get(this, 'flashMessages').success(message);
+    }, (e) => {
+      let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
+      Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
+    });
   },
 
   setupController(controller, model) {
