@@ -7,25 +7,33 @@
         Save
       {{/if}}
     </button>
-    {{provider-logo size="sm" provider=provider}}
+
+    {{#unless isOrganizational}}
+      {{provider-logo size="sm" provider=provider}}
+    {{/unless}}
 
     <h1 class="security-control-group-title">
+      {{#if isOrganizational}}
+        {{organizationName}}
+      {{/if}}
       {{schema.schema.title}}
     </h1>
 
-    {{#liquid-if showStatusBar class="status-bar"}}
-      {{#liquid-if validationErrors class="fadeIn error-message"}}
-        <i class="fa fa-exclamation-circle"></i> {{validationErrors}}
-      {{/liquid-if}}
+    {{#if showStatusBar}}
+      <div class="status-bar">
+        {{#if validationErrors class="fadeIn error-message"}}
+          <i class="fa fa-exclamation-circle"></i> {{validationErrors}}
+        {{/if}}
 
-      {{#liquid-if saveMessage class="fadeIn save-message"}}
-        <i class="fa fa-check"></i> {{saveMessage}}
-      {{/liquid-if}}
+        {{#if saveMessage class="fadeIn save-message"}}
+          <i class="fa fa-check"></i> {{saveMessage}}
+        {{/if}}
 
-      {{#liquid-if attestation.isSaving class="fadeIn save-message"}}
-        <i class="fa fa-spin fa-spinner"></i> Saving...
-      {{/liquid-if}}
-    {{/liquid-if}}
+        {{#if attestation.isSaving class="fadeIn save-message"}}
+          <i class="fa fa-spin fa-spinner"></i> Saving...
+        {{/if}}
+      </div>
+    {{/if}}
   </header>
 
   {{#if isLoading}}

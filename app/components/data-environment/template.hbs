@@ -1,20 +1,15 @@
-<td>
-  <strong>{{property.title}}</strong>
-</td>
-
-<td>
-  {{#if provider}}
-    {{provider-logo size="sm" provider=provider}}
-  {{/if}}
-</td>
-
-<td class="toggle-small align-right">
-  <div class='options'>
-    {{#if property.readonly}}
-      <div class="locked-property">
-        <i class="fa fa-lock"></i>
-      </div>
+{{#unless property.readonly}}
+  <td>
+    {{#if provider}}
+      {{provider-logo size="sm" provider=provider}}
     {{/if}}
-    {{schema-field-toggle key=handle property=property document=document}}
-  </div>
-</td>
+  </td>
+  <td>
+    <strong>{{property.title}}</strong>
+  </td>
+  <td class="toggle-small align-right">
+    <div class='options'>
+      {{schema-field-toggle key=handle property=property document=document}}
+    </div>
+  </td>
+{{/unless}}

@@ -63,16 +63,13 @@ test('Lists all data environments', function(assert) {
   signInAndVisit(dataEnvironmentsUrl);
 
   andThen(() => {
-    let aptibleRow = findWithAssert('tr:contains(Aptible)');
+    assert.equal(find('tr:contains(Aptible)').length, 0, 'has no Aptible row');
 
     dataEnvironments.forEach(function(de) {
-      assert.ok(find(`td:contains(${de})`), `${de} is rendered`);
+      if (de !== 'Aptible') {
+        assert.ok(find(`td:contains(${de})`), `${de} is rendered`);
+      }
     });
-
-    assert.ok(aptibleRow.find('td:last input[type="checkbox"]').is(':disabled'),
-              'Aptible is disabled');
-    assert.ok(aptibleRow.find('td:last .x-toggle-container-checked').length,
-              'Aptible is pre-selected');
   });
 });
 
@@ -109,7 +106,7 @@ test('Clicking Save saves data environment selections to attestation', function(
 });
 
 test('Should load existing selections when attestation already exists', function(assert) {
-  expect(6);
+  expect(5);
   let existingSelection = {
     amazonS3: false,
     aptible: true,
@@ -140,7 +137,9 @@ test('Should load existing selections when attestation already exists', function
   andThen(() => {
     // For each DE verify toggle state matches existing attestation
     for(var deName in existingSelection) {
-      assert.equal(find(`input[name="${deName}"]`).is(':checked'), existingSelection[deName]);
+      if(deName !== 'aptible') {
+        assert.equal(find(`input[name="${deName}"]`).is(':checked'), existingSelection[deName], `${deName} loaded`);
+      }
     }
   });
 
@@ -154,7 +153,7 @@ test('Should load existing selections when attestation already exists', function
 });
 
 function toggleDataEnvironment(environment) {
-  let toggle = findWithAssert(`tr:contains(${environment}) td:last input[type="checkbox"]`);
+  let toggle = findWithAssert(`tr:contains(${environment}) input[type="checkbox"]`);
   toggle.click();
 }
 

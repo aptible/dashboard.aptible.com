@@ -33,6 +33,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
       let selectedDataEnvironments = schemaDocument.dump({ excludeInvalid: true });
 
       attestation.set('document', selectedDataEnvironments);
+      attestation.setUser(this.session.get('currentUser'));
       attestation.save().then(() => {
         profile.next(this.get('stepName'));
         return profile.save().then(() => {

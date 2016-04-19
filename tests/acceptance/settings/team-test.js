@@ -148,6 +148,9 @@ test('Toggling user roles and clicking continue saves team attestation with corr
     organization: `/organizations/${orgId}`,
     id: '0',
     schema_id: 'workforce_roles/1',
+    user_email: 'stubbed-user@gmail.com',
+    user_name: 'stubbed user',
+    user_url: '/users/user1',
     document: [
       {
         email: 'basicuser@asdf.com',
@@ -239,6 +242,9 @@ test('Pending invitations are included in attestation payload', function(assert)
     organization: `/organizations/${orgId}`,
     id: '0',
     schema_id: 'workforce_roles/1',
+    user_email: 'stubbed-user@gmail.com',
+    user_name: 'stubbed user',
+    user_url: '/users/user1',
     document: [
       {
         email: 'basicuser@asdf.com',
@@ -385,6 +391,9 @@ test('Team page with existing team attestation', function(assert) {
     schema_id: 'workforce_roles/1',
     organization: `/organizations/${orgId}`,
     organization_url: `/organizations/${orgId}`,
+    user_email: 'stubbed-user@gmail.com',
+    user_name: 'stubbed user',
+    user_url: '/users/user1',
     document: [
       {
         email: 'basicuser@asdf.com',

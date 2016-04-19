@@ -1,4 +1,4 @@
-import { SETUP_STEPS } from 'sheriff/models/organization-profile';
+//import { SETUP_STEPS } from 'sheriff/models/organization-profile';
 
 export function buildSPDTransition(context, from, to) {
   context.transition(
@@ -15,48 +15,54 @@ export function buildSPDTransition(context, from, to) {
 }
 
 export default function() {
-  SETUP_STEPS.forEach((current, index) => {
-    if(index < SETUP_STEPS.length) {
-      let next = SETUP_STEPS[index + 1];
-      buildSPDTransition(this, `setup.${current}`, `setup.${next}`);
-      buildSPDTransition(this, `setup.${current}`, `setup.${next}.index`);
-    }
-  });
 
-  this.transition(
-    this.fromRoute('setup.data-environments'),
-    this.toRoute('setup.security-controls.index'),
-    this.use('toLeft'),
-    this.reverse('toRight')
-  );
+  // Sadly, these transitions are causing massive performance issues when exiting
+  // the security controls step.  I suspect there is a rendering issue with
+  // ember-json-schema-views that is exacerbated by ember-liquid fire.
 
-  this.transition(
-    this.fromRoute('setup.security-controls.index'),
-    this.toRoute('setup.security-controls.show'),
-    this.use('toLeft'),
-    this.reverse('toRight')
-  );
+  // See https://github.com/ember-animation/liquid-fire/issues/441
 
-  this.transition(
-    this.fromRoute('setup.security-controls.show'),
-    this.toRoute('setup.finish'),
-    this.use('toLeft'),
-    this.reverse('toRight')
-  );
+  // SETUP_STEPS.forEach((current, index) => {
+  //   if(index < SETUP_STEPS.length) {
+  //     let next = SETUP_STEPS[index + 1];
+  //     buildSPDTransition(this, `setup.${current}`, `setup.${next}`);
+  //   }
+  // });
 
-  this.transition(
-    this.fromRoute('settings.security-controls.index'),
-    this.toRoute('settings.security-controls.show'),
-    this.use('toLeft'),
-    this.reverse('toRight')
-  );
+  // this.transition(
+  //   this.fromRoute('setup.data-environments'),
+  //   this.toRoute('setup.security-controls.index'),
+  //   this.use('toLeft'),
+  //   this.reverse('toRight')
+  // );
 
-  this.transition(
-    this.fromRoute('settings.security-controls.show'),
-    this.toRoute('settings.finish'),
-    this.use('toLeft'),
-    this.reverse('toRight')
-  );
+  // this.transition(
+  //   this.fromRoute('setup.security-controls.index'),
+  //   this.toRoute('setup.security-controls.show'),
+  //   this.use('toLeft'),
+  //   this.reverse('toRight')
+  // );
+
+  // this.transition(
+  //   this.fromRoute('setup.security-controls.show'),
+  //   this.toRoute('setup.finish'),
+  //   this.use('toLeft'),
+  //   this.reverse('toRight')
+  // );
+
+  // this.transition(
+  //   this.fromRoute('settings.security-controls.index'),
+  //   this.toRoute('settings.security-controls.show'),
+  //   this.use('toLeft'),
+  //   this.reverse('toRight')
+  // );
+
+  // this.transition(
+  //   this.fromRoute('settings.security-controls.show'),
+  //   this.toRoute('settings.finish'),
+  //   this.use('toLeft'),
+  //   this.reverse('toRight')
+  // );
 
   this.transition(
     this.inHelper('liquid-modal'),

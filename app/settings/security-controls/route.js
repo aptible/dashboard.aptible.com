@@ -5,7 +5,8 @@ import buildSecurityControlGroups from 'sheriff/utils/build-security-control-gro
 export default Ember.Route.extend({
   model() {
     let handle = 'selected_data_environments';
-    let organizationUrl = this.modelFor('organization').get('data.links.self');
+    let organization = this.modelFor('organization');
+    let organizationUrl = organization.get('data.links.self');
     let attestationParams = { handle, organizationUrl, document: [] };
 
     return new Ember.RSVP.Promise((resolve, reject) => {
@@ -17,9 +18,8 @@ export default Ember.Route.extend({
           }
 
           let dataEnvironmentSelections = dataEnvironments.get('document');
-          let organizationUrl = this.modelFor('organization').get('data.links.self');
           let groups = buildSecurityControlGroups(dataEnvironmentSelections,
-                                                  organizationUrl, this.store);
+                                                  organization, this.store);
           resolve(groups);
         }, reject);
     });

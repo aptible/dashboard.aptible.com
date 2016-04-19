@@ -94,13 +94,13 @@ test('clicking next will finish SPD if on last group', function(assert) {
   });
   stubProfile({ currentStep: 'security-controls'});
   stubRequests();
-  signInAndVisit(`${securityControlsUrl}/aptible_security_controls`);
+  signInAndVisit(`${securityControlsUrl}/workstation_security_controls`);
 
   stubRequest('post', '/attestations', function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to /attestations');
-    assert.equal(json.handle, 'aptible_security_controls');
+    assert.equal(json.handle, 'workstation_security_controls');
 
     return this.success({ id: 1 });
   });
@@ -118,7 +118,7 @@ test('clicking next will finish SPD if on last group', function(assert) {
 
   andThen(() => {
     let title = findWithAssert('.security-control-group-title');
-    assert.ok(title.is(':contains(Aptible)'), 'Aptible control group');
+    assert.ok(title.is(':contains(Workstation)'), 'Workstation control group');
   });
 
   andThen(clickContinueButton);

@@ -107,6 +107,7 @@ export default Ember.Route.extend({
       }
 
       attestation.set('document', schemaDocument);
+      attestation.setUser(this.session.get('currentUser'));
       attestation.save().then(() => {
         let message = 'Workforce saved.';
         Ember.get(this, 'flashMessages').success(message);
