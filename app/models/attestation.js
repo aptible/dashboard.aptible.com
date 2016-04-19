@@ -49,9 +49,20 @@ function getInvalidPropertyError(message) {
 let Attestation = DS.Model.extend({
   handle: DS.attr('string'),
   organizationUrl: DS.attr('string'),
+  userUrl: DS.attr('string'),
+  userName: DS.attr('string'),
+  userEmail: DS.attr('string'),
   schemaId: DS.attr('string'),
   document: DS.attr({ defaultValue: {} }),
   createdAt: DS.attr('iso-8601-timestamp'),
+
+  setUser(user) {
+    let userUrl = user.get('data.links.self');
+    let userName = user.get('name');
+    let userEmail = user.get('email');
+
+    this.setProperties({ userUrl, userName, userEmail });
+  },
 
   validationErrors: Ember.computed('errors.[]', function() {
     let validationErrors = [];
