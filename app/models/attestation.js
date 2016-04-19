@@ -1,5 +1,6 @@
 import DS from 'ember-data';
 import Ember from 'ember';
+import User from './user';
 
 let { decamelize, capitalize } = Ember.String;
 
@@ -49,9 +50,22 @@ function getInvalidPropertyError(message) {
 let Attestation = DS.Model.extend({
   handle: DS.attr('string'),
   organizationUrl: DS.attr('string'),
+  userUrl: DS.attr('string'),
+  userName: DS.attr('string'),
+  userEmail: DS.attr('string'),
   schemaId: DS.attr('string'),
   document: DS.attr({ defaultValue: {} }),
   createdAt: DS.attr('iso-8601-timestamp'),
+
+  setUser(user) {
+    Ember.assert('user must be a User model', user instanceof User);
+
+    let userUrl = user.get('data.links.self');
+    let userName = user.get('name');
+    let userEmail = user.get('email');
+
+    this.setProperties({ userUrl, userName, userEmail });
+  },
 
   validationErrors: Ember.computed('errors.[]', function() {
     let validationErrors = [];
