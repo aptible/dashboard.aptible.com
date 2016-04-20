@@ -14,7 +14,7 @@ export const dataEnvironmentProviderMap = {
 export const globalSecurityControlGroups = [
   'application_security_controls', 'email_security_controls',
   'security_procedures_security_controls', 'workforce_security_controls',
-  'workstation_security_controls'];
+  'workstation_security_controls', 'software_development_lifecycle_security_controls'];
 
 export default function(dataEnvironments, organization, store) {
   let organizationUrl = organization.get('data.links.self');
