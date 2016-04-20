@@ -8,14 +8,12 @@ export default Ember.Component.extend({
 
   isSliding: false,
 
-  shouldDisable: Ember.computed('isV1Stack', 'isSaving', function() {
-    return this.get('isV1Stack') || this.get('isSaving');
+  shouldDisable: Ember.computed('isv1Stack', 'isSaving', function() {
+    return this.get('isv1Stack') || this.get('isSaving');
   }),
 
-  isv1Stack: function() {
-    let sweetnessVersion = this.get('service.stack.sweetnessStackVersion');
-    return !(sweetnessVersion && sweetnessVersion === "v2");
-  }.property('service.stack.sweetnessStackVersion'),
+  isv2Stack: Ember.computed.equal('service.stack.sweetnessStackVersion', 'v2'),
+  isv1Stack: Ember.computed.not('isv2Stack'),
 
   showActionButtons: function(){
     if (this.get('isSliding')) { return false; }

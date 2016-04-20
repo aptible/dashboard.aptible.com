@@ -39,3 +39,53 @@ test('it renders', function(assert) {
   this.render();
   assert.equal(component._state, 'inDOM');
 });
+
+test('it should set shouldDisable to true for v1 stacks', function(assert) {
+  assert.expect(1);
+
+  // creates the component instance
+  var component = this.subject({
+    service: Ember.Object.create({
+      containerSize: 1024,
+      containerCount: 1,
+      stack: Ember.Object.create({})
+    })
+  });
+
+  assert.equal(true, component.get('shouldDisable'));
+});
+
+test('it should set shouldDisable to false for v2 stacks', function(assert) {
+  assert.expect(1);
+
+  // creates the component instance
+  var component = this.subject({
+    service: Ember.Object.create({
+      containerSize: 1024,
+      containerCount: 1,
+      stack: Ember.Object.create({
+        sweetnessStackVersion: 'v2'
+      })
+    })
+  });
+
+  assert.equal(false, component.get('shouldDisable'));
+});
+
+test('it should set shouldDisable to true when component is saving', function(assert) {
+  assert.expect(1);
+
+  // creates the component instance
+  var component = this.subject({
+    isSaving: true,
+    service: Ember.Object.create({
+      containerSize: 1024,
+      containerCount: 1,
+      stack: Ember.Object.create({
+        sweetnessStackVersion: 'v2'
+      })
+    })
+  });
+
+  assert.equal(true, component.get('shouldDisable'));
+});
