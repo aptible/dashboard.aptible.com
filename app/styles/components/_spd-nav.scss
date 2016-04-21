@@ -1,0 +1,68 @@
+.spd-progress-body {
+  display: flex;
+  justify-content: space-between;
+
+  .spd-progress-step {
+    .spd-progress-step-image {
+      display: none;
+    }
+
+    &.active .spd-progress-step-title {
+      color: $color-primary;
+    }
+  }
+
+  .spd-progress-step-title {
+    font-size: 11px;
+    color: $color-light;
+    font-weight: $weight-semibold;
+    text-transform: uppercase;
+  }
+}
+
+.new-header {
+  .spd-progress {
+    margin-top: -12px;
+  }
+
+  .spd-progress-bar {
+    margin: 11px 0 30px;
+  }
+}
+
+.spd-progress-bar {
+  background: #fafafa;
+  height: 4px;
+  border-radius: 2px;
+  width: 100%;
+  overflow:hidden;
+
+  .spd-progress-bar-container {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+  }
+
+  .spd-progress-bar-step {
+    flex-grow: 1;
+    text-align: center;
+    height: 4px;
+
+    &.completed, &.active {
+      background: #eaeaea;
+    }
+  }
+}
+
+.spd-back-button {
+  float: left;
+  margin-left: -25px;
+  font-size: 16px;
+  margin-top: -15px;
+}
+
+.spd-filterbar {
+  @extend %clearfix;
+  padding: 0 0 30px;
+}

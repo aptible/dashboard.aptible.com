@@ -1,0 +1,15 @@
+{{#unless property.readonly}}
+  <td>
+    {{#if provider}}
+      {{provider-logo size="sm" provider=provider}}
+    {{/if}}
+  </td>
+  <td>
+    <strong>{{property.title}}</strong>
+  </td>
+  <td class="toggle-small align-right">
+    <div class='options'>
+      {{schema-field-toggle key=handle property=property document=document}}
+    </div>
+  </td>
+{{/unless}}

@@ -1,0 +1,42 @@
+<div class="panel-heading">
+  <div class="user-gravatar">
+    {{gravatar-image email=status.user.email size=25}}
+  </div>
+
+  <div class="user-title">
+    <h5 class="user-name">{{status.user.name}}</h5>
+    <div class="user-email">{{status.user.email}}</div>
+    <ul class="training-enrollment">
+      {{training-enrollment-badge
+          user=status.user
+          courseStatus=status.courses.training_log
+          tagName="li"}}
+
+      {{training-enrollment-badge
+          user=status.user
+          courseStatus=status.courses.developer_training_log
+          tagName="li"}}
+
+      {{training-enrollment-badge
+          user=status.user
+          courseStatus=status.courses.security_officer_training_log
+          tagName="li"}}
+    </ul>
+  </div>
+</div>
+
+<div class="panel-body">
+  <ul class="resource-metadata">
+    <li class="resource-metadata-item">
+      <h5 class="resource-metadata-title">Recent Activity</h5>
+      <h3 class="resource-metadata-value">
+        {{#each status.documents as |document|}}
+          {{document-activity-item document=document}}
+        {{else}}
+          No Training Activity Yet
+        {{/each}}
+      </h3>
+    </li>
+  </ul>
+</div>
+

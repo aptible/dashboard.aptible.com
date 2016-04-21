@@ -1,0 +1,45 @@
+{{#spd-nav
+  preventContinueMessage=preventContinueMessage
+  onNext="onNext"
+  onPrevious="onPrevious"
+  stepName="Workforce"
+  onSave="onSave"
+  attestation=attestation
+}}
+  <div class="description">
+    <p>
+      Aptible provides 3 training programs as a part of your Pilot plan: Basic HIPAA Training, Advanced HIPAA Training, and Security Officer Training.
+    </p>
+
+    <p>
+      Basic HIPAA Training is Required for any individual in your workforce with direct or indirect contact with personal health or health-related financial information is required to complete basic HIPAA training. Additionally, any individual expected to have direct contact with patients.
+    </p>
+
+    <p>
+      All users invited into your Aptible organization will automatically be enrolled in Basic HIPAA training.
+    </p>
+
+    <p>
+      Use the toggles below to designate Developers and Security Officers. User's designated as "Robots" will receive no training enrollments.
+    </p>
+  </div>
+{{/spd-nav}}
+
+<div class="container main-body">
+  {{spd-errors errors=errors}}
+
+  <div class="spd-filterbar">
+    <div class="pull-right">
+      <button class="btn btn-default invite-team-button" {{action "showInviteModal"}}><i class="fa fa-plus"></i> Invite Team</button>
+    </div>
+  </div>
+
+  <div class="panels">
+    {{team-index
+      teamDocument=schemaDocument
+      invitations=invitations
+      properties=properties
+      resendInvitation=(action 'resendInvitation')
+      removeInvitation=(action 'removeInvitation')}}
+  </div>
+</div>

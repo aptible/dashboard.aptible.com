@@ -1,0 +1,24 @@
+<main class="layout-content spd-content">
+
+  <header class="new-header">
+    <div class="container">
+      <div class='header-left'>
+        <h2 class="sub-title">Compliance Engines</h2>
+        <h1 class="title">Workforce Training</h1>
+      </div>
+      <div class="header-right">
+        <ul class="header-actions">
+          <li>
+            {{#link-to 'settings.team' classNames='btn btn-default'}}
+        Manage Workforce
+      {{/link-to}}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <div class="container main-body">
+    {{outlet}}
+  </div>
+</main>

@@ -1,5 +1,3 @@
-/* global QUnit */
-
 import Ember from "ember";
 
 Ember.Test.registerAsyncHelper('expectRequiresAuthentication', function(app, url){

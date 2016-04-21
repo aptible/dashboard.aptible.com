@@ -1,0 +1,27 @@
+<div class="container main-body">
+  <div class="sort-group data-environment-groups">
+    <h5 class="sort-header">Data Environment Security Controls</h5>
+    <div class="row">
+      {{#each dataEnvironmentGroups as |securityControlGroup|}}
+        <div class="col-xs-4">
+          {{security-control-index-item
+            showPath="settings.security-controls.show"
+            securityControlGroup=securityControlGroup}}
+        </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="sort-group data-environment-groups">
+    <h5 class="sort-header">Organizational Security Controls</h5>
+    <div class="row">
+      {{#each organizationalGroups as |securityControlGroup|}}
+        <div class="col-xs-4">
+          {{security-control-index-item
+            showPath="settings.security-controls.show"
+            securityControlGroup=securityControlGroup}}
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</div>

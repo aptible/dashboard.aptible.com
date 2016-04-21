@@ -13,11 +13,36 @@ module.exports = function(environment) {
     apiBaseUri: detectEndpointUri('api', environment) || 'http://localhost:4001',
     billingBaseUri: detectEndpointUri('billing', environment) || 'http://localhost:4004',
     metricsBaseuri: detectEndpointUri('metrics', environment) || "http://localhost:3000",
+    complianceBaseUri: detectEndpointUri('compliance', environment) || 'http://localhost:3001',
+    dashboardBaseUri: detectEndpointUri('dashboard', environment) || 'http://localhost:4200',
+
     aptibleHosts: {
       compliance: detectEndpointUri('compliance', environment) || 'http://localhost:3001',
       dashboard: detectEndpointUri('dashboard', environment) || 'http://localhost:4200',
       support: 'https://support.aptible.com',
       contact: 'http://contact.aptible.com'
+    },
+
+    complianceEngines: [
+      { name: 'Risk Assessment', path: 'risk', app: 'compliance' },
+      { name: 'Policies & Procedures', path: 'policy', app: 'compliance' },
+      { name: 'Application Security', path: 'security', app: 'compliance' },
+      { name: 'Workforce Training', path: 'training' }
+    ],
+
+    complianceTools: [
+      { name: 'Incident Response', path: 'incidents', app: 'compliance' },
+      { name: 'Contract Management', path: 'contracts', app: 'compliance' }
+    ],
+
+    'ember-cli-toggle': {
+      includedThemes: ['light', 'default', 'flip', 'ios'],
+      excludedThemes: ['flip'],
+      defaultShowLabels: true, // defaults to false
+      defaultTheme: 'light',   // defaults to 'default'
+      defaultSize: 'small',    // defaults to 'medium'
+      defaultOff: 'False',     // defaults to 'Off'
+      defaultOn: 'True'        // defaults to 'On'
     },
 
     authTokenKey: '_aptible_authToken',
@@ -71,12 +96,12 @@ module.exports = function(environment) {
     },
 
     contentSecurityPolicy: {
-      'connect-src': "'self' http://localhost:4004 https://billing.aptible-staging.com https://api.aptible-staging.com https://auth.aptible-staging.com http://localhost:4000 http://localhost:4001 ws://localhost:35729 ws://0.0.0.0:35729 http://api.segment.io http://auth.aptible.foundry.io http://api.aptible.foundry.io http://localhost:3000 http://metrics.aptible-staging.com",
+      'connect-src': "'self' http://aptible1.local:4000 http://aptible1.local:4001 http://aptible1.local:4002 http://aptible1.local:4004 http://localhost:4000 http://localhost:4001 http://localhost:4002 ws://localhost:35729 ws://0.0.0.0:35729 http://api.mixpanel.com http://api.segment.io https://auth.aptible-staging.com https://api.aptible-staging.com https://gridiron.aptible-staging.com https://api-ping.intercom.io wss://*.intercom.io https://*.intercom.io",
       'style-src': "'self' 'unsafe-inline' http://use.typekit.net",
-      'img-src': "'self' http://www.gravatar.com https://secure.gravatar.com http://www.google-analytics.com http://p.typekit.net https://track.customer.io data: app.getsentry.com",
-      'script-src': "'self' 'unsafe-inline' https://js.stripe.com https://api.stripe.com http://use.typekit.net http://cdn.segment.com https://assets.customer.io http://www.google-analytics.com http://cdn.ravenjs.com",
+      'img-src': "'self' http://www.gravatar.com https://secure.gravatar.com http://www.google-analytics.com http://p.typekit.net https://track.customer.io https://js.intercomcdn.com",
+      'script-src': "'self' 'unsafe-inline' https://js.stripe.com https://api.stripe.com http://use.typekit.net http://cdn.segment.com https://assets.customer.io http://www.google-analytics.com http://cdn.mxpnl.com https://js.intercomcdn.com https://static.intercomcdn.com https://widget.intercom.io",
       'font-src': "'self' data:",
-      'object-src': 'http://localhost:4200'
+      'object-src': "http://localhost:4200"
     },
 
     featureFlags: {
@@ -115,6 +140,7 @@ module.exports = function(environment) {
     delete ENV.apiBaseUri;
     delete ENV.authBaseUri;
     delete ENV.billingBaseUri;
+    delete ENV.gridironBaseUri;
 
     // https://github.com/poteto/ember-cli-flash/issues/32
     // Flash messages with a timeout will pause andThen()'s for the timeout

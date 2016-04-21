@@ -1,0 +1,54 @@
+<section class="compliance-section">
+  <header><span class="header-title">{{organization.name}} Training Overview</span></header>
+  {{training-progress-bar users=model}}
+</section>
+
+<section class="compliance-section">
+  <header>
+    <span class="header-title">Training Status By User</span>
+  </header>
+
+  <div class="resource-list-grid workforce-members">
+    <div class="row">
+      {{#each model as |userTrainingStatus|}}
+        {{#unless userTrainingStatus.settings.isRobot}}
+          <div class="col-xs-4">
+            {{user-training-item status=userTrainingStatus}}
+          </div>
+        {{/unless}}
+      {{/each}}
+    </div>
+  </div>
+</section>
+
+{{#if pendingInvitations}}
+  <section class="compliance-section">
+    <header>
+      <span class="header-title">Pending Invitations</span>
+    </header>
+    <div class="panel compliance-status-table-panel white-panel pending-invitations">
+      {{#each pendingInvitations as |invitationSettings|}}
+        <div class="panel-row">
+          {{pending-invitation invitationSettings=invitationSettings}}
+        </div>
+      {{/each}}
+    </div>
+  </section>
+{{/if}}
+
+{{#if robots}}
+  <section class="compliance-section">
+    <header>
+      <span class="header-title">Robot Users</span>
+    </header>
+    <div class="panel compliance-status-table-panel white-panel robot-users">
+      {{#each robots as |robot|}}
+        <div class="panel-row robot-user">
+          <div class="info">
+            <div class="name">{{robot.email}}</div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </section>
+{{/if}}

@@ -1,0 +1,52 @@
+$unenrolled-badge-color: #d6d6d6;
+
+.training-enrollment {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+
+  li {
+    display: inline-block;
+    margin: 0 5px 0 0;
+  }
+
+  .badge {
+    text-transform: uppercase;
+    font-size: 11px;
+    color: #fff;
+    margin: 5px 0;
+    font-weight: $weight-normal;
+
+    .fa {
+      display: none;
+    }
+
+    &.status-notEnrolled {
+      background: $unenrolled-badge-color;
+    }
+
+    &.status-overdue {
+      background: $color-danger;
+
+      .fa.fa-exclamation-circle {
+        display: inline;
+      }
+    }
+
+    &.status-expired {
+      background: $color-warning;
+
+      .fa.fa-exclamation-circle {
+        display: inline;
+      }
+    }
+
+    &.status-complete {
+      background: $color-success;
+
+      .fa.fa-check {
+        display: inline;
+      }
+    }
+  }
+}
