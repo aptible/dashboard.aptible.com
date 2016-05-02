@@ -3,37 +3,27 @@
 {{/dashboard-dropdown-item}}
 
 {{#dashboard-dropdown-item}}
-  {{#link-to-aptible path='settings/profile' app='dashboard'}}
-    Profile
-  {{/link-to-aptible}}
+  {{link-to 'Profile' 'settings.profile'}}
 {{/dashboard-dropdown-item}}
 
 {{#dashboard-dropdown-item}}
-  {{#link-to-aptible path='settings/admin' app='dashboard'}}
-    Account
-  {{/link-to-aptible}}
+  {{link-to 'Account' 'settings.admin'}}
 {{/dashboard-dropdown-item}}
 
 {{#dashboard-dropdown-item}}
-  {{#link-to-aptible path='settings/ssh' app='dashboard'}}
-    SSH Keys
-  {{/link-to-aptible}}
+  {{link-to 'SSH Keys' 'settings.ssh'}}
 {{/dashboard-dropdown-item}}
 
 {{#if user.superuser}}
-{{#dashboard-dropdown-item}}
-  {{#link-to-aptible path='settings/impersonate' app='dashboard'}}
-    Impersonate
-  {{/link-to-aptible}}
-{{/dashboard-dropdown-item}}
+  {{#dashboard-dropdown-item}}
+    {{link-to 'Impersonate' 'settings.impersonate'}}
+  {{/dashboard-dropdown-item}}
 {{/if}}
 
 {{dashboard-dropdown-divider}}
 
 <div>
   {{#dashboard-dropdown-item}}
-    {{#link-to-aptible path='logout' app='dashboard'}}
-      Logout
-    {{/link-to-aptible}}
+    {{link-to 'Logout' 'logout'}}
   {{/dashboard-dropdown-item}}
 </div>
