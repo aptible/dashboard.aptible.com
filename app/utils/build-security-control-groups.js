@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import loadSchema from 'sheriff/utils/load-schema';
-import Attestation from 'sheriff/models/attestation';
+import loadSchema from 'diesel/utils/load-schema';
+import Attestation from 'diesel/models/attestation';
 
 export const dataEnvironmentProviderMap = {
   aptible: 'aptible',

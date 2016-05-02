@@ -1,15 +1,12 @@
 import Ember from 'ember';
-import { module, test, skip } from 'qunit';
-import startApp from 'sheriff/tests/helpers/start-app';
+import { module, test } from 'qunit';
+import startApp from 'diesel/tests/helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
-import { orgId, rolesHref, usersHref, invitationsHref, securityOfficerId,
+import { orgId, rolesHref, usersHref, invitationsHref,
          securityOfficerHref } from '../../helpers/organization-stub';
-import { DATA_ENVIRONMENTS } from 'sheriff/setup/data-environments/route';
 
 let application;
-let startUrl = `${orgId}/setup/start`;
 let userId = 'basic-user-1';
-let developerId = 'developer-user-2';
 let basicRoleId = 'basic-role-1';
 let developerRoleId = 'developer-role-2';
 
@@ -56,23 +53,23 @@ module('Acceptance: Security Program Design: Required', {
   }
 });
 
-test('Loading Sheriff without completing SPD redirects you to start SPD', function(assert) {
+test('Loading compliance without completing SPD redirects you to start SPD', function(assert) {
   stubProfile({ hasCompletedSetup: false });
   stubRequests();
-  signInAndVisit(`${orgId}/training`);
+  signInAndVisit(`/compliance/${orgId}/training`);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.start', 'redirected to start SPD');
+    assert.equal(currentPath(), 'compliance.compliance-organization.setup.start', 'redirected to start SPD');
   });
 });
 
-test('Loading Sheriff with completed SPD does not redirect you', function(assert) {
+test('Loading compliance with completed SPD does not redirect you', function(assert) {
   stubProfile({ hasCompletedSetup: true });
   stubRequests();
-  signInAndVisit(`${orgId}/training`);
+  signInAndVisit(`/compliance/${orgId}/training`);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.engines.training.index', 'remains on current path');
+    assert.equal(currentPath(), 'compliance.compliance-organization.engines.training.index', 'remains on current path');
   });
 });
 
@@ -83,31 +80,31 @@ function stubRequests() {
     { email: users[0].email, isDeveloper: false, isSecurityOfficer: false, isRobot: false, hasAptibleAccount: true }
   ] });
 
-  stubRequest('get', '/criteria', function(request) {
+  stubRequest('get', '/criteria', function() {
     return this.success({ _embedded: { criteria: [] }});
   });
 
-  stubRequest('get', '/documents', function(request) {
+  stubRequest('get', '/documents', function() {
     return this.success({ _embedded: { documents: [] } });
   });
 
-  stubRequest('get', rolesHref, function(request) {
+  stubRequest('get', rolesHref, function() {
     return this.success({ _embedded: { roles } });
   });
 
-  stubRequest('get', usersHref, function(request) {
+  stubRequest('get', usersHref, function() {
     return this.success({ _embedded: { users }});
   });
 
-  stubRequest('get', invitationsHref, function(request) {
+  stubRequest('get', invitationsHref, function() {
     return this.success({ _embedded: { invitations: [] }});
   });
 
-  stubRequest('get', securityOfficerHref, function(request) {
+  stubRequest('get', securityOfficerHref, function() {
     return this.success(users[0]);
   });
 
-  stubRequest('get', '/permissions', function(request) {
+  stubRequest('get', '/permissions', function() {
     return this.success({ _embedded: { permissions }});
   });
 }

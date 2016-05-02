@@ -44,7 +44,7 @@ Ember.Test.registerHelper('stubSchemasAPI', function(app, options = {}) {
 
   Ember.keys(schemas).forEach((handle) => {
     if (except.indexOf(handle) === -1) {
-      stubRequest('get', `/schemas/${handle}`, function(request) {
+      stubRequest('get', `/schemas/${handle}`, function() {
         return this.success(schemas[handle]);
       });
     }

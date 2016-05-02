@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import SPDRouteMixin from 'sheriff/mixins/routes/spd-route';
+import SPDRouteMixin from 'diesel/mixins/routes/spd-route';
 
 export const NEXT_STEPS = [
   { key: 'risk', title: 'Complete a Risk Analysis', cta: 'Begin Risk Analysis', current: true, step: 2 },

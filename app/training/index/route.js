@@ -1,10 +1,10 @@
 import Ember from 'ember';
-import { findUserBy } from 'sheriff/utils/build-team-document';
-import TrainingEnrollmentStatus from 'sheriff/utils/training-enrollment-status';
+import { findUserBy } from 'diesel/utils/build-team-document';
+import TrainingEnrollmentStatus from 'diesel/utils/training-enrollment-status';
 
 export default Ember.Route.extend({
   model() {
-    let organization = this.modelFor('organization');
+    let organization = this.modelFor('compliance-organization');
     let workforceAttestation = this.modelFor('training').attestation.get('document');
 
     // Map all users into a TrainingEnrollmentStatus object
@@ -24,7 +24,7 @@ export default Ember.Route.extend({
   },
 
   setupController(controller, model) {
-    let organization = this.modelFor('organization');
+    let organization = this.modelFor('compliance-organization');
     let criteria = this.modelFor('training').criteria;
 
     controller.set('criteria', criteria);

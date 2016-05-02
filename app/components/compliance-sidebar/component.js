@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import config from '../../config/environment';
-import { STEPS, getStepIndex } from 'sheriff/components/spd-nav/component';
+import { STEPS, getStepIndex } from 'diesel/components/spd-nav/component';
 
 export default Ember.Component.extend({
   routingService: Ember.inject.service('routing'),
@@ -28,7 +28,7 @@ export default Ember.Component.extend({
     steps.map((step, stepIndex) => {
       Ember.setProperties(step, {
         current: (stepIndex === currentStepIndex),
-        path:`settings.${step.key}`
+        path:`compliance-settings.${step.key}`
       });
 
       return step;

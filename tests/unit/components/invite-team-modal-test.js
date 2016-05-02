@@ -1,6 +1,4 @@
 import { moduleForComponent, test } from 'ember-qunit';
-import Ember from 'ember';
-import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('invite-team-modal', 'InviteTeamModalUnitTest', {
   needs: ['component:modal-wrapper']
@@ -26,7 +24,7 @@ testCases.forEach((testCase) => {
       }
     };
 
-    let component = this.subject({
+    this.subject({
       invitesList: testCase,
       role: 'r1',
       targetObject: targetObject,

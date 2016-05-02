@@ -1,13 +1,13 @@
 import Ember from 'ember';
-import Attestation from 'sheriff/models/attestation';
-import buildTeamDocument from 'sheriff/utils/build-team-document';
-import loadSchema from 'sheriff/utils/load-schema';
+import Attestation from 'diesel/models/attestation';
+import buildTeamDocument from 'diesel/utils/build-team-document';
+import loadSchema from 'diesel/utils/load-schema';
 
 export default Ember.Route.extend({
   attestationValidator: Ember.inject.service(),
   model() {
     let handle = 'workforce_roles';
-    let organization = this.modelFor('organization');
+    let organization = this.modelFor('compliance-organization');
     let organizationUrl = organization.get('data.links.self');
 
     return loadSchema(handle).then((schema) => {
@@ -26,7 +26,7 @@ export default Ember.Route.extend({
   },
 
   setupController(controller, model) {
-    let organization = this.modelFor('organization');
+    let organization = this.modelFor('compliance-organization');
     let { schema, attestation, invitations, users } = model;
     let schemaDocument = buildTeamDocument(users, invitations,
                                            attestation.get('document'), schema);
@@ -122,7 +122,7 @@ export default Ember.Route.extend({
     },
 
     inviteTeam(inviteList, roleId) {
-      let organization = this.modelFor('organization');
+      let organization = this.modelFor('compliance-organization');
       let role = organization.get('roles').findBy('id', roleId);
 
       inviteList.map((email) => {
@@ -140,7 +140,7 @@ export default Ember.Route.extend({
     },
 
     onRemoveInvitation() {
-      let organization = this.modelFor('organization');
+      let organization = this.modelFor('compliance-organization');
       let existingDocument = this.controller.get('schemaDocument').dump();
       let newSchemaDocument = buildTeamDocument(organization.get('users'),
                                                 organization.get('invitations'),

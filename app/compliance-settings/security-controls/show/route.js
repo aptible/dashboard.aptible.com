@@ -4,7 +4,7 @@ export default Ember.Route.extend({
   stepName: 'security-controls',
 
   model(params) {
-    let securityControlGroups = this.modelFor('settings.security-controls');
+    let securityControlGroups = this.modelFor('compliance-settings.security-controls');
     return securityControlGroups.findBy('handle', params.handle);
   },
 
@@ -26,7 +26,7 @@ export default Ember.Route.extend({
   },
 
   setupController(controller, model) {
-    let securityControlGroups = this.modelFor('settings.security-controls');
+    let securityControlGroups = this.modelFor('compliance-settings.security-controls');
 
     controller.set('model', model);
     controller.set('securityControlGroups', securityControlGroups);

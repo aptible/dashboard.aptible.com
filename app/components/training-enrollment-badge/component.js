@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { ENROLLMENT_STATUSES } from 'sheriff/utils/training-enrollment-status';
+import { ENROLLMENT_STATUSES } from 'diesel/utils/training-enrollment-status';
 
 export default Ember.Component.extend({
   classNames: ['training-enrollment-badge'],

@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { VALID_EMAIL_REGEX } from 'sheriff/validators/email';
+import { VALID_EMAIL_REGEX } from 'diesel/validators/email';
 
 var title = `Invite your workforce`;
 var description = `Any member of your workforce with access to PHI is required

@@ -1,3 +1,4 @@
+
 import Ember from "ember";
 import config from "./config/environment";
 
@@ -166,28 +167,32 @@ Router.map(function() {
     path: "claim/:invitation_id/:verification_code"
   });
 
-  this.route('not-found', {path: '/*wildcard'});
+  this.authenticatedRoute('compliance', { path: '/compliance' }, function() {
+    this.route('compliance-organization', { path: '/:organization_id', resetNamespace: true }, function() {
+      this.route("engines", { path: '', resetNamespace: true }, function() {
 
-  this.authenticatedRoute('organization', { path: ':organization_id'}, function() {
+        this.route("training", { path: '/training', resetNamespace: true }, function() {
+          this.route("criterion", { path: ':criterion_handle' }, function() {});
+        });
 
-    this.route("engines", { path: '', resetNamespace: true }, function() {
-      this.route("training", { path: 'training', resetNamespace: true }, function() {
-        this.route("criterion", { path: ':criterion_handle' }, function() {});
+        this.route('risk');
+        this.route('policies');
+        this.route('security');
+        this.route('contracts');
+        this.route('incidents');
+
+        this.route('compliance-settings', { path: 'settings', resetNamespace: true }, spdSteps);
       });
-      this.route('risk');
-      this.route('policies');
-      this.route('security');
-      this.route('contracts');
-      this.route('incidents');
-      this.route('settings', { path: 'settings', resetNamespace: true }, spdSteps);
-    });
 
-    this.route('setup', { path: 'setup', resetNamespace: true}, function() {
-      this.route('start');
-      this.route('finish');
-      spdSteps.call(this);
+      this.route('setup', { path: 'setup', resetNamespace: true}, function() {
+        this.route('start');
+        this.route('finish');
+        spdSteps.call(this);
+      });
     });
   });
+
+  this.route('not-found', {path: '/*wildcard'});
 });
 
 export default Router;

@@ -2,6 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   redirect() {
-    return this.transitionTo('training');
+    return this.transitionTo('training.index');
   }
 });

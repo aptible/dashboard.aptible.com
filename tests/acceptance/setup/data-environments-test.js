@@ -1,15 +1,14 @@
 import Ember from 'ember';
-import { module, test, skip } from 'qunit';
-import startApp from 'sheriff/tests/helpers/start-app';
+import { module, test } from 'qunit';
+import startApp from 'diesel/tests/helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
-import { orgId, rolesHref, usersHref, invitationsHref, securityOfficerId,
+import { orgId, rolesHref, usersHref, invitationsHref,
          securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
 let attestationHandle = 'selected_data_environments';
-let dataEnvironmentsUrl = `${orgId}/setup/data-environments`;
+let dataEnvironmentsUrl = `/compliance/${orgId}/setup/data-environments`;
 let userId = 'basic-user-1';
-let developerId = 'developer-user-2';
 let basicRoleId = 'basic-role-1';
 let developerRoleId = 'developer-role-2';
 let dataEnvironments = ['Aptible', 'Amazon Simple Storage Service (Amazon S3)', 'Gmail'];
@@ -90,7 +89,7 @@ test('Clicking back should return you to previous step', function(assert) {
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.team', 'returned to team step');
+    assert.equal(currentPath(), 'compliance.compliance-organization.setup.team', 'returned to team step');
   });
 });
 
@@ -135,7 +134,7 @@ test('Clicking continue saves data environment selections to organization profil
   andThen(clickContinueButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.security-controls.index', 'proceeds to next step');
+    assert.equal(currentPath(), 'compliance.compliance-organization.setup.security-controls.index', 'proceeds to next step');
   });
 });
 
@@ -196,7 +195,7 @@ test('Should load existing selections when attestation already exists', function
   andThen(clickContinueButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.security-controls.index', 'proceeds to next step');
+    assert.equal(currentPath(), 'compliance.compliance-organization.setup.security-controls.index', 'proceeds to next step');
   });
 });
 
@@ -261,23 +260,23 @@ function stubRequests() {
   stubValidOrganization();
   stubSchemasAPI();
 
-  stubRequest('get', rolesHref, function(request) {
+  stubRequest('get', rolesHref, function() {
     return this.success({ _embedded: { roles } });
   });
 
-  stubRequest('get', usersHref, function(request) {
+  stubRequest('get', usersHref, function() {
     return this.success({ _embedded: { users }});
   });
 
-  stubRequest('get', invitationsHref, function(request) {
+  stubRequest('get', invitationsHref, function() {
     return this.success({ _embedded: { invitations: [] }});
   });
 
-  stubRequest('get', securityOfficerHref, function(request) {
+  stubRequest('get', securityOfficerHref, function() {
     return this.success(users[0]);
   });
 
-  stubRequest('get', '/permissions', function(request) {
+  stubRequest('get', '/permissions', function() {
     return this.success({ _embedded: { permissions }});
   });
 }

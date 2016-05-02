@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { formatUtcTimestamp } from 'sheriff/helpers/format-utc-timestamp';
+import { formatUtcTimestamp } from 'diesel/helpers/format-utc-timestamp';
 export const COURSE_NAMES = { training_log: 'Basic',
                               developer_training_log: 'Developer',
                               security_officer_training_log: 'Security' };

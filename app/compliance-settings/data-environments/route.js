@@ -1,11 +1,11 @@
 import Ember from 'ember';
-import Attestation from 'sheriff/models/attestation';
-import loadSchema from 'sheriff/utils/load-schema';
+import Attestation from 'diesel/models/attestation';
+import loadSchema from 'diesel/utils/load-schema';
 
 export default Ember.Route.extend({
   model() {
     let handle = 'selected_data_environments';
-    let organizationUrl = this.modelFor('organization').get('data.links.self');
+    let organizationUrl = this.modelFor('compliance-organization').get('data.links.self');
 
     return loadSchema(handle).then((schema) => {
       let attestationParams = { handle, schemaId: schema.id, organizationUrl,

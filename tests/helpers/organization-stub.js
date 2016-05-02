@@ -8,7 +8,7 @@ export var invitationsHref = `/organizations/${orgId}/invitations`;
 export var securityOfficerId = 'security-officer-3';
 export var securityOfficerHref = `/users/${securityOfficerId}`;
 
-Ember.Test.registerHelper('stubValidOrganization', function(app) {
+Ember.Test.registerHelper('stubValidOrganization', function() {
   let organization = {
     id: orgId,
     name: orgId,
@@ -21,34 +21,34 @@ Ember.Test.registerHelper('stubValidOrganization', function(app) {
     }
   };
 
-  stubRequest('get', `/organizations/${orgId}`, function(request) {
+  stubRequest('get', `/organizations/${orgId}`, function() {
     return this.success(organization);
   });
 
-  stubRequest('get', '/organizations', function(request) {
+  stubRequest('get', '/organizations', function() {
     return this.success({ _embedded: { organizations: [organization] }});
   });
 });
 
-Ember.Test.registerHelper('stubProfile', function(app, profileData) {
-  stubRequest('get', `/organization_profiles/${orgId}`, function(request) {
+Ember.Test.registerHelper('stubProfile', function(_app, profileData) {
+  stubRequest('get', `/organization_profiles/${orgId}`, function() {
     profileData.id = orgId;
     return this.success(profileData);
   });
 });
 
-Ember.Test.registerHelper('clickContinueButton', function(app) {
+Ember.Test.registerHelper('clickContinueButton', function() {
   let continueButton = findWithAssert('button.spd-nav-continue').first();
   continueButton.click();
 });
 
 
-Ember.Test.registerHelper('clickBackButton', function(app) {
+Ember.Test.registerHelper('clickBackButton', function() {
   let continueButton = findWithAssert('button.spd-nav-back').first();
   continueButton.click();
 });
 
-Ember.Test.registerHelper('stubCurrentAttestations', function(app, attestationPayloads) {
+Ember.Test.registerHelper('stubCurrentAttestations', function(_app, attestationPayloads) {
   var attestationId = 0;
 
   stubRequest('get', '/attestations', function(request) {

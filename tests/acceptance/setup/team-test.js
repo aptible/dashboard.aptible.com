@@ -1,12 +1,12 @@
 import Ember from 'ember';
 import { module, test, skip } from 'qunit';
-import startApp from 'sheriff/tests/helpers/start-app';
+import startApp from 'diesel/tests/helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
 import { orgId, rolesHref, usersHref, invitationsHref, securityOfficerId,
          securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
-let teamUrl = `${orgId}/setup/team`;
+let teamUrl = `/compliance/${orgId}/setup/team`;
 let userId = 'basic-user-1';
 let developerId = 'developer-user-2';
 let basicRoleId = 'basic-role-1';
@@ -120,7 +120,7 @@ test('You are redirected to correct step if not ready for team step', function(a
   signInAndVisit(teamUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.organization', 'redirected to organization step');
+    assert.equal(currentPath(), 'compliance.compliance-organization.setup.organization', 'redirected to organization step');
   });
 });
 
@@ -141,7 +141,7 @@ test('Clicking back should return you to previous step', function(assert) {
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.locations', 'returned to locations step');
+    assert.equal(currentPath(), 'compliance.compliance-organization.setup.locations', 'returned to locations step');
   });
 });
 
@@ -638,7 +638,7 @@ test('Developer and Security Officer groups are validated to include at least on
   stubRequests();
   signInAndVisit(teamUrl);
 
-  stubRequest('post', '/attestations', function(request) {
+  stubRequest('post', '/attestations', function() {
     assert.ok(false, 'does not save an attestation');
     return this.success({ id: 1 });
   });
@@ -646,7 +646,7 @@ test('Developer and Security Officer groups are validated to include at least on
   andThen(clickContinueButton);
   andThen(() => {
     assert.ok(find('.alert-danger:contains(at least one Developer is required, at least one Security Officer is required.)').length === 1, 'shows an error');
-    assert.equal(currentPath(), 'organization.setup.team', 'remains on team step');
+    assert.equal(currentPath(), 'compliance.compliance-organization.setup.team', 'remains on team step');
   });
 });
 
@@ -655,7 +655,7 @@ test('Clicking re-invite button sends new invitation', function(assert) {
   stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
   stubProfile({ currentStep: 'team' });
   stubRequests();
-  stubRequest('post', '/resets', function(request) {
+  stubRequest('post', '/resets', function() {
     assert.ok(true, 'posts a reset for the invitation');
     return this.success();
   });
@@ -678,7 +678,7 @@ test('Clicking X button deletes pending invitation', function(assert) {
   stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
   stubProfile({ currentStep: 'team' });
   stubRequests();
-  stubRequest('delete', `/invitations/${invitations[0].id}`, function(request) {
+  stubRequest('delete', `/invitations/${invitations[0].id}`, function() {
     assert.ok(true, 'deletes the invitation');
     return this.noContent();
   });
@@ -850,7 +850,7 @@ function openInviteModal() {
 
 function selectRole(roleId) {
   let select = findWithAssert('select.select-role');
-  select.val(basicRoleId);
+  select.val(roleId);
   select.trigger('change');
 }
 
@@ -862,23 +862,23 @@ function stubRequests() {
     return this.success({ _embedded: { users: [users[1]] }});
   });
 
-  stubRequest('get', rolesHref, function(request) {
+  stubRequest('get', rolesHref, function() {
     return this.success({ _embedded: { roles } });
   });
 
-  stubRequest('get', usersHref, function(request) {
+  stubRequest('get', usersHref, function() {
     return this.success({ _embedded: { users }});
   });
 
-  stubRequest('get', invitationsHref, function(request) {
+  stubRequest('get', invitationsHref, function() {
     return this.success({ _embedded: { invitations }});
   });
 
-  stubRequest('get', securityOfficerHref, function(request) {
+  stubRequest('get', securityOfficerHref, function() {
     return this.success(users[2]);
   });
 
-  stubRequest('get', '/permissions', function(request) {
+  stubRequest('get', '/permissions', function() {
     return this.success({ _embedded: { permissions }});
   });
 }

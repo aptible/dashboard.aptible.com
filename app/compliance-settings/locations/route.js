@@ -1,12 +1,12 @@
 import Ember from 'ember';
 import Property from 'ember-json-schema-document/models/property';
-import Attestation from 'sheriff/models/attestation';
-import loadSchema from 'sheriff/utils/load-schema';
+import Attestation from 'diesel/models/attestation';
+import loadSchema from 'diesel/utils/load-schema';
 
 export default Ember.Route.extend({
   model() {
     let handle = 'workforce_locations';
-    let organizationUrl = this.modelFor('organization').get('data.links.self');
+    let organizationUrl = this.modelFor('compliance-organization').get('data.links.self');
 
     return loadSchema(handle).then((schema) => {
       let attestationParams = { handle, schemaId: schema.id, organizationUrl,

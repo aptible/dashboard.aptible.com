@@ -1,1 +1,0 @@
-export { default } from 'sheriff/setup/security-controls/index/controller';

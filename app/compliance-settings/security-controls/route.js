@@ -1,11 +1,11 @@
 import Ember from 'ember';
-import Attestation from 'sheriff/models/attestation';
-import buildSecurityControlGroups from 'sheriff/utils/build-security-control-groups';
+import Attestation from 'diesel/models/attestation';
+import buildSecurityControlGroups from 'diesel/utils/build-security-control-groups';
 
 export default Ember.Route.extend({
   model() {
     let handle = 'selected_data_environments';
-    let organization = this.modelFor('organization');
+    let organization = this.modelFor('compliance-organization');
     let organizationUrl = organization.get('data.links.self');
     let attestationParams = { handle, organizationUrl, document: [] };
 

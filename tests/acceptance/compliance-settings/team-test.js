@@ -1,12 +1,12 @@
 import Ember from 'ember';
-import { module, test, skip } from 'qunit';
-import startApp from 'sheriff/tests/helpers/start-app';
+import { module, test } from 'qunit';
+import startApp from 'diesel/tests/helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
 import { orgId, rolesHref, usersHref, invitationsHref, securityOfficerId,
          securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
-let teamUrl = `${orgId}/settings/team`;
+let teamUrl = `/compliance/${orgId}/settings/team`;
 let userId = 'basic-user-1';
 let developerId = 'developer-user-2';
 let basicRoleId = 'basic-role-1';
@@ -526,9 +526,8 @@ test('Invite new member modal basic UI', function(assert) {
 test('Invite modal creates invitation record for each email', function(assert) {
   stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
   expect(17);
-
-  let emailAddresses = 'skylar+1@aptible.com;skylar+2@aptible.com\nskylar+3@aptible.com skylar+4@aptible.com';
   let roleId = basicRoleId;
+  let emailAddresses = 'skylar+1@aptible.com;skylar+2@aptible.com\nskylar+3@aptible.com skylar+4@aptible.com';
   let id = 1;
 
   stubRequest('post', `/roles/${roleId}/invitations`, function(request) {
@@ -576,7 +575,7 @@ test('Developer and Security Officer groups are validated to include at least on
   stubRequests();
   signInAndVisit(teamUrl);
 
-  stubRequest('post', '/attestations', function(request) {
+  stubRequest('post', '/attestations', function() {
     assert.ok(false, 'does not save an attestation');
     return this.success({ id: 1 });
   });
@@ -592,7 +591,7 @@ test('Clicking re-invite button sends new invitation', function(assert) {
   stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
   stubProfile({ currentStep: 'team' });
   stubRequests();
-  stubRequest('post', '/resets', function(request) {
+  stubRequest('post', '/resets', function() {
     assert.ok(true, 'posts a reset for the invitation');
     return this.success();
   });
@@ -615,7 +614,7 @@ test('Clicking X button deletes pending invitation', function(assert) {
   stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
   stubProfile({ currentStep: 'team' });
   stubRequests();
-  stubRequest('delete', `/invitations/${invitations[0].id}`, function(request) {
+  stubRequest('delete', `/invitations/${invitations[0].id}`, function() {
     assert.ok(true, 'deletes the invitation');
     return this.noContent();
   });
@@ -646,7 +645,7 @@ function openInviteModal() {
   button.click();
 }
 
-function selectRole(roleId) {
+function selectRole() {
   let select = findWithAssert('select.select-role');
   select.val(basicRoleId);
   select.trigger('change');
@@ -661,23 +660,23 @@ function stubRequests() {
     return this.success({ _embedded: { users: [users[1]] }});
   });
 
-  stubRequest('get', rolesHref, function(request) {
+  stubRequest('get', rolesHref, function() {
     return this.success({ _embedded: { roles } });
   });
 
-  stubRequest('get', usersHref, function(request) {
+  stubRequest('get', usersHref, function() {
     return this.success({ _embedded: { users }});
   });
 
-  stubRequest('get', invitationsHref, function(request) {
+  stubRequest('get', invitationsHref, function() {
     return this.success({ _embedded: { invitations }});
   });
 
-  stubRequest('get', securityOfficerHref, function(request) {
+  stubRequest('get', securityOfficerHref, function() {
     return this.success(users[2]);
   });
 
-  stubRequest('get', '/permissions', function(request) {
+  stubRequest('get', '/permissions', function() {
     return this.success({ _embedded: { permissions }});
   });
 }

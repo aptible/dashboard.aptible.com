@@ -1,8 +1,8 @@
-import LocationsController from 'sheriff/setup/locations/controller';
+import LocationsController from 'diesel/setup/locations/controller';
 import Ember from 'ember';
 
 export default LocationsController.extend({
-  settings: Ember.inject.controller(),
+  settings: Ember.inject.controller('compliance-settings'),
 
   addNewLocation() {
     let { document, schema, locationProperty } = this.getProperties('document', 'schema', 'locationProperty');

@@ -1,15 +1,13 @@
 import Ember from 'ember';
-import { module, test, skip } from 'qunit';
-import startApp from 'sheriff/tests/helpers/start-app';
+import { module, test } from 'qunit';
+import startApp from 'diesel/tests/helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
-import { orgId, rolesHref, usersHref, invitationsHref, securityOfficerId,
+import { orgId, rolesHref, usersHref, invitationsHref,
          securityOfficerHref } from '../../helpers/organization-stub';
-import { DATA_ENVIRONMENTS } from 'sheriff/setup/data-environments/route';
 
 let application;
-let startUrl = `${orgId}/setup/start`;
+let startUrl = `/compliance/${orgId}/setup/start`;
 let userId = 'basic-user-1';
-let developerId = 'developer-user-2';
 let basicRoleId = 'basic-role-1';
 let developerRoleId = 'developer-role-2';
 
@@ -83,7 +81,7 @@ test('Basic setup start page UI', function(assert) {
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.organization', 'moved to next step');
+    assert.equal(currentPath(), 'compliance.compliance-organization.setup.organization', 'moved to next step');
   });
 });
 
@@ -94,7 +92,7 @@ test('Existing organization profiles should redirect to future step', function(a
   signInAndVisit(startUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.locations', 'redirected to current step');
+    assert.equal(currentPath(), 'compliance.compliance-organization.setup.locations', 'redirected to current step');
   });
 });
 
@@ -103,23 +101,23 @@ function stubRequests() {
   stubValidOrganization();
   stubSchemasAPI();
 
-  stubRequest('get', rolesHref, function(request) {
+  stubRequest('get', rolesHref, function() {
     return this.success({ _embedded: { roles } });
   });
 
-  stubRequest('get', usersHref, function(request) {
+  stubRequest('get', usersHref, function() {
     return this.success({ _embedded: { users }});
   });
 
-  stubRequest('get', invitationsHref, function(request) {
+  stubRequest('get', invitationsHref, function() {
     return this.success({ _embedded: { invitations: [] }});
   });
 
-  stubRequest('get', securityOfficerHref, function(request) {
+  stubRequest('get', securityOfficerHref, function() {
     return this.success(users[0]);
   });
 
-  stubRequest('get', '/permissions', function(request) {
+  stubRequest('get', '/permissions', function() {
     return this.success({ _embedded: { permissions }});
   });
 }

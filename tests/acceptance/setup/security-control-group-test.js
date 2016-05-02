@@ -1,12 +1,12 @@
 import Ember from 'ember';
-import { module, test, skip } from 'qunit';
-import startApp from 'sheriff/tests/helpers/start-app';
+import { module, test } from 'qunit';
+import startApp from 'diesel/tests/helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
-import { orgId, rolesHref, usersHref, invitationsHref, securityOfficerId,
+import { orgId, rolesHref, usersHref, invitationsHref,
          securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
-let securityControlsUrl = `${orgId}/setup/security-controls`;
+let securityControlsUrl = `/compliance/${orgId}/setup/security-controls`;
 let roleId = 'owners-role';
 let userId = 'u1';
 let roles = [
@@ -125,7 +125,7 @@ test('clicking next will finish SPD if on last group', function(assert) {
   andThen(clickContinueButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.finish');
+    assert.equal(currentPath(), 'compliance.compliance-organization.setup.finish');
   });
 });
 
@@ -174,61 +174,27 @@ test('clicking previous will go to index when on first group', function(assert) 
   andThen(clickBackButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.setup.security-controls.index', 'on security control index page');
+    assert.equal(currentPath(), 'compliance.compliance-organization.setup.security-controls.index', 'on security control index page');
   });
 });
-
-function clickSaveButton() {
-  let button = findWithAssert('button.spd-nav-save');
-  button.click();
-}
-
-function assertTrueSecurityControls(controls, assert) {
-  controls.forEach((control) => {
-    let controlEl = findWithAssert(`.x-toggle[name="${control}.implemented"]`);
-    assert.ok(controlEl.is(':checked'));
-  });
-}
-
-function assertEnumSecurityControls(controls, assert) {
-  for (var controlName in controls) {
-    let controlEl = findWithAssert(`select[name="${controlName}.technologies"]`);
-    assert.equal(controlEl.val(), controls[controlName]);
-  }
-}
-
-function toggleSecurityControl(controlName) {
-  let toggle = findWithAssert(`input[name="${controlName}.implemented"]`);
-  toggle.click();
-}
-
-function setEnumSecurityControl(controlName, controlVal) {
-  let option = findWithAssert(`option[value="${controlVal}"]`);
-  let select = findWithAssert(`select[name="${controlName}.technologies"]`);
-
-  Ember.run(function() {
-    select.val(controlVal);
-    select.trigger('change');
-  });
-}
 
 function stubRequests() {
   stubValidOrganization();
   stubSchemasAPI();
 
-  stubRequest('get', rolesHref, function(request) {
+  stubRequest('get', rolesHref, function() {
     return this.success({ _embedded: { roles } });
   });
 
-  stubRequest('get', usersHref, function(request) {
+  stubRequest('get', usersHref, function() {
     return this.success({ _embedded: { users }});
   });
 
-  stubRequest('get', invitationsHref, function(request) {
+  stubRequest('get', invitationsHref, function() {
     return this.success({ _embedded: { invitations: [] }});
   });
 
-  stubRequest('get', securityOfficerHref, function(request) {
+  stubRequest('get', securityOfficerHref, function() {
     return this.success(users[0]);
   });
 }

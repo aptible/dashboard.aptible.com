@@ -1,12 +1,12 @@
 import Ember from 'ember';
-import { module, test, skip } from 'qunit';
-import startApp from 'sheriff/tests/helpers/start-app';
+import { module, test } from 'qunit';
+import startApp from 'diesel/tests/helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
-import { orgId, rolesHref, usersHref, invitationsHref, securityOfficerId,
+import { orgId, rolesHref, usersHref, invitationsHref,
          securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
-let locationsUrl = `${orgId}/settings/locations`;
+let locationsUrl = `/compliance/${orgId}/settings/locations`;
 let roleId = 'owners-role';
 let userId = 'u1';
 let roles = [
@@ -60,7 +60,7 @@ test('Locations page, with existing location attestation', function(assert) {
   signInAndVisit(locationsUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.engines.settings.locations', 'remains on locations step');
+    assert.equal(currentPath(), 'compliance.compliance-organization.engines.compliance-settings.locations', 'remains on locations step');
     assert.equal(find('.locations-index table tbody tr').length, 2, 'has two locations');
     assert.ok(find('td:contains(HQ)').length, 'Has first location');
     assert.ok(find('td:contains(Satellite)').length, 'Has second location');
@@ -108,7 +108,7 @@ test('Adding an incomplete location shows an error message', function(assert) {
   andThen(openLocationDialog);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.engines.settings.locations', 'remains on location step');
+    assert.equal(currentPath(), 'compliance.compliance-organization.engines.compliance-settings.locations', 'remains on location step');
     fillInLocation();
   });
 
@@ -199,19 +199,19 @@ function stubRequests() {
   stubSchemasAPI();
   stubProfile({ hasCompletedSetup: true });
 
-  stubRequest('get', rolesHref, function(request) {
+  stubRequest('get', rolesHref, function() {
     return this.success({ _embedded: { roles } });
   });
 
-  stubRequest('get', usersHref, function(request) {
+  stubRequest('get', usersHref, function() {
     return this.success({ _embedded: { users }});
   });
 
-  stubRequest('get', invitationsHref, function(request) {
+  stubRequest('get', invitationsHref, function() {
     return this.success({ _embedded: { invitations: [] }});
   });
 
-  stubRequest('get', securityOfficerHref, function(request) {
+  stubRequest('get', securityOfficerHref, function() {
     return this.success(users[0]);
   });
 }

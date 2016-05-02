@@ -1,7 +1,6 @@
 import Ember from 'ember';
-import { module, test, skip } from 'qunit';
-import startApp from 'sheriff/tests/helpers/start-app';
-import { stubRequest } from 'ember-cli-fake-server';
+import { module, skip } from 'qunit';
+import startApp from 'diesel/tests/helpers/start-app';
 
 let application;
 

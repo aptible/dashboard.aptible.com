@@ -1,6 +1,10 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  model(params) {
+    return this.store.find('organization', params.organization_id);
+  },
+
   afterModel(model) {
     return Ember.RSVP.hash({
       users: model.get('users'),
@@ -12,6 +16,6 @@ export default Ember.Route.extend({
 
   setupController(controller, model) {
     controller.set('model', model);
-    controller.set('organizations', this.modelFor('index'));
+    controller.set('organizations', this.modelFor('compliance'));
   }
 });

@@ -1,9 +1,9 @@
 import Ember from 'ember';
-import OrganizationProfile from 'sheriff/models/organization-profile';
+import OrganizationProfile from 'diesel/models/organization-profile';
 
 export default Ember.Route.extend({
   model() {
-    let organization = this.modelFor('organization');
+    let organization = this.modelFor('compliance-organization');
     return OrganizationProfile.findOrCreate(organization, this.store);
   },
 
@@ -14,8 +14,8 @@ export default Ember.Route.extend({
   },
 
   setupController(controller) {
-    controller.set('organizations', this.modelFor('index'));
-    controller.set('organization', this.modelFor('organization'));
+    controller.set('organizations', this.modelFor('compliance'));
+    controller.set('organization', this.modelFor('compliance-organization'));
   },
 
   renderTemplate() {

@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
-import startApp from 'sheriff/tests/helpers/start-app';
+import startApp from 'diesel/tests/helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
 import { orgId, rolesHref, usersHref, securityOfficerId, invitationsHref,
          securityOfficerHref } from '../../helpers/organization-stub';
@@ -16,7 +16,7 @@ let developerRoleId = 'developer-role-2';
 let trainingCriterionId = 'training-criterion-1';
 let developerCriterionId = 'developer-criterion-2';
 let securityCriterionId = 'training-criterion-3';
-let overviewUrl = `/${orgId}/training`;
+let overviewUrl = `/compliance/${orgId}/training`;
 
 let criteria = [
 {
@@ -117,7 +117,7 @@ test(`visiting ${overviewUrl}: basic UI`, function(assert) {
   signInAndVisit(overviewUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.engines.training.index');
+    assert.equal(currentPath(), 'compliance.compliance-organization.engines.training.index');
     assert.equal(find('.workforce-members .user').length, 3, 'shows all 3 active users');
 
     // user 1 is only enrolled in basic

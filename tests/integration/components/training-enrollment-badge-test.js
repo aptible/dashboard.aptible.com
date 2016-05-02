@@ -1,7 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
-import { ENROLLMENT_STATUSES } from 'sheriff/utils/training-enrollment-status';
+import { ENROLLMENT_STATUSES } from 'diesel/utils/training-enrollment-status';
 
 moduleForComponent('training-enrollment-badge', {
   integration: true

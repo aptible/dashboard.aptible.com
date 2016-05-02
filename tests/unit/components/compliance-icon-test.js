@@ -1,8 +1,4 @@
-import {
-  moduleForComponent,
-  test
-} from 'ember-qunit';
-import Ember from 'ember';
+import { moduleForComponent, test } from 'ember-qunit';
 
 moduleForComponent('compliance-icon', {
   // specify the other units that are required for this test

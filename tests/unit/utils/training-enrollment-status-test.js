@@ -1,10 +1,7 @@
-import {
-  moduleFor,
-  test
-} from 'ember-qunit';
+import { test } from 'ember-qunit';
 import Ember from 'ember';
 import { fromNow, ago } from '../../helpers/date';
-import TrainingEnrollmentStatus from 'sheriff/utils/training-enrollment-status';
+import TrainingEnrollmentStatus from 'diesel/utils/training-enrollment-status';
 
 module('Unit: TrainingEnrollmentStatus');
 

@@ -1,4 +1,4 @@
-//import { SETUP_STEPS } from 'sheriff/models/organization-profile';
+//import { SETUP_STEPS } from 'diesel/models/organization-profile';
 
 export function buildSPDTransition(context, from, to) {
   context.transition(
