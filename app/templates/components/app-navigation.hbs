@@ -1,0 +1,12 @@
+<li class="{{if opsActive 'active' null}}">
+  {{link-to 'Apps and Databases' 'stacks'}}
+</li>
+{{#if showSheriff}}
+  <li class="{{if sheriffActive 'active' null}}">
+    {{link-to 'Compliance Tools' 'compliance'}}
+  </li>
+{{else}}
+  <li>
+    {{#link-to-aptible app="compliance" path=""}}Compliance Tools{{/link-to-aptible}}
+  </li>
+{{/if}}
