@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
@@ -15,5 +16,8 @@ export default DS.Model.extend({
 
   containerSize: Ember.computed('containerMemoryLimitMb', function() {
     return this.get('containerMemoryLimitMb') || 1024;
+  }),
+  usage: Ember.computed('containerCount', 'containerSize', function() {
+    return this.get('containerCount') * (this.get('containerSize') / 1024);
   })
 });

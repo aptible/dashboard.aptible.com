@@ -27,7 +27,10 @@ export default DS.Model.extend(ProvisionableMixin, {
             type === 'mysql');
   }),
 
-  supportsClustering: Ember.computed.equal('type', 'mongodb')
+  supportsClustering: Ember.computed.equal('type', 'mongodb'),
+
+  serviceUsage: Ember.computed.mapBy('service', 'usage'),
+  usage: Ember.computed.sum('serviceUsage')
 });
 
 export function provisionDatabases(user, store){
