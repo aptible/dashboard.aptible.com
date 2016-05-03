@@ -36,7 +36,7 @@ test(`visiting ${url} with no apps redirects to apps new`, function(assert) {
 
   signInAndVisit(url);
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.stack.apps.new');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.new');
   });
 });
 
@@ -62,7 +62,7 @@ test(`visiting ${url}`, function(assert) {
   signInAndVisit(url);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
     expectTitle(`${stackHandle} Apps`);
   });
 });
@@ -272,7 +272,7 @@ test(`visiting ${url} then clicking on an app visits the app`, function(assert) 
   });
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.app.services.index', 'app show page is visited');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.app.services.index', 'app show page is visited');
   });
 });
 

@@ -9,7 +9,7 @@ import { stubRequest } from '../../helpers/fake-server';
 var application;
 // MUST match the stubbed organization role for this user in `signIn` helper
 // so that the user can manage this organization
-let orgId = 'o1';
+let orgId = 1;
 let url = `/organizations/${orgId}/members`;
 let membersUrl = `/organizations/${orgId}/users`;
 
@@ -17,12 +17,29 @@ module('Acceptance: OrganizationMembers', {
   beforeEach: function() {
     application = startApp();
     stubStacks();
-    stubOrganizations();
+    stubRequest('get', '/organizations', function(){
+      return this.success({
+        _links: {},
+        _embedded: {
+          organizations: [{
+            _links: {
+              users: { href: membersUrl },
+              self: { href: `/organizations/${orgId}` }
+            },
+            id: orgId,
+            name: 'Sprocket Co',
+            type: 'organization'
+          }]
+        }
+      });
+    });
     stubOrganization({
       id: orgId,
-      _links: { users: { href: membersUrl } }
+      _links: {
+        users: { href: membersUrl },
+        self: { href: `/organizations/${orgId}` }
+      }
     });
-
   },
 
   afterEach: function() {
@@ -43,9 +60,22 @@ test(`visiting ${url} shows users`, function(assert) {
   },{
     id: 'bob',
     name: 'Bob',
+    verified: true,
     email: 'bob@bob.com',
     _links: { roles: {href: '/users/bob/roles'} }
   }];
+
+  let roleData = {
+    privileged: true,
+    _links: {
+      self: { href: `/roles/r1` },
+      organization: { href: `/organizations/${orgId}` }
+    }
+  };
+
+  stubRequest('get', membersUrl, function() {
+    return this.success(users);
+  });
 
   assert.expect(5 + 1*users.length);
 
@@ -62,10 +92,10 @@ test(`visiting ${url} shows users`, function(assert) {
     return this.success({ _embedded: { roles: [] } });
   });
 
-  signInAndVisit(url);
+  signInAndVisit(url, {}, roleData);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.organization.members.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.members.index');
     assert.ok(find(':contains(Mike)').length, 'Mike is on the page');
     assert.ok(find(':contains(bob@bob.com)').length, 'bob@bob.com is on the page');
     expectLink(`/organizations/${orgId}/invite`);

@@ -86,14 +86,13 @@ test(`visiting ${url} requires authentication`, function() {
 });
 
 test(`visiting ${url} shows user's info and all roles with checkboxes`, function(assert) {
-  assert.expect(5 + 3*roles.length);
+  assert.expect(4 + 3*roles.length);
 
   signInAndVisit(url);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.organization.members.edit');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.members.edit');
     assert.ok(find(`:contains(${user.name})`).length, `user name "${user.name} is on the page`);
-    assert.ok(find(`:contains(${user.name})`).length, `user email "${user.email} is on the page`);
 
     expectButton('Save');
     expectButton(`Remove from ${orgName}`);
@@ -202,6 +201,6 @@ test(`visit ${url} allows removing user from organization`, function(assert){
   signInAndVisit(url);
   clickButton(`Remove from ${orgName}`);
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.organization.members.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.members.index');
   });
 });

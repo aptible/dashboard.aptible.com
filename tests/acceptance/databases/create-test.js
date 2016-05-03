@@ -20,8 +20,8 @@ module('Acceptance: Database Create', {
         organization: { href: '/organizations/1' }
       }
     });
-    stubOrganization();
     stubOrganizations();
+    stubOrganization();
   },
   afterEach: function() {
     Ember.run(App, 'destroy');
@@ -37,19 +37,25 @@ test(`visit ${url} requires authentication`, function() {
 });
 
 test(`visiting /stacks/:stack_id/databases without any databases redirects to ${url}`, function(assert) {
-  let stack = { id: stackId };
+  let stack = {
+    id: stackId,
+    _links: { organization: { href: '/organizations/1' } }
+  };
   stubStacks({}, [stack]);
   stubStack(stack);
   stubOrganization();
   signInAndVisit(`/stacks/${stackId}/databases`);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.stack.databases.new');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.databases.new');
   });
 });
 
 test(`visit ${url} when stack has no databases does not show cancel`, function(assert) {
-  let stack = { id: stackId };
+  let stack = {
+    id: stackId,
+    _links: { organization: { href: '/organizations/1' } }
+  };
   stubStacks({}, [stack]);
   stubStack(stack);
   stubRequest('get', '/accounts/my-stack-1/databases', function(){
@@ -64,21 +70,25 @@ test(`visit ${url} when stack has no databases does not show cancel`, function(a
   signInAndVisit(url);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.stack.databases.new');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.databases.new');
     let button = findButton('Cancel');
     assert.ok(!button.length, 'has no cancel button');
   });
 });
 
 test(`visit ${url} shows basic info`, function(assert) {
-  let stack = { id: stackId, handle: stackHandle };
+  let stack = {
+    id: stackId,
+    handle: stackHandle,
+    _links: { organization: { href: '/organizations/1' } }
+  };
   stubStacks({ includeDatabases: true });
   stubStack(stack);
   stubOrganization();
   signInAndVisit(url);
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.stack.databases.new');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.databases.new');
 
     expectInput('handle');
     expectFocusedInput('handle');
@@ -112,7 +122,11 @@ test(`visit ${url} and create`, function(assert) {
 
   // Just needed to stub /stack/my-stack-1/databases
   stubStacks({ includeDatabases: true });
-  stubStack({ id: stackId, handle: 'stack-1'});
+  // stubStack({
+  //   id: stackId,
+  //   handle: 'stack-1',
+  //   _links: { organization: { href: '/organizations/1' } }
+  // });
 
   // get account (aka stack)
   stubRequest('get', '/accounts', function(){
@@ -122,7 +136,8 @@ test(`visit ${url} and create`, function(assert) {
           id: 'my-stack-1',
           handle: 'stack-1',
           _links: {
-            databases: { href: '/accounts/my-stack-1/databases' }
+            databases: { href: '/accounts/my-stack-1/databases' },
+            organization: { href: '/organizations/1' }
           }
         }]
       }
@@ -184,7 +199,7 @@ test(`visit ${url} and create`, function(assert) {
   // TODO test that moving the slider changes the disk size
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.stack.databases.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.databases.index');
 
     assert.ok( findDatabase(dbHandle).length,
         'db list shows new db' );
@@ -209,7 +224,8 @@ test(`visit ${url} with duplicate handle`, function(assert) {
           id: 'my-stack-1',
           handle: 'stack-1',
           _links: {
-            databases: { href: '/accounts/my-stack-1/databases' }
+            databases: { href: '/accounts/my-stack-1/databases' },
+            organization: { href: '/organizations/1' }
           }
         }]
       }
@@ -243,7 +259,7 @@ test(`visit ${url} with duplicate handle`, function(assert) {
     assert.ok(submitButton.is(':disabled'), 'submit button is disabled');
 
     submitButton.click();
-    assert.equal(currentPath(), 'dashboard.stack.databases.new');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.databases.new');
   });
 });
 
@@ -258,7 +274,7 @@ test(`visit ${url} and click cancel button`, function(assert) {
     clickButton('Cancel');
   });
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.stack.databases.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.databases.index');
 
     assert.ok( !findDatabase(dbHandle).length,
         'does not show database in list' );
@@ -295,7 +311,7 @@ test(`visit ${url} and transition away`, function(assert) {
     visit(dbIndexUrl);
   });
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.stack.databases.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.databases.index');
 
     assert.ok( !findDatabase(dbHandle).length,
         'does not show database in list' );

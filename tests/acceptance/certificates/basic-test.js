@@ -57,7 +57,7 @@ test(`visiting ${url} with no certificates redirects to certificates new`, funct
 
   signInAndVisit(url);
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.stack.certificates.new');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.certificates.new');
   });
 });
 
@@ -80,4 +80,3 @@ test(`visiting ${url} shows list of certificates`, function(assert) {
     assert.equal(find('.panel.certificate').length, 2, '2 certificates');
   });
 });
-

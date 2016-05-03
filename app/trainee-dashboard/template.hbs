@@ -1,0 +1,51 @@
+<div class="main-wrapper">
+  <header class="layout-header">
+    {{partial "header"}}
+    {{#unless session.currentUser.verified}}
+      {{verification-code-reset user=session.currentUser}}
+    {{/unless}}
+
+    {{#if flashMessages.queue}}
+      <div class="notifications">
+        {{#each flashMessages.queue as |flash|}}
+          {{flash-message flash=flash}}
+        {{/each}}
+      </div>
+    {{/if}}
+  </header>
+
+  <div class="layout-body">
+    <div class="layout-content">
+      <div class="container main-body trainee-dashboard">
+        <div class="row">
+          <div class="col-xs-4 col-xs-offset-2">
+            {{#link-to-aptible app="compliance" path="" class="panel-link"}}
+              <div class="panel white-panel">
+                <div class="panel-body">
+                  <div class="trainee-panel--icon glyphicon glyphicon-education" aria-hidden="true"></div>
+                  <h5 class="trainee-panel--title">Training</h5>
+                </div>
+              </div>
+            {{/link-to-aptible}}
+          </div>
+
+          <div class="col-xs-4">
+            {{#link-to-aptible app="compliance" path="" class="panel-link"}}
+              <div class="panel white-panel">
+                <div class="panel-body">
+                  <div class="trainee-panel--icon fa fa-file-text-o"></div>
+                  <h5 class="trainee-panel--title">Policies and Procedures</h5>
+                </div>
+              </div>
+            {{/link-to-aptible}}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="layout-footer">
+    {{partial "nav-footer"}}
+  </footer>
+</div>

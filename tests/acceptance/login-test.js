@@ -61,9 +61,16 @@ test('logging in with bad credentials', function(assert) {
 });
 
 test('logging in with correct credentials', function(assert) {
-  stubStacks();
-  stubOrganization();
-  stubOrganizations();
+  let roleData = {
+    id: 'r1',
+    privileged: true,
+    _links: {
+      self: { href: '/roles/r1' },
+      organization: { href: '/organizations/1' }
+    }
+  };
+
+  stubIndexRequests();
 
   stubRequest('post', '/tokens', function(request){
     let params = this.json(request);
@@ -74,10 +81,25 @@ test('logging in with correct credentials', function(assert) {
     return successfulTokenResponse(this, userUrl);
   });
 
+  stubRequest('get', '/roles/r1', function(){
+    return this.success(roleData);
+  });
+
+  stubRequest('get', '/users/my-user/roles', function() {
+    return this.success({
+      _embedded: {
+        roles: [roleData]
+      }
+    });
+  });
+
   stubRequest('get', userUrl, function(){
     return this.success({
-      id: 'some-id',
-      username: 'some-email'
+      id: 'my-user',
+      username: 'some-email',
+      _links: {
+        roles: { href: '/users/my-user/roles' }
+      }
     });
   });
 
@@ -86,7 +108,7 @@ test('logging in with correct credentials', function(assert) {
   fillInput('password', password);
   clickButton('Log in');
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
   });
 });
 
@@ -166,7 +188,7 @@ test('visit /login while already logged in redirects to stack', function(assert)
   signInAndVisit('/login');
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
   });
 });
 

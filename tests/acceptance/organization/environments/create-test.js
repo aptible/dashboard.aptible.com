@@ -7,7 +7,7 @@ import startApp from 'diesel/tests/helpers/start-app';
 import { stubRequest } from 'diesel/tests/helpers/fake-server';
 
 let application;
-let orgId = 'o1'; // FIXME this is hardcoded to match the value for signIn in aptible-helpers
+let orgId = 1; // FIXME this is hardcoded to match the value for signIn in aptible-helpers
 let url = `/organizations/${orgId}/environments/new`;
 
 module('Acceptance: Organizations: Environments: New', {
@@ -31,7 +31,7 @@ test(`visiting ${url} shows form to create new environment`, (assert) => {
   stubStacks();
   signInAndVisit(url);
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.organization.environments.new');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.environments.new');
     expectButton('Save environment');
     expectButton('Cancel');
     expectFocusedInput('environment-handle');
@@ -70,7 +70,7 @@ test(`visiting ${url} and creating new environment`, (assert) => {
     clickButton('Save environment');
   });
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.organization.environments.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.environments.index');
   });
 });
 
@@ -110,7 +110,7 @@ test(`visiting ${url} and with duplicate handle`, (assert) => {
   });
   andThen(() => {
     //Still on new page
-    assert.equal(currentPath(), 'dashboard.organization.environments.new');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.environments.new');
   });
 });
 
@@ -146,6 +146,6 @@ test(`visiting ${url} and creating new prod environment`, (assert) => {
     clickButton('Save environment');
   });
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.organization.environments.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.environments.index');
   });
 });

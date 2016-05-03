@@ -68,7 +68,7 @@ test(`visit ${url} shows basic stack info`, function(assert) {
   signInAndVisit(url);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
 
     expectLink(`stacks/${stackId}/databases`);
     expectLink(`stacks/${stackId}/logging`);

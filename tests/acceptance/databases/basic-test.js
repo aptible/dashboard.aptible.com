@@ -37,7 +37,7 @@ test('visiting /stacks/:stack_id/databases', function(assert) {
   signInAndVisit('/stacks/my-stack-1/databases');
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.stack.databases.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.databases.index');
     expectTitle('my-stack-1 Databases');
   });
 });
@@ -70,7 +70,7 @@ test('visiting /stacks/my-stack-1/databases then clicking on an database visits 
   });
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.database.activity', 'show page is visited');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.database.activity', 'show page is visited');
   });
 });
 
