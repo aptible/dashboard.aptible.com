@@ -10,11 +10,13 @@ export function SET_SHOULD_RELOAD(bool) {
 export let RELOAD_RETRY_DELAY = 30000;
 
 export const STATUSES = {
-  PENDING:        'pending',
-  PROVISIONING:   'provisioning',
-  DEPROVISIONED:  'deprovisioned',
-  PROVISIONED:    'provisioned',
-  DEPROVISIONING: 'deprovisioning'
+  PENDING:              'pending',
+  PROVISIONING:         'provisioning',
+  DEPROVISIONED:        'deprovisioned',
+  PROVISIONED:          'provisioned',
+  DEPROVISIONING:       'deprovisioning',
+  PROVISION_FAILED:     'provision_failed',
+  DEPROVISION_FAILED:   'deprovision_failed'
 };
 
 const ReloadStatuses = [
@@ -60,6 +62,8 @@ export const ProvisionableBaseMixin = Ember.Mixin.create({
   isDeprovisioning: computed.equal('status', STATUSES.DEPROVISIONING),
   isProvisioned: computed.equal('status', STATUSES.PROVISIONED),
   isProvisioning: computed.equal('status', STATUSES.PROVISIONING),
+  hasFailedProvision: computed.equal('status', STATUSES.PROVISION_FAILED),
+  hasFailedDeprovision: computed.equal('status', STATUSES.DEPROVISION_FAILED),
   isPending: computed.equal('status', STATUSES.PENDING),
   hasBeenDeprovisioned: computed.or('isDeprovisioned', 'isDeprovisioning'),
   hasBeenDeployed: computed.not('isPending')
