@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -6,7 +7,7 @@ moduleForComponent('usage-quote-by-resource', {
 });
 
 test('basic attributes are set', function(assert) {
-  let stack = { handle: 'stack1', getUsageByResourceType: function() { return 10; } };
+  let stack = Ember.Object.create({ handle: 'stack1', apps: [], containerUsage: 10 });
   this.set('stacks', [stack]);
   this.render(hbs('{{usage-quote-by-resource stacks=stacks allowance=6 hourlyRate=8 plan="platform" resource="container"}}'));
 
@@ -20,8 +21,8 @@ test('basic attributes are set', function(assert) {
 });
 
 test('container usage less than allowance results in 0 billing', function(assert) {
-  let stack1 = { handle: 'stack1', getUsageByResourceType: function() { return 2; } };
-  let stack2 = { handle: 'stack2', getUsageByResourceType: function() { return 3; } };
+  let stack1 = Ember.Object.create({ handle: 'stack1', apps: [], containerUsage: 2 });
+  let stack2 = Ember.Object.create({ handle: 'stack2', apps: [], containerUsage: 3 });
   this.set('stacks', [stack1, stack2]);
   this.render(hbs('{{usage-quote-by-resource stacks=stacks allowance=6 hourlyRate=8 plan="platform" resource="container"}}'));
 
@@ -37,8 +38,8 @@ test('container usage less than allowance results in 0 billing', function(assert
 });
 
 test('container usage equal to allowance results in 0 billing', function(assert) {
-  let stack1 = { handle: 'stack1', getUsageByResourceType: function() { return 3; } };
-  let stack2 = { handle: 'stack2', getUsageByResourceType: function() { return 3; } };
+  let stack1 = Ember.Object.create({ handle: 'stack1', apps: [], containerUsage: 3 });
+  let stack2 = Ember.Object.create({ handle: 'stack2', apps: [], containerUsage: 3 });
   this.set('stacks', [stack1, stack2]);
   this.render(hbs('{{usage-quote-by-resource stacks=stacks allowance=6 hourlyRate=8 plan="platform" resource="container"}}'));
 
@@ -52,8 +53,8 @@ test('container usage equal to allowance results in 0 billing', function(assert)
 });
 
 test('container usage exceeding allowance results in overage billing', function(assert) {
-  let stack1 = { handle: 'stack1', getUsageByResourceType: function() { return 8; } };
-  let stack2 = { handle: 'stack2', getUsageByResourceType: function() { return 9; } };
+  let stack1 = Ember.Object.create({ handle: 'stack1', apps: [], containerUsage: 8 });
+  let stack2 = Ember.Object.create({ handle: 'stack2', apps: [], containerUsage: 9 });
   this.set('stacks', [stack1, stack2]);
   this.render(hbs('{{usage-quote-by-resource stacks=stacks allowance=6 hourlyRate=8 plan="platform" resource="container"}}'));
 
@@ -67,8 +68,8 @@ test('container usage exceeding allowance results in overage billing', function(
 });
 
 test('disk usage less than allowance results in 0 billing', function(assert) {
-  let stack1 = { handle: 'stack1', getUsageByResourceType: function() { return 200; } };
-  let stack2 = { handle: 'stack2', getUsageByResourceType: function() { return 300; } };
+  let stack1 = Ember.Object.create({ handle: 'stack1', databases: [], getUsageByResourceType: function() { return 200; } });
+  let stack2 = Ember.Object.create({ handle: 'stack2', databases: [], getUsageByResourceType: function() { return 300; } });
   this.set('stacks', [stack1, stack2]);
   this.render(hbs('{{usage-quote-by-resource stacks=stacks allowance=1000 hourlyRate=0.0507 plan="platform" resource="disk"}}'));
 
@@ -84,8 +85,8 @@ test('disk usage less than allowance results in 0 billing', function(assert) {
 });
 
 test('disk usage equal to allowance results in 0 billing', function(assert) {
-  let stack1 = { handle: 'stack1', getUsageByResourceType: function() { return 200; } };
-  let stack2 = { handle: 'stack2', getUsageByResourceType: function() { return 800; } };
+  let stack1 = Ember.Object.create({ handle: 'stack1', databases: [], getUsageByResourceType: function() { return 200; } });
+  let stack2 = Ember.Object.create({ handle: 'stack2', databases: [], getUsageByResourceType: function() { return 800; } });
   this.set('stacks', [stack1, stack2]);
   this.render(hbs('{{usage-quote-by-resource stacks=stacks allowance=1000 hourlyRate=0.0507 plan="platform" resource="disk"}}'));
 
@@ -99,8 +100,8 @@ test('disk usage equal to allowance results in 0 billing', function(assert) {
 });
 
 test('disk usage exceeding allowance results in overage billing', function(assert) {
-  let stack1 = { handle: 'stack1', getUsageByResourceType: function() { return 800; } };
-  let stack2 = { handle: 'stack2', getUsageByResourceType: function() { return 900; } };
+  let stack1 = Ember.Object.create({ handle: 'stack1', databases: [], getUsageByResourceType: function() { return 800; } });
+  let stack2 = Ember.Object.create({ handle: 'stack2', databases: [], getUsageByResourceType: function() { return 900; } });
   this.set('stacks', [stack1, stack2]);
   this.render(hbs('{{usage-quote-by-resource stacks=stacks allowance=1000 hourlyRate=0.0507 plan="platform" resource="disk"}}'));
 

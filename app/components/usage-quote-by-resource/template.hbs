@@ -16,7 +16,7 @@
 
   <ul class="usage-quote-items">
     {{#each stacks as |stack|}}
-      {{stack-resource-usage stack=stack resource=resource classNames="usage-quote-item"}}
+      {{stack-resource-usage stack=stack resource=resource classNames="usage-quote-item" hourlyRate=hourlyRate}}
     {{/each}}
 
     {{#if allowance}}

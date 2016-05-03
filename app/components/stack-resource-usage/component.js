@@ -2,8 +2,10 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   tagName: 'li',
-  usage: Ember.computed('stack', 'resource', function() {
-    let stack = this.get('stack');
-    return stack.getUsageByResourceType(this.get('resource'));
+
+  resources: Ember.computed('stack', 'resource', function() {
+    let firstLevel = { container: 'apps', disk: 'databases',
+      domain: 'apps' }[this.get('resource')];
+    return this.get('stack').get(firstLevel);
   })
 });
