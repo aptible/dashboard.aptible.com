@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-aptible-shared",
-  "version": "0.0.74",
+  "version": "0.0.75",
   "description": "Shared assets for Aptible's Ember apps",
   "directories": {
     "doc": "doc",
