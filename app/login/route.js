@@ -5,14 +5,20 @@ import DisallowAuthenticated from "diesel/mixins/routes/disallow-authenticated";
 
 export const AFTER_AUTH_COOKIE = 'afterAuthUrl';
 
-export function buildCredentials(email, password) {
-  return {
+export function buildCredentials(email, password, otpToken) {
+  let credentials = {
     username: email,
     password,
     grant_type: 'password',
     scope: 'manage',
     expires_in: 12 * 60 * 60  // 12 hours
   };
+
+  if (!Ember.isNone(otpToken)) {
+    credentials.otp_token = otpToken;
+  }
+
+  return credentials;
 }
 
 export default Ember.Route.extend(DisallowAuthenticated, {
@@ -39,7 +45,9 @@ export default Ember.Route.extend(DisallowAuthenticated, {
   actions: {
 
     login: function(authAttempt){
-      var credentials = buildCredentials(authAttempt.get('email'), authAttempt.get('password'));
+      var credentials = buildCredentials(authAttempt.get('email'),
+                                         authAttempt.get('password'),
+                                         authAttempt.get('otpToken'));
 
       this.controller.set('isLoggingIn', true);
 
@@ -54,7 +62,11 @@ export default Ember.Route.extend(DisallowAuthenticated, {
           this.transitionTo('index');
         }
       }, (e) => {
-        this.currentModel.set('error', e.message);
+        if (e.authError === 'otp_token_required') {
+          this.controller.set('otpRequested', true);
+        } else {
+          this.currentModel.set('error', e.message);
+        }
       }).finally( () => {
         this.controller.set('isLoggingIn', false);
       });
