@@ -42,6 +42,9 @@ export default DS.Model.extend({
   pending: Ember.computed.not('activated'),
   persistedVhosts: Ember.computed.filterBy('vhosts', 'isNew', false),
   vhostNames: Ember.computed.mapBy('persistedVhosts', 'virtualDomain'),
+  appUsage: Ember.computed.mapBy('apps', 'usage'),
+  databaseUsage: Ember.computed.mapBy('databases', 'usage'),
+  containerUsage: Ember.computed.sum('appUsage', 'databaseUsage'),
 
   getUsageByResourceType(type) {
     let usageAttr = { container: 'containerCount', disk: 'totalDiskSize',

@@ -15,5 +15,8 @@ export default DS.Model.extend(ProvisionableMixin, {
   vhosts: DS.hasMany('vhost', {async:true}),
   lastOperation: DS.belongsTo('operation', {async:true}),
   lastDeployOperation: DS.belongsTo('operation', {async:true}),
-  currentImage: DS.belongsTo('image', {async:true})
+  currentImage: DS.belongsTo('image', {async:true}),
+
+  serviceUsage: Ember.computed.mapBy('services', 'usage'),
+  usage: Ember.computed.sum('serviceUsage')
 });
