@@ -11,7 +11,80 @@ let signupIndexPath = 'signup.index';
 
 let email = 'good@email.com';
 let password = 'Correct#Password1!3';
+let otpToken = '123456';
 let userUrl = '/users/my-user';
+
+let createStubTokenEndpoint = function(assert, options) {
+  // Options recognized:
+  // - expectOtpToken (defaults to false).
+  // - acceptCredentials (defaults to false).
+  // - errorMessage (defaults to 'Auth Error').
+
+  stubRequest('post', '/tokens', function(request){
+    let params = this.json(request);
+    assert.equal(params.username, email, 'correct email is passed');
+    assert.equal(params.password, password, 'correct password is passed');
+    assert.equal(params.grant_type, 'password', 'correct grant_type is passed');
+
+    if (options.expectOtpToken) {
+      if (!params.otp_token) {
+        return this.error(401, {
+          code: 401,
+          error: 'otp_token_required',
+          message: 'OTP Token Required'
+        });
+      }
+      assert.equal(params.otp_token, otpToken, 'correct otp_token is passed');
+    } else {
+      assert.ok(!params.otp_token);
+    }
+
+    if (options.acceptCredentials) {
+      return successfulTokenResponse(this, userUrl);
+    }
+
+    return this.error(401, {
+      code: 401,
+      error: 'invalid_credentials',
+      message: options.errorMessage || 'Auth Error'
+    });
+  });
+};
+
+let createStubHomeApiEndpoints = function() {
+  let roleData = {
+    id: 'r1',
+    privileged: true,
+    _links: {
+      self: { href: '/roles/r1' },
+      organization: { href: '/organizations/1' }
+    }
+  };
+
+  stubIndexRequests();
+
+  stubRequest('get', '/roles/r1', function(){
+    return this.success(roleData);
+  });
+
+  stubRequest('get', '/users/my-user/roles', function() {
+    return this.success({
+      _embedded: {
+        roles: [roleData]
+      }
+    });
+  });
+
+  stubRequest('get', userUrl, function(){
+    return this.success({
+      id: 'my-user',
+      username: 'some-email',
+      _links: {
+        roles: { href: '/users/my-user/roles' }
+      }
+    });
+  });
+};
 
 module('Acceptance: Login', {
   beforeEach: function() {
@@ -36,17 +109,9 @@ test('visiting /login', function(assert) {
 test('logging in with bad credentials', function(assert) {
   let errorMessage = 'User not found: '+email;
 
-  stubRequest('post', '/tokens', function(request){
-    let params = this.json(request);
-    assert.equal(params.username, email, 'correct email is passed');
-    assert.equal(params.password, password, 'correct password is passed');
-    assert.equal(params.grant_type, 'password', 'correct grant_type is passed');
-
-    return this.error(401, {
-      code: 401,
-      error: 'invalid_credentials',
-      message: errorMessage
-    });
+  createStubTokenEndpoint(assert, {
+    acceptCredentials: false,
+    errorMessage: errorMessage
   });
 
   visit('/login');
@@ -61,51 +126,54 @@ test('logging in with bad credentials', function(assert) {
 });
 
 test('logging in with correct credentials', function(assert) {
-  let roleData = {
-    id: 'r1',
-    privileged: true,
-    _links: {
-      self: { href: '/roles/r1' },
-      organization: { href: '/organizations/1' }
-    }
-  };
-
-  stubIndexRequests();
-
-  stubRequest('post', '/tokens', function(request){
-    let params = this.json(request);
-    assert.equal(params.username, email, 'correct email is passed');
-    assert.equal(params.password, password, 'correct password is passed');
-    assert.equal(params.grant_type, 'password', 'correct grant_type is passed');
-
-    return successfulTokenResponse(this, userUrl);
-  });
-
-  stubRequest('get', '/roles/r1', function(){
-    return this.success(roleData);
-  });
-
-  stubRequest('get', '/users/my-user/roles', function() {
-    return this.success({
-      _embedded: {
-        roles: [roleData]
-      }
-    });
-  });
-
-  stubRequest('get', userUrl, function(){
-    return this.success({
-      id: 'my-user',
-      username: 'some-email',
-      _links: {
-        roles: { href: '/users/my-user/roles' }
-      }
-    });
+  createStubHomeApiEndpoints();
+  createStubTokenEndpoint(assert, {
+    acceptCredentials: true
   });
 
   visit('/login');
   fillInput('email', email);
   fillInput('password', password);
+  clickButton('Log in');
+  andThen(() => {
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
+  });
+});
+
+test('logging in with a bad OTP token', function(assert) {
+  let errorMessage = 'Invalid OTP Token';
+
+  createStubTokenEndpoint(assert, {
+    acceptCredentials: false,
+    errorMessage: errorMessage,
+    expectOtpToken: true
+  });
+
+  visit('/login');
+  fillInput('email', email);
+  fillInput('password', password);
+  clickButton('Log in');
+  fillInput('otp-token', otpToken);
+  clickButton('Log in');
+  andThen(() =>{
+    assert.equal(currentPath(), 'login');
+    let error = findWithAssert('.alert.alert-danger');
+    elementTextContains(error, errorMessage);
+  });
+});
+
+test('logging in with a valid OTP token', function(assert) {
+  createStubHomeApiEndpoints();
+  createStubTokenEndpoint(assert, {
+    acceptCredentials: true,
+    expectOtpToken: true
+  });
+
+  visit('/login');
+  fillInput('email', email);
+  fillInput('password', password);
+  clickButton('Log in');
+  fillInput('otp-token', otpToken);
   clickButton('Log in');
   andThen(() => {
     assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');

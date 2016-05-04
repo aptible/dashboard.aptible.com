@@ -58,6 +58,7 @@
     "ember-radio-button": "^0.1.3",
     "ember-truth-helpers": "^1.2.0",
     "ember-validations": "2.0.0-alpha.3",
+    "ember-qrcode": "0.0.4",
     "express": "^4.8.5",
     "glob": "^4.0.5",
     "liquid-fire": "ef4/liquid-fire#v0.23.0",
