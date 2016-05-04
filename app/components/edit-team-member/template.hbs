@@ -1,0 +1,61 @@
+<td class="gravatar-col sm">
+  <div class="gravatar sm">
+    {{gravatar-image email=document.values.email}}
+  </div>
+</td>
+<td>
+  {{#if document.values.hasAptibleAccount}}
+    <strong>{{document.values.name}}</strong>
+  {{else}}
+    <div class="pending-invite">
+      Pending Invite
+    </div>
+  {{/if}}
+</td>
+<td>{{document.values.email}}</td>
+<td>
+  <div class="toggle-developer">
+    {{schema-field-toggle
+      key='isDeveloper'
+      property=properties.isDeveloper
+      document=document}}
+  </div>
+</td>
+<td>
+  <div class="toggle-security-officer">
+    {{schema-field-toggle
+      key='isSecurityOfficer'
+      property=properties.isSecurityOfficer
+      document=document}}
+  </div>
+</td>
+<td>
+  <div class="toggle-robot">
+    {{schema-field-toggle
+      key='isRobot'
+      property=properties.isRobot
+      document=document}}
+  </div>
+</td>
+{{#if document.values.hasAptibleAccount}}
+  <td></td>
+{{else}}
+  <td class="row-actions two-actions">
+    <ul class="row-action-nav">
+      <li>
+        <a {{action (action this.attrs.resendInvitation document.values.email)}}>
+          {{#bs-tooltip title="Resend Invitation"}}
+            <i class="fa fa-refresh"></i>
+          {{/bs-tooltip}}
+        </a>
+      </li>
+      <li>
+        <a {{action (action this.attrs.removeInvitation document.values.email)}}>
+          {{#bs-tooltip title="Destroy Invitation"}}
+            <i class="fa fa-times danger"></i>
+          {{/bs-tooltip}}
+        </a>
+      </li>
+    </ul>
+  </td>
+{{/if}}

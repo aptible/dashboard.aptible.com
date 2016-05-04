@@ -1,0 +1,22 @@
+<div class="main-wrapper">
+  <header class="layout-header">
+    {{partial "header"}}
+    {{#unless session.currentUser.verified}}
+      {{verification-code-reset user=session.currentUser}}
+    {{/unless}}
+
+    {{#if flashMessages.queue}}
+      <div class="notifications">
+        {{#each flashMessages.queue as |flash|}}
+          {{flash-message flash=flash}}
+        {{/each}}
+      </div>
+    {{/if}}
+  </header>
+  <div class="layout-body">
+    {{outlet}}
+  </div>
+  <footer class="layout-footer">
+    {{partial "nav-footer"}}
+  </footer>
+</div>

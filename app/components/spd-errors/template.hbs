@@ -1,0 +1,8 @@
+{{#if errorMessages class="fadeIn"}}
+  <div class="alert alert-danger">
+    <strong>Error:</strong> {{errorMessages}}
+    <button {{action "clearMessages"}} type="button" class="close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+{{/if}}

@@ -1,0 +1,46 @@
+{{#modal-wrapper title=title description=description onDismiss="onDismiss"}}
+  <div class="panel panel-default white-panel">
+    <div class="panel-body">
+      <form>
+        {{#if errors}}
+          <div class="alert alert-danger">
+            {{errors}}
+            <button {{action "clearMessages"}} type="button" class="close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {{/if}}
+
+        <div class="form-group">
+          <label>Role</label>
+          <select class="form-control select-role" name='role' {{action 'updateRole' on="change"}}>
+            <option selected=true disabled>Select role...</option>
+            {{#each roles as |role|}}
+              <option selected={{if (eq selected.id role.id) true null}} value="{{role.id}}">
+                {{if role.privileged "(Admin)" ''}} {{role.name}}
+              </option>
+            {{/each}}
+          </select>
+
+          <div class="form-tip">
+            Need to create a role instead?  <a {{action "showCreateRole"}}>Create a new role</a>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Email addresses</label>
+
+          {{textarea value=invitesList class="form-control email-addresses" rows="5" name="email-addresses"}}
+
+          <div class="form-tip">
+            Tip: you can invite multiple users at once by separating email addresses with commas or semicolons.
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-lg send-invites pull-right" type="submit" {{action "sendInvitations"}}>Send Invitations</button>
+        <button class="btn btn-default btn-lg pull-left cancel-invites" type="reset" {{action "onDismiss"}}>Cancel</button>
+
+      </form>
+    </div>
+  </div>
+{{/modal-wrapper}}

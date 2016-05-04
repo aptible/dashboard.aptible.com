@@ -1,0 +1,28 @@
+{{#modal-wrapper title="Add a location" description=description onDismiss="onDismiss"}}
+  <div class="panel panel-default white-panel">
+    <div class="panel-body">
+      <form>
+        {{#if errors}}
+          <div class="alert alert-danger">
+            {{errors}}
+            <button {{action "clearMessages"}} type="button" class="close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {{/if}}
+
+        {{#each-property properties=locationProperties document=newLocation as |key property type|}}
+          <div class="form-group">
+            <label>{{property.title}}</label>
+            {{component (concat 'schema-field-' type) key=key property=property document=newLocation}}
+          </div>
+        {{/each-property}}
+
+        <button class="btn btn-primary btn-lg pull-right" type="submit" {{action "addLocation" newLocation}}>
+        Add Location</button>
+        <button class="btn btn-default btn-lg pull-left" type="reset" {{action "onDismiss"}}>Cancel</button>
+
+      </form>
+    </div>
+  </div>
+{{/modal-wrapper}}

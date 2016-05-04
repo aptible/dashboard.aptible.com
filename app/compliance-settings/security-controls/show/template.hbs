@@ -1,0 +1,8 @@
+<div class="container main-body">
+  {{link-to '← Back to All Security Controls' 'compliance-settings.security-controls.index'}}
+  <div class="panel security-controls provider-{{model.provider}}">
+    <div class="security-control-group">
+      {{security-control-group securityControlGroup=model onSave="onSave"}}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="panel white-panel">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Address</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Zip</th>
+        <th class="one-action"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each locations as |location|}}
+        <tr>
+          <td><strong>{{location.values.description}}</strong></td>
+          <td>{{location.values.streetAddress}}</td>
+          <td>{{location.values.city}}</td>
+          <td>{{location.values.state}}</td>
+          <td>{{location.values.zip}}</td>
+          <td class="row-actions one-action">
+            <ul class="row-action-nav">
+              <li>
+                <a><i class="fa fa-times danger"></i></a>
+              </li>
+            </ul>
+          </td>
+        </tr>
+      {{else}}
+        <tr>
+          <td class="empty-row" colspan="6">No Locations.  Add one below.</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

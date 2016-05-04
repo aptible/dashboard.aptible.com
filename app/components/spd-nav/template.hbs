@@ -1,0 +1,55 @@
+<header class="new-header">
+  <div class="container">
+    {{#if isOnAStep}}
+      {{spd-progress steps=steps}}
+    {{/if}}
+
+    {{#if next}}
+      <div class='header-left'>
+        <h2 class="sub-title">Security Program Design</h2>
+        <h1 class="title">{{stepName}}</h1>
+        {{yield}}
+      </div>
+    {{/if}}
+
+    {{#if isOnAStep}}
+      {{#if next}}
+        <div class="header-right">
+          <ul class="header-actions">
+            {{#if showSave}}
+              <li>
+                <button {{action 'save'}} class="btn btn-default btn-sm spd-nav-save" disabled={{isSaving}}>Save</button>
+              </li>
+            {{/if}}
+
+            {{#if showPrevious}}
+              <li>
+                <button {{action 'previous' previous.path}} class="btn btn-primary btn-sm spd-nav-back">← Back</button>
+              </li>
+            {{/if}}
+
+            <li>
+              {{#if preventContinueMessage}}
+                {{#bs-tooltip title=preventContinueMessage}}
+                  <div>
+                    <button class="btn btn-primary btn-sm spd-nav-continue" disabled="disabled">Next →</button>
+                  </div>
+                {{/bs-tooltip}}
+              {{else}}
+                {{#if isSaving}}
+                  <button class="btn btn-primary btn-sm spd-nav-continue" disabled>
+                    <i class="fa fa-spin fa-spinner"></i> Saving...
+                  </button>
+                {{else}}
+                  <button {{action 'next' next.path}} class="btn btn-primary btn-sm spd-nav-continue">
+                    Next →
+                  </button>
+                {{/if}}
+              {{/if}}
+            </li>
+          </ul>
+        </div>
+      {{/if}}
+    {{/if}}
+  </div>
+</header>

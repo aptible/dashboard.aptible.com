@@ -1,0 +1,44 @@
+{{#if options.showProperty}}
+  <div class="security-control-field {{key}} {{if errors 'with-errors' null}} {{if property.readonly 'readonly' null}}">
+
+  {{#if errors}}
+    {{#each errors as |error|}}
+      <div class="alert alert-danger">
+        <i class="fa fa-exclamation-circle"></i>
+        {{error.propertyName}} {{error.error}}
+      </div>
+    {{/each}}
+  {{/if}}
+
+    <div class="header">
+      {{#if property.title}}
+        <div class="title">
+          {{#if property.readonly}}
+            {{#bs-tooltip title="This security control is locked because it is automatically implemented in the Aptible Platform."}}
+              <i class="fa fa-lock"></i>
+            {{/bs-tooltip}}
+          {{/if}}
+
+          {{property.title}}
+
+          {{#if property.displayProperties.tooltip}}
+            {{#learn-more-tooltip tip=property.displayProperties.tooltip}}
+              <i class="fa fa-question-circle"></i>
+            {{/learn-more-tooltip}}
+          {{/if}}
+        </div>
+      {{/if}}
+
+      {{#if property.description}}
+        <div class="description">{{property.description}}</div>
+      {{/if}}
+    </div>
+
+    <div class="schema-field-wrapper">
+      {{component (concat 'schema-field-' type)
+        key=(concat (concat parentKey '.') key)
+        property=property
+        document=document}}
+    </div>
+  </div>
+{{/if}}

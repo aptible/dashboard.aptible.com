@@ -22,7 +22,6 @@ App = Ember.Application.extend({
 loadInitializers(App, config.modulePrefix);
 
 monkeyPatchRaven();
-
 bustFrames();
 
 export default App;

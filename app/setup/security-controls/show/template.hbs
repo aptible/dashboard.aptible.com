@@ -1,0 +1,11 @@
+<div class="container main-body">
+  <div class="panel security-controls provider-{{model.provider}}">
+    <div class="panel-sidebar panel-sidebar-right layout-sidebar">
+      {{security-control-group-nav groups=securityControlGroups current=model}}
+    </div>
+
+    <div class="security-control-group">
+      {{security-control-group securityControlGroup=model onNext="onNext" onPrevious="onPrevious" onSave="onSave"}}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+.popover {
+  font-family: "proxima-nova", Helvetica, sans-serif;
+  max-width: none;
+}
+
+.popover-content {
+  max-width: 400px;
+}
+
+.learn-more-tooltip {
+  .fa {
+    margin: 0 4px;
+    color: $color-bright-blue;
+    cursor: pointer;
+    opacity: .5;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.learn-more-tooltip-wrapper {
+  width: 300px;
+  margin: 5px;
+
+  .learn-more-cta {
+    margin-top: 15px;
+  }
+}

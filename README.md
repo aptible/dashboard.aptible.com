@@ -26,6 +26,7 @@ You will need the following things properly installed on your computer.
 ## Running / Development
 
 * `ember server`
+
 * Visit localhost:4200
 
 By default, the api.aptible.com and auth.aptible.com servers will be used as data sources. For use with Dashboard they should be given the `.env` values of:
@@ -108,6 +109,7 @@ This repo contains a `.travis.yml` file that will automatically deploy the appli
 
 The `.travis.yml` file will be updated with a new value for `env.secure`. Commit and push this file.
 
+
 ## Further Reading / Useful Links
 
 * ember: http://emberjs.com/
@@ -116,8 +118,10 @@ The `.travis.yml` file will be updated with a new value for `env.secure`. Commit
   * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
   * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
 
+
 ## Copyright
 
 Copyright (c) 2015 [Aptible](https://www.aptible.com). All rights reserved.
 
 [<img src="https://s.gravatar.com/avatar/9b58236204e844e3181e43e05ddb0809?s=60" style="border-radius: 50%;" alt="@sandersonet" />](https://github.com/sandersonet)
+
