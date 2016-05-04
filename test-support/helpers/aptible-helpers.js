@@ -24,7 +24,7 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData, token
     privileged: true,
     _links: {
       self: { href: `/roles/${roleData.id}` },
-      organization: { href: '/organizations/1' }
+      organization: { href: '/organizations/o1' }
     }
   };
 
@@ -95,7 +95,7 @@ Ember.Test.registerAsyncHelper('expectRedirectsWhenLoggedIn', function(app, url)
   signInAndVisit(url);
 
   andThen(function(){
-    equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
+    equal(currentPath(), 'dashboard.stack.apps.index');
   });
 });
 
