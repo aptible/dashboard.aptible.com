@@ -10,7 +10,7 @@ export const STEPS = [
 
 
 export function getStepIndex(currentPath) {
-  let prefix = /^organization/ig;
+  let prefix = /^compliance\.compliance\-organization/ig;
   let i;
 
   if (!currentPath) {

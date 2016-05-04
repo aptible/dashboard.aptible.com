@@ -9,4 +9,16 @@ button > i.fa-spinner {
 
 .main-wrapper .layout-content {
   background: #fff;
+  min-width: 970px;
+  -webkit-flex: 1;
+  flex: 1;
+  background: #fafafa;
+}
+
+header.resource-header {
+  background: #fff;
+}
+
+.panel-link .panel {
+  border: 1px solid #fff;
 }
