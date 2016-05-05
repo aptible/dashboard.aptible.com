@@ -109,7 +109,7 @@ test(`visit ${url} shows basic info`, function(assert){
     assert.ok(find('h5:contains(Provisioning Log Drains)').length, 'has a pending header');
     assert.equal(find('.pending-log-drains .log-drain').length, 1, 'has one pending log drain');
 
-    assert.ok(find('h5:contains(Deprovisioned Log Drains)').length, 'has a deprovisioning header');
+    assert.ok(find('h5:contains(Deprovisioning Log Drains)').length, 'has a deprovisioning header');
     assert.equal(find('.deprovisioning-log-drains .log-drain').length, 1, 'has one deprovisioning log drain');
   });
 });
@@ -203,6 +203,7 @@ test(`visit ${url} with log drains and click add log shows form`, function(asser
 });
 
 test(`visit ${url} with log drains and restart one`, function(assert){
+  let operationId = 1;
   let defaultLogDrains = { logDrains: [{
     id: 'drain-1',
     handle: 'first-drain',
@@ -215,7 +216,19 @@ test(`visit ${url} with log drains and restart one`, function(assert){
   stubRequest('post', `/log_drains/:id/operations`, function(request){
     let json = this.json(request);
     assert.equal(json.type, 'configure', 'creates a configure operation');
-    return this.success();
+    return this.success({
+      id: '1',
+      status: 'queued',
+      type: 'configure'
+    });
+  });
+
+  stubRequest('get', `/operations/${operationId}`, function(){
+    return this.success({
+      id: '1',
+      status: 'succeeded',
+      type: 'configure'
+    });
   });
 
   stubRequest('put', `/log_drains/:id`, function(request){
@@ -236,12 +249,26 @@ test(`visit ${url} with log drains and restart one`, function(assert){
 });
 
 test(`visit ${url} with log drains and deprovisions one`, function(assert){
+
   this.prepareStubs();
+  let operationId = 1;
 
   stubRequest('post', `/log_drains/:id/operations`, function(request){
     let json = this.json(request);
     assert.equal(json.type, 'deprovision', 'creates a deprovision operation');
-    return this.success();
+    return this.success({
+      id: '1',
+      status: 'queued',
+      type: 'deprovision'
+    });
+  });
+
+  stubRequest('get', `/operations/${operationId}`, function(){
+    return this.success({
+      id: '1',
+      status: 'succeeded',
+      type: 'deprovision'
+    });
   });
 
   stubRequest('put', `/log_drains/:id`, function(request){
@@ -260,7 +287,8 @@ test(`visit ${url} with log drains and deprovisions one`, function(assert){
   });
   andThen(function() {
     assert.equal(find('.alert-success').length, 1, 'displays a success message');
-    assert.equal(find('.panel.log-drain').length, 0, 'locally removes the deprovisioning log drain');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.log-drains.index',
+      'should first redirect to index page');
   });
 });
 

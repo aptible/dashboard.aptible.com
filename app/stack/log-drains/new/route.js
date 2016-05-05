@@ -43,8 +43,6 @@ export default Ember.Route.extend({
           type: 'configure',
           logDrain: log
         });
-        // Ensures polling for status updates, no need to save via API
-        log.set('status', 'provisioning');
         return op.save();
       }).then( () => {
         this.transitionTo('stack.log-drains.index');

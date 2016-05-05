@@ -41,6 +41,19 @@
     </div>
   {{/if}}
 
+  {{#if hasFailedDeprovision}}
+      <div class="sort-group deprovisioning-apps">
+          <h5 class="sort-header">Apps that failed to deprovision</h5>
+          <div class="row">
+            {{#each sortedFailedDeprovisionApps as |app|}}
+                <div class="col-xs-4">
+                  {{partial 'stack/app'}}
+                </div>
+            {{/each}}
+          </div>
+      </div>
+  {{/if}}
+
   <div class="resource-actions">
     {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
       {{#if hasAbility}}

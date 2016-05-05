@@ -58,14 +58,23 @@
             {{click-to-copy text=model.connectionUrl}}
           </h3>
         </li>
-      {{else}}
+      {{else if model.isProvisioning}}
         <li class="resource-metadata-item">
           <h5 class="resource-metadata-title">Status</h5>
           <h3 class="resource-metadata-value"><i class="fa fa-spin fa-spinner"></i> <span class="db-status">Provisioning</span></h3>
         </li>
+      {{else if model.hasFailedProvision}}
+          <li class="resource-metadata-item">
+              <h5 class="resource-metadata-title">Status</h5>
+              <h3 class="resource-metadata-value"><span class="db-status">Provision failed</span></h3>
+          </li>
+      {{else if model.hasFailedDeProvision}}
+          <li class="resource-metadata-item">
+              <h5 class="resource-metadata-title">Status</h5>
+              <h3 class="resource-metadata-value"><span class="db-status">Deprovision failed</span></h3>
+          </li>
       {{/if}}
     {{/if}}
-
     </ul>
   </div>
 </header>

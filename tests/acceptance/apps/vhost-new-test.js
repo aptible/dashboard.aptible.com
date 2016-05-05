@@ -335,6 +335,11 @@ test(`visit ${appVhostsNewUrl} and create vhost with existing certificates`, fun
     click(findWithAssert('label:contains(custom certificate)'));
   });
 
+  stubRequest('get', `/operations/new-op-id`, function(){
+    return this.success({id: 'new-op-id', status: 'succeeded'});
+  });
+
+  visit(appVhostsNewUrl);
   andThen(function(){
     clickButton('Save Endpoint');
   });
@@ -381,6 +386,11 @@ test(`visit ${appVhostsNewUrl} and create vhost with new certificate`, function(
     click(findWithAssert('label:contains(custom certificate)'));
   });
 
+  stubRequest('get', `/operations/new-op-id`, function(){
+    return this.success({id: 'new-op-id', status: 'succeeded'});
+  });
+
+  visit(appVhostsNewUrl);
   andThen(function(){
     fillInput('certificate-body', 'my long cert');
     fillInput('private-key', 'my long pk');
@@ -423,6 +433,11 @@ test(`visit ${appVhostsNewUrl} and create default endpoint`, function(assert) {
     click(findWithAssert('label:contains(default endpoint)'));
   });
 
+  stubRequest('get', `/operations/new-op-id`, function(){
+    return this.success({id: 'new-op-id', status: 'succeeded'});
+  });
+
+  visit(appVhostsNewUrl);
   andThen(function(){
     fillInput('domain-type', true);
     clickButton('Save Endpoint');

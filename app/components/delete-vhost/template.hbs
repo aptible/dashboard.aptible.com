@@ -1,7 +1,9 @@
-<button class="btn btn-default btn-xs" href="#" {{action 'delete' vhost}} disabled={{isDeleting}}>
-  {{#if isDeleting}}
-    Deleting
+{{#unless isProvisioning}}
+<button class="btn btn-default btn-xs" href="#" {{action 'delete' vhost}} disabled={{isDeprovisioning}}>
+  {{#if isDeprovisioning}}
+    Deprovisioning
   {{else}}
     Delete
   {{/if}}
 </button>
+{{/unless}}

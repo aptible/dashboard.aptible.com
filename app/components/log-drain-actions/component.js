@@ -12,7 +12,7 @@ export default Ember.Component.extend({
 
   actions: {
     restart(){
-      let message = `Successfully restarted ${this.logDrain.get('handle')}`;
+      let message = `Restarting ${this.logDrain.get('handle')}...`;
       let errorMessage = `There was an error restarting ${this.logDrain.get('handle')}.`;
       let component = this;
       var op = this.get('store').createRecord('operation', {
@@ -33,8 +33,8 @@ export default Ember.Component.extend({
       confirmMsg += 'Are you sure you want to continue?\n';
       if (!confirm(confirmMsg)) { return false; }
 
-      let message = `Successfully deprovisioned ${this.logDrain.get('handle')}`;
-      let errorMessage = `There was an error restarting ${this.logDrain.get('handle')}.`;
+      let message = `Deprovisioning ${this.logDrain.get('handle')}...`;
+      let errorMessage = `There was an error deprovisioning ${this.logDrain.get('handle')}.`;
       let component = this;
       let logDrain = this.logDrain; // Keep a ref for the run later
       var op = this.get('store').createRecord('operation', {
@@ -42,14 +42,9 @@ export default Ember.Component.extend({
         logDrain: logDrain
       });
       op.save().then(() => {
+        component.sendAction('completedAction', message);
         logDrain.set('status', 'deprovisioning');
-        logDrain.save().then(() => {
-          component.sendAction('completedAction', message);
-        }).catch( (e) => { component.sendError(e, errorMessage); });
       }).catch( (e) => { component.sendError(e, errorMessage); });
-      Ember.run.later(component, () => {
-        logDrain.deleteRecord();
-      }, 5000);
     }
   }
 });

@@ -1,0 +1,92 @@
+<div class="resource-list-grid">
+
+  {{#if hasActive}}
+    <div class="sort-group active-databases">
+      {{#if showSortableHeader}}
+        <h5 class="sort-header">Provisioned Databases</h5>
+      {{/if}}
+      <div class="row">
+        {{#each sortedDeployedDatabases as |database|}}
+          <div class="col-xs-4">
+            {{partial 'stack/db'}}
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  {{/if}}
+
+  {{#if hasPending}}
+    <div class="sort-group pending-databases">
+      <h5 class="sort-header">Provisioning Databases</h5>
+      <div class="row">
+        {{#each sortedPendingDatabases as |database|}}
+          <div class="col-xs-4">
+            {{partial 'stack/db'}}
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  {{/if}}
+
+  {{#if hasDeprovisioning}}
+      <div class="sort-group pending-databases">
+          <h5 class="sort-header">Deprovisioning Databases</h5>
+          <div class="row">
+            {{#each sortedDeprovisioningDatabases as |database|}}
+                <div class="col-xs-4">
+                  {{partial 'stack/db'}}
+                </div>
+            {{/each}}
+          </div>
+      </div>
+  {{/if}}
+
+  {{#if hasFailedProvision}}
+      <div class="sort-group pending-databases">
+          <h5 class="sort-header">Databases that failed to provision</h5>
+          <div class="row">
+            {{#each sortedFailedProvisionDatabases as |database|}}
+                <div class="col-xs-4">
+                  {{partial 'stack/db'}}
+                </div>
+            {{/each}}
+          </div>
+      </div>
+  {{/if}}
+
+  {{#if hasDeprovisioned}}
+    <div class="sort-group deprovisioned-databases">
+      <h5 class="sort-header">Deprovisioned Databases</h5>
+      <div class="row">
+        {{#each sortedDeprovisionedDatabases as |database|}}
+          <div class="col-xs-4">
+            {{partial 'stack/db'}}
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  {{/if}}
+
+  {{#if hasFailedDeprovision}}
+      <div class="sort-group pending-databases">
+          <h5 class="sort-header">Databases that failed to deprovision</h5>
+          <div class="row">
+            {{#each sortedFailedDeprovisionDatabases as |database|}}
+                <div class="col-xs-4">
+                  {{partial 'stack/db'}}
+                </div>
+            {{/each}}
+          </div>
+      </div>
+  {{/if}}
+
+  <div class="resource-list-actions">
+    {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
+      {{#if hasAbility}}
+        {{#if session.currentUser.verified}}
+          {{link-to 'Create Database' 'databases.new' class="btn btn-primary"}}
+        {{/if}}
+      {{/if}}
+    {{/aptible-ability}}
+  </div>
+</div>

@@ -6,8 +6,8 @@ export default Ember.Component.extend({
   store: Ember.inject.service(),
 
   vhost: null,
-
-  isDeleting: false,
+  isProvisioning: Ember.computed.equal('vhost.isProvisioning', true),
+  isDeprovisioning: Ember.computed.equal('vhost.isDeprovisioning', true),
 
   actions: {
     delete() {
@@ -26,14 +26,14 @@ export default Ember.Component.extend({
       this.sendAction('startDeletion');
       this.set('isDeleting', true);
 
-      op.save().then( () => {
-        vhost.deleteRecord();
-        this.sendAction('completeDeletion');
-      }).catch( (e) => {
-        this.sendAction('failDeletion', e);
-      }).finally( () => {
-        this.set('isDeleting', false);
-      });
+      op.save()
+        .then(() => {
+          vhost.set('status', 'deprovisioning');
+          this.sendAction('completeDeletion');
+        }).catch((e) => {
+          vhost.set('status', 'deprovision_failed');
+          this.sendAction('failDeletion', e);
+        });
     }
   }
 });

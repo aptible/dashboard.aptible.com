@@ -1,0 +1,70 @@
+{{#if hasActive}}
+    <div class="sort-group provisioned-log-drains">
+      {{#if showSortableHeader}}
+          <h5 class="sort-header">Provisioned Log Drains</h5>
+      {{/if}}
+        <div class="row">
+          {{#each provisionedLogDrains as |logDrain|}}
+              <div class="col-xs-12">
+                  {{ log-drain-item logDrain=logDrain completedAction="completedAction" failedAction="failedAction" }}
+              </div>
+          {{/each}}
+        </div>
+    </div>
+{{/if}}
+
+{{#if hasPending}}
+    <div class="sort-group pending-log-drains">
+        <h5 class="sort-header">Provisioning Log Drains</h5>
+        <div class="row">
+          {{#each pendingOrProvisioningLogDrains as |logDrain|}}
+              <div class="col-xs-12">
+                {{ log-drain-item logDrain=logDrain completedAction="completedAction" failedAction="failedAction" }}
+              </div>
+          {{/each}}
+        </div>
+    </div>
+{{/if}}
+
+{{#if hasFailedProvision}}
+    <div class="sort-group deprovisioning-log-drains">
+        <h5 class="sort-header">Log Drains that failed to provision</h5>
+        <div class="row">
+          {{#each failedProvisioningLogDrains as |logDrain|}}
+              <div class="col-xs-12">
+                {{ log-drain-item logDrain=logDrain completedAction="completedAction" failedAction="failedAction" }}
+              </div>
+          {{/each}}
+        </div>
+    </div>
+{{/if}}
+
+{{#if hasDeprovisioning}}
+    <div class="sort-group deprovisioning-log-drains">
+        <h5 class="sort-header">Deprovisioning Log Drains</h5>
+        <div class="row">
+          {{#each deprovisionedLogDrains as |logDrain|}}
+              <div class="col-xs-12">
+                {{ log-drain-item logDrain=logDrain completedAction="completedAction" failedAction="failedAction" }}
+              </div>
+          {{/each}}
+        </div>
+    </div>
+{{/if}}
+
+{{#if hasFailedDeprovision}}
+    <div class="sort-group deprovisioning-log-drains">
+        <h5 class="sort-header">Log Drains that failed to deprovision</h5>
+        <div class="row">
+          {{#each failedDeprovisioningLogDrains as |logDrain|}}
+              <div class="col-xs-12">
+                {{ log-drain-item logDrain=logDrain completedAction="completedAction" failedAction="failedAction" }}
+              </div>
+          {{/each}}
+        </div>
+    </div>
+{{/if}}
+
+<div class="resource-actions">
+  {{link-to 'Add Log Drain' 'stack.log-drains.new' class="btn btn-primary"}}
+</div>

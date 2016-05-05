@@ -10,5 +10,10 @@ export default Ember.Route.extend({
     if(model.get('length') === 0) {
       this.transitionTo('databases.new', this.modelFor('stack'));
     }
+  },
+  actions: {
+    forceRedirect: function() {
+      this.transitionTo('databases.new', this.modelFor('stack'));
+    }
   }
 });
