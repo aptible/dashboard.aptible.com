@@ -2,7 +2,7 @@
   preventContinueMessage=preventContinueMessage
   onNext="onNext"
   onPrevious="onPrevious"
-  stepName="Your Organization"
+  stepName="About Your Organization"
   onSave="onSave"
   profile=model
 }}
@@ -10,12 +10,12 @@
 <div class="container main-body">
   <div class="panel panel-striped">
     <div class="panel-section">
-      <div class="panel-section-title">About Your Organization</div>
+      <div class="panel-section-title">Briefly describe your organization:</div>
       {{textarea value=model.aboutOrganization rows="5" class="form-control" name="aboutOrganization"}}
     </div>
 
     <div class="panel-section">
-      <div class="panel-section-title">Description of your productions</div>
+      <div class="panel-section-title">Briefly describe your production apps and architecture:</div>
       {{textarea value=model.aboutProduct rows="5" class="form-control" name="aboutProduct"}}
     </div>
   </div>

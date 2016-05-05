@@ -50,7 +50,8 @@ test('Locations page basic UI, with no existing locations', function(assert) {
 
   andThen(() => {
     assert.equal(currentPath(), 'compliance.compliance-organization.setup.locations', 'remains on locations step');
-    assert.ok(find('.empty-row:contains(No Locations.  Add one below.)').length,
+    assert.ok(find('.empty-row:contains(No locations.  Add one above.)').length,
+
               'shows empty row with no locations');
     assert.ok(find('.spd-nav-continue').is(':disabled'),
               'Continue button is disabled');
