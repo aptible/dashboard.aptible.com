@@ -1,4 +1,5 @@
 import DS from 'ember-data';
+import Ember from 'ember';
 
 export default DS.Model.extend({
   type: DS.attr('string'),
@@ -26,5 +27,31 @@ export default DS.Model.extend({
   app: null,
   vhost: null,
   logDrain: null,
-  service: null
+  service: null,
+
+  reloadUntilStatusChanged: function(maximumTimeout) {
+    let reloadUntilOperationStatusChanged = (operation, maximumTimeout, timeout) => {
+      return operation.reload().then((o) => {
+        return new Ember.RSVP.Promise((resolve, reject) => {
+          if(timeout > maximumTimeout) {
+            return reject(new Error('Operation timed out.'));
+          }
+
+          let status = o.get('status');
+          if(status === 'succeeded') {
+            return resolve(o);
+          } else if(status === 'failed') {
+            return reject(new Error('Operation failed.'));
+          }
+
+          Ember.run.later(o, () => {
+            return resolve(reloadUntilOperationStatusChanged(o, maximumTimeout, timeout * 2));
+          }, timeout);
+        });
+      });
+    };
+
+    return reloadUntilOperationStatusChanged(this, maximumTimeout, 1000)
+  }
+
 });
