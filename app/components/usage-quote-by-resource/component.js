@@ -7,7 +7,14 @@ export default Ember.Component.extend({
     return this.get('resource').capitalize().pluralize();
   }),
 
-  grossUsage: Ember.computed('stacks.[]', function() {
+  containerUsage: Ember.computed.mapBy('stacks', 'containerUsage'),
+  totalContainerUsage: Ember.computed.sum('containerUsage'),
+
+  grossUsage: Ember.computed('resource', 'totalContainerUsage', function() {
+    if(this.get('resource') === 'container') {
+      return this.get('totalContainerUsage');
+    }
+
     let total = 0;
     this.get('stacks').forEach((stack) => {
       total += stack.getUsageByResourceType(this.get('resource'));
@@ -24,11 +31,11 @@ export default Ember.Component.extend({
     }
   }),
 
-  netUsage: Ember.computed('grossUsage', 'allowance', function() {
+  netUsage: Ember.computed('grossUsage', 'allowance', 'resource', function() {
     return Math.max(this.get('grossUsage') - this.get('allowance'), 0);
   }),
 
-  totalUsageCost: Ember.computed('netUsage', 'hourlyRate', function() {
+  totalUsageCost: Ember.computed('resource', 'netUsage', 'hourlyRate', function() {
     return this.get('netUsage') * this.get('hourlyRate') * HOURS_PER_MONTH;
   })
 });
