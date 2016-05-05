@@ -1,6 +1,10 @@
 @import "aptible";
 @import "dashboard-global";
 @import "billing-plans";
+@import "setup";
+@import "ember-json-schema-views";
+
+
 @import "components/activate-notice";
 @import "components/button-with-confirmation";
 @import "components/change-plan";
@@ -29,3 +33,24 @@
 @import "components/vhost-panel";
 @import "components/welcome";
 @import "components/trainee-dashboard";
+@import "components/add-location-form";
+@import "components/compliance-icon";
+@import "components/dashboard";
+@import "components/document-activity-item";
+@import "components/data-environment-index";
+@import "components/edit-team-member";
+@import "components/learn-more-tooltip";
+@import "components/organization-switcher";
+@import "components/pending-invitation";
+@import "components/security-control";
+@import "components/security-control-group";
+@import "components/security-control-index-item";
+@import "components/spd";
+@import "components/spd-nav";
+@import "components/spd-steps";
+@import "components/user-training-item";
+@import "components/training-progress-bar";
+@import "components/x-toggle";
+.container {
+  width: auto;
+}

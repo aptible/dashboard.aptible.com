@@ -6,7 +6,8 @@ module.exports = function(defaults) {
   var options = {
     emberCliFontAwesome: { includeFontAwesomeAssets: false },
     vendorFiles: {
-      'handlebars.js': null
+      'handlebars.js': null,
+      fingerprint: { exclude: ['assets/images/data-environments'] }
     }
   };
 
@@ -26,7 +27,6 @@ module.exports = function(defaults) {
   }
 
   var app = new EmberApp(defaults, options);
-
   app.import('bower_components/nouislider/src/jquery.nouislider.css');
   app.import('bower_components/nouislider/distribute/jquery.nouislider.js');
 
@@ -52,7 +52,6 @@ module.exports = function(defaults) {
 
   // Shim to load c3
   app.import('vendor/shims/c3.js');
-
   // Use `app.import` to add additional libraries to the generated
   // output files.
   //

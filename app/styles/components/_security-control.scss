@@ -1,0 +1,87 @@
+.security-control {
+  border-bottom: 1px solid $color-border-gray;
+  padding: 30px;
+
+  &:last-child {
+    border: 0;
+  }
+
+  .title {
+    font-size: 15px;
+    font-weight: $weight-semibold;
+    margin: 0 0 15px;
+  }
+
+  .description {
+    font-size: 14px;
+    color: $color-light;
+  }
+
+  .radio {
+    margin: 0
+  }
+
+  .multiselect-checkboxes {
+    margin-top: 20px;
+  }
+
+  .x-toggle-container-disabled {
+    opacity: .33;
+  }
+
+  .toggle-text {
+    text-transform: uppercase;
+    font-weight: $weight-semibold;
+    color: $color-light;
+
+    &.small {
+      font-size: 11px;
+      margin-top: -3px;
+    }
+  }
+}
+
+.security-control-title {
+  .title {
+    font-size: 18px;
+  }
+}
+
+.security-control-field {
+  @extend %clearfix;
+  padding: 15px 0;
+
+  &.with-errors {
+    border: 1px solid #FFDBD7;
+    border-radius: 5px;
+    background: #FFEFEF;
+    padding: 15px;
+  }
+
+  .title {
+    font-size: 15px;
+    font-weight: normal;
+    margin: 0;
+
+    i.fa-lock {
+      color: $color-bright-blue;
+      margin: 0 8px 0 0;
+    }
+  }
+
+  .description {
+    margin-top: 5px;
+  }
+
+  .radio {
+    font-size: 14px;
+
+    label {
+
+    }
+  }
+
+  .toggle, .form-control, .radio {
+    margin-top: 15px;
+  }
+}

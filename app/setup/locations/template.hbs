@@ -1,0 +1,24 @@
+{{#spd-nav
+  preventContinueMessage=preventContinueMessage
+  onNext="onNext"
+  onPrevious="onPrevious"
+  stepName="Workforce Locations"
+  onSave="onSave"
+  attestation=attestation
+}}
+  <div class="description">
+    <p>
+      Please add a name and address for all workforce locations.
+    </p>
+  </div>
+{{/spd-nav}}
+
+<div class="container main-body">
+  <div class="spd-filterbar">
+    <div class="pull-right">
+      <button class="btn btn-default add-location-button" {{action "onAddLocation"}}><i class="fa fa-plus"></i> Location</button>
+    </div>
+  </div>
+
+  {{location-index locations=validLocations}}
+</div>

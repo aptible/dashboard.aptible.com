@@ -1,0 +1,109 @@
+.current-organization {
+  width: 100%;
+
+  .dropdown-select {
+    display: block;
+    margin: 10px 10px 0;
+
+    > .btn-group {
+      width: 100%;
+    }
+
+    .btn-link {
+      font-size: 13px;
+      color: $color-primary;
+    }
+
+    .dropdown-toggle {
+      float: right;
+      padding-top: 8px;
+    }
+  }
+
+  .btn-group.dropdown-select .dropdown-menu > li > a {
+    padding: 12px;
+  }
+
+  .dropdown-menu {
+    width: 260px;
+    padding: 0;
+
+    > li {
+      @extend %clearfix;
+      border-bottom: 1px solid $color-border-gray;
+
+      &.active {
+        > a {
+          color: $color-primary;
+          background: transparent;
+        }
+      }
+
+      &:last-child a {
+        border: 0;
+        border-radius: 0 0 3px 3px;
+      }
+
+      &:first-child a {
+        border-radius: 3px 3px 0 0;
+      }
+
+      > a {
+        clear: none;
+        font-size: 13px;
+        color: $color-light;
+        font-weight: $weight-semibold;
+      }
+
+      i.fa {
+        font-size: 11px;
+        margin: 0 8px 0 0;
+      }
+    }
+
+    .org-name {
+      font-size: 13px;
+      display: block;
+      float: left;
+      padding: 8px 6px 6px;
+      font-weight: $weight-semibold;
+
+      i.fa {
+        vertical-align: 1px;
+
+        &.success {
+          color: $color-success;
+        }
+      }
+    }
+
+    a.org-name {
+      color: $color-bright-blue;
+
+      &:hover {
+        background: none;
+        color: $color-primary;
+      }
+    }
+
+    .sub-nav-tabs {
+      float: right;
+
+      a {
+        padding: 9px 10px 4px;
+
+        &:hover {
+          i.fa {
+            color: $color-primary;
+          }
+        }
+      }
+
+      i.fa {
+        font-size: 14px;
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+}

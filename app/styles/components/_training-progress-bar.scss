@@ -1,0 +1,47 @@
+.stacked-bar {
+  position: relative;
+  height: 40px;
+  overflow: hidden;
+  border-radius: 5px;
+
+  .column {
+    position: relative;
+    top: 0;
+    float: left;
+    background: $color-danger;
+    height: 100%;
+
+    .label {
+      font-weight: $weight-semibold;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow: 1px 1px 2px rgba(0,0,0,.3);
+      text-align: center;
+      width: 100%;
+      font-size: 13px;
+      display: none;
+      padding: 15px 0;
+    }
+
+    &.show-label .label {
+      display: block;
+    }
+
+    &.completed {
+      background: $color-success;
+      width: 200px;
+      float: left;
+    }
+
+    &.expired {
+      background: $color-warning;
+      width: 150px;
+      float: left;
+    }
+
+    &.overdue {
+      margin-left: 350px;
+      float: none;
+    }
+  }
+}

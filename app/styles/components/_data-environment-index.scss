@@ -1,0 +1,30 @@
+.data-environment-provider {
+  &.sm {
+    img {
+      height: 30px;
+    }
+  }
+
+  &.md {
+    img {
+      height: 50px;
+    }
+  }
+
+  &.lg {
+    img {
+      height: 80px;
+    }
+  }
+}
+
+.data-environment {
+  .toggle {
+    margin-top: 5px;
+  }
+
+  .locked-property {
+    float: left;
+    margin-top: 0;
+  }
+}

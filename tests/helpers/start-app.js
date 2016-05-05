@@ -2,8 +2,9 @@ import Ember from 'ember';
 import Application from '../../app';
 import config from '../../config/environment';
 
-// registers test helpers for injection
 import './aptible-helpers';
+import './organization-stub';
+import './schemas-api-stub';
 import './set-feature';
 
 export default function startApp(attrs) {

@@ -1,0 +1,28 @@
+{{#spd-nav
+  preventContinueMessage=preventContinueMessage
+  onNext="onNext"
+  onPrevious="onPrevious"
+  stepName="Data Environments"
+  onSave="onSave"
+  attestation=attestation
+}}
+  <div class="description">
+    <p>
+      Please select any of the data environments below that you use to store or transmit protected health information (PHI).
+    </p>
+
+    <p>
+      Don't see a system that you use here? <a href="http://contact.aptible.com">Contact Support</a>
+    </p>
+  </div>
+{{/spd-nav}}
+
+<div class="container main-body">
+  <div class="panels">
+    {{data-environment-index
+      dataEnvironmentSchema=model
+      dataEnvironmentDocument=schemaDocument}}
+  </div>
+</div>
+
+

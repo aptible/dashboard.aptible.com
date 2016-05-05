@@ -6,6 +6,9 @@ cache:
   directories:
   - node_modules
 before_install:
+- mkdir phantomjs-2.0.0
+- wget https://s3.amazonaws.com/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -O phantomjs-2.0.0/phantomjs-2.0.0-ubuntu-12.04.tar.bz2
+- tar -xvf phantomjs-2.0.0/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -C phantomjs-2.0.0/
 - export PATH=$PWD/phantomjs-2.0.0:$PATH
 - npm config set spin false
 - npm install -g npm@^2

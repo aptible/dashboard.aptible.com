@@ -1,0 +1,145 @@
+.security-control-group-header {
+  @extend %clearfix;
+  padding: 45px 30px;
+  border-bottom: 1px solid $color-border-gray;
+
+  .data-environment-provider {
+    float: left;
+    margin-right: 30px;
+  }
+
+  .security-control-group-title {
+    float: left;
+    font-size: 20px;
+    margin: 6px 0 0 0;
+  }
+
+  .status-bar {
+    clear: both;
+  }
+}
+
+.security-control-group-footer {
+  @extend %clearfix;
+  padding: 30px;
+}
+
+.loading-provider {
+  margin: 50px 0;
+  text-align: center;
+  color: #c0c0c0;
+  font-size: 30px;
+}
+
+.loading-progress {
+  color: $color-light;
+  text-align:center;
+}
+
+.security-control-group {
+  display: flex;
+  order: 2;
+  flex: 1;
+  background: #fff;
+  border-left: 1px solid $color-border-gray;
+  border-radius: 3px 0 0 3px;
+  justify-content: center;
+
+  > div {
+    width: 100%;
+  }
+}
+
+.security-controls {
+  .layout-sidebar {
+    order: 1;
+    flex: 0 0 300px;
+    border: 0;
+    background: none;
+  }
+
+  .sidebar-nav {
+    border: 0;
+
+    > li {
+      margin-bottom: 4px;
+    }
+
+    .active {
+      > .step {
+        font-weight: $weight-semibold;
+        color: $color-primary;
+        background: $color-border-gray;
+        border-radius: 0 5px 5px 0;
+      }
+    }
+
+    .step {
+      color: $color-light;
+      padding: 12px;
+      font-size: 13px;
+      padding: 8px 10px;
+      padding-left: 20px;
+
+      i.success {
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+.status-bar {
+  @extend %clearfix;
+
+  > .liquid-child {
+    padding-top: 30px;
+  }
+
+  .save-message {
+    color: $color-light;
+    font-size: 12px;
+
+    .fa-check {
+      color: $color-success;
+    }
+  }
+
+  .error-message {
+    color: $color-danger;
+    font-weight: $weight-semibold;
+    font-size: 12px;
+
+    .fa-exclamation-circle {
+      color: $color-danger;
+    }
+  }
+}
+
+.panel.security-controls {
+  display: flex;
+  flex: 1;
+}
+
+.security-controls-provider {
+  text-align: center;
+
+  .data-environment-provider {
+    top: 50%;
+    margin-top: -25px;
+    position: absolute;
+    width: 230px;
+    text-align: center;
+  }
+}
+
+.security-controls-list {
+  width: 100%;
+}
+
+.security-controls.with-save-bar {
+  .security-controls-provider {
+    .data-environment-provider {
+      margin-top:-50px;
+    }
+  }
+}
