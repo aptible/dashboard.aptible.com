@@ -85,7 +85,7 @@ test('/databases/:id/deprovision will deprovision with confirmation', function(a
   click('button:contains(Deprovision)');
   andThen(() => {
     assert.ok(didDeprovision, 'deprovisioned', 'received successful response');
-    assert.equal(currentPath(), 'dashboard.stack.databases.new',
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.databases.new',
       'with no dbs, user is routed to create one');
   });
 });
@@ -122,6 +122,6 @@ test('/databases/:id/deprovision will show deprovision error', function(assert) 
   andThen(function(){
     var error = findWithAssert('.alert');
     assert.ok(error.text().indexOf(errorMessage) > -1, 'error message shown');
-    assert.equal(currentPath(), 'dashboard.database.deprovision');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.database.deprovision');
   });
 });

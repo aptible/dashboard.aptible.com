@@ -42,12 +42,18 @@ function doSetup(options={}){
       users: { href: apiOrgUsersUrl }
     }
   };
+  let currentUserRoleData = options.currentUserRoleData || roleData;
 
   stubRequest('get', '/organizations', function() {
     return this.success({ _embedded: [orgData]});
   });
   stubOrganization(orgData);
 
+  stubRequest('get', `/roles/${roleData.id}`, function() {
+    return this.success(roleData);
+  });
+
+  // stacks links.organization is /oranizations/o1, but role is to /organizations/1
   stubStacks({}, options.stacks || []);
   stubRequest('get', apiOrgUsersUrl, function(){
     return this.success({ _embedded: {users: options.users || []} });
@@ -55,7 +61,7 @@ function doSetup(options={}){
   // This stubs out the roles URL, and since the roleId
   // matches that in the visited URL the data from this
   // index response is used.
-  signIn(null, roleData);
+  signIn(null, currentUserRoleData);
 }
 
 test(`visiting ${url} shows role edit fields`, (assert)=> {
@@ -81,13 +87,24 @@ test(`visiting ${url} lists permissions by stack`, (assert)=> {
       organization: { href: orgUrl }
     }
   }];
-  doSetup({roleData: {
-    id: roleId,
-    privileged: false,
-    name: roleName,
-    _links: { self: { href: apiRoleUrl } }
-  }});
-  stubStacks({}, stacks);
+  doSetup({
+    currentUserRoleData: {
+      id: 'admin-role-1',
+      privileged: true,
+      name: 'admin role',
+      _links: {
+        self: { href: '/role/admin-role-1' },
+        organization: { href: '/organizations/o1' }
+      }
+    },
+    roleData: {
+      id: roleId,
+      privileged: false,
+      name: roleName,
+      _links: { self: { href: apiRoleUrl } }
+    },
+    stacks: stacks
+  });
 
   let postedPermission;
   let createPermissionUrl = `/accounts/${stackId}/permissions`;

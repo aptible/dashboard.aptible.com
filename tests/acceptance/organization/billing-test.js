@@ -10,7 +10,7 @@ let application;
 
 // FIXME this is hardcoded to match the value for signIn in
 // aptible-helpers
-const organizationId = 'o1';
+const organizationId = 1;
 
 const billingUrl = `/organizations/${organizationId}/billing`;
 const url = billingUrl;

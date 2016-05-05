@@ -75,7 +75,7 @@ test('visiting /welcome/payment-info logged in with stacks', function(assert) {
   signInAndVisit('/welcome/payment-info');
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
   });
 });
 
@@ -168,7 +168,7 @@ test('payment info should be submitted to stripe to create stripeToken', functio
     stubStacks();
   });
   andThen( () => {
-    assert.equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
   });
 });
 
@@ -215,7 +215,7 @@ test('submitting valid payment info for development plan should create dev stack
 
   clickButton('Save');
   andThen( () => {
-    assert.equal(currentPath(), 'dashboard.stack.apps.new');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.new');
   });
 });
 
@@ -267,7 +267,7 @@ test('submitting valid payment info on organization with existing stripe info sh
   clickButton('Save');
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.stack.apps.new');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.new');
   });
 });
 
@@ -310,7 +310,7 @@ test('submitting valid payment info should create app', function(assert) {
   });
   clickButton('Save');
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
   });
 });
 
@@ -357,7 +357,7 @@ test('submitting valid payment info should create db', function(assert) {
   });
   clickButton('Save');
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.stack.apps.new');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.new');
   });
 });
 
@@ -412,7 +412,7 @@ test('submitting valid payment info when user is verified should provision db', 
   });
   clickButton('Save');
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.stack.apps.new');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.new');
 
     assert.equal(databaseParams.handle, dbHandle,
           'db params has handle');

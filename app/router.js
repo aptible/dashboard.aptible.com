@@ -41,94 +41,95 @@ const Router = Ember.Router.extend({
 
 Router.map(function() {
   this.authenticatedRoute("dashboard", { path: '/' }, function() {
+    this.route('requires-read-access', { path: '', resetNamespace: true }, function() {
+      this.route("index", { path: '', resetNamespace: true });
 
-    this.route("index", { path: '', resetNamespace: true });
+      this.route("app", {
+        resetNamespace: true,
+        path: "apps/:app_id"
+      }, function() {
+        this.route("services", function () {
+          this.route('metrics', {
+            path: ':service_id/metrics'
+          });
+        });
+        this.route("vhosts", {}, function(){
+          this.route('new');
+          this.route('edit', {
+            path: ':vhost_id/edit'
+          });
+        });
+        this.route("activity");
+        this.route("deprovision");
+        this.route("deploy");
+      });
 
-    this.route("app", {
-      resetNamespace: true,
-      path: "apps/:app_id"
-    }, function() {
-      this.route("services", function () {
-        this.route('metrics', {
-          path: ':service_id/metrics'
+      this.route("database", {
+        resetNamespace: true,
+        path: "databases/:database_id"
+      }, function() {
+        this.route("activity");
+        this.route("replicate");
+        this.route("cluster");
+        this.route("metrics");
+        this.route("deprovision");
+      });
+
+      this.route("stack", {
+        resetNamespace: true,
+        path: "stacks/:stack_id"
+      }, function() {
+        this.route("activate", { path: 'activate'});
+        this.route("log-drains", {
+          path: 'logging'
+        }, function(){
+          this.route("new");
+        });
+
+        this.route("apps", {
+          resetNamespace: true
+        }, function() {
+          this.route("new");
+        });
+
+        this.route("databases", {
+          resetNamespace: true
+        }, function() {
+          this.route("new");
+        });
+
+        this.route("certificates", {
+          resetNamespace: true
+        }, function() {
+          this.route("new");
+          this.route('edit', {
+            path: ':certificate_id/edit'
+          });
         });
       });
-      this.route("vhosts", {}, function(){
-        this.route('new');
-        this.route('edit', {
-          path: ':vhost_id/edit'
+
+      this.route("stacks", { resetNamespace: true });
+
+      this.route("organization", {
+        resetNamespace: true,
+        path: "/organizations/:organization_id"
+      }, function() {
+        this.route("members", {}, function() {
+          this.route("edit", {path: ":user_id/edit"});
         });
-      });
-      this.route("activity");
-      this.route("deprovision");
-      this.route("deploy");
-    });
-
-    this.route("database", {
-      resetNamespace: true,
-      path: "databases/:database_id"
-    }, function() {
-      this.route("activity");
-      this.route("replicate");
-      this.route("cluster");
-      this.route("metrics");
-      this.route("deprovision");
-    });
-
-    this.route("stack", {
-      resetNamespace: true,
-      path: "stacks/:stack_id"
-    }, function() {
-      this.route("activate", { path: 'activate'});
-      this.route("log-drains", {
-        path: 'logging'
-      }, function(){
-        this.route("new");
-      });
-
-      this.route("apps", {
-        resetNamespace: true
-      }, function() {
-        this.route("new");
-      });
-
-      this.route("databases", {
-        resetNamespace: true
-      }, function() {
-        this.route("new");
-      });
-
-      this.route("certificates", {
-        resetNamespace: true
-      }, function() {
-        this.route("new");
-        this.route('edit', {
-          path: ':certificate_id/edit'
+        this.route("roles", {}, function() {
+          this.route('new');
+          this.route("show", {path: ":role_id"});
         });
-      });
-    });
-
-    this.route("stacks", { resetNamespace: true });
-
-    this.route("organization", {
-      resetNamespace: true,
-      path: "/organizations/:organization_id"
-    }, function() {
-      this.route("members", {}, function() {
-        this.route("edit", {path: ":user_id/edit"});
-      });
-      this.route("roles", {}, function() {
-        this.route('new');
-        this.route("show", {path: ":role_id"});
-      });
-      this.route("invite");
-      this.route('contact-settings');
-      this.route('environments', function() {
-        this.route('new');
-      });
-      this.route("billing", {}, function() {
-        this.route('plan');
-        this.route('payment-method');
+        this.route("invite");
+        this.route('contact-settings');
+        this.route('environments', function() {
+          this.route('new');
+        });
+        this.route("billing", {}, function() {
+          this.route('plan');
+          this.route('payment-method');
+        });
       });
     });
 
@@ -148,6 +149,8 @@ Router.map(function() {
     this.route("first-app");
     this.route("payment-info");
   });
+
+  this.authenticatedRoute("trainee-dashboard", { resetNamespace: true });
 
   this.route("login");
   this.route("logout");

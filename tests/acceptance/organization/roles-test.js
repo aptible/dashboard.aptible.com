@@ -7,14 +7,29 @@ import startApp from 'diesel/tests/helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
 let application;
-let orgId = 'o1'; // FIXME this is hardcoded to match the value for signIn in aptible-helpers
+let orgId = 1;
 let url = `/organizations/${orgId}/roles`;
 let rolesUrl = url;
 
 module('Acceptance: Organizations: Roles', {
   beforeEach: function() {
     application = startApp();
-    stubOrganizations();
+    stubRequest('get', '/organizations', function(){
+      return this.success({
+        _links: {},
+        _embedded: {
+          organizations: [{
+            _links: {
+              roles: { href: rolesUrl },
+              self: { href: `/organizations/${orgId}` }
+            },
+            id: orgId,
+            name: 'Sprocket Co',
+            type: 'organization'
+          }]
+        }
+      });
+    });
   },
 
   afterEach: function() {
@@ -31,17 +46,28 @@ test(`visiting ${url} shows roles`, (assert) => {
   let roles = [{
     id: 'role1',
     name: 'Owner',
-    privileged: true
+    privileged: true,
+    _links: {
+      self: { href: `/roles/role1` },
+      organization: { href: `/organizations/${orgId}` }
+    }
   }, {
     id: 'role2',
-    name: 'devs'
+    name: 'devs',
+    _links: {
+      self: { href: `/roles/role2` },
+      organization: { href: `/organizations/${orgId}` }
+    }
   }];
 
   assert.expect(2 + 2*roles.length);
 
   stubOrganization({
     id: orgId,
-    _links: { roles: {href: rolesUrl} }
+    _links: {
+      roles: { href: rolesUrl },
+      self: { href: `/organizations/${orgId}` }
+    }
   });
 
   stubRequest('get', rolesUrl, function(){
@@ -49,9 +75,10 @@ test(`visiting ${url} shows roles`, (assert) => {
     return this.success({ _embedded: { roles }});
   });
 
-  signInAndVisit(url);
+  signInAndVisit(url, {}, roles[0]);
+
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.organization.roles.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.roles.index');
 
     roles.forEach( (r) => {
       let roleDiv = find(`.role:contains(${r.name})`);
@@ -90,6 +117,6 @@ test(`visit ${url} and click to show`, (assert) => {
   signInAndVisit(url);
   click(`a[title="Edit ${role.name} Permissions"]`);
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.organization.roles.show');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.roles.show');
   });
 });

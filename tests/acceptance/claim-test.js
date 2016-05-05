@@ -35,6 +35,14 @@ test(`visiting ${url} as unauthenticated redirects to signup/invitation/:invitat
 
 test(`visiting ${url} as unauthenticated revisits after log in`, function(assert) {
   let userUrl = '/user-url';
+  let roleData = {
+    id: 'r1',
+    privileged: true,
+    _links: {
+      self: { href: '/roles/r1' },
+      organization: { href: '/organizations/1' }
+    }
+  };
   stubRequest('post', '/tokens', function(){
     return this.success({
       id: 'my-id',
@@ -46,10 +54,17 @@ test(`visiting ${url} as unauthenticated revisits after log in`, function(assert
       _links: { user: { href: userUrl } }
     });
   });
+  stubRequest('get', `/roles/${roleData.id}`, function(){
+    return this.success(roleData);
+  });
   stubRequest('get', userUrl, function(){
     return this.success({
       id: 'some-id',
-      username: 'some-email'
+      username: 'some-email',
+      _links: {
+        roles:  { href: '/users/some-id/roles' }
+      },
+      _embedded: { roles:  [roleData] }
     });
   });
 
@@ -86,7 +101,7 @@ test(`visiting ${url} as unauthenticated revisits after log in`, function(assert
   clickButton('Accept invitation');
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
   });
 });
 
@@ -128,7 +143,7 @@ test(`visiting ${url} as authenticated creates verification`, function(assert) {
   signInAndVisit(url);
   clickButton('Accept invitation');
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
   });
 });
 

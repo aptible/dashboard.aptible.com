@@ -20,13 +20,13 @@ module('Acceptance: Organization', {
 test('visiting /organization', function(assert) {
   stubOrganizations();
   stubStacks();
-  stubOrganization({ id: 'o1' });
-  stubBillingDetail({ id: 'o1' });
+  stubOrganization({ id: 1 });
+  stubBillingDetail({ id: 1 });
   setFeature('organization-settings', true);
-  signInAndVisit('/organizations/o1');
+  signInAndVisit('/organizations/1');
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.organization.members.index');
-    expectLink('/organizations/o1/members');
-    expectLink('/organizations/o1/roles');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.members.index');
+    expectLink('/organizations/1/members');
+    expectLink('/organizations/1/roles');
   });
 });

@@ -72,13 +72,13 @@ test(`visiting ${url} and creating new certificate`, function(assert) {
 
   signInAndVisit(url);
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.stack.certificates.new');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.certificates.new');
     fillInput('body', cert);
     fillInput('private-key', pKey);
     clickButton('Save Certificate');
   });
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.stack.certificates.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.certificates.index');
   });
 });
