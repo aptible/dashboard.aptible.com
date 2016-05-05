@@ -42,6 +42,20 @@
         color: $color-light;
       }
 
+      table.usage-value {
+        float: left;
+        clear: left;
+        width: 100%;
+      }
+
+      table.usage-value tr td:first-child {
+        text-align: left;
+      }
+
+      table.usage-value tr td:last-child {
+        width: 80px;
+      }
+
       &.total-item {
         .usage-label, .usage-value {
           font-weight: $weight-semibold;
