@@ -9,7 +9,10 @@ export default DS.Model.extend({
   password: DS.attr('string'),
   verified: DS.attr('boolean'),
   createdAt: DS.attr('date'),
-  superuser : DS.attr('boolean'),
+  superuser: DS.attr('boolean'),
+  otpEnabled: DS.attr('boolean'),
+  otpUri: DS.attr('string'),
+  otpToken: DS.attr('string'),
 
   // used when changing a user's password. Set as an `attr` so that it
   // will be sent to the API
@@ -17,6 +20,9 @@ export default DS.Model.extend({
 
   // not persisted, used when changing a user's password
   passwordConfirmation: null,
+
+  // Used when enabling 2FA. Set as an `attr` so that it's sent to the API;
+  otpReset: DS.attr('boolean'),
 
   // relationships
   token: DS.belongsTo('token', { async: true, requireReload: true }),

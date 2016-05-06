@@ -18,7 +18,9 @@ export default BaseProvider.extend({
       xhrFields: { withCredentials: true }
     }).catch(function(jqXHR){
       if (jqXHR.responseJSON) {
-        throw new Error(jqXHR.responseJSON.message);
+        let err = new Error(jqXHR.responseJSON.message);
+        err.authError = jqXHR.responseJSON.error;
+        throw err;
       } else if (jqXHR.responseText) {
         throw new Error(jqXHR.responseText);
       } else {
