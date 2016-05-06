@@ -3,10 +3,9 @@
 </div>
 
 <table class="usage-value stack-usage-value">
-  {{#if (eq resource 'container')}}
+  {{#if isContainer}}
     <tr><th>App containers</th></tr>
-    {{#each resources as |app|}}
-
+    {{#each stack.apps as |app|}}
       {{#each app.services as |service|}}
         {{ service-resource-usage handle=app.handle service=service release=service.currentRelease hourlyRate=hourlyRate }}
       {{/each}}
@@ -18,16 +17,16 @@
     {{/each}}
   {{/if}}
 
-  {{#if (eq resource 'disk')}}
-    {{#each resources as |database|}}
+  {{#if isDisk}}
+    {{#each stack.databases as |database|}}
       {{ disk-resource-usage handle=database.handle service=database.service database=database hourlyRate=hourlyRate }}
     {{/each}}
   {{/if}}
 
-  {{#if (eq resource 'domain')}}
-    {{#each resources as |app|}}
+  {{#if isDomain}}
+    {{#each stack.apps as |app|}}
       {{#each app.vhosts as |vhost|}}
-        {{ vhost-resource-usage vhost=vhost handle=vhost.displayHost hourlyRate=hourlyRate }}
+        {{ vhost-resource-usage status=vhost.status handle=vhost.displayHost hourlyRate=hourlyRate }}
       {{/each}}
     {{/each}}
   {{/if}}

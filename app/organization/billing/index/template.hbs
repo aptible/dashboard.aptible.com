@@ -75,6 +75,9 @@
     <h5 class="sort-header">Current Platform Usage</h5>
 
     {{usage-quote-by-resource
+      apps=apps
+      databases=databases
+      services=services
       stacks=model
       allowance=billingDetail.containersInPlan
       hourlyRate=billingDetail.containerCentsPerHour
