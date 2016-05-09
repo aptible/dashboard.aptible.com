@@ -7,19 +7,23 @@ export default Ember.Component.extend({
     return this.get('resource').capitalize().pluralize();
   }),
 
-  containerUsage: Ember.computed.mapBy('stacks', 'containerUsage'),
+  diskUsage: Ember.computed.mapBy('stacks', 'totalDiskSize'),
+  domainUsage: Ember.computed.mapBy('stacks', 'domainCount'),
+  containerUsage: Ember.computed.mapBy('services', 'usage'),
+
+  totalDiskUsage: Ember.computed.sum('diskUsage'),
+  totalDomainUsage: Ember.computed.sum('domainUsage'),
   totalContainerUsage: Ember.computed.sum('containerUsage'),
 
-  grossUsage: Ember.computed('resource', 'totalContainerUsage', function() {
-    if(this.get('resource') === 'container') {
-      return this.get('totalContainerUsage');
+  grossUsage: Ember.computed('resource', function() {
+    switch(this.get('resource')) {
+      case 'container':
+        return this.get('totalContainerUsage');
+      case 'disk':
+        return this.get('totalDiskUsage');
+      case 'domain':
+        return this.get('totalDomainUsage');
     }
-
-    let total = 0;
-    this.get('stacks').forEach((stack) => {
-      total += stack.getUsageByResourceType(this.get('resource'));
-    });
-    return total;
   }),
 
   rate: Ember.computed('resource', 'hourlyRate', function() {
