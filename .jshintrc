@@ -81,7 +81,10 @@
     "setFeature",
     "stubInvitation",
     "stubIndexRequests",
-    "-Promise"
+    "-Promise",
+    "createStubUser",
+    "createStubRole",
+    "createStubToken"
   ],
   "browser": true,
   "boss": true,

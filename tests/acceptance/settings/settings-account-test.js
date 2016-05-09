@@ -6,7 +6,7 @@ import { stubRequest } from '../../helpers/fake-server';
 let App;
 
 let settingsUrl = '/settings';
-let settingsAccountUrl = `${settingsUrl}/admin`;
+let settingsAccountUrl = `${settingsUrl}/protected/admin`;
 let settingsProfileUrl = `${settingsUrl}/profile`;
 // from signInAndVisit helper
 let userEmail = 'stubbed-user@gmail.com';

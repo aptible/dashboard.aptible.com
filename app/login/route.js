@@ -21,13 +21,34 @@ export function buildCredentials(email, password, otpToken) {
   return credentials;
 }
 
-export default Ember.Route.extend(DisallowAuthenticated, {
+export function executeAuthAttempt(authPromiseFactory) {
+  let credentials = buildCredentials(this.currentModel.get('email'),
+      this.currentModel.get('password'),
+      this.currentModel.get('otpToken'));
 
+  this.currentModel.set('isLoggingIn', true);
+  this.currentModel.set('error', null);
+
+  return authPromiseFactory(credentials).catch((e) => {
+    if (e.authError === 'otp_token_required') {
+      this.currentModel.set('otpRequested', true);
+    } else {
+      this.currentModel.set('error', e.message);
+    }
+  }) .finally(() => {
+    this.currentModel.set('isLoggingIn', false);
+  });
+}
+
+export default Ember.Route.extend(DisallowAuthenticated, {
   model: function() {
     var model = Ember.Object.create({
       email: '',
-      password: ''
+      password: '',
+      otpRequested: false,
+      isLoggingIn: false
     });
+
     var afterAuthUrl = Cookies.read(AFTER_AUTH_COOKIE);
     if (afterAuthUrl) {
       Cookies.erase(AFTER_AUTH_COOKIE);
@@ -43,33 +64,24 @@ export default Ember.Route.extend(DisallowAuthenticated, {
   },
 
   actions: {
+    login: function() {
+      let route = this;
 
-    login: function(authAttempt){
-      var credentials = buildCredentials(authAttempt.get('email'),
-                                         authAttempt.get('password'),
-                                         authAttempt.get('otpToken'));
+      let authPromiseFactory = function(credentials) {
+        return route.session.open('application', credentials).then(() => {
+          if (route.session.attemptedTransition) {
+            route.session.attemptedTransition.retry();
+            route.session.attemptedTransition = null;
+          } else if (route.currentModel.get('afterAuthUrl')) {
+            Location.replace(route.currentModel.get('afterAuthUrl'));
+          } else {
+            route.currentModel.set('isSuccessful', true);  // TODO: Is this used anywhere?
+            route.transitionTo('index');
+          }
+        });
+      };
 
-      this.controller.set('isLoggingIn', true);
-
-      this.session.open('application', credentials).then(() => {
-        if (this.session.attemptedTransition) {
-          this.session.attemptedTransition.retry();
-          this.session.attemptedTransition = null;
-        } else if (authAttempt.get('afterAuthUrl')) {
-          Location.replace(authAttempt.get('afterAuthUrl'));
-        } else {
-          this.controller.set('isSuccessful', true);
-          this.transitionTo('index');
-        }
-      }, (e) => {
-        if (e.authError === 'otp_token_required') {
-          this.controller.set('otpRequested', true);
-        } else {
-          this.currentModel.set('error', e.message);
-        }
-      }).finally( () => {
-        this.controller.set('isLoggingIn', false);
-      });
+      return executeAuthAttempt.bind(this, authPromiseFactory)();
     }
   }
 });

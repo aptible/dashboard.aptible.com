@@ -41,8 +41,12 @@ export default Ember.Route.extend({
 
       Ember.merge(credentials, prepareSubjectParameters(authAttempt.email, authAttempt.organizationHref));
 
+      // Use the exchange stuff here.
+
       this.controller.set('inProgress', true);
       this.currentModel.set('error', null);
+
+      // TODO: Use new architecture of acquiring the token first. This would be safer against XSS, etc.
 
       // Log out and then log back in as the impersonated user
       this.session.close('application', {noDelete: true})
@@ -57,7 +61,7 @@ export default Ember.Route.extend({
         });
       }, (e) => {
         // Log back in as the (presumed) admin user and propagate the error.
-        return this.session.open('application', {token: adminToken}).then(() => {throw e;});
+        return this.session.open('application', {token: adminToken}).then(() => { throw e; });
       })
       .then(() => {
         // At this point we know impersonation has succeeded. Merely transitioning to 'index'
