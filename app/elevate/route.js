@@ -4,14 +4,14 @@ import { executeAuthAttempt } from "diesel/login/route";
 export default Ember.Route.extend({
   elevation: Ember.inject.service(),
 
-  model() {
-    let user = this.session.get('currentUser');
-
+  model(queryParams) {
     let model = Ember.Object.create({
-      email: user.get("email"),
+      email: this.get("session.currentUser.email"),
       password: '',
       otpRequested: false,
-      isLoggingIn: false
+      isLoggingIn: false,
+
+      redirectTo: queryParams["redirectTo"]
     });
 
     return model;
@@ -24,12 +24,8 @@ export default Ember.Route.extend({
 
       let authPromiseFactory = function(credentials) {
         return elevationService.createElevatedToken(credentials).then(() => {
-          if (elevationService.attemptedTransition) {
-            elevationService.attemptedTransition.retry();
-            elevationService.attemptedTransition = null;
-          } else {
-            route.transitionTo('index');
-          }
+          let redirectTo = route.currentModel.get("redirectTo") || "index";
+          route.transitionTo(redirectTo);
         });
       };
 

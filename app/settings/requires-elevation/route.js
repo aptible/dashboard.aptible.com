@@ -5,10 +5,8 @@ export default Ember.Route.extend({
 
   beforeModel(transition) {
     let elevationService = this.get("elevation");
-
     if (!elevationService.isElevated()) {
-      elevationService.attemptedTransition = transition;
-      this.transitionTo("elevate");
+      this.transitionTo("elevate", {queryParams: { redirectTo: transition.targetName }});
     }
   }
 });
