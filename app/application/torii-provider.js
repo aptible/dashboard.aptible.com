@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import BaseProvider from "torii/providers/base";
-import ajax from "../utils/ajax";
-import config from "../config/environment";
+import { createToken } from "../utils/tokens";
 
 export default BaseProvider.extend({
   open(credentials) {
@@ -12,21 +11,12 @@ export default BaseProvider.extend({
       return new Ember.RSVP.Promise((resolve, _) => resolve(JSON.parse(token.get('rawPayload'))));
     }
 
-    return ajax(config.authBaseUri+'/tokens', {
-      type: 'POST',
-      data: credentials,
-      xhrFields: { withCredentials: true }
-    }).catch(function(jqXHR){
-      if (jqXHR.responseJSON) {
-        let err = new Error(jqXHR.responseJSON.message);
-        err.authError = jqXHR.responseJSON.error;
-        throw err;
-      } else if (jqXHR.responseText) {
-        throw new Error(jqXHR.responseText);
-      } else {
-        throw new Error("Unknown error from the server.");
-      }
-    });
-  }
+    // If it's a tokenPayload, same
+    let tokenPayload = credentials.tokenPayload;
+    if (tokenPayload !== undefined) {
+      return new Ember.RSVP.Promise((resolve, _) => resolve(tokenPayload));
+    }
 
+    return createToken(credentials);
+  }
 });
