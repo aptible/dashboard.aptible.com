@@ -30,6 +30,15 @@
                 name="password"
                 class="form-control"}}
             </div>
+            {{#if otpRequested}}
+              <div class="form-group">
+                <label>2FA Token</label>
+                {{input type="text"
+                value=model.otpToken
+                name="otp-token"
+                class="form-control"}}
+              </div>
+            {{/if}}
             <button
               disabled={{isLoggingIn}}
               type="submit"

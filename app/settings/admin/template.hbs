@@ -20,12 +20,18 @@
             </div>
             {{#if changingPassword}}
               <div class="form-group">
-                <label for="current-password">Current password</label>
+                <label for="password-current-password">Current password</label>
                 {{input type="password"
                         class="form-control" placholder="Current password"
                         value=model.currentPassword
-                        name="current-password"}}
+                        name="password-current-password"}}
               </div>
+              {{#if otpEnabled}}
+                <div class="form-group">
+                  <label for="password-otp-token">2FA Token</label>
+                  {{input type="text" value=model.otpToken name="password-otp-token" class="form-control"}}
+                </div>
+              {{/if}}
             {{/if}}
             <div class="">
               <button {{action 'changePassword'}}
@@ -54,15 +60,21 @@
             </div>
             {{#if changingEmail}}
               <div class="form-group">
-                <label for="password">Please enter your current password</label>
+                <label for="email-current-password">Current password</label>
                 {{input type="password"
                         class="form-control" placeholder="Current password"
                         value=model.currentPassword
-                        name="current-password"}}
+                        name="email-current-password"}}
               </div>
+              {{#if otpEnabled}}
+                <div class="form-group">
+                  <label for="email-otp-token">2FA Token</label>
+                  {{input type="text" value=model.otpToken name="email-otp-token" class="form-control"}}
+                </div>
+              {{/if}}
             {{/if}}
             <div class="">
-              <button {{action 'changeEmail'}} class="btn btn-primary" type="submit">
+              <button {{action 'changeEmail'}} class="btn btn-primary" type="submit" disabled={{model.isSaving}}>
                 {{#if isSavingEmail}}
                   Saving
                 {{else}}
@@ -70,6 +82,60 @@
                 {{/if}}
               </button>
             </div>
+          </form>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading"><h3>2-Factor Authentication</h3></div>
+        <div class="panel-body">
+          {{#if otpMessageLevel}}
+            {{#bs-alert alert=otpMessageLevel}}
+              {{otpMessage}}
+            {{/bs-alert}}
+          {{/if}}
+
+          <p>
+          {{#if otpDisabled}}
+            2-factor authentication can be enabled for your account.
+          {{else if otpPending}}
+            2-factor authentication will be enabled for your account after confirmation.
+          {{else if otpEnabled}}
+            2-factor authentication is currently enforced for your account. It can be disabled
+            with your password and 2FA token.
+          {{else}}
+            {{! Shouldn't be happening }}
+            2-factor authentication is in an unexpected state. Please contact support.
+          {{/if}}
+          </p>
+
+          {{#if otpPending}}
+            <div>
+              {{qr-code data=model.otpUri}}
+            </div>
+          {{/if}}
+
+          <form>
+            <div class="form-group">
+              <label for="otp-current-password">Current password</label>
+              {{input type="password"
+              class="form-control" placeholder="Current password"
+              value=model.currentPassword
+              name="otp-current-password"}}
+            </div>
+
+            {{#if otpShowToken}}
+            <div class="form-group">
+              <label for="otp-otp-token">2FA token</label>
+              {{input type="text"
+              class="form-control" placeholder="Enter code"
+              value=model.otpToken
+              name="otp-otp-token"}}
+            </div>
+            {{/if}}
+
+            <button {{action otpButtonAction}} class="btn btn-primary" type="submit" disabled={{model.isSaving}}>
+              {{otpButtonLabel}}
+            </button>
           </form>
         </div>
       </div>
