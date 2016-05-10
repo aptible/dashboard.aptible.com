@@ -34,11 +34,15 @@ export default Ember.Route.extend({
     resetOtp() {
       let user = this.currentModel;
 
-      user.set("otpReset", true).save().then(() => {
+      this.store.createRecord('otp-configuration', {
+        user: user
+      }).save().then((otpConfiguration) => {
+        return user.set("currentOtpConfiguration", otpConfiguration).save();
+      }).then(() => {
         Ember.get(this, 'flashMessages').success("Scan the QR code to proceed.");
       }).catch((e) => {
         this.handleApiError(e);
-      }).finally(() => user.set("otpReset", false));
+      });
     },
 
     toggleOtp() {

@@ -8,9 +8,9 @@ export default Ember.Controller.extend({
   isSavingPassword: Ember.computed.bool('session.currentUser.isSaving'),
   isSavingEmail: Ember.computed.bool('session.currentUser.isSaving'),
 
-  otpState: Ember.computed("model.otpEnabled", "model.otpUri", function() {
+  otpState: Ember.computed("model.otpEnabled", "model.currentOtpConfiguration.otpUri", function() {
     let otpEnabled = this.get("model.otpEnabled");
-    let otpUri = this.get("model.otpUri");
+    let otpUri = this.get("model.currentOtpConfiguration.otpUri");
     if (otpEnabled) { return OTP_STATE_ENABLED; }
     if (otpUri) { return OTP_STATE_PENDING; }
     return OTP_STATE_DISABLED;
