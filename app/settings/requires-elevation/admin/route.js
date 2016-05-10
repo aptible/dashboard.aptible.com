@@ -20,7 +20,7 @@ export default Ember.Route.extend({
 
   resetController(controller){
     controller.setProperties({
-      changingEmail: false,
+      showOtpRecoveryCodes: true,
     });
   },
 
@@ -39,6 +39,9 @@ export default Ember.Route.extend({
       }).save().then((otpConfiguration) => {
         return user.set("currentOtpConfiguration", otpConfiguration).save();
       }).then(() => {
+        // Ensure OTP Token isn't nil to force the user to provide one (the
+        // auth API only verifies the token if one is provided).
+        user.set("otpToken", "");
         Ember.get(this, 'flashMessages').success("Scan the QR code to proceed.");
       }).catch((e) => {
         this.handleApiError(e);
@@ -55,6 +58,10 @@ export default Ember.Route.extend({
         this.handleApiError(e);
         user.set("otpEnabled", otpWasEnabled);
       });
+    },
+
+    showOtpRecoveryCodes() {
+      this.controller.set("showOtpRecoveryCodes", true);
     },
 
     changePassword() {

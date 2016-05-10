@@ -48,5 +48,8 @@ export default Ember.Controller.extend({
 
   otpDisabled: Ember.computed.equal("otpState", OTP_STATE_DISABLED),
   otpPending: Ember.computed.equal("otpState", OTP_STATE_PENDING),
-  otpEnabled: Ember.computed.equal("otpState", OTP_STATE_ENABLED)
+  otpEnabled: Ember.computed.equal("otpState", OTP_STATE_ENABLED),
+
+  usedRecoveryCodes: Ember.computed.filterBy("model.currentOtpConfiguration.otpRecoveryCodes", "used", true),
+  allRecoveryCodes: Ember.computed.alias("model.currentOtpConfiguration.otpRecoveryCodes")
 });

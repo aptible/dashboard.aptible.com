@@ -59,18 +59,22 @@
       <div class="panel panel-default">
         <div class="panel-heading"><h3>2-Factor Authentication</h3></div>
         <div class="panel-body">
-          <p>
           {{#if otpDisabled}}
-            2-factor authentication can be enabled for your account.
+            <p> 2-factor authentication can be enabled for your account. </p>
           {{else if otpPending}}
-            2-factor authentication will be enabled for your account after confirmation.
+            <p> 2-factor authentication will be enabled for your account after confirmation. </p>
           {{else if otpEnabled}}
-            2-factor authentication is enabled for your account.
+            <p> 2-factor authentication is enabled for your account. </p>
+
+            <ul>
+              <li>Download your backup codes if you haven't done so yet.</li>
+              <li>You might need to update aptible-cli for 2FA support.</li>
+              <li>Note that 2FA does not apply to git push operations.</li>
+            </ul>
           {{else}}
             {{! Shouldn't be happening }}
-            2-factor authentication is in an unexpected state. Please contact support.
+            <p> 2-factor authentication is in an unexpected state. Please contact support. </p>
           {{/if}}
-          </p>
 
           {{#if otpPending}}
             <div>
@@ -95,6 +99,42 @@
           </form>
         </div>
       </div>
+      {{#if otpEnabled}}
+      <div class="panel panel-default">
+        <div class="panel-heading"><h3>2-Factor Authentication Backup Codes</h3></div>
+        <div class="panel-body">
+          <p>
+          Use backup codes to login if your 2-factor authentication device is
+          unavailable. Keep them somewhere safe.
+          </p>
+
+          <p>
+          Backup codes can only be used once. You have currently used
+          {{usedRecoveryCodes.length}} backup code(s) out of
+          {{allRecoveryCodes.length}}. If you run out, you'll need to disable
+          and re-enable 2-factor authentication.
+          </p>
+
+          {{#if showOtpRecoveryCodes}}
+            <ul>
+              {{#each code in model.currentOtpConfiguration.otpRecoveryCodes}}
+                <li>
+                  {{#if code.used}}
+                    <s>{{code.value}}</s>
+                  {{else}}
+                    {{code.value}}
+                  {{/if}}
+                </li>
+              {{/each}}
+            </ul>
+          {{else}}
+            <button {{action 'showOtpRecoveryCodes'}} class="btn btn-primary" type="submit">
+              Show backup codes
+            </button>
+          {{/if}}
+        </div>
+      </div>
+    {{/if}}
     </div>
   </div>
 </div>
