@@ -11,24 +11,21 @@ export default DS.Model.extend({
   createdAt: DS.attr('date'),
   superuser: DS.attr('boolean'),
   otpEnabled: DS.attr('boolean'),
-  otpUri: DS.attr('string'),
 
   // not persisted, used when changing a user's password
   passwordConfirmation: null,
 
-  // Used when enabling 2FA. Set as an `attr` so to ensure they are sent to the
-  // API.
-  otpReset: DS.attr('boolean'),
+  // Used when enabling 2FA. Set as an `attr` so that it's sent to the API.
   otpToken: DS.attr('string'),
 
   // relationships
+  // REVIEW: We used to have a 'token' attribute. It's unclear where this was
+  // used (if at all). Do we want to create a Ember.computed 'token' field for
+  // backwards compatibility?
   tokens: DS.hasMany('token', { async: true, requireReload: true }),
   roles: DS.hasMany('role', { async: true }),
   sshKeys: DS.hasMany('ssh-key', { async: true }),
-
-  // REVIEW: We used to have a 'token' attribute. It's unclear where this was
-  // used (if at all). Do we want to create a Ember.computed for backwards
-  // compatibility?
+  currentOtpConfiguration: DS.belongsTo('otp-configuration', { async: true }),
 
   // check ability, returns a promise
   // e.g.: user.can('manage', stack).then(function(boolean){ ... });

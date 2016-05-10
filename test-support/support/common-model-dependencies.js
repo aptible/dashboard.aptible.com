@@ -20,6 +20,7 @@ export default [
   'model:billing-detail',
   'model:release',
   'model:container',
+  'model:otp-configuration',
   'adapter:application',
   'serializer:application',
   'transform:iso-8601-timestamp'
