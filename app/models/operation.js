@@ -48,6 +48,12 @@ export default DS.Model.extend({
             return resolve(reloadUntilOperationStatusChanged(o, maximumTimeout, timeout * 2));
           }, timeout);
         });
+      }).catch((err) => {
+        // Catch error caused by the operation not existing if its associated resource
+        // has been removed in the backend.
+        if(err.status !== 404) {
+          throw err;
+        }
       });
     };
 
