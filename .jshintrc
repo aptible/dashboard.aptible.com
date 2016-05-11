@@ -84,7 +84,8 @@
     "-Promise",
     "createStubUser",
     "createStubRole",
-    "createStubToken"
+    "createStubToken",
+    "expectRequiresElevation"
   ],
   "browser": true,
   "boss": true,
