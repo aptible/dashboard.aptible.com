@@ -12,9 +12,6 @@ export default DS.Model.extend({
   superuser: DS.attr('boolean'),
   otpEnabled: DS.attr('boolean'),
 
-  // not persisted, used when changing a user's password
-  passwordConfirmation: null,
-
   // Used when enabling 2FA. Set as an `attr` so that it's sent to the API.
   otpToken: DS.attr('string'),
 
