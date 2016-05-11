@@ -14,6 +14,8 @@ Ember.Test.registerHelper('createStubUser', function(app, userData) {
     _links: {
       ssh_keys: { href: `/users/${userData.id}/ssh_keys` },
       roles:  { href: `/users/${userData.id}/roles` },
+      otp_configurations:  { href: `/users/${userData.id}/otp_configurations` },
+      current_otp_configuration: { },  // None by default
       self: { href: `/users/${userData.id}` }
     }
   };
@@ -71,10 +73,13 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData, token
 
   let currentUser = Ember.run(function(){
     let store = app.__container__.lookup('store:application');
+    // TODO: Perhaps we could use pushPayload here?
     return store.push('user', Ember.$.extend(true, userData, {
       links: {
         sshKeys: userData._links.ssh_keys.href,
         roles: userData._links.roles.href,
+        otpConfigurations: userData._links.otp_configurations.href,
+        currentOtpConfiguration: userData._links.current_otp_configuration.href,
         self: userData._links.self.href
       }
     }));
