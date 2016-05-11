@@ -21,11 +21,11 @@ let otpRecoveryCodesHref = `${otpConfigurationHref}/otp_recovery_codes`;
 
 let createStubUserUpdateEndpoint = function(assert, options) {
   let defaultOptions = {
-    expectPassword: null,
-    expectEmail: null,
-    expectOtpStatus: null,
-    expectOtpToken: null,
-    expectOtpConfiguration: null,
+    expectPassword: undefined,
+    expectEmail: undefined,
+    expectOtpStatus: undefined,
+    expectOtpToken: undefined,
+    expectOtpConfiguration: undefined,
     returnError: true,
     errorMessage: "Invalid Credentials"
   };
@@ -34,23 +34,23 @@ let createStubUserUpdateEndpoint = function(assert, options) {
   stubRequest('put', `/users/${userId}`, function(request){
     let params = this.json(request);
 
-    if (options.expectEmail !== null) {
-      assert.equal(params.email, newEmail, 'correct email is passed');
+    if (options.expectEmail !== undefined) {
+      assert.equal(params.email, options.expectEmail, 'correct email is passed');
     }
 
-    if (options.expectPassword !== null) {
-      assert.equal(params.password, newPassword, 'correct password is passed');
+    if (options.expectPassword !== undefined) {
+      assert.equal(params.password, options.expectPassword, 'correct password is passed');
     }
 
-    if (options.expectOtpStatus !== null) {
+    if (options.expectOtpStatus !== undefined) {
       assert.equal(params.otp_enabled, options.expectOtpStatus, "correct OTP status is passed");
     }
 
-    if (options.expectOtpToken !== null) {
+    if (options.expectOtpToken !== undefined) {
       assert.equal(params.otp_token, options.expectOtpToken, "correct OTP token is passed");
     }
 
-    if (options.expectOtpConfiguration !== null) {
+    if (options.expectOtpConfiguration !== undefined) {
         assert.equal(params.current_otp_configuration, options.expectOtpConfiguration, "Correct OTP Configuration is passed");
     }
 
@@ -117,6 +117,38 @@ let createStubOtpConfiguration = function(withOtpUri) {
   return otpConfiguration;
 };
 
+let setupOtpScaffolding = function(otpEnabled) {
+  // Preload the OTP configuration in the store.
+  Ember.run(() => {
+    let store = App.__container__.lookup("store:application");
+    store.pushPayload({"otp_configurations": [createStubOtpConfiguration(true)]});
+  });
+
+  stubRequest("get", otpConfigurationHref, function() {
+    // Allow requests to the OTP configuration, but don't return the OTP URI
+    // (which is what the API would do).
+    return this.success(createStubOtpConfiguration(false));
+  });
+
+  stubRequest("get", otpRecoveryCodesHref, function() {
+    return this.success({
+      _embedded: {
+        otp_recovery_codes: [ createStubOtpRecoveryCode('12345678', true), createStubOtpRecoveryCode('87654321', false) ],
+        _links: {
+          otp_configuration: { href: otpConfigurationHref },
+          self: { href: otpRecoveryCodesHref }
+        }
+      }
+    });
+  });
+
+  signInAndVisit(settingsAccountUrl, {
+    otpEnabled: !!otpEnabled,  // NOTE: The helper expects name that work in Ember, not names as they are in the API :(
+    _links: {
+      current_otp_configuration: { href: otpConfigurationHref }
+    }
+  }, {}, { scope: "elevated" });
+};
 
 module('Acceptance: User Settings: Account', {
   beforeEach: function() {
@@ -266,44 +298,11 @@ test(`${settingsAccountUrl} allows a user with 2FA disabled to reset it`, functi
 
   andThen(() => {
     assert.ok(createdOtpConfiguration);
-    assert.ok(findInput('otp-otp-token').length, 'OTP token input is found');
+    assert.ok(findInput('otp-token').length, 'OTP token input is found');
     assert.ok(!find('h3:contains(Backup Codes)').length, 'recovery codes are not shown');
     // TODO: Find a way to assert that a QR code is shown?
   });
 });
-
-let setupOtpScaffolding = function(otpEnabled) {
-  // Preload the OTP configuration in the store.
-  Ember.run(() => {
-    let store = App.__container__.lookup("store:application");
-    store.pushPayload({"otp_configurations": [createStubOtpConfiguration(true)]});
-  });
-
-  stubRequest("get", otpConfigurationHref, function() {
-    // Allow requests to the OTP configuration, but don't return the OTP URI
-    // (which is what the API would do).
-    return this.success(createStubOtpConfiguration(false));
-  });
-
-  stubRequest("get", otpRecoveryCodesHref, function() {
-    return this.success({
-      _embedded: {
-        otp_recovery_codes: [ createStubOtpRecoveryCode('12345678', true), createStubOtpRecoveryCode('87654321', false) ],
-        _links: {
-          otp_configuration: { href: otpConfigurationHref },
-          self: { href: otpRecoveryCodesHref }
-        }
-      }
-    });
-  });
-
-  signInAndVisit(settingsAccountUrl, {
-    otpEnabled: !!otpEnabled,  // NOTE: The helper expects name that work in Ember, not names as they are in the API :(
-    _links: {
-      current_otp_configuration: { href: otpConfigurationHref }
-    }
-  }, {}, { scope: "elevated" });
-};
 
 test(`${settingsAccountUrl} allows a user with 2FA reset to enable it (with OTP token)`, function(assert) {
   assert.expect(5);
@@ -318,7 +317,7 @@ test(`${settingsAccountUrl} allows a user with 2FA reset to enable it (with OTP 
   });
 
   andThen(() => {
-    fillInput('otp-otp-token', otpToken);
+    fillInput('otp-token', otpToken);
     clickButton('Enable 2FA');
   });
 
@@ -365,13 +364,72 @@ test(`${settingsAccountUrl} allows a user with 2FA enabled to disable it`, funct
   });
 });
 
-/* TODO: re-introduce this test once it's realistic to do so (e.g. another route supports elevation).
+test(`On ${settingsAccountUrl}, saving your password should not interrupt the OTP process`, function(assert) {
+  createStubUserUpdateEndpoint(assert, {
+    expectPassword: newPassword,
+    returnError: false
+  });
+
+  stubRequest("post", "/users/user1/otp_configurations", function() {
+    return this.success(createStubOtpConfiguration(true));
+  });
+
+  signInAndVisit(settingsAccountUrl, {}, {}, { scope: "elevated" });
+
+  andThen(() => {
+    clickButton('Start 2FA activation');
+  });
+
+  andThen(() => {
+    assert.ok(findInput('otp-token').length, 'OTP token input is found');
+  });
+
+  andThen(() => {
+    fillInput('password', newPassword);
+    fillInput('confirm-password', newPassword);
+    clickButton('Change password');
+  });
+
+  andThen(() => {
+    assert.ok(findInput('otp-token').length, 'OTP token input is still found');
+  });
+});
+
+test(`On ${settingsAccountUrl}, saving your email should not update your password`, function(assert) {
+  assert.expect(2);
+
+  createStubUserUpdateEndpoint(assert, {
+    expectEmail: newEmail,
+    expectPassword: null
+  });
+
+  signInAndVisit(settingsAccountUrl, {}, {}, { scope: "elevated" });
+
+  andThen(() => {
+    fillInput("email", newEmail);
+    fillInput("password", newPassword);
+    clickButton("Change email");
+  });
+});
+
 test(`${settingsAccountUrl} clears credentials when the user navigates away`, function(assert) {
-  signInAndVisit(settingsAccountUrl);
-  andThen(() => fillInput('otp-current-password', 'foobar123'));
-  andThen(() => assert.equal(findInput('otp-current-password').val(), 'foobar123'));
+  let user = createStubUser();
+  stubUser(user);
+  stubRequest('get', '/current_token', function() {
+    return this.success(createStubToken({ scope: "elevated" }, user));
+  });
+  setupOtpScaffolding(false);
+
+  andThen(() => {
+    fillInput('password', newPassword);
+    fillInput('otp-token', otpToken);
+  });
+
   visit(settingsProfileUrl); // go away
   visit(settingsAccountUrl); // come back
-  andThen(() => assert.equal(findInput('otp-current-password').val(), ''));
+
+  andThen(() => {
+    assert.equal(findInput('password').val(), '', 'password input is empty');
+    assert.ok(!findInput('otp-token').length, 'OTP token input is no longer found');
+  });
 });
-*/

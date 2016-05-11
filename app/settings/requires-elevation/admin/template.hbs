@@ -9,22 +9,22 @@
               <label for="password">New password</label>
               {{input type="password"
                       class="form-control" placholder="New password"
-                      value=model.password name="password"}}
+                      value=model.workingPassword name="password"}}
             </div>
             <div class="form-group">
               <label for="confirm-password">Confirm new password</label>
               {{input type="password"
                       class="form-control" placholder="New password"
-                      value=model.passwordConfirmation
+                      value=model.workingPasswordConfirmation
                       name="confirm-password"}}
             </div>
 
             <div class="">
               <button {{action 'changePassword'}}
-                disabled={{model.isSaving}}
+                disabled={{isSaving}}
                 class="btn btn-primary" type="submit">
 
-                {{#if isSavingPassword}}
+                {{#if isSaving}}
                   Saving
                 {{else}}
                   Change password
@@ -42,11 +42,11 @@
               <label for="email">Email</label>
               {{input type="email"
                       class="form-control" placeholder="Email"
-                      value=model.email name="email"}}
+                      value=model.workingEmail name="email"}}
             </div>
             <div class="">
-              <button {{action 'changeEmail'}} class="btn btn-primary" type="submit" disabled={{model.isSaving}}>
-                {{#if isSavingEmail}}
+              <button {{action 'changeEmail'}} class="btn btn-primary" type="submit" disabled={{isSaving}}>
+                {{#if isSaving}}
                   Saving
                 {{else}}
                   Change email
@@ -78,22 +78,22 @@
 
           {{#if otpPending}}
             <div>
-              {{qr-code data=model.currentOtpConfiguration.otpUri}}
+              {{qr-code data=model.workingOtpConfiguration.otpUri}}
             </div>
           {{/if}}
 
           <form>
             {{#if otpPending}}
               <div class="form-group">
-                <label for="otp-otp-token">2FA token</label>
+                <label for="otp-token">2FA token</label>
                 {{input type="text"
                 class="form-control" placeholder="Enter code"
                 value=model.otpToken
-                name="otp-otp-token"}}
+                name="otp-token"}}
               </div>
             {{/if}}
 
-            <button {{action otpButtonAction}} class="btn btn-primary" type="submit" disabled={{model.isSaving}}>
+            <button {{action otpButtonAction}} class="btn btn-primary" type="submit" disabled={{isSaving}}>
               {{otpButtonLabel}}
             </button>
           </form>
@@ -115,9 +115,9 @@
           and re-enable 2-factor authentication.
           </p>
 
-          {{#if showOtpRecoveryCodes}}
+          {{#if model.showOtpRecoveryCodes}}
             <ul>
-              {{#each code in model.currentOtpConfiguration.otpRecoveryCodes}}
+              {{#each code in model.user.currentOtpConfiguration.otpRecoveryCodes}}
                 <li>
                   {{#if code.used}}
                     <s>{{code.value}}</s>

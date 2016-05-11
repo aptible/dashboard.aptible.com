@@ -5,14 +5,13 @@ var OTP_STATE_PENDING = 2;
 var OTP_STATE_ENABLED = 3;
 
 export default Ember.Controller.extend({
-  isSavingPassword: Ember.computed.bool('session.currentUser.isSaving'),
-  isSavingEmail: Ember.computed.bool('session.currentUser.isSaving'),
+  isSaving: Ember.computed.bool('session.currentUser.isSaving'),
 
-  otpState: Ember.computed("model.otpEnabled", "model.currentOtpConfiguration.otpUri", function() {
-    let otpEnabled = this.get("model.otpEnabled");
-    let otpUri = this.get("model.currentOtpConfiguration.otpUri");
+  otpState: Ember.computed("model.user.otpEnabled", "model.workingOtpConfiguration.otpUri", function() {
+    let otpEnabled = this.get("model.user.otpEnabled");
+    let workingOtpUri  = this.get("model.workingOtpConfiguration.otpUri");
     if (otpEnabled) { return OTP_STATE_ENABLED; }
-    if (otpUri) { return OTP_STATE_PENDING; }
+    if (workingOtpUri) { return OTP_STATE_PENDING; }
     return OTP_STATE_DISABLED;
   }),
 
@@ -50,6 +49,6 @@ export default Ember.Controller.extend({
   otpPending: Ember.computed.equal("otpState", OTP_STATE_PENDING),
   otpEnabled: Ember.computed.equal("otpState", OTP_STATE_ENABLED),
 
-  usedRecoveryCodes: Ember.computed.filterBy("model.currentOtpConfiguration.otpRecoveryCodes", "used", true),
-  allRecoveryCodes: Ember.computed.alias("model.currentOtpConfiguration.otpRecoveryCodes")
+  usedRecoveryCodes: Ember.computed.filterBy("model.user.currentOtpConfiguration.otpRecoveryCodes", "used", true),
+  allRecoveryCodes: Ember.computed.alias("model.user.currentOtpConfiguration.otpRecoveryCodes")
 });
