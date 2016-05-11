@@ -25,6 +25,8 @@ export default DS.Model.extend({
   tokens: DS.hasMany('token', { async: true, requireReload: true }),
   roles: DS.hasMany('role', { async: true }),
   sshKeys: DS.hasMany('ssh-key', { async: true }),
+  otpConfigurations: DS.hasMany('otp-configuration', { async: true }),
+
   currentOtpConfiguration: DS.belongsTo('otp-configuration', { async: true }),
 
   // check ability, returns a promise
