@@ -1,4 +1,5 @@
 import DS from 'ember-data';
+import Ember from 'ember';
 import ProvisionableMixin from '../mixins/models/provisionable';
 
 export default DS.Model.extend(ProvisionableMixin, {
@@ -11,5 +12,7 @@ export default DS.Model.extend(ProvisionableMixin, {
 
   stack: DS.belongsTo('stack', {async:true}),
 
-  reloadWhileProvisioning: true
+  reloadWhileProvisioning: true,
+
+  isLogTail: Ember.computed.equal('drainType', 'tail')
 });
