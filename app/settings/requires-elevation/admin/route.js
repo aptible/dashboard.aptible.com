@@ -24,6 +24,7 @@ export default Ember.Route.extend({
       workingOtpConfiguration: user.get("currentOtpConfiguration"),
       otpToken: "",
       showOtpRecoveryCodes: false,
+      showOtpSecret: false,
       user: user,
     });
   },
@@ -112,13 +113,18 @@ export default Ember.Route.extend({
         clearOtp(user);
         this.currentModel.setProperties({
           otpToken: null,
-          showOtpRecoveryCodes: false
+          showOtpRecoveryCodes: false,
+          showOtpSecret: false
         });
         Ember.get(this, 'flashMessages').success(`2FA is now ${otpWasEnabled ? 'disabled' : 'enabled'}.`);
       }).catch((e) => {
         this.handleApiError(e);
         user.set("otpEnabled", otpWasEnabled);
       });
+    },
+
+    showOtpSecret() {
+      this.currentModel.set("showOtpSecret", true);
     },
 
     showOtpRecoveryCodes() {

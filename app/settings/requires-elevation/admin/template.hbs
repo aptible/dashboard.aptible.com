@@ -63,6 +63,11 @@
             <p> 2-factor authentication can be enabled for your account. </p>
           {{else if otpPending}}
             <p> 2-factor authentication will be enabled for your account after confirmation. </p>
+            <p>
+            To proceed, scan the QR code below with your 2FA app (we recommend using
+            <a href="https://support.google.com/accounts/answer/1066447?hl=en">Google Authenticator</a>),
+            input the code generated, and click on {{otpButtonLabel}}.
+            </p>
           {{else if otpEnabled}}
             <p> 2-factor authentication is enabled for your account. </p>
 
@@ -80,6 +85,15 @@
             <div>
               {{qr-code data=model.workingOtpConfiguration.otpUri}}
             </div>
+            {{#if model.showOtpSecret}}
+              <p> Your 2FA secret is: <b>{{otpSecret}}</b>. </p>
+            {{else}}
+              <p>
+              If you are unable to scan a QR code,
+              <a href="#" {{action "showOtpSecret"}}>reveal your 2FA secret</a>
+              and use manual entry.
+              </p>
+            {{/if}}
           {{/if}}
 
           <form>

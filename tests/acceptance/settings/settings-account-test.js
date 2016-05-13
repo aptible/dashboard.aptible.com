@@ -327,6 +327,20 @@ test(`${settingsAccountUrl} allows a user with 2FA reset to enable it (with OTP 
   });
 });
 
+test(`${settingsAccountUrl} allows a user to reveal their OTP secret`, function(assert) {
+  assert.expect(1);
+
+  setupOtpScaffolding(false);
+
+  andThen(() => {
+    clickButton('reveal your 2FA secret');
+  });
+
+  andThen(() => {
+    assert.ok(find('b:contains(abc123456)').length, 'shows OTP secret');
+  });
+});
+
 test(`${settingsAccountUrl} allows a user with 2FA enabled to view their recovery codes`, function(assert) {
   assert.expect(4);
 
@@ -443,8 +457,8 @@ test(`${settingsAccountUrl} clears credentials when the user navigates away`, fu
   });
 });
 
-test(`${settingsAccountUrl} does not persist the 2FA token after activation`, function(assert) {
-  assert.expect(2);
+test(`${settingsAccountUrl} does not persist the 2FA params after activation`, function(assert) {
+  assert.expect(3);
 
   setupOtpScaffolding(false);
   stubRequest("post", "/users/user1/otp_configurations", function() {
@@ -453,12 +467,13 @@ test(`${settingsAccountUrl} does not persist the 2FA token after activation`, fu
   createStubUserUpdateEndpoint(assert, { returnError: false });
 
   andThen(() => {
+    findWithAssert("a:contains(reveal your 2FA secret)").click();
     fillInput('otp-token', otpToken);
     clickButton('Enable 2FA');
-    clickButton('Show backup codes');
   });
 
   andThen(() => {
+    clickButton('Show backup codes');
     clickButton('Disable 2FA');
   });
 
@@ -467,6 +482,7 @@ test(`${settingsAccountUrl} does not persist the 2FA token after activation`, fu
   });
 
   andThen(() => {
+    assert.ok(find("a:contains(reveal your 2FA secret)").length, 'Reveal OTP secret link is shown');
     assert.equal(findInput('otp-token').val(), '', 'OTP token input is empty');
     clickButton('Enable 2FA');
   });
