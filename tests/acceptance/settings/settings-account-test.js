@@ -418,6 +418,9 @@ test(`${settingsAccountUrl} clears credentials when the user navigates away`, fu
   stubRequest('get', '/current_token', function() {
     return this.success(createStubToken({ scope: "elevated" }, user));
   });
+  stubRequest("post", "/users/user1/otp_configurations", function() {
+    return this.success(createStubOtpConfiguration(true));
+  });
   setupOtpScaffolding(false);
 
   andThen(() => {
@@ -431,5 +434,44 @@ test(`${settingsAccountUrl} clears credentials when the user navigates away`, fu
   andThen(() => {
     assert.equal(findInput('password').val(), '', 'password input is empty');
     assert.ok(!findInput('otp-token').length, 'OTP token input is no longer found');
+    clickButton('Start 2FA activation');
+  });
+
+  andThen(() => {
+    assert.ok(findInput('otp-token').length, 'OTP token input is found again');
+    assert.equal(findInput('otp-token').val(), '', 'OTP token input is empty');
+  });
+});
+
+test(`${settingsAccountUrl} does not persist the 2FA token after activation`, function(assert) {
+  assert.expect(2);
+
+  setupOtpScaffolding(false);
+  stubRequest("post", "/users/user1/otp_configurations", function() {
+    return this.success(createStubOtpConfiguration(true));
+  });
+  createStubUserUpdateEndpoint(assert, { returnError: false });
+
+  andThen(() => {
+    fillInput('otp-token', otpToken);
+    clickButton('Enable 2FA');
+    clickButton('Show backup codes');
+  });
+
+  andThen(() => {
+    clickButton('Disable 2FA');
+  });
+
+  andThen(()  => {
+    clickButton('Start 2FA activation');
+  });
+
+  andThen(() => {
+    assert.equal(findInput('otp-token').val(), '', 'OTP token input is empty');
+    clickButton('Enable 2FA');
+  });
+
+  andThen(() => {
+    assert.ok(!find('li:contains(12345678)').length, 'recovery codes are not shown');
   });
 });

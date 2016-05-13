@@ -4,7 +4,8 @@ const clearPassword = function(user) {
   user.set("password", null);
 };
 
-const clearOtpUri = function(user) {
+const clearOtp = function(user) {
+  user.set("otpToken", null);
   user.get("currentOtpConfiguration").then((otpConfiguration) => {
     if (otpConfiguration) {
       otpConfiguration.set("otpUri", null);
@@ -44,7 +45,7 @@ export default Ember.Route.extend({
 
     // TODO this will leave the user in a dirty state.
     clearPassword(user);
-    clearOtpUri(user);
+    clearOtp(user);
   },
 
   actions: {
@@ -108,7 +109,11 @@ export default Ember.Route.extend({
         otpToken: this.currentModel.get("otpToken"),
         currentOtpConfiguration: this.currentModel.get("workingOtpConfiguration")
       }).save().then(() => {
-        clearOtpUri(user);
+        clearOtp(user);
+        this.currentModel.setProperties({
+          otpToken: null,
+          showOtpRecoveryCodes: false
+        });
         Ember.get(this, 'flashMessages').success(`2FA is now ${otpWasEnabled ? 'disabled' : 'enabled'}.`);
       }).catch((e) => {
         this.handleApiError(e);
