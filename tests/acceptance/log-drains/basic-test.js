@@ -142,7 +142,27 @@ test(`visit ${url} shows pending and provisioning`, function(assert){
     assert.equal( logDrainEls.length, logDrains.length );
 
     assert.ok(find('h5:contains(Provisioning Log Drains)').length, 'has a pending header');
+    assert.ok(find('h5:contains(Host)').length, 'has host section');
     assert.equal(find('.pending-log-drains .log-drain').length, 2, 'has one pending log drain');
+  });
+});
+
+test(`visit ${url} shows log tail explanation`, function(assert) {
+  let logDrains = [{
+    id: 'drain-1',
+    handle: 'first-drain',
+    drain_type: 'tail',
+    status: 'pending'
+  }];
+
+  this.prepareStubs({logDrains});
+
+  signInAndVisit(url);
+
+  andThen(function(){
+    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.log-drains.index');
+    assert.ok(!find('h5:contains(Host)').length, 'has no host section');
+    assert.ok(find('h3:contains(log drain was automatically provisioned)').length, 'has tail explanation');
   });
 });
 

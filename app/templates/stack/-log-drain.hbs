@@ -37,12 +37,21 @@
       </li>
 
       <li class="resource-metadata-item">
-        <h5 class="resource-metadata-title">
-          Host
-        </h5>
-        <h3 class="resource-metadata-value">
-          {{logDrain.drainHost}}:{{logDrain.drainPort}}
-        </h3>
+        {{#if logDrain.isLogTail}}
+          <h5 class="resource-metadata-title">
+            About
+          </h5>
+          <h3 class="resource-metadata-value">
+            This log drain was automatically provisioned to support `aptible logs` on your stack.
+          </h3>
+        {{else}}
+          <h5 class="resource-metadata-title">
+            Host
+          </h5>
+          <h3 class="resource-metadata-value">
+            {{logDrain.drainHost}}:{{logDrain.drainPort}}
+          </h3>
+        {{/if}}
       </li>
     </ul>
   </div>
