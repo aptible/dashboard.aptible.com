@@ -5,7 +5,7 @@ let Location = {
   replaceAndWait(url) {
     Location.replace(url);
     // never-resolving promise
-    return Ember.RSVP.Promise(() => {});
+    return new Ember.RSVP.Promise(() => {});
   }
 };
 
