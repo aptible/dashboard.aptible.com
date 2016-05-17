@@ -24,6 +24,10 @@
 
 <div>
   {{#dashboard-dropdown-item}}
+    <a href="#" {{action "showIntercom"}}>Announcements</a>
+  {{/dashboard-dropdown-item}}
+
+  {{#dashboard-dropdown-item}}
     {{link-to 'Logout' 'logout'}}
   {{/dashboard-dropdown-item}}
 </div>
