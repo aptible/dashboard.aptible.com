@@ -101,3 +101,38 @@ test('visiting /apps/my-app-id when the app is deprovisioned', function(assert) 
     assert.ok(deprovisionTitle.length, 'show deprovision title');
   });
 });
+
+test(`visit /apps/app-id shows current tab with active class`, function(assert) {
+  let appId = 1;
+  let appName = 'foo';
+  let stackHandle = 'bar';
+
+  stubOrganizations();
+  stubApp({
+    id: appId,
+    handle: appName,
+    status: 'provisioned',
+    _links: {
+      account: { href: `/accounts/${stackHandle}` }
+    }
+  });
+  stubStacks();
+  stubStack({
+    id: stackHandle,
+    handle: stackHandle
+  });
+
+
+  signInAndVisit(`/apps/${appId}`);
+
+  andThen(() => {
+    assert.equal(find('li.active a:contains(Services)').length, 1, 'Services is active');
+    assert.equal(find('li.active a:contains(Domains)').length, 0, 'Domains is inactive');
+    clickButton('Domains');
+  });
+
+  andThen(() => {
+    assert.equal(find('li.active a:contains(Services)').length, 0, 'Services is inactive');
+    assert.equal(find('li.active a:contains(Domains)').length, 1, 'Domains is active');
+  });
+});
