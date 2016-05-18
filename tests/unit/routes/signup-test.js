@@ -5,7 +5,7 @@ import {
 
 moduleFor('route:signup', {
   unit: true,
-  needs: 'service:analytics'
+  needs: ['service:analytics', 'service:elevation']
 });
 
 test('it exists', function(assert) {

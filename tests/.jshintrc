@@ -85,7 +85,11 @@
     "stubIndexRequests",
     "check",
     "stubStackDatabases",
-    "stubBillingDetail"
+    "stubBillingDetail",
+    "createStubUser",
+    "createStubRole",
+    "createStubToken",
+    "expectRequiresElevation"
   ],
   "node": false,
   "browser": false,

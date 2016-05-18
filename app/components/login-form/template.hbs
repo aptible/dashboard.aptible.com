@@ -1,0 +1,69 @@
+{{#login-box}}
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+      {{#if model.error}}
+        {{#bs-alert alert="danger"}}
+          {{model.error}}
+        {{/bs-alert}}
+      {{/if}}
+      <div class="animated panel panel-focused {{if isSuccessful 'fadeOut'}}">
+        <div class="panel-heading">
+          {{#if showHelpLinks}}
+            <div class="panel-heading-link">
+              {{link-to 'Create an account' 'signup'}}
+            </div>
+          {{/if}}
+          <h3>{{formTitle}}</h3>
+        </div>
+        <div class="panel-body">
+          <form>
+            <div class="form-group">
+              <label>Email</label>
+              {{input type="email"
+                name="email"
+                value=model.email
+                disabled=emailDisabled
+                autofocus=autofocusEmail
+                class="form-control"}}
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              {{input type="password"
+                value=model.password
+                autofocus=autofocusPassword
+                name="password"
+                class="form-control"}}
+            </div>
+            {{#if model.otpRequested}}
+              <div class="form-group">
+                <label>2FA Token</label>
+                {{input type="text"
+                value=model.otpToken
+                name="otp-token"
+                class="form-control"}}
+              </div>
+            {{/if}}
+            <button
+              disabled={{model.isLoggingIn}}
+              type="submit"
+              class="btn btn-primary btn-block btn-lg"
+              {{action "login"}}>
+              {{#if model.isLoggingIn}}
+                <i class="fa fa-spin fa-spinner"></i> {{spinnerTitle}}
+              {{else}}
+                {{actionTitle}}
+              {{/if}}
+            </button>
+          </form>
+
+          {{#if showHelpLinks}}
+            <div class="panel-heading-link">
+              {{link-to "Forgot your password?" 'password.reset' classNames="pull-right forgot-password-link"}}
+            </div>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
+{{/login-box}}
+

@@ -29,7 +29,14 @@ function spdSteps() {
 
 const Router = Ember.Router.extend({
   analytics: Ember.inject.service(),
+  elevation: Ember.inject.service(),
   location: config.locationType,
+
+  onBeforeTransition: function(transition) {
+    // TODO: Can this be added to the requires-elevation route instead?
+    return this.get("elevation").tryDropPrivileges(transition);
+  }.on('willTransition'),
+
   onTransition: function() {
     this.get('analytics').page();
 
@@ -135,8 +142,12 @@ Router.map(function() {
 
     this.route('settings', {
       resetNamespace: true
-    }, function(){
-      this.route('admin');
+    }, function() {
+      this.route('requires-elevation', { path: 'protected' }, function() {
+        // REVIEW: We *need* to have a path for this, otherwise the index
+        // redirect to profile won't work. Is /protected/ the "right" path?
+        this.route('admin');
+      });
       this.route('profile');
       this.route('ssh');
       this.route('impersonate');
@@ -151,6 +162,7 @@ Router.map(function() {
   });
 
   this.authenticatedRoute("trainee-dashboard", { resetNamespace: true });
+  this.authenticatedRoute("elevate", { resetNamespace: true });
 
   this.route("login");
   this.route("logout");

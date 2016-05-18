@@ -1,0 +1,154 @@
+<div class="row">
+  <div class="col-xs-6">
+    <div class="panel-group">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h3>Change Your Password</h3></div>
+        <div class="panel-body">
+          <form action="">
+            <div class="form-group">
+              <label for="password">New password</label>
+              {{input type="password"
+                      class="form-control" placholder="New password"
+                      value=model.workingPassword name="password"}}
+            </div>
+            <div class="form-group">
+              <label for="confirm-password">Confirm new password</label>
+              {{input type="password"
+                      class="form-control" placholder="New password"
+                      value=model.workingPasswordConfirmation
+                      name="confirm-password"}}
+            </div>
+
+            <div class="">
+              <button {{action 'changePassword'}}
+                disabled={{isSaving}}
+                class="btn btn-primary" type="submit">
+
+                {{#if isSaving}}
+                  Saving
+                {{else}}
+                  Change password
+                {{/if}}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading"><h3>Change Your Email</h3></div>
+        <div class="panel-body">
+          <form>
+            <div class="form-group">
+              <label for="email">Email</label>
+              {{input type="email"
+                      class="form-control" placeholder="Email"
+                      value=model.workingEmail name="email"}}
+            </div>
+            <div class="">
+              <button {{action 'changeEmail'}} class="btn btn-primary" type="submit" disabled={{isSaving}}>
+                {{#if isSaving}}
+                  Saving
+                {{else}}
+                  Change email
+                {{/if}}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading"><h3>2-Factor Authentication</h3></div>
+        <div class="panel-body">
+          {{#if otpDisabled}}
+            <p> 2-factor authentication can be enabled for your account. </p>
+          {{else if otpPending}}
+            <p> 2-factor authentication will be enabled for your account after confirmation. </p>
+            <p>
+            To proceed, scan the QR code below with your 2FA app (we recommend using
+            <a href="https://support.google.com/accounts/answer/1066447?hl=en">Google Authenticator</a>),
+            input the code generated, and click on {{otpButtonLabel}}.
+            </p>
+          {{else if otpEnabled}}
+            <p> 2-factor authentication is enabled for your account. </p>
+
+            <ul>
+              <li>Download your backup codes if you haven't done so yet.</li>
+              <li>You might need to update aptible-cli for 2FA support.</li>
+              <li>Note that 2FA does not apply to git push operations.</li>
+            </ul>
+          {{else}}
+            {{! Shouldn't be happening }}
+            <p> 2-factor authentication is in an unexpected state. Please contact support. </p>
+          {{/if}}
+
+          {{#if otpPending}}
+            <div>
+              {{qr-code data=model.workingOtpConfiguration.otpUri}}
+            </div>
+            {{#if model.showOtpSecret}}
+              <p> Your 2FA secret is: <b>{{otpSecret}}</b>. </p>
+            {{else}}
+              <p>
+              If you are unable to scan a QR code,
+              <a href="#" {{action "showOtpSecret"}}>reveal your 2FA secret</a>
+              and use manual entry.
+              </p>
+            {{/if}}
+          {{/if}}
+
+          <form>
+            {{#if otpPending}}
+              <div class="form-group">
+                <label for="otp-token">2FA token</label>
+                {{input type="text"
+                class="form-control" placeholder="Enter code"
+                value=model.otpToken
+                name="otp-token"}}
+              </div>
+            {{/if}}
+
+            <button {{action otpButtonAction}} class="btn btn-primary" type="submit" disabled={{isSaving}}>
+              {{otpButtonLabel}}
+            </button>
+          </form>
+        </div>
+      </div>
+      {{#if otpEnabled}}
+      <div class="panel panel-default">
+        <div class="panel-heading"><h3>2-Factor Authentication Backup Codes</h3></div>
+        <div class="panel-body">
+          <p>
+          Use backup codes to login if your 2-factor authentication device is
+          unavailable. Keep them somewhere safe.
+          </p>
+
+          <p>
+          Backup codes can only be used once. You have currently used
+          {{usedRecoveryCodes.length}} backup code(s) out of
+          {{allRecoveryCodes.length}}. If you run out, you'll need to disable
+          and re-enable 2-factor authentication.
+          </p>
+
+          {{#if model.showOtpRecoveryCodes}}
+            <ul>
+              {{#each code in model.user.currentOtpConfiguration.otpRecoveryCodes}}
+                <li>
+                  {{#if code.used}}
+                    <s>{{code.value}}</s>
+                  {{else}}
+                    {{code.value}}
+                  {{/if}}
+                </li>
+              {{/each}}
+            </ul>
+          {{else}}
+            <button {{action 'showOtpRecoveryCodes'}} class="btn btn-primary" type="submit">
+              Show backup codes
+            </button>
+          {{/if}}
+        </div>
+      </div>
+    {{/if}}
+    </div>
+  </div>
+</div>

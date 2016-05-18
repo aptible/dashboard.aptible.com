@@ -2,7 +2,7 @@ import { moduleFor, test } from 'ember-qunit';
 
 moduleFor('route:organization/environments/new', {
   unit: true,
-  needs: 'service:analytics'
+  needs: ['service:analytics', 'service:elevation']
 });
 
 test('it exists', function(assert) {

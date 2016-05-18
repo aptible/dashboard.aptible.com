@@ -1,51 +1,7 @@
-{{#login-box}}
-  <div class="row">
-    <div class="col-xs-6 col-xs-offset-3">
-      {{#if model.error}}
-        {{#bs-alert alert="danger"}}
-          {{model.error}}
-        {{/bs-alert}}
-      {{/if}}
-      <div class="animated panel panel-focused {{if isSuccessful 'fadeOut'}}">
-        <div class="panel-heading">
-          <div class="panel-heading-link">
-            {{link-to 'Create an account' 'signup'}}
-          </div>
-          <h3>Sign in to your Aptible account</h3>
-        </div>
-        <div class="panel-body">
-          <form>
-            <div class="form-group">
-              <label>Email</label>
-              {{input type="email"
-                name="email"
-                value=model.email
-                autofocus=true
-                class="form-control"}}
-            </div>
-            <div class="form-group">
-              <label>Password</label>
-              {{input type="password"
-                value=model.password
-                name="password"
-                class="form-control"}}
-            </div>
-            <button
-              disabled={{isLoggingIn}}
-              type="submit"
-              class="btn btn-primary btn-block btn-lg"
-              {{action "login" model}}>
-              {{#if isLoggingIn}}
-                <i class="fa fa-spin fa-spinner"></i> Logging in...
-              {{else}}
-                Log in
-              {{/if}}
-            </button>
-          </form>
-
-          {{link-to "Forgot your password?" 'password.reset' classNames="pull-right forgot-password-link"}}
-        </div>
-      </div>
-    </div>
-  </div>
-{{/login-box}}
+{{login-form action="login" model=model
+  emailDisabled=false
+  showHelpLinks=true
+  formTitle="Sign in to your Aptible account"
+  actionTitle="Log in"
+  spinnerTitle="Logging in..."
+}}

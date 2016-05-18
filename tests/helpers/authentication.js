@@ -7,3 +7,11 @@ Ember.Test.registerAsyncHelper('expectRequiresAuthentication', function(app, url
     QUnit.equal(currentPath(), 'login');
   });
 });
+
+Ember.Test.registerAsyncHelper('expectRequiresElevation', function(app, url){
+  visit(url);
+
+  andThen(() => {
+    QUnit.equal(currentPath(), 'elevate');
+  });
+});
