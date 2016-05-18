@@ -36,15 +36,3 @@ export function getPersistedToken() {
     }
   }).catch(rethrowJqXhrError);
 }
-
-export function persistToken(token) {
-  return ajax(config.authBaseUri + '/tokens/' + token.id + '?persist=true', {
-    type: 'GET',
-    headers: {
-      'Authorization': 'Bearer ' + token.get("accessToken")
-    },
-    xhrFields: {
-      withCredentials: true
-    }
-  }).catch(rethrowJqXhrError);
-}
