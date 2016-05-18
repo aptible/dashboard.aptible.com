@@ -24,5 +24,11 @@ export default Ember.Component.extend({
   vhostNamesTooltip: Ember.computed('model.vhostNames', function() {
     let names = this.model.get('vhostNames');
     return names.slice(this.get('maxVisibleDomainNames')).join(', ');
-  })
+  }),
+
+  logDrainsForSnippet: Ember.computed.filter("model.logDrains", (o) => {
+    return !(o.get("isLogTail"));
+  }),
+
+  hasLogDrains: Ember.computed.notEmpty("model.logDrains")
 });
