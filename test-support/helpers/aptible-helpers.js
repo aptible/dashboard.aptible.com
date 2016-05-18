@@ -4,7 +4,7 @@ import MockLocation from './mock-location';
 import MockTitle from './mock-title';
 import { stubValidSession } from './torii'; // provided by Torii
 
-Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData, tokenData){
+Ember.Test.registerHelper('createStubUser', function(app, userData) {
   userData = userData || {};
   userData.id = userData.id || 'user1';
   const defaultUserData = {
@@ -14,10 +14,16 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData, token
     _links: {
       ssh_keys: { href: `/users/${userData.id}/ssh_keys` },
       roles:  { href: `/users/${userData.id}/roles` },
+      otp_configurations:  { href: `/users/${userData.id}/otp_configurations` },
+      current_otp_configuration: { },  // None by default
       self: { href: `/users/${userData.id}` }
     }
   };
 
+  return Ember.$.extend(true, defaultUserData, userData);
+});
+
+Ember.Test.registerHelper('createStubRole', function(app, roleData) {
   roleData = roleData || {};
   roleData.id = roleData.id || 'r1';
   const defaultRoleData = {
@@ -28,9 +34,10 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData, token
     }
   };
 
-  userData = Ember.$.extend(true, defaultUserData, userData);
-  roleData = Ember.$.extend(true, defaultRoleData, roleData);
+  return Ember.$.extend(true, defaultRoleData, roleData);
+});
 
+Ember.Test.registerHelper('createStubToken', function(app, tokenData, stubUser) {
   tokenData = tokenData || {};
   tokenData.id = tokenData.id || 'stubbed-token-id';
   const defaultTokenData = {
@@ -40,10 +47,17 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData, token
     scope: 'manage',
     type: 'token',
     _links: {
-      user: { href: userData._links.self.href }
+      user: { href: stubUser._links.self.href }
     }
-  }
-  tokenData = Ember.$.extend(true, defaultTokenData, tokenData);
+  };
+
+  return Ember.$.extend(true, defaultTokenData, tokenData);
+});
+
+Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData, tokenData){
+  userData = createStubUser(userData);
+  roleData = createStubRole(roleData);
+  tokenData = createStubToken(tokenData, userData);
 
   stubRequest('get', `/roles/${roleData.id}`, function(request){
     return this.success(roleData);
@@ -59,10 +73,13 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData, token
 
   let currentUser = Ember.run(function(){
     let store = app.__container__.lookup('store:application');
+    // TODO: Perhaps we could use pushPayload here?
     return store.push('user', Ember.$.extend(true, userData, {
       links: {
         sshKeys: userData._links.ssh_keys.href,
         roles: userData._links.roles.href,
+        otpConfigurations: userData._links.otp_configurations.href,
+        currentOtpConfiguration: userData._links.current_otp_configuration.href,
         self: userData._links.self.href
       }
     }));
@@ -74,6 +91,7 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData, token
       id: tokenData.id,
       accessToken: tokenData.access_token,
       rawPayload: JSON.stringify(tokenData),
+      scope: tokenData.scope,
       links: { user: tokenData._links.user.href }
     });
   });
