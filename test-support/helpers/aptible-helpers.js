@@ -54,16 +54,16 @@ Ember.Test.registerHelper('createStubToken', function(app, tokenData, stubUser) 
   return Ember.$.extend(true, defaultTokenData, tokenData);
 });
 
-Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData, tokenData){
+Ember.Test.registerHelper('signIn', function(app, userData, roleData, tokenData){
   userData = createStubUser(userData);
   roleData = createStubRole(roleData);
   tokenData = createStubToken(tokenData, userData);
 
-  stubRequest('get', `/roles/${roleData.id}`, function(request){
+  stubRequest('get', `/roles/${roleData.id}`, function(){
     return this.success(roleData);
   });
 
-  stubRequest('get', `/users/${userData.id}/roles`, function(request){
+  stubRequest('get', `/users/${userData.id}/roles`, function(){
     return this.success({
       _embedded: {
         roles: [roleData]
@@ -71,32 +71,17 @@ Ember.Test.registerAsyncHelper('signIn', function(app, userData, roleData, token
     });
   });
 
-  let currentUser = Ember.run(function(){
-    let store = app.__container__.lookup('store:application');
-    // TODO: Perhaps we could use pushPayload here?
-    return store.push('user', Ember.$.extend(true, userData, {
-      links: {
-        sshKeys: userData._links.ssh_keys.href,
-        roles: userData._links.roles.href,
-        otpConfigurations: userData._links.otp_configurations.href,
-        currentOtpConfiguration: userData._links.current_otp_configuration.href,
-        self: userData._links.self.href
-      }
-    }));
+  stubRequest('get', `/users/${userData.id}`, function() {
+    return this.success(userData);
   });
 
-  let token = Ember.run(function() {
-    let store = app.__container__.lookup('store:application');
-    return store.push('token', {
-      id: tokenData.id,
-      accessToken: tokenData.access_token,
-      rawPayload: JSON.stringify(tokenData),
-      scope: tokenData.scope,
-      links: { user: tokenData._links.user.href }
-    });
+  stubRequest('get', '/current_token', function() {
+    return this.success(tokenData);
   });
 
-  stubValidSession(app, {currentUser, token});
+  stubRequest('get', `/tokens/${tokenData.id}`, function() {
+    return this.success(tokenData);
+  });
 });
 
 Ember.Test.registerAsyncHelper('signInAndVisit', function(app, url, userData, roleData, tokenData){
