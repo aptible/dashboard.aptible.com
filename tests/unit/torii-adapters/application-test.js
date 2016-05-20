@@ -30,7 +30,7 @@ moduleFor('torii-adapter:application', 'Torii Adapter: Aptible', {
   }
 });
 
-test('#close destroys token, storage', function(assert){
+test('#close destroys token, storage by default', function(assert){
   assert.expect(4);
   const done = assert.async();
   var adapter = this.subject({
@@ -54,7 +54,7 @@ test('#close destroys token, storage', function(assert){
   });
 
   Ember.run(function(){
-    adapter.close(token).then(function(){
+    adapter.close({token: token}).then(function(){
       assert.ok(true, 'session is opened with an auth_token');
       assert.equal(removedKey, config.authTokenKey, 'removes token value');
       assert.ok(!getAccessToken(), 'unsets token on auth');
