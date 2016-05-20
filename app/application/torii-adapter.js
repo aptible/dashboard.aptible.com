@@ -46,7 +46,7 @@ export default Ember.Object.extend({
         return session;
       });
     }).then((session) => {
-      this.identifyToAnalytics(session.currentUser);
+      this.identifyToAnalytics(session.currentActor || session.currentUser);
       return session;
     }).catch(function(e){
       clearSession();
