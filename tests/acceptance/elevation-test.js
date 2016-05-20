@@ -39,41 +39,43 @@ test("Visiting an URL requiring elevation with a manage token redirects to /elev
 });
 
 test("Visiting a URL that does not require elevation with an elevated token clears it", function(assert) {
-  let currentTokenRequestCount = 0;
+  signIn(user, {}, { scope: "elevated" });
 
+  let currentTokenRequestCount = 0;
   stubRequest('get', '/current_token', function() {
     currentTokenRequestCount++;
     return this.success(createStubToken({}, user));
   });
 
-  signIn(user, {}, { scope: "elevated" });
   andThen(() => { assert.equal(currentTokenRequestCount, 0); });
   andThen(() => { visit("/"); });
   andThen(() => { assert.equal(currentTokenRequestCount, 1); });
 });
 
 test("Visiting a URL that does not require elevation with a manage token does not trigger requests", function(assert) {
-  let currentTokenRequestCount = 0;
+  signIn(user, {}, { scope: "manage" });
 
+  let currentTokenRequestCount = 0;
   stubRequest('get', '/current_token', function() {
     currentTokenRequestCount++;
     return this.success(createStubToken({}, user));
   });
 
-  signIn(user, {}, { scope: "manage" });
   andThen(() => { visit("/"); });
-  andThen(() => { assert.equal(currentTokenRequestCount, 0); });
+  andThen(() => { assert.equal(currentTokenRequestCount, 1); });
+  andThen(() => { visit("/settings/profile"); });
+  andThen(() => { assert.equal(currentTokenRequestCount, 1); });
 });
 
 test("Persisting an elevated token does not kill the UI", function(assert) {
-  let currentTokenRequestCount = 0;
+  signIn(user, {}, { scope: "elevated" });
 
+  let currentTokenRequestCount = 0;
   stubRequest('get', '/current_token', function() {
     currentTokenRequestCount++;
     return this.success(createStubToken({ scope: "elevated" }, user));
   });
 
-  signIn(user, {}, { scope: "elevated" });
   andThen(() => { visit("/"); });
   andThen(() => { assert.equal(currentTokenRequestCount, 1); });
 });
