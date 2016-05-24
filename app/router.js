@@ -190,7 +190,16 @@ Router.map(function() {
           this.route("criterion", { path: ':criterion_handle' }, function() {});
         });
 
-        this.route('risk');
+        this.route("risk_assessments", { path: '/risk_assessments', resetNamespace: true }, function() {
+          this.route("risk_assessment", { path: '/:risk_assessment_id', resetNamespace: true}, function() {
+            this.route("nodes", { path: '/:node_type' }, function() {
+              this.route("node", { path: '/:handle' }, function() {
+                this.route("edit", { path: '/edit' });
+              });
+            });
+          })
+        });
+
         this.route('policies');
         this.route('security');
         this.route('contracts');
