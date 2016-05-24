@@ -8,8 +8,8 @@ export function isTrainingCriterion(criterion) {
 export default Ember.Route.extend({
   model() {
     let handle = 'workforce_roles';
-    let organizationUrl = this.modelFor('compliance-organization').get('data.links.self');
-    let attestationParams = { handle, organizationUrl, document: [] };
+    let organizationProfile = this.modelFor('engines');
+    let attestationParams = { handle, organizationProfile, document: [] };
     let attestation = Attestation.findOrCreate(attestationParams, this.store);
 
     let criteria = new Ember.RSVP.Promise((resolve, reject) => {
