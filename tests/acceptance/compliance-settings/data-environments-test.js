@@ -78,7 +78,6 @@ test('Clicking Save saves data environment selections to attestation', function(
   stubCurrentAttestations({ selected_data_environments: { aptible: true }, team: [] });
   let expectedDataEnvironmentPayload = {
     amazonS3: true,
-    aptible: true,
     gmail: true
   };
 
@@ -86,7 +85,7 @@ test('Clicking Save saves data environment selections to attestation', function(
   stubRequests();
   signInAndVisit(dataEnvironmentsUrl);
 
-  stubRequest('post', '/attestations', function(request) {
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to /attestations');
@@ -108,13 +107,11 @@ test('Should load existing selections when attestation already exists', function
   expect(5);
   let existingSelection = {
     amazonS3: false,
-    aptible: true,
     gmail: false,
   };
 
   let expectedDataEnvironmentPayload = {
     amazonS3: false,
-    aptible: true,
     gmail: true,
   };
 
@@ -123,7 +120,7 @@ test('Should load existing selections when attestation already exists', function
   stubRequests();
   signInAndVisit(dataEnvironmentsUrl);
 
-  stubRequest('post', '/attestations', function(request) {
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to /attestations');

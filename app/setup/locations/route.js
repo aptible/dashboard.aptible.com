@@ -6,15 +6,14 @@ import loadSchema from 'diesel/utils/load-schema';
 
 export default Ember.Route.extend(SPDRouteMixin, {
   model() {
+    let organizationProfile = this.modelFor('setup');
     let handle = 'workforce_locations';
-    let organizationUrl = this.modelFor('compliance-organization').get('data.links.self');
 
     return loadSchema(handle).then((schema) => {
-      let attestationParams = { handle, schemaId: schema.id, organizationUrl,
-                                document: [] };
+      let attestationParams = { handle, schemaId: schema.id, document: [],
+                                organizationProfile };
       let attestation = Attestation.findOrCreate(attestationParams, this.store);
       let schemaDocument = schema.buildDocument();
-
 
       return Ember.RSVP.hash({ schema, attestation, schemaDocument });
     });

@@ -51,7 +51,7 @@ Ember.Test.registerHelper('clickBackButton', function() {
 Ember.Test.registerHelper('stubCurrentAttestations', function(_app, attestationPayloads) {
   var attestationId = 0;
 
-  stubRequest('get', '/attestations', function(request) {
+  stubRequest('get', `/organization_profiles/${orgId}/attestations`, function(request) {
     let requestHandle = request.url.replace(/.+handle=(\S+)\&.+/, '$1');
     let attestations = [];
 

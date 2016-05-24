@@ -8,11 +8,11 @@ export default Ember.Route.extend({
   model() {
     let handle = 'workforce_roles';
     let organization = this.modelFor('compliance-organization');
-    let organizationUrl = organization.get('data.links.self');
+    let organizationProfile = this.modelFor('compliance-settings');
 
     return loadSchema(handle).then((schema) => {
       let attestationParams = { handle, schemaId: schema.id, document: [],
-                                organizationUrl };
+                                organizationProfile };
 
       let attestation = Attestation.findOrCreate(attestationParams, this.store);
 

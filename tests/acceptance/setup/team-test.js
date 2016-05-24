@@ -232,7 +232,7 @@ test('Toggling user roles and clicking continue saves team attestation with corr
   stubRequests();
   signInAndVisit(teamUrl);
 
-  stubRequest('post', '/attestations', function(request) {
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to create attestation');
@@ -379,7 +379,7 @@ test('Pending invitations are included in attestation payload', function(assert)
     assert.equal(find('.lf-dialog').length, 0, 'dialog is closed');
   });
 
-  stubRequest('post', '/attestations', function(request) {
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to create attestation');
@@ -494,7 +494,7 @@ test('Team page with existing team attestation', function(assert) {
   stubProfile({ currentStep: 'team' });
   stubRequests();
 
-  stubRequest('post', '/attestations', function(request) {
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to create attestation');
@@ -638,7 +638,7 @@ test('Developer and Security Officer groups are validated to include at least on
   stubRequests();
   signInAndVisit(teamUrl);
 
-  stubRequest('post', '/attestations', function() {
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function() {
     assert.ok(false, 'does not save an attestation');
     return this.success({ id: 1 });
   });
@@ -817,7 +817,7 @@ test('Saving progress', function(assert) {
     assert.equal(find('.lf-dialog').length, 0, 'dialog is closed');
   });
 
-  stubRequest('post', '/attestations', function(request) {
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to create attestation');

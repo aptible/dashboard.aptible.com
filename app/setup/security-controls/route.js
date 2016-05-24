@@ -9,8 +9,8 @@ export default Ember.Route.extend(SPDRouteMixin, {
   model() {
     let handle = 'selected_data_environments';
     let organization = this.modelFor('compliance-organization');
-    let organizationUrl = organization.get('data.links.self');
-    let attestationParams = { handle, organizationUrl, document: [] };
+    let organizationProfile = this.modelFor('setup');
+    let attestationParams = { handle, organizationProfile, document: [] };
 
     return new Ember.RSVP.Promise((resolve, reject) => {
       Attestation
@@ -22,7 +22,8 @@ export default Ember.Route.extend(SPDRouteMixin, {
 
           let dataEnvironmentSelections = dataEnvironments.get('document');
           let groups = buildSecurityControlGroups(dataEnvironmentSelections,
-                                                  organization, this.store);
+                                                  organization, organizationProfile,
+                                                  this.store);
           resolve(groups);
         }, reject);
     }).catch(() => {

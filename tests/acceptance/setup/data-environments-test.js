@@ -116,7 +116,7 @@ test('Clicking continue saves data environment selections to organization profil
     return this.success(json);
   });
 
-  stubRequest('post', '/attestations', function(request) {
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to /attestations');
@@ -167,7 +167,7 @@ test('Should load existing selections when attestation already exists', function
     return this.success(json);
   });
 
-  stubRequest('post', '/attestations', function(request) {
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to /attestations');
@@ -218,7 +218,7 @@ test('Save progress', function(assert) {
   stubRequests();
   signInAndVisit(dataEnvironmentsUrl);
 
-  stubRequest('post', '/attestations', function(request) {
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to /attestations');

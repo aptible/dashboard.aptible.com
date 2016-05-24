@@ -16,8 +16,7 @@ export const globalSecurityControlGroups = [
   'security_procedures_security_controls', 'workforce_security_controls',
   'workstation_security_controls', 'software_development_lifecycle_security_controls'];
 
-export default function(dataEnvironments, organization, store) {
-  let organizationUrl = organization.get('data.links.self');
+export default function(dataEnvironments, organization, organizationProfile, store) {
   let dataEnvironmentNames = Ember.keys(dataEnvironments).filter((deName) => {
     return dataEnvironments[deName];
   }).sort();
@@ -54,17 +53,17 @@ export default function(dataEnvironments, organization, store) {
       isLoading: true,
       organization
     });
-    return loadSchemaAndAttestation(securityControlGroup, organizationUrl, store);
+    return loadSchemaAndAttestation(securityControlGroup, organizationProfile, store);
   });
 }
 
-function loadSchemaAndAttestation(securityControlGroup, organizationUrl, store) {
+function loadSchemaAndAttestation(securityControlGroup, organizationProfile, store) {
   securityControlGroup.attestation = new Ember.RSVP.Promise((resolve) => {
     securityControlGroup.schema = loadSchema(securityControlGroup.handle);
     securityControlGroup.schema.then((schema) => {
       Ember.set(securityControlGroup, 'schema', schema);
       let attestationParams = { handle: securityControlGroup.handle,
-                              schemaId: schema.id, organizationUrl, document: {} };
+                              schemaId: schema.id, organizationProfile, document: {} };
       let loadAttestation =  Attestation
                                .findOrCreate(attestationParams, store)
                                .then((attestation) => {
