@@ -86,6 +86,9 @@ test(`visit ${url} shows basic stack info`, function(assert) {
     assert.ok(find(`h5:contains(2 Databases)`).length,
        'Header that contains db length');
 
+    assert.ok(find('h5:contains(0 Log Drains)').length,
+        'Header contains log drain length');
+
     // 2 + 3
     assert.ok(find(`h3:contains(Using 5 containers)`).length,
        'has containers count');
@@ -93,5 +96,8 @@ test(`visit ${url} shows basic stack info`, function(assert) {
     // 4 + 2
     assert.ok(find(`h3:contains(Using 6GB of disk)`).length,
        'has disk size header');
+
+    assert.ok(find(`h3:contains(None configured)`).length,
+        'has log drain header');
   });
 });
