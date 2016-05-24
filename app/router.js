@@ -190,15 +190,7 @@ Router.map(function() {
           this.route("criterion", { path: ':criterion_handle' }, function() {});
         });
 
-        this.route("risk_assessments", { path: '/risk_assessments', resetNamespace: true }, function() {
-          this.route("risk_assessment", { path: '/:risk_assessment_id', resetNamespace: true}, function() {
-            this.route("nodes", { path: '/:node_type' }, function() {
-              this.route("node", { path: '/:handle' }, function() {
-                this.route("edit", { path: '/edit' });
-              });
-            });
-          })
-        });
+        this.route("risk-assessments", { path: 'risk_assessments', resetNamespace: true });
 
         this.route('policies');
         this.route('security');
@@ -206,6 +198,16 @@ Router.map(function() {
         this.route('incidents');
 
         this.route('compliance-settings', { path: 'settings', resetNamespace: true }, spdSteps);
+      });
+
+       this.route("risk-assessment", { path: 'risk_assessments/:risk_assessment_id', resetNamespace: true}, function() {
+        this.route("nodes", { path: ':node_type' }, function() {
+
+        });
+      });
+
+      this.route("risk-assessment-component", { path: 'risk_assessments/:risk_assessment_id/:node_type/:handle', resetNamespace: true }, function() {
+        this.route("edit", { path: 'edit' });
       });
 
       this.route('setup', { path: 'setup', resetNamespace: true}, function() {
