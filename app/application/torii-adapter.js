@@ -62,23 +62,27 @@ export default Ember.Object.extend({
     return this._authenticateWithPayload(tokenPayload);
   },
 
-  close(token) {
-    Ember.assert(
-      `A token must be passed: session.close('aptible', /*token*/);`,
-      !!token
-    );
-
+  close(options) {
+    options = options || {};
     let promise;
 
-    if (!!token.noDelete) {
+    if (!!options.noDelete) {
       promise = new Ember.RSVP.Promise((resolve, _) => resolve());
     } else {
-      promise = ajax(config.authBaseUri+`/tokens/${token.get('id')}`, {
+      const token = options.token;
+      Ember.assert(`A token must be passed: session.close('aptible', { token: /*token*/ });`, !!token);
+
+      const xhrFields = {};
+      if (!options.noClearCookies) {
+        xhrFields.withCredentials = true;
+      }
+
+      promise = ajax(`${config.authBaseUri}/tokens/${token.get('id')}`, {
         type: 'DELETE',
         headers: {
-          'Authorization': 'Bearer ' + getAccessToken()
+          'Authorization': 'Bearer ' + token.get("accessToken") || getAccessToken()
         },
-        xhrFields: { withCredentials: true }
+        xhrFields: xhrFields
       });
     }
 
