@@ -56,6 +56,7 @@ let Attestation = DS.Model.extend({
   schemaId: DS.attr('string'),
   document: DS.attr({ defaultValue: {} }),
   createdAt: DS.attr('iso-8601-timestamp'),
+  organizationProfile: DS.belongsTo('organizationProfile', {async: true}),
 
   setUser(user) {
     Ember.assert('user must be a User model', user instanceof User);
@@ -82,13 +83,14 @@ let Attestation = DS.Model.extend({
 
 Attestation.reopenClass({
   findOrCreate(params, store) {
-    if (!(params.handle && params.organizationUrl)) {
-      throw new Error('You must provide both a `handle` and an `organizationUrl` to `Attestation.findOrCreate`');
+
+    if (!(params.handle && params.organizationProfile)) {
+      throw new Error('You must provide both a `handle` and an `organizationProfile` to `Attestation.findOrCreate`');
     }
 
-    let handle = params.handle;
-    let organization = params.organizationUrl;
-    let findParams = { current: true, handle, organization };
+    let { handle, organizationProfile } = params;
+
+    let findParams = { current: true, handle, organizationProfile };
 
     return new Ember.RSVP.Promise((resolve) => {
       store.find('attestation', findParams)
@@ -101,7 +103,9 @@ Attestation.reopenClass({
         })
 
         // In case of error, just create new attestation
-        .catch(() => { resolve( store.createRecord('attestation', params)); });
+        .catch(() => {
+          resolve( store.createRecord('attestation', params));
+        });
     });
   }
 });

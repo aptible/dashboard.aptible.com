@@ -59,7 +59,7 @@ function checkConditions(requestType, conditions){
  */
 export default function buildURLWithPrefixMap(prefixPropertyMapping){
   // From ember-data's buildURL: https://github.com/emberjs/data/blob/ff35ee78bfac058afb7a715a5dfc5760218cc05c/packages/ember-data/lib/adapters/build-url-mixin.js#L51
-  return function buildURL(type, id, snapshot, requestType) {
+  return function buildURL(type, id, snapshot, requestType, params) {
     let url = [],
         host = Ember.get(this, 'host'),
         prefix = this.urlPrefix();
@@ -91,7 +91,14 @@ export default function buildURLWithPrefixMap(prefixPropertyMapping){
     if (prefix) { url.unshift(prefix); }
 
     url = url.join('/');
-    if (!host && url) { url = '/' + url; }
+    if (!host && url) {
+      url = '/' + url;
+    }
+
+    // If a params hash is passed, serialize into a query string.
+    if(params) {
+      url = url + '?' + Ember.$.param(params);
+    }
 
     return url;
   };
