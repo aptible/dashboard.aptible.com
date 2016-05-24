@@ -3,7 +3,7 @@ import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
-let App;
+let App, showedOtpUri;
 
 let settingsUrl = '/settings';
 let settingsAccountUrl = `${settingsUrl}/protected/admin`;
@@ -93,7 +93,7 @@ let createStubOtpRecoveryCode = function(code, used) {
   };
 };
 
-let createStubOtpConfiguration = function(withOtpUri) {
+let createStubOtpConfiguration = function() {
   let otpConfiguration = {
     _links: {
       otp_recovery_codes: {
@@ -110,7 +110,8 @@ let createStubOtpConfiguration = function(withOtpUri) {
     id: otpConfigurationId,
   };
 
-  if (withOtpUri) {
+  if (!showedOtpUri) {
+    // Only let users see the OTP URI once (which is what the API would do).
     otpConfiguration.otpUri = `otpauth://totp/Aptible:${userEmail}?secret=abc123456&issuer=Aptible`;
   }
 
@@ -118,16 +119,10 @@ let createStubOtpConfiguration = function(withOtpUri) {
 };
 
 let setupOtpScaffolding = function(otpEnabled) {
-  // Preload the OTP configuration in the store.
-  Ember.run(() => {
-    let store = App.__container__.lookup("store:application");
-    store.pushPayload({"otp_configurations": [createStubOtpConfiguration(true)]});
-  });
-
   stubRequest("get", otpConfigurationHref, function() {
-    // Allow requests to the OTP configuration, but don't return the OTP URI
-    // (which is what the API would do).
-    return this.success(createStubOtpConfiguration(false));
+    // Allow one request where we show the OTP URI, which allows us to split our tests
+    // for initializing 2FA and actually enabling it.
+    return this.success(createStubOtpConfiguration());
   });
 
   stubRequest("get", otpRecoveryCodesHref, function() {
@@ -143,7 +138,7 @@ let setupOtpScaffolding = function(otpEnabled) {
   });
 
   signInAndVisit(settingsAccountUrl, {
-    otpEnabled: !!otpEnabled,  // NOTE: The helper expects name that work in Ember, not names as they are in the API :(
+    otp_enabled: !!otpEnabled,
     _links: {
       current_otp_configuration: { href: otpConfigurationHref }
     }
@@ -153,6 +148,7 @@ let setupOtpScaffolding = function(otpEnabled) {
 module('Acceptance: User Settings: Account', {
   beforeEach: function() {
     App = startApp();
+    showedOtpUri = false;
     stubStacks();
     stubOrganizations();
     stubOrganization({ id: 'o1'});
@@ -287,7 +283,7 @@ test(`${settingsAccountUrl} allows a user with 2FA disabled to reset it`, functi
 
   stubRequest("post", "/users/user1/otp_configurations", function() {
     createdOtpConfiguration = true;
-    return this.success(createStubOtpConfiguration(true));
+    return this.success(createStubOtpConfiguration());
   });
 
   signInAndVisit(settingsAccountUrl, {}, {}, { scope: "elevated" });
@@ -385,7 +381,7 @@ test(`On ${settingsAccountUrl}, saving your password should not interrupt the OT
   });
 
   stubRequest("post", "/users/user1/otp_configurations", function() {
-    return this.success(createStubOtpConfiguration(true));
+    return this.success(createStubOtpConfiguration());
   });
 
   signInAndVisit(settingsAccountUrl, {}, {}, { scope: "elevated" });
@@ -433,7 +429,7 @@ test(`${settingsAccountUrl} clears credentials when the user navigates away`, fu
     return this.success(createStubToken({ scope: "elevated" }, user));
   });
   stubRequest("post", "/users/user1/otp_configurations", function() {
-    return this.success(createStubOtpConfiguration(true));
+    return this.success(createStubOtpConfiguration());
   });
   setupOtpScaffolding(false);
 
@@ -462,7 +458,7 @@ test(`${settingsAccountUrl} does not persist the 2FA params after activation`, f
 
   setupOtpScaffolding(false);
   stubRequest("post", "/users/user1/otp_configurations", function() {
-    return this.success(createStubOtpConfiguration(true));
+    return this.success(createStubOtpConfiguration());
   });
   createStubUserUpdateEndpoint(assert, { returnError: false });
 

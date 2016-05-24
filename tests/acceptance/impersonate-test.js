@@ -89,10 +89,12 @@ test('Impersonation succeeds with RO access', function(assert) {
     assert.equal(params.subject_token, targetUserEmail);
     assert.equal(params.subject_token_type, 'aptible:user:email');
     assert.equal(params.scope, 'read', 'Token is read-only');
+    assert.ok(request.withCredentials, 'Token is persisted to cookies');
     return this.success(userTokenData);
   });
 
   stubRequest('delete', `/tokens/${adminTokenId}`, function(request) {
+    assert.ok(!request.withCredentials, 'Token deletion is not persisted to cookies');
     assert.equal(request.requestHeaders.Authorization, `Bearer ${adminTokenValue}`, 'DELETEd admin token as admin user');
     deletedAdminToken = true;
     return this.success();
@@ -103,7 +105,6 @@ test('Impersonation succeeds with RO access', function(assert) {
   clickButton('Impersonate');
   andThen(() => {
     assert.ok(deletedAdminToken, 'admin token was deleted');
-    findWithAssert(`header.navbar:contains('${adminUserName} (as ${targetUserName})')`);
     expectReplacedLocation('/');
   });
 });
@@ -112,10 +113,12 @@ test('Impersonation succeeds with R/W access', function(assert) {
   stubRequest('post', '/tokens', function(request) {
     let params = this.json(request);
     assert.equal(params.scope, 'manage', 'Token is read-write');
+    assert.ok(request.withCredentials, 'Token is persisted to cookies');
     return this.success(userTokenData);
   });
 
-  stubRequest('delete', `/tokens/${adminTokenId}`, function() {
+  stubRequest('delete', `/tokens/${adminTokenId}`, function(request) {
+    assert.ok(!request.withCredentials, 'Token deletion is not persisted to cookies');
     return this.success();
   });
 
@@ -124,7 +127,6 @@ test('Impersonation succeeds with R/W access', function(assert) {
   check('read-write');
   clickButton('Impersonate');
   andThen(() => {
-    findWithAssert(`header.navbar:contains('${adminUserName} (as ${targetUserName})')`);
     expectReplacedLocation('/');
   });
 });
@@ -138,10 +140,12 @@ test('Impersonation succeeds with an organization target', function(assert) {
     assert.equal(params.subject_token, organizationHref);
     assert.equal(params.subject_token_type, 'aptible:organization:href');
     assert.equal(params.scope, 'read', 'Token is read-only');
+    assert.ok(request.withCredentials, 'Token is persisted to cookies');
     return this.success(userTokenData);
   });
 
-  stubRequest('delete', `/tokens/${adminTokenId}`, function() {
+  stubRequest('delete', `/tokens/${adminTokenId}`, function(request) {
+    assert.ok(!request.withCredentials, 'Token deletion is not persisted to cookies');
     return this.success();
   });
 
@@ -149,8 +153,16 @@ test('Impersonation succeeds with an organization target', function(assert) {
   fillInput('organizationHref', organizationHref);
   clickButton('Impersonate');
   andThen(() => {
-    findWithAssert(`header.navbar:contains('${adminUserName} (as ${targetUserName})')`);
     expectReplacedLocation('/');
+  });
+});
+
+test('Actor name is shown when impersonating', function(assert) {
+  assert.expect(0);
+  signInAndVisit('/', targetUserData, {}, userTokenData);
+
+  andThen(() => {
+    findWithAssert(`header.navbar:contains('${adminUserName} (as ${targetUserName})')`);
   });
 });
 

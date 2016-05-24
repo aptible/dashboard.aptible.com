@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import Location from "diesel/utils/location";
-import ajax from "diesel/utils/ajax";
-import config from 'diesel/config/environment';
+import { createToken } from "diesel/utils/tokens";
 
 function prepareSubjectParameters(email, organizationHref) {
   if (email) {
@@ -41,38 +40,26 @@ export default Ember.Route.extend({
 
       Ember.merge(credentials, prepareSubjectParameters(authAttempt.email, authAttempt.organizationHref));
 
-      // Use the exchange stuff here.
-
       this.controller.set('inProgress', true);
       this.currentModel.set('error', null);
 
-      // TODO: Use new architecture of acquiring the token first. This would be safer against XSS, etc.
-
-      // Log out and then log back in as the impersonated user
-      this.session.close('application', {noDelete: true})
-      .then(() => {
-        return this.session.open('application', credentials);
-      })
-      .then(() => {
-        // Do *not* pass withCredentials to avoid clearing *user* session cookie.
-        return ajax(`${config.authBaseUri}/tokens/${adminToken.get('id')}`, {
-          type: 'DELETE',
-          headers: {'Authorization': 'Bearer ' + adminToken.get('accessToken')}
+      // To impersonate a user, this will first attempt to create a token for
+      // them and persist it to our cookies. If that succeeds, then all we need
+      // to do is destroy our admin token (without persisting that change to
+      // cookies) and reload the UI: upon reload the new token will be fetched
+      // from cookies, and we'll be logged in as whoever we intended to
+      // impersonate. If it fails, then we don't have to clean up anything
+      // (since nothing was created).
+      return createToken(credentials).then(() => {
+        return this.session.close('application', {
+          token: adminToken,
+          noClearCookies: true
         });
-      }, (e) => {
-        // Log back in as the (presumed) admin user and propagate the error.
-        return this.session.open('application', {token: adminToken}).then(() => { throw e; });
-      })
-      .then(() => {
-        // At this point we know impersonation has succeeded. Merely transitioning to 'index'
-        // may or may not work, depending on whether some data has been loaded as the superuser
-        // and has stuck around in the store. We can't really clear out the store either, considering
-        // our session data is stored in there. So: we just reload the page to get a clean slate.
+      }).then(() => {
         return Location.replaceAndWait('/');
-      }, (e) => {
+      }).catch((e) => {
         this.currentModel.set('error', `Error: ${e.message || JSON.stringify(e)}`);
-      })
-      .finally(() => {
+      }).finally(() => {
         this.controller.set('inProgress', false);
       });
     }
