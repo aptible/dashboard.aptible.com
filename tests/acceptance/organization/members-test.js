@@ -62,6 +62,7 @@ test(`visiting ${url} shows users`, function(assert) {
     name: 'Bob',
     verified: true,
     email: 'bob@bob.com',
+    otpEnabled: true,
     _links: { roles: {href: '/users/bob/roles'} }
   }];
 
@@ -77,7 +78,7 @@ test(`visiting ${url} shows users`, function(assert) {
     return this.success(users);
   });
 
-  assert.expect(5 + 1*users.length);
+  assert.expect(5 + 2*users.length);
 
   stubRequest('get', membersUrl, function(){
     assert.ok(true, 'Request for members is made');
@@ -102,5 +103,10 @@ test(`visiting ${url} shows users`, function(assert) {
     users.forEach((user) => {
       expectLink(`/organizations/${orgId}/members/${user.id}`);
     });
+
+    assert.ok(find('.user:contains(Mike) .resource-metadata-value:contains(Disabled)').length,
+                   '2FA status disabled is shown for Mike');
+    assert.ok(find('.user:contains(Bob) .resource-metadata-value:contains(Enabled)').length,
+                   '2FA status enabled is shown for Bob');
   });
 });

@@ -16,6 +16,10 @@
         <h5 class="resource-metadata-title">Roles</h5>
         <h3 class="resource-metadata-value">{{format-list (filter-by-organization user.roles organization) 'name' ', '}}</h3>
       </li>
+      <li class="resource-metadata-item">
+        <h5 class="resource-metadata-title">2-Factor Authentication</h5>
+        <h3 class="resource-metadata-value">{{otp-status otpEnabled=user.otpEnabled}}</h3>
+      </li>
     </ul>
   </div>
 </div>
