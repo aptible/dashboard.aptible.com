@@ -172,6 +172,34 @@ test("it reloads and redraws data when reload is clicked", function(assert) {
   });
 });
 
+test("it shows memory limit checkbox and memory limit line if limit exists", function (assert) {
+  stubRequest("get", `/releases/${releaseId}/containers`, function() {
+    let containers = makeContainers();
+    containers[1].memory_limit = 999;
+    return this.success({_embedded: {containers: containers}});
+  });
+
+  stubRequest("get", "/proxy/:containers", function() {
+    return this.success(makeValidMetricData());
+  });
+
+  signInAndVisit(databaseMetricsUrl);
+
+  andThen(() => {
+    let checkbox = find("input[name$='show-memory-limit']");
+    checkbox.prop('checked', true);
+    checkbox.change();
+  });
+
+  andThen(() => {
+    assert.equal(find("input[name$='show-memory-limit']").length, 1, "Show memory limit button is not shown!");
+    let chart = findWithAssert("div.c3-chart-component");
+    console.log(chart.text());
+    assert.ok(chart.text().indexOf("Memory limit (999 MB)") > -1, "Memory limit not shown!");
+    assert.ok(chart.text().indexOf("1000 MB") > -1, "Chart did not resize!");
+  });
+});
+
 test("it can change the horizon", function (assert) {
   // Expected requests (right to left)
   let expectedHorizons = ["1d", "1d", "1d", "1h", "1h", "1h"];
