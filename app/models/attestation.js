@@ -49,7 +49,6 @@ function getInvalidPropertyError(message) {
 
 let Attestation = DS.Model.extend({
   handle: DS.attr('string'),
-  organizationUrl: DS.attr('string'),
   userUrl: DS.attr('string'),
   userName: DS.attr('string'),
   userEmail: DS.attr('string'),

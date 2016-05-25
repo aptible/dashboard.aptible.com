@@ -20,7 +20,7 @@ export default GridironAdapter.extend({
       delete params.organizationProfile;
     }
 
-    return this._buildURL.call(this, type, id, snapshot, requestType, params);
+    return this._buildURL.call(this, type, id, snapshot, requestType);
   },
 
   updateRecord() {
