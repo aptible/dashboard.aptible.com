@@ -12,7 +12,7 @@ export default Ember.Mixin.create({
     }));
   },
 
-  data: Ember.computed("containers.@each", "horizon", "lastReload", "metric", function () {
+  data: Ember.computed("containers.[]", "horizon", "lastReload", "metric", function () {
     let horizon = this.get("horizon");
     let containers = this.get("containers");
 
