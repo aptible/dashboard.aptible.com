@@ -69,11 +69,28 @@ let database = {
 
 function makeValidMetricData() {
   return {
-    x: "x",
     columns: [
-      ["x", 1, 2, 3, 4, 5, 6],
-      ["a3a3a3a3a3a3a3a3a3a3a3", 1, 2, 3, 4]
-    ]
+      [
+        "time_0",
+        "2016-05-25T15:01:00Z",
+        "2016-05-25T15:02:00Z",
+        "2016-05-25T15:03:00Z",
+        "2016-05-25T15:04:00Z",
+        "2016-05-25T15:05:00Z"
+      ],
+      [
+        "a3a3a3a3a3a3a3a3a3a3a3",
+        1,
+        2,
+        3,
+        4
+      ]
+    ],
+    xFormat: "%Y-%m-%dT%H:%M:%SZ",
+    xLocaltime: false,
+    xs: {
+      "a3a3a3a3a3a3a3a3a3a3a3": "time_0"
+    }
   };
 }
 
@@ -135,6 +152,7 @@ test("it reloads and redraws data when reload is clicked", function(assert) {
   memoryMetricResponses[0].columns[1].push(99999);
   let laMetricResponses = [makeValidMetricData(), makeValidMetricData()];
   let fsMetricResponses = [makeValidMetricData(), makeValidMetricData()];
+  let ioMetricResponses = [makeValidMetricData(), makeValidMetricData()];
 
   stubRequest("get", "/proxy/:containers", function(request) {
     if (request.queryParams.metric === "memory") {
@@ -147,6 +165,10 @@ test("it reloads and redraws data when reload is clicked", function(assert) {
 
     if (request.queryParams.metric === "fs") {
       return this.success(fsMetricResponses.pop());
+    }
+
+    if (request.queryParams.metric === "iops") {
+      return this.success(ioMetricResponses.pop());
     }
 
     assert.ok(false, `Received invalid metric: ${request.queryParams.metric}`);
@@ -166,6 +188,7 @@ test("it reloads and redraws data when reload is clicked", function(assert) {
     assert.equal(memoryMetricResponses.length, 0, "Not enough requests!");
     assert.equal(laMetricResponses.length, 0, "Not enough requests!");
     assert.equal(fsMetricResponses.length, 0, "Not enough requests!");
+    assert.equal(ioMetricResponses.length, 0, "Not enough requests!");
     let chart = findWithAssert("div.c3-chart-component");
     // Expect the chart to resize to show the new data point
     assert.ok(chart.text().indexOf("10000 MB") > -1, "Memory not shown!");
@@ -201,7 +224,7 @@ test("it shows memory limit checkbox and memory limit line if limit exists", fun
 
 test("it can change the horizon", function (assert) {
   // Expected requests (right to left)
-  let expectedHorizons = ["1d", "1d", "1d", "1h", "1h", "1h"];
+  let expectedHorizons = ["1d", "1d", "1d", "1d", "1h", "1h", "1h", "1h"];
 
   stubRequest("get", `/releases/${releaseId}/containers`, function() {
     return this.success({_embedded: {containers: makeContainers()}});

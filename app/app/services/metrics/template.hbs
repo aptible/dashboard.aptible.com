@@ -1,4 +1,21 @@
-{{partial "service/metrics"}}
+<div class="row">
+  <div class="col-xs-12">
+    <div class="panel panel-default">
+      {{partial "mixins/metrics-panel-header"}}
+      <div class="panel-body">
+        {{container-memory-metrics
+          containers=targetContainers
+          horizon=model.uiState.dataHorizon
+          lastReload=model.uiState.lastReload}}
+
+        {{container-la-metrics
+          containers=targetContainers
+          horizon=model.uiState.dataHorizon
+          lastReload=model.uiState.lastReload}}
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="resource-actions">
   <button class="btn btn-default" {{action 'close'}}>Back to services</button>

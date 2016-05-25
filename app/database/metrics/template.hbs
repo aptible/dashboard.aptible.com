@@ -1,1 +1,30 @@
-{{partial "service/metrics"}}
+<div class="row">
+  <div class="col-xs-12">
+    <div class="panel panel-default">
+      {{partial "mixins/metrics-panel-header"}}
+      <div class="panel-body">
+        {{!-- TODO: memory limit from resource? --}}
+        {{container-memory-metrics
+          containers=targetContainers
+          horizon=model.uiState.dataHorizon
+          lastReload=model.uiState.lastReload}}
+
+        {{container-la-metrics
+          containers=targetContainers
+          horizon=model.uiState.dataHorizon
+          lastReload=model.uiState.lastReload}}
+
+        {{container-disk-metrics
+          containers=targetContainers
+          horizon=model.uiState.dataHorizon
+          lastReload=model.uiState.lastReload}}
+
+        {{container-iops-metrics
+          baselineIops=model.resource.disk.baselineIops
+          containers=targetContainers
+          horizon=model.uiState.dataHorizon
+          lastReload=model.uiState.lastReload}}
+      </div>
+    </div>
+  </div>
+</div>

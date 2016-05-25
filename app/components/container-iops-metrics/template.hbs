@@ -1,0 +1,17 @@
+<h4>Disk IO
+  {{more-info-icon
+    title="Understanding Disk IO"
+    bs-html=true
+    body="This metric represents the IO activity of your database, compared to the
+          baseline performance of its underlying volume.
+          <br><br>
+          Note that most database volumes are allowed to burst for short periods
+          of time, so your database's effective IO performance will sometimes
+          exceed the baseline, however that performance won't be sustained over
+          time.
+          <br><br>
+          If your IOPS count approaches the volume's baseline performance, you
+          should upgrade to a bigger volume (performance scales with volume size)."}}
+</h4>
+
+{{partial 'mixins/container-metrics'}}
