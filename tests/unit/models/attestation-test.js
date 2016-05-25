@@ -4,7 +4,7 @@ import modelDeps from '../../support/common-model-dependencies';
 import { stubRequest } from 'ember-cli-fake-server';
 
 moduleForModel('attestation', 'model:attestation', {
-  needs: modelDeps
+  needs: modelDeps.concat(['model:organization-profile'])
 });
 
 test('it exists', function(assert) {
