@@ -194,7 +194,6 @@ test("it shows memory limit checkbox and memory limit line if limit exists", fun
   andThen(() => {
     assert.equal(find("input[name$='show-memory-limit']").length, 1, "Show memory limit button is not shown!");
     let chart = findWithAssert("div.c3-chart-component");
-    console.log(chart.text());
     assert.ok(chart.text().indexOf("Memory limit (999 MB)") > -1, "Memory limit not shown!");
     assert.ok(chart.text().indexOf("1000 MB") > -1, "Chart did not resize!");
   });
