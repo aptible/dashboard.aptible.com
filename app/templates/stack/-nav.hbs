@@ -1,17 +1,17 @@
 <ul class="nav nav-pills resource-navigation">
-  {{#with-active-class route='dashboard.stack.apps' tagName='li'}}
+  {{#activating-item tagName="li" currentWhen="stack.apps"}}
     {{link-to 'Apps' 'apps.index'}}
-  {{/with-active-class}}
+  {{/activating-item}}
 
-  {{#with-active-class route='dashboard.stack.databases' tagName='li'}}
+  {{#activating-item tagName="li" currentWhen="stack.databases"}}
     {{link-to 'Databases' 'databases.index'}}
-  {{/with-active-class}}
+  {{/activating-item}}
 
-  {{#with-active-class route='dashboard.stack.log-drains' tagName='li'}}
+  {{#activating-item tagName="li" currentWhen="stack.log-drains"}}
     {{link-to 'Logging' 'stack.log-drains'}}
-  {{/with-active-class}}
+  {{/activating-item}}
 
-  {{#with-active-class route='dashboard.stack.certificates' tagName='li'}}
+  {{#activating-item tagName="li" currentWhen="stack.certificates"}}
     {{link-to 'Certificates' 'certificates.index'}}
-  {{/with-active-class}}
+  {{/activating-item}}
 </ul>
