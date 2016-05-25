@@ -78,6 +78,7 @@ test('Clicking Save saves data environment selections to attestation', function(
   stubCurrentAttestations({ selected_data_environments: { aptible: true }, team: [] });
   let expectedDataEnvironmentPayload = {
     amazonS3: true,
+    aptible: true,
     gmail: true
   };
 

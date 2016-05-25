@@ -144,8 +144,7 @@ test('Toggling user roles and clicking continue saves team attestation with corr
   stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
   let expectedAttestation = {
     handle: 'workforce_roles',
-    organization_url: `/organizations/${orgId}`,
-    organization: `/organizations/${orgId}`,
+    organization_profile_id: orgId,
     id: '0',
     schema_id: 'workforce_roles/1',
     user_email: 'stubbed-user@gmail.com',
@@ -238,8 +237,7 @@ test('Pending invitations are included in attestation payload', function(assert)
 
   let expectedAttestation = {
     handle: 'workforce_roles',
-    organization_url: `/organizations/${orgId}`,
-    organization: `/organizations/${orgId}`,
+    organization_profile_id: orgId,
     id: '0',
     schema_id: 'workforce_roles/1',
     user_email: 'stubbed-user@gmail.com',
@@ -389,8 +387,7 @@ test('Team page with existing team attestation', function(assert) {
     handle: 'workforce_roles',
     id: '0',
     schema_id: 'workforce_roles/1',
-    organization: `/organizations/${orgId}`,
-    organization_url: `/organizations/${orgId}`,
+    organization_profile_id: orgId,
     user_email: 'stubbed-user@gmail.com',
     user_name: 'stubbed user',
     user_url: '/users/user1',
@@ -455,7 +452,6 @@ test('Team page with existing team attestation', function(assert) {
 
   andThen(() => {
     // Existing attestation is use to render toggles in correct state
-
     currentTeamAttestation.forEach((user, index) => {
       let row = findWithAssert('table tbody tr')[index];
 

@@ -11,6 +11,6 @@ export const NEXT_STEPS = [
 export default Ember.Route.extend(SPDRouteMixin, {
   model() {
     return { steps: NEXT_STEPS,
-             organization: this.modelFor('compliance-organization') }
+             organization: this.modelFor('compliance-organization') };
   }
 });
