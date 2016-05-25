@@ -55,7 +55,7 @@ test('clicking next will save and go to next security control group', function(a
   stubRequests();
   signInAndVisit(`${securityControlsUrl}/amazon_s3_security_controls`);
 
-  stubRequest('post', '/attestations', function(request) {
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to /attestations');
@@ -97,7 +97,7 @@ test('clicking next will finish SPD if on last group', function(assert) {
   stubRequests();
   signInAndVisit(`${securityControlsUrl}/software_development_lifecycle_security_controls`);
 
-  stubRequest('post', '/attestations', function(request) {
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to /attestations');

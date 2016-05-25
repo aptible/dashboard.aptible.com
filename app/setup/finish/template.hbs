@@ -7,7 +7,7 @@
         <h3>Great job, {{session.currentUser.name}}! Your Security Program is complete.</h3>
 
         <div class="intro-text">
-          You can {{link-to 'return to your Compliance Dashboard' 'organization'}} or jump to the next step towards HIPAA compliance:
+          You can {{link-to 'return to your Compliance Dashboard' 'compliance-organization'}} or jump to the next step towards HIPAA compliance:
         </div>
 
         <div class="row">
@@ -18,7 +18,7 @@
                 <div class="step-title">Design your Security Program</div>
               </div>
 
-              {{#each model as |step|}}
+              {{#each model.steps as |step|}}
                 <div class="step {{if step.current 'current-step' null}}">
                   <div class="step-step">{{step.step}}</div>
                   <div class="step-title">{{step.title}}</div>

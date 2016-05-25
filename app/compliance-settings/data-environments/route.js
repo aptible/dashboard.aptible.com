@@ -5,10 +5,10 @@ import loadSchema from 'diesel/utils/load-schema';
 export default Ember.Route.extend({
   model() {
     let handle = 'selected_data_environments';
-    let organizationUrl = this.modelFor('compliance-organization').get('data.links.self');
+    let organizationProfile = this.modelFor('compliance-settings');
 
     return loadSchema(handle).then((schema) => {
-      let attestationParams = { handle, schemaId: schema.id, organizationUrl,
+      let attestationParams = { handle, schemaId: schema.id, organizationProfile,
                                 document: {} };
       let attestation = Attestation.findOrCreate(attestationParams, this.store);
       let schemaDocument = schema.buildDocument();

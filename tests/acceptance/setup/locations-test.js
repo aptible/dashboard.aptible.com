@@ -186,7 +186,7 @@ test('Adding an incomplete location shows an error message', function(assert) {
 test('Clicking continue creates locations attestation', function(assert) {
   expect(5);
   stubCurrentAttestations({ workforce_locations: [] });
-  stubRequest('post', '/attestations', function(request) {
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to /attestations');
@@ -221,7 +221,7 @@ test('Clicking continue creates locations attestation', function(assert) {
 test('Saving progress', function(assert) {
   expect(2);
   stubCurrentAttestations({ workforce_locations: [] });
-  stubRequest('post', '/attestations', function(request) {
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to /attestations');

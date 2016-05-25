@@ -176,8 +176,7 @@ test('Toggling user roles and clicking continue saves team attestation with corr
   stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
   let expectedAttestation = {
     handle: 'workforce_roles',
-    organization_url: `/organizations/${orgId}`,
-    organization: `/organizations/${orgId}`,
+    organization_profile_id: orgId,
     id: '0',
     schema_id: 'workforce_roles/1',
     user_email: 'stubbed-user@gmail.com',
@@ -232,7 +231,7 @@ test('Toggling user roles and clicking continue saves team attestation with corr
   stubRequests();
   signInAndVisit(teamUrl);
 
-  stubRequest('post', '/attestations', function(request) {
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to create attestation');
@@ -280,8 +279,7 @@ test('Pending invitations are included in attestation payload', function(assert)
 
   let expectedAttestation = {
     handle: 'workforce_roles',
-    organization_url: `/organizations/${orgId}`,
-    organization: `/organizations/${orgId}`,
+    organization_profile_id: orgId,
     id: '0',
     schema_id: 'workforce_roles/1',
     user_email: 'stubbed-user@gmail.com',
@@ -379,7 +377,7 @@ test('Pending invitations are included in attestation payload', function(assert)
     assert.equal(find('.lf-dialog').length, 0, 'dialog is closed');
   });
 
-  stubRequest('post', '/attestations', function(request) {
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to create attestation');
@@ -441,8 +439,7 @@ test('Team page with existing team attestation', function(assert) {
     handle: 'workforce_roles',
     id: '0',
     schema_id: 'workforce_roles/1',
-    organization: `/organizations/${orgId}`,
-    organization_url: `/organizations/${orgId}`,
+    organization_profile_id: orgId,
     user_email: 'stubbed-user@gmail.com',
     user_name: 'stubbed user',
     user_url: '/users/user1',
@@ -494,7 +491,7 @@ test('Team page with existing team attestation', function(assert) {
   stubProfile({ currentStep: 'team' });
   stubRequests();
 
-  stubRequest('post', '/attestations', function(request) {
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to create attestation');
@@ -638,7 +635,7 @@ test('Developer and Security Officer groups are validated to include at least on
   stubRequests();
   signInAndVisit(teamUrl);
 
-  stubRequest('post', '/attestations', function() {
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function() {
     assert.ok(false, 'does not save an attestation');
     return this.success({ id: 1 });
   });
@@ -718,8 +715,7 @@ test('Saving progress', function(assert) {
 
   let expectedAttestation = {
     handle: 'workforce_roles',
-    organization_url: `/organizations/${orgId}`,
-    organization: `/organizations/${orgId}`,
+    organization_profile_id: orgId,
     id: '0',
     schema_id: 'workforce_roles/1',
     user_email: 'stubbed-user@gmail.com',
@@ -817,7 +813,7 @@ test('Saving progress', function(assert) {
     assert.equal(find('.lf-dialog').length, 0, 'dialog is closed');
   });
 
-  stubRequest('post', '/attestations', function(request) {
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to create attestation');

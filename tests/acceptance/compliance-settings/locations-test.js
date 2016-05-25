@@ -135,7 +135,7 @@ test('Clicking Save creates locations attestation', function(assert) {
   }];
 
   stubCurrentAttestations({ workforce_locations: [] });
-  stubRequest('post', '/attestations', function(request) {
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to /attestations');
