@@ -69,6 +69,8 @@ test(`visit ${url} shows basic stack info`, function(assert) {
 
   andThen(function() {
     assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
+    assert.ok(find('ul.resource-navigation li.active a:contains(Apps)').length,
+              'Has active apps link');
 
     expectLink(`stacks/${stackId}/databases`);
     expectLink(`stacks/${stackId}/logging`);
