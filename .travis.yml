@@ -19,5 +19,7 @@ install:
 script:
 - npm test
 - script/travis-deploy.sh
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 env: # IAM: travis-s3
   secure: RdzCMUHB2dtmCc0IHEdIAvqItRhT45HLcr0C5s+lHIoImsNXatjjuHgOeCKlzn9Ewkx7Jkxt5q5ZBeOrQLEh8JTorGqrlpf40BQ46qd5tIScqwvQ4f2c6y06HGOzC2mbl1PK6w/7k76JfWcH0SNDG6exuCYViXkWhHb1oGxlJfA=
