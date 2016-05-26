@@ -1,2 +1,29 @@
-<h1>Risk Assessments Index</h1>
-{{link-to 'Show Page' 'risk-assessment' 1}}{{outlet}}
+<main class="layout-content spd-content">
+
+  <header class="new-header">
+    <div class="container">
+      <div class='header-left'>
+        <h2 class="sub-title">Compliance Engines</h2>
+        <h1 class="title">Risk Assessments</h1>
+      </div>
+    </div>
+  </header>
+
+  <div class="container main-body">
+
+    {{#each model.riskAssessments as |riskAssessment index|}}
+      <div class="panel white-panel risk-assessment">
+        <div class="panel-body">
+
+
+          <h3>v{{index}} {{riskAssessment.status}} Risk Assessment</h3>
+
+          <div>
+          {{link-to 'Resume' 'risk-assessment' riskAssessment.id class="btn btn-primary"}}
+          </div>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+
+</main>
