@@ -1,13 +1,20 @@
-<header class="new-header">
-  <div class="container">
-    <h1 class="title">{{organization.name}} Risk Assessments</h1>
+<main class="layout-content spd-content">
+
+  <header class="new-header">
+    <div class="container">
+      <div class='header-left'>
+        <h2 class="sub-title">Compliance Engines</h2>
+        <h1 class="title">{{model.organization.name}} Risk Assessments</h1>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-body container">
+    {{#each model.riskAssessments as |riskAssessment index|}}
+      {{risk-assessment-list-item riskAssessment=riskAssessment index=index}}
+    {{/each}}
+
+    {{outlet}}
   </div>
-</header>
 
-<div class="main-body container">
-  {{#each model.riskAssessments as |riskAssessment|}}
-    {{risk-assessment-list-item riskAssessment=riskAssessment}}
-  {{/each}}
-
-  {{outlet}}
-</div>
+</main>
