@@ -1,21 +1,25 @@
-<div class="container">
-  {{link-to '<- All Risk Assessments' 'risk-assessments'}}
-  <h2>Risk Assessment Show</h2>
+<main class="layout-content spd-content">
+  <header class="new-header">
+    <div class="container">
+    {{link-to '<- All Risk Assessments' 'risk-assessments'}}
+    <h2>{{model.status}} Risk Assessment</h2>
 
-  <style type="text/css">
-  li > a.active {
-    background: #ccc;
-  }
-  </style>
+    <style type="text/css">
+    li > a.active {
+      background: #ccc;
+    }
+    </style>
 
-  <ul>
-    <li>{{link-to 'Threat Events' 'risk-assessment.nodes' 'threat_events'}}</li>
-    <li>{{link-to 'Predisposing Conditions' 'risk-assessment.nodes' 'predisposing_conditions'}}</li>
-    <li>{{link-to 'Threat Sources' 'risk-assessment.nodes' 'threat_sources'}}</li>
-    <li>{{link-to 'Vulnerabilities' 'risk-assessment.nodes' 'vulnerabilities'}}</li>
-    <li>{{link-to 'Security Controls' 'risk-assessment.nodes' 'security_controls'}}</li>
-  </ul>
+    <ul>
+      <li>{{link-to 'Threat Events' 'risk-assessment.nodes' 'threat_events'}}</li>
+      <li>{{link-to 'Predisposing Conditions' 'risk-assessment.nodes' 'predisposing_conditions'}}</li>
+      <li>{{link-to 'Threat Sources' 'risk-assessment.nodes' 'threat_sources'}}</li>
+      <li>{{link-to 'Vulnerabilities' 'risk-assessment.nodes' 'vulnerabilities'}}</li>
+      <li>{{link-to 'Security Controls' 'risk-assessment.nodes' 'security_controls'}}</li>
+    </ul>
+    </div>
+  </header>
 
   {{outlet}}
 
-</div>
+</main>

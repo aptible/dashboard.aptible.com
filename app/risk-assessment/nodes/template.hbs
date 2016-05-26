@@ -1,3 +1,38 @@
-<h3>Here are all of the {{model.type}} for this risk assessment</h3>
+<div class="container main-body">
+  <h3>{{title}}</h3>
+  <div class="panel white-panel risk-assessment-components">
+    {{#each model.components as |riskAssessmentComponent|}}
+      <div class="panel-section">
+        <div class="pull-right">
+          {{link-to 'View' 'risk-assessment-component' riskAssessmentComponent class="btn btn-primary btn-xs"}}
+          {{link-to 'Edit' 'risk-assessment-component.edit' riskAssessmentComponent class="btn btn-primary btn-xs"}}
+        </div>
 
-{{link-to (concat 'View a ' model.type) 'risk-assessment-component' model.showNode}}
+        <h4>{{riskAssessmentComponent.title}}</h4>
+        <p>{{riskAssessmentComponent.description}}</p>
+
+        {{#if (eq riskAssessmentComponent.node_type 'security_controls')}}
+          <div class="clear">
+            {{#if riskAssessmentComponent.implemented}}
+              <span class="success">
+                Implemented!
+              </span>
+               {{#if riskAssessmentComponent.technologies}}
+                <h5>Technologies</h5>
+                <ul>
+                  {{#each riskAssessmentComponent.technologies as |tech|}}
+                    <li>{{tech}}</li>
+                  {{/each}}
+                </ul>
+              {{/if}}
+            {{else}}
+              <span class="danger">
+                Unimplemented!
+              </span>
+            {{/if}}
+          </div>
+        {{/if}}
+      </div>
+    {{/each}}
+  </div>
+</div>
