@@ -14,13 +14,13 @@
           horizon=model.uiState.dataHorizon
           lastReload=model.uiState.lastReload}}
 
-        {{container-disk-metrics
+        {{container-iops-metrics
+          baselineIops=model.resource.disk.baselineIops
           containers=targetContainers
           horizon=model.uiState.dataHorizon
           lastReload=model.uiState.lastReload}}
 
-        {{container-iops-metrics
-          baselineIops=model.resource.disk.baselineIops
+        {{container-disk-metrics
           containers=targetContainers
           horizon=model.uiState.dataHorizon
           lastReload=model.uiState.lastReload}}
