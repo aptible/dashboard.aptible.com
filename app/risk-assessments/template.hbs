@@ -1,2 +1,13 @@
-<h1>Risk Assessments Index</h1>
-{{link-to 'Show Page' 'risk-assessment' 1}}{{outlet}}
+<header class="new-header">
+  <div class="container">
+    <h1 class="title">{{organization.name}} Risk Assessments</h1>
+  </div>
+</header>
+
+<div class="main-body container">
+  {{#each model.riskAssessments as |riskAssessment|}}
+    {{risk-assessment-list-item riskAssessment=riskAssessment}}
+  {{/each}}
+
+  {{outlet}}
+</div>
