@@ -5,27 +5,34 @@ export default {
   "title":"Global Application Security Controls",
   "description": "Global application security controls",
   "properties":{
-    "hiddenTokens":{
+    "security_controls": {
       "type": "object",
-      "title":"Can haz secures?",
-      "required": ["implemented"],
       "properties": {
-        "implemented": {
-          "type":"boolean",
-          "description":"Wow",
-          "displayProperties":{
-            "useToggle":true,
-            "showLabels":true,
-            "labels":{
-              "trueLabel":"Yes",
-              "falseLabel":"No"
+
+        "hiddenTokens":{
+          "type": "object",
+          "title":"Can haz secures?",
+          "required": ["implemented"],
+          "properties": {
+            "implemented": {
+              "type":"boolean",
+              "description":"Wow",
+              "displayProperties":{
+                "useToggle":true,
+                "showLabels":true,
+                "labels":{
+                  "trueLabel":"Yes",
+                  "falseLabel":"No"
+                }
+              }
             }
           }
         }
-      }
+      },
+      "requried": ["hiddenTokens"]
     }
   },
   "required":[
-    "hiddenTokens"
+    "security_controls"
   ]
 };

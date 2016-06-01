@@ -5,28 +5,36 @@ export default {
   "title":"Email Security Controls",
   "description": "Email security controls",
   "properties":{
-    "encryption":{
+    "security_controls" : {
       "type": "object",
-      "required": ["implemented"],
-      "title":"Do you encrypt?",
       "properties": {
-        "implemented": {
-          "type":"boolean",
-          "description":"Do you encrypt emails?",
-          "displayProperties":{
-            "useToggle":true,
-            "showLabels":true,
-            "labels":{
-              "trueLabel":"Yes",
-              "falseLabel":"No"
+        "encryption":{
+          "type": "object",
+          "required": ["implemented"],
+          "title":"Do you encrypt?",
+          "properties": {
+            "implemented": {
+              "type":"boolean",
+              "description":"Do you encrypt emails?",
+              "displayProperties":{
+                "useToggle":true,
+                "showLabels":true,
+                "labels":{
+                  "trueLabel":"Yes",
+                  "falseLabel":"No"
+                }
+              }
             }
           }
         }
-      }
+      },
+      "required": [
+        "encryption"
+      ]
     }
   },
 
   "required":[
-    "encryption"
+    "security_controls"
   ]
 };

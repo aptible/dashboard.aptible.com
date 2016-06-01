@@ -49,9 +49,9 @@
   {{else}}
 
     <div class="security-controls-list">
-      {{#each-property properties=schema.properties document=document recursive=false as |key property type options|}}
+      {{#each-property properties=schema.properties.security_controls.properties document=document recursive=false as |key property type options|}}
         {{security-control
-          key=key
+          key=(concat 'security_controls.' key)
           property=property
           type=type
           provider=securityControlGroup.provider
