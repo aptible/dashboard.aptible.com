@@ -5,28 +5,32 @@ export default {
   "title":"Amazon Web Services",
   "description":"Amazon Web Services security controls",
   "properties":{
-    "mfa":{
+    "security_controls" : {
       "type": "object",
-      "required": ["implemented"],
-      "title":"AWS Security",
       "properties": {
-        "implemented": {
-          "type":"boolean",
-          "description":"Is yer AWS secure?",
-          "displayProperties":{
-            "useToggle":true,
-            "showLabels":true,
-            "labels":{
-              "trueLabel":"Yes",
-              "falseLabel":"No"
+        "mfa":{
+          "type": "object",
+          "required": ["implemented"],
+          "title":"AWS Security",
+          "properties": {
+            "implemented": {
+              "type":"boolean",
+              "description":"Is yer AWS secure?",
+              "displayProperties":{
+                "useToggle":true,
+                "showLabels":true,
+                "labels":{
+                  "trueLabel":"Yes",
+                  "falseLabel":"No"
+                }
+              }
             }
           }
         }
-      }
+      },
+      "required":["mfa"]
     }
   },
 
-  "required":[
-    "security"
-  ]
+  "required":["security_controls"]
 };

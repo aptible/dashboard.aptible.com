@@ -74,7 +74,7 @@ test('Basic UI', function(assert) {
 test('Resuming with existing attestations', function(assert) {
   stubCurrentAttestations({
     selected_data_environments: selectedDataEnvironments,
-    google_security_controls: { security: { implemented: true }}
+    google_security_controls: { security_controls: { security: { implemented: true } } }
   });
   stubProfile({ currentStep: 'security-controls'});
   stubRequests();
@@ -91,7 +91,7 @@ test('Resuming with existing attestations', function(assert) {
   andThen(() => {
     assert.equal(currentPath(), 'compliance.compliance-organization.setup.security-controls.show');
 
-    assert.ok(find('input[name="security.implemented"]').is(':checked'), 'Existing attestation is loaded');
+    assert.ok(find('input[name="security_controls.security.implemented"]').is(':checked'), 'Existing attestation is loaded');
   });
 });
 

@@ -5,20 +5,25 @@ export default {
   "title":"Workforce Security Controls",
   "description": "Workforce security controls",
   "properties":{
-    "robots":{
+    "security_controls": {
       "type": "object",
-      "required": ["implemented"],
-      "title":"Autonomous Workforce",
       "properties": {
-        "implemented": {
-          "type":"boolean",
-          "description":"Do you only hire robots?",
-          "displayProperties":{
-            "useToggle":true,
-            "showLabels":true,
-            "labels":{
-              "trueLabel":"Yes",
-              "falseLabel":"No"
+        "robots":{
+          "type": "object",
+          "required": ["implemented"],
+          "title":"Autonomous Workforce",
+          "properties": {
+            "implemented": {
+              "type":"boolean",
+              "description":"Do you only hire robots?",
+              "displayProperties":{
+                "useToggle":true,
+                "showLabels":true,
+                "labels":{
+                  "trueLabel":"Yes",
+                  "falseLabel":"No"
+                }
+              }
             }
           }
         }
@@ -26,6 +31,6 @@ export default {
     }
   },
   "required":[
-    "robots"
+    "security_controls"
   ]
 };

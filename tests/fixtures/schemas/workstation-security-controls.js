@@ -5,20 +5,25 @@ export default {
   "title":"Workstation Controls",
   "description": "Workstation security controls",
   "properties":{
-    "keyboardLocks":{
+    "security_controls": {
       "type": "object",
-      "required": ["implemented"],
-      "title":"Keyboard Locks",
       "properties": {
-        "implemented": {
-          "type":"boolean",
-          "description":"Do you require your workforce to lock their keyboards using a keyboard lock?",
-          "displayProperties":{
-            "useToggle":true,
-            "showLabels":true,
-            "labels":{
-              "trueLabel":"Yes",
-              "falseLabel":"No"
+        "keyboardLocks":{
+          "type": "object",
+          "required": ["implemented"],
+          "title":"Keyboard Locks",
+          "properties": {
+            "implemented": {
+              "type":"boolean",
+              "description":"Do you require your workforce to lock their keyboards using a keyboard lock?",
+              "displayProperties":{
+                "useToggle":true,
+                "showLabels":true,
+                "labels":{
+                  "trueLabel":"Yes",
+                  "falseLabel":"No"
+                }
+              }
             }
           }
         }
