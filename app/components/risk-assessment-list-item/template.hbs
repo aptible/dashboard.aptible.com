@@ -1,3 +1,4 @@
+
 <div class="panel white-panel ra-list-item ra-list-item--{{riskAssessment.status}}">
   {{risk-assessment-status-header riskAssessment=riskAssessment}}
 
@@ -16,8 +17,10 @@
     <div class="ra-list-item__contributors">
       <h3 class="user-gravatars__title">Contributors</h3>
       <div class="user-gravatars">
+
         <!-- TODO: uncomment when contributors are part of the model data -->
         {{!-- user-gravatars users=riskAssessment.contributors size=24 count=5 placeholder='--' --}}
+
       </div>
     </div>
     {{#unless (eq riskAssessment.status 'draft')}}
