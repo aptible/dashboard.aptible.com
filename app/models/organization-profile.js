@@ -11,6 +11,7 @@ let OrganizationProfile = DS.Model.extend({
   aboutProduct: DS.attr('string'),
   organization: DS.attr('string'),
   attestations: DS.hasMany('attestation', {async: true}),
+  riskAssessments: DS.hasMany('risk-assessment', { async: true }),
 
   indexOfCurrentStep: Ember.computed('currentStep', function() {
     return this.indexOfStep(this.get('currentStep'));
