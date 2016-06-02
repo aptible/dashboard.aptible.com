@@ -5,20 +5,25 @@ export default {
   "title":"Security Procedures",
   "description": "Organizational Security Procedures",
   "properties":{
-    "secureProcedure0":{
+    "security_controls": {
       "type": "object",
-      "required": ["implemented"],
-      "title":"Do you secure?",
       "properties": {
-        "implemented": {
-          "type":"boolean",
-          "description":"??",
-          "displayProperties":{
-            "useToggle":true,
-            "showLabels":true,
-            "labels":{
-              "trueLabel":"Yes",
-              "falseLabel":"No"
+        "secureProcedure0":{
+          "type": "object",
+          "required": ["implemented"],
+          "title":"Do you secure?",
+          "properties": {
+            "implemented": {
+              "type":"boolean",
+              "description":"??",
+              "displayProperties":{
+                "useToggle":true,
+                "showLabels":true,
+                "labels":{
+                  "trueLabel":"Yes",
+                  "falseLabel":"No"
+                }
+              }
             }
           }
         }

@@ -5,20 +5,25 @@ export default {
   "title":"Gmail",
   "description": "Gmail security controls",
   "properties":{
-    "linkSharingSettings":{
+    "security_controls": {
       "type": "object",
-      "required": ["implemented"],
-      "title":"Is your Gmail secure??",
       "properties": {
-        "implemented": {
-          "type":"boolean",
-          "description":"How secure is it?",
-          "displayProperties":{
-            "useToggle":true,
-            "showLabels":true,
-            "labels":{
-              "trueLabel":"Yes",
-              "falseLabel":"No"
+        "linkSharingSettings":{
+          "type": "object",
+          "required": ["implemented"],
+          "title":"Is your Gmail secure??",
+          "properties": {
+            "implemented": {
+              "type":"boolean",
+              "description":"How secure is it?",
+              "displayProperties":{
+                "useToggle":true,
+                "showLabels":true,
+                "labels":{
+                  "trueLabel":"Yes",
+                  "falseLabel":"No"
+                }
+              }
             }
           }
         }
@@ -27,6 +32,6 @@ export default {
   },
 
   "required":[
-    "isSecure"
+    "security_controls"
   ]
 };

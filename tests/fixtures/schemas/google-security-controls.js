@@ -5,19 +5,24 @@ export default {
   "title":"Google",
   "description": "Google security controls",
   "properties":{
-    "security":{
+    "security_controls": {
       "type": "object",
-      "title":"How much security can your googles haz?",
       "properties": {
-        "implemented": {
-          "type":"boolean",
-          "description":"Wow",
-          "displayProperties":{
-            "useToggle":true,
-            "showLabels":true,
-            "labels":{
-              "trueLabel":"Yes",
-              "falseLabel":"No"
+        "security":{
+          "type": "object",
+          "title":"How much security can your googles haz?",
+          "properties": {
+            "implemented": {
+              "type":"boolean",
+              "description":"Wow",
+              "displayProperties":{
+                "useToggle":true,
+                "showLabels":true,
+                "labels":{
+                  "trueLabel":"Yes",
+                  "falseLabel":"No"
+                }
+              }
             }
           }
         }
@@ -25,6 +30,6 @@ export default {
     }
   },
   "required":[
-    "security"
+    "security_controls"
   ]
 };

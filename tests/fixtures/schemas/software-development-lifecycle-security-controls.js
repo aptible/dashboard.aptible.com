@@ -4,20 +4,25 @@ export default {
   "type":"object",
   "title":"Software Development Lifecycle",
   "properties":{
-    "secureProcedure0":{
+    "security_controls": {
       "type": "object",
-      "required": ["implemented"],
-      "title":"Do you secure?",
       "properties": {
-        "implemented": {
-          "type":"boolean",
-          "description":"??",
-          "displayProperties":{
-            "useToggle":true,
-            "showLabels":true,
-            "labels":{
-              "trueLabel":"Yes",
-              "falseLabel":"No"
+        "secureProcedure0":{
+          "type": "object",
+          "required": ["implemented"],
+          "title":"Do you secure?",
+          "properties": {
+            "implemented": {
+              "type":"boolean",
+              "description":"??",
+              "displayProperties":{
+                "useToggle":true,
+                "showLabels":true,
+                "labels":{
+                  "trueLabel":"Yes",
+                  "falseLabel":"No"
+                }
+              }
             }
           }
         }
