@@ -6,5 +6,10 @@ export default DS.Model.extend({
   approvingAuthorityUserName: DS.attr('string'),
   approvingAuthorityUserEmail:DS.attr('string'),
   approvingAuthorityUrl: DS.attr('string'),
-  graph: DS.attr()
+  vulnerabilities: DS.hasMany('vulnerability', {embedded: true}),
+  threatEvents: DS.hasMany('threatEvent', {embedded: true}),
+  predisposingConditions: DS.hasMany('predisposingCondition', {embedded: true}),
+  threatSources: DS.hasMany('threatSource', {embedded: true}),
+  securityControls: DS.hasMany('securityControl', {embedded: true}),
+  mitigations: DS.hasMany('mitigation', {embedded: true})
 });
