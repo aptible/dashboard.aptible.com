@@ -35,7 +35,7 @@ export default ApplicationSerializer.extend({
   },
 
   extractSingle(store, primaryType, rawPayload, recordId) {
-    rawPayload = _extractRiskAssessment(rawPayload);
+    rawPayload = this._extractRiskAssessment(rawPayload);
     return this._super(store, primaryType, rawPayload, recordId);
   },
 
