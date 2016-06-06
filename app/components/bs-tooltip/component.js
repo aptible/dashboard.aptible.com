@@ -5,6 +5,7 @@
  *   * title: The text to be displayed in the tooltip
  * Optional params:
  *   * placement: 'left','right','top','bottom' (default: 'bottom')
+ *   * bs-html: Whether HTML should be allowed. Default: false
  *   * bs-trigger: The triggering event ('click', 'focus', etc.). Default: none
  *   * bs-container: The container to use for the tooltip (e.g., 'body'). Default: none
  *
