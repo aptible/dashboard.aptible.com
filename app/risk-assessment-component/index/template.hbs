@@ -1,8 +1,22 @@
-<div class="container">
-  {{link-to 'Risk Assessment' 'risk-assessment' 1}}
-  <h3>View risk assessment component</h3>
-  {{link-to 'Edit' 'risk-assessment-component.edit'}}
+<main class="layout-content spd-content risk-assessment__main">
+  {{risk-assessment-status-header riskAssessment=model.riskAssessment}}
 
-  Title: {{model.title}}
-  Description: {{model.description}}
-</div>
+
+  <header class="new-header risk-assessment__header">
+    <div class="container">
+      <div class='header-left'>
+        <h2 class="sub-title">
+          {{link-to 'Risk Assessment' 'risk-assessment' model.riskAssessment}} -
+          Threat Event
+        </h2>
+        <h1 class="title">{{model.component.title}}</h1>
+        <p class="ra-component__description">{{model.component.description}}</p>
+      </div>
+
+      <div class='pull-right'>
+        {{link-to 'Edit' 'risk-assessment-component.edit'}}
+      </div>
+
+    </div>
+  </header>
+</main>

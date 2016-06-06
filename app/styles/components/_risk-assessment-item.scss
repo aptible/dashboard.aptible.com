@@ -6,36 +6,47 @@
   width: 75%;
 }
 
-// Header
-.ra-list-item__status-header {
+//
+// status header component
+// Used on list item and as a general header
+//
+.ra__status-header {
   background-color: #ececec;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
   color: #4a4a4a;
   font-size: 11px;
   font-weight: 100;
   padding: 10px 20px;
   text-transform: uppercase;
+  .ra-list-item & {
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    .container {
+      max-width: auto;
+      min-width: auto;
+      padding: 0;
+      width: auto;
+    }
+  }
 }
-.ra-list-item__status-header--current {
+.ra__status-header--current {
   background-color: #2ecc71;
   color: white;
   text-shadow: 0px 1px 1px rgba(0,0,0,0.22);
 }
-.ra-list-item__status-header--draft {
+.ra__status-header--draft {
   background-color: #445464;
   color: white;
   text-shadow: 0px 1px 1px rgba(0,0,0,0.22);
 }
 
-.ra-list-item__status {
+.ra__status {
   color: #9b9b9b;
   margin-left: 5px;
 }
-.ra-list-item__status--draft {
+.ra__status--draft {
   color: #c6e0fe;
 }
-.ra-list-item__status--current {
+.ra__status--current {
   color: #cdffe2;
 }
 
