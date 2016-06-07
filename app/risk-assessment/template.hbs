@@ -1,21 +1,47 @@
-<div class="container">
-  {{link-to '<- All Risk Assessments' 'risk-assessments'}}
-  <h2>Risk Assessment Show</h2>
+<main class="layout-content spd-content risk-assessment__main">
+  <header class="new-header risk-assessment__header">
+    <div class="container">
+      <div class='header-left'>
+        {{link-to '<- All Risk Assessments' 'risk-assessments'}}
+        <h2 class="sub-title">{{model.organization.name}}</h2>
+        <h1 class="title">{{model.status}} Risk Assessments</h1>
+      </div>
 
-  <style type="text/css">
-  li > a.active {
-    background: #ccc;
-  }
-  </style>
+      <div class='pull-right'>
+        {{link-to 'Submit for Approval' 'risk-assessment' riskAssessment.id class="btn btn-primary"}}
+        {{link-to 'Download PDF' 'risk-assessment' riskAssessment.id class="btn btn-default"}}
+      </div>
+    </div>
 
-  <ul>
-    <li>{{link-to 'Threat Events' 'risk-assessment.nodes' 'threat_events'}}</li>
-    <li>{{link-to 'Predisposing Conditions' 'risk-assessment.nodes' 'predisposing_conditions'}}</li>
-    <li>{{link-to 'Threat Sources' 'risk-assessment.nodes' 'threat_sources'}}</li>
-    <li>{{link-to 'Vulnerabilities' 'risk-assessment.nodes' 'vulnerabilities'}}</li>
-    <li>{{link-to 'Security Controls' 'risk-assessment.nodes' 'security_controls'}}</li>
-  </ul>
+    <div class="container">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#">Components</a></li>
+        <li><a href="#">Activity</a></li>
+        <li><a href="#">Compare</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="container main-body">
+    <div class="risk-components-nav">
+      {{#link-to 'risk-assessment.nodes' 'threat_events' class="risk-components-nav__link"}}
+        <i class="fa fa-bolt"></i> Risks
+      {{/link-to}}
+      {{#link-to 'risk-assessment.nodes' 'vulnerabilities' class="risk-components-nav__link"}}
+        <i class="fa fa-unlock"></i> Vulnerabilities
+      {{/link-to}}
+      {{#link-to 'risk-assessment.nodes' 'predisposing_conditions' class="risk-components-nav__link"}}
+        <i class="fa fa-globe"></i> Predisposing Conditions
+      {{/link-to}}
+      {{#link-to 'risk-assessment.nodes' 'threat_sources' class="risk-components-nav__link"}}
+        <i class="fa fa-users"></i> Threat Sources
+      {{/link-to}}
+      {{#link-to 'risk-assessment.nodes' 'security_controls' class="risk-components-nav__link"}}
+        <i class="fa fa-sliders"></i> Security Controls
+      {{/link-to}}
+    </div>
+  </div>
 
   {{outlet}}
 
-</div>
+</main>

@@ -1,0 +1,182 @@
+.main-wrapper .risk-assessment__main {
+  background-color: white;
+}
+
+header.risk-assessment__header {
+  padding-bottom: 0;
+  .header-left {
+    margin-bottom: 50px;
+  }
+  h1 {
+    font-size: 24px;
+    text-transform: capitalize;
+  }
+  .nav-tabs {
+    border-bottom: none;
+  }
+}
+
+.risk-components-nav {
+  background: #FFFFFF;
+  border-radius: 3px;
+  border: 1px solid #E0E0E0;
+  box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.08);
+}
+ul.risk-components-nav {
+  list-style: none;
+  padding: 0;
+}
+
+a.risk-components-nav__link {
+  color: #4a4a4a;
+}
+.risk-components-nav__link {
+  border-right: 1px solid #e9ebf1;
+  color: #4a4a4a;
+  display: inline-block;
+  padding: 15px 20px;
+  transition-property: color, background-color, border-color;
+  transition-timing-function: ease-in-out;
+  transition-duration: 0.25s;
+  width: 20%;
+  .fa {
+    color: #cecece;
+    font-size: 16px;
+    padding-right: 5px;
+    transition: color 0.25s ease-in-out;
+  }
+  &.active, &:hover, &:focus {
+    color: white;
+    outline: none;
+    text-decoration: none;
+    .fa {
+      color: white;
+    }
+  }
+  &:hover, &:focus {
+    background-color: rgba(74, 144, 226, 0.75);
+    border-color: rgba(74, 144, 226, 0.75);
+  }
+  &.active {
+    background: #4a90e2;
+    border-color: #4a90e2;
+    &:focus {
+      background: #4a90e2;
+      border-color: #4a90e2;
+    }
+  }
+  &:first-of-type {
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
+  }
+  &:last-of-type {
+    border-right: none;
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+  }
+}
+
+//
+// .base-table additions for risk assessment components
+//
+.base-table__risk-threat-events {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 850px;
+  max-width: 850px;
+}
+
+//
+// Risk Assessment Component
+// TODO: replace integer with descriptive computed label
+//
+// 3 - Very High
+// 2 - High
+// 1 - Medium
+// 0 - Low
+.risk-assessment-component__chip {
+  color: white;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: normal;
+  text-transform: uppercase;
+}
+.risk-assessment-component__chip--3 {
+  background-color: #d9534f;
+  &:after {
+    content: "Very High"
+  }
+}
+.risk-assessment-component__chip--2 {
+  background-color: #f46666;
+  &:after {
+    content: "High"
+  }
+}
+.risk-assessment-component__chip--1 {
+  background-color: #ffb330;
+  &:after {
+    content: "Medium"
+  }
+}
+.risk-assessment-component__chip--0 {
+  background-color: #c9e141;
+  &:after {
+    content: "Low"
+  }
+}
+// Security Controls
+.risk-assessment-component__chip--unimplemented {
+  background-color: #d9534f;
+  &:after {
+    content: "Unimplemented"
+  }
+}
+.risk-assessment-component__chip--implemented {
+  background-color: #c9e141;
+  &:after {
+    content: "Implemented"
+  }
+}
+
+.risk-assessment__filters {
+  margin-bottom: 30px;
+  .form-group {
+    margin-right: 30px;
+    .fa-search {
+      color: #9b9b9b;
+      position: absolute;
+      transform: translate(10px, 8px);
+    }
+  }
+  .form-control {
+    color: #4a4a4a;
+    font-size: 13px;
+    font-weight: normal;
+    min-width: 135px;
+  }
+  .form-inline .form-control.risk-assessment__search-input {
+    width: 250px;
+  }
+}
+.risk-assessment__filters__label {
+  color: #9b9b9b;
+  display: block;
+  font-size: 12px;
+  font-weight: normal;
+  text-transform: uppercase;
+}
+
+.risk-assessment__search-input {
+  height: 30px;
+  padding-left: 30px;
+  width: 250px;
+}
+// Bootstrap specificity
+@media (min-width: 768px) {
+  .form-inline .form-control.risk-assessment__search-input {
+    width: 250px;
+  }
+}
