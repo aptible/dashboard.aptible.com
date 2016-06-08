@@ -91,7 +91,7 @@ a.risk-components-nav__link {
 // Risk Assessment Component
 // TODO: replace integer with descriptive computed label
 //
-// 3 - Very High
+// 3 - Severe
 // 2 - High
 // 1 - Medium
 // 0 - Low
@@ -106,7 +106,7 @@ a.risk-components-nav__link {
 .risk-assessment-component__chip--3 {
   background-color: #d9534f;
   &:after {
-    content: "Very High"
+    content: "Severe"
   }
 }
 .risk-assessment-component__chip--2 {

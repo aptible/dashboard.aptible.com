@@ -2,6 +2,9 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model() {
-    return this.modelFor('risk-assessment-component');
+    let riskAssessment = this.modelFor('risk-assessment');
+    let component = this.modelFor('risk-assessment-component');
+
+    return  { riskAssessment, component };
   }
 });
