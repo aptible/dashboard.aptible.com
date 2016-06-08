@@ -1,0 +1,24 @@
+  <thead>
+  <tr>
+    <th>Threat Event</th>
+    <th>Description</th>
+    <th>Risk Index</th>
+    <th>Relevance</th>
+    <th>Base Impact</th>
+    <th></th>
+  </tr>
+</thead>
+<tbody>
+  {{#each filteredThreatEvents as |threatEvent|}}
+    <tr>
+      <td>{{threatEvent.title}}</td>
+      <td>{{threatEvent.description}}</td>
+      <td>{{threatEvent.appliedRiskIndex}}</td>
+      <td>{{threatEvent.relevanceText}}</td>
+      <td>{{threatEvent.impactText}}</td>
+      <td class="base-table__actions">
+        {{link-to 'View' 'threat-event' threatEvent class="btn btn-link"}}
+      </td>
+    </tr>
+  {{/each}}
+</tbody>

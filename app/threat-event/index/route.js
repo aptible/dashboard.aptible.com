@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  redirect() {
-    this.transitionTo('threat-events');
+  model() {
+    return this.modelFor('risk-assessment.threat-events');
   }
 });

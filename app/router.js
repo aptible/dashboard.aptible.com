@@ -1,6 +1,9 @@
-
 import Ember from "ember";
 import config from "./config/environment";
+
+const RISK_ASSESSMENT_COMPONENTS = ["threat_events", "predisposing_conditions",
+                                    "security_controls", "threat_sources",
+                                    "vulnerabilities"];
 
 function spdSteps() {
   this.modal('add-location-modal', {
@@ -203,13 +206,25 @@ Router.map(function() {
       });
 
        this.route("risk-assessment", { path: 'risk_assessments/:risk_assessment_id', resetNamespace: true}, function() {
-        this.route("nodes", { path: ':node_type' }, function() {
+        this.route("activity", { path: 'activity' });
+        this.route("compare", { path: 'compare' });
 
+        RISK_ASSESSMENT_COMPONENTS.forEach((component) => {
+          let inflector = new Ember.Inflector(Ember.Inflector.defaultRules);
+          let indexRoute = component.replace('_', '-');
+          let showRoute = inflector.singularize(indexRoute);
+          let showPath = `${component}/${inflector.singularize(component)}_id`;
+
+          // Index routes e.g threat_events
+          this.route(indexRoute, { path: component, resetNamespace: true }, function() {
+            this.route('new')
+          });
+
+          // Show routes e.g. threat_events/spear_phishing
+          this.route(showRoute, { path: showPath, resetNamespace: true }, function() {
+            this.route('edit');
+          });
         });
-      });
-
-      this.route("risk-assessment-component", { path: 'risk_assessments/:risk_assessment_id/:node_type/:handle', resetNamespace: true }, function() {
-        this.route("edit", { path: 'edit' });
       });
 
       this.route('setup', { path: 'setup', resetNamespace: true}, function() {
