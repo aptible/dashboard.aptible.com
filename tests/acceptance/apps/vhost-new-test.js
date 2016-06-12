@@ -10,7 +10,7 @@ let appVhostsUrl = '/apps/' + appId + '/vhosts';
 let appVhostsApiUrl = '/apps/' + appId + '/vhosts';
 let appVhostsNewUrl = '/apps/' + appId + '/vhosts/new';
 
-module('Acceptance: App Vhost New', {
+module('Acceptance: App Endpoint New', {
   beforeEach: function() {
     App = startApp();
     stubStacks();
@@ -26,7 +26,7 @@ test('visit ' + appVhostsNewUrl + ' requires authentication', function() {
   expectRequiresAuthentication(appVhostsNewUrl);
 });
 
-test(`visiting ${appVhostsUrl} without any Vhosts redirects to ${appVhostsNewUrl}`, function(assert) {
+test(`visiting ${appVhostsUrl} without any endpoints redirects to ${appVhostsNewUrl}`, function(assert) {
   stubStacks();
   stubApp({ id: appId });
   stubStack({ id: 'stubbed-stack' });
@@ -67,16 +67,16 @@ test(`visit ${appVhostsNewUrl} shows creation form`, function(assert) {
   signInAndVisit(appVhostsNewUrl);
 
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new VHost)').length,
+    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
        'has header');
     expectInput('service', {input:'select'});
     expectFocusedInput('service', {input:'select'});
     expectInput('domain-type', {input:'radio'});
     expectInput('certificate-body', {input:'textarea'});
     expectInput('private-key', {input:'textarea'});
-    expectButton('Save VHost');
+    expectButton('Save Endpoint');
     expectButton('Cancel');
-    expectTitle(`Add a domain - ${appHandle} - ${stackHandle}`);
+    expectTitle(`Add an endpoint - ${appHandle} - ${stackHandle}`);
   });
 });
 
@@ -139,18 +139,18 @@ test(`visit ${appVhostsNewUrl} shows creation form with existing certificates`, 
   signInAndVisit(appVhostsNewUrl);
 
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new VHost)').length,
+    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
        'has header');
     expectInput('domain-type', {input:'radio'});
     expectInput('service', {input:'select'});
     expectFocusedInput('service', {input:'select'});
     expectInput('certificate', { input: 'select'});
-    expectButton('Save VHost');
+    expectButton('Save Endpoint');
     expectButton('Cancel');
 
     assert.ok(!find('textarea[name="certificate-body"]').length, 'has no certificate body field');
     assert.ok(!find('textarea[name="private-key"]').length, 'has no private key field');
-    expectTitle(`Add a domain - ${appHandle} - ${stackHandle}`);
+    expectTitle(`Add an endpoint - ${appHandle} - ${stackHandle}`);
 
     let toggle = find('.toggle-new-certificate');
     toggle.click();
@@ -219,20 +219,20 @@ test(`visit ${appVhostsNewUrl} shows creation form without certificates`, functi
   signInAndVisit(appVhostsNewUrl);
 
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new VHost)').length,
+    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
        'has header');
     expectInput('domain-type', {input:'radio'});
     expectInput('service', {input:'select'});
     expectFocusedInput('service', {input:'select'});
     expectInput('certificate-body', {input:'textarea'});
     expectInput('private-key', {input:'textarea'});
-    expectButton('Save VHost');
+    expectButton('Save Endpoint');
     expectButton('Cancel');
-    expectTitle(`Add a domain - ${appHandle} - ${stackHandle}`);
+    expectTitle(`Add an endpoint - ${appHandle} - ${stackHandle}`);
   });
 });
 
-test(`visit ${appVhostsNewUrl} should remove certificate form if default vhost is clicked`, function(assert) {
+test(`visit ${appVhostsNewUrl} should remove certificate form if default endpoint is clicked`, function(assert) {
   let appId = 1;
   let appHandle = 'my-app';
   let serviceId = 'the-service-id';
@@ -286,7 +286,7 @@ test(`visit ${appVhostsNewUrl} should remove certificate form if default vhost i
   signInAndVisit(appVhostsNewUrl);
 
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new VHost)').length,
+    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
       'has header');
 
     expectInput('domain-type', {input:'radio'});
@@ -294,13 +294,13 @@ test(`visit ${appVhostsNewUrl} should remove certificate form if default vhost i
     expectFocusedInput('service', {input:'select'});
     expectInput('certificate-body', {input:'textarea'});
     expectInput('private-key', {input:'textarea'});
-    expectButton('Save VHost');
+    expectButton('Save Endpoint');
     expectButton('Cancel');
-    expectTitle(`Add a domain - ${appHandle} - ${stackHandle}`);
+    expectTitle(`Add an endpoint - ${appHandle} - ${stackHandle}`);
   });
 
   andThen(function(){
-    click( find('label:contains(default domain name)'));
+    click( find('label:contains(default endpoint name)'));
   });
 
   andThen(function(){
@@ -309,7 +309,7 @@ test(`visit ${appVhostsNewUrl} should remove certificate form if default vhost i
   });
 });
 
-test(`visit ${appVhostsNewUrl} shows creation form for service with existing default vhost`, function(assert) {
+test(`visit ${appVhostsNewUrl} shows creation form for service with existing default endpoint`, function(assert) {
   let appId = 1;
   let appHandle = 'my-app';
   let serviceId = 'the-service-id';
@@ -367,7 +367,7 @@ test(`visit ${appVhostsNewUrl} shows creation form for service with existing def
   signInAndVisit(appVhostsNewUrl);
 
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new VHost)').length,
+    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
       'has header');
 
     expectInput('service', {input:'select'});
@@ -375,9 +375,9 @@ test(`visit ${appVhostsNewUrl} shows creation form for service with existing def
     expectNoInput('domain-type', {input:'radio'});
     expectInput('certificate-body', {input:'textarea'});
     expectInput('private-key', {input:'textarea'});
-    expectButton('Save VHost');
+    expectButton('Save Endpoint');
     expectButton('Cancel');
-    expectTitle(`Add a domain - ${appHandle} - ${stackHandle}`);
+    expectTitle(`Add an endpoint - ${appHandle} - ${stackHandle}`);
   });
 });
 
@@ -465,7 +465,7 @@ test(`visit ${appVhostsNewUrl} and create vhost with existing certificates`, fun
 
   visit(appVhostsNewUrl);
   andThen(function(){
-    clickButton('Save VHost');
+    clickButton('Save Endpoint');
   });
 });
 
@@ -529,11 +529,11 @@ test(`visit ${appVhostsNewUrl} and create vhost with new certificate`, function(
   andThen(function(){
     fillInput('certificate-body', 'my long cert');
     fillInput('private-key', 'my long pk');
-    clickButton('Save VHost');
+    clickButton('Save Endpoint');
   });
 });
 
-test(`visit ${appVhostsNewUrl} and create default vhost`, function(assert) {
+test(`visit ${appVhostsNewUrl} and create default endpoint`, function(assert) {
   assert.expect(6);
 
   let appId = 1;
@@ -582,6 +582,6 @@ test(`visit ${appVhostsNewUrl} and create default vhost`, function(assert) {
   visit(appVhostsNewUrl);
   andThen(function(){
     fillInput('domain-type', true);
-    clickButton('Save VHost');
+    clickButton('Save Endpoint');
   });
 });

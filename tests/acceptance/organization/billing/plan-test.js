@@ -93,7 +93,7 @@ test(`on plan "development": shows default allowances for "platform" upgrade`, (
 
     assert.equal(containers.text().trim(), '6 x 1GB Containers included');
     assert.equal(diskSpace.text().trim(), '1TB Disk, Encryption & Backups included');
-    assert.equal(domains.text().trim(), '4 Domains included');
+    assert.equal(domains.text().trim(), '4 Endpoints included');
   });
 });
 
@@ -110,7 +110,7 @@ test(`on plan "platform": shows custom allowances`, (assert) => {
 
     assert.equal(containers.text().trim(), '15 x 1GB Containers included');
     assert.equal(diskSpace.text().trim(), '2.5TB Disk, Encryption & Backups included');
-    assert.equal(domains.text().trim(), '10 Domains included');
+    assert.equal(domains.text().trim(), '10 Endpoints included');
   });
 });
 
@@ -127,7 +127,7 @@ test(`on plan "production": shows custom allowances`, (assert) => {
 
     assert.equal(containers.text().trim(), '15 x 1GB Containers included');
     assert.equal(diskSpace.text().trim(), '2.5TB Disk, Encryption & Backups included');
-    assert.equal(domains.text().trim(), '10 Domains included');
+    assert.equal(domains.text().trim(), '10 Endpoints included');
   });
 });
 

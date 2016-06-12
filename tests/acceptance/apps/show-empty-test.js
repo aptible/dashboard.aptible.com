@@ -93,7 +93,7 @@ test(`visit ${url} when app has not been deployed`, function(assert){
 
     // hidden tabs
     //expectNoTab('Services');
-    //expectNoTab('Domains');
+    //expectNoTab('Endpoints');
 
     // displayed steps
 

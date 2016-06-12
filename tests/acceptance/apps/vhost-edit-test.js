@@ -18,7 +18,7 @@ let vhostsUrl = `/apps/${appId}/vhosts`;
 
 let url = `/apps/${appId}/vhosts/${vhostId}/edit`;
 
-module('Acceptance: App Vhost Edit', {
+module('Acceptance: App Endpoint Edit', {
   beforeEach: function() {
     App = startApp();
     stubStacks();
@@ -109,7 +109,7 @@ test(`visit ${url} shows form with certificates`, function(assert) {
     assert.ok(!findInput('certificate-body').length, 'has no certificate body field');
     assert.ok(!findInput('private-key').length, 'has no private key field');
 
-    expectButton('Save VHost');
+    expectButton('Save Endpoint');
     expectButton('Cancel');
   });
 });
@@ -148,7 +148,7 @@ test(`visit ${url} shows form without certificates`, function(assert) {
     assert.equal(findInput('private-key').val(), '',
           'private key is empty');
 
-    expectButton('Save VHost');
+    expectButton('Save Endpoint');
     expectButton('Cancel');
   });
 });
@@ -169,7 +169,7 @@ test(`visit ${url} click save`, function(assert) {
   });
 
   stubRequest('put', `/vhosts/${vhostId}`, function(request){
-    assert.ok(true, 'posts to create vhost');
+    assert.ok(true, 'posts to create endpoint');
     let json = this.json(request);
     assert.equal(json.certificate, certificateHref);
 
@@ -177,14 +177,14 @@ test(`visit ${url} click save`, function(assert) {
   });
 
   stubRequest('get', `/vhosts/${vhostId}`, function(request){
-    assert.ok(true, 'reloads the updated vhost');
+    assert.ok(true, 'reloads the updated endpoint');
     let json = this.json(request);
     return this.success(Ember.merge(json, {id:vhostId, status: 'provisioned' }));
   });
 
 
   stubRequest('post', `/vhosts/${vhostId}/operations`, function(request){
-    assert.ok(true, 'posts to create vhost operation');
+    assert.ok(true, 'posts to create endpoint operation');
     let json = this.json(request);
 
     assert.equal(json.type, 'provision');
@@ -202,20 +202,20 @@ test(`visit ${url} click save`, function(assert) {
     fillIn(findInput('certificate-body'), newCert);
     fillIn(findInput('private-key'), newPk);
 
-    click(findButton('Save VHost'));
+    click(findButton('Save Endpoint'));
   });
 
   andThen( () => {
     assert.equal(currentPath(), 'dashboard.requires-read-access.app.vhosts.index');
 
     assert.ok( find(`.vhost .vhost-virtualdomain:contains(health.io)`).length,
-        'shows new virtual domain health.io');
+        'shows new endpoint health.io');
   });
 });
 
 test(`visit ${url} click save and error`, function(assert) {
   let stackId = 'stubbed-stack';
-  let errorMsg = 'There was an error with this domain';
+  let errorMsg = 'There was an error with this endpoint';
 
   stubRequest('get', `/accounts/${stackId}/certificates`, function(){
     return this.success({ _embedded: { certificates: [] } });
@@ -239,7 +239,7 @@ test(`visit ${url} click save and error`, function(assert) {
   signInAndVisit(url);
 
   andThen( () => {
-    click(findButton('Save VHost'));
+    click(findButton('Save Endpoint'));
   });
 
   andThen( () => {

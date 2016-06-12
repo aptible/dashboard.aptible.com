@@ -54,7 +54,7 @@ test('if resource equals disk then grossUsage should equal the sum of stack tota
   }, 0));
 });
 
-test('if resource equals domain then grossUsage should equal the sum of stack domainCount', function(assert) {
+test('if resource equals endpoint then grossUsage should equal the sum of stack domainCount', function(assert) {
   assert.expect(2);
 
   // creates the component instance

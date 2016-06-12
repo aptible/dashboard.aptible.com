@@ -3,7 +3,7 @@ import Ember from "ember";
 export default Ember.Route.extend({
   titleToken: function(){
     var app = this.modelFor('app');
-    return `${app.get('handle')} Domains`;
+    return `${app.get('handle')} Endpoints`;
   },
   redirect: function(model) {
     if(model.get('length') === 0) {
@@ -16,7 +16,7 @@ export default Ember.Route.extend({
       this.controller.set('error', null);
     },
     failDeletion: function(/* e */){
-      this.controller.set('error', 'There was an error deleting the VHost.');
+      this.controller.set('error', 'There was an error deleting the endpoint.');
     },
     completeDeletion: function(){
       this.controller.set('error', null);

@@ -4,7 +4,11 @@ export const HOURS_PER_MONTH = 730;
 
 export default Ember.Component.extend({
   resourceLabel: Ember.computed('resource', function() {
-    return this.get('resource').capitalize().pluralize();
+    if(this.get('resource') === 'domain') {
+      return 'Endpoints';
+    } else {
+      return this.get('resource').capitalize().pluralize();
+    }
   }),
 
   diskUsage: Ember.computed.mapBy('stacks', 'totalDiskSize'),

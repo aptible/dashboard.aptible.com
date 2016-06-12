@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   titleToken() {
     var app = this.modelFor('app');
-    return `Add a domain - ${app.get('handle')}`;
+    return `Add an endpoint - ${app.get('handle')}`;
   },
 
   model() {
@@ -71,14 +71,14 @@ export default Ember.Route.extend({
 
         return op.save();
       }).then(() => {
-        let message = `Domain ${vhost.get('virtualDomain')} created`;
+        let message = `Endpoint created: ${vhost.get('virtualDomain')}`;
 
         this.transitionTo('app.vhosts');
         Ember.get(this, 'flashMessages').success(message);
       }).catch( (e) => {
         let message = Ember.get(e, 'responseJSON.message') ||
                       Ember.get(e, 'message') ||
-                      `There was an error updating ${vhost.get('virtualDomain')}`;
+                      `There was an error updating endpoint ${vhost.get('virtualDomain')}`;
         Ember.get(this, 'flashMessages').danger(message);
       });
     },
