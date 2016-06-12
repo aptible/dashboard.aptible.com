@@ -127,12 +127,12 @@ test(`visit /apps/app-id shows current tab with active class`, function(assert) 
 
   andThen(() => {
     assert.equal(find('li.active a:contains(Services)').length, 1, 'Services is active');
-    assert.equal(find('li.active a:contains(Domains)').length, 0, 'Domains is inactive');
-    clickButton('Domains');
+    assert.equal(find('li.active a:contains(Endpoints)').length, 0, 'Endpoints is inactive');
+    clickButton('Endpoints');
   });
 
   andThen(() => {
     assert.equal(find('li.active a:contains(Services)').length, 0, 'Services is inactive');
-    assert.equal(find('li.active a:contains(Domains)').length, 1, 'Domains is active');
+    assert.equal(find('li.active a:contains(Endpoints)').length, 1, 'Endpoints is active');
   });
 });

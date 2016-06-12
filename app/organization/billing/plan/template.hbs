@@ -53,7 +53,7 @@
                 {{fa-icon "check" classNames="primary"}} {{gb-to-tb 1000}}TB Disk, Encryption &amp; Backups included
               </li>
               <li>
-                {{fa-icon "check" classNames="primary"}} 4 Domains included
+                {{fa-icon "check" classNames="primary"}} 4 Endpoints included
               </li>
             {{else}}
               <li>
@@ -63,7 +63,7 @@
                 {{fa-icon "check" classNames="primary"}} {{gb-to-tb (if model.diskAllowance model.diskAllowance 1000)}}TB Disk, Encryption &amp; Backups included
               </li>
               <li>
-                {{fa-icon "check" classNames="primary"}} {{if model.domainAllowance model.domainAllowance 4}} Domains included
+                {{fa-icon "check" classNames="primary"}} {{if model.domainAllowance model.domainAllowance 4}} Endpoints included
               </li>
             {{/if}}
             <li>

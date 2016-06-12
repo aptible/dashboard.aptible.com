@@ -65,7 +65,7 @@ export default Ember.Route.extend({
 
         return op.save();
       }).then( () => {
-        let message = `Domain ${vhost.get('virtualDomain')} updated.`;
+        let message = `Endpoint ${vhost.get('virtualDomain')} updated.`;
         Ember.get(this, 'flashMessages').success(message);
 
         return vhost.reload();
@@ -74,7 +74,7 @@ export default Ember.Route.extend({
       }).catch( (e) => {
         let message = Ember.get(e, 'responseJSON.message') ||
                       Ember.get(e, 'message') ||
-                      `There was an error updating ${vhost.get('virtualDomain')}`;
+                      `There was an error updating the ${vhost.get('virtualDomain')} endpoint`;
         Ember.get(this, 'flashMessages').danger(message);
       });
     },

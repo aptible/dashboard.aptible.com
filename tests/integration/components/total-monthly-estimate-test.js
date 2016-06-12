@@ -14,7 +14,7 @@ test('sums usage correctly', function(assert) {
                                             domainCentsPerHour: 5, diskCentsPerHour: 0.0507, planRate: 0 });
 
   // Net container rate: (11 + 3 - 6) * 8 * 730 = 46720
-  // Net domain rate: (8 + 1 - 4) * 5 * 730 = 18250
+  // Net endpoint rate: (8 + 1 - 4) * 5 * 730 = 18250
   // Net disk rate: (2000 + 1000 - 1000) * .0507 * 730 = 74022
   // Net cents: 138992
   // net dollars: $1,389.92
@@ -34,7 +34,7 @@ test('sums usage with base plan rate correctly', function(assert) {
                                             domainCentsPerHour: 5, diskCentsPerHour: 0.0507, planRate: 349900 });
 
   // Net container rate: (11 + 3 - 6) * 8 * 730 = 46720
-  // Net domain rate: (8 + 1 - 4) * 5 * 730 = 18250
+  // Net endpoint rate: (8 + 1 - 4) * 5 * 730 = 18250
   // Net disk rate: (2000 + 1000 - 1000) * .0507 * 730 = 74022
   // Net plan rate 349900
   // Net cents: 488892
