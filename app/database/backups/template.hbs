@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-xs-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>Create a New Database Backup</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+        You can initiate the creation of a new backup at any time. Existing
+        backups are shown below. Note that if you schedule a manual backup,
+        Aptible won't schedule an automated backup for another 24 hours.
+        </p>
+        <button class="btn btn-success btn-lg" {{action 'createBackup'}}>
+          Create New Backup
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<div>
+  <div class="row">
+    {{#each model as |backup|}}
+      <div class="col-xs-4">
+        {{backup-item backup=backup}}
+      </div>
+    {{/each}}
+  </div>
+</div>
+
+{{aptible-pagination currentPage=currentPage
+  totalCount=totalCount
+  perPage=perPage
+  nextPage="nextPage"
+  prevPage="prevPage"}}
