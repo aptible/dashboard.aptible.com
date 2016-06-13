@@ -10,12 +10,15 @@ let application;
 let orgId = 1; // FIXME this is hardcoded to match the value for signIn in aptible-helpers
 let url = `/organizations/${orgId}/environments/new`;
 
+var setupBillingDetail = function(plan='production') {
+  stubBillingDetail({ id:orgId, plan: plan});
+};
+
 module('Acceptance: Organizations: Environments: New', {
   beforeEach: function() {
     application = startApp();
     stubOrganizations();
     stubOrganization({ id:orgId });
-    stubBillingDetail({ id:orgId, plan: 'production'});
   },
 
   afterEach: function() {
@@ -24,10 +27,12 @@ module('Acceptance: Organizations: Environments: New', {
 });
 
 test(`visiting ${url} requires authentication`, () => {
+  setupBillingDetail();
   expectRequiresAuthentication(url);
 });
 
 test(`visiting ${url} shows form to create new environment`, (assert) => {
+  setupBillingDetail();
   stubStacks();
   signInAndVisit(url);
   andThen(() => {
@@ -41,6 +46,8 @@ test(`visiting ${url} shows form to create new environment`, (assert) => {
 
 test(`visiting ${url} and creating new environment`, (assert) => {
   const handle = 'some-handle';
+
+  setupBillingDetail();
 
   stubRequest('get', `/accounts`, function(){
     return this.success({
@@ -76,6 +83,8 @@ test(`visiting ${url} and creating new environment`, (assert) => {
 
 test(`visiting ${url} and with duplicate handle`, (assert) => {
   const handle = 'some-handle';
+
+  setupBillingDetail();
 
   stubRequest('get', `/accounts`, function(){
     return this.success({
@@ -117,6 +126,8 @@ test(`visiting ${url} and with duplicate handle`, (assert) => {
 test(`visiting ${url} and creating new prod environment`, (assert) => {
   const handle = 'some-handle';
 
+  setupBillingDetail();
+
   stubRequest('get', `/accounts`, function(){
     return this.success({
       _embedded: {
@@ -143,6 +154,44 @@ test(`visiting ${url} and creating new prod environment`, (assert) => {
   andThen(() => {
     fillInput('environment-handle', handle);
     check('environment-phi');
+    clickButton('Save environment');
+  });
+  andThen(() => {
+    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.environments.index');
+  });
+});
+
+test(`Creating a new environment with non-phi plan offers a link to upgrade`, (assert) => {
+  const handle = 'some-handle';
+
+  setupBillingDetail('development');
+
+  stubRequest('get', `/accounts`, function(){
+    return this.success({
+      _embedded: {
+      }
+    });
+  });
+
+  stubRequest('post', `/accounts`, function(request){
+    assert.ok(true, 'posts to /accounts');
+    let json = this.json(request);
+    assert.equal(json.handle, handle, 'has handle');
+    assert.equal(json.type, 'development', 'development env');
+    return this.success({
+      id: handle,
+      handle
+    });
+  });
+
+  stubRequest('post', '/claims/account', function(){
+    return this.success({});
+  });
+
+  signInAndVisit(url);
+  andThen(() => {
+    fillInput('environment-handle', handle);
+    assert.ok(find('.form-group a[href*="contact.aptible.com"]:contains(Contact support to upgrade to PHI ready plan.)').length);
     clickButton('Save environment');
   });
   andThen(() => {
