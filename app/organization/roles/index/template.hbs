@@ -21,7 +21,7 @@
     <div class="resource-actions">
       {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
         {{#if hasAbility}}
-          {{#link-to 'organization.roles.new' classNames='btn btn-primary'}}Create role{{/link-to}}
+          {{#link-to 'organization.roles.new' classNames='btn btn-primary'}}Create Role{{/link-to}}
         {{/if}}
       {{/aptible-ability}}
     </div>

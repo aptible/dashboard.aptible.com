@@ -90,7 +90,7 @@ test(`visiting ${url} shows roles`, (assert) => {
       }
     });
 
-    expectButton('Create role');
+    expectButton('Create Role');
   });
 });
 
