@@ -14,7 +14,6 @@ test('basic attributes are set', function(assert) {
   let title = this.$('.resource-label');
   let rate = this.$('.resource-rate');
   let stackHandle = this.$('.stack-handle');
-
   assert.equal(title.text(), 'Containers', 'has a resource title');
   assert.equal(rate.text(), '$0.08 per hour', 'has a resource rate');
   assert.equal($.trim(stackHandle.text()), 'stack1', 'has a stack');

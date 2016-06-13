@@ -1,17 +1,17 @@
-<div class="usage-label stack-handle">
-  {{stack.handle}}
+<div class="stack-resource-environment">
+  Environment: <span class="stack-handle">{{stack.handle}}</span>
 </div>
 
 <table class="usage-value stack-usage-value">
   {{#if isContainer}}
-    <tr><th>App containers</th></tr>
+    <tr><th>App Containers</th></tr>
     {{#each stack.apps as |app|}}
       {{#each app.services as |service|}}
         {{ service-resource-usage handle=app.handle service=service release=service.currentRelease hourlyRate=hourlyRate }}
       {{/each}}
     {{/each}}
 
-    <tr><th>Database containers</th></tr>
+    <tr><th>Database Containers</th></tr>
     {{#each stack.databases as |database|}}
       {{ service-resource-usage handle=database.handle service=database.service release=database.service.currentRelease hourlyRate=hourlyRate }}
     {{/each}}
