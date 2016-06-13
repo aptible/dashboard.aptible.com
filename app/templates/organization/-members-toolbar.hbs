@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-xs-12">
+    <!-- <div class="aptable-tools pull-left">
+      <div class="aptable-tools__search">
+        <div class="form-group">
+          <label class="aptable-tools__label">Search</label>
+          <i class="fa fa-search"></i>
+          {{input value=filterValue type='text' class='aptable-tools__search-input input-xs'}}
+        </div>
+     </div>
+    </div> -->
+
+    <div class="pull-right">
+      {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
+        {{#if hasAbility}}
+          {{#link-to 'organization.invite' class="btn btn-primary"}}
+            Invite New Member
+          {{/link-to}}
+        {{/if}}
+      {{/aptible-ability}}
+    </div>
+  </div>
+</div>

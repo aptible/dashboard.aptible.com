@@ -1,0 +1,23 @@
+<tr class="aptable__pending-invite-row">
+  <td>{{invitation.email}}</td>
+  <td>{{invitation.role.name}}</td>
+  <td>{{invitation.inviterName}}</td>
+  <td>{{format-date invitation.createdAt}}</td>
+  <!-- Actions -->
+  <td class="aptable__actions">
+    {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
+      {{#if hasAbility}}
+        <a class="btn btn-default btn-xs" {{action 'destroyInvitation' invitation}} href="#">
+          {{#bs-tooltip title="Delete Invitation"}}
+            <i class="fa fa-times"></i>
+          {{/bs-tooltip}}
+        </a>
+        <a class="btn btn-default btn-xs" {{action 'resendInvitation' invitation}} href="#">
+          {{#bs-tooltip title="Resend Invitation"}}
+          <i class="fa fa-undo"></i>
+          {{/bs-tooltip}}
+        </a>
+      {{/if}}
+    {{/aptible-ability}}
+  </td>
+</tr>

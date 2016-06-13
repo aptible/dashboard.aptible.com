@@ -1,6 +1,6 @@
 {{partial 'organization/members-toolbar'}}
 
-<div class="sort-group organization-members">
+<div class="sort-group organization-pending-invitations">
   <ul class='aptable__nav'>
     {{#if organization.invitations}}
       {{#activating-item currentWhen="organization.members.index" tagName="li"}}
@@ -15,21 +15,17 @@
   <table class="aptable">
     <thead>
       <tr>
-        <th>Name</th>
         <th>Email</th>
-        <th>Roles</th>
-        <th>MFA</th>
-        {{#aptible-ability user=session.currentUser scope='manage' permittable=organization as |hasAbility|}}
-          {{#if hasAbility}}
-            <th></th>
-          {{/if}}
-        {{/aptible-ability}}
+        <th>Role</th>
+        <th>Invited By</th>
+        <th>Invited On</th>
+        <th class="aptable__actions"></th>
       </tr>
     </thead>
 
     <tbody>
-      {{#each sortedMembers as |user|}}
-        {{partial 'organization/user-table-row'}}
+      {{#each sortedInvites as |invitation|}}
+        {{partial 'organization/invited-user-table-row'}}
       {{/each}}
     </tbody>
   </table>
