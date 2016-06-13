@@ -12,7 +12,8 @@ var types = {
   clone: 'fa-copy',
   deprovision: 'fa-remove',
   reprovision: 'fa-refresh',
-  replicate: 'fa-clone'
+  replicate: 'fa-clone',
+  backup: 'fa-hdd-o'
 };
 
 var statuses = {
