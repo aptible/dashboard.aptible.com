@@ -12,7 +12,7 @@ var appVhostsUrl = '/apps/' + appId + '/vhosts';
 var appVhostsApiUrl = '/apps/' + appId + '/vhosts';
 var appVhostsNewUrl = '/apps/' + appId + '/vhosts/new';
 
-module('Acceptance: App Vhosts', {
+module('Acceptance: App Endpoints', {
   beforeEach: function() {
     App = startApp();
     stubStacks();
@@ -91,11 +91,11 @@ test(`visit ${appVhostsUrl} has link to ${appVhostsNewUrl}`, function() {
 
   andThen(function(){
     expectLink(appVhostsNewUrl);
-    expectTitle(`${appHandle} Domains - ${stackHandle}`);
+    expectTitle(`${appHandle} Endpoints - ${stackHandle}`);
   });
 });
 
-test(`visit ${appVhostsUrl} lists active vhosts`, function(assert) {
+test(`visit ${appVhostsUrl} lists active endpoints`, function(assert) {
   var vhosts = [{
     id: 1,
     virtual_domain: 'www.health1.io',
@@ -126,7 +126,7 @@ test(`visit ${appVhostsUrl} lists active vhosts`, function(assert) {
     vhosts.forEach(function(vhost, index){
       let vhostEl = find(`.vhost:eq(${index})`);
       assert.ok(vhostEl.find(`:contains(${vhost.virtual_domain})`).length,
-         `has virtual domain "${vhost.virtual_domain}"`);
+         `has endpoint "${vhost.virtual_domain}"`);
 
       assert.ok(vhostEl.find(`:contains(${vhost.external_host})`).length,
          `has external host "${vhost.external_host}"`);
@@ -173,7 +173,7 @@ test(`visit ${appVhostsUrl} lists pending vhosts`, function(assert) {
     vhosts.forEach(function(vhost, index){
       let vhostEl = find(`.vhost:eq(${index})`);
       assert.ok(vhostEl.find(`:contains(${vhost.virtual_domain})`).length,
-         `has virtual domain "${vhost.virtual_domain}"`);
+         `has endpoint "${vhost.virtual_domain}"`);
 
       assert.ok(vhostEl.find(`:contains(${vhost.external_host})`).length,
          `has external host "${vhost.external_host}"`);
@@ -224,7 +224,7 @@ test(`visit ${appVhostsUrl} lists deprovisioning`, function(assert) {
     vhosts.forEach(function(vhost, index){
       let vhostEl = find(`.vhost:eq(${index})`);
       assert.ok(vhostEl.find(`:contains(${vhost.virtual_domain})`).length,
-         `has virtual domain "${vhost.virtual_domain}"`);
+         `has endpoint "${vhost.virtual_domain}"`);
 
       assert.ok(vhostEl.find(`:contains(${vhost.external_host})`).length,
          `has external host "${vhost.external_host}"`);
@@ -235,7 +235,7 @@ test(`visit ${appVhostsUrl} lists deprovisioning`, function(assert) {
   });
 });
 
-test(`visit ${appVhostsUrl} allows deleting vhost`, function(assert) {
+test(`visit ${appVhostsUrl} allows deleting endpoint`, function(assert) {
   assert.expect(2);
 
   let vhostId = 'vhost-1';
@@ -263,11 +263,11 @@ test(`visit ${appVhostsUrl} allows deleting vhost`, function(assert) {
   });
   andThen(function(){
     assert.equal(find('.vhost').length, 0,
-          'the vhost is no longer shown in the UI');
+          'the endpoint is no longer shown in the UI');
   });
 });
 
-test(`visit ${appVhostsUrl} and delete vhost has error`, function(assert) {
+test(`visit ${appVhostsUrl} and delete endpoint has error`, function(assert) {
   assert.expect(2);
 
   let vhostId = 'vhost-1';
@@ -293,7 +293,7 @@ test(`visit ${appVhostsUrl} and delete vhost has error`, function(assert) {
     click(findButton('Delete'));
   });
   andThen(function(){
-    let errorMessage = 'error deleting the VHost';
+    let errorMessage = 'error deleting the endpoint';
     let alert = find(`.alert`);
     assert.ok(alert.length, 'displays error div');
     assert.ok(alert.text().indexOf(errorMessage) > -1,

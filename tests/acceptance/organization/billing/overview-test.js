@@ -45,7 +45,7 @@ test(`visiting ${url} shows current plan and resource usage`, (assert) => {
     assert.notOk(find('.sort-header:contains(Discounts)').length, 'has a discounts section');
     assert.ok(find('.resource-label:contains(Containers)').length, 'has a containers quote');
     assert.ok(find('.resource-label:contains(Disk)').length, 'has a disk quote');
-    assert.ok(find('.resource-label:contains(Domains)').length, 'has a domains quote');
+    assert.ok(find('.resource-label:contains(Endpoints)').length, 'has an endpoints quote');
   });
 });
 
