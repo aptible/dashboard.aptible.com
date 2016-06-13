@@ -2,13 +2,23 @@ import Ember from 'ember';
 
 export const HOURS_PER_MONTH = 730;
 
+const RESOURCE_LABELS = {
+  'domain': 'endpoint',
+  'disk': 'disk',
+  'container': 'container'
+};
+
 export default Ember.Component.extend({
-  resourceLabel: Ember.computed('resource', function() {
-    if(this.get('resource') === 'domain') {
-      return 'Endpoints';
-    } else {
-      return this.get('resource').capitalize().pluralize();
-    }
+  resourceHandle: Ember.computed('resource', function() {
+    return this.get('resource').toLowerCase();
+  }),
+
+  resourceTitle: Ember.computed('resourceHandle', function() {
+    return RESOURCE_LABELS[this.get('resourceHandle')].capitalize().pluralize();
+  }),
+
+  resourceLabel: Ember.computed('resourceHandle', function() {
+    return RESOURCE_LABELS[this.get('resourceHandle')];
   }),
 
   diskUsage: Ember.computed.mapBy('stacks', 'totalDiskSize'),
