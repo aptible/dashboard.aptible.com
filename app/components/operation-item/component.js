@@ -10,6 +10,9 @@ export default Ember.Component.extend({
     if(type === 'rebuild') {
       return 'rebuilt';
     }
+    if(type === 'backup') {
+      return 'backed up';
+    }
     if (type.slice(-1) === 'e') {
       return `${type}d`;
     }
