@@ -13,7 +13,7 @@ let orgId = 1;
 let url = `/organizations/${orgId}/members`;
 let membersUrl = `/organizations/${orgId}/users`;
 
-module('Acceptance: OrganizationMembers', {
+module('Acceptance: Organization Members', {
   beforeEach: function() {
     application = startApp();
     stubStacks();
@@ -78,7 +78,7 @@ test(`visiting ${url} shows users`, function(assert) {
     return this.success(users);
   });
 
-  assert.expect(5 + 2*users.length);
+  assert.expect(6 + 2*users.length);
 
   stubRequest('get', membersUrl, function(){
     assert.ok(true, 'Request for members is made');
@@ -104,6 +104,8 @@ test(`visiting ${url} shows users`, function(assert) {
       expectLink(`/organizations/${orgId}/members/${user.id}`);
     });
 
+    assert.ok(find('.aptable__member-row .aptable__actions .btn').length,
+                   'Edit action is rendered for stubbed user.');
     assert.ok(find('.aptable__member-row:contains(Mike):contains(Disabled)').length,
                    '2FA status disabled is shown for Mike');
     assert.ok(find('.aptable__member-row:contains(Bob):contains(Enabled)').length,
