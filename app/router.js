@@ -76,9 +76,10 @@ Router.map(function() {
         path: "databases/:database_id"
       }, function() {
         this.route("activity");
+        this.route("metrics");
+        this.route("backups");
         this.route("replicate");
         this.route("cluster");
-        this.route("metrics");
         this.route("deprovision");
       });
 
