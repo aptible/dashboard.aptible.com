@@ -285,6 +285,8 @@ test(`visit ${appVhostsNewUrl} should remove certificate form if default endpoin
 
   signInAndVisit(appVhostsNewUrl);
 
+
+  Error.stackTraceLimit = 1000;
   andThen(function(){
     assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
       'has header');
@@ -300,7 +302,8 @@ test(`visit ${appVhostsNewUrl} should remove certificate form if default endpoin
   });
 
   andThen(function(){
-    click( find('label:contains(default endpoint name)'));
+    let button = findWithAssert('label:contains(default endpoint address)');
+    click(button);
   });
 
   andThen(function(){
