@@ -123,8 +123,8 @@ test(`visit ${url} allows scaling of services`, function(assert) {
 
   stubRequest('post', `/services/${serviceId}/operations`, function(request){
     let json = this.json(request);
-    assert.equal(json.type, 'scale');
-    assert.equal(json.container_count, newContainerCount);
+    assert.equal(json.type, 'scale', 'is of scale type');
+    assert.equal(json.container_count, newContainerCount, 'has correct container count');
     json.id = serviceId;
     return this.success(json);
   });
@@ -139,11 +139,12 @@ test(`visit ${url} allows scaling of services`, function(assert) {
 
   signInAndVisit(url);
   andThen(() => {
-    assert.equal($('.btn:contains("Scale")').css('visibility'), 'hidden');
+    assert.equal($('.btn:contains("Scale")').css('visibility'), 'hidden', 'Scale button is hidden');
     triggerSlider('.slider', newContainerCount);
   });
+
   andThen(() => {
-    assert.equal($('.btn:contains("Scale")').css('visibility'), 'visible');
+    assert.equal($('.btn:contains("Scale")').css('visibility'), 'visible', 'Scale button is visible');
     clickButton('Scale');
   });
 });
