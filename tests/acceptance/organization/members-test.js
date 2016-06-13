@@ -104,9 +104,9 @@ test(`visiting ${url} shows users`, function(assert) {
       expectLink(`/organizations/${orgId}/members/${user.id}`);
     });
 
-    assert.ok(find('.user:contains(Mike) .resource-metadata-value:contains(Disabled)').length,
+    assert.ok(find('.aptable__member-row:contains(Mike):contains(Disabled)').length,
                    '2FA status disabled is shown for Mike');
-    assert.ok(find('.user:contains(Bob) .resource-metadata-value:contains(Enabled)').length,
+    assert.ok(find('.aptable__member-row:contains(Bob):contains(Enabled)').length,
                    '2FA status enabled is shown for Bob');
   });
 });

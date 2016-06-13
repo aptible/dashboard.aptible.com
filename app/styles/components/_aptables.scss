@@ -1,0 +1,106 @@
+//
+// Aptible Table Component
+//
+.aptable {
+  border: 1px solid #E0E0E0;
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.06);
+  border-radius: 3px;
+  border-collapse: separate;
+  width: 100%;
+
+  table {
+    width: 100%;
+  }
+
+  th, td {
+    background-color: #fff;
+    border-left: 1px solid #e0e0e0;
+    padding: 15px 20px;
+    transition: background-color 0.25s ease-in-out;
+    &:first-child {
+      border-left: none;
+    }
+  }
+
+  thead tr:first-child {
+    th {
+      &:first-child {
+        border-top-left-radius: 3px
+      }
+      &:last-child {
+        border-top-right-radius: 3px;
+      }
+    }
+  }
+
+  tr:last-child {
+    td {
+      &:first-child {
+        border-bottom-left-radius: 3px;
+      }
+      &:last-child {
+        border-bottom-right-radius: 3px;
+      }
+    }
+  }
+
+  th {
+    border-bottom: 1px solid #e0e0e0;
+    color: #9B9B9B;
+    font-size: 12px;
+    font-weight: 300;
+    text-transform: uppercase;
+  }
+  tr:hover {
+    td {
+      background-color: #F7F8FB;
+    }
+    .aptable__actions .btn {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}
+
+.aptable__actions {
+  text-align: right;
+  .btn {
+    color: #999;
+    opacity: 0;
+    transition: opacity 0.25s ease-in-out;
+    visibility: hidden;
+    &:hover {
+      color: #999;
+    }
+  }
+  a.btn.btn-xs {
+    padding: 1px 4px;
+  }
+}
+
+
+.aptable__nav {
+  margin-bottom: 10px;
+  padding: 0;
+  list-style: none;
+  li {
+    display: inline-block;
+    font-size: 11px;
+    margin-right: 20px;
+    text-transform: uppercase;
+    a {
+      color: rgba(157,157,157,0.7);
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    &.active a {
+      color: #4a4a4a;
+      cursor: default;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+}

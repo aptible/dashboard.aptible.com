@@ -122,6 +122,7 @@ Router.map(function() {
         path: "/organizations/:organization_id"
       }, function() {
         this.route("members", {}, function() {
+          this.route('pending-invitations');
           this.route("edit", {path: ":user_id/edit"});
         });
         this.route("roles", {}, function() {
