@@ -5,6 +5,10 @@
 @import "ember-json-schema-views";
 
 
+@import "components/aptables";
+@import "components/labels";
+@import "components/typography";
+@import "components/profile-image";
 @import "components/activate-notice";
 @import "components/button-with-confirmation";
 @import "components/change-plan";

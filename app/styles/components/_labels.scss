@@ -1,0 +1,17 @@
+//
+// Some adjustments to bootstrap labels
+// http://getbootstrap.com/components/#labels
+//
+.label {
+  border-radius: 3px;
+  font-size: 11px;
+  padding: 5px 8px;
+  text-transform: uppercase;
+  font-weight: 100;
+}
+.label-danger {
+  background: #DF5365;
+}
+.label-success {
+  background: #7ED321;
+}
