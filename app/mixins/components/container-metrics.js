@@ -12,7 +12,7 @@ export default Ember.Mixin.create({
     }));
   },
 
-  data: Ember.computed("containers.@each", "horizon", "lastReload", "metric", function () {
+  data: Ember.computed("containers.[]", "horizon", "lastReload", "metric", function () {
     let horizon = this.get("horizon");
     let containers = this.get("containers");
 
@@ -36,46 +36,55 @@ export default Ember.Mixin.create({
   }),
 
   grid: Ember.computed("gridLines" , function () {
-    return {
-      y: {
-        lines: this.get("gridLines")
-      }
-    };
+    return Ember.RSVP.hash({
+      gridLines: this.get("gridLines")
+    }).then((h) => {
+      return {
+        y: {
+          lines: h.gridLines
+        }
+      };
+    });
   }),
 
   axis: Ember.computed("axisLabel", "axisFormatter", "axisBottomPadding", "axisMax", function () {
-    let axis = {
-      x: {
-        type: 'timeseries',
-        tick: {
-          format: formatUtcTimestamp,
-          culling: {
-            max: 4
+    return Ember.RSVP.hash({
+      axisLabel: this.get("axisLabel"),
+      axisFormatter: this.get("axisFormatter"),
+      axisBottomPadding: this.getWithDefault("axisBottomPadding", null),
+      axisMax: this.get("axisMax")
+    }).then((h) => {
+      let axis = {
+        x: {
+          type: 'timeseries',
+          tick: {
+            format: formatUtcTimestamp,
+            culling: {
+              max: 4
+            }
+          }
+        },
+        y: {
+          min: 0,
+          padding: {
+            bottom: h.axisBottomPadding
+          },
+          label: {
+            text: h.axisLabel,
+            position: "outer-top"
+          },
+          tick: {
+            format: h.axisFormatter
           }
         }
-      },
-      y: {
-        min: 0,
-        padding: {
-          bottom: this.getWithDefault("axisBottomPadding", null)
-        },
-        label: {
-          text: this.get("axisLabel"),
-          position: "outer-top"
-        },
-        tick: {
-          format: this.get("axisFormatter")
-        }
+      };
+
+      if (h.axisMax) {
+        axis.y.max = h.axisMax;
       }
-    };
 
-    let axisMax = this.get("axisMax");
-
-    if (axisMax) {
-      axis.y.max = axisMax;
-    }
-
-    return axis;
+      return axis;
+    });
   }),
 
   setStatus: function(statusMessage, statusLevel) {

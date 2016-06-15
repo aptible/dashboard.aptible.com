@@ -1,3 +1,19 @@
+<h4>
+  Memory Usage
+  {{more-info-icon
+    title="Understanding Memory Usage"
+    bs-html=true
+    body="This metric represents the amount of memory your container has requested from the host system.
+          <br><br>
+          If your container approaches its memory limit, the host system will attempt to reclaim some memory
+          from your container, or terminate it if that's not possible. Memory used for caches and buffers can
+          usually be reclaimed, whereas anonymous memory and memory-mapped files (RSS) usually cannot. Use
+          the toggle below the chart to compare those metrics.
+          <br><br>
+          If this number approaches the memory limit, you should upgrade to a bigger container or reduce the memory
+          footprint of your container."}}
+</h4>
+
 {{partial 'mixins/container-metrics'}}
 
 <p>

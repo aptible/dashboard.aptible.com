@@ -1,1 +1,13 @@
+<h4>
+  Load Average
+  {{more-info-icon
+    title="Understanding the Load Average"
+    bs-html=true
+    body="This metric represents the number of runnable and blocked tasks (threads) in your
+          container.
+          <br><br>
+          If this number is consistently high, and appears to be hitting a ceiling,
+          you should upgrade to a bigger container or investigate your container for performance
+          bottlenecks in terms of CPU or IO."}}
+</h4>
 {{partial 'mixins/container-metrics'}}
