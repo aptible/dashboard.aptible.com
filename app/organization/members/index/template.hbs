@@ -1,16 +1,7 @@
 {{partial 'organization/members-toolbar'}}
 
 <div class="sort-group organization-members">
-  <ul class='aptable__nav'>
-    {{#if organization.invitations}}
-      {{#activating-item currentWhen="organization.members.index" tagName="li"}}
-        {{link-to "Members" "organization.members.index"}}
-      {{/activating-item}}
-      {{#activating-item currentWhen="organization.members.pending-invitations" tagName="li"}}
-        {{link-to "Pending Invitations" "organization.members.pending-invitations"}}
-      {{/activating-item}}
-    {{/if}}
-  </ul>
+  <h3 class="heading heading--caps heading--sm">Members</h3>
 
   <table class="aptable">
     <thead>

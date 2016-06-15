@@ -77,30 +77,3 @@
     padding: 1px 4px;
   }
 }
-
-
-.aptable__nav {
-  margin-bottom: 10px;
-  padding: 0;
-  list-style: none;
-  li {
-    display: inline-block;
-    font-size: 11px;
-    margin-right: 20px;
-    text-transform: uppercase;
-    a {
-      color: rgba(157,157,157,0.7);
-      text-decoration: none;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-    &.active a {
-      color: #4a4a4a;
-      cursor: default;
-      &:hover {
-        text-decoration: none;
-      }
-    }
-  }
-}
