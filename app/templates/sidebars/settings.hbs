@@ -3,9 +3,14 @@
     <li class="title">
       {{organization.name}} Settings
     </li>
-    {{#link-to 'organization.members' organization tagName="li"}}
-      {{link-to "Members" "organization.members" organization bubbles=false}}
-    {{/link-to}}
+    {{#activating-item currentWhen="organization.members.index" tagName="li"}}
+      {{link-to "Members" "organization.members.index" organization bubbles=false}}
+    {{/activating-item}}
+    {{#if organization.invitations}}
+      {{#activating-item currentWhen="organization.members.pending-invitations" tagName="li"}}
+        {{link-to "Pending Invitations" "organization.members.pending-invitations" organization bubbles=false}}
+      {{/activating-item}}
+    {{/if}}
     {{#link-to 'organization.roles' organization tagName="li"}}
       {{link-to "Roles" "organization.roles" organization bubbles=false}}
     {{/link-to}}

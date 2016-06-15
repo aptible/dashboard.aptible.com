@@ -23,26 +23,26 @@
                 {{/each}}
               </ul>
             </div>
+
+            {{#unless (eq session.currentUser model)}}
+              <div class="">
+                <label>Remove {{model.name}} from {{organization.name}}</label>
+                {{#if disableRemoveMessage}}
+                  {{#bs-tooltip title=disableRemoveMessage placement="bottom" bs-contaner=false}}
+                    <div>
+                      <button class='btn btn-danger btn-block' disabled>Remove from {{organization.name}}
+                      </button>
+                    </div>
+                  {{/bs-tooltip}}
+                {{else}}
+                  <button {{action 'remove' model}} class='btn btn-danger btn-block'>
+                    Remove from {{organization.name}}
+                  </button>
+                {{/if}}
+              </div>
+            {{/unless}}
           </form>
         </div>
-
-        {{#unless (eq session.currentUser model)}}
-          <div class="">
-            <label>Remove {{model.name}} from {{organization.name}}</label>
-            {{#if disableRemoveMessage}}
-              {{#bs-tooltip title=disableRemoveMessage placement="bottom" bs-contaner=false}}
-                <div>
-                  <button class='btn btn-danger btn-block' disabled>Remove from {{organization.name}}
-                  </button>
-                </div>
-              {{/bs-tooltip}}
-            {{else}}
-              <button {{action 'remove' model}} class='btn btn-danger btn-block'>
-                Remove from {{organization.name}}
-              </button>
-            {{/if}}
-          </div>
-        {{/unless}}
       </div>
     </div>
 
