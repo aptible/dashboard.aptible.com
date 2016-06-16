@@ -57,7 +57,7 @@ export default DS.Model.extend({
       });
     };
 
-    return reloadUntilOperationStatusChanged(this, maximumTimeout, 1000)
+    return reloadUntilOperationStatusChanged(this, maximumTimeout, 1000);
   }
 
 });
