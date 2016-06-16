@@ -56,7 +56,7 @@ export const ProvisionableBaseMixin = Ember.Mixin.create({
         run(this, '_recursiveReload');
       }, this._reloadRetryDelay);
     }).catch((err) => {
-      if(err.message.indexOf('notFound') > -1) {
+      if (err.message && err.message.indexOf('notFound') > -1) {
         this.deleteRecord();
         return;
       }
