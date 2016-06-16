@@ -1,0 +1,19 @@
+<div class="panel-heading">
+  <i class="fa fa-hdd-o" aria-hidden="true"></i>
+  {{format-utc-timestamp backup.createdAt }}
+</div>
+
+<div class="panel-body">
+  <ul class="resource-metadata">
+    <li class="resource-metadata-item">
+      <h5 class="resource-metadata-title">Location</h5>
+      <h3 class="resource-metadata-value">{{backup.awsRegion}}</h3>
+    </li>
+    <li class="resource-metadata-item">
+      <h5 class="resource-metadata-title">Actions</h5>
+      <h3 class="resource-metadata-value">
+        {{backup-restore-link backup=backup bindPopover=bindPopovers}}
+      </h3>
+    </li>
+  </ul>
+</div>

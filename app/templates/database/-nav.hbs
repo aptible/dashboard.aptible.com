@@ -7,6 +7,10 @@
     {{link-to "Metrics" "database.metrics"}}
   {{/activating-item}}
 
+  {{#activating-item currentWhen="database.backups" tagName="li"}}
+    {{link-to "Backups" "database.backups"}}
+  {{/activating-item}}
+
   {{#if model.supportsReplication}}
     {{#activating-item currentWhen="database.replicate" tagName="li"}}
       {{link-to "Replicate" "database.replicate"}}
