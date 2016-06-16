@@ -188,3 +188,42 @@ test(`visit ${backupsPage} shows restore instructions`, function(assert) {
     assert.ok(find(restorePopover).length, 'Restore popover is shown for copy');
   });
 });
+
+test(`navigating away from ${backupsPage} dismisses tooltips`, function(assert) {
+  assert.expect(2);
+
+  const backups = [
+    { id: 0, created_at: '2016-06-12T12:12:12.005Z', aws_region: 'us-east-1',
+      _links: { self: { href: '/backups/0' }}}
+  ];
+
+  stubRequest("get", backupsIndexUrl, function() {
+    return this.success({
+      current_page: 1,
+      per_page: backups.length,
+      total: backups.length,
+      _embedded: { backups: backups }
+    });
+  });
+
+  signInAndVisit(backupsPage);
+
+
+  const restorePopover = '.popover:contains(aptible backup:restore 0)';
+
+  andThen(() => {
+    clickButton("Restore to a New Database");
+  });
+
+  andThen(() => {
+    assert.ok(find(restorePopover).length, 'Restore popover is present');
+  });
+
+  andThen(() => {
+    visit('/');
+  });
+
+  andThen(() => {
+    assert.ok(!find(restorePopover).length, 'Restore popover is gone');
+  });
+});
