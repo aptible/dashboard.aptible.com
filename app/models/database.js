@@ -17,6 +17,7 @@ export default DS.Model.extend(ProvisionableMixin, {
   initializeFrom: DS.belongsTo('database', {async: true, inverse: 'dependents'}),
   dependents: DS.hasMany('database', {async: true, inverse: 'initializeFrom'}),
   service: DS.belongsTo('service', {async:true}),
+  backups: DS.hasMany('backups', {async: true}),
 
   reloadWhileProvisioning: true,
 
