@@ -20,11 +20,12 @@
 
 <hr>
 
-<div>
+{{!-- Don't change backup-list without altering .../backup-restore-link/template.hbs accordingly --}}
+<div class="backup-list">
   <div class="row">
     {{#each model as |backup|}}
       <div class="col-xs-4">
-        {{backup-item backup=backup}}
+        {{backup-item backup=backup bindPopovers=".backup-list"}}
       </div>
     {{/each}}
   </div>
