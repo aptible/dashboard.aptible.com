@@ -52,7 +52,7 @@ function nameInput(){
 }
 
 function updateProfileButton(){
-  return find('button:contains(Change name)');
+  return find('button:contains(Change Name)');
 }
 
 test('visit ' + settingsProfileUrl + ' shows profile info', function(assert) {
