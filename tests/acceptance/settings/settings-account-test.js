@@ -182,7 +182,7 @@ test(`visit ${settingsAccountUrl} allows changing password`, function(assert) {
     assert.ok(find('h3:contains(Change Your Password)').length, 'has change password header');
     fillInput('password', newPassword);
     fillInput('confirm-password', newPassword);
-    clickButton('Change password');
+    clickButton('Change Password');
   });
 
   andThen(function(){
@@ -209,7 +209,7 @@ test(`visit ${settingsAccountUrl} and change password with errors`, function(ass
   andThen(() => {
     fillInput('password', newPassword);
     fillInput('confirm-password', newPassword);
-    clickButton('Change password');
+    clickButton('Change Password');
   });
 
   andThen(() => {
@@ -225,7 +225,7 @@ test(`visit ${settingsAccountUrl} requires passwords to match`, function(assert)
   andThen(() => {
     fillInput('password', newPassword);
     fillInput('confirm-password', newPassword + "junk");
-    clickButton('Change password');
+    clickButton('Change Password');
   });
 
   andThen(() => {
@@ -245,7 +245,7 @@ test(`visit ${settingsAccountUrl} allows changing email`, function(assert) {
 
   andThen(function(){
     fillInput('email', newEmail);
-    clickButton('Change email');
+    clickButton('Change Email');
   });
 
   andThen(() => {
@@ -269,7 +269,7 @@ test(`visit ${settingsAccountUrl} change email with errors`, function(assert) {
 
   andThen(() => {
     fillInput('email', newEmail);
-    clickButton('Change email');
+    clickButton('Change Email');
   });
 
   andThen(() => {
@@ -289,7 +289,7 @@ test(`${settingsAccountUrl} allows a user with 2FA disabled to reset it`, functi
   signInAndVisit(settingsAccountUrl, {}, {}, { scope: "elevated" });
 
   andThen(() => {
-    clickButton('Start 2FA activation');
+    clickButton('Configure 2FA');
   });
 
   andThen(() => {
@@ -345,7 +345,7 @@ test(`${settingsAccountUrl} allows a user with 2FA enabled to view their recover
   andThen(() => {
     assert.ok(find('h3:contains(Backup Codes)').length, 'has recovery codes header');
     assert.ok(!find('li:contains(12345678)').length, 'recovery codes are not shown');
-    clickButton('Show backup codes');
+    clickButton('Show Backup Codes');
   });
 
   andThen(() => {
@@ -387,7 +387,7 @@ test(`On ${settingsAccountUrl}, saving your password should not interrupt the OT
   signInAndVisit(settingsAccountUrl, {}, {}, { scope: "elevated" });
 
   andThen(() => {
-    clickButton('Start 2FA activation');
+    clickButton('Configure 2FA');
   });
 
   andThen(() => {
@@ -397,7 +397,7 @@ test(`On ${settingsAccountUrl}, saving your password should not interrupt the OT
   andThen(() => {
     fillInput('password', newPassword);
     fillInput('confirm-password', newPassword);
-    clickButton('Change password');
+    clickButton('Change Password');
   });
 
   andThen(() => {
@@ -418,7 +418,7 @@ test(`On ${settingsAccountUrl}, saving your email should not update your passwor
   andThen(() => {
     fillInput("email", newEmail);
     fillInput("password", newPassword);
-    clickButton("Change email");
+    clickButton("Change Email");
   });
 });
 
@@ -444,7 +444,7 @@ test(`${settingsAccountUrl} clears credentials when the user navigates away`, fu
   andThen(() => {
     assert.equal(findInput('password').val(), '', 'password input is empty');
     assert.ok(!findInput('otp-token').length, 'OTP token input is no longer found');
-    clickButton('Start 2FA activation');
+    clickButton('Configure 2FA');
   });
 
   andThen(() => {
@@ -469,12 +469,12 @@ test(`${settingsAccountUrl} does not persist the 2FA params after activation`, f
   });
 
   andThen(() => {
-    clickButton('Show backup codes');
+    clickButton('Show Backup Codes');
     clickButton('Disable 2FA');
   });
 
   andThen(()  => {
-    clickButton('Start 2FA activation');
+    clickButton('Configure 2FA');
   });
 
   andThen(() => {
