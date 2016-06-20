@@ -50,7 +50,7 @@ export default Ember.Controller.extend({
 
     switch(otpState) {
       case OTP_STATE_DISABLED:
-        return 'Start 2FA activation';
+        return 'Configure 2FA';
       case OTP_STATE_PENDING:
         return 'Enable 2FA';
       case OTP_STATE_ENABLED:
