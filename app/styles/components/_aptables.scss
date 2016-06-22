@@ -51,6 +51,7 @@
     font-weight: 300;
     text-transform: uppercase;
   }
+
   tr:hover {
     td {
       background-color: #F7F8FB;
@@ -60,6 +61,11 @@
       opacity: 1;
     }
   }
+}
+
+.aptable__row-heading {
+  font-size: 13px;
+  color: #4a4a4a;
 }
 
 .aptable__actions {

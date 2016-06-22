@@ -23,5 +23,6 @@ export default Ember.Route.extend({
     controller.set('model', model.roles);
     controller.set('stacks', model.stacks);
     controller.set('organization', this.modelFor('organization'));
+    controller.set('ownerRole', this.modelFor('organization').ownerRole);
   }
 });

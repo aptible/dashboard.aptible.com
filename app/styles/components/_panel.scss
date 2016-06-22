@@ -1,0 +1,90 @@
+.panel--bisected {
+  background-color: white;
+  display: flex;
+  overflow: hidden;
+
+  .panel-heading, .panel-body {
+    flex: 1;
+    flex-grow: 0;
+  }
+  .panel-heading {
+    background-color: default;
+    min-width: 230px;
+    padding: 20px 20px 0;
+  }
+
+
+  .panel-body {
+    background-color: #F7F8FB;
+    flex-grow: 1;
+    width: calc(100% - 235px);
+    text-align: center;
+    p, .role-details__header {
+      margin-left: auto;
+      margin-right: auto;
+      width: 450px;
+    }
+  }
+
+  .panel-body--aptable {
+    padding: 0;
+    text-align: left;
+    .aptable {
+      border-width: 0;
+      box-shadow: none;
+      border-left-width: 1px;
+      border-radius: 0;
+      // thead td {
+      //   font-size: 12px;
+      //   color: #9B9B9B;
+      //   text-transform: uppercase;
+      //   border-bottom: 1px solid #E0E0E0;
+      // }
+    }
+  }
+}
+
+.panel-link {
+  p {
+    text-decoration: none;
+    color: #9b9b9b;
+  }/* The Platform Owners : */
+  .aptable__row-heading, .role-details__header {
+    color: #4a4a4a;
+  }
+  .role-details__header {
+    font-size: 14px;
+  }
+  td {
+    font-size: 13px;
+    color: #9b9b9b;
+  }
+}
+.role-details__heading {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .label-owner {
+    margin-bottom: 30px;
+  }
+}
+.role-details__label {
+  flex-grow: 1;
+}
+.role-details__name {
+  color: #4A4A4A;
+  font-size: 16px;
+  margin-top: 0;
+}
+.role-details__members {
+}
+
+.user-names {
+  list-style: none;
+  padding: 0;
+}
+.user-names__value, .user-names__remainder {
+  font-size: 12px;
+  color: #9B9B9B;
+  white-space: nowrap;
+}

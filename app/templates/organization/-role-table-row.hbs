@@ -1,0 +1,11 @@
+<td class="aptable__row-heading">{{role.name}}</td>
+<td>{{permitted-stacks-by-role scope='manage' role=role stacks=stacks}}</td>
+<td>{{permitted-stacks-by-role scope='read' role=role stacks=stacks}}</td>
+<td>{{role.users.length}}</td>
+<td>
+  {{#if role.owner}}
+    <div class="label label-owner">
+      <i class="fa fa-shield"></i> Owner
+    </div>
+  {{/if}}
+</td>

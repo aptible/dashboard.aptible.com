@@ -1,0 +1,20 @@
+<div class="panel-body panel-body--aptable">
+  <table class="aptable">
+    <thead>
+      <th>Environment</th>
+      <th>Permissions</th>
+    </thead>
+    <tbody>
+      {{#each stacks as |stack|}}
+        <tr>
+          <td class="aptable__row-heading">{{stack.handle}}</td>
+          <td>
+            {{#if role}}
+              {{permissions-by-stack role=role stack=stack}}
+            {{/if}}
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
