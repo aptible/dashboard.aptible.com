@@ -10,5 +10,6 @@ export default DS.Model.extend({
   intent: DS.attr('number'),
   targeting: DS.attr('number'),
   rangeOfEffects: DS.attr('number'),
+  threatVector: DS.attr('number'),
   adversarial: DS.attr('boolean')
 });

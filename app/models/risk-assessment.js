@@ -11,5 +11,6 @@ export default DS.Model.extend({
   predisposingConditions: DS.hasMany('predisposingCondition', {embedded: true}),
   threatSources: DS.hasMany('threatSource', {embedded: true}),
   securityControls: DS.hasMany('securityControl', {embedded: true}),
-  mitigations: DS.hasMany('mitigation', {embedded: true})
+  mitigations: DS.hasMany('mitigation', {embedded: true}),
+  createdAt: DS.attr('iso-8601-timestamp')
 });
