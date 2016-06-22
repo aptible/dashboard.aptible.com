@@ -1,15 +1,14 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  scopesString: Ember.computed('scopesResult', function(){
-    return this.get('scopesResult');
-  }),
-
   scopes: Ember.computed('stack', 'role.types', function() {
-    const role = this.get('role');
-    const stack = this.get('stack');
-    stack.scopesForRole(role).then(function(scopes) {
-      this.set('scopesResult', scopes.join(', '));
+    let roleId = this.get('role').get('id');
+    let scopes = [];
+    this.get('stack').get('permissions').forEach(function(permission) {
+      if (permission.get('data.links.role').split('/').pop() === roleId) {
+        scopes.push(permission.get('scope'));
+      }
     });
+    return scopes.join(', ');
   })
 });
