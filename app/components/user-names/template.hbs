@@ -1,0 +1,8 @@
+{{#if truncatedUsers.length}}
+  <li class="user-names__value">{{names}}</li>
+{{else}}
+  <li>{{placeholder}}</li>
+{{/if}}
+{{#if difference}}
+  <li class="user-names__remainder">+ {{difference}} more</li>
+{{/if}}
