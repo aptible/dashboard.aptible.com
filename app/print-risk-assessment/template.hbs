@@ -1,0 +1,38 @@
+<div class="print-document">
+  <h1>{{capitalize model.status}} Risk Assessment</h1>
+  {{#if model.isCurrent}}
+    <h2>Current</h2>
+  {{/if}}
+
+  {{#if model.isDraft}}
+    <h2>Started on {{format-utc-timestamp model.createdAt}}</h2>
+  {{/if}}
+
+  {{#if model.isCurrent}}
+    <h2>Started on {{format-utc-timestamp model.createdAt}}</h2>
+  {{/if}}
+
+  <hr />
+  <h3>Predisposing Conditions</h3>
+  {{predisposing-condition-list predisposingConditions=model.predisposingConditions class="table"}}
+
+
+  <hr />
+  <h3>Vulnerabilities</h3>
+  {{vulnerability-list vulnerabilities=model.vulnerabilities class="table"}}
+
+
+  <hr />
+  <h3>Threat Sources</h3>
+  {{threat-sources-list threatSources=model.threatSources class="table"}}
+
+
+  <hr />
+  <h3>Threat Events</h3>
+  {{threat-event-list threatEvents=model.threatEvents class="table"}}
+
+
+  <hr />
+  <h3>Security Controls</h3>
+  {{security-controls-list securityControls=model.securityControls class="table"}}
+</div>

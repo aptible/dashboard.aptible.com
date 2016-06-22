@@ -23,14 +23,31 @@ const IMPACTS = [
 ];
 
 export default Ember.Component.extend({
-  filters: { search: '', sort: SORT[0], relevance: null },
+  filters: { search: '', sort: SORT[0].value, relevance: null },
 
   classNames: ['risk-assessment__filters form-inline'],
   sorts: SORT,
   relevances: RELEVANCES,
   impacts: IMPACTS,
 
+  showClear: Ember.computed('filters.search', 'filters.relevance', 'filters.impact', function() {
+    let currentSearch = this.get('filters.search') || '';
+    let relevance = this.get('filters.relevance');
+    let impact = this.get('filters.impact');
+
+    return Ember.$.trim(currentSearch) !== '' ||
+           (relevance && relevance !== '') ||
+            (impact && impact !== '');
+  }),
+
   actions: {
+    clear() {
+      this.set('filters.sort', SORT[0].value);
+      this.set('filters.relevance', null);
+      this.set('filters.impact', null);
+      this.set('filters.search', '');
+    },
+
     update() {
       let sort = this.$('select.sort').val();
       let relevance = parseInt(this.$('select.relevance').val(), 10);

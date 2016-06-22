@@ -1,0 +1,22 @@
+  <thead>
+  <tr>
+    <th>Predisposing Condition</th>
+    <th>Description</th>
+    <th>Pervasiveness</th>
+    <th></th>
+  </tr>
+</thead>
+<tbody>
+  {{#each filteredPredisposingConditions as |predisposingCondition|}}
+
+    <tr>
+      <td class='aptable__row-header'>{{predisposingCondition.title}}</td>
+      <td>{{predisposingCondition.description}}</td>
+      <td>{{predisposingCondition.pervasivenessText}}</td>
+
+      <td class="base-table__actions">
+        {{link-to 'View' 'predisposing-condition' predisposingCondition class="btn btn-link"}}
+      </td>
+    </tr>
+  {{/each}}
+</tbody>

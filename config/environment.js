@@ -25,7 +25,7 @@ module.exports = function(environment) {
     },
 
     complianceEngines: [
-      { name: 'Risk Assessment', path: 'risk', app: 'compliance' },
+      { name: 'Risk Assessment', path: 'risk-assessments' },
       { name: 'Policies & Procedures', path: 'policy', app: 'compliance' },
       { name: 'Application Security', path: 'security', app: 'compliance' },
       { name: 'Workforce Training', path: 'training' }
@@ -154,6 +154,8 @@ module.exports = function(environment) {
   }
 
   if (environment === 'staging') {
+    complianceEngines[0] = { name: 'Risk Assessment', path: 'risk', app: 'compliance' };
+
     ENV.segmentioKey = '6jZlAcweTojgXShBvn4B9Tvwr1IlqkEE';
 
     ENV.featureFlags['price-estimator'] = true;
@@ -169,6 +171,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
+    complianceEngines[0] = { name: 'Risk Assessment', path: 'risk', app: 'compliance' };
     ENV.stripePublishableKey = 'pk_live_ujeTeUIMpUcvNsWwu7R9b3Zy';
     ENV.segmentioKey = '5aOlxMYapu6bQCQYFbDz7rhNvVV7B1A5';
 

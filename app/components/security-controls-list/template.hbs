@@ -1,0 +1,27 @@
+  <thead>
+  <tr>
+    <th>Security Control</th>
+    <th>Description</th>
+    <th>Status</th>
+    <th>Vulnerabilities</th>
+    <th></th>
+  </tr>
+</thead>
+<tbody>
+  {{#each filteredSecurityControls as |securityControl|}}
+    <tr>
+      <td class='aptable__row-header'>{{securityControl.title}}</td>
+      <td>{{securityControl.description}}</td>
+      <td>{{securityControl.status}}</td>
+      <td>
+        {{#each securityControl.vulnerabilities as |vulnerability|}}
+          {{link-to vulnerability.title 'vulnerability' vulnerability}},
+        {{/each}}
+      </td>
+
+      <td class="base-table__actions">
+        {{link-to 'View' 'security-control' securityControl class="btn btn-link"}}
+      </td>
+    </tr>
+  {{/each}}
+</tbody>

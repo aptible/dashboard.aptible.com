@@ -1,0 +1,27 @@
+  <thead>
+  <tr>
+    <th>Threat Source</th>
+    <th>Description</th>
+    <th>Adversarial</th>
+    <th>Range of Effects</th>
+    <th>Threat Vector</th>
+    <th></th>
+  </tr>
+</thead>
+<tbody>
+  {{#each filteredThreatSources as |threatSource|}}
+    <tr>
+      <td class='aptable__row-header'>{{threatSource.title}}</td>
+      <td>{{threatSource.description}}</td>
+      <td>
+        {{if threatSource.adversarial "Adversarial" "Non-Adversarial"}}
+      </td>
+      <td>{{threatSource.rangeOfEffects}}</td>
+      <td>{{threatSource.threatVector}}</td>
+
+      <td class="base-table__actions">
+        {{link-to 'View' 'threat-source' threatSource class="btn btn-link"}}
+      </td>
+    </tr>
+  {{/each}}
+</tbody>

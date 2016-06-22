@@ -9,6 +9,6 @@ export default Ember.Route.extend({
   },
 
   model() {
-    return this.modelFor('risk-assessment.security-controls');
+    return this.modelFor('security-controls');
   }
 });

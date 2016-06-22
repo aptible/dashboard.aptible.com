@@ -17,6 +17,8 @@
   font-weight: 100;
   padding: 10px 20px;
   text-transform: uppercase;
+  font-weight: $weight-semibold;
+
   .ra-list-item & {
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;

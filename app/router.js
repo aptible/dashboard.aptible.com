@@ -79,10 +79,9 @@ Router.map(function() {
         path: "databases/:database_id"
       }, function() {
         this.route("activity");
-        this.route("metrics");
-        this.route("backups");
         this.route("replicate");
         this.route("cluster");
+        this.route("metrics");
         this.route("deprovision");
       });
 
@@ -126,7 +125,6 @@ Router.map(function() {
         path: "/organizations/:organization_id"
       }, function() {
         this.route("members", {}, function() {
-          this.route('pending-invitations');
           this.route("edit", {path: ":user_id/edit"});
         });
         this.route("roles", {}, function() {
@@ -187,6 +185,31 @@ Router.map(function() {
     path: "claim/:invitation_id/:verification_code"
   });
 
+  this.authenticatedRoute('print-risk-assessment', { path: 'risk_assessments/:risk_assessment_id/print', resetNamespace: true}, function() {});
+
+  this.authenticatedRoute("risk-assessment", { path: 'risk_assessments/:risk_assessment_id', resetNamespace: true}, function() {
+    this.route("submit", { path: "submit" });
+    this.route("activity", { path: 'activity' });
+    this.route("compare", { path: 'compare' });
+
+    RISK_ASSESSMENT_COMPONENTS.forEach((component) => {
+      let inflector = new Ember.Inflector(Ember.Inflector.defaultRules);
+      let indexRoute = component.replace('_', '-');
+      let showRoute = inflector.singularize(indexRoute);
+      let showPath = `${component}/${inflector.singularize(component)}_id`;
+
+      // Index routes e.g threat_events
+      this.route(indexRoute, { path: component, resetNamespace: true }, function() {
+        this.route('new')
+      });
+
+      // Show routes e.g. threat_events/spear_phishing
+      this.route(showRoute, { path: showPath, resetNamespace: true }, function() {
+        this.route('edit');
+      });
+    });
+  });
+
   this.authenticatedRoute('compliance', { path: '/compliance' }, function() {
     this.route('compliance-organization', { path: '/:organization_id', resetNamespace: true }, function() {
       this.route("engines", { path: '', resetNamespace: true }, function() {
@@ -203,28 +226,6 @@ Router.map(function() {
         this.route('incidents');
 
         this.route('compliance-settings', { path: 'settings', resetNamespace: true }, spdSteps);
-      });
-
-       this.route("risk-assessment", { path: 'risk_assessments/:risk_assessment_id', resetNamespace: true}, function() {
-        this.route("activity", { path: 'activity' });
-        this.route("compare", { path: 'compare' });
-
-        RISK_ASSESSMENT_COMPONENTS.forEach((component) => {
-          let inflector = new Ember.Inflector(Ember.Inflector.defaultRules);
-          let indexRoute = component.replace('_', '-');
-          let showRoute = inflector.singularize(indexRoute);
-          let showPath = `${component}/${inflector.singularize(component)}_id`;
-
-          // Index routes e.g threat_events
-          this.route(indexRoute, { path: component, resetNamespace: true }, function() {
-            this.route('new')
-          });
-
-          // Show routes e.g. threat_events/spear_phishing
-          this.route(showRoute, { path: showPath, resetNamespace: true }, function() {
-            this.route('edit');
-          });
-        });
       });
 
       this.route('setup', { path: 'setup', resetNamespace: true}, function() {

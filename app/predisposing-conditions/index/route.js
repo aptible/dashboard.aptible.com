@@ -9,6 +9,6 @@ export default Ember.Route.extend({
   },
 
   model() {
-    return this.modelFor('risk-assessment.predisposing-conditions');
+    return this.modelFor('predisposing-conditions');
   }
 });
