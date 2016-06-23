@@ -151,4 +151,19 @@
     {{/if}}
     </div>
   </div>
+
+
+  <div class="col-xs-6">
+    <div class="panel-group">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h3>Log Out Other Sessions</h3></div>
+        <div class="panel-body">
+          <p>You can log out other sessions at any time. This cannot be undone.</p>
+          <button {{action 'revokeAllAccessibleTokens'}} class="btn btn-danger" type="submit">
+            Log Out All Other Sessions
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
