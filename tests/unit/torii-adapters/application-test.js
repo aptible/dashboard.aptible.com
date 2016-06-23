@@ -80,6 +80,7 @@ test('#open stores payload, set currentUser', function(assert){
   var userId = 'some-user-id';
   var userUrl = '/some-user-url';
   var userEmail = 'some@email.com';
+  var tokenUrl = '/some-token-url';
 
   stubRequest('get', userUrl, function(){
     return this.success({
@@ -96,6 +97,9 @@ test('#open stores payload, set currentUser', function(assert){
     _links: {
       user: {
         href: userUrl
+      },
+      self: {
+        href: tokenUrl
       }
     }
   };
@@ -128,6 +132,7 @@ test('#fetch fetches current_token, stores payload, set currentUser', function(a
   var userUrl = '/some-user-url';
   var currentTokenUrl = '/current_token';
   var userEmail = 'some@email.com';
+  var tokenUrl = '/some-token-url';
 
   stubRequest('get', currentTokenUrl, function(){
     return this.success({
@@ -136,6 +141,9 @@ test('#fetch fetches current_token, stores payload, set currentUser', function(a
       _links: {
         user: {
           href: userUrl
+        },
+        self: {
+          href: tokenUrl
         }
       }
     });
@@ -185,6 +193,7 @@ test('#fetch fetches current_token, stores payload, set currentUser, currentActo
   var actorUrl = '/some-actor-id';
   var actorEmail = 'some@actor.com';
   var currentTokenUrl = '/current_token';
+  var tokenUrl = '/some-token-url';
 
   stubRequest('get', currentTokenUrl, function(){
     return this.success({
@@ -196,6 +205,9 @@ test('#fetch fetches current_token, stores payload, set currentUser, currentActo
         },
         actor: {
           href: actorUrl
+        },
+        self: {
+          href: tokenUrl
         }
       }
     });
