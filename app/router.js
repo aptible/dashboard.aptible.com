@@ -5,6 +5,8 @@ const RISK_ASSESSMENT_COMPONENTS = ["threat_events", "predisposing_conditions",
                                     "security_controls", "threat_sources",
                                     "vulnerabilities"];
 
+let inflector = new Ember.Inflector(Ember.Inflector.defaultRules);
+
 function spdSteps() {
   this.modal('add-location-modal', {
     withParams: ['newLocation'],
@@ -193,20 +195,23 @@ Router.map(function() {
     this.route("compare", { path: 'compare' });
 
     RISK_ASSESSMENT_COMPONENTS.forEach((component) => {
-      let inflector = new Ember.Inflector(Ember.Inflector.defaultRules);
       let indexRoute = component.replace('_', '-');
-      let showRoute = inflector.singularize(indexRoute);
-      let showPath = `${component}/${inflector.singularize(component)}_id`;
-
       // Index routes e.g threat_events
+
       this.route(indexRoute, { path: component, resetNamespace: true }, function() {
         this.route('new')
       });
+    });
+  });
 
-      // Show routes e.g. threat_events/spear_phishing
-      this.route(showRoute, { path: showPath, resetNamespace: true }, function() {
-        this.route('edit');
-      });
+  // Show routes e.g. threat_events/risk_assessment_id_spear_phishing
+  RISK_ASSESSMENT_COMPONENTS.forEach((component) => {
+    let indexRoute = component.replace('_', '-');
+    let showRoute = inflector.singularize(indexRoute);
+    let showPath = `${component}/:id`;
+
+    this.route(showRoute, { path: showPath, resetNamespace: true }, function() {
+      this.route('edit');
     });
   });
 

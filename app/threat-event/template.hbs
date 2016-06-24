@@ -1,1 +1,60 @@
-{{outlet}}
+<main class="layout-content spd-content risk-assessment__main">
+  {{risk-assessment-status-header riskAssessment=riskAssessment}}
+
+  <header class="risk-assessment-header">
+    <div class="risk-assessment-container">
+
+      <div class='risk-assessment-header__title-info'>
+        <h2 class="risk-assessment-header__sub-title">
+          {{#link-to 'risk-assessment' riskAssessment }}{{capitalize riskAssessment.status}} Risk Assessment{{/link-to}} - Threat Event</h2>
+        <h1 class="risk-assessment-header__title">{{model.title}}</h1>
+
+        <div class="risk-assessment-header__component-description">{{model.description}}</div>
+        <div class="risk-assessment-header__component-big-stats">
+
+        </div>
+      </div>
+
+      <div class="risk-assessment-header__component_micro-stats">
+        <ul>
+          <li class="risk-assessment-header__component_micro-stats__item">
+            <span class="risk-assessment-header__component_micro-stats__item__title">
+              Likelihood of Initiation
+            </span>
+            <span class="risk-assessment-header__component_micro-stats__item__value">
+              {{model.likelihoodOfInitiation}}
+            </span>
+          </li>
+
+          <li class="risk-assessment-header__component_micro-stats__item">
+            <span class="risk-assessment-header__component_micro-stats__item__title">
+              Likelihood of Adverse Impact
+            </span>
+            <span class="risk-assessment-header__component_micro-stats__item__value">
+              {{model.likelihoodOfInitiation}}
+            </span>
+          </li>
+
+          <li class="risk-assessment-header__component_micro-stats__item">
+            <span class="risk-assessment-header__component_micro-stats__item__title">
+              Overall Likelihood of Adverse Impact
+            </span>
+            <span class="risk-assessment-header__component_micro-stats__item__value">
+              {{model.overalLikelihoodOfAdverseImpact}}
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <div class='risk-assessment-header__actions'>
+
+      </div>
+    </div>
+  </header>
+
+  <div class="main-body">
+    <div class="risk-assessment-container">
+      {{outlet}}
+    </div>
+  </div>
+</main>

@@ -1,24 +1,38 @@
-  <thead>
+<thead>
   <tr>
-    <th>Threat Event</th>
-    <th>Description</th>
-    <th>Risk Index</th>
-    <th>Relevance</th>
-    <th>Base Impact</th>
-    <th></th>
+    {{#each columnHeaders as |header|}}
+      <th>{{header}}</th>
+    {{/each}}
   </tr>
 </thead>
 <tbody>
   {{#each filteredThreatEvents as |threatEvent|}}
     <tr>
-      <td class='aptable__row-header'>{{threatEvent.title}}</td>
-      <td>{{threatEvent.description}}</td>
-      <td>{{threatEvent.appliedRiskIndex}}</td>
-      <td>{{threatEvent.relevanceText}}</td>
-      <td>{{threatEvent.impactText}}</td>
-      <td class="base-table__actions">
-        {{link-to 'View' 'threat-event' threatEvent class="btn btn-link"}}
-      </td>
+      {{#if columnConfig.title}}
+        <td class='aptable__row-header'>{{threatEvent.title}}</td>
+      {{/if}}
+
+      {{#if columnConfig.description}}
+        <td>{{threatEvent.description}}</td>
+      {{/if}}
+
+      {{#if columnConfig.appliedRiskIndex}}
+        <td>{{threatEvent.appliedRiskIndex}}</td>
+      {{/if}}
+
+      {{#if columnConfig.relevanceText}}
+        <td>{{threatEvent.relevanceText}}</td>
+      {{/if}}
+
+      {{#if columnConfig.impactText}}
+        <td>{{threatEvent.impactText}}</td>
+      {{/if}}
+
+      {{#if columnConfig.actions}}
+        <td class="base-table__actions">
+          {{link-to 'View' 'threat-event' threatEvent class="btn btn-link"}}
+        </td>
+      {{/if}}
     </tr>
   {{/each}}
 </tbody>
