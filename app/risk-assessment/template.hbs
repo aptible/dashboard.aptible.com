@@ -9,7 +9,7 @@
           <div class='risk-assessment-header__title-info'>
             {{link-to '← All Risk Assessments' 'risk-assessments' model.organizationProfile class="risk-assessment-header__back-to-index"}}
             <h2 class="risk-assessment-header__sub-title">Started on {{format-utc-timestamp model.createdAt}}</h2>
-            <h1 class="risk-assessment-header__title">{{capitalize model.status}} Risk Assessment</h1>
+            <h1 class="risk-assessment-header__title">{{capitalize-string model.status}} Risk Assessment</h1>
           </div>
         </div>
 

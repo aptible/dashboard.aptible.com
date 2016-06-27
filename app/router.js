@@ -85,6 +85,7 @@ Router.map(function() {
         this.route("cluster");
         this.route("metrics");
         this.route("deprovision");
+        this.route("backups");
       });
 
       this.route("stack", {
