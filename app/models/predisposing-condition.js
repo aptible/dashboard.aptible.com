@@ -9,6 +9,9 @@ export default DS.Model.extend({
   title: DS.attr('string'),
   description: DS.attr('string'),
   pervasiveness: DS.attr('number'),
+
+  threatEvents: DS.hasMany('threat-event', { embedded: true }),
+
   scaledPervasiveness: Ember.computed('pervasiveness', function() {
     // FIXME: This convertes the 10 point pervasiveness scale into a 5 point scale
     // Should probably just update the baseline risk graph rather than doing this

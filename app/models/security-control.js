@@ -10,7 +10,20 @@ export default DS.Model.extend({
   implemented: DS.attr('boolean'),
   planned: Ember.computed.bool('plannedMilestone'),
   plannedMilestone: DS.attr('string'),
+
   vulnerabilities: DS.hasMany('vulnerability', { embedded: true }),
+  mitigations: DS.hasMany('mitigation', { embedded: true }),
+
+  threatEvents: Ember.computed('vulnerabilities.[]', function() {
+    let threatEvents = {};
+    this.get('vulnerabilities').forEach((vulnerability) => {
+      vulnerability.get('threatEvents').forEach((te) => {
+        threatEvents[te.get('id')] = te;
+      })
+    });
+
+    return Ember.keys(threatEvents).map((id) => threatEvents[id]);
+  }),
 
   status: Ember.computed('implemented', 'planned', function() {
     if(this.get('implemented')) {

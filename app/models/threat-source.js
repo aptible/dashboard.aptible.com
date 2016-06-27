@@ -2,7 +2,7 @@ import DS from 'ember-data';
 import Ember from 'ember';
 
 export default DS.Model.extend({
-  riskAssessment: DS.belongsTo('riskAssessment'),
+  riskAssessment: DS.belongsTo('risk-assessment'),
   handle: DS.attr('string'),
   title: DS.attr('string'),
   description: DS.attr('string'),
@@ -11,5 +11,7 @@ export default DS.Model.extend({
   targeting: DS.attr('number'),
   rangeOfEffects: DS.attr('number'),
   threatVector: DS.attr('number'),
-  adversarial: DS.attr('boolean')
+  adversarial: DS.attr('boolean'),
+
+  threatEvents: DS.hasMany('threat-event', { embedded: true })
 });

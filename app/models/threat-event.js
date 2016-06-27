@@ -10,7 +10,7 @@ export const IMPACTS = [
 ];
 
 export default DS.Model.extend({
-  riskAssessment: DS.belongsTo('riskAssessment'),
+  riskAssessment: DS.belongsTo('risk-assessment'),
   handle: DS.attr('string'),
   title: DS.attr('string'),
   description: DS.attr('string'),
@@ -20,10 +20,19 @@ export default DS.Model.extend({
   baseImpact: DS.attr('number'),
   likelihoodOfOccurence: DS.attr('number'),
   adversarial: DS.attr('boolean'),
-  vulnerabilities: DS.hasMany('vulnerability', { async: false }),
-  threatSources: DS.hasMany('threatSource', { async: false }),
-  predisposingConditions: DS.hasMany('predisposingCondition', { async: false }),
-  securityControls: Ember.computed('vulnerabilities.securityControls.[]', function() {
+
+
+  appliedLikelihoodOfImpact: DS.attr('number'),
+  appliedOverallLikelihood: DS.attr('number'),
+  plannedLikelihoodOfImpact: DS.attr('number'),
+  plannedOverallLikelihood: DS.attr('number'),
+  likelihoodOfInitiation: DS.attr('number'),
+
+  threatSources: DS.hasMany('threat-source', { embedded: true }),
+  predisposingConditions: DS.hasMany('predisposing-condition', { embedded: true }),
+  vulnerabilities: DS.hasMany('vulnerability', { embedded: true }),
+
+  securityControls: Ember.computed('vulnerabilities.[]', function() {
     let securityControls = {};
 
     this.get('vulnerabilities').forEach((vulnerability) => {
