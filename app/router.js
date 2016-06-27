@@ -1,6 +1,11 @@
-
 import Ember from "ember";
 import config from "./config/environment";
+
+const RISK_ASSESSMENT_COMPONENTS = ["threat_events", "predisposing_conditions",
+                                    "security_controls", "threat_sources",
+                                    "vulnerabilities"];
+
+let inflector = new Ember.Inflector(Ember.Inflector.defaultRules);
 
 function spdSteps() {
   this.modal('add-location-modal', {
@@ -184,6 +189,34 @@ Router.map(function() {
     path: "claim/:invitation_id/:verification_code"
   });
 
+  this.authenticatedRoute('print-risk-assessment', { path: 'risk_assessments/:risk_assessment_id/print', resetNamespace: true}, function() {});
+
+  this.authenticatedRoute("risk-assessment", { path: 'risk_assessments/:risk_assessment_id', resetNamespace: true}, function() {
+    this.route("submit", { path: "submit" });
+    this.route("activity", { path: 'activity' });
+    this.route("compare", { path: 'compare' });
+
+    RISK_ASSESSMENT_COMPONENTS.forEach((component) => {
+      let indexRoute = component.replace('_', '-');
+      // Index routes e.g threat_events
+
+      this.route(indexRoute, { path: component, resetNamespace: true }, function() {
+        this.route('new');
+      });
+    });
+  });
+
+  // Show routes e.g. threat_events/risk_assessment_id_spear_phishing
+  RISK_ASSESSMENT_COMPONENTS.forEach((component) => {
+    let indexRoute = component.replace('_', '-');
+    let showRoute = inflector.singularize(indexRoute);
+    let showPath = `${component}/:id`;
+
+    this.route(showRoute, { path: showPath, resetNamespace: true }, function() {
+      this.route('edit');
+    });
+  });
+
   this.authenticatedRoute('compliance', { path: '/compliance' }, function() {
     this.route('compliance-organization', { path: '/:organization_id', resetNamespace: true }, function() {
       this.route("engines", { path: '', resetNamespace: true }, function() {
@@ -192,7 +225,8 @@ Router.map(function() {
           this.route("criterion", { path: ':criterion_handle' }, function() {});
         });
 
-        this.route('risk');
+        this.route("risk-assessments", { path: 'risk_assessments', resetNamespace: true });
+
         this.route('policies');
         this.route('security');
         this.route('contracts');

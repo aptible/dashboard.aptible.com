@@ -1,0 +1,33 @@
+  <thead>
+  <tr>
+    {{#each columnHeaders as |header|}}
+      <th>{{header}}</th>
+    {{/each}}
+  </tr>
+</thead>
+
+<tbody>
+  {{#each filteredPredisposingConditions as |predisposingCondition|}}
+
+    <tr>
+      {{#if columnConfig.title}}
+        <td class='aptable__row-header'>{{predisposingCondition.title}}</td>
+      {{/if}}
+
+      {{#if columnConfig.description}}
+        <td>{{predisposingCondition.description}}</td>
+      {{/if}}
+
+      {{#if columnConfig.pervasiveness}}
+        <td>{{predisposingCondition.pervasivenessText}}</td>
+      {{/if}}
+
+      {{#if columnConfig.actions}}
+        <td class="base-table__actions">
+          {{link-to 'View' 'predisposing-condition' predisposingCondition.id class="btn btn-link"}}
+        </td>
+      {{/if}}
+
+    </tr>
+  {{/each}}
+</tbody>

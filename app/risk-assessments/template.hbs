@@ -1,0 +1,16 @@
+<main class="layout-content spd-content">
+  <header class="new-header">
+    <div class="container">
+      <div class='header-left'>
+        <h2 class="sub-title">{{model.organization.name}}</h2>
+        <h1 class="title">Risk Assessments</h1>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-body container">
+    {{#each model.riskAssessments as |riskAssessment index|}}
+      {{risk-assessment-list-item riskAssessment=riskAssessment index=index}}
+    {{/each}}
+  </div>
+</main>

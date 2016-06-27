@@ -32,8 +32,16 @@ Ember.Test.registerHelper('stubValidOrganization', function() {
 
 Ember.Test.registerHelper('stubProfile', function(_app, profileData) {
   stubRequest('get', `/organization_profiles/${orgId}`, function() {
-    profileData.id = orgId;
-    return this.success(profileData);
+    let defaultProfileData = {
+      id: orgId,
+      hasCompletedSetup: true,
+      _links: {
+        risk_assessments: { href: `/organization_profiles/${orgId}/risk-assessments` },
+        self: { href: `/organization_profiles/${orgId}` }
+      }
+    };
+
+    return this.success(Ember.$.extend({}, defaultProfileData, profileData));
   });
 });
 
