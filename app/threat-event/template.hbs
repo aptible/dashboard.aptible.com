@@ -4,57 +4,79 @@
   <header class="risk-assessment-header">
     <div class="risk-assessment-container">
 
-      <div class='risk-assessment-header__title-info'>
-        <h2 class="risk-assessment-header__sub-title">
-          {{#link-to 'risk-assessment' riskAssessment }}{{capitalize riskAssessment.status}} Risk Assessment{{/link-to}} - Threat Event</h2>
-        <h1 class="risk-assessment-header__title">{{model.title}}</h1>
-
-        <div class="risk-assessment-header__component-description">{{model.description}}</div>
-        <div class="risk-assessment-header__component-big-stats">
-
+      <div class="row">
+        <div class="col-xs-12">
+          <div class='risk-assessment-header__title-info'>
+            <h2 class="risk-assessment-header__sub-title">
+              {{#link-to 'risk-assessment' riskAssessment }}
+                ← {{capitalize riskAssessment.status}} Risk Assessment
+              {{/link-to}} - Threat Event</h2>
+            <h1 class="risk-assessment-header__title">{{model.title}}</h1>
+          </div>
         </div>
       </div>
 
-      <div class="risk-assessment-header__component_micro-stats">
-        <ul>
-          <li class="risk-assessment-header__component_micro-stats__item">
-            <span class="risk-assessment-header__component_micro-stats__item__title">
-              Likelihood of Initiation
-            </span>
-            <span class="risk-assessment-header__component_micro-stats__item__value">
-              {{model.likelihoodOfInitiation}}
-            </span>
-          </li>
+      <div class="row">
+        <div class="col-xs-7">
+          <div class="risk-assessment-header__component-description">{{model.description}}</div>
+        </div>
 
-          <li class="risk-assessment-header__component_micro-stats__item">
-            <span class="risk-assessment-header__component_micro-stats__item__title">
-              Likelihood of Adverse Impact
-            </span>
-            <span class="risk-assessment-header__component_micro-stats__item__value">
-              {{model.likelihoodOfInitiation}}
-            </span>
-          </li>
+        <div class="col-xs-5">
+          <div class="risk-assessment-header__component-big-stats clearfix">
+            <div class="risk-assessment-header__component-big-stats__stat">
+              <div class="value">{{model.appliedRiskIndex}}</div>
+              <div class="label">Overall Risk Index</div>
+            </div>
 
-          <li class="risk-assessment-header__component_micro-stats__item">
-            <span class="risk-assessment-header__component_micro-stats__item__title">
-              Overall Likelihood of Adverse Impact
-            </span>
-            <span class="risk-assessment-header__component_micro-stats__item__value">
-              {{model.overalLikelihoodOfAdverseImpact}}
-            </span>
-          </li>
-        </ul>
+            <div class="risk-assessment-header__component-big-stats__stat">
+              <div class="value">{{model.impact}}</div>
+              <div class="label">Impact</div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class='risk-assessment-header__actions'>
 
+      <div class="risk-assessment-header__component_micro-stats">
+        <ul>
+
+          {{#if model.likelihoodOfInitiation}}
+            <li class="risk-assessment-header__component_micro-stats__item">
+              <span class="risk-assessment-header__component_micro-stats__item__title">
+                Likelihood of Initiation
+              </span>
+              <span class="risk-assessment-header__component_micro-stats__item__value">
+                {{model.likelihoodOfInitiation}}
+              </span>
+            </li>
+          {{/if}}
+
+          {{#if model.appliedLikelihoodOfImpact}}
+            <li class="risk-assessment-header__component_micro-stats__item">
+              <span class="risk-assessment-header__component_micro-stats__item__title">
+                Likelihood of Adverse Impact
+              </span>
+              <span class="risk-assessment-header__component_micro-stats__item__value">
+                {{model.appliedLikelihoodOfImpact}}
+              </span>
+            </li>
+          {{/if}}
+
+          {{#if model.appliedOverallLikelihood}}
+            <li class="risk-assessment-header__component_micro-stats__item">
+              <span class="risk-assessment-header__component_micro-stats__item__title">
+                Overall Likelihood of Adverse Impact
+              </span>
+              <span class="risk-assessment-header__component_micro-stats__item__value">
+                {{model.appliedOverallLikelihood}}
+              </span>
+            </li>
+          {{/if}}
+
+        </ul>
       </div>
     </div>
   </header>
 
-  <div class="main-body">
-    <div class="risk-assessment-container">
-      {{outlet}}
-    </div>
-  </div>
+  {{outlet}}
 </main>

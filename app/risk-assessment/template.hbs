@@ -4,24 +4,31 @@
   <header class="risk-assessment-header">
     <div class="risk-assessment-container">
 
-      <div class='risk-assessment-header__title-info'>
-        {{link-to '← All Risk Assessments' 'risk-assessments' model.organizationProfile class="risk-assessment-header__back-to-index"}}
-        <h2 class="risk-assessment-header__sub-title">Started on {{format-utc-timestamp model.createdAt}}</h2>
-        <h1 class="risk-assessment-header__title">{{capitalize model.status}} Risk Assessment</h1>
-      </div>
+      <div class="row">
+        <div class="col-xs-8">
+          <div class='risk-assessment-header__title-info'>
+            {{link-to '← All Risk Assessments' 'risk-assessments' model.organizationProfile class="risk-assessment-header__back-to-index"}}
+            <h2 class="risk-assessment-header__sub-title">Started on {{format-utc-timestamp model.createdAt}}</h2>
+            <h1 class="risk-assessment-header__title">{{capitalize model.status}} Risk Assessment</h1>
+          </div>
+        </div>
 
-      <div class='risk-assessment-header__actions'>
-        {{#if false}}
-          <span class="risk-assessment-header__action">
-            {{link-to 'Submit for Approval' 'risk-assessment.submit' model class="btn btn-primary"}}
-          </span>
-        {{/if}}
+        <div class="col-xs-4">
+          <div class='risk-assessment-header__actions'>
+            {{#if false}}
+              <span class="risk-assessment-header__action">
+                {{link-to 'Submit for Approval' 'risk-assessment.submit' model class="btn btn-primary"}}
+              </span>
+            {{/if}}
 
-        <span class="risk-assessment-header__action">
-          {{link-to 'Download PDF' 'print-risk-assessment' model class="btn btn-default" target="_blank"}}
-        </span>
+            <span class="risk-assessment-header__action">
+              {{link-to 'Download PDF' 'print-risk-assessment' model class="btn btn-default" target="_blank"}}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
+
 
     <div class="risk-assessment-container">
       <ul class="nav nav-tabs risk-assessment-header__tabs">
@@ -30,6 +37,7 @@
           {{link-to 'Components' 'risk-assessment' model}}
         {{/activating-item}}
 
+        {{!--
         {{#activating-item currentWhen="risk-assessment.activity" tagName="li"}}
           {{link-to 'Activity' 'risk-assessment.activity' model}}
         {{/activating-item}}
@@ -37,6 +45,7 @@
         {{#activating-item currentWhen="risk-assessment.compare" tagName="li"}}
           {{link-to 'Compare' 'risk-assessment.compare' model}}
         {{/activating-item}}
+        --}}
       </ul>
     </div>
   </header>

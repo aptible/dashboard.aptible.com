@@ -38,8 +38,16 @@ $bg-blue: #FCFDFF;
 }
 
 .risk-assessment-header__title-info {
-  margin: 50px 0;
-  float: left;
+  margin: 50px 0 30px;
+}
+
+.risk-assessment-header__component-description {
+  color: $color-light;
+  font-size: 14px;
+}
+
+.risk-assessment-header__component-big-stats {
+
 }
 
 .risk-assessment-header__actions {
@@ -52,6 +60,7 @@ $bg-blue: #FCFDFF;
 }
 
 .risk-assessment-header__tabs {
+  margin: 20px 0 0;
   border-bottom: 0;
   clear: both;
 
@@ -59,6 +68,34 @@ $bg-blue: #FCFDFF;
     font-weight: $weight-semibold;
   }
 }
+
+.risk-assessment-header__component_micro-stats {
+  clear: both;
+  margin: 40px 0;
+
+  > ul {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.risk-assessment-header__component_micro-stats__item {
+  display: inline-block;
+  margin: 0 25px 0 0;
+
+  .risk-assessment-header__component_micro-stats__item__title {
+    color: $color-light;
+    font-weight: $weight-semibold;
+    text-transform: uppercase;
+    margin: 0 8px 0 0;
+  }
+
+  .risk-assessment-header__component_micro-stats__item__value {
+    font-size: 18px;
+    font-weight: $weight-semibold;
+  }
+}
+
 
 .risk-assessment__filters__clear {
   font-size: 11px;
@@ -88,6 +125,39 @@ a.risk-components-nav__link {
 
 .risk-assessment__index {
   margin: 30px 0;
+}
+
+.risk-assessment-component {}
+
+.risk-assessment-component__section {
+  padding: 30px 0;
+  border-bottom: 1px solid $border-blue;
+}
+
+.risk-assessment-component__section__title {
+  margin: 0 0 30px;
+  font-size: 16px;
+  font-weight: $weight-semibold;
+}
+
+.risk-assessment-component__section_final {
+  border: 0;
+}
+
+.risk-assessment-header__component-big-stats__stat {
+  width: 50%;
+  text-align: center;
+  float: left;
+
+  .value {
+    font-size: 40px;
+    font-weight: $weight-semibold;
+  }
+
+  .label {
+    color: $color-light;
+    font-weight: $weight-semibold;
+  }
 }
 
 .risk-components-nav__link {
