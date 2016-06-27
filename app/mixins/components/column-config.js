@@ -9,7 +9,7 @@ export default Ember.Mixin.create({
     let config = {};
 
     for(var column in columnPresets) {
-      config[column] = enabledColumns.indexOf(column) > -1
+      config[column] = enabledColumns.indexOf(column) > -1;
     }
 
     return config;

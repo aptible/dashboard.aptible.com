@@ -11,7 +11,7 @@ export default Ember.Route.extend({
           riskAssessment,
           predisposingCondition: riskAssessment.get('predisposingConditions').findBy('id', params.id)
         });
-      });
+      }, reject);
 
     });
   },

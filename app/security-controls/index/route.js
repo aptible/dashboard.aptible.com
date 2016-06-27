@@ -1,11 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  title: function(tokens) {
+  title: function() {
     let riskAssessment = this.modelFor('risk-assessment');
     let status = riskAssessment.get('status').capitalize();
 
-    return `Security Controls - ${status} Risk Assessment`
+    return `Security Controls - ${status} Risk Assessment`;
   },
 
   model() {

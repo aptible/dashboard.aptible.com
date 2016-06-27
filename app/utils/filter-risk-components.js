@@ -44,13 +44,13 @@ export default function filterComponents(components, filters = {}) {
       b = b.get(filters.sort);
 
       if(filters.sort === 'title') {
-        if (a == b) { return 0; }
+        if (a === b) { return 0; }
         if (a < b) { return -1; }
         return 1;
       } else {
         // everything else is an number
-        a = a || 0
-        b = b || 0
+        a = a || 0;
+        b = b || 0;
 
         return Math.round(parseFloat(b, 10)) - Math.round(parseFloat(a, 10));
       }

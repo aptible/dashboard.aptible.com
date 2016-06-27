@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  titleToken: function(tokens){
+  titleToken() {
     return 'Risk Assessment';
   }
 });

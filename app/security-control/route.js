@@ -11,7 +11,7 @@ export default Ember.Route.extend({
           riskAssessment,
           securityControl: riskAssessment.get('securityControls').findBy('id', params.id)
         });
-      });
+      }, reject);
 
     });
   },

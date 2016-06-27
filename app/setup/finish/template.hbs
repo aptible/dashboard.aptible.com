@@ -24,7 +24,7 @@
                   <div class="step-title">{{step.title}}</div>
                   {{#if step.current}}
                     <div class="step-cta">
-                      {{link-to step.cta (concat 'engines.' step.key) class="btn btn-primary btn-sm"}}
+                      {{link-to step.cta step.key class="btn btn-primary btn-sm"}}
                     </div>
                   {{/if}}
                 </div>

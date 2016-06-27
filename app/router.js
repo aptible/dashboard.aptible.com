@@ -81,11 +81,11 @@ Router.map(function() {
         path: "databases/:database_id"
       }, function() {
         this.route("activity");
+        this.route("metrics");
+        this.route("backups");
         this.route("replicate");
         this.route("cluster");
-        this.route("metrics");
         this.route("deprovision");
-        this.route("backups");
       });
 
       this.route("stack", {
@@ -128,6 +128,7 @@ Router.map(function() {
         path: "/organizations/:organization_id"
       }, function() {
         this.route("members", {}, function() {
+          this.route('pending-invitations');
           this.route("edit", {path: ":user_id/edit"});
         });
         this.route("roles", {}, function() {
@@ -200,7 +201,7 @@ Router.map(function() {
       // Index routes e.g threat_events
 
       this.route(indexRoute, { path: component, resetNamespace: true }, function() {
-        this.route('new')
+        this.route('new');
       });
     });
   });
