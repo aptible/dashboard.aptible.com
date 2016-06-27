@@ -68,9 +68,13 @@ export default ApplicationSerializer.extend({
     // ID as a prefix for each key.
     riskAssessment._embedded.threat_events.map((threatEvent) => {
       ['vulnerabilities', 'threat_sources', 'predisposing_conditions'].forEach((relationship) => {
-        threatEvent[relationship] = threatEvent[relationship].map((key) => {
+        threatEvent[relationship.camelize()] = threatEvent[relationship].map((key) => {
           return `${riskAssessment.id}_${key}`
         });
+
+        if(relationship.camelize() !== relationship) {
+          delete threatEvent[relationship];
+        }
       })
       return threatEvent;
     });

@@ -1,5 +1,12 @@
 export default [
   'model:service',
+  'model:risk-assessment',
+  'model:predisposing-condition',
+  'model:threat-source',
+  'model:mitigation',
+  'model:security-control',
+  'model:vulnerability',
+  'model:threat-event',
   'model:certificate',
   'model:stack',
   'model:app',

@@ -4,7 +4,7 @@ import {
 } from 'ember-qunit';
 import modelDeps from '../../support/common-model-dependencies';
 
-moduleForModel('risk-assessment', 'model:risk-assessment', {
+moduleForModel('predisposing-condition', 'model:predisposing-condition', {
   needs: modelDeps
 });
 
