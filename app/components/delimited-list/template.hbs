@@ -1,0 +1,10 @@
+<span class="delimited-list__value">
+  {{#if (gt values.length 0)}}
+    {{values}}
+  {{else}}
+    {{placeholder}}
+  {{/if}}
+</span>
+{{#if difference}}
+  <span class="delimited-list__remainder">+ {{difference}} more</span>
+{{/if}}
