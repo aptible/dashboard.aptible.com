@@ -1,0 +1,35 @@
+<section class="risk-assessment-component__section">
+  <div class="risk-assessment-container">
+    <h3 class="risk-assessment-component__section__title">Predisposing Conditions</h3>
+    <div class="aptable">
+      {{predisposing-condition-list predisposingConditions=model.predisposingConditions}}
+    </div>
+  </div>
+</section>
+
+<section class="risk-assessment-component__section">
+  <div class="risk-assessment-container">
+    <h3 class="risk-assessment-component__section__title">Vulnerabilities</h3>
+    <div class="aptable">
+      {{vulnerability-list vulnerabilities=model.vulnerabilities}}
+    </div>
+  </div>
+</section>
+
+<section class="risk-assessment-component__section">
+  <div class="risk-assessment-container">
+    <h3 class="risk-assessment-component__section__title">Threat Sources</h3>
+    <div class="aptable">
+      {{threat-sources-list threatSources=model.threatSources}}
+    </div>
+  </div>
+</section>
+
+<section class="risk-assessment-component__section risk-assessment-component__section_final">
+  <div class="risk-assessment-container">
+    <h3 class="risk-assessment-component__section__title">Security Controls</h3>
+    <div class="aptable">
+      {{security-controls-list securityControls=model.securityControls}}
+    </div>
+  </div>
+</section>

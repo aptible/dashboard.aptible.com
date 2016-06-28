@@ -1,0 +1,76 @@
+<main class="layout-content spd-content risk-assessment__main">
+  {{risk-assessment-status-header riskAssessment=model}}
+
+  <header class="risk-assessment-header">
+    <div class="risk-assessment-container">
+
+      <div class="row">
+        <div class="col-xs-8">
+          <div class='risk-assessment-header__title-info'>
+            {{link-to '← All Risk Assessments' 'risk-assessments' model.organizationProfile class="risk-assessment-header__back-to-index"}}
+            <h2 class="risk-assessment-header__sub-title">Started on {{format-utc-timestamp model.createdAt}}</h2>
+            <h1 class="risk-assessment-header__title">{{capitalize-string model.status}} Risk Assessment</h1>
+          </div>
+        </div>
+
+        <div class="col-xs-4">
+          <div class='risk-assessment-header__actions'>
+            {{#if false}}
+              <span class="risk-assessment-header__action">
+                {{link-to 'Submit for Approval' 'risk-assessment.submit' model class="btn btn-primary"}}
+              </span>
+            {{/if}}
+
+            <span class="risk-assessment-header__action">
+              {{link-to 'Download PDF' 'print-risk-assessment' model class="btn btn-default" target="_blank"}}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="risk-assessment-container">
+      <ul class="nav nav-tabs risk-assessment-header__tabs">
+
+        {{#activating-item currentWhen="risk-assessment" tagName="li"}}
+          {{link-to 'Components' 'risk-assessment' model}}
+        {{/activating-item}}
+
+        {{!--
+        {{#activating-item currentWhen="risk-assessment.activity" tagName="li"}}
+          {{link-to 'Activity' 'risk-assessment.activity' model}}
+        {{/activating-item}}
+
+        {{#activating-item currentWhen="risk-assessment.compare" tagName="li"}}
+          {{link-to 'Compare' 'risk-assessment.compare' model}}
+        {{/activating-item}}
+        --}}
+      </ul>
+    </div>
+  </header>
+
+  <div class="main-body">
+    <div class="risk-assessment-container">
+      <div class="risk-components-nav">
+        {{#link-to 'threat-events' class="risk-components-nav__link"}}
+          <i class="fa fa-bolt"></i> Risks
+        {{/link-to}}
+        {{#link-to 'vulnerabilities' class="risk-components-nav__link"}}
+          <i class="fa fa-unlock"></i> Vulnerabilities
+        {{/link-to}}
+        {{#link-to 'predisposing-conditions' class="risk-components-nav__link"}}
+          <i class="fa fa-globe"></i> Predisposing Conditions
+        {{/link-to}}
+        {{#link-to 'threat-sources' class="risk-components-nav__link"}}
+          <i class="fa fa-users"></i> Threat Sources
+        {{/link-to}}
+        {{#link-to 'security-controls' class="risk-components-nav__link"}}
+          <i class="fa fa-sliders"></i> Security Controls
+        {{/link-to}}
+      </div>
+    </div>
+
+    {{outlet}}
+  </div>
+</main>
