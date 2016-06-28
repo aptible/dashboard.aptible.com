@@ -8,10 +8,8 @@
       {{#each stacks as |stack|}}
         <tr>
           <td class="aptable__row-heading">{{stack.handle}}</td>
-          <td>
-            {{#if role}}
-              {{permissions-by-stack role=role stack=stack}}
-            {{/if}}
+          <td class="aptable__capitalized-list">
+            {{permissions-by-stack role=role stack=stack}}
           </td>
         </tr>
       {{/each}}

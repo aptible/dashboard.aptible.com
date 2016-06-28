@@ -1,0 +1,71 @@
+<div class="row">
+  <div class="col-xs-12">
+
+    <div class="panel-heading"><h3>Environments</h3></div>
+
+    <div class="stacks">
+      {{#each stacks as |stack|}}
+        <div class="panel panel-default panel--bisected">
+          <div class="panel-heading role-details__heading">
+            <div class="role-details__label">
+              <h2 class="role-details__name">{{stack.handle}}</h2>
+              {{#if stack.allowPHI}}
+                <div class="label label-success">
+                  <i class="fa fa-check"></i> PHI Enabled
+                </div>
+              {{else}}
+                <div class="label label-info">PHI Not Allowed</div>
+              {{/if}}
+            </div>
+            <div class="role-details__members">
+              <h4 class="aptible-label">Apps</h4>
+              {{delimited-list list=stack.apps listKey='handle' placeholder='-'}}
+            </div>
+            <div class="role-details__members">
+              <h4 class="aptible-label">Databases</h4>
+              {{delimited-list list=stack.databases listKey='handle' placeholder='-'}}
+            </div>
+          </div>
+          <div class="panel-body panel-body--aptable">
+            <table class="aptable">
+              <thead>
+                <th>{{stack.handle}} Permissions</th>
+                <th>Granted</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="aptable__row-heading">Read</td>
+                  <td class="aptable__actions">
+                    {{!permission-checkbox
+                        scope="read"
+                        stack=stack
+                        role=model
+                        changeset=changeset}}
+                    {{!x-toggle
+                        size='x-sm'
+                        toggled=value
+                        showLabels=false
+                        toggle="onToggle"
+                        name=name
+                        disabled=property.readonly}}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="aptable__row-heading">Manage</td>
+                  <td class="aptable__actions">
+                    {{!permission-checkbox
+                        scope="manage"
+                        stack=stack
+                        role=model
+                        changeset=changeset}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+
+  </div>
+</div>

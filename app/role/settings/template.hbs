@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-xs-6">
+
+    <form role='form'>
+      <div class="panel">
+        <div class="panel-heading">
+          <h3>Settings</h3>
+        </div>
+
+        <div class="panel-body">
+            {{server-validation-errors model=model}}
+
+          <div class="form-group">
+            <label for="role-name">Role Name</label>
+            {{focusable-input name="role-name"
+                              value=model.name
+                              autofocus=true
+                              class="form-control"}}
+          </div>
+        </div>
+
+      </div>
+      <div class="resource-actions">
+        <button {{action 'save'}}
+                disabled={{isUnchanged}}
+                class='btn btn-primary' type='submit'>
+          {{#if model.isSaving}}
+            Saving...
+          {{else}}
+            Save Changes
+          {{/if}}
+        </button>
+      </div>
+    </form>
+
+  </div>
+</div>

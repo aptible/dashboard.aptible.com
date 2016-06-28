@@ -1,0 +1,32 @@
+//role-type-select--platform
+.role-type-select {
+  /* Rectangle 185: */
+  background: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.08);
+  border-radius: 3px;
+  text-align: center;
+  padding: 40px 35px;
+}
+
+.role-type-select--selected {
+  background: #4A90E2;
+  border-color: #4a90e2;
+  .role-type-select__name {
+    color: #FFFFFF;
+  }
+  .role-type-select__info {
+    color: #C7EFFF;
+  }
+}
+
+.role-type-select__name {
+  color: #4A4A4A;
+  font-size: 16px;
+  margin-bottom: 15px;
+  margin-top: 0;
+}
+.role-type-select__info {
+  color: #9B9B9B;
+  font-size: 14px;
+}

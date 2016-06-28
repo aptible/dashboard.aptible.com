@@ -1,10 +1,6 @@
 import Ember from "ember";
 
 export default Ember.Controller.extend({
-  saveButtonName: 'Update Role',
-
-  isUnchanged: Ember.computed.not('isChanged'),
-  isChanged: Ember.computed.or('_changesetIsChanged', 'model.isDirty'),
   _changesetIsChanged: false,
 
   observeChangeset: function() {
@@ -19,13 +15,5 @@ export default Ember.Controller.extend({
 
       this.set('_changesetIsChanged', hasChanged);
     });
-  },
-
-  nonmembers: function(){
-    const members = this.get('model.users');
-    const organizationUsers = this.get('organization.users');
-    return organizationUsers.reject((user) => {
-      return members.contains(user);
-    });
-  }.property('model.users.[]', 'organization.users.[]'),
+  }
 });

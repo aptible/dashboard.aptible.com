@@ -1,0 +1,106 @@
+<div class="row">
+  <div class="col-xs-5">
+    <form>
+      <label class="aptible-label">Add Existing User</label>
+      <div class="invite-user">
+        <button class="btn btn-primary" {{action "inviteUser" invitedUser}} type="submit">Add</button>
+        <div class="user-select-container">
+          {{ultimate-select
+            class="user-select" name="billing-contact" prompt="Select..."
+            items=nonmembers itemKey="id" itemValue="name"
+            update=(action (mut invitedUser)) selected=invitedUser}}
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-xs-1">
+    <div class="aptible-label">OR</div>
+  </div>
+
+  <div class="col-xs-6">
+    <form role='form' {{action "inviteByEmail" inviteByEmail on="submit"}}>
+      {{server-validation-errors model=invitation}}
+      <label class="aptible-label">Invite by email</label>
+      <div class="invite-user">
+        <button class="btn btn-primary" {{action "inviteByEmail" invitedEmail}} type="submit">Send Invite</button>
+        <div class="invite-user-container">
+          {{input name='invite-by-email' value=invitedEmail classNames="form-control"}}
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<hr>
+
+<!-- TODO: Search
+<form>
+  <label class="aptible-label">Search Members</label>
+  <input type="search">
+</form> -->
+
+<div class="row">
+  <div class="col-xs-12">
+    <h3 class="heading heading--caps heading--sm">Members</h3>
+
+    <table class="aptable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Date Added</th>
+          <th>Owner</th>
+          <th>Admin Members</th>
+          {{#aptible-ability user=session.currentUser scope='manage' permittable=organization as |hasAbility|}}
+            {{#if hasAbility}}
+              <th>Actions</th>
+            {{/if}}
+          {{/aptible-ability}}
+        </tr>
+      </thead>
+
+      <tbody>
+        {{#if sortedMemberships}}
+          {{#each sortedMemberships as membership}}
+            {{partial 'role/membership-table-row'}}
+          {{/each}}
+        {{else}}
+          <td class="aptable--empty" colspan="6">
+            {{role.name}} currently has no members.
+          </td>
+        {{/if}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{{#if pendingInvitations}}
+  <div class="row">
+    <div class="col-xs-12">
+      <h3 class="heading heading--caps heading--sm">Pending Invites</h3>
+
+      <table class="aptable">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Invited By</th>
+            <th>Invited On</th>
+            {{!#aptible-ability user=session.currentUser scope='manage' permittable=organization as |hasAbility|}}
+              {{!#if hasAbility}}
+                <th>Actions</th>
+              {{!/if}}
+            {{!/aptible-ability}}
+          </tr>
+        </thead>
+
+        <tbody>
+          {{#each pendingInvitations as invitation}}
+            {{partial 'organization/invited-user-table-row' current-user=session.currentUser}}
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{{/if}}

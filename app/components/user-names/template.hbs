@@ -1,8 +1,10 @@
-{{#if truncatedUsers.length}}
-  <li class="user-names__value">{{names}}</li>
-{{else}}
-  <li>{{placeholder}}</li>
-{{/if}}
+<li class="user-names__value">
+  {{#if (gt users.length 0)}}
+    {{names}}
+  {{else}}
+    {{placeholder}}
+  {{/if}}
+</li>
 {{#if difference}}
   <li class="user-names__remainder">+ {{difference}} more</li>
 {{/if}}

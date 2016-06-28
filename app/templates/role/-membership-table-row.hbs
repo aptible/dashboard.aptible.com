@@ -1,0 +1,18 @@
+<tr class="aptable__member-row">
+  <td class="profile--inline">
+    {{partial 'organization/user' user=membership.user}}
+  </td>
+  <td>yo {{membership.user}}</td>
+  <td>{{format-utc-timestamp membership.createdAt }}</td>
+  <td>
+    {{#if membership.user.isPlatformOwner}}
+      <div class="label label-owner">
+        <i class="fa fa-shield"></i> Owner
+      </div>
+    {{/if}}
+  </td>
+  <td>
+    TODO: add checkbox
+  </td>
+  <td class="aptable__actions">REMOVE</td>
+</tr>

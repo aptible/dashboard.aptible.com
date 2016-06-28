@@ -2,7 +2,7 @@
   <div class="panel-heading role-details__heading">
     <div class="role-details__label">
       <h2 class="role-details__name">{{role.name}}</h2>
-      {{#if role.owner}}
+      {{#if role.isOwner}}
         <div class="label label-owner">
           <i class="fa fa-shield"></i> Owner
         </div>
@@ -10,14 +10,12 @@
     </div>
     <div class="role-details__members">
       <h4 class="aptible-label">Members</h4>
-      {{#if role.users}}
-        {{user-names users=role.users count=3 placeholder='--'}}
-      {{/if}}
+      {{user-names users=role.users count=4 placeholder='-'}}
     </div>
   </div>
   {{!-- PRIVILEGED ROLES --}}
   {{#if role.privileged}}
-    {{#if (eq role.type 'owner')}}
+    {{#if role.isOwner}}
       {{partial 'organization/role-details-owner'}}
     {{/if}}
     {{#if (eq role.type 'platform_owner')}}

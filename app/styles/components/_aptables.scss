@@ -68,6 +68,10 @@
   color: #4a4a4a;
 }
 
+.aptable__capitalized-list {
+  text-transform: capitalize;
+}
+
 .aptable__actions {
   text-align: right;
   .btn {

@@ -9,53 +9,9 @@
                       class="form-control"}}
   </div>
 
-  <div class="form-group">
-    <label for="role-name">Admin role</label>
-    <div class="form-container">
-      <ul>
-        <li>
-          <label>
-            {{input type="checkbox"
-            name="role-admin"
-            checked=model.privileged}}
-            Admin Role
-          </label>
-        </li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="stacks">
-    {{#each stacks as |stack|}}
-      <div class="form-group stack">
-        <label for="role-name">{{stack.handle}} Permissions</label>
-        <div class="form-container">
-          <ul>
-            <li>
-              <label>
-                {{permission-checkbox
-                  scope="read"
-                  stack=stack
-                  role=model
-                  changeset=changeset}}
-                Read
-              </label>
-            </li>
-            <li>
-              <label>
-                {{permission-checkbox
-                  scope="manage"
-                  stack=stack
-                  role=model
-                  changeset=changeset}}
-                Manage
-              </label>
-            </li>
-          </ul>
-        </div>
-      </div>
-    {{/each}}
-  </div>
+  {{#if billingDetail.allowPHI}}
+    {{role-type-options role=role}}
+  {{/if}}
 
   <div class="resource-actions">
     <button {{action 'cancel'}} class='btn btn-default' type='reset'>
@@ -63,14 +19,13 @@
     </button>
 
     <button {{action 'save'}}
-            disabled={{isUnchanged}}
+            disabled={{model.isDirty}}
             class='btn btn-primary' type='submit'>
       {{#if model.isSaving}}
         Saving...
       {{else}}
-        {{saveButtonName}}
+        Save
       {{/if}}
     </button>
   </div>
 </form>
-
