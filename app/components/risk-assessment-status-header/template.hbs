@@ -1,0 +1,8 @@
+<header class="ra__status-header ra__status-header--{{riskAssessment.status}}">
+  <div class="container">
+    <span class="ra__label">{{riskAssessment.status}}</span>
+    <span class="ra__status ra__status--{{riskAssessment.status}}">
+      {{#if (eq riskAssessment.status 'draft')}}In Progress{{else}}Approved{{/if}}
+    </span>
+  </div>
+</header>

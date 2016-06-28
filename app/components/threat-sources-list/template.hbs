@@ -1,0 +1,40 @@
+<thead>
+  <tr>
+    {{#each columnHeaders as |header|}}
+      <th>{{header}}</th>
+    {{/each}}
+  </tr>
+</thead>
+<tbody>
+  {{#each filteredThreatSources as |threatSource|}}
+    <tr>
+      {{#if columnConfig.title}}
+        <td class='aptable__row-header'>{{threatSource.title}}</td>
+      {{/if}}
+
+      {{#if columnConfig.description}}
+        <td>{{threatSource.description}}</td>
+      {{/if}}
+
+      {{#if columnConfig.adversarial}}
+        <td>
+          {{if threatSource.adversarial "Adversarial" "Non-Adversarial"}}
+        </td>
+      {{/if}}
+
+      {{#if columnConfig.rangeOfEffects}}
+        <td>{{threatSource.rangeOfEffects}}</td>
+      {{/if}}
+
+      {{#if columnConfig.threatVector}}
+        <td>{{threatSource.threatVector}}</td>
+      {{/if}}
+
+      {{#if columnConfig.actions}}
+        <td class="base-table__actions">
+          {{link-to 'View' 'threat-source' threatSource.id class="btn btn-link"}}
+        </td>
+      {{/if}}
+    </tr>
+  {{/each}}
+</tbody>
