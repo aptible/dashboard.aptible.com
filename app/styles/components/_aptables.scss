@@ -15,8 +15,9 @@
   th, td {
     background-color: #fff;
     border-left: 1px solid #e0e0e0;
-    padding: 15px 20px;
+    padding: 11px 20px;
     transition: background-color 0.25s ease-in-out;
+
     &:first-child {
       border-left: none;
     }
@@ -27,6 +28,7 @@
       &:first-child {
         border-top-left-radius: 3px
       }
+
       &:last-child {
         border-top-right-radius: 3px;
       }
@@ -38,23 +40,30 @@
       &:first-child {
         border-bottom-left-radius: 3px;
       }
+
       &:last-child {
         border-bottom-right-radius: 3px;
       }
     }
   }
 
+  tr:nth-child(even) td {
+    background: #fafafa;
+  }
+
   th {
     border-bottom: 1px solid #e0e0e0;
-    color: #9B9B9B;
+    color: $color-light;
     font-size: 12px;
-    font-weight: 300;
     text-transform: uppercase;
+    font-weight: $weight-semibold;
   }
+
   tr:hover {
     td {
       background-color: #F7F8FB;
     }
+
     .aptable__actions .btn {
       visibility: visible;
       opacity: 1;
@@ -62,17 +71,25 @@
   }
 }
 
+
+.aptable__row-header {
+  font-weight: $weight-semibold;
+}
+
 .aptable__actions {
   text-align: right;
+
   .btn {
     color: #999;
     opacity: 0;
     transition: opacity 0.25s ease-in-out;
     visibility: hidden;
+
     &:hover {
       color: #999;
     }
   }
+
   a.btn.btn-xs {
     padding: 1px 4px;
   }

@@ -46,6 +46,7 @@
 @import "components/learn-more-tooltip";
 @import "components/organization-switcher";
 @import "components/pending-invitation";
+@import "components/print-document";
 @import "components/security-control";
 @import "components/security-control-group";
 @import "components/security-control-index-item";
@@ -55,6 +56,6 @@
 @import "components/user-training-item";
 @import "components/training-progress-bar";
 @import "components/x-toggle";
-.container {
-  width: auto;
-}
+@import "components/risk-assessment-item";
+@import "components/risk-components";
+
