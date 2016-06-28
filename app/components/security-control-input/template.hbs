@@ -1,0 +1,27 @@
+<div class="security-control-fields {{if property.readonly 'readonly' null}}">
+  <div class="security-control-title">
+    <div class="title">
+      {{property.title}}
+      {{#if property.displayProperties.tooltip}}
+        {{#learn-more-tooltip tip=property.displayProperties.tooltip}}
+          <i class="fa fa-question-circle"></i>
+        {{/learn-more-tooltip}}
+      {{/if}}
+    </div>
+
+    {{#if property.description}}
+      <div class="description">{{property.description}}</div>
+    {{/if}}
+  </div>
+  {{#each-property properties=property.properties document=document as |fieldKey field fieldType fieldOptions|}}
+    {{security-control-field
+      attestation=attestation
+      parentKey=key
+      key=fieldKey
+      property=field
+      type=fieldType
+      document=document
+      options=fieldOptions}}
+  {{/each-property}}
+</div>
+

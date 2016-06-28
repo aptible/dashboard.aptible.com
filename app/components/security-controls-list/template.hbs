@@ -1,0 +1,38 @@
+<thead>
+  <tr>
+    {{#each columnHeaders as |header|}}
+      <th>{{header}}</th>
+    {{/each}}
+  </tr>
+</thead>
+<tbody>
+  {{#each filteredSecurityControls as |securityControl|}}
+    <tr>
+      {{#if columnConfig.title}}
+      <td class='aptable__row-header'>{{securityControl.title}}</td>
+      {{/if}}
+
+      {{#if columnConfig.description}}
+        <td>{{securityControl.description}}</td>
+      {{/if}}
+
+      {{#if columnConfig.status}}
+        <td>{{securityControl.status}}</td>
+      {{/if}}
+
+      {{#if columnConfig.vulnerabilities}}
+        <td>
+          {{#each securityControl.vulnerabilities as |vulnerability|}}
+            {{link-to vulnerability.title 'vulnerability' vulnerability}},
+          {{/each}}
+        </td>
+      {{/if}}
+
+      {{#if columnConfig.actions}}
+        <td class="base-table__actions">
+          {{link-to 'View' 'security-control' securityControl.id class="btn btn-link"}}
+        </td>
+      {{/if}}
+    </tr>
+  {{/each}}
+</tbody>
