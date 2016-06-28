@@ -22,20 +22,6 @@ export default Ember.Component.extend({
 
   disabled: Ember.computed.reads('role.privileged'),
 
-  init() {
-    this._super();
-    this._stagedObjectKey = {
-      stack: this.get('stack'),
-      scope: this.get('scope'),
-      role: this.get('role')
-    };
-
-    this.updateIsChecked();
-    this.get('changeset').subscribe(this._stagedObjectKey, () => {
-      this.updateIsChecked();
-    });
-  },
-
   updateIsChecked(){
     const value = this.get('changeset').value(this._stagedObjectKey);
     this.set('isChecked', value.isEnabled);
