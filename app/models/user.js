@@ -32,6 +32,12 @@ export default DS.Model.extend({
     return can(this, scope, stack);
   },
 
+  isPlatformOwner: Ember.computed('roles.@each.type', function() {
+    return this.get('roles').reduce(function(prev, type) {
+      return prev || (type === 'owner' || type === 'platform_owner');
+    }, false, 'type');
+  }),
+
   organizations: Ember.computed('roles.@each.organization', function() {
     var organizations = {};
 
@@ -45,5 +51,9 @@ export default DS.Model.extend({
       return organizations[organizationId];
     });
 
-  })
+  }),
+
+  findMembership(memberships) {
+    return memberships.findBy('data.links.user', this.get('data.links.self'));
+  }
 });

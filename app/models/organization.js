@@ -56,7 +56,42 @@ export default DS.Model.extend({
     return [];
   },
 
-  developerRoles: Ember.computed('roles.@each.privileged', 'managePermissions', function() {
+  ownerRole: Ember.computed('roles.@each.type', 'managePermissions', function() {
+    let roles = this.get('roles');
+    return roles.filter((role) => {
+      return role.get('type') === 'owner';
+    }).get('firstObject');
+  }),
+
+  complianceOwnerRole: Ember.computed('roles.@each.type', 'managePermissions', function() {
+    let roles = this.get('roles');
+    return roles.filter((role) => {
+      return role.get('type') === 'compliance_owner';
+    });
+  }),
+
+  platformOwnerRole: Ember.computed('roles.@each.type', 'managePermissions', function() {
+    let roles = this.get('roles');
+    return roles.filter((role) => {
+      return role.get('type') === 'platform_owner';
+    });
+  }),
+
+  platformUserRoles: Ember.computed('roles.@each.type', 'managePermissions', function() {
+    let roles = this.get('roles');
+    return roles.filter((role) => {
+      return role.get('type') === 'platform_user';
+    });
+  }),
+
+  complianceUserRoles: Ember.computed('roles.@each.type', 'managePermissions', function() {
+    let roles = this.get('roles');
+    return roles.filter((role) => {
+      return role.get('type') === 'platform_user';
+    });
+  }),
+
+  developerRoles: Ember.computed('roles.@each.type', 'managePermissions', function() {
     // FIXME: Developer roles are any roles that:
     // 1. Are privileged: true
     // 2. Or have a manage permission on an API resource
