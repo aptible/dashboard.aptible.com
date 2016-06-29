@@ -1,0 +1,11 @@
+<div class="form-group {{ errorClass }}">
+  <label class="block" for={{concat elementId '-domain'}}>Domain Name</label>
+  {{#if tip}}
+    <p>{{tip}}</p>
+  {{/if}}
+  {{input type="text"
+    name=(concat elementId '-domain')
+    value=domain
+    class="form-control"
+    placeholder="www.example.com"}}
+</div>

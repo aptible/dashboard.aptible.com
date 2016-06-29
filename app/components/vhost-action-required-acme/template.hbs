@@ -1,0 +1,17 @@
+<p>
+  You must set up a CNAME via your DNS provider from
+  <code>{{vhost.acmeDomain}}</code> to <code>{{vhost.externalHost}}</code>.
+</p>
+
+<p>
+  Once you've done so, click <i>{{actionLabel}}</i>, and Aptible will attempt to
+  generate a SSL certificate for your domain.
+</p>
+
+<button class="btn btn-default btn-xs" href="#" {{action 'renew'}} disabled={{isRenewing}}>
+  {{#if isRenewing}}
+    Please Wait...
+  {{else}}
+    {{actionLabel}}
+  {{/if}}
+</button>

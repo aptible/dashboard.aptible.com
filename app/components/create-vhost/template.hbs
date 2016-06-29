@@ -20,51 +20,99 @@
               {{ ultimate-select items=services name="service" itemKey="id" itemValue="handle" update=(action (mut vhostService)) selected=vhostService autofocus=true }}
             </div>
 
-          {{#unless serviceHasDefaultVhost}}
               <div class="form-group">
-                <label class="block" for="domain-type">Endpoint type:</label>
+                <label class="block" for="domain-type">
+                  Endpoint type:
+                    {{more-info-icon
+                    title="Choosing an Endpoint Type"
+                    bs-html=true
+                    body="
+                    <p>
+                    For development apps and non-user facing APIs, choose a
+                    <strong>Default Endpoint</strong>: Aptible takes care of
+                    the domain name and SSL certificate for you.
+                    </p>
+                    <p>
+                    For other use cases, a <strong>custom domain with managed
+                    SSL</strong> is a good option: you use your own domain
+                    name, but Aptible handles provisioning and renewing your SSL
+                    certificate.
+                    </p>
+                    <p>
+                    For more advanced use cases, like using an Extended
+                    Validation SSL certificate, use a <strong>custom domain
+                    with a custom SSL certificate</strong> for complete control.
+                    </p>"}}
+
+                </label>
                 <div class="radio">
+                  {{#if defaultVhostAllowed}}
+                    <div>
+                      {{#radio-button value=TYPE_DEFAULT groupValue=vhostType name="domain-type"}}
+                        Use app-{{ model.app.id }}.on-aptible.com default endpoint.
+                      {{/radio-button}}
+                    </div>
+                  {{/if}}
                   <div>
-                    {{#radio-button value=true groupValue=model.isDefault name="domain-type"}}
-                      {{#bs-tooltip placement="bottom" title='A default endpoint has an endpoint address in the format app-${id}.on-aptible.com.' bs-container=false}}
-                          Use app-{{ model.app.id }}.on-aptible.com default endpoint address
-                      {{/bs-tooltip}}
+                    {{#radio-button value=TYPE_ACME groupValue=vhostType name="domain-type"}}
+                        Use a custom domain with managed SSL.
                     {{/radio-button}}
                   </div>
                     <div>
-                      {{#radio-button value=false groupValue=model.isDefault name="domain-type"}}
-                        {{#bs-tooltip placement="bottom" title='Custom endpoints let you use your own certificate and domain name.' bs-container=false}}
-                            Use a custom endpoint address
-                        {{/bs-tooltip}}
+                      {{#radio-button value=TYPE_GENERIC groupValue=vhostType name="domain-type"}}
+                        Use a custom domain and a custom SSL certificate.
                       {{/radio-button}}
                     </div>
                 </div>
               </div>
-          {{/unless}}
 
             <div class="form-group">
-              <label class="block" for="vhost-type">Type</label>
+              <label class="block" for="vhost-type">
+                Endpoint Placement
+                {{more-info-icon
+                  title="Choosing an Endpoint Placement"
+                  bs-html=true
+                  body="
+                    <p>
+                    <strong>External endpoints</strong> are accessible via the
+                    a public internet. Use them for user-facing applications.
+                    </p>
+                    <p>
+                    <strong>Internal endpoints</strong> are only accessible by
+                    other apps in your private Aptible infrastructure. Use them
+                    for internal APIs.
+                    </p>"}}
+              </label>
+              {{#if placementNeeded}}
               <div class="radio">
                 <div>
                   {{#radio-button value=false groupValue=model.internal name="vhost-type"}}
-                    {{#bs-tooltip placement="bottom" title='External endpoints are accessible from the outside internet.' bs-container=false}}
-                        External
-                    {{/bs-tooltip}}
+                    External
                   {{/radio-button}}
                 </div>
                 <div>
-                  {{#radio-button value=true groupValue=model.internal name="vhost-type"}}
-                    {{#bs-tooltip placement="bottom" title='Internal endpoints are only accessible from other apps in your stack.' bs-container=false}}
-                        Internal
-                    {{/bs-tooltip}}
-                  {{/radio-button}}
+                    {{#radio-button value=true groupValue=model.internal name="vhost-type" }}
+                      Internal
+                    {{/radio-button}}
                 </div>
               </div>
+            {{else}}
+              <p>
+                This Endpoint type does not support internal endpoints. The
+                endpoint will be external.
+              </p>
+            {{/if}}
             </div>
 
-          {{#unless model.isDefault}}
+          {{#if acmeDomainNeeded}}
+            {{domain-input domain=model.acmeDomain valid=acmeDomainValid
+              tip="You'll neeed to be able to create a CNAME from this domain
+                  name to a domain name provided by Aptible."}}
+          {{/if}}
+
+          {{#if certificateNeeded}}
             {{select-or-create-certificate certificates=certificates vhost=model}}
-          {{/unless}}
+          {{/if}}
         </div>
       </div>
     </div>
@@ -72,7 +120,7 @@
 
   <div class="resource-actions">
     <button class="btn btn-default" type="reset" {{action 'cancel'}}>Cancel</button>
-    <button class="btn btn-primary" type="submit" {{action 'save' model vhostService}} disabled={{model.isSaving}}>
+    <button class="btn btn-primary" type="submit" {{action 'save' model vhostService}} disabled={{formDisabled}}>
       {{#if model.isSaving}}
           <i class='fa fa-spin fa-spinner'></i> Saving...
       {{else}}

@@ -8,12 +8,27 @@
   {{/bs-alert}}
 {{/if}}
 
+{{#if hasActionRequired}}
+  <div class="sort-group active-domains">
+    {{#if showSortableHeader}}
+      <h5 class="sort-header">Endpoints With Action Required</h5>
+    {{/if}}
+    {{#each actionRequiredDomains as |vhost|}}
+      <div class="row">
+        <div class="col-xs-12">
+          {{partial 'app/domain'}}
+        </div>
+      </div>
+    {{/each}}
+  </div>
+{{/if}}
+
 {{#if hasActive}}
   <div class="sort-group active-domains">
     {{#if showSortableHeader}}
       <h5 class="sort-header">Provisioned Endpoints</h5>
     {{/if}}
-    {{#each provisionedDomains as |vhost|}}
+    {{#each activeDomains as |vhost|}}
       <div class="row">
         <div class="col-xs-12">
           {{partial 'app/domain'}}

@@ -13,6 +13,7 @@ export default Ember.Route.extend({
     return Ember.RSVP.hash({
       vhost: this.store.createRecord('vhost', { app }),
       services: app.get('services'),
+      vhosts: app.get('vhosts'),
       certificates: stack.get('certificates'),
       stack: stack
     });
@@ -21,14 +22,13 @@ export default Ember.Route.extend({
   setupController(controller, model) {
     var vhost = model.vhost,
         services = model.services,
+        vhosts = model.vhosts,
         certificates = model.certificates;
-
-    vhost.set('isDefault', false);
 
     controller.set('model', vhost);
     controller.set('services', services);
+    controller.set('vhosts', vhosts);
     controller.set('certificates', certificates);
-    controller.set('vhostService', services.objectAt(0));
   },
 
   actions: {
@@ -38,11 +38,8 @@ export default Ember.Route.extend({
 
       let promise;
 
-      if(vhost.get('isDefault')) {
-        vhost.set('service', service);
-        promise = vhost.save();
-      } else {
-        if(vhost.get('certificateBody')) {
+      if (vhost.get("isGeneric")) {
+        if (vhost.get('certificateBody')) {
           let certificateBody = vhost.get('certificateBody');
           let privateKey = vhost.get('privateKey');
           let newCertificate = this.store.createRecord(
@@ -61,6 +58,9 @@ export default Ember.Route.extend({
 
           return vhost.save();
         });
+      } else {
+        vhost.set('service', service);
+        promise = vhost.save();
       }
 
       promise.then(() => {
