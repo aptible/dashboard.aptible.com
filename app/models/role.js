@@ -36,6 +36,22 @@ export default DS.Model.extend({
     return this.get('type') === 'owner';
   }),
 
+  isComplianceOwner: Ember.computed('type', function() {
+    return this.get('type') === 'compliance_owner';
+  }),
+
+  isComplianceUser: Ember.computed('type', function() {
+    return this.get('type') === 'platform_user';
+  }),
+
+  isPlatformOwner: Ember.computed('type', function() {
+    return this.get('type') === 'platform_owner';
+  }),
+
+  isPlatformUser: Ember.computed('type', function() {
+    return this.get('type') === 'platform_user';
+  }),
+
   privileged: Ember.computed('type', function() {
     return PRIVILEGED_ROLE_TYPES.indexOf(this.get('type')) > -1;
   }),
