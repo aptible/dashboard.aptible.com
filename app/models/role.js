@@ -23,7 +23,6 @@ export const USER_ROLE_TYPES = {
   compliance_user: 'Compliance'
 };
 
-
 export default DS.Model.extend({
   name: DS.attr(),
   type: DS.attr({ defaultValue: 'platform_user' }),
@@ -41,7 +40,7 @@ export default DS.Model.extend({
   }),
 
   isComplianceUser: Ember.computed('type', function() {
-    return this.get('type') === 'platform_user';
+    return this.get('type') === 'compliance_user';
   }),
 
   isPlatformOwner: Ember.computed('type', function() {
