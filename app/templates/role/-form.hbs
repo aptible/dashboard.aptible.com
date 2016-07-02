@@ -10,7 +10,7 @@
   </div>
 
   {{#if billingDetail.allowPHI}}
-    {{role-type-options role=role}}
+    {{role-type-options role=model}}
   {{/if}}
 
   <div class="resource-actions">
@@ -19,8 +19,8 @@
     </button>
 
     <button {{action 'save'}}
-            disabled={{model.isDirty}}
-            class='btn btn-primary' type='submit'>
+                disabled={{isUnchanged}}
+                class='btn btn-primary' type='submit'>
       {{#if model.isSaving}}
         Saving...
       {{else}}

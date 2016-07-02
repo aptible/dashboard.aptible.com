@@ -18,6 +18,7 @@ export default Ember.Route.extend({
   setupController(controller, model) {
     controller.set('model', model.get('memberships'));
     controller.set('role', model);
+    controller.set('platform', model.get('platform'));
     controller.set('pendingInvitations', model.get('invitations'));
     controller.set('organization', model.get('organization'));
   },
@@ -38,7 +39,7 @@ export default Ember.Route.extend({
       });
     },
 
-    inviteByEmail(email){
+    inviteByEmail(email) {
       let role = this.currentModel;
       let invitation = this.controller.get('invitation');
       if (invitation) {
@@ -52,6 +53,7 @@ export default Ember.Route.extend({
       }
       invitation.save().then(() => {
         this.controller.set('invitation', null);
+        this.controller.set('invitedEmail', '');
         let message = `Invitation sent to ${email}`;
         Ember.get(this, 'flashMessages').success(message);
       }, (e) => {

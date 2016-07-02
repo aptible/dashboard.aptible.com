@@ -15,9 +15,11 @@
       {{#activating-item currentWhen='role.members' tagName='li'}}
         {{link-to 'Members' 'role.members' model}}
       {{/activating-item}}
-      {{#activating-item currentWhen='role.environments' tagName='li'}}
-        {{link-to 'Environments' 'role.environments' model}}
-      {{/activating-item}}
+      {{#if platform}}
+        {{#activating-item currentWhen='role.environments' tagName='li'}}
+          {{link-to 'Environments' 'role.environments' model}}
+        {{/activating-item}}
+      {{/if}}
       {{#activating-item currentWhen='role.settings' tagName='li'}}
         {{link-to 'Settings' 'role.settings' model}}
       {{/activating-item}}

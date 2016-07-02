@@ -1,7 +1,7 @@
 <div class="row">
-  <div class="col-xs-5">
-    <form>
-      <label class="aptible-label">Add Existing User</label>
+  <div class="col-xs-12 flex-row">
+    <form class="flex-row-item">
+      <h3 class="heading--caps heading--sm">Add Existing User</h3>
       <div class="invite-user">
         <button class="btn btn-primary" {{action "inviteUser" invitedUser}} type="submit">Add</button>
         <div class="user-select-container">
@@ -12,16 +12,12 @@
         </div>
       </div>
     </form>
-  </div>
 
-  <div class="col-xs-1">
-    <div class="aptible-label">OR</div>
-  </div>
+    <h3 class="flex-row-item heading--caps heading--sm">OR</h3>
 
-  <div class="col-xs-6">
-    <form role='form' {{action "inviteByEmail" inviteByEmail on="submit"}}>
+    <form class="flex-row-item" role='form' {{action "inviteByEmail" inviteByEmail on="submit"}}>
       {{server-validation-errors model=invitation}}
-      <label class="aptible-label">Invite by email</label>
+      <h3 class="heading--caps heading--sm">Invite By Email</h3>
       <div class="invite-user">
         <button class="btn btn-primary" {{action "inviteByEmail" invitedEmail}} type="submit">Send Invite</button>
         <div class="invite-user-container">
@@ -42,7 +38,7 @@
 
 <div class="row">
   <div class="col-xs-12">
-    <h3 class="heading heading--caps heading--sm">Members</h3>
+    <h3 class="heading--caps heading--sm">Members</h3>
 
     <table class="aptable">
       <thead>
@@ -78,7 +74,7 @@
 {{#if pendingInvitations}}
   <div class="row">
     <div class="col-xs-12">
-      <h3 class="heading heading--caps heading--sm">Pending Invites</h3>
+      <h3 class="heading--caps heading--sm">Pending Invites</h3>
 
       <table class="aptable">
         <thead>

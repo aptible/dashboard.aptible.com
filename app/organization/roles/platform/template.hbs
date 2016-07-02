@@ -1,0 +1,57 @@
+{{partial 'organization/roles-header'}}
+
+<div class="layout-container">
+
+  <ul class='nav nav-pills resource-navigation'>
+    {{#activating-item currentWhen="organization.roles.platform" tagName="li"}}
+      {{link-to "Platform Roles" "organization.roles.platform" organization}}
+    {{/activating-item}}
+    {{#activating-item currentWhen="organization.roles.compliance" tagName="li"}}
+      {{link-to "Compliance Roles" "organization.roles.compliance" organization}}
+    {{/activating-item}}
+  </ul>
+
+  <div class="row">
+    {{#each ownerRole as |role|}}
+      <div class="col-xs-12">
+        {{#aptible-ability user=session.currentUser scope='manage' permittable=organization as |hasAbility|}}
+          {{#if hasAbility}}
+            {{#link-to "role" role title=(concat-params "Edit " role.name " Permissions") classNames="panel-link"}}
+              {{partial 'organization/role'}}
+            {{/link-to}}
+          {{else}}
+            {{partial 'organization/role'}}
+          {{/if}}
+        {{/aptible-ability}}
+      </div>
+    {{/each}}
+
+    {{#each platformOwnerRole as |role|}}
+      <div class="col-xs-12">
+        {{#aptible-ability user=session.currentUser scope='manage' permittable=organization as |hasAbility|}}
+          {{#if hasAbility}}
+            {{#link-to 'role' role title=(concat-params "Edit " role.name " Permissions") classNames="panel-link"}}
+              {{partial 'organization/role'}}
+            {{/link-to}}
+          {{else}}
+            {{partial 'organization/role'}}
+          {{/if}}
+        {{/aptible-ability}}
+      </div>
+    {{/each}}
+
+    {{#each platformUserRoles as |role|}}
+      <div class="col-xs-12">
+        {{#aptible-ability user=session.currentUser scope='manage' permittable=organization as |hasAbility|}}
+          {{#if hasAbility}}
+            {{#link-to 'role' role title=(concat-params "Edit " role.name " Permissions") classNames="panel-link"}}
+              {{partial 'organization/role'}}
+            {{/link-to}}
+          {{else}}
+            {{partial 'organization/role'}}
+          {{/if}}
+        {{/aptible-ability}}
+      </div>
+    {{/each}}
+  </div>
+</div>

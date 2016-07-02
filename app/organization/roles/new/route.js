@@ -15,6 +15,7 @@ export default Ember.Route.extend({
 
   setupController(controller, model) {
     let organization = this.modelFor('organization');
+    controller.set('model', model);
     controller.set('organization', organization);
     controller.set('billingDetail', organization.get('billingDetail'));
   },
@@ -28,7 +29,7 @@ export default Ember.Route.extend({
       this.transitionTo('organization.roles');
     },
 
-    save(){
+    save() {
       let role = this.currentModel;
 
       role.save().then(() => {
