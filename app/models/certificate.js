@@ -18,6 +18,7 @@ export default DS.Model.extend({
   createdAt: DS.attr('iso-8601-timestamp'),
   notBefore: DS.attr('iso-8601-timestamp'),
   notAfter: DS.attr('iso-8601-timestamp'),
+  isAcme: DS.attr('boolean'),
 
   // relationships
   stack: DS.belongsTo('stack', {async: true}),

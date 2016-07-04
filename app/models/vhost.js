@@ -1,3 +1,4 @@
+import Ember from "ember";
 import DS from 'ember-data';
 import ProvisionableMixin from '../mixins/models/provisionable';
 
@@ -9,6 +10,7 @@ export default DS.Model.extend(ProvisionableMixin, {
   isDefault: DS.attr('boolean'),
   internal: DS.attr('boolean', {defaultValue: false}),
   virtualDomain: DS.attr('string'),
+  acmeDomain: DS.attr('string'),
 
   certificate: DS.belongsTo('certificate', { async: true }),
   service: DS.belongsTo('service', {async:true}),
@@ -18,11 +20,34 @@ export default DS.Model.extend(ProvisionableMixin, {
   reloadWhileProvisioning: true,
 
   commonName: Ember.computed.alias('virtualDomain'),
+
   displayHost: Ember.computed('isDefault', 'externalHost', 'virtualDomain', function() {
-    if(this.get('isDefault')) {
+    if (this.get('isDefault')) {
       return this.get('virtualDomain');
     }
-
     return this.get('externalHost');
-  })
+  }),
+
+  isAcme: Ember.computed("acmeDomain", function() {
+    return !!this.get("acmeDomain");
+  }),
+
+  isGeneric: Ember.computed("isDefault", "isAcme", function() {
+    return !(this.get("isDefault") || this.get("isAcme"));
+  }),
+
+  acmeActivationRequired: Ember.computed('isProvisioned', 'acmeDomain', 'certificate.id', function() {
+    if (!this.get('acmeDomain')) { return false; }
+    if (!this.get('isProvisioned')) { return false; }
+    if (this.get('certificate.id')) { return false; }
+    return true;
+  }),
+
+  actionsRequired: Ember.computed('acmeActivationRequired', function() {
+    const actions = [];
+    if (this.get('acmeActivationRequired')) { actions.push('acme'); }
+    return actions;
+  }),
+
+  hasActionRequired: Ember.computed.gt('actionsRequired.length', 0)
 });
