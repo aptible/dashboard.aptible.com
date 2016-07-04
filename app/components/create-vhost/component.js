@@ -46,12 +46,20 @@ export default Ember.Component.extend({
       }
       vhost.set(k, resets[k]);
     }
-  }.observes('vhostType'),
+  }.observes("vhostType"),
 
   didInitAttrs() {
-    // Set up some defaults when this component is instantiated.
-    this.set('vhostType', this.get("defaultVhostAllowed") ? VHOST_TYPE_DEFAULT: VHOST_TYPE_ACME);
-    this.set('vhostService', this.get("services").objectAt(0));
+    // Any service is fine as a default.
+    let defaultService = this.get("services").objectAt(0);
+    this.set('vhostService', defaultService);
+
+    // Prefer VHOSTs types that require the least configuration from the user.
+    let defaultVhostType = VHOST_TYPE_GENERIC;
+    if (this.get("acmeVhostAllowed")) { defaultVhostType = VHOST_TYPE_ACME; }
+    if (this.get("defaultVhostAllowed")) { defaultVhostType = VHOST_TYPE_DEFAULT; }
+    this.set('vhostType', defaultVhostType);
+
+    // The observer won't run automatically, so we force it now.
     this.vhostTypeObserver();
   },
 
@@ -62,11 +70,14 @@ export default Ember.Component.extend({
   placementNeeded: Ember.computed.not("isAcme"),
   acmeDomainNeeded: Ember.computed.and("isAcme"),
   certificateNeeded: Ember.computed.and("isGeneric"),
+
   defaultVhostAllowed: Ember.computed("vhosts.[]", function() {
     return !(this.get("vhosts").any((vhost) => {
       return vhost.get("isDefault");
     }));
   }),
+
+  acmeVhostAllowed: Ember.computed.equal('vhostService.stack.sweetnessStackVersion', 'v2'),
 
   formValid: Ember.computed("vhostType", "acmeDomainValid", function() {
     if (this.get("isAcme")) {

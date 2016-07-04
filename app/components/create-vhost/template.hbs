@@ -46,18 +46,33 @@
 
                 </label>
                 <div class="radio">
-                  {{#if defaultVhostAllowed}}
-                    <div>
+                  <div>
+                    {{#if defaultVhostAllowed}}
                       {{#radio-button value=TYPE_DEFAULT groupValue=vhostType name="domain-type"}}
                         Use app-{{ model.app.id }}.on-aptible.com default endpoint.
                       {{/radio-button}}
-                    </div>
-                  {{/if}}
-                  <div>
-                    {{#radio-button value=TYPE_ACME groupValue=vhostType name="domain-type"}}
-                        Use a custom domain with managed SSL.
-                    {{/radio-button}}
+                    {{else}}
+                      <label class="disabled">
+                        <input type="radio" class="ember-view" disabled>
+                        Default endpoint unavailable: this app already has one.
+                      </label>
+                    {{/if}}
                   </div>
+
+                  <div>
+                    {{#if acmeVhostAllowed}}
+                      {{#radio-button value=TYPE_ACME groupValue=vhostType name="domain-type"}}
+                        Use a custom domain with managed SSL.
+                      {{/radio-button}}
+                    {{else}}
+                      <label class="disabled">
+                        <input type="radio" class="ember-view" disabled>
+                        Managed SSL unavailable: this feature is not available
+                        on Aptible legacy infrastructure.
+                      </label>
+                    {{/if}}
+                  </div>
+
                     <div>
                       {{#radio-button value=TYPE_GENERIC groupValue=vhostType name="domain-type"}}
                         Use a custom domain and a custom SSL certificate.

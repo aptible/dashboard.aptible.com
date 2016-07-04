@@ -36,6 +36,7 @@ function setupStubs(options) {
   if (options.withCertificates === undefined) { options.withCertificates = true; }
   if (options.withServiceDefaultVhost === undefined) { options.withServiceDefaultVhost = false; }
   if (options.withAppDefaultVhost === undefined) { options.withAppDefaultVhost = false; }
+  if (options.sweetnessStackVersion === undefined) { options.sweetnessStackVersion = 'v2'; }
 
   stubRequest('get', `/accounts/${stackId}/certificates`, function(){
     return this.success({
@@ -59,7 +60,8 @@ function setupStubs(options) {
     _embedded: {},
     id: stackId,
     handle: stackHandle,
-    activated: true
+    activated: true,
+    sweetness_stack_version: options.sweetnessStackVersion
   });
 
   const vhosts = [];
@@ -93,7 +95,10 @@ function setupStubs(options) {
       _embedded: {
         services: [{ // Must have at least 1 service so that there is a service selected in the dropdown
           id: serviceId,
-          handle: 'the-hubot-service'
+          handle: 'the-hubot-service',
+          _links: {
+            account: { href: `/accounts/${stackId}` }
+          }
         }]
       },
       _links: {
@@ -243,7 +248,7 @@ test(`visit ${appVhostsNewUrl} shows creation form for app with existing default
     assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
       'has header');
 
-    // TODO: Find domain input?
+    findWithAssert('label:contains(Default endpoint unavailable)');
     expectInput('service', {input:'select'});
     expectFocusedInput('service', {input:'select'});
     expectInput('domain-type', {input:'radio'});
@@ -262,6 +267,7 @@ test(`visit ${appVhostsNewUrl} shows creation form for app with existing default
     assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
       'has header');
 
+    findWithAssert('label:contains(Default endpoint unavailable)');
     expectInput('service', {input:'select'});
     expectFocusedInput('service', {input:'select'});
     expectInput('domain-type', {input:'radio'});
@@ -272,6 +278,25 @@ test(`visit ${appVhostsNewUrl} shows creation form for app with existing default
   });
 });
 
+test(`visit ${appVhostsNewUrl} shows creation form for app on v1 stack`, function(assert) {
+  setupStubs({ withCertificates: false, sweetnessStackVersion: 'v1' });
+  signInAndVisit(appVhostsNewUrl);
+
+  andThen(function(){
+    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
+      'has header');
+
+    findWithAssert('label:contains(Managed SSL unavailable)');
+    expectInput('service', {input:'select'});
+    expectFocusedInput('service', {input:'select'});
+    expectInput('domain-type', {input:'radio'});
+    expectNoInput('certificate-body', {input:'textarea'});
+    expectNoInput('private-key', {input:'textarea'});
+    expectButton('Save Endpoint');
+    expectButton('Cancel');
+    expectTitle(`Add an endpoint - ${appHandle} - ${stackHandle}`);
+  });
+});
 
 test(`visit ${appVhostsNewUrl} and create vhost with existing certificates`, function(assert) {
   assert.expect(5);
