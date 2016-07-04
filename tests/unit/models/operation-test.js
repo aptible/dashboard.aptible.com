@@ -234,3 +234,24 @@ test(`creating an operation for a service POSTS to ${serviceOperationURL}`, func
     });
   });
 });
+
+[
+  ["queued", false],
+  ["running", false],
+  ["failed", true],
+  ["succeeded", true]
+].forEach((testCase) => {
+  const operationStatus = testCase[0];
+  const expectIsDone = testCase[1];
+  test(`isDone returns ${expectIsDone} for ${operationStatus}`, function(assert) {
+    let operation;
+
+    Ember.run(() => {
+      operation = this.store().createRecord("operation", {
+        status: operationStatus
+      });
+    });
+
+    assert.equal(operation.get("isDone"), expectIsDone);
+  });
+});

@@ -41,7 +41,9 @@ export default DS.Model.extend({
           if(status === 'succeeded') {
             return resolve(o);
           } else if(status === 'failed') {
-            return reject(new Error('Operation failed.'));
+            const err = new Error('Operation failed.');
+            err.operation = o;
+            return reject(err);
           }
 
           Ember.run.later(o, () => {
@@ -58,6 +60,12 @@ export default DS.Model.extend({
     };
 
     return reloadUntilOperationStatusChanged(this, maximumTimeout, 1000);
-  }
+  },
 
+  isDone: Ember.computed("status", function() {
+    const operationStatus = this.get("status");
+    if (operationStatus === "succeeded") { return true; }
+    if (operationStatus === "failed") { return true; }
+    return false;
+  })
 });
