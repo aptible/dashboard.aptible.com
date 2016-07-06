@@ -1,0 +1,28 @@
+<td class="profile--inline">
+  {{gravatar-image email=membership.user.email size=25 class="profile-image"}}
+  {{membership.user.name}}
+</td>
+<td>{{membership.user.email}}</td>
+<td>{{format-utc-timestamp membership.createdAt true}}</td>
+<td>
+  {{#if membership.user.isPlatformOwner}}
+    <div class="label label-owner">
+      <i class="fa fa-shield"></i> Owner
+    </div>
+  {{/if}}
+</td>
+<td class="aptable__actions aptable__actions--checkbox">
+  {{x-toggle
+      toggled=membership.privileged
+      toggle='togglePrivileged'
+      showLabels=false
+      disabled=isDisabled
+      size='small'}}
+</td>
+<td class="aptable__actions aptable__actions--100">
+  <a class="btn btn-default btn-xs" {{action 'destroyMembership' membership}} href="#">
+    {{#bs-tooltip title="Remove role membership"}}
+      <i class="fa fa-times"></i> Remove
+    {{/bs-tooltip}}
+  </a>
+</td>
