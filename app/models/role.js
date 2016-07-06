@@ -51,6 +51,10 @@ export default DS.Model.extend({
     return this.get('type') === 'platform_user';
   }),
 
+  requiresPermissions: Ember.computed('type', function() {
+    return this.get('type') === 'platform_user';
+  }),
+
   privileged: Ember.computed('type', function() {
     return PRIVILEGED_ROLE_TYPES.indexOf(this.get('type')) > -1;
   }),

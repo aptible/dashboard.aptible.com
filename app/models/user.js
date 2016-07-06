@@ -19,6 +19,7 @@ export default DS.Model.extend({
   // REVIEW: We used to have a 'token' attribute. It's unclear where this was
   // used (if at all). Do we want to create a Ember.computed 'token' field for
   // backwards compatibility?
+  memberships: DS.hasMany('membership', { async: true }),
   tokens: DS.hasMany('token', { async: true, requireReload: true }),
   roles: DS.hasMany('role', { async: true }),
   sshKeys: DS.hasMany('ssh-key', { async: true }),
@@ -32,11 +33,19 @@ export default DS.Model.extend({
     return can(this, scope, stack);
   },
 
-  isPlatformOwner: Ember.computed('roles.@each.type', function() {
-    return this.get('roles').reduce(function(prev, type) {
+  isAccountOwner: Ember.computed('roles.@each.type', function() {
+    return this.get('roles').then((roles) => {
+      roles.reduce(function(prev, type) {
+        return prev || type === 'owner';
+      }, false, 'type');
+    });
+  }),
+
+  isPlatformOwner(roles) {
+    return roles.reduce(function(prev, type) {
       return prev || (type === 'owner' || type === 'platform_owner');
     }, false, 'type');
-  }),
+  },
 
   organizations: Ember.computed('roles.@each.organization', function() {
     var organizations = {};

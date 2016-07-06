@@ -91,6 +91,14 @@ export default DS.Model.extend({
     });
   }),
 
+  userRoles: Ember.computed('roles.@each.type', 'managePermissions', function() {
+    let roles = this.get('roles');
+    return roles.filter((role) => {
+      return role.get('type') === 'platform_user' ||
+              role.get('type') === 'compliance_user';
+    });
+  }),
+
   developerRoles: Ember.computed('roles.@each.type', 'managePermissions', function() {
     // FIXME: Developer roles are any roles that:
     // 1. Are privileged: true

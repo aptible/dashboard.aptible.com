@@ -78,6 +78,34 @@ export default DS.Model.extend({
     });
   },
 
+  permissionForRole(role, scope) {
+    let permissions;
+
+    if (role.get('privileged') &&
+        role.get('data.links.organization') === this.get('data.links.organization')) {
+      return new Ember.RSVP.Promise((resolve) => {
+        resolve(true);
+      });
+    }
+
+    return this.get('permissions').then(function(_permissions){
+      permissions = _permissions;
+
+      return permissions.map(function(perm){
+        return {
+          roleId: getRoleIdFromPermission(perm),
+          scope:  perm.get('scope')
+        };
+      });
+    }).then(function(stackRoleScopes){
+      return Ember.A(Ember.A(stackRoleScopes).filter((stackRoleScope) => {
+        return (role.get('id') === stackRoleScope.roleId &&
+                  stackRoleScope.scope === scope);
+      }));
+    });
+
+  },
+
   permitsRole(role, scope){
     let permissions;
 
