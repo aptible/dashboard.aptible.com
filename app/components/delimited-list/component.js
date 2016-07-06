@@ -8,14 +8,20 @@ export default Ember.Component.extend({
   list: null,
   listKey: null,
 
-  values: Ember.computed('count', function() {
-    var count = this.get('count') || this.get('list').length;
+  hasValues: Ember.computed.gt('list.length', 0),
+
+  values: Ember.computed('list.[]', function() {
+    var count = this.getWithDefault('count', this.get('list.length'));
     var key = this.get('listKey');
-    
-    return this.get('list').mapBy(key).slice(0, count).join(', ');
+
+    var result = this.get('list.content').mapBy(key).slice(0, count).join(', ');
+    if (this.get('difference') !== 0) {
+      result += ', ';
+    }
+    return result;
   }),
 
-  difference: Ember.computed('count', function() {
-    return Math.max(this.get('list').length - this.get('count'), 0);
+  difference: Ember.computed('list.[]', function() {
+    return Math.max(this.get('list.length') - this.get('count'), 0);
   })
 });
