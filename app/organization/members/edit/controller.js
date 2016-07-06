@@ -1,6 +1,17 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  platformOwnerRole: Ember.computed('organization.roles', function() {
+    let currentUser = this.get('session').get('currentUser');
+    if (currentUser.isAccountOwner) {
+      return this.get('organization.roles').sortBy('name');
+    }
+    // TODO: platform / compliance owners need a unique set here
+    else {
+      return this.get('organization.userRoles').sortBy('name');
+    }
+  }),
+
   isSecurityOfficer: Ember.computed('organization.securityOfficer.id', 'model.id', function() {
     return this.get('organization.securityOfficer.id') === this.get('model.id');
   }),

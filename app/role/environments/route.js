@@ -1,30 +1,23 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  init() {
-    this._super();
-    this._stacks = null;
-    this._organization = null;
+  model() {
+    let role = this.modelFor('role');
+
+    return Ember.RSVP.hash({
+      role: role,
+      memberships: role.get('memberships'),
+      organization: role.get('organization'),
+      stacks: this.store.findStacksFor(role.get('organization')),
+      currentUserRoles: this.session.get('currentUser').get('roles')
+    });
   },
 
-  afterModel(model){
-    const promises = [];
-    this._organization = model.get('organization');
-
-    promises.push(this._organization);
-    promises.push(this.store.findStacksFor(this._organization).then((stacks) => {
-      this._stacks = stacks;
-      // stacks.forEach((stack) => {
-      //   promises.push(stack.get('apps'));
-      //   promises.push(stack.get('databases'));
-      // });
-    }));
-    return Ember.RSVP.all(promises);
-  },
-
-  setupController(controller, model){
-    controller.set('model', model);
-    controller.set('stacks', this._stacks);
-    controller.set('organization', this._organization);
+  setupController(controller, model) {
+    controller.set('model', model.role);
+    controller.set('stacks', model.stacks);
+    controller.set('organization', model.organization);
+    controller.set('platformRole', model.role.get('platform'));
+    controller.set('currentUserRoles', model.currentUserRoles);
   }
 });

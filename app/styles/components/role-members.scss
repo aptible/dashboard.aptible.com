@@ -50,6 +50,15 @@ ul.role-members {
 
   button.btn-primary {
     float:right;
-    width: 60px;
+  }
+}
+
+.role__add-user {
+  width: 430px;
+}
+.role__invite-user {
+  width: 485px;
+  input {
+    width: 90%;
   }
 }

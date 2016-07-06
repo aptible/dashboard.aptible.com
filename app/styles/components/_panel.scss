@@ -15,7 +15,6 @@
 
 
   .panel-body {
-    background-color: #F7F8FB;
     flex-grow: 1;
     width: calc(100% - 235px);
     text-align: center;
@@ -35,21 +34,13 @@
       border-bottom-width: 1px;
       box-shadow: none;
       border-radius: 0;
-      // thead td {
-      //   font-size: 12px;
-      //   color: #9B9B9B;
-      //   text-transform: uppercase;
-      //   border-bottom: 1px solid #E0E0E0;
-      // }
     }
   }
-}
 
-.panel-link {
   p {
     text-decoration: none;
     color: #9b9b9b;
-  }/* The Platform Owners : */
+  }
   .aptable__row-heading, .role-details__header {
     color: #4a4a4a;
   }
@@ -61,23 +52,33 @@
     color: #9b9b9b;
   }
 }
+
+.panel--owner, .panel--platform_owner, .panel--compliance_owner {
+  .panel-body {
+    background-color: #F7F8FB;
+  }
+}
+
+.panel--owner {
+  margin-bottom: 50px;
+}
+
 .role-details__heading {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   .label-owner {
     margin-bottom: 30px;
   }
 }
 .role-details__label {
-  flex-grow: 1;
+  margin-bottom: 30px;
 }
 .role-details__name {
   color: #4A4A4A;
   font-size: 16px;
   margin-top: 0;
 }
-.role-details__members {
+.role-details__list {
+  color: #9b9b9b;
+  margin-bottom: 20px;
 }
 
 .user-names {
@@ -87,4 +88,8 @@
 .user-names__value, .user-names__remainder {
   font-size: 12px;
   color: #9B9B9B;
+}
+
+.delimited-list__placeholder {
+  font-style: italic;
 }

@@ -73,7 +73,6 @@
 }
 
 .aptable__actions {
-  text-align: right;
   .btn {
     color: #999;
     opacity: 0;
@@ -86,4 +85,13 @@
   a.btn.btn-xs {
     padding: 1px 4px;
   }
+  .x-toggle:checked + .x-toggle-light.x-toggle-btn {
+    background-color: #2ba4ef;
+  }
+}
+.aptable__actions--100 {
+  width: 120px;
+}
+.aptable__actions--checkbox {
+  width: 150px;
 }

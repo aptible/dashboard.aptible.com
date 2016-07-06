@@ -4,9 +4,9 @@
   <td>{{invitation.inviterName}}</td>
   <td>{{format-date invitation.createdAt}}</td>
   <!-- Actions -->
-  <td class="aptable__actions">
-    {{!#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
-      {{!#if hasAbility}}
+  <td class="aptable__actions aptable__actions--100">
+    {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
+      {{#if hasAbility}}
         <a class="btn btn-default btn-xs" {{action 'destroyInvitation' invitation}} href="#">
           {{#bs-tooltip title="Delete Invitation"}}
             <i class="fa fa-times"></i>
@@ -17,7 +17,7 @@
           <i class="fa fa-undo"></i>
           {{/bs-tooltip}}
         </a>
-      {{!/if}}
-    {{!/aptible-ability}}
+      {{/if}}
+    {{/aptible-ability}}
   </td>
 </tr>

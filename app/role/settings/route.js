@@ -15,7 +15,7 @@ export default Ember.Route.extend({
           let message = `${role.get('name')} saved`;
 
           Ember.get(this, 'flashMessages').success(message);
-          this.transitionTo('organization.roles');
+          this.transitionTo('role.members');
         });
       }
     }

@@ -17,13 +17,21 @@
                 <div class="label label-info">PHI Not Allowed</div>
               {{/if}}
             </div>
-            <div class="role-details__members">
+            <div class="role-details__list">
               <h4 class="aptible-label">Apps</h4>
-              {{delimited-list list=stack.apps listKey='handle' placeholder='-'}}
+              {{delimited-list
+                  count=3
+                  list=stack.apps
+                  listKey='handle'
+                  placeholder='-'}}
             </div>
-            <div class="role-details__members">
+            <div class="role-details__list">
               <h4 class="aptible-label">Databases</h4>
-              {{delimited-list list=stack.databases listKey='handle' placeholder='-'}}
+              {{delimited-list
+                  count=3
+                  list=stack.databases
+                  listKey='handle'
+                  placeholder='-'}}
             </div>
           </div>
           <div class="panel-body panel-body--aptable">
@@ -35,29 +43,24 @@
               <tbody>
                 <tr>
                   <td class="aptable__row-heading">Read</td>
-                  <td class="aptable__actions">
-                    {{!permission-checkbox
-                        scope="read"
-                        stack=stack
+                  <td class="aptable__actions aptable__actions--100">
+                    {{permission-toggle
+                        currentUser=session.currentUser
+                        currentUserRoles=currentUserRoles
                         role=model
-                        changeset=changeset}}
-                    {{!x-toggle
-                        size='x-sm'
-                        toggled=value
-                        showLabels=false
-                        toggle="onToggle"
-                        name=name
-                        disabled=property.readonly}}
+                        scope="read"
+                        stack=stack}}
                   </td>
                 </tr>
                 <tr>
                   <td class="aptable__row-heading">Manage</td>
                   <td class="aptable__actions">
-                    {{!permission-checkbox
-                        scope="manage"
-                        stack=stack
+                    {{permission-toggle
+                        currentUser=session.currentUser
+                        currentUserRoles=currentUserRoles
                         role=model
-                        changeset=changeset}}
+                        scope="manage"
+                        stack=stack}}
                   </td>
                 </tr>
               </tbody>

@@ -1,31 +1,38 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  model() {
+    let role = this.modelFor('role');
+
+    return Ember.RSVP.hash({
+      role: role,
+      memberships: role.get('memberships')
+    });
+  },
+
   afterModel(model) {
-    let organization = model.get('organization');
+    let organization = model.role.get('organization');
     const promises = [];
 
-    promises.push(model.get('users'));
-    promises.push(model.get('organization'));
-    promises.push(model.get('invitations'));
-    promises.push(model.get('members'));
-    promises.push(model.get('memberships'));
+    promises.push(model.role.get('users'));
+    promises.push(model.role.get('organization'));
+    promises.push(model.role.get('invitations'));
     promises.push(organization.get('users'));
 
     return Ember.RSVP.all(promises);
   },
 
   setupController(controller, model) {
-    controller.set('model', model.get('memberships'));
-    controller.set('role', model);
-    controller.set('platform', model.get('platform'));
-    controller.set('pendingInvitations', model.get('invitations'));
-    controller.set('organization', model.get('organization'));
+    controller.set('role', model.role);
+    controller.set('memberships', model.memberships);
+    controller.set('platformRole', model.role.get('platform'));
+    controller.set('pendingInvitations', model.role.get('invitations'));
+    controller.set('organization', model.role.get('organization'));
   },
 
   actions: {
-    inviteUser(user){
-      const role = this.currentModel;
+    addMember(user){
+      const role = this.controller.get('role');
       const userLink = user.get('data.links.self');
       const membership = this.store.createRecord('membership', {
         role,
@@ -35,12 +42,12 @@ export default Ember.Route.extend({
       membership.save().then(() => {
         let message = `${user.get('name')} added to ${role.get('name')} role`;
         Ember.get(this, 'flashMessages').success(message);
-        return this.currentModel.get('users').reload();
+        return role.get('users').reload();
       });
     },
 
     inviteByEmail(email) {
-      let role = this.currentModel;
+      let role = this.controller.get('role');
       let invitation = this.controller.get('invitation');
       if (invitation) {
         invitation.set('email', email);
@@ -63,17 +70,15 @@ export default Ember.Route.extend({
       });
     },
 
-    removeUser(user){
-      let role = this.currentModel;
-      let userLink = user.get('data.links.self');
+    removeMembership(membership){
+      let role = this.controller.get('role');
+      let user = membership.get('user');
+      let memberships = this.controller.get('memberships');
 
-      role.get('memberships').then((memberships) => {
-        let membership = memberships.findBy('data.links.user', userLink);
-        return membership.destroyRecord();
-      }).then(() => {
+      return membership.destroyRecord().then(() => {
         let message = `${user.get('name')} removed from ${role.get('name')} role`;
         Ember.get(this, 'flashMessages').success(message);
-        return this.currentModel.get('users').reload();
+        return memberships.reload();
       });
     },
 

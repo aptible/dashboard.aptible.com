@@ -11,9 +11,9 @@
         {{link-to "Pending Invitations" "organization.members.pending-invitations" organization bubbles=false}}
       {{/activating-item}}
     {{/if}}
-    {{#activating-item currentWhen="organization.role" tagName="li"}}
+    {{#with-active-class route="role" tagName="li"}}
       {{link-to "Roles" "organization.roles" organization bubbles=false}}
-    {{/activating-item}}
+    {{/with-active-class}}
     {{#link-to 'organization.environments' organization tagName="li"}}
       {{link-to "Environments" "organization.environments" organization bubbles=false}}
     {{/link-to}}

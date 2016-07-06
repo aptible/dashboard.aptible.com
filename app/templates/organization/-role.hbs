@@ -1,4 +1,4 @@
-<div class="panel panel-default panel--bisected">
+<div class="panel panel-default panel--bisected panel--{{role.type}}">
   <div class="panel-heading role-details__heading">
     <div class="role-details__label">
       <h2 class="role-details__name">{{role.name}}</h2>
@@ -8,9 +8,14 @@
         </div>
       {{/if}}
     </div>
-    <div class="role-details__members">
+    <div class="role-details__list">
       <h4 class="aptible-label">Members</h4>
-      {{user-names users=role.users count=4 placeholder='-'}}
+      {{!user-names users=role.users count=4 placeholder='-'}}
+      {{delimited-list
+          count=4
+          list=role.users
+          listKey='name'
+          placeholder='no members'}}
     </div>
   </div>
   {{!-- PRIVILEGED ROLES --}}
@@ -25,7 +30,10 @@
       {{partial 'organization/role-details-compliance-owner'}}
     {{/if}}
   {{else}}
-    {{!-- Platform or Compliance User Roles --}}
-    {{partial 'organization/role-details'}}
+    {{#if role.platform}}
+      {{partial 'organization/platform-role-details'}}
+    {{else}}
+      {{partial 'organization/compliance-role-details'}}
+    {{/if}}
   {{/if}}
 </div>

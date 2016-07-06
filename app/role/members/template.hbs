@@ -1,27 +1,27 @@
 <div class="row">
   <div class="col-xs-12 flex-row">
-    <form class="flex-row-item">
+    <form class="flex-row-item role__add-user">
       <h3 class="heading--caps heading--sm">Add Existing User</h3>
       <div class="invite-user">
-        <button class="btn btn-primary" {{action "inviteUser" invitedUser}} type="submit">Add</button>
+        <button class="btn btn-primary" {{action "addMember" invitedUser}} type="submit">Add</button>
         <div class="user-select-container">
           {{ultimate-select
-            class="user-select" name="billing-contact" prompt="Select..."
-            items=nonmembers itemKey="id" itemValue="name"
-            update=(action (mut invitedUser)) selected=invitedUser}}
+              class="user-select" name="billing-contact" prompt="Select..."
+              items=nonmembers itemKey="id" itemValue="name"
+              update=(action (mut invitedUser)) selected=invitedUser}}
         </div>
       </div>
     </form>
 
     <h3 class="flex-row-item heading--caps heading--sm">OR</h3>
 
-    <form class="flex-row-item" role='form' {{action "inviteByEmail" inviteByEmail on="submit"}}>
+    <form class="role__invite-user flex-row-item" role='form' {{action "inviteByEmail" inviteByEmail on="submit"}}>
       {{server-validation-errors model=invitation}}
       <h3 class="heading--caps heading--sm">Invite By Email</h3>
       <div class="invite-user">
         <button class="btn btn-primary" {{action "inviteByEmail" invitedEmail}} type="submit">Send Invite</button>
         <div class="invite-user-container">
-          {{input name='invite-by-email' value=invitedEmail classNames="form-control"}}
+          {{input name='invite-by-email' value=invitedEmail classNames="form-control" placeholder="Email Address"}}
         </div>
       </div>
     </form>
@@ -47,7 +47,12 @@
           <th>Email</th>
           <th>Date Added</th>
           <th>Owner</th>
-          <th>Admin Members</th>
+          <th>
+            Admin Members
+            {{#bs-tooltip placement="bottom" bs-container=false title="Admins can manage members"}}
+              <i class='fa fa-question-circle icon--highlight'></i>
+            {{/bs-tooltip}}
+          </th>
           {{#aptible-ability user=session.currentUser scope='manage' permittable=organization as |hasAbility|}}
             {{#if hasAbility}}
               <th>Actions</th>
@@ -57,15 +62,16 @@
       </thead>
 
       <tbody>
-        {{#if sortedMemberships}}
-          {{#each sortedMemberships as membership}}
-            {{partial 'role/membership-table-row'}}
-          {{/each}}
+        {{#each memberships as |membership|}}
+          {{membership-table-row
+              membership=membership
+              role=role
+              currentUser=session.currentUser}}
         {{else}}
           <td class="aptable--empty" colspan="6">
             {{role.name}} currently has no members.
           </td>
-        {{/if}}
+        {{/each}}
       </tbody>
     </table>
   </div>
@@ -92,7 +98,7 @@
         </thead>
 
         <tbody>
-          {{#each pendingInvitations as invitation}}
+          {{#each pendingInvitations as |invitation|}}
             {{partial 'organization/invited-user-table-row' current-user=session.currentUser}}
           {{/each}}
         </tbody>
