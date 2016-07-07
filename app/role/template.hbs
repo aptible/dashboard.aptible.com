@@ -15,7 +15,7 @@
       {{#activating-item currentWhen='role.members' tagName='li'}}
         {{link-to 'Members' 'role.members' model}}
       {{/activating-item}}
-      {{#if model.platform}}
+      {{#if model.isPlatform}}
         {{#activating-item currentWhen='role.environments' tagName='li'}}
           {{link-to 'Environments' 'role.environments' model}}
         {{/activating-item}}

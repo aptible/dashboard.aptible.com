@@ -12,7 +12,6 @@ export default Ember.Route.extend({
   },
 
   redirect() {
-    //if (!this.model.billingDetail.get('allowPHI')) { }
     this.transitionTo('organization.roles.platform');
   }
 });

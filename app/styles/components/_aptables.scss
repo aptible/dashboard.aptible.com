@@ -88,8 +88,11 @@
   .x-toggle:checked + .x-toggle-light.x-toggle-btn {
     background-color: #2ba4ef;
   }
+  .x-toggle-container-disabled {
+    opacity: 0.6;
+  }
 }
-.aptable__actions--100 {
+.aptable__actions--skinny {
   width: 120px;
 }
 .aptable__actions--checkbox {

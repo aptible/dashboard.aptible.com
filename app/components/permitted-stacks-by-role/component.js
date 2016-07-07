@@ -9,9 +9,7 @@ export default Ember.Component.extend({
     const role = this.get('role');
     const scope = this.get('scope');
     return Ember.RSVP.all(this.get('stacks').map((stack) => {
-      return stack.permitsRole(role, scope).then((permitted) => {
-        return permitted && stack;
-      });
+      return stack.permitsRole(role, scope) && stack;
     })).then((stacks) => {
       const permittedStacks = stacks.filter(r => !!r);
       this.set('permittedStacks', permittedStacks);

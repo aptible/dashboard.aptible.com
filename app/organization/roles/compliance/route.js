@@ -13,8 +13,7 @@ export default Ember.Route.extend({
 
   afterModel(model){
     return Ember.RSVP.hash({
-      users: Ember.RSVP.all(model.roles.map(r => r.get('users'))),
-      permissions: Ember.RSVP.all(model.stacks.map(s => s.get('permissions'))),
+      users: Ember.RSVP.all(model.roles.map(r => r.get('users')))
     });
   },
 
@@ -23,5 +22,12 @@ export default Ember.Route.extend({
     controller.set('stacks', model.stacks);
     controller.set('organization', this.modelFor('organization'));
     controller.set('billingDetail', model.billingDetail);
+  },
+
+  // Only show compliance roles if the organization's plan allows PHI
+  redirect(model) {
+    if (!model.billingDetail.get('allowPHI')) {
+      this.transitionTo('organization.roles.platform');
+    }
   }
 });

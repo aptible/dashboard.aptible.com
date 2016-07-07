@@ -10,7 +10,6 @@
     </div>
     <div class="role-details__list">
       <h4 class="aptible-label">Members</h4>
-      {{!user-names users=role.users count=4 placeholder='-'}}
       {{delimited-list
           count=4
           list=role.users
@@ -30,7 +29,7 @@
       {{partial 'organization/role-details-compliance-owner'}}
     {{/if}}
   {{else}}
-    {{#if role.platform}}
+    {{#if role.isPlatform}}
       {{partial 'organization/platform-role-details'}}
     {{else}}
       {{partial 'organization/compliance-role-details'}}

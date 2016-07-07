@@ -13,8 +13,7 @@ export default Ember.Route.extend({
 
   afterModel(model){
     return Ember.RSVP.hash({
-      users: Ember.RSVP.all(model.roles.map(r => r.get('users'))),
-      permissions: Ember.RSVP.all(model.stacks.map(s => s.get('permissions'))),
+      users: Ember.RSVP.all(model.roles.map(r => r.get('users')))
     });
   },
 
