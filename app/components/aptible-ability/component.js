@@ -12,16 +12,31 @@ export default Ember.Component.extend({
     var user  = this.get('user'),
         scope = this.get('scope'),
         permittable = this.get('permittable'),
+        role = this.get('role'),
         component = this;
 
-     Ember.assert("You must provide a user to aptible-ability", !!user);
-     Ember.assert("You must provide a scope to aptible-ability", !!scope);
-     Ember.assert("You must provide a permittable to aptible-ability", !!permittable);
+    Ember.assert("You must provide a user to aptible-ability", !!user);
+    Ember.assert("You must provide a scope to aptible-ability", !!scope);
+    Ember.assert("You must provide a permittable to aptible-ability", !!permittable);
 
-     user.can(scope, permittable).then(function(bool){
-       if (component.isDestroyed) { return; }
+    user.can(scope, permittable).then((bool) => {
+      if (component.isDestroyed) { return; }
 
-       component.set('hasAbility', bool);
-     });
+      component.set('hasAbility', bool);
+
+      // Only check the membership of a role if the user does not have ability
+      // and the role exists
+      if (!bool && role && role.get('requiresPermissions')) {
+        role.get('memberships').then((memberships) => {
+          console.log('role:', role.get('name'));
+          var membership = user.findMembership(memberships);
+
+          if (component.isDestroyed || !membership) { return; }
+
+          component.set('hasAbility', membership.get('privileged'));
+        });
+        return;
+      }
+    });
   })
 });

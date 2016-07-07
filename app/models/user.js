@@ -63,6 +63,6 @@ export default DS.Model.extend({
   }),
 
   findMembership(memberships) {
-    return memberships.findBy('data.links.user', this.get('data.links.self'));
+    return memberships.findBy('user.id', this.get('id'));
   }
 });

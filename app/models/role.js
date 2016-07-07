@@ -51,19 +51,17 @@ export default DS.Model.extend({
     return this.get('type') === 'platform_user';
   }),
 
-  requiresPermissions: Ember.computed('type', function() {
-    return this.get('type') === 'platform_user';
-  }),
+  requiresPermissions: Ember.computed.equal('type', 'platform_user'),
 
   privileged: Ember.computed('type', function() {
     return PRIVILEGED_ROLE_TYPES.indexOf(this.get('type')) > -1;
   }),
 
-  compliance: Ember.computed('type', function() {
+  isCompliance: Ember.computed('type', function() {
     return COMPLIANCE_ROLE_TYPES.indexOf(this.get('type')) > -1;
   }),
 
-  platform: Ember.computed('type', function() {
+  isPlatform: Ember.computed('type', function() {
     return PLATFORM_ROLE_TYPES.indexOf(this.get('type')) > -1;
   }),
 

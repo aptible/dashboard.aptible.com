@@ -131,19 +131,16 @@ export default DS.Model.extend({
     return developmentUsers;
   }),
 
-  // needed by aptible-ability
+  // Needed by aptible-ability
   permitsRole(role, scope){
-    return new Ember.RSVP.Promise( (resolve) => {
-      let roleOrganizationHref = role.get('data.links.organization');
-      let match = orgRegex.exec(roleOrganizationHref);
-      let roleOrganizationId = match[1];
+    let roleOrganizationHref = role.get('data.links.organization');
+    let match = orgRegex.exec(roleOrganizationHref);
+    let roleOrganizationId = match[1];
 
-      let permitted = roleOrganizationId === this.get('id');
-      if (scope === 'manage') {
-        permitted = permitted && role.get('privileged');
-      }
-
-      resolve(permitted);
-    });
+    let permitted = roleOrganizationId === this.get('id');
+    if (scope === 'manage') {
+      permitted = permitted && role.get('privileged');
+    }
+    return permitted;
   }
 });

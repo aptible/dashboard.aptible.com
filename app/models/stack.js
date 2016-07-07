@@ -31,10 +31,10 @@ export default DS.Model.extend({
   apps: DS.hasMany('app', {async: true}),
   certificates: DS.hasMany('certificate', {async: true}),
   databases: DS.hasMany('database', {async: true}),
-  permissions: DS.hasMany('permission', {async:true}),
-  organization: DS.belongsTo('organization', {async:true}),
-  logDrains: DS.hasMany('log-drain', {async:true}),
-  vhosts: DS.hasMany('vhost', {async:true}),
+  permissions: DS.hasMany('permission', {embedded: true}),
+  organization: DS.belongsTo('organization', {async: true}),
+  logDrains: DS.hasMany('log-drain', {embedded: true}),
+  vhosts: DS.hasMany('vhost', {async: true}),
 
   // computed properties
   allowPHI: Ember.computed.match('type', /production/),
@@ -62,7 +62,7 @@ export default DS.Model.extend({
       });
     }
 
-    return this.get('permissions').then(function(_permissions){
+    return this.get('permissions').any(function(_permissions){
       permissions = _permissions;
 
       return permissions.map(function(perm){
@@ -78,60 +78,28 @@ export default DS.Model.extend({
     });
   },
 
-  permissionForRole(role, scope) {
-    let permissions;
-
-    if (role.get('privileged') &&
-        role.get('data.links.organization') === this.get('data.links.organization')) {
-      return new Ember.RSVP.Promise((resolve) => {
-        resolve(true);
-      });
-    }
-
-    return this.get('permissions').then(function(_permissions){
-      permissions = _permissions;
-
-      return permissions.map(function(perm){
-        return {
-          roleId: getRoleIdFromPermission(perm),
-          scope:  perm.get('scope')
-        };
-      });
-    }).then(function(stackRoleScopes){
-      return Ember.A(Ember.A(stackRoleScopes).filter((stackRoleScope) => {
-        return (role.get('id') === stackRoleScope.roleId &&
-                  stackRoleScope.scope === scope);
-      }));
+  // Checking a specific scope
+  hasRoleScope(role, scope) {
+    return this.get('permissions').any(function(permission) {
+      return (getRoleIdFromPermission(permission) === role.get('id') && permission.get('scope') === scope);
     });
-
   },
 
-  permitsRole(role, scope){
-    let permissions;
+  findPermission(role, scope) {
+    return this.get('permissions').find(function(permission) {
+      return (getRoleIdFromPermission(permission) === role.get('id') && permission.get('scope') === scope);
+    });
+  },
 
+  // Checking a level of scope permission.
+  permitsRole(role, scope){
     if (role.get('privileged') &&
         role.get('data.links.organization') === this.get('data.links.organization')) {
-      return new Ember.RSVP.Promise((resolve) => {
-        resolve(true);
-      });
+      return true;
     }
 
-    return this.get('permissions').then(function(_permissions){
-      permissions = _permissions;
-
-      return permissions.map(function(perm){
-        return {
-          roleId: getRoleIdFromPermission(perm),
-          scope:  perm.get('scope')
-        };
-      });
-    }).then(function(stackRoleScopes){
-      return Ember.A(Ember.A(stackRoleScopes).filter((stackRoleScope) => {
-        return role.get('id') === stackRoleScope.roleId;
-      })).any((stackRoleScope) => {
-        return stackRoleScope.scope === 'manage' ||
-          stackRoleScope.scope === scope;
-      });
+    return this.get('permissions').any(function(permission) {
+      return (getRoleIdFromPermission(permission) === role.get('id') && permission.can(scope));
     });
   }
 });
