@@ -1,0 +1,38 @@
+<thead>
+  <tr>
+    {{#each columnHeaders as |header|}}
+      <th>{{header}}</th>
+    {{/each}}
+  </tr>
+</thead>
+<tbody>
+  {{#each filteredThreatEvents as |threatEvent|}}
+    <tr>
+      {{#if columnConfig.title}}
+        <td class='aptable__row-header'>{{threatEvent.title}}</td>
+      {{/if}}
+
+      {{#if columnConfig.description}}
+        <td>{{threatEvent.description}}</td>
+      {{/if}}
+
+      {{#if columnConfig.appliedRiskIndex}}
+        <td>{{threatEvent.appliedRiskIndex}}</td>
+      {{/if}}
+
+      {{#if columnConfig.relevanceText}}
+        <td>{{threatEvent.relevanceText}}</td>
+      {{/if}}
+
+      {{#if columnConfig.impactText}}
+        <td>{{threatEvent.impactText}}</td>
+      {{/if}}
+
+      {{#if columnConfig.actions}}
+        <td class="base-table__actions">
+          {{link-to 'View' 'threat-event' threatEvent.id class="btn btn-link view-threat-event"}}
+        </td>
+      {{/if}}
+    </tr>
+  {{/each}}
+</tbody>

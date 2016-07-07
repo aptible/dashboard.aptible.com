@@ -50,13 +50,13 @@ test('visit ' + settingsSshUrl + ' shows ssh keys', function(assert) {
     assert.equal( find('.ssh-key-item').length, keys.length,
            'has ' + keys.length + ' ssh keys');
 
-    expectButton('Add another SSH key');
+    expectButton('Add Another SSH key');
 
     let deleteButton = findButton('Delete SSH Key');
     assert.equal(deleteButton.length, keys.length,
           'has ' + keys.length + ' delete buttons');
   });
-  clickButton('Add another SSH key');
+  clickButton('Add Another SSH key');
 
   andThen(function(){
     expectInput('name');
@@ -64,7 +64,7 @@ test('visit ' + settingsSshUrl + ' shows ssh keys', function(assert) {
     expectButton('Save new SSH key');
     expectButton('Cancel');
 
-    let addButton = findButton('Add another SSH key');
+    let addButton = findButton('Add Another SSH key');
     assert.ok(!addButton.length, 'does not show add button when adding a key');
   });
 });
@@ -74,7 +74,7 @@ test('visit ' + settingsSshUrl + ' with no key shows button to add key', functio
   signInAndVisit(settingsSshUrl);
 
   andThen(function(){
-    expectButton('Add your first SSH key');
+    expectButton('Add First SSH key');
   });
 });
 
@@ -101,13 +101,13 @@ test('visit ' + settingsSshUrl + ' allows adding a key', function(assert) {
   });
 
   signInAndVisit(settingsSshUrl);
-  clickButton('Add your first SSH key');
+  clickButton('Add First SSH key');
   clickButton('Cancel');
   andThen(function(){
     let saveButton = findButton('Save new SSH key');
     assert.ok( !saveButton.length, 'save button is not shown after cancel' );
   });
-  clickButton('Add your first SSH key');
+  clickButton('Add First SSH key');
   fillInput('name', keyName);
   fillInput('ssh-public-key', publicKey);
   clickButton('Save new SSH key');
@@ -130,7 +130,7 @@ test('visit ' + settingsSshUrl + ' and adding a key when it returns an error', f
   });
 
   signInAndVisit(settingsSshUrl);
-  clickButton('Add your first SSH key');
+  clickButton('Add First SSH key');
   fillInput('name', keyName );
   fillInput('ssh-public-key', publicKey );
   clickButton('Save new SSH key');
@@ -174,8 +174,8 @@ test(`visiting ${settingsSshUrl} as unverified user shows verification message`,
   signInAndVisit(settingsSshUrl, userData);
 
   andThen(() => {
-    expectNoButton('Add your first SSH key');
-    expectNoButton('Add another SSH key');
+    expectNoButton('Add First SSH key');
+    expectNoButton('Add Another SSH key');
 
     let message = find('.activate-notice h1');
     assert.ok(message.text().indexOf('Confirm your email') > -1,

@@ -1,0 +1,54 @@
+<div class="form-group">
+  <label class="risk-assessment__filters__label">Sort</label>
+  <select class="form-control input-sm sort" {{action 'update' on="change"}}>
+
+    {{#each sorts as |sort|}}
+      <option value={{sort.value}} selected={{if (eq filters.sort sort.value) true false}}>
+        {{sort.title}}
+      </option>
+    {{/each}}
+  </select>
+</div>
+
+<div class="form-group">
+  <label class="risk-assessment__filters__label">Impact</label>
+  <select class="form-control input-sm impact" {{action 'update' on="change"}}>
+    <option value="" selected={{if (not filters.impact) true null}}>Any</option>
+    {{#each impacts as |impact|}}
+      <option value={{impact.value}} selected={{if (eq filters.impact impact.value) true false}}>
+        {{impact.title}}
+      </option>
+    {{/each}}
+  </select>
+</div>
+
+<div class="form-group">
+  <label class="risk-assessment__filters__label">Relevance</label>
+  <select class="form-control input-sm relevance" {{action 'update' on="change"}}>
+    <option value="" selected={{if (not filters.relevance) true null}}>Any</option>
+    {{#each relevances as |relevance|}}
+      <option value={{relevance.value}} selected={{if (eq filters.relevance relevance.value) true false}}>
+        {{relevance.title}}
+      </option>
+    {{/each}}
+  </select>
+</div>
+
+<div class="form-group">
+  <label class="risk-assessment__filters__label">Search</label>
+  <i class="fa fa-search"></i>
+
+  {{one-way-input
+    type="search"
+    name="search"
+    class="risk-assessment__search-input form-control input-sm"
+    update=(action (mut filters.search))
+    value=filters.search}}
+</div>
+
+{{#if showClear}}
+  <div class="form-group">
+    <label class="risk-assessment__filters__label">&nbsp;</label>
+    <a href="" {{action 'clear'}} class="risk-assessment__filters__clear">Clear Filters</a>
+  </div>
+{{/if}}
