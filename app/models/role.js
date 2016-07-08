@@ -1,28 +1,5 @@
 import DS from 'ember-data';
 
-export const PRIVILEGED_ROLE_TYPES = [
-  "owner",
-  "platform_owner",
-  "compliance_owner"
-];
-
-export const COMPLIANCE_ROLE_TYPES = [
-  "owner",
-  "compliance_owner",
-  "compliance_user"
-];
-
-export const PLATFORM_ROLE_TYPES = [
-  "owner",
-  "platform_owner",
-  "platform_user"
-];
-
-export const USER_ROLE_TYPES = {
-  platform_user: 'Platform',
-  compliance_user: 'Compliance'
-};
-
 export default DS.Model.extend({
   name: DS.attr(),
   type: DS.attr({ defaultValue: 'platform_user' }),
@@ -31,39 +8,18 @@ export default DS.Model.extend({
   invitations: DS.hasMany('invitations', {async:true}),
   users: DS.hasMany('users', {async:true}),
 
-  isOwner: Ember.computed('type', function() {
-    return this.get('type') === 'owner';
-  }),
+  isAccountOwner: Ember.computed.equal('type', 'owner'),
+  isComplianceOwner: Ember.computed.equal('type', 'compliance_owner'),
+  isPlatformOwner: Ember.computed.equal('type', 'platform_owner'),
+  isComplianceUser: Ember.computed.equal('type', 'compliance_user'),
+  isPlatformUser: Ember.computed.equal('type', 'platform_user'),
 
-  isComplianceOwner: Ember.computed('type', function() {
-    return this.get('type') === 'compliance_owner';
-  }),
+  isOwner: Ember.computed.or('isAccountOwner', 'isPlatformOwner', 'isComplianceOwner'),
+  isCompliance: Ember.computed.or('isAccountOwner', 'isComplianceOwner', 'isComplianceUser'),
+  isPlatform: Ember.computed.or('isAccountOwner', 'isPlatformOwner', 'isPlatformUser'),
 
-  isComplianceUser: Ember.computed('type', function() {
-    return this.get('type') === 'compliance_user';
-  }),
-
-  isPlatformOwner: Ember.computed('type', function() {
-    return this.get('type') === 'platform_owner';
-  }),
-
-  isPlatformUser: Ember.computed('type', function() {
-    return this.get('type') === 'platform_user';
-  }),
-
-  requiresPermissions: Ember.computed.equal('type', 'platform_user'),
-
-  privileged: Ember.computed('type', function() {
-    return PRIVILEGED_ROLE_TYPES.indexOf(this.get('type')) > -1;
-  }),
-
-  isCompliance: Ember.computed('type', function() {
-    return COMPLIANCE_ROLE_TYPES.indexOf(this.get('type')) > -1;
-  }),
-
-  isPlatform: Ember.computed('type', function() {
-    return PLATFORM_ROLE_TYPES.indexOf(this.get('type')) > -1;
-  }),
+  requiresPermissions: Ember.computed.alias('isPlatformUser'),
+  privileged: Ember.computed.deprecatingAlias('isOwner'),
 
   persistedInvitations: Ember.computed('invitations.[]', function() {
     return this.get('invitations').rejectBy('isNew');

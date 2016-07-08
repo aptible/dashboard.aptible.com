@@ -27,7 +27,7 @@ Ember.Test.registerHelper('createStubRole', function(app, roleData) {
   roleData = roleData || {};
   roleData.id = roleData.id || 'r1';
   const defaultRoleData = {
-    privileged: true,
+    type: 'owner',
     _links: {
       self: { href: `/roles/${roleData.id}` },
       organization: { href: '/organizations/1' }

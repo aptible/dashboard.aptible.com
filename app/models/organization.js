@@ -101,7 +101,7 @@ export default DS.Model.extend({
 
   developerRoles: Ember.computed('roles.@each.type', 'managePermissions', function() {
     // FIXME: Developer roles are any roles that:
-    // 1. Are privileged: true
+    // 1. Are privileged: role.type ===  owner | platform_owner
     // 2. Or have a manage permission on an API resource
     // This property will not be set without first setting permissions on
     // the organization instance.  This seems smelly.
