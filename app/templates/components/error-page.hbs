@@ -1,0 +1,28 @@
+<div class="error-body">
+  <div class="error-dialog">
+
+    <div class="error-logo"></div>
+
+    {{#if errorCode}}
+      <h1 class="error-code">{{errorCode}}</h1>
+    {{/if}}
+
+    <h1>{{title}}</h1>
+
+    <h3>{{message}}</h3>
+
+    {{yield}}
+
+    <div class="error-action">
+      {{link-to actionName actionDestination}}
+    </div>
+  </div>
+
+  <ul class="error-footer">
+    <li><a href="http://status.aptible.com">Aptible Status</a></li>
+    <li><a href="https://twitter.com/aptiblestatus">@aptiblestatus</a></li>
+    <li>{{#link-to-aptible app="support" path="contact"}}Contact Support{{/link-to-aptible}}</li>
+    </ul>
+
+    <a class="circle-icon" href="https://www.aptible.com"></a>
+</div>
