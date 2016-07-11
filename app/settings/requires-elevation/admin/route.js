@@ -52,7 +52,7 @@ export default Ember.Route.extend({
           tokens.sessionToken
         ]});
     }).then((response) => {
-      const m = `Revoked ${response.revoked} tokens. ` +
+      const m = `Revoked ${response.revoked} token(s). ` +
         'It may take up to a minute for all sessions to effectively be logged out.';
       Ember.get(this, 'flashMessages').success(m);
     });
