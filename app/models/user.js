@@ -41,6 +41,12 @@ export default DS.Model.extend({
     });
   }),
 
+  isOwner: Ember.computed('roles.@each.type', function() {
+    this.get('roles').reduce(function(prev, type) {
+      return prev || type.toString().indexOf('owner') > -1;
+    }, false, 'type');
+  }),
+
   isPlatformOwner(roles) {
     return roles.reduce(function(prev, type) {
       return prev || (type === 'owner' || type === 'platform_owner');

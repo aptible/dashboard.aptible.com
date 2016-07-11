@@ -112,7 +112,7 @@ export default DS.Model.extend({
 
     return roles.filter((role) => {
       let roleHref = role.get('data.links.self');
-      return role.get('privileged') || managedRolesHrefs.indexOf(roleHref) > -1;
+      return role.get('isOwner') || managedRolesHrefs.indexOf(roleHref) > -1;
     });
   }),
 
@@ -132,14 +132,14 @@ export default DS.Model.extend({
   }),
 
   // Needed by aptible-ability
-  permitsRole(role, scope){
+  permitsRole(role, scope) {
     let roleOrganizationHref = role.get('data.links.organization');
     let match = orgRegex.exec(roleOrganizationHref);
     let roleOrganizationId = match[1];
 
     let permitted = roleOrganizationId === this.get('id');
     if (scope === 'manage') {
-      permitted = permitted && role.get('privileged');
+      permitted = permitted && role.get('isOwner');
     }
     return permitted;
   }

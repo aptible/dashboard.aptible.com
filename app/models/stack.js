@@ -55,7 +55,7 @@ export default DS.Model.extend({
   scopesForRole(role) {
     let permissions;
 
-    if (role.get('privileged') &&
+    if (role.get('isOwner') &&
         role.get('data.links.organization') === this.get('data.links.organization')) {
       return new Ember.RSVP.Promise((resolve) => {
         resolve(true);
@@ -92,8 +92,8 @@ export default DS.Model.extend({
   },
 
   // Checking a level of scope permission.
-  permitsRole(role, scope){
-    if (role.get('privileged') &&
+  permitsRole(role, scope) {
+    if (role.get('isOwner') &&
         role.get('data.links.organization') === this.get('data.links.organization')) {
       return true;
     }
