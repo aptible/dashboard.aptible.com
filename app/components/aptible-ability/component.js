@@ -28,7 +28,6 @@ export default Ember.Component.extend({
       // and the role exists
       if (!bool && role && role.get('requiresPermissions')) {
         role.get('memberships').then((memberships) => {
-          console.log('role:', role.get('name'));
           var membership = user.findMembership(memberships);
 
           if (component.isDestroyed || !membership) { return; }
