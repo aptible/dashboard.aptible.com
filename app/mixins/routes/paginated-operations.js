@@ -2,7 +2,9 @@ import Ember from 'ember';
 
 export default Ember.Mixin.create({
   titleToken: function(){
-    let resource = this.modelFor( this.get('paginatedResourceOwnerType') );
+    let ownerType = Ember.get(this, 'getPaginatedResourceOwnerType')();
+    let resource = this.modelFor(ownerType);
+    // let resource = this.modelFor( this.get('paginatedResourceOwnerType') );
     return `${resource.get('handle')} Activity`;
   },
 
