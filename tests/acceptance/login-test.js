@@ -54,7 +54,7 @@ let createStubTokenEndpoint = function(assert, options) {
 let createStubHomeApiEndpoints = function() {
   let roleData = {
     id: 'r1',
-    privileged: true,
+    type: 'owner',
     _links: {
       self: { href: '/roles/r1' },
       organization: { href: '/organizations/1' }

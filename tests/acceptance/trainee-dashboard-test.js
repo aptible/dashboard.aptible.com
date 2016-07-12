@@ -10,8 +10,8 @@ let application;
 function doSetup() {
   stubOrganizations();
   stubStacks();
-  // Ensure the current user's role is NOT privileged
-  signInAndVisit('/', {}, { privileged: false });
+  // Ensure the current user's role is NOT an owner
+  signInAndVisit('/', {}, { type: 'compliance_user' });
 }
 
 module('Acceptance: Trainee Dashboard', {

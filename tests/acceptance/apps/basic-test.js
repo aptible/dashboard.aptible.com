@@ -21,7 +21,7 @@ test(`visiting ${url} requires authentication`, function() {
 });
 
 test(`visiting ${url} with no apps redirects to apps new`, function(assert) {
-  stubRequest('get', '/accounts/my-stack-1/apps', function(){
+  stubRequest('get', '/accounts/my-stack-1/apps', function() {
     return this.success({
       _links: {},
       _embedded: {
@@ -281,7 +281,7 @@ test(`visit ${url} shows create app button if user is verified`, function() {
     id: stackId,
     _links: {
       apps: { href: `/accounts/${stackId}/apps` },
-      permissions: { href: `/accounts/${stackId}/permissions` }
+      organization: { href: '/organizations/1' }
     }
   };
   stubOrganization();

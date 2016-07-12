@@ -42,7 +42,7 @@ let users = [
 let roles = [
   {
     id: basicRoleId,
-    privileged: false,
+    type: 'platform_user',
     name: 'Basic Role',
     _links: {
       self: { href: `/roles/${basicRoleId}` },
@@ -51,7 +51,7 @@ let roles = [
   },
   {
     id: developerRoleId,
-    privileged: false,
+    type: 'platform_user',
     name: 'Developer Role',
     _links: {
       self: { href: `/roles/${developerRoleId}` },
@@ -60,7 +60,7 @@ let roles = [
   },
   {
     id: adminRoleId,
-    privileged: true,
+    type: 'owner',
     name: 'Admin Role',
     _links: {
       self: { href: `/roles/${adminRoleId}` },

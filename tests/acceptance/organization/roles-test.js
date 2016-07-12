@@ -46,7 +46,7 @@ test(`visiting ${url} shows roles`, (assert) => {
   let roles = [{
     id: 'role1',
     name: 'Owner',
-    privileged: true,
+    type: 'owner',
     _links: {
       self: { href: `/roles/role1` },
       organization: { href: `/organizations/${orgId}` }

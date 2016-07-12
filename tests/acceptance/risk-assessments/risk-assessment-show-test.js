@@ -33,7 +33,7 @@ let users = [
 let roles = [
   {
     id: basicRoleId,
-    privileged: false,
+    type: 'platform_user',
     name: 'Basic Role',
     _links: {
       self: { href: `/roles/${basicRoleId}` },

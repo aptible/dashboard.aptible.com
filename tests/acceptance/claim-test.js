@@ -37,7 +37,7 @@ test(`visiting ${url} as unauthenticated revisits after log in`, function(assert
   let userUrl = '/user-url';
   let roleData = {
     id: 'r1',
-    privileged: true,
+    type: 'owner',
     _links: {
       self: { href: '/roles/r1' },
       organization: { href: '/organizations/1' }

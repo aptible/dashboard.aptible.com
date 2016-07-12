@@ -90,7 +90,7 @@ test(`visiting ${url} lists permissions by stack`, (assert)=> {
   doSetup({
     currentUserRoleData: {
       id: 'admin-role-1',
-      privileged: true,
+      type: 'owner',
       name: 'admin role',
       _links: {
         self: { href: '/role/admin-role-1' },
@@ -99,7 +99,7 @@ test(`visiting ${url} lists permissions by stack`, (assert)=> {
     },
     roleData: {
       id: roleId,
-      privileged: false,
+      type: 'platform_user',
       name: roleName,
       _links: { self: { href: apiRoleUrl } }
     },
@@ -146,7 +146,7 @@ test(`visiting ${url} lists permissions by stack`, (assert)=> {
 test(`visiting ${url} lists permissions by stack, checked boxes when permissions are present`, (assert)=> {
   let roleData = {
     id: roleId,
-    privileged: false,
+    type: 'platform_user',
     name: roleName
   };
 

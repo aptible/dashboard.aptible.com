@@ -15,8 +15,7 @@ module('Acceptance: Databases', {
       handle: 'my-stack-1',
       _links: {
         databases: { href: '/accounts/my-stack-1/databases' },
-        permissions: { href: '/accounts/my-stack-1/permissions' },
-        organization: { href: '/organizations/1' },
+        organization: { href: '/organizations/1'  }
       }
     };
     stubStack(stack);
