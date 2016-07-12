@@ -8,14 +8,14 @@ export default function can(user, scope, permittablePromise){
   let permittable;
 
   return new Ember.RSVP.resolve(permittablePromise)
-  .then(function(resolvedPermittable) {
-    Ember.assert('Must pass a parameter that implements `permitsRole`', !!resolvedPermittable.permitsRole);
-    permittable = resolvedPermittable;
-    return user.get('roles');
-  }).then(function(roles){
-    return Ember.RSVP.all(roles.map((role) => permittable.permitsRole(role, scope)) );
-  }).then((results) => {
-    return results.indexOf(true) > -1;
-  });
-
+    .then(function(resolvedPermittable) {
+      Ember.assert('Must pass a parameter that implements `permitsRole`', !!resolvedPermittable.permitsRole);
+      permittable = resolvedPermittable;
+      return user.get('roles');
+    })
+    .then(function(roles){
+      return roles.map((role) => {
+        return permittable.permitsRole(role, scope)
+      }).indexOf(true) > -1;
+    });
 }
