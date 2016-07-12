@@ -34,6 +34,7 @@ export default Ember.Route.extend({
 
   actions: {
     addMember(user){
+      if (!user) { return; }
       const role = this.controller.get('role');
       const userLink = user.get('data.links.self');
       const membership = this.store.createRecord('membership', {
@@ -43,6 +44,7 @@ export default Ember.Route.extend({
 
       membership.save().then(() => {
         let message = `${user.get('name')} added to ${role.get('name')} role`;
+        this.controller.set('invitedUser', '');
         Ember.get(this, 'flashMessages').success(message);
         return role.get('users').reload();
       });

@@ -3,16 +3,35 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   classNames: ['aptable__member-row'],
   tagName: 'tr',
+  initialized: false,
+  busy: false,
 
-  isDisabled: Ember.computed('currentUser.roles.[]', 'currentUser.memberships.[]', function() {
-    // let role = this.get('role');
-    // let organization = role.get('organization');
-    // return true;
+  setup: function() {
+    Ember.run.next(() => {
+      this.set('initialized', true);
+    });
+  }.on('init'),
+
+  // Account | Platform | Compliance Owners effectively have admin privileges
+  isToggled: Ember.computed('membersihp.privileged', 'membership.user.isOwner', function() {
+    let membership = this.get('membership');
+    return membership.get('user.isOwner') || membership.get('privileged');
+  }),
+
+  isDisabled: Ember.computed('currentUser.isOwner', function() {
+    return this.get('currentUser.isOwner');
   }),
 
   actions: {
-    togglePrivileged() {
-      this.get('membership').save();
+    togglePrivileged(isOn) {
+      let membership = this.get('membership');
+
+      if (!this.get('initialized') || this.get('busy')) { return; }
+      if (membership.get('user.isOwner')) { return; }
+
+      membership.set('privileged', isOn);
+      this.set('busy', true);
+      membership.save().then(() => { this.set('busy', false); });
     },
 
     // Confirm deletes, also message that the user will be removed from the

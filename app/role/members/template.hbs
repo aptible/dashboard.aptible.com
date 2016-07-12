@@ -6,7 +6,7 @@
         <button class="btn btn-primary" {{action "addMember" invitedUser}} type="submit">Add</button>
         <div class="user-select-container">
           {{ultimate-select
-              class="user-select" name="billing-contact" prompt="Select..."
+              class="user-select" name="invited-user" prompt="Select..."
               items=nonmembers itemKey="id" itemValue="name"
               update=(action (mut invitedUser)) selected=invitedUser}}
         </div>
@@ -43,15 +43,12 @@
           <th>Owner</th>
           <th>
             Admin Members
-            {{#bs-tooltip placement="bottom" bs-container=false title="Admins can manage members"}}
+            {{#bs-tooltip placement="bottom" bs-container=false
+                title="Owners and Role Admins can manage members."}}
               <i class='fa fa-question-circle icon--highlight'></i>
             {{/bs-tooltip}}
           </th>
-          {{#aptible-ability user=session.currentUser scope='manage' permittable=organization as |hasAbility|}}
-            {{#if hasAbility}}
-              <th>Actions</th>
-            {{/if}}
-          {{/aptible-ability}}
+          <th>Actions</th>
         </tr>
       </thead>
 

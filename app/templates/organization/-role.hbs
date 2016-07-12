@@ -18,14 +18,14 @@
     </div>
   </div>
   {{!-- PRIVILEGED ROLES --}}
-  {{#if role.privileged}}
-    {{#if role.isOwner}}
+  {{#if role.isOwner}}
+    {{#if role.isAccountOwner}}
       {{partial 'organization/role-details-owner'}}
     {{/if}}
-    {{#if (eq role.type 'platform_owner')}}
+    {{#if role.isPlatformOwner}}
       {{partial 'organization/role-details-platform-owner'}}
     {{/if}}
-    {{#if (eq role.type 'compliance_owner')}}
+    {{#if role.isComplianceOwner}}
       {{partial 'organization/role-details-compliance-owner'}}
     {{/if}}
   {{else}}

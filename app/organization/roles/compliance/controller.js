@@ -3,7 +3,7 @@ import Ember from "ember";
 export default Ember.Controller.extend({
   confirmationModal: Ember.inject.service(),
 
-  ownerRole: Ember.computed.filterBy('model', 'isOwner'),
+  ownerRole: Ember.computed.filterBy('model', 'isAccountOwner'),
   complianceOwnerRole: Ember.computed.filterBy('model', 'isComplianceOwner'),
   complianceUserRoles: Ember.computed('model.@each.name', function() {
     return this.get('model').filterBy('isComplianceUser').sortBy('name');

@@ -5,7 +5,7 @@
 <td>{{membership.user.email}}</td>
 <td>{{format-utc-timestamp membership.createdAt true}}</td>
 <td>
-  {{#if membership.user.isPlatformOwner}}
+  {{#if membership.user.isOwner}}
     <div class="label label-owner">
       <i class="fa fa-shield"></i> Owner
     </div>
@@ -13,7 +13,7 @@
 </td>
 <td class="aptable__actions aptable__actions--checkbox">
   {{x-toggle
-      toggled=membership.privileged
+      toggled=isToggled
       toggle='togglePrivileged'
       showLabels=false
       disabled=isDisabled
