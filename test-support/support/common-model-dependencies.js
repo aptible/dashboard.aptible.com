@@ -1,5 +1,12 @@
 export default [
   'model:service',
+  'model:risk-assessment',
+  'model:predisposing-condition',
+  'model:threat-source',
+  'model:mitigation',
+  'model:security-control',
+  'model:vulnerability',
+  'model:threat-event',
   'model:certificate',
   'model:stack',
   'model:app',
@@ -22,6 +29,7 @@ export default [
   'model:container',
   'model:otp-configuration',
   'model:otp-recovery-code',
+  'model:backup',
   'adapter:application',
   'serializer:application',
   'transform:iso-8601-timestamp'

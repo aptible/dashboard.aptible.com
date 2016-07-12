@@ -20,7 +20,7 @@
     width: 140px;
     background-size: 140px;
     margin: 0 auto 0 auto;
-    background-image: url('/ember-cli-aptible/shared/assets/images/error-logo.png');
+    background-image: url('/ember-cli-aptible-shared/assets/images/error-logo.png');
   }
 
   .circle-icon {
@@ -35,19 +35,42 @@
     background-image: url('/ember-cli-aptible-shared/assets/images/tiny-color-logo.png');
   }
 
-  h1 {
-    font-size: 29px;
-    color: $color-primary;
-    margin: 50px 0 0 0;
-  }
+  .error-body {
+    h1 {
+      font-size: 29px;
+      color: $color-primary;
+      margin-top: 50px;
+    }
 
-  h3 {
-    font-size: 18px;
-    color: $color-light;
+    h3 {
+      font-size: 18px;
+      color: $color-light;
+    }
+
+    h3, ul, p {
+      margin-top: 25px;
+    }
+
+    li, p {
+      color: $color-light;
+      font-size: 14px;
+    }
+
+    li {
+      text-align: left;
+    }
+
+    .error-action {
+      margin-top: 25px;
+
+      a {
+        font-size: 18px;
+      }
+    }
   }
 
   .error-footer {
-    margin: 50px 0;
+    margin: 50px 0px;
     padding: 0;
     display: inline-block;
     list-style-type: none;

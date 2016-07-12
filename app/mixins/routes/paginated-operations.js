@@ -1,44 +1,27 @@
 import Ember from 'ember';
+import Paginated from 'diesel/mixins/routes/paginated';
 
-export default Ember.Mixin.create({
+export default Ember.Mixin.create(Paginated, {
+  // Methods to override
+  getPaginatedResourceOwnerType() {
+    Ember.assert('Must override getPaginatedResourceOwnerType');
+  },
+
+  // Paginated hooks
+  getPaginatedResourceType: () => 'operation',
+
+  composeQuery(page) {
+    const paginatedResourceOwnerType = this.getPaginatedResourceOwnerType();
+    const paginatedResourceOwner = this.modelFor(paginatedResourceOwnerType);
+
+    const query = {page: page};
+    query[paginatedResourceOwnerType] = paginatedResourceOwner;
+    return query;
+  },
+
+  // Ember hooks
   titleToken: function(){
-    let ownerType = Ember.get(this, 'getPaginatedResourceOwnerType')();
-    let resource = this.modelFor(ownerType);
-    // let resource = this.modelFor( this.get('paginatedResourceOwnerType') );
+    let resource = this.modelFor(this.getPaginatedResourceOwnerType());
     return `${resource.get('handle')} Activity`;
   },
-
-  setPaginationMeta: function(typeName, store, controller){
-    var pagination = store.metadataFor(typeName);
-    controller.set('currentPage', pagination.current_page);
-    controller.set('totalCount', pagination.total_count);
-    controller.set('perPage', pagination.per_page);
-  },
-
-  actions: {
-    goToPage: function(page){
-      var paginatedResourceOwnerType = this.get('paginatedResourceOwnerType');
-
-      Ember.assert('Routes mixing in Pagination must set a paginatedResourceOwnerType',
-                   paginatedResourceOwnerType);
-
-      var controller = this.controller;
-      var store = this.store;
-      var route = this;
-      var query = {page:page};
-      var paginatedResourceOwner = this.modelFor(paginatedResourceOwnerType);
-      query[ paginatedResourceOwnerType ] = paginatedResourceOwner;
-
-      this.store.find('operation', query).then(function(operations){
-        controller.set('model', operations);
-        route.setPaginationMeta('operation', store, controller);
-      });
-    },
-    nextPage: function(page){
-      this.send('goToPage', page + 1);
-    },
-    prevPage: function(page){
-      this.send('goToPage', page - 1);
-    }
-  }
 });
