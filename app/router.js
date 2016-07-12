@@ -158,6 +158,7 @@ Router.map(function() {
       this.route('profile');
       this.route('ssh');
       this.route('impersonate');
+      this.route('logout');
     });
   });
 
@@ -172,7 +173,6 @@ Router.map(function() {
   this.authenticatedRoute("elevate", { resetNamespace: true });
 
   this.route("login");
-  this.route("logout");
   this.route("signup", {}, function(){
     this.route('invitation', {path:'/invitation/:invitation_id/:verification_code'});
   });

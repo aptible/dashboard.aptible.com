@@ -261,7 +261,7 @@ test('visit /login while already logged in redirects to stack', function(assert)
 });
 
 test('logging out redirects to login if not logged in', function(assert) {
-  visit('/logout');
+  visit('/settings/logout');
   andThen(function(){
     assert.equal(currentPath(), 'login', 'redirected to login');
   });

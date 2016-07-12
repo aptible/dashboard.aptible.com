@@ -3,7 +3,7 @@ import {
   test
 } from 'ember-qunit';
 
-moduleFor('route:logout',  {
+moduleFor('route:settings:logout',  {
   unit: true,
   needs: ['service:analytics', 'service:elevation']
 });
