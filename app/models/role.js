@@ -15,10 +15,10 @@ export default DS.Model.extend({
   isPlatformUser: Ember.computed.equal('type', 'platform_user'),
 
   isOwner: Ember.computed.or('isAccountOwner', 'isPlatformOwner', 'isComplianceOwner'),
+  isUser: Ember.computed.or('isPlatformUser', 'isComplianceUser'),
   isCompliance: Ember.computed.or('isAccountOwner', 'isComplianceOwner', 'isComplianceUser'),
   isPlatform: Ember.computed.or('isAccountOwner', 'isPlatformOwner', 'isPlatformUser'),
 
-  requiresPermissions: Ember.computed.alias('isPlatformUser'),
   privileged: Ember.computed.deprecatingAlias('isOwner'),
 
   persistedInvitations: Ember.computed('invitations.[]', function() {

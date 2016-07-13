@@ -26,7 +26,7 @@ export default Ember.Component.extend({
 
       // Only check the membership of a role if the user does not have ability
       // and the role exists
-      if (!bool && role && role.get('requiresPermissions')) {
+      if (!bool && role && role.get('isUser')) {
         role.get('memberships').then((memberships) => {
           var membership = user.findMembership(memberships);
 

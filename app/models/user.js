@@ -33,24 +33,38 @@ export default DS.Model.extend({
     return can(this, scope, stack);
   },
 
-  isAccountOwner: Ember.computed('roles.@each.type', function() {
-    return this.get('roles').then((roles) => {
-      roles.reduce(function(prev, type) {
-        return prev || type === 'owner';
-      }, false, 'type');
-    });
-  }),
+  isAccountOwner(roles) {
+    Ember.assert('You must pass roles', !!roles);
 
-  isOwner: Ember.computed('roles.@each.type', function() {
-    this.get('roles').reduce(function(prev, type) {
-      return prev || type.toString().indexOf('owner') > -1;
-    }, false, 'type');
-  }),
+    return roles.reduce(function(prev, role) {
+      return prev || role.get('type') === 'owner';
+    }, false);
+  },
+
+  isOwner(roles) {
+    Ember.assert('You must pass roles', !!roles);
+
+    return roles.reduce(function(prev, role) {
+      return prev || role.get('type').toString().indexOf('owner') > -1;
+    }, false);
+  },
+
+  isComplianceOwner(roles) {
+    Ember.assert('You must pass roles', !!roles);
+
+    return roles.reduce(function(prev, role) {
+      let type = role.get('type');
+      return prev || (type === 'owner' || type === 'compliance_owner');
+    }, false);
+  },
 
   isPlatformOwner(roles) {
-    return roles.reduce(function(prev, type) {
+    Ember.assert('You must pass roles', !!roles);
+
+    return roles.reduce(function(prev, role) {
+      let type = role.get('type');
       return prev || (type === 'owner' || type === 'platform_owner');
-    }, false, 'type');
+    }, false);
   },
 
   organizations: Ember.computed('roles.@each.organization', function() {
