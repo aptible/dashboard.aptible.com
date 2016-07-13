@@ -19,8 +19,9 @@ function pushTokenToStore(tokenPayload, store) {
     scope: tokenPayload.scope,
     rawPayload: JSON.stringify(tokenPayload),
     links: {
+      self: tokenPayload._links.self.href,
       user: tokenPayload._links.user.href,
-      actor: tokenPayload._links.actor && tokenPayload._links.actor.href
+      actor: tokenPayload._links.actor && tokenPayload._links.actor.href,
     }
   });
 }

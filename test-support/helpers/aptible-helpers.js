@@ -47,6 +47,7 @@ Ember.Test.registerHelper('createStubToken', function(app, tokenData, stubUser) 
     scope: 'manage',
     type: 'token',
     _links: {
+      self: { href: `/tokens/${tokenData.id}` },
       user: { href: stubUser._links.self.href }
     }
   };
