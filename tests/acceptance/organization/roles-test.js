@@ -45,7 +45,7 @@ test(`visiting ${url} shows roles`, (assert) => {
   stubStacks();
   let roles = [{
     id: 'role1',
-    name: 'Owner',
+    name: 'Account Owner',
     type: 'owner',
     _links: {
       self: { href: `/roles/role1` },
@@ -53,14 +53,23 @@ test(`visiting ${url} shows roles`, (assert) => {
     }
   }, {
     id: 'role2',
+    name: 'Platform Owner',
+    type: 'platform_owner',
+    _links: {
+      self: { href: `/roles/role3` },
+      organization: { href: `/organizations/${orgId}` }
+    }
+  }, {
+    id: 'role3',
     name: 'devs',
+    type: 'platform_user',
     _links: {
       self: { href: `/roles/role2` },
       organization: { href: `/organizations/${orgId}` }
     }
   }];
 
-  assert.expect(2 + 2*roles.length);
+  assert.expect(6);
 
   stubOrganization({
     id: orgId,
@@ -78,15 +87,15 @@ test(`visiting ${url} shows roles`, (assert) => {
   signInAndVisit(url, {}, roles[0]);
 
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.roles.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.roles.platform');
 
     roles.forEach( (r) => {
-      let roleDiv = find(`.role:contains(${r.name})`);
+      let roleDiv = find(`.role-details__heading:contains(${r.name})`);
       assert.ok(roleDiv.length, `shows role with name "${r.name}"`);
 
-      if (r.privileged) {
+      if (r.isOwner) {
         assert.ok(roleDiv.find('.fa-shield').length,
-                  'privileged role is marked as such in ui');
+                  'owner roles are marked as such in ui');
       }
     });
 
@@ -105,7 +114,8 @@ test(`visit ${url} and click to show`, (assert) => {
   });
   let role = {
     id: 'role1',
-    name: 'Owner'
+    name: 'Dev',
+    type: 'platform_user'
   };
 
   stubRequest('get', rolesUrl, function() {
@@ -117,6 +127,6 @@ test(`visit ${url} and click to show`, (assert) => {
   signInAndVisit(url);
   click(`a[title="Edit ${role.name} Permissions"]`);
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.roles.show');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.role.members');
   });
 });

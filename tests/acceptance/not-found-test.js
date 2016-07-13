@@ -19,7 +19,7 @@ test(`visiting ${url} shows not-found message`, function(assert) {
 
   andThen(function() {
     assert.equal(currentPath(), 'not-found');
-    expectLink('support.aptible.com');
+    expectLink('contact.aptible.com');
     expectLink('status.aptible.com');
     expectLink('twitter.com/aptiblestatus');
   });
