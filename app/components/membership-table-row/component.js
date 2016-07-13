@@ -5,29 +5,63 @@ export default Ember.Component.extend({
   tagName: 'tr',
   initialized: false,
   busy: false,
+  memberUserRoles: [],
+  currentUserRoles: [],
 
   setup: function() {
+    this.get('membership.user.roles').then((roles) => {
+      this.set('memberUserRoles', roles);
+    });
+    this.get('currentUser.roles').then((roles) => {
+      this.set('currentUserRoles', roles);
+    });
     Ember.run.next(() => {
       this.set('initialized', true);
     });
   }.on('init'),
 
-  // Account | Platform | Compliance Owners effectively have admin privileges
-  isToggled: Ember.computed('membersihp.privileged', 'membership.user.isOwner', function() {
-    let membership = this.get('membership');
-    return membership.get('user.isOwner') || membership.get('privileged');
+  hasOwnerShield: Ember.computed('memberUserRoles.[]', function() {
+    let user = this.get('membership.user');
+    return this.isRoleOwner(user, this.get('memberUserRoles'));
   }),
 
-  isDisabled: Ember.computed('currentUser.isOwner', function() {
-    return this.get('currentUser.isOwner');
+  isRoleOwner(user, roles) {
+    if (this.get('role.isCompliance')) {
+      return user.isComplianceOwner(roles);
+    }
+    return user.isPlatformOwner(roles);
+  },
+
+  // Account | Platform | Compliance Owners effectively have admin privileges,
+  // so it gets toggled and disabled.
+  isToggled: Ember.computed('membership.privileged', 'memberUserRoles.[]', function() {
+    return this.isRoleOwner(this.get('membership.user'), this.get('memberUserRoles')) ||
+      this.get('membership.privileged');
+  }),
+
+  isDisabled: Ember.computed('memberUserRoles.[]', 'currentUserRoles.[]', function() {
+    if (this.get('role.isOwner')) { return true; }
+    let currentUserRoles = this.get('currentUserRoles');
+    let memberUserRoles = this.get('memberUserRoles');
+    // Disable if current user is not a role owner
+    if (!this.isRoleOwner(this.get('currentUser'), this.get('currentUserRoles'))) {
+      return true;
+    }
+    // If current user is a role owner, check this role member and disable
+    // if they are an owner
+    return this.isRoleOwner(this.get('membership.user'), this.get('memberUserRoles'));
   }),
 
   actions: {
     togglePrivileged(isOn) {
       let membership = this.get('membership');
 
+      // No changes if this is the init call
+      // NOTE: new versions of x-toggle don't call the toggle on init
       if (!this.get('initialized') || this.get('busy')) { return; }
-      if (membership.get('user.isOwner')) { return; }
+
+      // No need to update if this user is an owner.
+      if (this.isRoleOwner(membership.get('user'), this.get('memberUserRoles'))) { return; }
 
       membership.set('privileged', isOn);
       this.set('busy', true);
@@ -41,8 +75,13 @@ export default Ember.Component.extend({
       let membership = this.get('membership');
       let user = membership.get('user');
 
+      let target = user.get('name');
+      if (user.get('id') === this.get('currentUser.id')) {
+        target = 'yourself'
+      }
+
       // Confirm...
-      let confirmMsg = `\nAre you sure you want to remove ${user.get('name')} from ${role.get('name')}?\n`;
+      let confirmMsg = `\nAre you sure you want to remove ${target} from ${role.get('name')}?\n`;
       if (!confirm(confirmMsg)) { return false; }
 
       membership.destroyRecord().then(() => {

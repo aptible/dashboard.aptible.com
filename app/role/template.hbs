@@ -20,9 +20,15 @@
           {{link-to 'Environments' 'role.environments' model}}
         {{/activating-item}}
       {{/if}}
-      {{#activating-item currentWhen='role.settings' tagName='li'}}
-        {{link-to 'Settings' 'role.settings' model}}
-      {{/activating-item}}
+      {{#if model.isUser}}
+        {{#aptible-ability user=session.currentUser scope='manage' permittable=model.organization as |hasAbility|}}
+          {{#if hasAbility}}
+            {{#activating-item currentWhen='role.settings' tagName='li'}}
+              {{link-to 'Settings' 'role.settings' model}}
+            {{/activating-item}}
+          {{/if}}
+        {{/aptible-ability}}
+      {{/if}}
     </ul>
 
     {{outlet}}

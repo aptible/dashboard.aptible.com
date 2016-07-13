@@ -32,6 +32,7 @@ export default Ember.Route.extend({
     controller.set('currentUserRoles', model.currentUserRoles);
   },
 
+  // Note: Memberships are removed by the membership table row component
   actions: {
     addMember(user){
       if (!user) { return; }
@@ -46,7 +47,7 @@ export default Ember.Route.extend({
         let message = `${user.get('name')} added to ${role.get('name')} role`;
         this.controller.set('invitedUser', '');
         Ember.get(this, 'flashMessages').success(message);
-        return role.get('users').reload();
+        return this.get('controller').set('memberships', role.get('memberships').reload());
       });
     },
 
@@ -71,18 +72,6 @@ export default Ember.Route.extend({
         if (!(e instanceof DS.InvalidError)) {
           throw e;
         }
-      });
-    },
-
-    removeMembership(membership){
-      let role = this.controller.get('role');
-      let user = membership.get('user');
-      let memberships = this.controller.get('memberships');
-
-      return membership.destroyRecord().then(() => {
-        let message = `${user.get('name')} removed from ${role.get('name')} role`;
-        Ember.get(this, 'flashMessages').success(message);
-        return memberships.reload();
       });
     },
 

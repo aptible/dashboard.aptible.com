@@ -5,10 +5,8 @@
 <td>{{membership.user.email}}</td>
 <td>{{format-utc-timestamp membership.createdAt true}}</td>
 <td>
-  {{#if membership.user.isOwner}}
-    <div class="label label-owner">
-      <i class="fa fa-shield"></i> Owner
-    </div>
+  {{#if hasOwnerShield}}
+    <div class="label label-owner"><i class="fa fa-shield"></i> Owner</div>
   {{/if}}
 </td>
 <td class="aptable__actions aptable__actions--checkbox">

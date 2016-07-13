@@ -14,7 +14,7 @@ export default Ember.Component.extend({
   }.on('init'),
 
   isChecked: Ember.computed('stack.@each.permissions', function() {
-    if (this.get('role').get('requiresPermissions')) {
+    if (this.get('role').get('isPlatformUser')) {
       return this.get('stack').hasRoleScope(this.get('role'), this.get('scope'));
     }
     return true;
@@ -22,8 +22,8 @@ export default Ember.Component.extend({
 
   isDisabled: Ember.computed('currentUser.roles.[]', function() {
     let currentUserRoles = this.get('currentUserRoles');
-    if (this.get('role').get('requiresPermissions')) {
-      return this.get('currentUser').isPlatformOwner(currentUserRoles);
+    if (this.get('role').get('isPlatformUser')) {
+      return !this.get('currentUser').isPlatformOwner(currentUserRoles);
     }
     return true;
   }),
