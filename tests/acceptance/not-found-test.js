@@ -22,5 +22,7 @@ test(`visiting ${url} shows not-found message`, function(assert) {
     expectLink('support.aptible.com');
     expectLink('status.aptible.com');
     expectLink('twitter.com/aptiblestatus');
+
+    assert.ok(find(`a[href="/"]`).length, "Has link back to /");
   });
 });
