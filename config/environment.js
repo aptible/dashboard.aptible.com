@@ -3,23 +3,31 @@
 var detectEndpointUri = require('../lib/detect-endpoint-uri');
 
 module.exports = function(environment) {
+  var metricsBaseUri = detectEndpointUri('metrics', environment) || "http://localhost:3000";
+  var complianceBaseUri = detectEndpointUri('compliance', environment) || 'http://localhost:3001';
+  var authBaseUri = detectEndpointUri('auth', environment) || 'http://localhost:4000';
+  var apiBaseUri = detectEndpointUri('api', environment) || 'http://localhost:4001';
+  var gridironBaseUri = detectEndpointUri('gridiron', environment) || 'http://localhost:4002';
+  var billingBaseUri = detectEndpointUri('billing', environment) || 'http://localhost:4004';
+  var dashboardBaseUri = detectEndpointUri('dashboard', environment) || 'http://localhost:4200';
+
   var ENV = {
     modulePrefix: 'diesel',
     environment: environment,
     baseURL: '/',
     locationType: 'auto',
 
-    metricsBaseuri: detectEndpointUri('metrics', environment) || "http://localhost:3000",
-    complianceBaseUri: detectEndpointUri('compliance', environment) || 'http://localhost:3001',
-    authBaseUri: detectEndpointUri('auth', environment) || 'http://localhost:4000',
-    apiBaseUri: detectEndpointUri('api', environment) || 'http://localhost:4001',
-    gridironBaseUri: detectEndpointUri('gridiron', environment) || 'http://localhost:4002',
-    billingBaseUri: detectEndpointUri('billing', environment) || 'http://localhost:4004',
-    dashboardBaseUri: detectEndpointUri('dashboard', environment) || 'http://localhost:4200',
+    metricsBaseUri: metricsBaseUri,
+    complianceBaseUri: complianceBaseUri,
+    authBaseUri: authBaseUri,
+    apiBaseUri: apiBaseUri,
+    gridironBaseUri: gridironBaseUri,
+    billingBaseUri: billingBaseUri,
+    dashboardBaseUri: dashboardBaseUri,
 
     aptibleHosts: {
-      compliance: detectEndpointUri('compliance', environment) || 'http://localhost:3001',
-      dashboard: detectEndpointUri('dashboard', environment) || 'http://localhost:4200',
+      compliance: complianceBaseUri,
+      dashboard: dashboardBaseUri,
       support: 'https://support.aptible.com',
       contact: 'http://contact.aptible.com'
     },
@@ -97,7 +105,10 @@ module.exports = function(environment) {
     },
 
     contentSecurityPolicy: {
-      'connect-src': "'self' ws://aptible1.local:49152 http://aptible1.local:4200 http://aptible1.local:4000 http://aptible1.local:4001 http://aptible1.local:4002 http://aptible1.local:4004 http://localhost:4000 http://localhost:4001 http://localhost:4002 ws://localhost:35729 ws://0.0.0.0:35729 http://api.mixpanel.com http://api.segment.io https://auth.aptible-staging.com https://api.aptible-staging.com https://gridiron.aptible-staging.com https://api-ping.intercom.io wss://*.intercom.io https://*.intercom.io",
+      'connect-src': "'self' ws://aptible1.local:49152 http://aptible1.local:4200 http://aptible1.local:4000 http://aptible1.local:4001 http://aptible1.local:4002 http://aptible1.local:4004 http://localhost:4000 http://localhost:4001 http://localhost:4002 ws://localhost:35729 ws://0.0.0.0:35729 http://api.mixpanel.com http://api.segment.io https://auth.aptible-staging.com https://api.aptible-staging.com https://gridiron.aptible-staging.com https://api-ping.intercom.io wss://*.intercom.io https://*.intercom.io" + [
+        metricsBaseUri, complianceBaseUri, authBaseUri, apiBaseUri,
+        gridironBaseUri, billingBaseUri, dashboardBaseUri,
+      ].join(' '),
       'style-src': "'self' 'unsafe-inline' http://use.typekit.net",
       'img-src': "'self' http://www.gravatar.com https://secure.gravatar.com http://www.google-analytics.com http://p.typekit.net https://track.customer.io https://js.intercomcdn.com",
       'script-src': "'self' 'unsafe-inline' http://aptible1.local:49152 https://js.stripe.com https://api.stripe.com http://use.typekit.net http://cdn.segment.com https://assets.customer.io http://www.google-analytics.com http://cdn.mxpnl.com https://js.intercomcdn.com https://static.intercomcdn.com https://widget.intercom.io",

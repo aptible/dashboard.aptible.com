@@ -24,7 +24,7 @@ export default Ember.Service.extend({
     let accessToken = this.get("session.token.accessToken");
     let containerIds = containers.map((container) => container.get("id"));
 
-    return ajax(`${config.metricsBaseuri}/proxy/${containerIds.join(":")}?horizon=${horizon}&metric=${metric}`, {
+    return ajax(`${config.metricsBaseUri}/proxy/${containerIds.join(":")}?horizon=${horizon}&metric=${metric}`, {
       headers: {
         "Authorization": `Bearer ${accessToken}`
       }
