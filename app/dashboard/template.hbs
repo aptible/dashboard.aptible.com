@@ -2,9 +2,7 @@
   <div class="main-wrapper">
     <header class="layout-header">
       {{partial "header"}}
-      {{#unless session.currentUser.verified}}
-        {{verification-code-reset user=session.currentUser}}
-      {{/unless}}
+      {{verification-code-reset user=session.currentUser}}
 
       {{#if flashMessages.queue}}
         <div class="notifications">
