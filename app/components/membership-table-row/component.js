@@ -41,8 +41,7 @@ export default Ember.Component.extend({
 
   isDisabled: Ember.computed('memberUserRoles.[]', 'currentUserRoles.[]', function() {
     if (this.get('role.isOwner')) { return true; }
-    let currentUserRoles = this.get('currentUserRoles');
-    let memberUserRoles = this.get('memberUserRoles');
+
     // Disable if current user is not a role owner
     if (!this.isRoleOwner(this.get('currentUser'), this.get('currentUserRoles'))) {
       return true;
@@ -75,9 +74,9 @@ export default Ember.Component.extend({
       let membership = this.get('membership');
       let user = membership.get('user');
 
-      let target = user.get('name');
+      let subject = user.get('name');
       if (user.get('id') === this.get('currentUser.id')) {
-        target = 'yourself'
+        subject = 'yourself';
       }
 
       // Confirm...

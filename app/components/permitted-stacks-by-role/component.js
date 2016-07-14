@@ -14,5 +14,5 @@ export default Ember.Component.extend({
       const permittedStacks = stacks.filter(r => !!r);
       this.set('permittedStacks', permittedStacks);
     });
-  }.observes('scope', 'stacks.[]', 'role.privileged').on('init')
+  }.observes('scope', 'stacks.[]', 'role.isOwner').on('init')
 });
