@@ -13,6 +13,7 @@ export function signupInputsTest(url){
 }
 
 export function doSignupSteps(url, userInput, options={}){
+  // TODO: Use createStubUser, createStubToken
   let defaultInput = {
     name: 'bob', email: 'bob@gmail.com', password: 'abcDEF012!@#'
   };

@@ -1,5 +1,6 @@
 import ajax from "../utils/ajax";
 import config from "../config/environment";
+import { getAccessToken } from '../adapters/application';
 
 function rethrowJqXhrError(jqXHR) {
   // TODO: Use this everywhere.
@@ -33,6 +34,20 @@ export function getPersistedToken() {
     type: 'GET',
     xhrFields: {
       withCredentials: true
+    }
+  }).catch(rethrowJqXhrError);
+}
+
+export function revokeAllAccessibleTokens(options) {
+  options = options || {};
+
+  return ajax(config.authBaseUri + '/tokens/revoke_all_accessible', {
+    type: 'POST',
+    data: {
+      except_tokens: options.exceptTokenHrefs
+    },
+    headers: {
+      'Authorization': `Bearer ${getAccessToken()}`
     }
   }).catch(rethrowJqXhrError);
 }

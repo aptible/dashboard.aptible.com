@@ -1,4 +1,5 @@
 export default function successfulTokenResponse(server, userUrl) {
+  // TODO: Deprecate usage, use createStubToken instead.
   return server.success({
     id: 'my-id',
     access_token: 'my-token',
@@ -9,6 +10,9 @@ export default function successfulTokenResponse(server, userUrl) {
     _links: {
       user: {
         href: userUrl
+      },
+      self: {
+        href: '/tokens/my-id'
       }
     }
   });
