@@ -104,23 +104,23 @@ test('user and stack do not have same role', function(assert) {
   });
 });
 
-test('user has privileged role in stack organization can manage stack', function(assert) {
+test('user has owner role in stack organization can manage stack', function(assert) {
   let user, userRole, stack, otherRole, stackPermission;
   let links = { organization: '123' };
 
   Ember.run(function(){
-    user     = store.push('user', {id: 'u1', roles: ['r1'], verified: true});
-    userRole = store.push('role', {id:'r1', privileged: true, links: links});
+    user = store.push('user', {id: 'u1', roles: ['r1'], verified: true});
+    userRole = store.push('role', {id:'r1', type: 'owner', links: links});
     otherRole = store.push('role', {id: 'r2', links: links});
 
-    // stack permission has otherRole, not privileged userRole
+    // stack permission has otherRole, not owner userRole
     stackPermission = store.push('permission', {
       id:'p1',
       links: {
         roles: '/role/r2'
       }
     });
-    stack    = store.push('stack', {id:'s1', permissions:['p1'], links: links});
+    stack = store.push('stack', {id:'s1', permissions:['p1'], links: links});
   });
 
   return Ember.run(function(){
@@ -129,19 +129,19 @@ test('user has privileged role in stack organization can manage stack', function
 
       return can(user, 'read', stack);
     }).then(function(res){
-      assert.ok(res, 'privileged user with privileged role in organization can read stack');
+      assert.ok(res, 'privileged user with owner role in organization can read stack');
     });
   });
 });
 
-test('user has privileged role in outside organization cannot manage stack', function(assert) {
+test('user has owner role in outside organization cannot manage stack', function(assert) {
   let user, userRole, stack, outsideRole, stackPermission;
   let organization = { organization: '123' };
   let outsideOrganizationUrl = '/organziation/321';
 
   Ember.run(function(){
     user     = store.push('user', {id: 'u1', roles: ['r1'], verified: true});
-    userRole = store.push('role', {id:'r1', privileged: true, links: organization });
+    userRole = store.push('role', {id:'r1', type: 'owner', links: organization });
     outsideRole = store.push('role', {id: 'r2', links: {organization: outsideOrganizationUrl }});
 
     stackPermission = store.push('permission', {
@@ -372,7 +372,7 @@ test('when permission data includes role links, do not fetch roles, just use der
 //   });
 // });
 
-test('when user has privileged organization role, user can manage organization', function(assert){
+test('when user has an owner organization role, user can manage organization', function(assert){
   assert.expect(1);
   let done = assert.async();
   let user, roles = [], organization;
@@ -382,7 +382,7 @@ test('when user has privileged organization role, user can manage organization',
     roles.push( store.push('role',
       {
         id:'r2',
-        privileged: true,
+        type: 'owner',
         organization: 'o1',
         links: {organization: '/organizations/o1'}
       }

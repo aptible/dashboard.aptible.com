@@ -103,4 +103,14 @@
 .container {
   min-width: 970px;
   max-width: 1200px;
+  width: auto;
+}
+
+.flex-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-row-item {
+  align-self: flex-end;
 }

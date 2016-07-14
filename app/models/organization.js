@@ -56,9 +56,52 @@ export default DS.Model.extend({
     return [];
   },
 
-  developerRoles: Ember.computed('roles.@each.privileged', 'managePermissions', function() {
+  ownerRole: Ember.computed('roles.@each.type', 'managePermissions', function() {
+    let roles = this.get('roles');
+    return roles.filter((role) => {
+      return role.get('type') === 'owner';
+    }).get('firstObject');
+  }),
+
+  complianceOwnerRole: Ember.computed('roles.@each.type', 'managePermissions', function() {
+    let roles = this.get('roles');
+    return roles.filter((role) => {
+      return role.get('type') === 'compliance_owner';
+    });
+  }),
+
+  platformOwnerRole: Ember.computed('roles.@each.type', 'managePermissions', function() {
+    let roles = this.get('roles');
+    return roles.filter((role) => {
+      return role.get('type') === 'platform_owner';
+    });
+  }),
+
+  platformUserRoles: Ember.computed('roles.@each.type', 'managePermissions', function() {
+    let roles = this.get('roles');
+    return roles.filter((role) => {
+      return role.get('type') === 'platform_user';
+    });
+  }),
+
+  complianceUserRoles: Ember.computed('roles.@each.type', 'managePermissions', function() {
+    let roles = this.get('roles');
+    return roles.filter((role) => {
+      return role.get('type') === 'platform_user';
+    });
+  }),
+
+  userRoles: Ember.computed('roles.@each.type', 'managePermissions', function() {
+    let roles = this.get('roles');
+    return roles.filter((role) => {
+      return role.get('type') === 'platform_user' ||
+              role.get('type') === 'compliance_user';
+    });
+  }),
+
+  developerRoles: Ember.computed('roles.@each.type', 'managePermissions', function() {
     // FIXME: Developer roles are any roles that:
-    // 1. Are privileged: true
+    // 1. Are privileged: role.type ===  owner | platform_owner
     // 2. Or have a manage permission on an API resource
     // This property will not be set without first setting permissions on
     // the organization instance.  This seems smelly.
@@ -69,7 +112,7 @@ export default DS.Model.extend({
 
     return roles.filter((role) => {
       let roleHref = role.get('data.links.self');
-      return role.get('privileged') || managedRolesHrefs.indexOf(roleHref) > -1;
+      return role.get('isOwner') || managedRolesHrefs.indexOf(roleHref) > -1;
     });
   }),
 
@@ -88,19 +131,16 @@ export default DS.Model.extend({
     return developmentUsers;
   }),
 
-  // needed by aptible-ability
-  permitsRole(role, scope){
-    return new Ember.RSVP.Promise( (resolve) => {
-      let roleOrganizationHref = role.get('data.links.organization');
-      let match = orgRegex.exec(roleOrganizationHref);
-      let roleOrganizationId = match[1];
+  // Needed by aptible-ability
+  permitsRole(role, scope) {
+    let roleOrganizationHref = role.get('data.links.organization');
+    let match = orgRegex.exec(roleOrganizationHref);
+    let roleOrganizationId = match[1];
 
-      let permitted = roleOrganizationId === this.get('id');
-      if (scope === 'manage') {
-        permitted = permitted && role.get('privileged');
-      }
-
-      resolve(permitted);
-    });
+    let permitted = roleOrganizationId === this.get('id');
+    if (scope === 'manage') {
+      permitted = permitted && role.get('isOwner');
+    }
+    return permitted;
   }
 });

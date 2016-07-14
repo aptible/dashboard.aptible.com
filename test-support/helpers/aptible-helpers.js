@@ -27,7 +27,7 @@ Ember.Test.registerHelper('createStubRole', function(app, roleData) {
   roleData = roleData || {};
   roleData.id = roleData.id || 'r1';
   const defaultRoleData = {
-    privileged: true,
+    type: 'owner',
     _links: {
       self: { href: `/roles/${roleData.id}` },
       organization: { href: '/organizations/1' }
@@ -156,22 +156,20 @@ Ember.Test.registerHelper('stubStack', function(app, stackData){
   let defaultStackData = {
     activated: true,
     _links: {
-      permissions: { href: `/accounts/${id}/permissions` }
+      self: { href: '...' },
+      organization: { href: '/organizations/1' }
+    },
+    _embedded: {
+      permissions: [{
+        id: `${id}-permission-1`,
+        scope: 'manage',
+        _links: {
+          role: { href: '/roles/r1' }
+        }
+      }]
     }
   };
   stackData = Ember.$.extend(true, defaultStackData, stackData);
-
-  stubRequest('get', `/accounts/${id}/permissions`, function(request){
-    return this.success({
-      _embedded: {
-        permissions: [{
-          id: 'p1',
-          scope: 'manage',
-          _links: { role: { href: `/roles/r1` } }
-        }]
-      }
-    });
-  });
 
   stubRequest('get', `/accounts/${id}`, function(request){
     return this.success(stackData);
@@ -402,6 +400,7 @@ Ember.Test.registerHelper('stubOrganizations', function(app){
           },
           id: 1,
           name: 'Sprocket Co',
+          handle: 'sprocket-co',
           type: 'organization'
         }]
       }
