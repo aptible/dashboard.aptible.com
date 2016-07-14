@@ -39,6 +39,7 @@ const stubStacksWithError = function(code, error, message) {
     andThen(() => {
       assert.equal(currentPath(), "error");
       expectLink("support.aptible.com");
+      expectLink("contact.aptible.com");
       expectLink("status.aptible.com");
       expectLink("twitter.com/aptiblestatus");
 
