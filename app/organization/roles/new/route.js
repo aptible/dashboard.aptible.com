@@ -3,26 +3,28 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   model() {
     let organization = this.modelFor('organization');
-    return this.store.createRecord('role', {
-      organization
+    
+    // Note: organization.get('billingDetail') works, but this is easier to test.
+    let billingDetail = this.store.find('billing-detail', organization.get('id'));
+
+    return Ember.RSVP.hash({
+      role: this.store.createRecord('role', {
+        organization
+      }),
+      organization,
+      billingDetail: billingDetail
     });
   },
 
-  afterModel() {
-    let organization = this.modelFor('organization');
-    return Ember.RSVP.resolve(organization.get('billingDetail'));
-  },
-
   setupController(controller, model) {
-    let organization = this.modelFor('organization');
-    controller.set('model', model);
-    controller.set('organization', organization);
-    controller.set('billingDetail', organization.get('billingDetail'));
+    controller.set('model', model.role);
+    controller.set('organization', model.organization);
+    controller.set('billingDetail', model.billingDetail);
   },
 
   actions: {
     willTransition() {
-      this.currentModel.rollback();
+      this.currentModel.role.rollback();
     },
 
     cancel() {
@@ -30,7 +32,7 @@ export default Ember.Route.extend({
     },
 
     save() {
-      let role = this.currentModel;
+      let role = this.currentModel.role;
 
       role.save().then(() => {
         let message = `${role.get('name')} created`;

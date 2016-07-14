@@ -80,7 +80,7 @@ export default Ember.Component.extend({
       }
 
       // Confirm...
-      let confirmMsg = `\nAre you sure you want to remove ${target} from ${role.get('name')}?\n`;
+      let confirmMsg = `\nAre you sure you want to remove ${subject} from ${role.get('name')}?\n`;
       if (!confirm(confirmMsg)) { return false; }
 
       membership.destroyRecord().then(() => {
