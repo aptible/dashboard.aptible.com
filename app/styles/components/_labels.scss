@@ -3,6 +3,7 @@
 // http://getbootstrap.com/components/#labels
 //
 .label {
+  background-color: #2BA4EF;
   border-radius: 3px;
   font-size: 11px;
   padding: 5px 8px;
@@ -10,8 +11,11 @@
   font-weight: 100;
 }
 .label-danger {
-  background: #DF5365;
+  background-color: #DF5365;
 }
 .label-success {
-  background: #7ED321;
+  background-color: #7ED321;
+}
+.label-info {
+  background-color: #9B9B9B;
 }

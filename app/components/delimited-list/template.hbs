@@ -1,0 +1,8 @@
+{{#if hasValues}}
+  <span class="delimited-list__value">{{values}}</span>
+{{else}}
+  <span class="delimited-list__placeholder">{{placeholder}}</span>
+{{/if}}
+{{#if difference}}
+  <span class="delimited-list__remainder">+ {{difference}} more</span>
+{{/if}}

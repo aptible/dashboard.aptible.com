@@ -1,6 +1,4 @@
 import Ember from 'ember';
-
-
 /* Example usage:
  *
   {{permission-checkbox
@@ -47,5 +45,4 @@ export default Ember.Component.extend({
     this.get('changeset').setValue(
       this._stagedObjectKey, {permission: value.permission, isEnabled:!!isChecked});
   }
-
 });

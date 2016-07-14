@@ -12,7 +12,7 @@ let userId = 'u1';
 let roles = [
   {
     id: roleId,
-    privileged: true,
+    type: 'owner',
     name: 'Owners',
     _links: {
       self: { href: `/roles/${roleId}` },

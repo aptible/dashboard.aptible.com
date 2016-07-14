@@ -61,7 +61,7 @@
 
   tr:hover {
     td {
-      background-color: #F7F8FB;
+      background-color: #f7f8fb;
     }
 
     .aptable__actions .btn {
@@ -71,14 +71,16 @@
   }
 }
 
+.aptable__row-heading {
+  font-size: 13px;
+  color: #4a4a4a;
+}
 
-.aptable__row-header {
-  font-weight: $weight-semibold;
+.aptable__capitalized-list {
+  text-transform: capitalize;
 }
 
 .aptable__actions {
-  text-align: right;
-
   .btn {
     color: #999;
     opacity: 0;
@@ -93,4 +95,16 @@
   a.btn.btn-xs {
     padding: 1px 4px;
   }
+  .x-toggle:checked + .x-toggle-light.x-toggle-btn {
+    background-color: #2ba4ef;
+  }
+  .x-toggle-container-disabled {
+    opacity: 0.6;
+  }
+}
+.aptable__actions--skinny {
+  width: 120px;
+}
+.aptable__actions--checkbox {
+  width: 155px;
 }

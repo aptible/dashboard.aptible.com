@@ -47,6 +47,7 @@ const stacks = [{
 
 function setup(){
   stubOrganization({id:orgId});
+  stubBillingDetail({id:orgId});
   stubStacks({}, stacks);
 }
 
@@ -62,69 +63,50 @@ test(`visiting ${url} shows form to create new role`, (assert) => {
     expectButton('Save');
     expectButton('Cancel');
     expectFocusedInput('role-name');
-    expectInput('role-admin');
-
-    stacks.forEach((stack) => {
-      let stackDiv = find(`.stacks :contains(${stack.handle})`);
-      assert.ok(stackDiv.length,
-                `has stack with handle "${stack.handle}"`);
-    });
   });
 });
 
-test(`visiting ${url} and creating new role without permissions`, (assert) => {
+test(`visiting ${url} and creating new platform_user role`, (assert) => {
   setup();
-
+  assert.expect(4);
   const roleName = roleData.name;
 
   stubRequest('post', `/organizations/${orgId}/roles`, function(request){
     assert.ok(true, 'posts to /roles');
     let json = this.json(request);
     assert.equal(json.name, roleName, 'has role name');
-    assert.ok(!!json.privileged, 'has admin value');
+    assert.equal(json.type, 'platform_user', 'Is a platform user role');
     return this.success(roleData);
-  });
-
-  signInAndVisit(url);
-  andThen(() => {
-    click(findInput('role-admin'));
-    fillInput('role-name', roleName);
-    clickButton('Save');
-  });
-  andThen(() => {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.roles.index');
-  });
-});
-
-test(`visiting ${url} and creating new role with permissions`, (assert) => {
-  setup();
-  assert.expect(4);
-
-  // tested in previous test
-  stubRequest('post', `/organizations/${orgId}/roles`, function(){
-    return this.success(roleData);
-  });
-
-  let stackId = stacks[0].id;
-  let createPermissionUrl = `/accounts/${stackId}/permissions`;
-
-  stubRequest('post', createPermissionUrl, function(request){
-    assert.ok(true, `posts to "${createPermissionUrl}"`);
-    let json = this.json(request);
-    assert.equal(json.scope, 'manage', 'posts correct scope');
-    assert.equal(json.role, apiRoleUrl, 'posts correct role');
-
-    return this.success({ links: { role: apiRoleUrl } });
   });
 
   signInAndVisit(url);
   fillInput('role-name', roleData.name);
-  andThen(() => {
-    let stackWritePermission = findWithAssert(`.stacks .permission-checkbox:eq(1)`);
-    click(stackWritePermission);
-  });
   clickButton('Save');
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.roles.index');
+    assert.equal(currentPath(), 'dashboard.requires-read-access.role.environments');
+  });
+});
+
+test(`visiting ${url} and creating new compliance_user role`, (assert) => {
+  setup();
+  assert.expect(4);
+  const roleName = roleData.name;
+
+  stubRequest('post', `/organizations/${orgId}/roles`, function(request){
+    assert.ok(true, 'posts to /roles');
+    let json = this.json(request);
+    assert.equal(json.name, roleName, 'has role name');
+    assert.equal(json.type, 'compliance_user', 'is a compliance user role');
+    return this.success(roleData);
+  });
+
+  signInAndVisit(url);
+  andThen(() => {
+    fillInput('role-name', roleData.name);
+    findWithAssert('.role-type-option[data-option-value=compliance_user]').click();
+    clickButton('Save');
+  });
+  andThen(() => {
+    assert.equal(currentPath(), 'dashboard.requires-read-access.role.environments');
   });
 });

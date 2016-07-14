@@ -1,0 +1,37 @@
+<main class="layout-content">
+  <header class="resource-header">
+    <div class="layout-container">
+      <div class="resource-title">
+        <h1 class="resource-breadcrumb">
+          <span class="current">{{model.name}}</span>
+        </h1>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout-container">
+    <h1>{{platformRole}}</h1>
+    <ul class='nav nav-pills resource-navigation'>
+      {{#activating-item currentWhen='role.members' tagName='li'}}
+        {{link-to 'Members' 'role.members' model}}
+      {{/activating-item}}
+      {{#if model.isPlatform}}
+        {{#activating-item currentWhen='role.environments' tagName='li'}}
+          {{link-to 'Environments' 'role.environments' model}}
+        {{/activating-item}}
+      {{/if}}
+      {{#if model.isUser}}
+        {{#aptible-ability user=session.currentUser scope='manage' permittable=model.organization as |hasAbility|}}
+          {{#if hasAbility}}
+            {{#activating-item currentWhen='role.settings' tagName='li'}}
+              {{link-to 'Settings' 'role.settings' model}}
+            {{/activating-item}}
+          {{/if}}
+        {{/aptible-ability}}
+      {{/if}}
+    </ul>
+
+    {{outlet}}
+
+  </div>
+</main>

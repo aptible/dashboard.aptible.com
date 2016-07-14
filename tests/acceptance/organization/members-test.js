@@ -67,7 +67,7 @@ test(`visiting ${url} shows users`, function(assert) {
   }];
 
   let roleData = {
-    privileged: true,
+    type: 'owner',
     _links: {
       self: { href: `/roles/r1` },
       organization: { href: `/organizations/${orgId}` }

@@ -12,7 +12,7 @@
         <th>MFA</th>
         {{#aptible-ability user=session.currentUser scope='manage' permittable=organization as |hasAbility|}}
           {{#if hasAbility}}
-            <th></th>
+            <th>Actions</th>
           {{/if}}
         {{/aptible-ability}}
       </tr>

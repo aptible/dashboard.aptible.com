@@ -3,7 +3,6 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   redirect() {
     if (!this.features.get('trainee-dashboard')) { return; }
-
     var route = this;
     var dashboard = this.modelFor('dashboard');
     var user = this.session.get('currentUser');

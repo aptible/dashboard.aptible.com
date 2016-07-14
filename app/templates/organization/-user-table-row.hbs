@@ -1,6 +1,7 @@
 <tr class="aptable__member-row">
   <td class="profile--inline">
-    {{partial 'organization/user'}}
+    {{gravatar-image email=user.email size=25 class="profile-image"}}
+    {{user.name}}
   </td>
   <td>{{user.email}}</td>
   <td>

@@ -132,8 +132,9 @@ Router.map(function() {
           this.route("edit", {path: ":user_id/edit"});
         });
         this.route("roles", {}, function() {
+          this.route("platform");
+          this.route("compliance");
           this.route('new');
-          this.route("show", {path: ":role_id"});
         });
         this.route("invite");
         this.route('contact-settings');
@@ -144,6 +145,15 @@ Router.map(function() {
           this.route('plan');
           this.route('payment-method');
         });
+      });
+
+      this.route("role", {
+        resetNamespace: true,
+        path: "roles/:role_id"
+      }, function() {
+        this.route('members');
+        this.route('environments');
+        this.route('settings');
       });
     });
 

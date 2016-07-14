@@ -1,28 +1,38 @@
-<div class="panel panel-default role resource-list-item">
-  <div class="panel-heading">
-    {{#if role.privileged}}
-      <div class="panel-icon">
-        <i class="fa fa-shield"></i>
-      </div>
+<div class="panel panel-default panel--bisected panel--{{role.type}}">
+  <div class="panel-heading role-details__heading">
+    <div class="role-details__label">
+      <h2 class="role-details__name">{{role.name}}</h2>
+      {{#if role.isOwner}}
+        <div class="label label-owner">
+          <i class="fa fa-shield"></i> Owner
+        </div>
+      {{/if}}
+    </div>
+    <div class="role-details__list">
+      <h4 class="aptible-label">Members</h4>
+      {{delimited-list
+          count=4
+          list=role.users
+          listKey='name'
+          placeholder='no members'}}
+    </div>
+  </div>
+  {{!-- PRIVILEGED ROLES --}}
+  {{#if role.isOwner}}
+    {{#if role.isAccountOwner}}
+      {{partial 'organization/role-details-owner'}}
     {{/if}}
-    <h5>{{role.name}}</h5>
-  </div>
-  <div class="panel-body">
-    <ul class="resource-metadata">
-      <li class="resource-metadata-item">
-        <h5 class="resource-metadata-title">Manage</h5>
-        <h3 class="resource-metadata-value">{{permitted-stacks-by-role scope='manage' role=role stacks=stacks}}</h3>
-      </li>
-      <li class="resource-metadata-item">
-        <h5 class="resource-metadata-title">Read</h5>
-        <h3 class="resource-metadata-value">{{permitted-stacks-by-role scope='read' role=role stacks=stacks}}</h3>
-      </li>
-      <li class="resource-metadata-item">
-        <h5 class="resource-metadata-title">Members</h5>
-        <h3 class="resource-metadata-value">
-          {{user-gravatars users=role.users size=24 count=5 placeholder='--'}}
-        </h3>
-      </li>
-    </ul>
-  </div>
+    {{#if role.isPlatformOwner}}
+      {{partial 'organization/role-details-platform-owner'}}
+    {{/if}}
+    {{#if role.isComplianceOwner}}
+      {{partial 'organization/role-details-compliance-owner'}}
+    {{/if}}
+  {{else}}
+    {{#if role.isPlatform}}
+      {{partial 'organization/platform-role-details'}}
+    {{else}}
+      {{partial 'organization/compliance-role-details'}}
+    {{/if}}
+  {{/if}}
 </div>
