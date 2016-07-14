@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { getPersistedToken, revokeAllAccessibleTokens } from "diesel/utils/tokens";
 
 const clearPassword = function(user) {
   user.set("password", null);
@@ -28,6 +29,35 @@ export default Ember.Route.extend({
       user: user,
     });
   },
+
+  promptForSessionLogout() {
+    const m = 'Do you want to log out all other sessions? ' +
+              '(if unsure, we recommend you do so by clicking OK)';
+    if (!confirm(m)) { return; }
+    return this.revokeAllAccessibleTokens();
+  },
+
+  revokeAllAccessibleTokens() {
+    // This page is protected by elevation, so we might have two tokens: a
+    // persisted one that's going to be used once we exit this page, and an
+    // ephemeral elevated token that's in-use right now. We want to preserve
+    // both of those.
+    return Ember.RSVP.hash({
+      persistedToken: getPersistedToken(),
+      sessionToken: this.get("session.token.data.links.self")
+    }).then((tokens) => {
+      return revokeAllAccessibleTokens({
+        exceptTokenHrefs: [
+          tokens.persistedToken._links.self.href,
+          tokens.sessionToken
+        ]});
+    }).then((response) => {
+      const m = `Revoked ${response.revoked} token(s). ` +
+        'It may take up to a minute for all sessions to effectively be logged out.';
+      Ember.get(this, 'flashMessages').success(m);
+    });
+  },
+
 
   handleApiError(e) {
     let message = e.responseJSON ? e.responseJSON.message : e.message;
@@ -70,6 +100,8 @@ export default Ember.Route.extend({
         this.currentModel.set("workingPasswordConfirmation", "");
         clearPassword(user);
         Ember.get(this, 'flashMessages').success('Password updated');
+      }).then(() => {
+        return this.promptForSessionLogout();
       }).catch((e) => {
         this.handleApiError(e);
       });
@@ -81,7 +113,9 @@ export default Ember.Route.extend({
 
       user.set("email", newEmail).save().then(() => {
         Ember.get(this, 'flashMessages').success(`Email updated to ${user.get('email')}`);
-      }).catch( (e) => {
+      }).then(() => {
+        return this.promptForSessionLogout();
+      }).catch((e) => {
         this.handleApiError(e);
       });
     },
@@ -117,6 +151,10 @@ export default Ember.Route.extend({
           showOtpSecret: false
         });
         Ember.get(this, 'flashMessages').success(`2FA is now ${otpWasEnabled ? 'disabled' : 'enabled'}.`);
+        return !otpWasEnabled;
+      }).then((newOtpStatus) => {
+        if (!newOtpStatus) { return; }
+        return this.promptForSessionLogout();
       }).catch((e) => {
         this.handleApiError(e);
         user.set("otpEnabled", otpWasEnabled);
@@ -129,6 +167,12 @@ export default Ember.Route.extend({
 
     showOtpRecoveryCodes() {
       this.currentModel.set("showOtpRecoveryCodes", true);
+    },
+
+    revokeAllAccessibleTokens() {
+      // NOTE: This action technically does not require elevation in the API,
+      // but the account page is the most natural place to put it.
+      return this.revokeAllAccessibleTokens();
     },
 
     willTransition() {

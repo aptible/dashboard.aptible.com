@@ -1,0 +1,41 @@
+<main class="layout-content">
+  <div class="layout-container">
+    <form role="form">
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="panel panel-default ">
+            <div class="panel-heading">
+              <h3>Log Out</h3>
+            </div>
+            <div class="panel-body">
+              <p>
+                Clicking log out will log you out of Aptible in this browser.
+                You can log out other sessions as well by checking the box below.
+              </p>
+              <div class="form-group">
+                {{input
+                  type="checkbox"
+                  id="revoke-all-accessible"
+                  name="revoke-all-accessible"
+                  checked=model.revokeAllAccessible}}
+                <label for="revoke-all-accessible">
+                  Log out all sessions
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="resource-actions">
+        <button class="btn btn-primary" type="submit" {{action 'doLogout'}} disabled={{model.inProgress}}>
+          {{#if model.inProgress}}
+            <i class="fa fa-spin fa-spinner"></i> Logging you out...
+          {{else}}
+            Log Out
+          {{/if}}
+        </button>
+      </div>
+    </form>
+  </div>
+</main>

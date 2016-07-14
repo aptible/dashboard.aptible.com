@@ -147,6 +147,7 @@ let setupOtpScaffolding = function(otpEnabled) {
 
 module('Acceptance: User Settings: Account', {
   beforeEach: function() {
+    window.confirm = function() { return false; };
     App = startApp();
     showedOtpUri = false;
     stubStacks();
@@ -422,6 +423,106 @@ test(`On ${settingsAccountUrl}, saving your email should not update your passwor
   });
 });
 
+test(`On ${settingsAccountUrl}, updating your email prompts to reset tokens`, function(assert) {
+  assert.expect(2);
+  window.confirm = function() { return true; };
+  let revokeCalled = false;
+
+  stubRequest('post', '/tokens/revoke_all_accessible', function() {
+    revokeCalled = true;
+    return this.success({revoked: 1});
+  });
+
+  createStubUserUpdateEndpoint(assert, { expectEmail: newEmail, returnError: false });
+  signInAndVisit(settingsAccountUrl, {}, {}, { scope: "elevated" });
+
+  andThen(() => {
+    fillInput("email", newEmail);
+    clickButton("Change Email");
+  });
+
+  andThen(() => {
+    assert.ok(revokeCalled, 'Revoke should be called');
+  });
+});
+
+test(`On ${settingsAccountUrl}, updating your password prompts to reset tokens`, function(assert) {
+  assert.expect(2);
+  window.confirm = function() { return true; };
+  let revokeCalled = false;
+
+  stubRequest('post', '/tokens/revoke_all_accessible', function() {
+    revokeCalled = true;
+    return this.success({revoked: 1});
+  });
+
+  createStubUserUpdateEndpoint(assert, { expectPassword: newPassword, returnError: false });
+  signInAndVisit(settingsAccountUrl, {}, {}, { scope: "elevated" });
+
+  andThen(() => {
+    fillInput("password", newPassword);
+    fillInput('confirm-password', newPassword);
+    clickButton("Change Password");
+  });
+
+  andThen(() => {
+    assert.ok(revokeCalled, 'Revoke should be called');
+  });
+});
+
+test(`On ${settingsAccountUrl}, enabling 2FA prompts to reset tokens`, function(assert) {
+  assert.expect(4);
+  window.confirm = function() { return true; };
+  let revokeCalled = false;
+
+  stubRequest('post', '/tokens/revoke_all_accessible', function() {
+    revokeCalled = true;
+    return this.success({revoked: 1});
+  });
+
+  setupOtpScaffolding(false);
+  createStubUserUpdateEndpoint(assert, {
+    returnError: false,
+    expectOtpStatus: true,
+    expectOtpToken: otpToken,
+    expectOtpConfiguration: otpConfigurationHref
+  });
+
+  andThen(() => {
+    fillInput('otp-token', otpToken);
+    clickButton('Enable 2FA');
+  });
+
+  andThen(() => {
+    assert.ok(revokeCalled, 'Revoke should be called');
+  });
+});
+
+test(`On ${settingsAccountUrl}, disabling 2FA does not prompt to reset tokens`, function(assert) {
+  assert.expect(2);
+  window.confirm = function() { return true; };
+  let revokeCalled = false;
+
+  stubRequest('post', '/tokens/revoke_all_accessible', function() {
+    revokeCalled = true;
+    return this.success({revoked: 1});
+  });
+
+  setupOtpScaffolding(true);
+  createStubUserUpdateEndpoint(assert, {
+    returnError: false,
+    expectOtpStatus: false
+  });
+
+  andThen(() => {
+    clickButton('Disable 2FA');
+  });
+
+  andThen(() => {
+    assert.ok(!revokeCalled, 'Revoke should not be called');
+  });
+});
+
 test(`${settingsAccountUrl} clears credentials when the user navigates away`, function(assert) {
   let user = createStubUser();
   stubUser(user);
@@ -485,5 +586,29 @@ test(`${settingsAccountUrl} does not persist the 2FA params after activation`, f
 
   andThen(() => {
     assert.ok(!find('li:contains(12345678)').length, 'recovery codes are not shown');
+  });
+});
+
+test(`${settingsAccountUrl} allows clearing all tokens`, function(assert) {
+  // We want to ensure we'll show two tokens, so we'll change the output of /current_token
+  // after logging.
+  assert.expect(3);
+
+  stubRequest('post', '/tokens/revoke_all_accessible', function(request) {
+    const params = this.json(request);
+    assert.equal(2, params.except_tokens.length);
+    assert.equal('/tokens/manage-token', params.except_tokens[0]);
+    assert.equal('/tokens/elevated-token', params.except_tokens[1]);
+    return this.success({revoked: 4});
+  });
+
+  signInAndVisit(settingsAccountUrl, {}, {}, { scope: 'elevated', id: 'elevated-token' });
+
+  andThen(() => {
+    signIn({}, {}, { scope: 'manage', id: 'manage-token' });
+  });
+
+  andThen(() => {
+    clickButton('Log Out All Other Sessions');
   });
 });

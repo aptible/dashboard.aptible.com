@@ -2,14 +2,14 @@ import Ember from "ember";
 
 export default Ember.Controller.extend({
 
-  title: function(){
+  errorCode: function(){
     return this.get('model.status') || this.get('model.name');
   }.property('model.status', 'model.name'),
 
-  subTitle: Ember.computed.alias('model.statusText'),
+  title: Ember.computed.alias('model.statusText'),
 
   message: function(){
-    return this.get('model.responseJSON.message')+'.' || 'Our JavaScript raised an exception.';
+    const errorLabel = this.get('model.responseJSON.message') || 'Our JavaScript raised an exception';
+    return `${errorLabel}. Maybe the URL you visited is no longer valid?`;
   }.property('model.responseJSON.message')
-
 });

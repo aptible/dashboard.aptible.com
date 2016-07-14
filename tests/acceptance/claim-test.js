@@ -34,6 +34,7 @@ test(`visiting ${url} as unauthenticated redirects to signup/invitation/:invitat
 });
 
 test(`visiting ${url} as unauthenticated revisits after log in`, function(assert) {
+  // TODO: Consider using createStubToken, createStubRole, createStubUser.
   let userUrl = '/user-url';
   let roleData = {
     id: 'r1',
@@ -51,7 +52,10 @@ test(`visiting ${url} as unauthenticated revisits after log in`, function(assert
       expires_in: 2,
       scope: 'manage',
       type: 'token',
-      _links: { user: { href: userUrl } }
+      _links: {
+        user: { href: userUrl },
+        self: { href: '/tokens/my-id' }
+      }
     });
   });
   stubRequest('get', `/roles/${roleData.id}`, function(){
