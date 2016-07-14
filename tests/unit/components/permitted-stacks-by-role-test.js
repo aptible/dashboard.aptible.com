@@ -33,20 +33,20 @@ test('it renders', function(assert) {
 test('returns all stacks that permit role', function(assert) {
   let stack1 = Ember.Object.create({
     handle: 'my-stack-1',
-    permissions: [
+    permissions: [{
       id: 'stack-1-permission-1',
       scope: 'manage',
       _links: { role: { href: '/roles/r1' } }
-    ]
+    }]
   });
 
   let stack2 = Ember.Object.create({
     handle: 'my-stack-2',
-    permissions: [
+    permissions: [{
       id: 'stack-2-permission-1',
       scope: 'manage',
       _links: { role: { href: '/roles/r1' } }
-    ]
+    }]
   });
 
   let stack3 = Ember.Object.create({
