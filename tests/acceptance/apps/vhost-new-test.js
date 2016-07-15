@@ -67,7 +67,7 @@ test(`visit ${appVhostsNewUrl} shows creation form`, function(assert) {
   signInAndVisit(appVhostsNewUrl);
 
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
+    assert.ok(find('.panel-heading:contains(Create a New Endpoint)').length,
        'has header');
     expectInput('service', {input:'select'});
     expectFocusedInput('service', {input:'select'});
@@ -139,7 +139,7 @@ test(`visit ${appVhostsNewUrl} shows creation form with existing certificates`, 
   signInAndVisit(appVhostsNewUrl);
 
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
+    assert.ok(find('.panel-heading:contains(Create a New Endpoint)').length,
        'has header');
     expectInput('domain-type', {input:'radio'});
     expectInput('service', {input:'select'});
@@ -219,7 +219,7 @@ test(`visit ${appVhostsNewUrl} shows creation form without certificates`, functi
   signInAndVisit(appVhostsNewUrl);
 
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
+    assert.ok(find('.panel-heading:contains(Create a New Endpoint)').length,
        'has header');
     expectInput('domain-type', {input:'radio'});
     expectInput('service', {input:'select'});
@@ -288,7 +288,7 @@ test(`visit ${appVhostsNewUrl} should remove certificate form if default endpoin
 
   Error.stackTraceLimit = 1000;
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
+    assert.ok(find('.panel-heading:contains(Create a New Endpoint)').length,
       'has header');
 
     expectInput('domain-type', {input:'radio'});
@@ -370,7 +370,7 @@ test(`visit ${appVhostsNewUrl} shows creation form for service with existing def
   signInAndVisit(appVhostsNewUrl);
 
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
+    assert.ok(find('.panel-heading:contains(Create a New Endpoint)').length,
       'has header');
 
     expectInput('service', {input:'select'});
