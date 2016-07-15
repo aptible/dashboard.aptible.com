@@ -3,8 +3,6 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   model() {
     let organization = this.modelFor('organization');
-    
-    // Note: organization.get('billingDetail') works, but this is easier to test.
     let billingDetail = this.store.find('billing-detail', organization.get('id'));
 
     return Ember.RSVP.hash({
@@ -37,7 +35,7 @@ export default Ember.Route.extend({
       role.save().then(() => {
         let message = `${role.get('name')} created`;
 
-        this.transitionTo('role.environments', role);
+        this.transitionTo('role.members', role);
         Ember.get(this, 'flashMessages').success(message);
       });
     }

@@ -45,9 +45,9 @@ const stacks = [{
   _links: { organization: {href: apiOrgUrl} }
 }];
 
-function setup(){
+function setup(plan){
   stubOrganization({id:orgId});
-  stubBillingDetail({id:orgId});
+  stubBillingDetail({ id: orgId, plan });
   stubStacks({}, stacks);
 }
 
@@ -56,7 +56,7 @@ test(`visiting ${url} requires authentication`, () => {
 });
 
 test(`visiting ${url} shows form to create new role`, (assert) => {
-  setup();
+  setup('dev');
   signInAndVisit(url);
   andThen(() => {
     assert.equal(currentPath(), 'dashboard.requires-read-access.organization.roles.new');
@@ -67,8 +67,7 @@ test(`visiting ${url} shows form to create new role`, (assert) => {
 });
 
 test(`visiting ${url} and creating new platform_user role`, (assert) => {
-  setup();
-  assert.expect(4);
+  setup('platform');
   const roleName = roleData.name;
 
   stubRequest('post', `/organizations/${orgId}/roles`, function(request){
@@ -80,16 +79,18 @@ test(`visiting ${url} and creating new platform_user role`, (assert) => {
   });
 
   signInAndVisit(url);
-  fillInput('role-name', roleData.name);
-  clickButton('Save');
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.role.environments');
+    fillInput('role-name', roleData.name);
+    findWithAssert('.role-type-option');
+    clickButton('Save');
+  });
+  andThen(() => {
+    assert.equal(currentPath(), 'dashboard.requires-read-access.role.members');
   });
 });
 
 test(`visiting ${url} and creating new compliance_user role`, (assert) => {
-  setup();
-  assert.expect(4);
+  setup('platform');
   const roleName = roleData.name;
 
   stubRequest('post', `/organizations/${orgId}/roles`, function(request){
@@ -101,12 +102,21 @@ test(`visiting ${url} and creating new compliance_user role`, (assert) => {
   });
 
   signInAndVisit(url);
-  andThen(() => {
+  andThen(function() {
+    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.roles.new');
     fillInput('role-name', roleData.name);
     findWithAssert('.role-type-option[data-option-value=compliance_user]').click();
     clickButton('Save');
   });
+  andThen(function() {
+    assert.equal(currentPath(), 'dashboard.requires-read-access.role.members');
+  });
+});
+
+test(`org visiting ${url} without a compliance allowed plan sees no role type options`, (assert) => {
+  setup('dev');
+  signInAndVisit(url);
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.role.environments');
+    assert.equal(find('.role-type-option').length, 0, 'no role options displayed');
   });
 });
