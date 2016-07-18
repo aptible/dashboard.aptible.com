@@ -8,16 +8,19 @@ const VHOST_RESET_PROPERTIES = {};
 
 VHOST_RESET_PROPERTIES[VHOST_TYPE_GENERIC] = {
   "isDefault": false,
-  "acmeDomain": null
+  "isAcme": false,
+  "userDomain": null
 };
 
 VHOST_RESET_PROPERTIES[VHOST_TYPE_DEFAULT] = {
   "isDefault": true,
-  "acmeDomain": null
+  "isAcme": false,
+  "userDomain": null
 };
 
 VHOST_RESET_PROPERTIES[VHOST_TYPE_ACME] = {
   "isDefault": false,
+  "isAcme": true,
   "internal": false
 };
 
@@ -29,7 +32,7 @@ export default Ember.Component.extend({
 
   vhostType: null,
   vhostService: null,
-  acmeDomainValid: false,
+  userDomainValid: false,
 
   TYPE_GENERIC: VHOST_TYPE_GENERIC,
   TYPE_DEFAULT: VHOST_TYPE_DEFAULT,
@@ -68,7 +71,7 @@ export default Ember.Component.extend({
   isAcme: Ember.computed.equal("vhostType", VHOST_TYPE_ACME),
 
   placementNeeded: Ember.computed.not("isAcme"),
-  acmeDomainNeeded: Ember.computed.and("isAcme"),
+  userDomainNeeded: Ember.computed.and("isAcme"),
   certificateNeeded: Ember.computed.and("isGeneric"),
 
   defaultVhostAllowed: Ember.computed("vhosts.[]", function() {
@@ -79,9 +82,9 @@ export default Ember.Component.extend({
 
   acmeVhostAllowed: Ember.computed.equal('vhostService.stack.sweetnessStackVersion', 'v2'),
 
-  formValid: Ember.computed("vhostType", "acmeDomainValid", function() {
+  formValid: Ember.computed("vhostType", "userDomainValid", function() {
     if (this.get("isAcme")) {
-      return this.get("acmeDomainValid");
+      return this.get("userDomainValid");
     }
     return true;
   }),

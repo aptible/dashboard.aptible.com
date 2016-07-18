@@ -119,12 +119,13 @@
             {{/if}}
             </div>
 
-          {{#if acmeDomainNeeded}}
-            {{domain-input domain=model.acmeDomain valid=acmeDomainValid
+          {{#if userDomainNeeded}}
+            {{domain-input domain=model.userDomain valid=userDomainValid
               tip="You'll need to be able to create a CNAME from this domain
                    name to one provided by Aptible."}}
           {{/if}}
 
+          {{! TODO: Allow ACME transitional certificates}}
           {{#if certificateNeeded}}
             {{select-or-create-certificate certificates=certificates vhost=model}}
           {{/if}}

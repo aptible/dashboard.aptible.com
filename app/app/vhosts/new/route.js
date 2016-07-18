@@ -38,6 +38,7 @@ export default Ember.Route.extend({
 
       let promise;
 
+      // TODO: Allow ACME transitional certificates.
       if (vhost.get("isGeneric")) {
         if (vhost.get('certificateBody')) {
           let certificateBody = vhost.get('certificateBody');
@@ -71,7 +72,11 @@ export default Ember.Route.extend({
 
         return op.save();
       }).then(() => {
-        let message = `Endpoint created: ${vhost.get('virtualDomain')}`;
+        let message = `Endpoint created: ${vhost.get('virtualDomain')}.`;
+
+        if (vhost.get("isAcme")) {
+          message += ' Please wait for next steps.';
+        }
 
         this.transitionTo('app.vhosts');
         Ember.get(this, 'flashMessages').success(message);

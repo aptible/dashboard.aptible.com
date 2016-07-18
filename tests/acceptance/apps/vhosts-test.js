@@ -141,13 +141,17 @@ test(`visit ${appVhostsUrl} lists endpoints with action required`, function(asse
   var vhosts = [{
     id: 1,
     virtual_domain: 'www.health1.io',
-    acme_domain: 'www.health1.io',
+    user_domain: 'www.health1.io',
+    acme: true,
+    acme_status: 'transitional',
     external_host: 'www.host1.com',
     status: 'provisioned',
   },{
     id: 2,
     virtual_domain: 'www.health2.io',
-    acme_domain: 'www.health2.io',
+    user_domain: 'www.health2.io',
+    acme: true,
+    acme_status: 'pending',
     external_host: 'www.host2.com',
     status: 'provisioned'
   }];
@@ -358,8 +362,10 @@ function setupAcmeStubs(assert, options) {
 
   const vhost = {
     id: vhostId,
-    acme_domain: "www.health.io",
-    status: "provisioned",
+    user_domain: "www.health.io",
+    acme: true,
+    acme_status: 'pending',
+    status: 'provisioned',
     _links: {
       self: { href: `/vhosts/${vhostId}` },
       operations: { href: `/vhosts/${vhostId}/operations` }
@@ -382,6 +388,8 @@ function setupAcmeStubs(assert, options) {
   };
 
   const completeRenew = () => {
+    vhost.acme_status = 'ready';
+    vhost._links.certificate = certificate._links.self;
     renewOperation.status = renewFinalStatus;
     if (options.renewTriggersProvision) {
       createProvision();
@@ -399,9 +407,6 @@ function setupAcmeStubs(assert, options) {
 
   const completeProvision = () => {
     provisionOperation.status = provisionFinalStatus;
-    if (provisionFinalStatus === "succeeded") {
-      vhost._links.certificate = certificate._links.self;
-    }
   };
 
   stubApp({

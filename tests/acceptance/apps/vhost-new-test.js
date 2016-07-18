@@ -424,10 +424,10 @@ test(`visit ${appVhostsNewUrl} and create default endpoint`, function(assert) {
 });
 
 test(`visit ${appVhostsNewUrl} and create managed endpoint`, function(assert) {
-  assert.expect(9);
+  assert.expect(11);
 
-  const acmeDomainInputSelector = "input[type=text]";
-  const acmeDomain = "some.domain.com";
+  const userDomainInputSelector = "input[type=text]";
+  const userDomain = "some.domain.com";
   const vhostId = "new-vhost-id";
 
   setupStubs();
@@ -440,7 +440,9 @@ test(`visit ${appVhostsNewUrl} and create managed endpoint`, function(assert) {
     assert.equal(json.certificate_body, null, "Certificate body is NULL");
     assert.equal(json.private_key, null, "Certificate key is NULL");
     assert.equal(json.type, "http_proxy_protocol", "Proxy protocol is set");
-    assert.equal(json.acme_domain, acmeDomain, "ACME domain is set");
+    assert.equal(json.user_domain, userDomain, "User domain is set");
+    assert.equal(json.acme, true, "ACME is set");
+    assert.equal(json.default, false, "Default is not set");
 
     return this.success({id:vhostId});
   });
@@ -461,13 +463,13 @@ test(`visit ${appVhostsNewUrl} and create managed endpoint`, function(assert) {
     const saveButton = findWithAssert("button:contains(Save Endpoint)");
     assert.ok(saveButton.attr("disabled"), "Save button is disabled");
 
-    const acmeDomainInput = findWithAssert(acmeDomainInputSelector);
-    const acmeDomainInputhasError = acmeDomainInput.parent(".form-group").attr("class").indexOf("has-error") > 0;
-    assert.ok(acmeDomainInputhasError, "ACME Domain input has error");
+    const userDomainInput = findWithAssert(userDomainInputSelector);
+    const userDomainInputhasError = userDomainInput.parent(".form-group").attr("class").indexOf("has-error") > 0;
+    assert.ok(userDomainInputhasError, "User Domain input has error");
   });
 
   andThen(() => {
-    fillIn(findWithAssert(acmeDomainInputSelector), acmeDomain);
+    fillIn(findWithAssert(userDomainInputSelector), userDomain);
   });
 
   andThen(function(){
