@@ -10,7 +10,9 @@ export default DS.Model.extend(ProvisionableMixin, {
   isDefault: DS.attr('boolean'),
   internal: DS.attr('boolean', {defaultValue: false}),
   virtualDomain: DS.attr('string'),
-  acmeDomain: DS.attr('string'),
+  userDomain: DS.attr('string'),
+  isAcme: DS.attr('boolean', { defaultValue: false }),
+  acmeStatus: DS.attr('string'),
 
   certificate: DS.belongsTo('certificate', { async: true }),
   service: DS.belongsTo('service', {async:true}),
@@ -28,19 +30,14 @@ export default DS.Model.extend(ProvisionableMixin, {
     return this.get('externalHost');
   }),
 
-  isAcme: Ember.computed("acmeDomain", function() {
-    return !!this.get("acmeDomain");
-  }),
-
   isGeneric: Ember.computed("isDefault", "isAcme", function() {
     return !(this.get("isDefault") || this.get("isAcme"));
   }),
 
-  acmeActivationRequired: Ember.computed('isProvisioned', 'acmeDomain', 'certificate.id', function() {
-    if (!this.get('acmeDomain')) { return false; }
+  acmeActivationRequired: Ember.computed('isProvisioned', 'isAcme', 'acmeStatus', function() {
     if (!this.get('isProvisioned')) { return false; }
-    if (this.get('certificate.id')) { return false; }
-    return true;
+    if (!this.get('isAcme')) { return false; }
+    return this.get('acmeStatus') !== 'ready';
   }),
 
   actionsRequired: Ember.computed('acmeActivationRequired', function() {

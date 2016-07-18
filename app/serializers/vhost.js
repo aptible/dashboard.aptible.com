@@ -3,7 +3,8 @@ import ApplicationSerializer from './application';
 export default ApplicationSerializer.extend({
 
   attrs: {
-    isDefault: 'default'
+    isDefault: 'default',
+    isAcme: 'acme'
   },
 
   serialize(snapshot, options) {
