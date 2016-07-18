@@ -9,7 +9,7 @@
         <th>Name</th>
         <th>Email</th>
         <th>Roles</th>
-        <th>MFA</th>
+        <th>2FA</th>
         {{#aptible-ability user=session.currentUser scope='manage' permittable=organization as |hasAbility|}}
           {{#if hasAbility}}
             <th>Actions</th>
