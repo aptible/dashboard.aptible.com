@@ -85,9 +85,8 @@ function load(){
 }
 
 export default Ember.Service.extend({
-  sentry: Ember.inject.service(),
   hasEmail: undefined,
-
+  raven: Ember.inject.service(),
   init: function(){
     load();
     Ember.assert("Analytics service expects window.analytics to be present", !!window.analytics);
@@ -112,7 +111,7 @@ export default Ember.Service.extend({
     return new Ember.RSVP.Promise(function(resolve) {
       if (config.environment !== 'test') {
         window.analytics.identify(id, attributes, Ember.run.bind(null, resolve));
-        service.get('sentry').identify(attributes);
+        service.get('raven').callRaven('setUserContext', attributes);
       } else {
         resolve();
       }
