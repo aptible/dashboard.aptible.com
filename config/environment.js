@@ -80,11 +80,7 @@ module.exports = function(environment) {
                'secure.gravatar.com'],
 
     sentry: {
-      skipCdn: false,
-      cdn: '//cdn.ravenjs.com',
       dsn: 'https://825dc91773b5407f94cb86bd7b5982d0@app.getsentry.com/46076',
-      version: '1.1.19',
-      whitelistUrls: ['localhost:4200'],
       development: true
     },
 
@@ -161,7 +157,6 @@ module.exports = function(environment) {
     // duration.  Forcing flashes to be sticky will allow them to be detectable
     ENV.flashMessageDefaults.sticky = true;
     ENV.sentry.development = true;
-    ENV.sentry.skipCdn = true;
   }
 
   if (environment === 'staging') {
