@@ -9,7 +9,7 @@ export default Ember.Route.extend({
 
     error(err) {
       this.intermediateTransitionTo('error', err);
-      this.get('raven').captureException(err, { throwWhenNotUsable: false });
+      this.get('raven').captureException(err);
     }
   }
 });
