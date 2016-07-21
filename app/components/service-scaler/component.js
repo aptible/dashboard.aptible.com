@@ -74,7 +74,11 @@ export default Ember.Component.extend({
       var deferred = Ember.RSVP.defer();
       this.sendAction('scaleService', service, containerCount, containerSize, deferred);
 
-      deferred.promise.catch(function(e){
+      deferred.promise.then(() => {
+        if (component.isDestroyed) { return; }
+
+        component.set('success', service.get('processType') + ' scaled to ' + containerCount + ' ' + containerSize + 'MB' + ' containers');
+      }).catch(function(e){
         if (component.isDestroyed) { return; }
 
         component.set('error', e.message);
@@ -82,7 +86,6 @@ export default Ember.Component.extend({
         if (component.isDestroyed) { return; }
 
         component.set('isSaving', false);
-        component.set('success', service.get('processType') + ' scaled to ' + containerCount + ' ' + containerSize + 'MB' + ' containers');
       });
     },
 
