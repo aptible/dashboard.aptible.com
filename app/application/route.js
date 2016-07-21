@@ -2,11 +2,10 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   requireAuthentication: false,
-  sentry: Ember.inject.service(),
   title: 'Aptible Dashboard',
   actions: {
     error: function(err) {
-      this.get('sentry').captureException(err);
+      this.get('raven').captureException(err);
       this.intermediateTransitionTo('error', err);
     }
   },
