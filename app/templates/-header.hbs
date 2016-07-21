@@ -4,7 +4,9 @@
   </div>
 
   <nav class="main-navigation">
-    {{app-navigation class="nav nav-pills"}}
+    {{app-navigation
+        class="nav nav-pills"
+        currentUser=session.currentUser}}
   </nav>
 
   <nav>
