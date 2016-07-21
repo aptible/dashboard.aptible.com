@@ -123,6 +123,22 @@ module('Acceptance: Security Program Settings: Team', {
   }
 });
 
+test('Team settings basic UI', function(assert) {
+  stubCurrentAttestations({ workforce_locations: [] });
+  stubProfile({ currentStep: 'team' });
+  stubRequests();
+  signInAndVisit(teamUrl);
+
+  andThen(() => {
+    assert.equal(find('.workforce-role.panel').length, 3, 'shows 3 role panels');
+  });
+  // Shows 3 role panels: Training Only, Developers, Compliance Admins
+  // Shows any users already in these roles.
+  // Clicking Add Users on any of the 3 opens a model
+  // Saving invites shows invites on the panel
+
+});
+
 test('Team shows all organization users', function(assert) {
   stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
   stubProfile({ currentStep: 'team' });

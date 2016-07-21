@@ -23,9 +23,20 @@
     </div>
   </div>
 
-  {{team-index
-    teamDocument=schemaDocument
-    properties=properties
+  <div class="row">
+    <div class="col-xs-4">
+      {{edit-role-panel role=model.trainingOnlyRole}}
+    </div>
+
+    <div class="col-xs-4">
+      {{edit-role-panel role=model.developerRole}}
+    </div>
+
+    <div class="col-xs-4">
+      {{edit-role-panel role=model.adminRole}}
+    </div>
+  </div>
+  {{!-team-index
     resendInvitation=(action 'resendInvitation')
     removeInvitation=(action 'removeInvitation')}}
 </div>

@@ -1,61 +1,54 @@
 import Ember from 'ember';
-import Attestation from 'diesel/models/attestation';
-import buildTeamDocument from 'diesel/utils/build-team-document';
-import loadSchema from 'diesel/utils/load-schema';
+import Role from 'diesel/models/role';
+
+export const DEFAULT_TRAINING_ROLE_NAME = 'Training Only Users';
+export const DEFAULT_DEVELOPER_ROLE_NAME = 'Developers';
+export const DEFAULT_ADMIN_ROLE_NAME = 'Compliance Admins';
+
+const TRAINING_ROLE_DESCRIPTION = `Add users to this role who do not need
+                                   access to manage any Aptible resources, but
+                                   should still receive Basic HIPAA Training.`;
+
+const DEVELOPER_ROLE_DESCRIPTION = `Any user with access to read or manage
+                                    information systems should be assigned to
+                                    this role.  Users in this role will be
+                                    required to take Advanced HIPAA Training.`;
+
+const ADMIN_ROLE_DESCRIPTION = `Users in this role can add/delete compliance
+                                roles, risk assessments, policies, procedures,
+                                and security controls.`;
 
 export default Ember.Route.extend({
   attestationValidator: Ember.inject.service(),
   model() {
-    let handle = 'workforce_roles';
     let organization = this.modelFor('compliance-organization');
-    let organizationProfile = this.modelFor('compliance-settings');
-
-    return loadSchema(handle).then((schema) => {
-      let attestationParams = { handle, schemaId: schema.id, document: [],
-                                organizationProfile };
-
-      let attestation = Attestation.findOrCreate(attestationParams, this.store);
-
-      return Ember.RSVP.hash({
-        schema, attestation,
-        users: organization.get('users'),
-        invitations: organization.get('invitations'),
-        securityOfficer: organization.get('securityOfficer')
-      });
+    let trainingOnlyRole = Role.findOrCreate({ organization,
+                                               name: DEFAULT_TRAINING_ROLE_NAME,
+                                               type: 'compliance_user' }, this.store);
+    let developerRole = Role.findOrCreate({ organization,
+                                            name: DEFAULT_DEVELOPER_ROLE_NAME,
+                                            type: 'compliance_user' }, this.store);
+    let adminRole = Role.findOrCreate({ organization,
+                                        name: DEFAULT_ADMIN_ROLE_NAME,
+                                        type: 'compliance_user' }, this.store);
+    return Ember.RSVP.hash({
+      trainingOnlyRole, developerRole, adminRole, organization,
+      invitations: organization.get('invitations'),
+      users: organization.get('users')
     });
   },
 
   setupController(controller, model) {
     let organization = this.modelFor('compliance-organization');
-    let { schema, attestation, invitations, users } = model;
-    let schemaDocument = buildTeamDocument(users, invitations,
-                                           attestation.get('document'), schema);
+    model.trainingOnlyRole.set('description', TRAINING_ROLE_DESCRIPTION);
+    model.developerRole.set('description', DEVELOPER_ROLE_DESCRIPTION);
+    model.adminRole.set('description', ADMIN_ROLE_DESCRIPTION);
 
-    controller.set('users', model.users);
-    controller.set('roles', organization.get('roles'));
-    controller.set('organization', organization);
-    controller.set('invitations', invitations);
-    controller.set('schemaDocument', schemaDocument);
-    controller.set('properties', schema.itemProperties);
+    controller.set('model', model)
     controller.set('actions', {
       resendInvitation: this.resendInvitation,
       removeInvitation: this.removeInvitation
     });
-  },
-
-  afterModel(model) {
-    if(model.schemaDocument && model.attestation) {
-      model.schemaDocument.load(model.attestation.get('document'));
-    }
-  },
-
-  validateAttestation(schemaDocument) {
-    let { attestation } = this.currentModel;
-    let errors = this.get('attestationValidator').validate(attestation, schemaDocument);
-
-    this.controller.set('errors', errors);
-
-    return errors;
   },
 
   resendInvitation(email) {

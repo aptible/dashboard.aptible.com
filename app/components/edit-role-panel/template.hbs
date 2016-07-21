@@ -1,0 +1,20 @@
+<div class="workforce-role__panel-body">
+  <h3 class="workforce-role__title">{{role.name}}</h3>
+  {{#if role.description}}
+    <p class="workforce-role__description">{{role.description}}</p>
+  {{/if}}
+
+  <div class="workforce-role__actions">
+    <button class="btn btn-primary" {{action "showInviteModal"}}>Add Users</button>
+  </div>
+
+  {{#if role.users}}
+    <div class="workforce-role__user-section">
+      <ul>
+        {{#each role.users as |user|}}
+          <li>{{user.name}}</li>
+        {{/each}}
+      </ul>
+    </div>
+  {{/if}}
+</div>
