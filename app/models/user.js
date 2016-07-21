@@ -33,38 +33,62 @@ export default DS.Model.extend({
     return can(this, scope, stack);
   },
 
-  isAccountOwner(roles) {
-    Ember.assert('You must pass roles', !!roles);
+  complianceRolesOnly(roles, organization) {
+    const organizationUrl = organization.get('data.links.self');
+    let platformRoles = [];
+    let complianceRoles = [];
 
-    return roles.reduce(function(prev, role) {
-      return prev || role.get('type') === 'owner';
-    }, false);
+    roles.filterBy('data.links.organization', organizationUrl).forEach((role) => {
+      if (role.get('isPlatform')) { platformRoles.push(role); }
+      if (role.get('isCompliance')) { complianceRoles.push(role); }
+    });
+    return platformRoles.length === 0 && complianceRoles.length > 0;
   },
 
-  isOwner(roles) {
+  isAccountOwner(roles, organization) {
     Ember.assert('You must pass roles', !!roles);
+    Ember.assert('You must pass an organization', !!organization);
 
-    return roles.reduce(function(prev, role) {
-      return prev || role.get('type').toString().indexOf('owner') > -1;
-    }, false);
+    const organizationUrl = organization.get('data.links.self');
+    return roles.filterBy('data.links.organization', organizationUrl)
+                .reduce(function(prev, role) {
+                  return prev || role.get('type') === 'owner';
+                }, false);
   },
 
-  isComplianceOwner(roles) {
+  isOwner(roles, organization) {
     Ember.assert('You must pass roles', !!roles);
+    Ember.assert('You must pass an organization', !!organization);
 
-    return roles.reduce(function(prev, role) {
-      let type = role.get('type');
-      return prev || (type === 'owner' || type === 'compliance_owner');
-    }, false);
+    const organizationUrl = organization.get('data.links.self');
+    return roles.filterBy('data.links.organization', organizationUrl)
+                .reduce(function(prev, role) {
+                  return prev || role.get('type').indexOf('owner') > -1;
+                }, false);
   },
 
-  isPlatformOwner(roles) {
+  isComplianceOwner(roles, organization) {
     Ember.assert('You must pass roles', !!roles);
+    Ember.assert('You must pass an organization', !!organization);
 
-    return roles.reduce(function(prev, role) {
-      let type = role.get('type');
-      return prev || (type === 'owner' || type === 'platform_owner');
-    }, false);
+    const organizationUrl = organization.get('data.links.self');
+    return roles.filterBy('data.links.organization', organizationUrl)
+                .reduce(function(prev, role) {
+                  let type = role.get('type');
+                  return prev || (['owner','compliance_owner'].indexOf(type) > -1);
+                }, false);
+  },
+
+  isPlatformOwner(roles, organization) {
+    Ember.assert('You must pass roles', !!roles);
+    Ember.assert('You must pass an organization', !!organization);
+
+    const organizationUrl = organization.get('data.links.self');
+    return roles.filterBy('data.links.organization', organizationUrl)
+                .reduce(function(prev, role) {
+                  let type = role.get('type');
+                  return prev || (['owner','platform_owner'].indexOf(type) > -1);
+                }, false);
   },
 
   organizations: Ember.computed('roles.@each.organization', function() {
