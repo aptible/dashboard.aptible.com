@@ -10,18 +10,19 @@ export default Ember.Component.extend({
     return config.featureFlags['sheriff'];
   }),
 
-  hasAccessToPlatform: Ember.computed('currentUser.roles', function() {
+  hasAccessTo(product) {
     let currentUser = this.get('currentUser');
     if (!currentUser) { return false; }
     let currentUserRoles = currentUser.get('roles');
-    return currentUserRoles.filterBy('isPlatform').length > 0;
+    return currentUserRoles.filterBy(product).length > 0;
+  },
+
+  hasAccessToPlatform: Ember.computed('currentUser.roles', function() {
+    this.hasAccessTo('isPlatform');
   }),
 
   hasAccessToCompliance: Ember.computed('currentUser.roles', function() {
-    let currentUser = this.get('currentUser');
-    if (!currentUser) { return false; }
-    let currentUserRoles = currentUser.get('roles');
-    return currentUserRoles.filterBy('isCompliance').length > 0;
+    this.hasAccessTo('isCompliance');
   }),
 
   sheriffActive: Ember.computed('routingService.currentPath', function() {
