@@ -196,6 +196,7 @@ test("it reloads and redraws data when reload is clicked", function(assert) {
 });
 
 test("it shows memory limit checkbox and memory limit line if limit exists", function (assert) {
+  stubOrganization();
   stubRequest("get", `/releases/${releaseId}/containers`, function() {
     let containers = makeContainers();
     containers[1].memory_limit = 999;

@@ -1,22 +1,18 @@
-<tr class="aptable__member-row">
-  <td class="profile--inline">
-    {{gravatar-image email=user.email size=25 class="profile-image"}}
-    {{user.name}}
+<td class="profile--inline">
+  {{gravatar-image email=user.email size=25 class="profile-image"}}
+  {{user.name}}
+</td>
+<td>{{user.email}}</td>
+<td>
+  {{format-list (filter-by-organization user.roles organization) 'name' ', '}}
+</td>
+<td>{{otp-status otpEnabled=user.otpEnabled}}</td>
+{{#if isAccountOwner}}
+  <td class="aptable__actions">
+    {{#link-to 'organization.members.edit' user classNames='btn btn-default btn-xs'}}
+      {{#bs-tooltip title="Edit membership"}}
+        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+      {{/bs-tooltip}}
+    {{/link-to}}
   </td>
-  <td>{{user.email}}</td>
-  <td>
-    {{format-list (filter-by-organization user.roles organization) 'name' ', '}}
-  </td>
-  <td>{{otp-status otpEnabled=user.otpEnabled}}</td>
-  {{#aptible-ability user=session.currentUser scope='manage' permittable=organization as |hasAbility|}}
-    {{#if hasAbility}}
-      <td class="aptable__actions">
-        {{#link-to 'organization.members.edit' user classNames='btn btn-default btn-xs'}}
-          {{#bs-tooltip title="Edit membership"}}
-            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-          {{/bs-tooltip}}
-        {{/link-to}}
-      </td>
-    {{/if}}
-  {{/aptible-ability}}
-</tr>
+{{/if}}
