@@ -18,11 +18,11 @@ export default Ember.Component.extend({
   },
 
   hasAccessToPlatform: Ember.computed('currentUser.roles', function() {
-    this.hasAccessTo('isPlatform');
+    return this.hasAccessTo('isPlatform');
   }),
 
   hasAccessToCompliance: Ember.computed('currentUser.roles', function() {
-    this.hasAccessTo('isCompliance');
+    return this.hasAccessTo('isCompliance');
   }),
 
   sheriffActive: Ember.computed('routingService.currentPath', function() {
