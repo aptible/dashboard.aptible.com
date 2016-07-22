@@ -6,7 +6,9 @@ export default Ember.Route.extend({
 
     return Ember.RSVP.hash({
       roles: organization.get('roles'),
+      organization: organization,
       stacks: this.store.findStacksFor(organization),
+      currentUserRoles: this.session.get('currentUser.roles'),
       billingDetail: organization.get('billingDetail')
     });
   },
@@ -20,7 +22,18 @@ export default Ember.Route.extend({
   setupController(controller, model){
     controller.set('model', model.roles);
     controller.set('stacks', model.stacks);
-    controller.set('organization', this.modelFor('organization'));
+    controller.set('organization', model.organization);
     controller.set('billingDetail', model.billingDetail);
+    controller.set('currentUserRoles', model.currentUserRoles);
+    controller.set('isAccountOwner', this.session.get('currentUser')
+                    .isAccountOwner(model.currentUserRoles, model.organization));
+  },
+
+  redirect(model) {
+    let currentUser = this.session.get('currentUser');
+
+    if (currentUser.complianceRolesOnly(model.currentUserRoles, model.organization)) {
+      this.transitionTo('organization.roles.compliance');
+    }
   }
 });

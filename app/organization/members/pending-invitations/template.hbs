@@ -1,4 +1,13 @@
-{{partial 'organization/members-toolbar'}}
+<div class="row">
+  <div class="col-xs-12">
+    <div class="pull-right">
+      {{invite-member-button
+          organization=organization
+          currentUserRoles=currentUserRoles
+          currentUser=session.currentUser}}
+    </div>
+  </div>
+</div>
 
 <div class="sort-group organization-pending-invitations">
   <h3 class="heading heading--caps heading--sm">Pending Invitations</h3>
@@ -10,7 +19,7 @@
         <th>Role</th>
         <th>Invited By</th>
         <th>Invited On</th>
-        <th class="aptable__actions"></th>
+        <th class="aptable__actions">Actions</th>
       </tr>
     </thead>
 

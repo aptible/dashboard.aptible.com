@@ -1,34 +1,36 @@
-<div class="row">
-  <div class="col-xs-12 flex-row">
-    <form class="flex-row-item role__add-user">
-      <h3 class="heading--caps heading--sm">Add Existing User</h3>
-      <div class="invite-user">
-        <button class="btn btn-primary" {{action "addMember" invitedUser}} type="submit">Add</button>
-        <div class="user-select-container">
-          {{ultimate-select
-              class="user-select" name="invited-user" prompt="Select..."
-              items=nonmembers itemKey="id" itemValue="name"
-              update=(action (mut invitedUser)) selected=invitedUser}}
+{{#if canManageMemberships}}
+  <div class="row">
+    <div class="col-xs-12 flex-row">
+      <form class="flex-row-item role__add-user">
+        <h3 class="heading--caps heading--sm">Add Existing User</h3>
+        <div class="invite-user">
+          <button class="btn btn-primary" {{action "addMember" invitedUser}} type="submit">Add</button>
+          <div class="user-select-container">
+            {{ultimate-select
+                class="user-select" name="invited-user" prompt="Select..."
+                items=nonmembers itemKey="id" itemValue="name"
+                update=(action (mut invitedUser)) selected=invitedUser}}
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
 
-    <h3 class="flex-row-item heading--caps heading--sm">OR</h3>
+      <h3 class="flex-row-item heading--caps heading--sm">OR</h3>
 
-    <form class="role__invite-user flex-row-item" role='form' {{action "inviteByEmail" inviteByEmail on="submit"}}>
-      {{server-validation-errors model=invitation}}
-      <h3 class="heading--caps heading--sm">Invite By Email</h3>
-      <div class="invite-user">
-        <button class="btn btn-primary" {{action "inviteByEmail" invitedEmail}} type="submit">Send Invite</button>
-        <div class="invite-user-container">
-          {{input name='invite-by-email' value=invitedEmail classNames="form-control" placeholder="Email Address"}}
+      <form class="role__invite-user flex-row-item" role='form' {{action "inviteByEmail" inviteByEmail on="submit"}}>
+        {{server-validation-errors model=invitation}}
+        <h3 class="heading--caps heading--sm">Invite By Email</h3>
+        <div class="invite-user">
+          <button class="btn btn-primary" {{action "inviteByEmail" invitedEmail}} type="submit">Send Invite</button>
+          <div class="invite-user-container">
+            {{input name='invite-by-email' value=invitedEmail classNames="form-control" placeholder="Email Address"}}
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
-</div>
 
-<hr>
+  <hr>
+{{/if}}
 
 <div class="row">
   <div class="col-xs-12">
@@ -42,7 +44,7 @@
           <th>Date Added</th>
           <th>Owner</th>
           <th>
-            Admin Members
+            Role Admins
             {{#bs-tooltip placement="bottom" bs-container=false
                 title="Owners and Role Admins can manage members."}}
               <i class='fa fa-question-circle icon--highlight'></i>
@@ -56,6 +58,7 @@
         {{#each memberships as |membership|}}
           {{membership-table-row
               membership=membership
+              organization=organization
               role=role
               currentUser=session.currentUser}}
         {{else}}
@@ -80,11 +83,7 @@
             <th>Role</th>
             <th>Invited By</th>
             <th>Invited On</th>
-            {{!#aptible-ability user=session.currentUser scope='manage' permittable=organization as |hasAbility|}}
-              {{!#if hasAbility}}
-                <th>Actions</th>
-              {{!/if}}
-            {{!/aptible-ability}}
+            <th>Actions</th>
           </tr>
         </thead>
 

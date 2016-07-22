@@ -4,7 +4,8 @@ export default Ember.Route.extend({
   model() {
     return Ember.RSVP.hash({
       stacks: this.store.find('stack'),
-      organizations: this.store.find('organization')
+      organizations: this.store.find('organization'),
+      currentUserRoles: this.session.get('currentUser.roles')
     });
   }
 });

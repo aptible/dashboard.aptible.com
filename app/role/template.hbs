@@ -2,9 +2,14 @@
   <header class="resource-header">
     <div class="layout-container">
       <div class="resource-title">
-        <h1 class="resource-breadcrumb">
-          <span class="current">{{model.name}}</span>
-        </h1>
+        {{#if roleTypeSubTitle}}
+          <h2 class="heading--caps heading--sm">
+            {{#link-to backToRolesRoute model.organization class="return-link"}}
+              {{roleTypeSubTitle}}
+            {{/link-to}}
+          </h2>
+        {{/if}}
+        <h1>{{model.name}}</h1>
       </div>
     </div>
   </header>

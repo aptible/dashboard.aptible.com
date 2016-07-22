@@ -7,7 +7,7 @@ export default Ember.Route.extend({
     return Ember.RSVP.hash({
       role: role,
       memberships: role.get('memberships'),
-      currentUserRoles: this.session.get('currentUser').get('roles')
+      currentUserRoles: this.session.get('currentUser.roles')
     });
   },
 

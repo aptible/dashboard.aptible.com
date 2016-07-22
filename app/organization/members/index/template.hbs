@@ -1,4 +1,13 @@
-{{partial 'organization/members-toolbar'}}
+<div class="row">
+  <div class="col-xs-12">
+    <div class="pull-right">
+      {{invite-member-button
+          organization=organization
+          currentUserRoles=currentUserRoles
+          currentUser=session.currentUser}}
+    </div>
+  </div>
+</div>
 
 <div class="sort-group organization-members">
   <h3 class="heading heading--caps heading--sm">Members</h3>
@@ -9,18 +18,19 @@
         <th>Name</th>
         <th>Email</th>
         <th>Roles</th>
+        <th>Owner</th>
         <th>2FA</th>
-        {{#aptible-ability user=session.currentUser scope='manage' permittable=organization as |hasAbility|}}
-          {{#if hasAbility}}
-            <th>Actions</th>
-          {{/if}}
-        {{/aptible-ability}}
+        {{#if isAccountOwner}}
+          <th>Actions</th>
+        {{/if}}
       </tr>
     </thead>
-
     <tbody>
       {{#each sortedMembers as |user|}}
-        {{partial 'organization/user-table-row'}}
+        {{user-table-row
+            organization=organization
+            user=user
+            isAccountOwner=isAccountOwner}}
       {{/each}}
     </tbody>
   </table>
