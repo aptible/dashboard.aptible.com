@@ -23,7 +23,7 @@ export default Ember.Component.extend({
   isDisabled: Ember.computed('currentUser.roles.[]', function() {
     let currentUserRoles = this.get('currentUserRoles');
     if (this.get('role').get('isPlatformUser')) {
-      return !this.get('currentUser').isPlatformOwner(currentUserRoles);
+      return !this.get('currentUser').isPlatformOwner(currentUserRoles, this.get('organization'));
     }
     return true;
   }),
@@ -40,8 +40,9 @@ export default Ember.Component.extend({
       let permission = stack.findPermission(role, scope);
 
       // NOTE: No error occurs if a permission with this role and scope already
-      // exist for this stack. Including this check to avoid a duplicate.
-      if (isOn && permission === undefined) { return; }
+      // exist for this stack. Including this for an existing permission to
+      // avoid a duplicate.
+      if (isOn && permission !== undefined) { return; }
 
       this.set('busy', true);
       if (isOn) {
