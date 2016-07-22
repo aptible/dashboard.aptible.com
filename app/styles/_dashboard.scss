@@ -31,7 +31,7 @@ header.resource-header {
 
     h1 {
       float: left;
-      margin: 6px 0 0 11px;
+      margin: 6px 0 0 0;
       font-size: 20px;
       font-weight: $weight-semibold;
       color: $color-primary;
@@ -53,6 +53,7 @@ header.resource-header {
 
     .resource-icon {
       float: left;
+      margin-right: 11px;
     }
 
     .resource-title-link a {

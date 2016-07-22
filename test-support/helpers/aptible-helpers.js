@@ -28,6 +28,7 @@ Ember.Test.registerHelper('createStubRole', function(app, roleData) {
   roleData.id = roleData.id || 'r1';
   const defaultRoleData = {
     type: 'owner',
+    name: 'Account Owner',
     _links: {
       self: { href: `/roles/${roleData.id}` },
       organization: { href: '/organizations/1' }
@@ -390,21 +391,23 @@ Ember.Test.registerHelper('stubBillingDetail', function(app, billingDetailData){
 
 
 Ember.Test.registerHelper('stubOrganizations', function(app){
+  let orgData = {
+    _links: {
+      self: { href: '/organizations/1' }
+    },
+    id: 1,
+    name: 'Sprocket Co',
+    handle: 'sprocket-co',
+    type: 'organization'
+  };
   stubRequest('get', '/organizations', function(request){
     return this.success({
       _links: {},
-      _embedded: {
-        organizations: [{
-          _links: {
-            self: { href: '/organizations/1' }
-          },
-          id: 1,
-          name: 'Sprocket Co',
-          handle: 'sprocket-co',
-          type: 'organization'
-        }]
-      }
+      _embedded: { organizations: [orgData] }
     });
+  });
+  stubRequest('get', '/organizations/1', function(request){
+    return this.success(orgData);
   });
 });
 
