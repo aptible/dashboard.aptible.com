@@ -16,6 +16,7 @@ export default Ember.Route.extend({
   setupController(controller, model){
     controller.set('model', model);
     controller.set('organization', this.modelFor('organization'));
+    controller.set('currentUser', this.session.get('currentUser'));
 
     let changeset = Changeset.create({
       key(keyData) {

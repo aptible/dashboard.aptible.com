@@ -1,9 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  platformOwnerRole: Ember.computed('organization.roles', function() {
-    let currentUser = this.get('session').get('currentUser');
-    if (currentUser.isAccountOwner) {
+  platformOwnerRole: Ember.computed('organization.roles', 'currentUser.roles', function() {
+    let currentUser = this.get('currentUser');
+    if (currentUser.isAccountOwner(this.get('currentUser.roles'), this.get('organization'))) {
       return this.get('organization.roles').sortBy('name');
     }
     // TODO: platform / compliance owners need a unique set here

@@ -42,16 +42,22 @@ test(`visiting ${url} shows signup inputs`, function() {
 
 test('Creating an account directs to welcome wizard', function(assert) {
   // for loading information on the welcome.first-app screen
+  let orgData = {
+    id: 'my-organization',
+    name: userInput.organization,
+    handle: 'my-org',
+    type: 'organization',
+    _links: {
+      self: { href: '/organizations/my-organization' }
+    }
+  };
   stubStacks({}, []);
-  stubOrganizations();
+  stubOrganizations(orgData);
 
   stubRequest('post', '/organizations', function(request){
     let params = this.json(request);
     assert.equal(params.name, userInput.organization, 'correct organization is passed');
-    return this.success({
-      id: 'my-organization',
-      name: userInput.organization
-    });
+    return this.success(orgData);
   });
 
   doSignupSteps(url, userInput, {clickButton:false});

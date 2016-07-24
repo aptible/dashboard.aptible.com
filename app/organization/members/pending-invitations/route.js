@@ -6,6 +6,7 @@ export default Ember.Route.extend({
 
     return Ember.RSVP.hash({
       organization: organization,
+      currentUserRoles: this.session.get('currentUser.roles'),
       invitations: organization.get('invitations')
     });
   },
@@ -13,6 +14,7 @@ export default Ember.Route.extend({
   setupController(controller, model){
     controller.set('invitations', model.invitations);
     controller.set('organization', model.organization);
+    controller.set('currentUserRoles', model.currentUserRoles);
   },
 
   actions: {

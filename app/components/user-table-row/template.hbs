@@ -6,6 +6,11 @@
 <td>
   {{format-list (filter-by-organization user.roles organization) 'name' ', '}}
 </td>
+<td>
+  {{#if hasOwnerShield}}
+    <div class="label label-owner"><i class="fa fa-shield"></i> Owner</div>
+  {{/if}}
+</td>
 <td>{{otp-status otpEnabled=user.otpEnabled}}</td>
 {{#if isAccountOwner}}
   <td class="aptable__actions">

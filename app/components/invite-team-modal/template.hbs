@@ -17,7 +17,7 @@
             <option selected=true disabled>Select role...</option>
             {{#each roles as |role|}}
               <option selected={{if (eq selected.id role.id) true null}} value="{{role.id}}">
-                {{if role.privileged "(Admin)" ''}} {{role.name}}
+                {{if role.isOwner "(Owner)" ''}} {{role.name}}
               </option>
             {{/each}}
           </select>

@@ -25,3 +25,19 @@ header.resource-header {
 body {
   -webkit-font-smoothing: antialiased;
 }
+
+.return-link {
+  &::before {
+    content: '←';
+    display: inline-block;
+    margin-right: 0.2em;
+    transition: transform 0.25s ease-in-out;
+    transform: translate(0, 0);
+  }
+  &:hover {
+    text-decoration: none;
+    &::before {
+      transform: translate(-0.2em, 0);
+    }
+  }
+}

@@ -11,7 +11,8 @@ let userId = 'basic-user-1';
 let developerId = 'developer-user-2';
 let basicRoleId = 'basic-role-1';
 let developerRoleId = 'developer-role-2';
-let adminRoleId = 'admin-role-3';
+let platformOwnerId = 'platform-owner-role-3';
+let complianceOwnerId = 'compliance-owner-role-4';
 let users = [
   {
     id: userId,
@@ -59,12 +60,21 @@ let roles = [
     }
   },
   {
-    id: adminRoleId,
-    type: 'owner',
-    name: 'Admin Role',
+    id: platformOwnerId,
+    type: 'platform_owner',
+    name: 'Platform Owner',
     _links: {
-      self: { href: `/roles/${adminRoleId}` },
-      users: { href: `/roles/${adminRoleId}/users`}
+      self: { href: `/roles/${platformOwnerId}` },
+      users: { href: `/roles/${platformOwnerId}/users`}
+    }
+  },
+  {
+    id: complianceOwnerId,
+    type: 'compliance_owner',
+    name: 'Compliance Owner',
+    _links: {
+      self: { href: `/roles/${complianceOwnerId}` },
+      users: { href: `/roles/${complianceOwnerId}/users`}
     }
   }
 ];
@@ -561,9 +571,9 @@ test('Invite new member modal basic UI', function(assert) {
 
     // It should have a dropdown with roles
     assert.equal(roleSelect.length, 1, 'has a role select');
-    assert.equal(roleSelect.find('option').length, 4, 'role select has 3 options');
+    assert.equal(roleSelect.find('option').length, 6, 'role select has 5 options');
     assert.ok(roleSelect.find('option:first').is(':disabled'), 'first option is disabled');
-    assert.equal(roleSelect.find('option:contains((Admin) Admin Role)').length, 1, 'Admin roles have (Admin) prefix');
+    assert.equal(roleSelect.find('option:contains((Owner))').length, 3, 'Owner roles have (Owner) prefix');
 
     // It should have a text area
     assert.equal(find('textarea.email-addresses').length, 1, 'has an email address text area');
@@ -850,8 +860,8 @@ function selectRole(roleId) {
   select.trigger('change');
 }
 
-function stubRequests() {
-  stubValidOrganization();
+function stubRequests(options) {
+  stubValidOrganization(options);
   stubSchemasAPI();
 
   stubRequest('get', `/roles/${developerRoleId}/users`, function() {

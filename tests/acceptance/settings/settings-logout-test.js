@@ -45,6 +45,7 @@ test(`${logoutUrl} allow a user to logout their current session`, function(asser
 
   let hasDeletedToken = false;
 
+  stubOrganization();
   stubRequest("delete", "/tokens/stubbed-token-id", function() {
     hasDeletedToken = true;
     return this.success(204, {});
@@ -88,6 +89,7 @@ test(`${logoutUrl} allow a user to logout all sessions`, function(assert) {
 test(`${logoutUrl} shows an error if one occurs`, function(assert) {
   assert.expect(1);
 
+  stubOrganization();
   stubRequest("delete", "/tokens/stubbed-token-id", function() {
     return this.error(500, {
       code: 500,

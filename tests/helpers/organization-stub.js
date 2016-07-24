@@ -1,14 +1,17 @@
 import Ember from 'ember';
 import { stubRequest } from 'ember-cli-fake-server';
 
-export var orgId = 'o1';
+export var orgId = '1';
 export var rolesHref = `/organizations/${orgId}/roles`;
 export var usersHref = `/organizations/${orgId}/users`;
 export var invitationsHref = `/organizations/${orgId}/invitations`;
 export var securityOfficerId = 'security-officer-3';
 export var securityOfficerHref = `/users/${securityOfficerId}`;
 
-Ember.Test.registerHelper('stubValidOrganization', function() {
+Ember.Test.registerHelper('stubValidOrganization', function(options) {
+  if (!!options && !!options.orgId) {
+    orgId = options.ordId;
+  }
   let organization = {
     id: orgId,
     name: orgId,

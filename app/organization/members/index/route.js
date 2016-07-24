@@ -7,19 +7,17 @@ export default Ember.Route.extend({
     return Ember.RSVP.hash({
       organization: organization,
       users: organization.get('users'),
+      currentUserRoles: this.session.get('currentUser.roles'),
       invitations: organization.get('invitations')
     });
   },
 
-  afterModel(model){
-    // FIXME: This causes way too many queries. Users should have roles embedded.
-    return Ember.RSVP.hash({
-      roles: model.users.map(u => u.get('roles'))
-    });
-  },
-
   setupController(controller, model){
+    let isAccountOwner = this.session.get('currentUser')
+                           .isAccountOwner(model.currentUserRoles, model.organization);
     controller.set('model', model.users);
+    controller.set('currentUserRoles', model.currentUserRoles);
+    controller.set('isAccountOwner', isAccountOwner);
     controller.set('organization', model.organization);
     controller.set('invitations', model.invitations);
   }

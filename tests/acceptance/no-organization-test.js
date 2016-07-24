@@ -42,4 +42,3 @@ test("visiting / redirects to no organization page", function(assert) {
               "Has link to /settings/logout");
   });
 });
-

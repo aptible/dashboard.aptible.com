@@ -27,9 +27,9 @@ export default Ember.Component.extend({
 
   isRoleOwner(user, roles) {
     if (this.get('role.isCompliance')) {
-      return user.isComplianceOwner(roles);
+      return user.isComplianceOwner(roles, this.get('organization'));
     }
-    return user.isPlatformOwner(roles);
+    return user.isPlatformOwner(roles, this.get('organization'));
   },
 
   // Account | Platform | Compliance Owners effectively have admin privileges,
