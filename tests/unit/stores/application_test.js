@@ -50,7 +50,9 @@ test('#findStacksBy', function(assert) {
   });
 
   Ember.run(() => {
-    service.findStacksFor(organization).then(function(stacks){
+    let returnVal = service.findStacksFor(organization);
+    assert.ok(returnVal instanceof DS.PromiseArray, 'returns a PromisArray');
+    returnVal.then(function(stacks){
       assert.ok(true, 'completed query');
       assert.equal(stacks.get('length'), 1, 'has a single stack');
       assert.equal(stacks.get('firstObject.handle'), 'valid',

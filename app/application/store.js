@@ -4,11 +4,13 @@ export default DS.Store.extend({
 
   findStacksFor(organization) {
     var organizationUrl = organization.get('data.links.self');
-    return this.find('stack').then((stacks) => {
+    let promise = this.find('stack').then((stacks) => {
       return this.filter('stack', function(stack) {
         return stack.get('data.links.organization') === organizationUrl;
       });
     });
+
+    return DS.PromiseArray.create({ promise });
   },
 
   recordWasInvalid: function(internalModel, errors) {
