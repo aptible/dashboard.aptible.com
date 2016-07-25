@@ -11,18 +11,6 @@ export default Ember.Route.extend({
     });
   },
 
-  afterModel(model) {
-    let organization = model.role.get('organization');
-    const promises = [];
-
-    promises.push(model.role.get('users'));
-    promises.push(model.role.get('organization'));
-    promises.push(model.role.get('invitations'));
-    promises.push(organization.get('users'));
-
-    return Ember.RSVP.all(promises);
-  },
-
   setupController(controller, model) {
     controller.set('role', model.role);
     controller.set('memberships', model.memberships);

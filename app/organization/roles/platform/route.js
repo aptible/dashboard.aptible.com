@@ -7,21 +7,14 @@ export default Ember.Route.extend({
     return Ember.RSVP.hash({
       roles: organization.get('roles'),
       organization: organization,
-      stacks: this.store.findStacksFor(organization),
       currentUserRoles: this.session.get('currentUser.roles'),
       billingDetail: organization.get('billingDetail')
     });
   },
 
-  afterModel(model){
-    return Ember.RSVP.hash({
-      users: Ember.RSVP.all(model.roles.map(r => r.get('users')))
-    });
-  },
-
   setupController(controller, model){
     controller.set('model', model.roles);
-    controller.set('stacks', model.stacks);
+    controller.set('stacks', this.store.findStacksFor(model.organization));
     controller.set('organization', model.organization);
     controller.set('billingDetail', model.billingDetail);
     controller.set('currentUserRoles', model.currentUserRoles);
