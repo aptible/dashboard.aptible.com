@@ -10,6 +10,12 @@ export default Ember.Component.extend({
     return config.featureFlags['sheriff'];
   }),
 
+  hasCompliancePlan: Ember.computed('currentUser.organizations.@each.billingDetail', function() {
+    return this.get('currentUser.organizations').reduce(function(prev, org) {
+      return prev || org.get('billingDetail.allowPHI');
+    }, false)
+  }),
+
   hasAccessTo(product) {
     let currentUser = this.get('currentUser');
     if (!currentUser) { return false; }
@@ -22,7 +28,7 @@ export default Ember.Component.extend({
   }),
 
   hasAccessToCompliance: Ember.computed('currentUser.roles', function() {
-    return this.hasAccessTo('isCompliance');
+    return this.hasAccessTo('isCompliance') && this.get('hasCompliancePlan');
   }),
 
   sheriffActive: Ember.computed('routingService.currentPath', function() {
