@@ -8,7 +8,6 @@ import {
 
 import Ember from 'ember';
 import startApp from '../../helpers/start-app';
-import { stubRequest } from 'diesel/tests/helpers/fake-server';
 
 var App;
 
@@ -17,20 +16,7 @@ var sharedTestOptions = {
 };
 
 function doSetup() {
-  let orgId='o1';
-  let orgUrl='/organizations/o1';
-
-  let orgData = {
-    id: orgId,
-    _links: {
-      self: { href: orgUrl },
-    }
-  };
-
-  stubRequest('get', '/organizations', function() {
-    return this.success({ _embedded: [orgData]});
-  });
-  stubOrganization(orgData);
+  stubOrganizations();
   stubStacks();
 }
 

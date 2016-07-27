@@ -70,13 +70,12 @@ test(`visiting ${url}`, function(assert) {
     }
   });
 
-  stubBillingDetail({
+  stubOrganization(organizationData, {
     _links: {
       self: {href: billingDetailApiUrl},
       billing_contact: {href: `/users/${billingContactData.id}`}
     }
   });
-  stubOrganization(organizationData);
   stubUser(securityOfficerData);
   stubUser(billingContactData);
   stubRequest('get', `${organizationApiUrl}/users`, function() {

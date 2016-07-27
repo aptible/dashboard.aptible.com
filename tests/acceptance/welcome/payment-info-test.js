@@ -43,6 +43,16 @@ function mockSuccessfulPayment(stripeToken){
   };
 
   stubRequest('post', '/billing_details', function(){
+    let billingDetailData = {
+      _links: {
+        self: { href: '/billing_details/1' },
+        organization: { href: '/organizations/1' }
+      },
+     id: 1
+    };
+    stubRequest('get', '/billing_details/1', function(){
+      return this.success(billingDetailData);
+    });
     return this.noContent();
   });
 }
@@ -71,7 +81,6 @@ test('visiting /welcome/payment-info when not logged in', function() {
 test('visiting /welcome/payment-info logged in with stacks', function(assert) {
   stubStacks();
   stubOrganizations();
-  stubOrganization();
   signInAndVisit('/welcome/payment-info');
 
   andThen(function() {
@@ -106,13 +115,13 @@ test('submitting empty payment info raises an error', function(assert) {
 test('payment info should be submitted to stripe to create stripeToken', function(assert) {
   assert.expect(8);
 
+  stubStacks({}, []);
+  stubOrganization();
   stubRequest('get', '/billing_details/1', function(){
     return this.notFound();
   });
 
-  stubStacks({}, []);
   // This is to load apps.index
-  stubOrganization();
   let cardOptions = {
     name: 'Bob Boberson',
     cardNumber: '4242424242424242',
@@ -127,6 +136,16 @@ test('payment info should be submitted to stripe to create stripeToken', functio
     var params = this.json(request);
     params.organization_id = params.id;
     assert.equal(params.stripe_token, stripeToken, 'stripe token is submitted');
+    let billingDetailData = {
+      _links: {
+        self: { href: '/billing_details/1' },
+        organization: { href: '/organizations/1' }
+      },
+     id: 1
+    };
+    stubRequest('get', '/billing_details/1', function(){
+      return this.success(billingDetailData);
+    });
     return this.noContent();
   });
 
@@ -157,15 +176,14 @@ test('payment info should be submitted to stripe to create stripeToken', functio
   andThen(function(){
     stubStacks();
   });
-  fillInput('name', cardOptions.name);
-  fillInput('number', cardOptions.cardNumber);
-  fillInput('cvc', cardOptions.cvc);
-  fillIn('select[data-stripe="exp-month"]', cardOptions.expMonth);
-  fillIn('select[data-stripe="exp-year"]', cardOptions.expYear);
-  fillInput('zip', cardOptions.addressZip);
-  clickButton('Save');
-  andThen(function(){
-    stubStacks();
+  andThen(function() {
+    fillInput('name', cardOptions.name);
+    fillInput('number', cardOptions.cardNumber);
+    fillInput('cvc', cardOptions.cvc);
+    fillIn('select[data-stripe="exp-month"]', cardOptions.expMonth);
+    fillIn('select[data-stripe="exp-year"]', cardOptions.expYear);
+    fillInput('zip', cardOptions.addressZip);
+    clickButton('Save');
   });
   andThen( () => {
     assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
@@ -176,8 +194,6 @@ test('submitting valid payment info for development plan should create dev stack
   assert.expect(4);
 
   stubStacks({}, []);
-  // This is to load apps.index
-  stubOrganization();
 
   stubRequest('get', '/billing_details/1', function(){
     return this.notFound();
@@ -210,10 +226,8 @@ test('submitting valid payment info for development plan should create dev stack
 
   visitPaymentInfoWithApp();
   andThen(function(){
-    stubStacks();
+    clickButton('Save');
   });
-
-  clickButton('Save');
   andThen( () => {
     assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.new');
   });
@@ -364,13 +378,13 @@ test('submitting valid payment info should create db', function(assert) {
 test('submitting valid payment info when user is verified should provision db', function(assert) {
   assert.expect(4);
 
-  stubRequest('get', '/billing_details/1', function(){
-    return this.notFound();
-  });
-
   stubStacks({}, []);
   // This is to load apps.index
   stubOrganization();
+  stubRequest('get', '/billing_details/1', function() {
+    return this.notFound();
+  });
+
   var stackHandle = 'sprocket-co';
   var dbHandle = 'my-db-1';
   var dbType = 'redis';

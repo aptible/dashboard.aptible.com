@@ -67,7 +67,7 @@ test(`visiting ${url} shows form to create new role`, (assert) => {
 });
 
 test(`visiting ${url} and creating new platform_user role`, (assert) => {
-  setup('platform');
+  setup('production');
   const roleName = roleData.name;
 
   stubRequest('post', `/organizations/${orgId}/roles`, function(request){
@@ -90,7 +90,7 @@ test(`visiting ${url} and creating new platform_user role`, (assert) => {
 });
 
 test(`visiting ${url} and creating new compliance_user role`, (assert) => {
-  setup('platform');
+  setup('production');
   const roleName = roleData.name;
 
   stubRequest('post', `/organizations/${orgId}/roles`, function(request){
