@@ -10,8 +10,8 @@ export default Ember.Component.extend({
     return config.featureFlags['sheriff'];
   }),
 
-  hasCompliancePlan: Ember.computed('organizations.@each.hasCompliancePlan', function() {
-    return this.get('organizations').filterBy('hasCompliancePlan', true).length > 0;
+  hasCompliancePlan: Ember.computed('currentUser.organizations.@each.hasCompliancePlan', function() {
+    return this.get('currentUser.organizations').filterBy('hasCompliancePlan', true).length > 0;
   }),
 
   hasAccessTo(product) {
