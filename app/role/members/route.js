@@ -35,7 +35,9 @@ export default Ember.Route.extend({
         let message = `${user.get('name')} added to ${role.get('name')} role`;
         this.controller.set('invitedUser', '');
         Ember.get(this, 'flashMessages').success(message);
-        return this.get('controller').set('memberships', role.get('memberships').reload());
+        role.get('users').pushObject(user);
+        role.get('memberships').pushObject(membership);
+        return;
       });
     },
 
