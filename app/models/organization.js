@@ -26,6 +26,7 @@ export default DS.Model.extend({
   securityOfficer: DS.belongsTo('user', {async:true}),
   billingDetail: DS.belongsTo('billing-detail', {async:true}),
   managePermissions: Ember.computed.filterBy('permissions', 'scope', 'manage'),
+  hasCompliancePlan: DS.attr('boolean', { defaultValue: false }),
 
   getCriteriaSubjects(criteria) {
     let subjects = [];
