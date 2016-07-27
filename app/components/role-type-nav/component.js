@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  showNav: Ember.computed('currentUser.roles.[]', 'billingDetail.allowPHI', function() {
+  showNav: Ember.computed('currentUser.roles.[]', 'billingDetail.hasCompliancePlan', function() {
     const organizationUrl = this.get('organization.data.links.self');
     let platformRoles = [];
     let complianceRoles = [];
@@ -15,6 +15,6 @@ export default Ember.Component.extend({
         complianceRoles.push(role);
       }
     });
-    return platformRoles.length > 0 && complianceRoles.length > 0 && this.get('billingDetail.allowPHI');
+    return platformRoles.length > 0 && complianceRoles.length > 0 && this.get('billingDetail.hasCompliancePlan');
   })
 });

@@ -23,7 +23,7 @@ export default Ember.Component.extend({
   isDisabled: Ember.computed('currentUser.roles.[]', function() {
     let currentUserRoles = this.get('currentUserRoles');
     if (this.get('role').get('isPlatformUser')) {
-      return !this.get('currentUser').isPlatformOwner(currentUserRoles, this.get('organization'));
+      return !this.get('currentUser').canManagePlatform(currentUserRoles, this.get('organization'));
     }
     return true;
   }),
