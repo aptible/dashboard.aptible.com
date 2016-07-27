@@ -413,7 +413,7 @@ Ember.Test.registerHelper('stubOrganizations', function(app){
 
 Ember.Test.registerHelper('stubOrganization', function(app, orgData){
   let defaultData = {
-    _links: { self: { href: '' } },
+    _links: { self: { href: '/organizations/1' } },
     id: 1, name: 'Sprocket Co', handle:'sprocket-co', type: 'organization'
   };
 
