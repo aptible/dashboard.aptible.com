@@ -370,7 +370,7 @@ Ember.Test.registerHelper('expectStackHeader', function(app, stackHandle){
 Ember.Test.registerHelper('stubBillingDetail', function(app, billingDetailData){
   let defaultData = {
     _links: {
-      self: { href: '' },
+      self: { href: '/billing_details/1' },
       organization: { href: '' }
     },
    id: 1,
@@ -393,7 +393,8 @@ Ember.Test.registerHelper('stubBillingDetail', function(app, billingDetailData){
 Ember.Test.registerHelper('stubOrganizations', function(app){
   let orgData = {
     _links: {
-      self: { href: '/organizations/1' }
+      self: { href: '/organizations/1' },
+      billing_detail: { href: '/billing_details/1' }
     },
     id: 1,
     name: 'Sprocket Co',
@@ -406,23 +407,37 @@ Ember.Test.registerHelper('stubOrganizations', function(app){
       _embedded: { organizations: [orgData] }
     });
   });
-  stubRequest('get', '/organizations/1', function(request){
+  stubRequest('get', '/organizations/:org_id', function(request){
     return this.success(orgData);
+  });
+  stubBillingDetail({
+    id: orgData.id,
+    _links: { self: `/billing_details/${orgData.id}` }
   });
 });
 
-Ember.Test.registerHelper('stubOrganization', function(app, orgData){
+Ember.Test.registerHelper('stubOrganization', function(app, orgData, billingDetailData){
   let defaultData = {
-    _links: { self: { href: '/organizations/1' } },
+    _links: {
+      self: { href: '/organizations/1' },
+      billing_detail: { href: '' },
+    },
     id: 1, name: 'Sprocket Co', handle:'sprocket-co', type: 'organization'
   };
-
   orgData = Ember.$.extend(true, defaultData, orgData || {});
   stubRequest('get', '/organizations/:org_id', function(request){
     orgData.id = request.params.org_id;
     orgData._links.self.href = `/organizations/${orgData.id}`;
+    orgData._links.billing_detail.href = `/billing_details/${orgData.id}`;
     return this.success( orgData );
   });
+
+  let defaultBillingDetail = {
+    id: orgData.id,
+    _links: { self: `/billing_details/${orgData.id}` }
+  };
+  billingDetailData = Ember.$.extend(true, defaultBillingDetail, billingDetailData || {});
+  stubBillingDetail(billingDetailData);
 });
 
 Ember.Test.registerHelper('expectLink', function(app, link, options) {
