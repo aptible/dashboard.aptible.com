@@ -1,9 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  model(){
+  model() {
     const organization = this.modelFor('organization');
-    const billingDetail = this.store.find('billing-detail', organization.get('id'));
+    // See dashboard/route.js -- billingDetail is set on organizations,
+    // allowinig this to work (billingDetail is from a different api).
+    const billingDetail = organization.get('billingDetail');
     const stacks = this.store.findStacksFor(organization);
 
     return Ember.RSVP.hash({
