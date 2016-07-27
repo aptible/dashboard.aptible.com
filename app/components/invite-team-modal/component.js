@@ -14,10 +14,19 @@ export default Ember.Component.extend({
   classNames: ['invite-team'],
   errors: null,
   isSending: false,
+  invitesList: '',
 
   init() {
     this._super(...arguments);
     this.setProperties({ title, description });
+
+    if(this.get('addUsersToRole.name')) {
+      this.set('title', `Invite Users to ${this.get('addUsersToRole.name')} Role`);
+    }
+
+    if(this.get('addUsersToRole.description')) {
+      this.set('description', this.get('addUsersToRole.description'));
+    }
   },
 
   splitInviteList: Ember.computed('invitesList', function() {
@@ -33,11 +42,15 @@ export default Ember.Component.extend({
 
   invalidEmails: Ember.computed.setDiff('splitInviteList', 'validEmails'),
 
+  selectedRole: Ember.computed('role', 'addUsersToRole', function() {
+    return this.get('addUsersToRole') || this.get('role');
+  }),
+
   validate() {
     let error = null;
-    let { invalidEmails, role } = this.getProperties('invalidEmails', 'role');
+    let { invalidEmails, selectedRole } = this.getProperties('invalidEmails', 'selectedRole');
 
-    if (!role) {
+    if (!selectedRole) {
       error = `Error: A role is required`;
     } else if (invalidEmails.length > 0) {
       let invalid = invalidEmails.join(', ');
@@ -69,10 +82,10 @@ export default Ember.Component.extend({
         return false;
       }
 
-      let { validEmails, role } = this.getProperties('validEmails', 'role');
+      let { validEmails, selectedRole } = this.getProperties('validEmails', 'selectedRole');
 
       this.sendAction('dismiss');
-      this.sendAction('inviteTeam', validEmails, role);
+      this.sendAction('inviteTeam', validEmails, selectedRole);
     },
 
     outsideClick: Ember.K

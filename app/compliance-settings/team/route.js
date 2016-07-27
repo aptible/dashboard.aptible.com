@@ -3,143 +3,129 @@ import Role from 'diesel/models/role';
 
 export const DEFAULT_TRAINING_ROLE_NAME = 'Training Only Users';
 export const DEFAULT_DEVELOPER_ROLE_NAME = 'Developers';
-export const DEFAULT_ADMIN_ROLE_NAME = 'Compliance Admins';
+export const DEFAULT_ADMIN_ROLE_NAME = 'Compliance Owners';
 
 const TRAINING_ROLE_DESCRIPTION = `Add users to this role who do not need
                                    access to manage any Aptible resources, but
                                    should still receive Basic HIPAA Training.`;
-
-const DEVELOPER_ROLE_DESCRIPTION = `Any user with access to read or manage
-                                    information systems should be assigned to
-                                    this role.  Users in this role will be
-                                    required to take Advanced HIPAA Training.`;
 
 const ADMIN_ROLE_DESCRIPTION = `Users in this role can add/delete compliance
                                 roles, risk assessments, policies, procedures,
                                 and security controls.`;
 
 export default Ember.Route.extend({
-  attestationValidator: Ember.inject.service(),
   model() {
     let organization = this.modelFor('compliance-organization');
     let trainingOnlyRole = Role.findOrCreate({ organization,
                                                name: DEFAULT_TRAINING_ROLE_NAME,
                                                type: 'compliance_user' }, this.store);
-    let developerRole = Role.findOrCreate({ organization,
-                                            name: DEFAULT_DEVELOPER_ROLE_NAME,
-                                            type: 'compliance_user' }, this.store);
+
     let adminRole = Role.findOrCreate({ organization,
                                         name: DEFAULT_ADMIN_ROLE_NAME,
-                                        type: 'compliance_user' }, this.store);
+                                        type: 'compliance_owner' }, this.store);
+
     return Ember.RSVP.hash({
-      trainingOnlyRole, developerRole, adminRole, organization,
+      trainingOnlyRole, adminRole, organization,
       invitations: organization.get('invitations'),
       users: organization.get('users')
     });
   },
 
   setupController(controller, model) {
-    let organization = this.modelFor('compliance-organization');
     model.trainingOnlyRole.set('description', TRAINING_ROLE_DESCRIPTION);
-    model.developerRole.set('description', DEVELOPER_ROLE_DESCRIPTION);
     model.adminRole.set('description', ADMIN_ROLE_DESCRIPTION);
 
-    controller.set('model', model)
-    controller.set('actions', {
-      resendInvitation: this.resendInvitation,
-      removeInvitation: this.removeInvitation
-    });
+    controller.set('model', model);
+    controller.set('roles', model.organization.get('roles'));
+    controller.set('organization', model.organization);
   },
-
-  resendInvitation(email) {
-    let reset = this.store.createRecord('reset');
-    let invitation = this.invitations.findBy('email', email);
-    let message = `Invitation resent to ${email}`;
-    let errorMessage = 'An error occurred. Please try resending the inviation again.';
-
-    reset.setProperties({
-      type: 'invitation',
-      invitationId: invitation.get('id')
-    });
-    reset.save().then(() => {
-      Ember.get(this, 'flashMessages').success(message);
-    }).catch((e) => {
-      errorMessage = Ember.get(e, 'responseJSON.message') || errorMessage;
-      Ember.get(this, 'flashMessages').danger(errorMessage);
-    });
-  },
-
-  removeInvitation(email) {
-    let invitation = this.invitations.findBy('email', email);
-    let message = `The invitation to ${invitation.get('email')} has been removed.`;
-    let errorMessage = 'An error occurred. Please retry removing the inviation.';
-
-    // Confirm...
-    let confirmMsg = `\nAre you sure you want to delete the invitation to ${email}?\n`;
-    if (!confirm(confirmMsg)) { return false; }
-
-    invitation.destroyRecord().then(() => {
-      this.send('onRemoveInvitation', invitation);
-      Ember.get(this, 'flashMessages').success(message);
-    }).catch((e) => {
-      errorMessage = Ember.get(e, 'responseJSON.message') || errorMessage;
-      Ember.get(this, 'flashMessages').danger(errorMessage);
-    });
-  },
-
 
   actions: {
-    save() {
-      let { attestation } = this.currentModel;
-      let schemaDocument = this.controller.get('schemaDocument').dump();
+    resendInvitation(invitation) {
+      let reset = this.store.createRecord('reset', { type: 'invitation' });
+      reset.setProperties({ invitationId: invitation.get('id') });
 
-      this.validateAttestation(schemaDocument);
+      reset.save().then(() => {
+        let message = `Invitation resent to ${invitation.get('email')}`;
+        Ember.get(this, 'flashMessages').success(message);
+      }).catch((e) => {
+        let errorMessage = 'An error occurred. Please try resending the inviation again.';
+        errorMessage = Ember.get(e, 'responseJSON.message') || errorMessage;
+        Ember.get(this, 'flashMessages').danger(errorMessage);
+      });
+    },
 
-      if (this.controller.get('errors.length') > 0) {
-        return;
+    deleteInvitation(invitation) {
+      let confirmMsg = `\nAre you sure you want to delete the invitation to ${invitation.get('email')}?\n`;
+      if (!confirm(confirmMsg)) {
+        return false;
       }
 
-      attestation.set('document', schemaDocument);
-      attestation.setUser(this.session.get('currentUser'));
-      attestation.save().then(() => {
-        let message = 'Workforce saved.';
+      invitation.destroyRecord().then(() => {
+        let message = `The invitation to ${invitation.get('email')} has been removed.`;
         Ember.get(this, 'flashMessages').success(message);
-      }, (e) => {
-        let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
-        Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
+      }).catch((e) => {
+        let errorMessage = 'An error occurred. Please retry removing the inviation.';
+        errorMessage = Ember.get(e, 'responseJSON.message') || errorMessage;
+        Ember.get(this, 'flashMessages').danger(errorMessage);
       });
+    },
+
+    removeMember(membership, role) {
+      let confirmMsg = `\nAre you sure you want to remove ${membership.get('user.name')} from ${role.get('name')}?\n`;
+
+      if (!confirm(confirmMsg)) {
+        return false;
+      }
+
+      if(membership) {
+        membership.destroyRecord();
+        role.get('users').removeObject(membership.get('user'));
+      }
+    },
+
+    addMember(user, role) {
+      Ember.assert('Must pass a user to `addMember`', user);
+      Ember.assert('Must pass a role to `addMember`', role);
+
+      let userUrl = user.get('data.links.self');
+
+      let membership = this.store.createRecord('membership', {
+        role, user, userUrl
+      });
+
+      if(role.get('isNew')) {
+        role.save().then(() => {
+          membership.save().then(() => {
+            role.get('users').pushObject(user);
+          });
+        });
+      } else {
+        membership.save().then(() => {
+          role.get('users').pushObject(user);
+        });
+      }
+
     },
 
     showInviteModal() {
       this.controller.showInviteModal();
     },
 
-    inviteTeam(inviteList, roleId) {
-      let organization = this.modelFor('compliance-organization');
-      let role = organization.get('roles').findBy('id', roleId);
+    inviteTeam(inviteList, role) {
+      Ember.assert('Must pass inviteList to `inviteTeam`', inviteList);
+      Ember.assert('Must pass a role to `inviteTeam`', role);
 
-      inviteList.map((email) => {
-        let inviteParams = { organization, role, email };
-        return this.store.createRecord('invitation', inviteParams).save();
+      let organization = this.modelFor('compliance-organization');
+
+      role.save().then(() => {
+        inviteList.map((email) => {
+          let inviteParams = { organization, role, email };
+          let invite = this.store.createRecord('invitation', inviteParams);
+          organization.get('invitations').pushObject(invite);
+          invite.save();
+        });
       });
-
-      let existingDocument = this.controller.get('schemaDocument').dump();
-      let newSchemaDocument = buildTeamDocument(organization.get('users'),
-                                                organization.get('invitations'),
-                                                existingDocument,
-                                                this.currentModel.schema);
-      this.controller.set('schemaDocument', newSchemaDocument);
-      this.controller.set('showInviteMOdal', false);
-    },
-
-    onRemoveInvitation() {
-      let organization = this.modelFor('compliance-organization');
-      let existingDocument = this.controller.get('schemaDocument').dump();
-      let newSchemaDocument = buildTeamDocument(organization.get('users'),
-                                                organization.get('invitations'),
-                                                existingDocument,
-                                                this.currentModel.schema);
-      this.controller.set('schemaDocument', newSchemaDocument);
     }
   }
 });

@@ -4,39 +4,36 @@
       <h2 class="sub-title">Security Program</h2>
       <h1 class="title">Workforce</h1>
     </div>
-    <div class="header-right">
-      <ul class="header-actions">
-        <li>
-          <button {{action 'save'}} class="btn btn-default btn-sm save-settings">Save</button>
-        </li>
-      </ul>
-    </div>
   </div>
 </header>
 
 <div class="container main-body">
   {{spd-errors errors=errors}}
 
-  <div class="spd-filterbar">
-    <div class="pull-right">
-      <button class="btn btn-default invite-team-button" {{action "showInviteModal"}}><i class="fa fa-plus"></i> Invite Team</button>
-    </div>
-  </div>
-
   <div class="row">
-    <div class="col-xs-4">
-      {{edit-role-panel role=model.trainingOnlyRole}}
+    <div class="col-xs-6">
+      {{edit-role-panel
+        role=model.trainingOnlyRole
+        invitations=model.invitations
+        openInviteModal="openInviteModal"
+        addMember="addMember"
+        removeMember="removeMember"
+        resendInvitation="resendInvitation"
+        deleteInvitation="deleteInvitation"
+      }}
     </div>
 
-    <div class="col-xs-4">
-      {{edit-role-panel role=model.developerRole}}
-    </div>
 
-    <div class="col-xs-4">
-      {{edit-role-panel role=model.adminRole}}
+    <div class="col-xs-6">
+      {{edit-role-panel
+        role=model.adminRole
+        invitations=model.invitations
+        openInviteModal="openInviteModal"
+        addMember="addMember"
+        removeMember="removeMember"
+        resendInvitation="resendInvitation"
+        deleteInvitation="deleteInvitation"
+      }}
     </div>
   </div>
-  {{!-team-index
-    resendInvitation=(action 'resendInvitation')
-    removeInvitation=(action 'removeInvitation')}}
 </div>
