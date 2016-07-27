@@ -10,6 +10,10 @@ export default Ember.Route.extend({
   },
 
   afterModel(model) {
+    if(model.organizations.get('length') === 0) {
+      return this.transitionTo('no-organization');
+    }
+
     return Ember.RSVP.all(model.organizations.map(o => o.get('billingDetail')));
   }
 });
