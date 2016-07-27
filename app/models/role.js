@@ -1,6 +1,6 @@
 import DS from 'ember-data';
 
-export default DS.Model.extend({
+let Role = DS.Model.extend({
   name: DS.attr(),
   type: DS.attr({ defaultValue: 'platform_user' }),
   organization: DS.belongsTo('organization', {async: true}),
@@ -25,3 +25,31 @@ export default DS.Model.extend({
     return this.get('invitations').rejectBy('isNew');
   })
 });
+
+Role.reopenClass({
+  // Find or create will attempt to find a matching role given a particular
+  // organization and some params.  If a matching role does not exist, one is
+  // created. `name`, `type`, and `organization` are requried params.
+  findOrCreate(params, store) {
+    Ember.assert('You must provide an organization to `Role#findOrCreate`',
+                 params.organization);
+    Ember.assert('You must provide a type to `Role#findOrCreate`', params.type);
+    Ember.assert('You must provide a name to `Role#findOrCreate`', params.name);
+
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      params.organization.get('roles').then((roles) => {
+        let role = roles.find((role) => {
+          return role.get('name') == params.name && role.get('type') == params.type;
+        });
+
+        if(role) {
+          resolve(role);
+        } else {
+          resolve(store.createRecord('role', params));
+        }
+      });
+    });
+  }
+});
+
+export default Role;
