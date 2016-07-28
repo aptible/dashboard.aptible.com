@@ -87,10 +87,10 @@ export default Ember.Component.extend({
         let message = `${user.get('name')} removed from ${role.get('name')} role`;
         this.sendAction('completedAction', message);
         // Ember Data relates users to roles (the membership relationship is inferred),
-        // need to remove the user from the role's list of user
-        role.get('users').then((users) => { users.removeObject(user.get('content')); });
-        role.get('users').reload();
-        return role.get('memberships').reload();
+        // need to remove the user from the role's list of users
+        role.get('users').removeObject(user);
+        role.get('memberships').removeObject(membership);
+        return;
       });
     }
   }

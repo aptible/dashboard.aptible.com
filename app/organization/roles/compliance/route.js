@@ -22,7 +22,7 @@ export default Ember.Route.extend({
   },
 
   redirect(model) {
-    if (!model.billingDetail.get('allowPHI')) {
+    if (!model.billingDetail.get('hasCompliancePlan')) {
       this.transitionTo('organization.roles.platform');
     }
   }

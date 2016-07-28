@@ -4,6 +4,7 @@ import { stubRequest } from 'ember-cli-fake-server';
 export var orgId = '1';
 export var rolesHref = `/organizations/${orgId}/roles`;
 export var usersHref = `/organizations/${orgId}/users`;
+export var billingDetailHref = `/billing-details/${orgId}`;
 export var invitationsHref = `/organizations/${orgId}/invitations`;
 export var securityOfficerId = 'security-officer-3';
 export var securityOfficerHref = `/users/${securityOfficerId}`;
@@ -18,6 +19,7 @@ Ember.Test.registerHelper('stubValidOrganization', function(options) {
     _links: {
       roles: { href: rolesHref },
       users: { href: usersHref },
+      billing_detail: { href: billingDetailHref },
       invitations: { href: invitationsHref },
       security_officer: { href: `/users/${securityOfficerId}` },
       self: { href: `/organizations/${orgId}` }
@@ -29,6 +31,10 @@ Ember.Test.registerHelper('stubValidOrganization', function(options) {
   });
 
   stubRequest('get', '/organizations', function() {
+    return this.success({ _embedded: { organizations: [organization] }});
+  });
+
+  stubRequest('get', `/billing_details/${orgId}`, function() {
     return this.success({ _embedded: { organizations: [organization] }});
   });
 });

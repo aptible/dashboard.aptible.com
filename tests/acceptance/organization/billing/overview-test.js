@@ -29,14 +29,14 @@ test(`visiting ${url} requires authentication`, () => {
 });
 
 test(`visiting ${url} shows current plan and resource usage`, (assert) => {
-  stubStacks();
-  stubOrganization();
-  stubOrganizations();
-  stubBillingDetail({
+  let billingDetail = {
+    id: organizationId,
     accountBalance: 0,
     planRate: 99900,
     coupon: null
-  });
+  };
+  stubStacks();
+  stubOrganization({}, billingDetail);
   signInAndVisit(url);
   andThen(function() {
     assert.ok(find('h3:contains(Platform)').length, 'has a plan');
@@ -50,14 +50,14 @@ test(`visiting ${url} shows current plan and resource usage`, (assert) => {
 });
 
 test(`visiting ${url} shows current balance and discounts`, (assert) => {
-  stubStacks();
-  stubOrganization();
-  stubOrganizations();
-  stubBillingDetail({
+  let billingDetail = {
+    id: organizationId,
     accountBalance: -35000,
     planRate: 99900,
     coupon: {id: '30% OFF 3 months'}
-  });
+  };
+  stubStacks();
+  stubOrganization({}, billingDetail);
   signInAndVisit(url);
   andThen(function() {
     assert.ok(find('.resource-metadata-title:contains("Current Balance")').length, 'renders current balance');

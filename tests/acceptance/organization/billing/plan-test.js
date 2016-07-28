@@ -178,10 +178,11 @@ test(`on plan "production": highlights the current plan, shows "contact support 
 });
 
 test(`on plan "development": clicking the upgrade platform shows modal`, () => {
-  let plan = 'development';
-  stubBillingDetail({plan});
-  stubOrganization();
-
+  let billingDetail = {
+    id: organizationId,
+    plan: 'development'
+  };
+  stubOrganization({}, billingDetail);
   signInAndVisit(url);
 
   clickButton('Upgrade to Platform');

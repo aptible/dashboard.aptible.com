@@ -2,25 +2,26 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   redirect() {
-    if (!this.features.get('trainee-dashboard')) { return; }
-    var route = this;
-    var dashboard = this.modelFor('dashboard');
-    var user = this.session.get('currentUser');
+    if (!this.features.get('trainee-dashboard')) {
+      return;
+    }
 
-    if (dashboard.stacks.get('length') === 0) { return; }
+    let organizations = this.modelFor('dashboard').organizations;
+    let userRoles = this.modelFor('dashboard').currentUserRoles;
 
-    var canReadPromises = dashboard.stacks.map(function(stack) {
-      return user.can('read', stack);
-    });
+    // Does the user have any roles for any organization that are not compliance user?
+    let complianceOnlyUser = !organizations.any((organization) => {
+      let organizationHref = organization.get('data.links.self');
+      let userOrganizationRoles = userRoles.filterBy('data.links.organization', organizationHref);
 
-    return new Ember.RSVP.all(canReadPromises).then(function(canReadValues) {
-      var isRestricted = !canReadValues.reduce(function(prev, cur) {
-        return prev || cur;
+      // Does the user have any roles that are not compliance user?
+      return userOrganizationRoles.any((role) => {
+        return role.get('type') !== 'compliance_user';
       });
-      user.set('isRestricted', isRestricted);
-      if (isRestricted) {
-        route.transitionTo('trainee-dashboard');
-      }
     });
+
+    if(complianceOnlyUser) {
+      this.transitionTo('trainee-dashboard');
+    }
   }
 });
