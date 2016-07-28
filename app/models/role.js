@@ -39,7 +39,15 @@ Role.reopenClass({
     return new Ember.RSVP.Promise((resolve, reject) => {
       params.organization.get('roles').then((roles) => {
         let role = roles.find((role) => {
-          return role.get('name') == params.name && role.get('type') == params.type;
+          if(params.name && role.get('name') !== params.name) {
+            return false;
+          }
+
+          if(params.type && role.get('type') !== params.type) {
+            return false;
+          }
+
+          return true;
         });
 
         if(role) {
