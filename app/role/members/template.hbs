@@ -8,9 +8,10 @@
           <div class="user-select-container">
             {{ultimate-select
                 class="user-select" name="invited-user" prompt="Select..."
-                items=nonmembers itemKey="id" itemValue="name"
+                items=nonMembers itemKey="id" itemValue="name"
                 update=(action (mut invitedUser)) selected=invitedUser}}
           </div>
+
         </div>
       </form>
 

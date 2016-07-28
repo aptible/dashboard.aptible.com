@@ -15,8 +15,8 @@ function spdSteps() {
   });
 
   this.modal('invite-team-modal', {
-    withParams: ['showInviteModal'],
-    otherParams: ['organization', 'roles', 'schemaDocument'],
+    withParams: ['addUsersToRole'],
+    otherParams: ['organization', 'roles'],
     dismissWithOutsideClick: false,
     actions: {
       inviteTeam: 'inviteTeam'

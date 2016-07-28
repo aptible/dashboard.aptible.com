@@ -1,0 +1,64 @@
+<div class="workforce-role__panel-body">
+  <h3 class="workforce-role__title">{{role.name}}</h3>
+  {{#if role.description}}
+    <p class="workforce-role__description">{{role.description}}</p>
+  {{/if}}
+
+
+  {{#if nonMembers}}
+  <div class="workforce-role__actions">
+    <div class="workforce-role__add-existing">
+      <button class="btn btn-primary" {{action "addMember" invitedUser}} type="submit" disabled={{disableAddExistingButton}}>Add</button>
+      <div class="user-select-container">
+      {{ultimate-select
+        class="user-select" name="invited-user" prompt="Add Existing User"
+        items=nonMembers itemKey="id" itemValue="name"
+        update=(action (mut invitedUser)) selected=invitedUser}}
+      </div>
+    </div>
+
+    <div class="workforce-role__invite">
+      <span class="workforce-role__or">or</span>
+      <a {{action "openInviteModal" role}} class="invite-more-users">invite new users into this role.</a>
+    </div>
+  </div>
+  {{else}}
+    <button class="btn btn-primary invite-more-users" {{action "openInviteModal" role}}>Invite New Users</button>
+  {{/if}}
+</div>
+
+{{#if showUsers}}
+  <div class="workforce-role__user-section">
+    <ul>
+      {{#each role.memberships as |membership|}}
+        <li class="workforce-role__user">
+          <div class="workforce-role__user-name">
+            {{gravatar-image email=membership.user.email size=50}}
+            {{membership.user.name}}
+          </div>
+          <div class="workforce-role__user-actions">
+            <a {{action (action "removeMember" membership) }}>
+              <i class="fa fa-times"></i>
+            </a>
+          </div>
+        </li>
+      {{/each}}
+
+      {{#each roleInvitations as |invitation|}}
+        <li class="workforce-role__invitation">
+          <div class="workforce-role__user-name">
+            {{invitation.email}}
+          </div>
+          <div class="workforce-role__user-actions">
+            <a {{action (action "resendInvitation" invitation) }}>
+              <i class="fa fa-refresh"></i>
+            </a>
+            <a {{action (action "deleteInvitation" invitation) }}>
+              <i class="fa fa-times"></i>
+            </a>
+          </div>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+{{/if}}

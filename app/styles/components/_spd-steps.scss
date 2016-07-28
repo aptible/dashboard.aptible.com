@@ -56,3 +56,102 @@
     }
   }
 }
+
+.workforce-role {
+
+}
+
+.workforce-role__panel-body {
+  padding: 20px;
+}
+
+.workforce-role__title {
+  font-size: 16px;
+  margin: 15px 0;
+  font-weight: $weight-semibold;
+}
+
+.workforce-role__description {
+  color: $color-light;
+  min-height: 100px;
+}
+
+.workforce-role__user-section {
+  background: $color-bg-gray;
+  border-top: 1px solid $color-border-gray;
+  padding: 10px 20px;
+
+  > ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    > li {
+      @extend %clearfix;
+      line-height: 40px;
+    }
+  }
+}
+
+.workforce-role__add-existing {
+  @extend %clearfix;
+
+  button {
+    float: right;
+  }
+
+  .user-select-container {
+    margin-right: 70px;
+  }
+}
+
+.workforce-role__invite {
+  margin: 10px 0 0 0;
+
+  > span {
+    color: $color-light;
+  }
+
+  > a {
+    font-weight: $weight-semibold;
+  }
+}
+
+.workforce-role__user-name {
+  font-weight: $weight-semibold;
+  float: left;
+
+  > img {
+    width: 16px;
+    border-radius: 3px;
+    margin: -3px 5px 0 0;
+  }
+}
+
+.workforce-role__invitation {
+  .workforce-role__user-name {
+    color: $color-light;
+  }
+}
+
+.workforce-role__user-actions {
+  color: $color-light;
+  font-weight: $weight-semibold;
+  float: right;
+
+  > a {
+    display: inline-block;
+    padding: 0 8px;
+    margin: 0 0 0 5px;
+    color: $color-light;
+
+    &:hover {
+      color: $color-primary;
+      text-decoration: none;
+    }
+  }
+
+  .fa {
+    font-size: 11px;
+  }
+}

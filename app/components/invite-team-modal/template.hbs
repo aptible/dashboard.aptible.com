@@ -11,21 +11,24 @@
           </div>
         {{/if}}
 
-        <div class="form-group">
-          <label>Role</label>
-          <select class="form-control select-role" name='role' {{action 'updateRole' on="change"}}>
-            <option selected=true disabled>Select role...</option>
-            {{#each roles as |role|}}
-              <option selected={{if (eq selected.id role.id) true null}} value="{{role.id}}">
-                {{if role.isOwner "(Owner)" ''}} {{role.name}}
-              </option>
-            {{/each}}
-          </select>
+        {{#unless addUsersToRole}}
+          <div class="form-group">
+            <label>Role</label>
+            <select class="form-control select-role" name='role' {{action 'updateRole' on="change"}}>
+              <option selected=true disabled>Select role...</option>
+              {{#each roles as |role|}}
+                <option selected={{if (eq selected.id role.id) true null}} value="{{role.id}}">
+                  {{if role.isOwner "(Owner)" ''}} {{role.name}}
+                </option>
+              {{/each}}
+            </select>
 
-          <div class="form-tip">
-            Need to create a role instead?  <a {{action "showCreateRole"}}>Create a new role</a>
+
+            <div class="form-tip">
+              Need to create a role instead?  <a {{action "showCreateRole"}}>Create a new role</a>
+            </div>
           </div>
-        </div>
+        {{/unless}}
 
         <div class="form-group">
           <label>Email addresses</label>

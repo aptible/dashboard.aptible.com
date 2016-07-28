@@ -3,29 +3,39 @@
   onNext="onNext"
   onPrevious="onPrevious"
   stepName="Workforce"
-  onSave="onSave"
-  attestation=attestation
 }}
+
   <div class="description">
     Assign security training to your workforce by adding training requirements to your Aptible roles. Invite users to those roles to trigger their training enrollments. Users designated as "Robots" will be exempt from training.
   </div>
 {{/spd-nav}}
 
 <div class="container main-body">
-  {{spd-errors errors=errors}}
+{{spd-errors errors=errors}}
 
-  <div class="spd-filterbar">
-    <div class="pull-right">
-      <button class="btn btn-default invite-team-button" {{action "showInviteModal"}}><i class="fa fa-plus"></i> Add Team Members</button>
+  <div class="row">
+    <div class="col-xs-6">
+      {{edit-role-panel
+        role=model.trainingOnlyRole
+        invitations=model.invitations
+        openInviteModal="openInviteModal"
+        addMember="addMember"
+        removeMember="removeMember"
+        resendInvitation="resendInvitation"
+        deleteInvitation="deleteInvitation"
+      }}
     </div>
-  </div>
 
-  <div class="panels">
-    {{team-index
-      teamDocument=schemaDocument
-      invitations=invitations
-      properties=properties
-      resendInvitation=(action 'resendInvitation')
-      removeInvitation=(action 'removeInvitation')}}
+    <div class="col-xs-6">
+      {{edit-role-panel
+        role=model.adminRole
+        invitations=model.invitations
+        openInviteModal="openInviteModal"
+        addMember="addMember"
+        removeMember="removeMember"
+        resendInvitation="resendInvitation"
+        deleteInvitation="deleteInvitation"
+      }}
+    </div>
   </div>
 </div>

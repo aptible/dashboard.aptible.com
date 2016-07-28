@@ -6,17 +6,22 @@ import { orgId, rolesHref, usersHref, invitationsHref, securityOfficerId,
          securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
-let teamUrl = `/compliance/${orgId}/settings/team`;
 let userId = 'basic-user-1';
 let developerId = 'developer-user-2';
-let basicRoleId = 'basic-role-1';
+let trainingOnlyRoleId = 'training-only-role-1';
 let developerRoleId = 'developer-role-2';
 let platformOwnerId = 'platform-owner-role-3';
 let complianceOwnerId = 'compliance-owner-role-4';
+
+let adminRoleId = 'admin-role-3';
+
+let settingsTeamUrl = `/compliance/${orgId}/settings/team`;
+let setupTeamUrl = `/compliance/${orgId}/setup/team`;
+
 let users = [
   {
     id: userId,
-    name: 'Basic User',
+    name: 'Training Sarah',
     email: 'basicuser@asdf.com',
     _links: {
       self: { href: `/users/${userId}` }
@@ -24,7 +29,7 @@ let users = [
   },
   {
     id: developerId,
-    name: 'Developer User',
+    name: 'Training Steve',
     email: 'developeruser@asdf.com',
     _links: {
       self: { href: `/users/${developerId}` }
@@ -40,41 +45,72 @@ let users = [
   }
 ];
 
+let memberships = [
+  {
+    id: 1,
+    _links: {
+      self: { href: 'memberships/1' },
+      role: { href: `/roles/${trainingOnlyRoleId}` },
+      user: { href: `/users/${users[0].id}`}
+    }
+  },
+  {
+    id: 2,
+    _links: {
+      self: { href: 'memberships/2' },
+      role: { href: `/roles/${trainingOnlyRoleId}` },
+      user: { href: `/users/${users[1].id}`}
+    }
+  },
+  {
+    id: 3,
+    _links: {
+      self: { href: 'memberships/3' },
+      role: { href: `/roles/${complianceOwnerId}` },
+      user: { href: `/users/${users[2].id}`}
+    }
+  }
+];
+
 let roles = [
   {
-    id: basicRoleId,
-    type: 'platform_user',
-    name: 'Basic Role',
+    id: trainingOnlyRoleId,
+    type: 'compliance_user',
+    name: 'Training Only Users',
     _links: {
-      self: { href: `/roles/${basicRoleId}` },
-      users: { href: `/roles/${basicRoleId}/users`}
+      self: { href: `/roles/${trainingOnlyRoleId}` },
+      users: { href: `/roles/${trainingOnlyRoleId}/users`},
+      memberships: { href: `/roles/${trainingOnlyRoleId}/memberships`}
     }
   },
   {
     id: developerRoleId,
-    type: 'platform_user',
-    name: 'Developer Role',
+    type: 'compliance_user',
+    name: 'Developer Training Role',
     _links: {
       self: { href: `/roles/${developerRoleId}` },
-      users: { href: `/roles/${developerRoleId}/users`}
+      users: { href: `/roles/${developerRoleId}/users`},
+      memberships: { href: `/roles/${developerRoleId}/memberships`}
     }
   },
   {
-    id: platformOwnerId,
-    type: 'platform_owner',
-    name: 'Platform Owner',
+    id: adminRoleId,
+    type: 'owner',
+    name: 'Admin Role',
     _links: {
       self: { href: `/roles/${platformOwnerId}` },
-      users: { href: `/roles/${platformOwnerId}/users`}
+      users: { href: `/roles/${platformOwnerId}/users`},
+      memberships: { href: `/roles/${platformOwnerId}/memberships`}
     }
   },
   {
     id: complianceOwnerId,
     type: 'compliance_owner',
-    name: 'Compliance Owner',
+    name: 'Compliance Owners',
     _links: {
       self: { href: `/roles/${complianceOwnerId}` },
-      users: { href: `/roles/${complianceOwnerId}/users`}
+      users: { href: `/roles/${complianceOwnerId}/users`},
+      memberships: { href: `/roles/${complianceOwnerId}/memberships`},
     }
   }
 ];
@@ -82,17 +118,27 @@ let roles = [
 let invitations = [
   {
     id: 'invite-1',
-    role_id: basicRoleId,
+    role_id: trainingOnlyRoleId,
     inviter_id: users[0].id,
     email: 'newuser1@aptible.com',
-    created_at: '2015-11-03T20:34:06.963Z'
+    created_at: '2015-11-03T20:34:06.963Z',
+    _links: {
+      role: {
+        href: `/roles/${trainingOnlyRoleId}`
+      }
+    }
   },
   {
     id: 'invite-2',
-    role_id: basicRoleId,
+    role_id: trainingOnlyRoleId,
     inviter_id: users[0].id,
     email: 'newuser2@aptible.com',
-    created_at: '2015-11-03T20:34:06.963Z'
+    created_at: '2015-11-03T20:34:06.963Z',
+    _links: {
+      role: {
+        href: `/roles/${trainingOnlyRoleId}`
+      }
+    }
   }
 ];
 
@@ -108,12 +154,12 @@ let permissions = [
     id: '2',
     scope: 'read',
     _links: {
-      role: { href: `/roles/${basicRoleId}` }
+      role: { href: `/roles/${trainingOnlyRoleId}` }
     }
   }
 ];
 
-module('Acceptance: Security Program Settings: Team', {
+module('Acceptance: Security Program Settings/Security Program Setup: Team', {
   beforeEach() {
     application = startApp();
   },
@@ -123,552 +169,284 @@ module('Acceptance: Security Program Settings: Team', {
   }
 });
 
-test('Team shows all organization users', function(assert) {
-  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
-  stubProfile({ currentStep: 'team' });
+
+test('Settings Team settings basic UI', function(assert) {
   stubRequests();
-  signInAndVisit(teamUrl);
-
-  andThen(() => {
-    users.forEach((user) => {
-      assert.ok(find(`td strong:contains(${user.name})`).length, 'has user');
-    });
-  });
+  stubAllRoles();
+  signInAndVisit(settingsTeamUrl);
+  testBasicUI(assert);
 });
 
-test('Shows all pending invitations', function(assert) {
-  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
-  stubProfile({ currentStep: 'team' });
+test('Setup Team settings basic UI', function(assert) {
   stubRequests();
-  signInAndVisit(teamUrl);
-
-  andThen(() => {
-    invitations.forEach((invite) => {
-      assert.ok(find(`td:contains(${invite.email})`).length, 'has invite row');
-    });
-  });
+  stubAllRoles();
+  signInAndVisit(setupTeamUrl);
+  testBasicUI(assert);
 });
 
-test('Toggling user roles and clicking continue saves team attestation with correct values', function(assert) {
-  expect(2);
-  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
-  let expectedAttestation = {
-    handle: 'workforce_roles',
-    organization_profile_id: orgId,
-    id: '0',
-    schema_id: 'workforce_roles/1',
-    user_email: 'stubbed-user@gmail.com',
-    user_name: 'stubbed user',
-    user_url: '/users/user1',
-    document: [
-      {
-        email: 'basicuser@asdf.com',
-        name: 'Basic User',
-        hasAptibleAccount: true,
-        isDeveloper: true,
-        isRobot: false,
-        isSecurityOfficer: true,
-        href: `/users/${userId}`,
-      },
-      {
-        email: 'developeruser@asdf.com',
-        name: 'Developer User',
-        hasAptibleAccount: true,
-        isDeveloper: false,
-        isRobot: false,
-        isSecurityOfficer: false,
-        href: `/users/${developerId}`,
-      },
-      {
-        email: 'securityofficeruser@asdf.com',
-        name: 'Security Officer User',
-        hasAptibleAccount: true,
-        isDeveloper: false,
-        isRobot: false,
-        isSecurityOfficer: false,
-        href: `/users/${securityOfficerId}`,
-      },
-      {
-        email: "newuser1@aptible.com",
-        hasAptibleAccount: false,
-        isDeveloper: false,
-        isRobot: false,
-        isSecurityOfficer: false
-      },
-      {
-        email: "newuser2@aptible.com",
-        hasAptibleAccount: false,
-        isDeveloper: false,
-        isRobot: true,
-        isSecurityOfficer: false
-      }
-    ]
-  };
-
-  stubProfile({ currentStep: 'team' });
-  stubRequests();
-  signInAndVisit(teamUrl);
-
-  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
-    let json = this.json(request);
-
-    assert.ok(true, 'posts to create attestation');
-    assert.deepEqual(json, expectedAttestation, 'correct attestation payload');
-
-    return this.success({ id: 1 });
-  });
-
-  andThen(() => {
-    findWithAssert('.toggle-developer:first label').click();
-    findWithAssert('.toggle-security-officer:first label').click();
-    findWithAssert('.toggle-robot:last label').click();
-  });
-
-  andThen(clickSaveButton);
-});
-
-test('Pending invitations are included in attestation payload', function(assert) {
-  expect(15);
-  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
-  let emailAddresses = 'skylar+1@aptible.com;skylar+2@aptible.com\nskylar+3@aptible.com skylar+4@aptible.com';
-  let roleId = basicRoleId;
-  let id = 1;
-
-  stubRequest('post', `/roles/${roleId}/invitations`, function(request) {
-    let json = this.json(request);
-    json.id = id++;
-
-    assert.ok(true, 'creates invitation');
-    assert.equal(json.role_id, roleId);
-    assert.equal(json.organization_id, orgId);
-
-    return this.success(json);
-  });
-
-  let expectedAttestation = {
-    handle: 'workforce_roles',
-    organization_profile_id: orgId,
-    id: '0',
-    schema_id: 'workforce_roles/1',
-    user_email: 'stubbed-user@gmail.com',
-    user_name: 'stubbed user',
-    user_url: '/users/user1',
-    document: [
-      {
-        email: 'basicuser@asdf.com',
-        name: 'Basic User',
-        hasAptibleAccount: true,
-        isDeveloper: true,
-        isRobot: false,
-        isSecurityOfficer: true,
-        href: `/users/${userId}`,
-      },
-      {
-        email: 'developeruser@asdf.com',
-        name: 'Developer User',
-        hasAptibleAccount: true,
-        isDeveloper: false,
-        isRobot: false,
-        isSecurityOfficer: false,
-        href: `/users/${developerId}`,
-      },
-      {
-        email: 'securityofficeruser@asdf.com',
-        name: 'Security Officer User',
-        hasAptibleAccount: true,
-        isDeveloper: false,
-        isRobot: false,
-        isSecurityOfficer: false,
-        href: `/users/${securityOfficerId}`,
-      },
-      {
-        email: "newuser1@aptible.com",
-        hasAptibleAccount: false,
-        isDeveloper: false,
-        isRobot: false,
-        isSecurityOfficer: false
-      },
-      {
-        email: "newuser2@aptible.com",
-        hasAptibleAccount: false,
-        isDeveloper: false,
-        isRobot: false,
-        isSecurityOfficer: false
-      },
-      {
-        email: 'skylar+1@aptible.com',
-        hasAptibleAccount: false,
-        isDeveloper: false,
-        isRobot: false,
-        isSecurityOfficer: false
-      },
-      {
-        email: 'skylar+2@aptible.com',
-        hasAptibleAccount: false,
-        isDeveloper: false,
-        isRobot: false,
-        isSecurityOfficer: false
-      },
-      {
-        email: 'skylar+3@aptible.com',
-        hasAptibleAccount: false,
-        isDeveloper: false,
-        isRobot: false,
-        isSecurityOfficer: false
-      },
-      {
-        email: 'skylar+4@aptible.com',
-        hasAptibleAccount: false,
-        isDeveloper: false,
-        isRobot: true,
-        isSecurityOfficer: false
-      }
-    ]
-  };
-
-  stubProfile({ currentStep: 'team' });
-  stubRequests();
-  signInAndVisit(teamUrl);
-
-  andThen(openInviteModal);
-  andThen(() => {
-    selectRole(roleId);
-    fillIn('textarea.email-addresses', emailAddresses);
-  });
-
-  andThen(() => {
-    let submitButton = findWithAssert('button.send-invites');
-    submitButton.click();
-  });
-
-  andThen(() => {
-    assert.equal(find('.lf-dialog').length, 0, 'dialog is closed');
-  });
-
-  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
-    let json = this.json(request);
-
-    assert.ok(true, 'posts to create attestation');
-    assert.deepEqual(json, expectedAttestation, 'correct attestation payload');
-
-    return this.success({ id: 1 });
-  });
-
-  andThen(() => {
-    findWithAssert('.toggle-developer:first label').click();
-    findWithAssert('.toggle-security-officer:first label').click();
-    findWithAssert('.toggle-robot:last label').click();
-  });
-
-  andThen(clickSaveButton);
-});
-
-test('Team page with existing team attestation', function(assert) {
-  expect(11);
-  let currentTeamAttestation = [
-    {
-      email: 'basicuser@asdf.com',
-      name: 'Basic User',
-      isDeveloper: false,
-      isRobot: false,
-      isSecurityOfficer: false,
-      href: `/users/${userId}`,
-    },
-    {
-      email: 'developeruser@asdf.com',
-      name: 'Developer User',
-      isDeveloper: true,
-      isRobot: false,
-      isSecurityOfficer: false,
-      href: `/users/${developerId}`,
-    },
-    {
-      email: 'securityofficeruser@asdf.com',
-      name: 'Security Officer User',
-      isDeveloper: false,
-      isRobot: true,
-      isSecurityOfficer: true,
-      href: `/users/${securityOfficerId}`,
-    }
-  ];
-
-  stubCurrentAttestations({ workforce_roles: currentTeamAttestation, workforce_locations: [] });
-  let expectedAttestation = {
-    handle: 'workforce_roles',
-    id: '0',
-    schema_id: 'workforce_roles/1',
-    organization_profile_id: orgId,
-    user_email: 'stubbed-user@gmail.com',
-    user_name: 'stubbed user',
-    user_url: '/users/user1',
-    document: [
-      {
-        email: 'basicuser@asdf.com',
-        name: 'Basic User',
-        hasAptibleAccount: true,
-        isDeveloper: true,
-        isRobot: false,
-        isSecurityOfficer: true,
-        href: `/users/${userId}`,
-      },
-      {
-        email: 'developeruser@asdf.com',
-        name: 'Developer User',
-        hasAptibleAccount: true,
-        isDeveloper: false,
-        isRobot: false,
-        isSecurityOfficer: false,
-        href: `/users/${developerId}`,
-      },
-      {
-        email: 'securityofficeruser@asdf.com',
-        name: 'Security Officer User',
-        hasAptibleAccount: true,
-        isDeveloper: true,
-        isRobot: true,
-        isSecurityOfficer: true,
-        href: `/users/${securityOfficerId}`,
-      },
-      {
-        email: "newuser1@aptible.com",
-        hasAptibleAccount: false,
-        isDeveloper: false,
-        isRobot: false,
-        isSecurityOfficer: false
-      },
-      {
-        email: "newuser2@aptible.com",
-        hasAptibleAccount: false,
-        isDeveloper: false,
-        isRobot: false,
-        isSecurityOfficer: false
-      }
-    ]
-  };
-
-  stubProfile({ currentStep: 'team' });
-  stubRequests();
-
-  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
-    let json = this.json(request);
-
-    assert.ok(true, 'posts to create attestation');
-    assert.deepEqual(json, expectedAttestation, 'correct attestation payload');
-
-    return this.success({ id: 1 });
-  });
-
-  signInAndVisit(teamUrl);
-
-  andThen(() => {
-    // Existing attestation is use to render toggles in correct state
-    currentTeamAttestation.forEach((user, index) => {
-      let row = findWithAssert('table tbody tr')[index];
-
-      let developerToggle = find('.toggle-developer input.x-toggle', row);
-      let soToggle = find('.toggle-security-officer input.x-toggle', row);
-      let robotToggle = find('.toggle-robot input.x-toggle', row);
-
-      assert.equal(developerToggle.is(':checked'), user.isDeveloper, 'is developer is checked');
-      assert.equal(soToggle.is(':checked'), user.isSecurityOfficer, 'security officer is checked');
-      assert.equal(robotToggle.is(':checked'), user.isRobot, 'robot is checked');
-    });
-  });
-
-  andThen(() => {
-    // Change toggle values
-
-    // Basic user changes
-    findWithAssert('.toggle-developer label')[0].click();
-    findWithAssert('.toggle-security-officer label')[0].click();
-
-    // Developer user changes
-    findWithAssert('.toggle-developer label')[1].click();
-
-    // Security user changes
-    findWithAssert('.toggle-developer label')[2].click();
-  });
-
-  // Continue to save and inspect assertions
-  andThen(clickSaveButton);
-});
-
-test('Invite new member modal basic UI', function(assert) {
-  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
-  stubProfile({ currentStep: 'team' });
-  stubRequests();
-  signInAndVisit(teamUrl);
-
-  andThen(openInviteModal);
-
-  andThen(() => {
-    assert.equal(find('h1:contains(Invite your workforce)').length, 1, 'has a modal title');
-
-    let roleSelect = find('select.select-role');
-
-    // It should have a dropdown with roles
-    assert.equal(roleSelect.length, 1, 'has a role select');
-    assert.equal(roleSelect.find('option').length, 6, 'role select has 5 options');
-    assert.ok(roleSelect.find('option:first').is(':disabled'), 'first option is disabled');
-    assert.equal(roleSelect.find('option:contains((Owner))').length, 3, 'Owner roles have (Owner) prefix');
-
-    // It should have a text area
-    assert.equal(find('textarea.email-addresses').length, 1, 'has an email address text area');
-
-    // It should have an Invite button and a Cancel button
-    assert.equal(find('button.cancel-invites:contains(Cancel)').length, 1, 'has a cancel button');
-    assert.equal(find('button.send-invites:contains(Send Invitations)').length, 1, 'has an invite button');
-
-    // Clicking cancel should close the dialog
-    let cancelButton = find('button.cancel-invites');
-    cancelButton.click();
-  });
-
-  andThen(() => {
-    assert.equal(find('.lf-dialog').length, 0, 'dialog is closed');
-  });
-});
-
-test('Invite modal creates invitation record for each email', function(assert) {
-  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
-  expect(17);
-  let roleId = basicRoleId;
-  let emailAddresses = 'skylar+1@aptible.com;skylar+2@aptible.com\nskylar+3@aptible.com skylar+4@aptible.com';
-  let id = 1;
-
-  stubRequest('post', `/roles/${roleId}/invitations`, function(request) {
-    let json = this.json(request);
-    json.id = id++;
-
-    assert.ok(true, 'creates invitation');
-    assert.equal(json.role_id, roleId);
-    assert.equal(json.organization_id, orgId);
-
-    return this.success(json);
-  });
-
-  stubProfile({ currentStep: 'team' });
-  stubRequests();
-  signInAndVisit(teamUrl);
-
-  andThen(openInviteModal);
-  andThen(() => {
-    selectRole(roleId);
-    fillIn('textarea.email-addresses', emailAddresses);
-  });
-
-  andThen(() => {
-    let submitButton = findWithAssert('button.send-invites');
-    submitButton.click();
-  });
-
-  andThen(() => {
-    assert.equal(find('.lf-dialog').length, 0, 'dialog is closed');
-  });
-
-  andThen(() => {
-    assert.equal(find('td:contains(skylar+1@aptible.com)').length, 1, 'has new invite');
-    assert.equal(find('td:contains(skylar+2@aptible.com)').length, 1, 'has new invite');
-    assert.equal(find('td:contains(skylar+3@aptible.com)').length, 1, 'has new invite');
-    assert.equal(find('td:contains(skylar+4@aptible.com)').length, 1, 'has new invite');
-  });
-});
-
-test('Developer and Security Officer groups are validated to include at least on user each', function(assert) {
-  expect(1);
-  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
-  stubProfile({ currentStep: 'team' });
-  stubRequests({orgId: 1});
-  signInAndVisit(teamUrl);
-
-  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function() {
-    assert.ok(false, 'does not save an attestation');
-    return this.success({ id: 1 });
-  });
-
-  andThen(clickSaveButton);
-  andThen(() => {
-    assert.ok(find('.alert-danger:contains(at least one Developer is required, at least one Security Officer is required.)').length === 1, 'shows an error');
-  });
-});
-
-test('Clicking re-invite button sends new invitation', function(assert) {
-  expect(2);
-  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
-  stubProfile({ currentStep: 'team' });
-  stubRequests();
-  stubRequest('post', '/resets', function() {
-    assert.ok(true, 'posts a reset for the invitation');
-    return this.success();
-  });
-
-  signInAndVisit(teamUrl);
-
-  andThen(() => {
-    let refreshBtn = findWithAssert('.two-actions:first .fa-refresh');
-    refreshBtn.click();
-  });
-
-  andThen(() => {
-    assert.ok(find('.alert-success'));
-  });
-});
-
-
-test('Clicking X button deletes pending invitation', function(assert) {
+test('Settings Clicking `X` next to users will remove their membership', function(assert) {
   expect(3);
-  stubCurrentAttestations({ workforce_roles: [], workforce_locations: [] });
-  stubProfile({ currentStep: 'team' });
   stubRequests();
-  stubRequest('delete', `/invitations/${invitations[0].id}`, function() {
-    assert.ok(true, 'deletes the invitation');
+  stubAllRoles();
+  signInAndVisit(settingsTeamUrl);
+  testRemoveUser(assert);
+});
+
+test('Setup Clicking `X` next to users will remove their membership', function(assert) {
+  expect(3);
+  stubRequests();
+  stubAllRoles();
+  signInAndVisit(setupTeamUrl);
+  testRemoveUser(assert);
+});
+
+test('Settings Clicking `X` next to invites will remove invitation', function(assert) {
+  expect(4);
+  stubRequests();
+  stubAllRoles();
+  signInAndVisit(settingsTeamUrl);
+  testRemoveInvitation(assert);
+});
+
+test('Setup Clicking `X` next to invites will remove invitation', function(assert) {
+  expect(4);
+  stubRequests();
+  stubAllRoles();
+  signInAndVisit(setupTeamUrl);
+  testRemoveInvitation(assert);
+});
+
+test('Settings clicking refresh next to invites will resend invitation', function(assert) {
+  expect(4);
+  stubRequests();
+  stubAllRoles();
+  signInAndVisit(settingsTeamUrl);
+  testResendInvitation(assert);
+});
+
+test('Setup clicking refresh next to invites will resend invitation', function(assert) {
+  expect(4);
+  stubRequests();
+  stubAllRoles();
+  signInAndVisit(setupTeamUrl);
+  testResendInvitation(assert);
+});
+
+test('Settings Inviting users if a role doesn\'t exist will create role', function(assert) {
+  expect(8);
+  stubPartialRoles();
+  stubRequests({ invitations: [] });
+  signInAndVisit(settingsTeamUrl);
+  testFindOrCreateRole(assert);
+});
+
+test('Setup Inviting users if a role doesn\'t exist will create role', function(assert) {
+  expect(8);
+  stubPartialRoles();
+  stubRequests({ invitations: [] });
+  signInAndVisit(setupTeamUrl);
+  testFindOrCreateRole(assert);
+});
+
+
+function testBasicUI(assert) {
+  andThen(() => {
+    // Shows 2 role panels: Training Only, Compliance Owners
+    let trainingPanel = findWithAssert('.workforce-role:contains(Training Only Users)');
+    let adminPanel = findWithAssert('.workforce-role:contains(Compliance Owners)');
+
+    assert.equal(trainingPanel.length, 1, 'shows training only role');
+    assert.equal(adminPanel.length, 1, 'shows compliance admin role');
+
+    // Training only has 2 users and 2 invites
+    assert.equal(trainingPanel.find('.workforce-role__user').length, 2, 'training role has correct user count');
+    assert.equal(trainingPanel.find('.workforce-role__invitation').length, 2, 'training role has correct invite count');
+
+    let trainingUsers = trainingPanel.find('.workforce-role__user .workforce-role__user-name');
+    assert.equal(trainingUsers.text().replace(/\W/ig,''), 'TrainingSarahTrainingSteve', 'training role has correct users');
+
+    let trainingInvites = trainingPanel.find('.workforce-role__invitation .workforce-role__user-name');
+    assert.equal(trainingInvites.text().replace(/\W/ig, ''), 'newuser1aptiblecomnewuser2aptiblecom', 'training role has correct invites');
+
+    // Compliance admin has 1 user and no invites
+    assert.equal(adminPanel.find('.workforce-role__user').length, 1, 'admin role has correct number of users');
+    assert.equal(adminPanel.find('.workforce-role__invitation').length, 0, 'admin role has correct number of invites');
+  });
+}
+
+function testRemoveUser(assert) {
+  window.confirm = function() {
+    return true;
+  };
+
+  stubRequest('delete', '/memberships/1', function() {
+    assert.ok(true, 'call to delete membership');
     return this.noContent();
   });
 
-  signInAndVisit(teamUrl);
-
   andThen(() => {
-    // Clobber window confirm to accept delete.
-    window.confirm = () => { return true; };
-    let refreshBtn = findWithAssert('.two-actions:first .danger');
-    refreshBtn.click();
+    assert.equal(find('.workforce-role__user').length, 3, 'three users to start');
+
+    let firstX = findWithAssert('.workforce-role__user .fa-times').first();
+    firstX.click();
   });
 
   andThen(() => {
-    assert.ok(find('.alert-success'));
-    assert.equal(find('.two-actions').length, 1, 'removes the deleted row');
+    assert.equal(find('.workforce-role__user').length, 2, 'a user is removed');
   });
-});
-
-
-function clickSaveButton() {
-  let button = findWithAssert('button.save-settings');
-  button.click();
 }
 
-function openInviteModal() {
-  let button = findWithAssert('.invite-team-button');
-  button.click();
-}
+function testRemoveInvitation(assert) {
+  window.confirm = function() {
+    assert.ok(true, 'confirms before removing invite');
+    return true;
+  };
 
-function selectRole() {
-  let select = findWithAssert('select.select-role');
-  select.val(basicRoleId);
-  select.trigger('change');
-}
-
-function stubRequests(options) {
-  stubValidOrganization(options);
-  stubSchemasAPI();
-  stubProfile({ hasCompletedSetup: true });
-
-  stubRequest('get', `/roles/${developerRoleId}/users`, function() {
-    return this.success({ _embedded: { users: [users[1]] }});
+  stubRequest('delete', '/invitations/invite-1', function() {
+    assert.ok(true, 'call to delete invitation');
+    return this.noContent();
   });
 
+  andThen(() => {
+    assert.equal(find('.workforce-role__invitation').length, 2, 'two invitations to start');
+
+    let firstX = findWithAssert('.workforce-role__invitation .fa-times').first();
+    firstX.click();
+  });
+
+  andThen(() => {
+    assert.equal(find('.workforce-role__invitation').length, 1, 'an invitation is removed');
+  });
+}
+
+function testResendInvitation(assert) {
+  window.confirm = function() {
+    assert.ok(true, 'confirms before removing invite');
+    return true;
+  };
+
+  stubRequest('post', '/resets', function(request) {
+    let json = this.json(request);
+    assert.ok(true, 'posts to create reset');
+    assert.equal(json.type, 'invitation');
+    assert.equal(json.invitation_id, 'invite-1');
+
+    json.id = 'reset-01';
+    return this.success(json);
+  });
+
+  andThen(() => {
+    assert.equal(find('.workforce-role__invitation').length, 2, 'two invitations to start');
+
+    let firstRefresh = findWithAssert('.workforce-role__invitation .fa-refresh').first();
+    firstRefresh.click();
+  });
+}
+
+function testFindOrCreateRole(assert) {
+  let newInviteEmail = 'test+user@example.com';
+  stubRequest('post', rolesHref, function(request) {
+    let json = this.json(request);
+
+    assert.ok(true, 'posts to create new role');
+    assert.equal(json.name, 'Training Only Users', 'uses correct name');
+    assert.equal(json.type, 'compliance_user', 'uses correct type');
+
+    json.id = trainingOnlyRoleId;
+    return this.success(json);
+   });
+
+  stubRequest('post', `/roles/${trainingOnlyRoleId}/invitations`, function(request) {
+    let json = this.json(request);
+    assert.ok(true, 'post to create invitation');
+    assert.equal(json.email, newInviteEmail, 'invite has correct email');
+
+    json.id = 'new-compliance-invite';
+
+    return this.success(json);
+  });
+
+  andThen(function() {
+    let adminPanel = findWithAssert('.workforce-role:contains(Training Only Users)');
+    let button = adminPanel.find('.invite-more-users');
+    assert.equal(button.length, 1, 'shows invite new users button');
+
+    button.click();
+  });
+
+  andThen(function() {
+    Ember.run(() => {
+      fillIn('textarea.email-addresses', newInviteEmail);
+      let submitButton = findWithAssert('button.send-invites');
+      submitButton.click();
+    });
+  });
+
+  andThen(function() {
+    let adminPanel = findWithAssert('.workforce-role:contains(Training Only Users)');
+    let adminInvites = adminPanel.find('.workforce-role__invitation .workforce-role__user-name');
+
+    assert.equal(find('.lf-dialog').length, 0, 'dialog is closed');
+    assert.equal(adminInvites.text().replace(/\W/ig, ''), newInviteEmail.replace(/\W/ig, ''), 'new invite renders');
+  });
+}
+
+function stubPartialRoles() {
+  stubRequest('get', rolesHref, function() {
+    return this.success({ _embedded: { roles: [roles[3]] } });
+  });
+
+  stubRequest('get', `/roles/${complianceOwnerId}`, function() {
+    return this.success(roles[2]);
+  });
+
+  stubRequest('get', `/roles/${complianceOwnerId}/users`, function() {
+    return this.success({ _embedded: { users: [users[2]] }});
+  });
+
+  stubRequest('get', `/roles/${complianceOwnerId}/memberships`, function() {
+    return this.success({ _embedded: { memberships: [memberships[2]] }});
+  });
+}
+
+function stubAllRoles() {
   stubRequest('get', rolesHref, function() {
     return this.success({ _embedded: { roles } });
   });
+
+  stubRequest('get', `/roles/${trainingOnlyRoleId}`, function() {
+    return this.success(roles[0]);
+  });
+
+  stubRequest('get', `/roles/${trainingOnlyRoleId}/users`, function() {
+    return this.success({ _embedded: { users: [users[0], users[1]] }});
+  });
+
+  stubRequest('get', `/roles/${trainingOnlyRoleId}/memberships`, function() {
+    return this.success({ _embedded: { memberships: [memberships[0], memberships[1]] }});
+  });
+
+  stubRequest('get', `/roles/${complianceOwnerId}`, function() {
+    return this.success(roles[2]);
+  });
+
+  stubRequest('get', `/roles/${complianceOwnerId}/users`, function() {
+    return this.success({ _embedded: { users: [users[2]] }});
+  });
+
+  stubRequest('get', `/roles/${complianceOwnerId}/memberships`, function() {
+    return this.success({ _embedded: { memberships: [memberships[2]] }});
+  });
+}
+
+function stubRequests(options = {}) {
+  if(options.invitations) {
+    invitations = options.invitations;
+  }
+  stubValidOrganization(options);
+  stubSchemasAPI();
+  stubCurrentAttestations({ workforce_locations: [] });
+  stubProfile({ hasCompletedSetup: true, currentStep: 'team' });
 
   stubRequest('get', usersHref, function() {
     return this.success({ _embedded: { users }});
