@@ -74,6 +74,14 @@ export default DS.Model.extend({
     return this.isRoleType(['platform_owner'], roles, organization);
   },
 
+  canManageCompliance(roles, organization) {
+    return this.isRoleType(['owner', 'compliance_owner'], roles, organization);
+  },
+
+  canManagePlatform(roles, organization) {
+    return this.isRoleType(['owner', 'platform_owner'], roles, organization);
+  },
+
   organizations: Ember.computed('roles.@each.organization', function() {
     var organizations = {};
 

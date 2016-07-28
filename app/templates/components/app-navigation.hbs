@@ -14,8 +14,10 @@
     </li>
   {{/if}}
 {{/if}}
+
 {{#each currentUser.organizations as |organization|}}
   <li class="{{if settingsActive 'active' null}}">
-    {{link-to 'Settings' 'organization' organization}}
+    {{link-to organization.name 'organization' organization}}
   </li>
 {{/each}}
+

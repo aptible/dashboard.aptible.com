@@ -50,6 +50,7 @@ export default DS.Model.extend({
   billingContact: DS.belongsTo('user', {async:true}),
   organization: DS.belongsTo('organization', {async:true}),
   allowPHI: Ember.computed.match('plan', /pilot|production|platform/),
+  hasCompliancePlan: Ember.computed.match('plan', /pilot|production/),
   hasStripeSubscription: Ember.computed.bool('stripeSubscriptionId'),
   hasStripeCustomer: Ember.computed.bool('stripeCustomerId'),
   hasStripe: Ember.computed.and('hasStripeCustomer', 'hasStripeSubscription'),
