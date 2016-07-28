@@ -89,3 +89,59 @@ test('it should set shouldDisable to true when component is saving', function(as
 
   assert.equal(true, component.get('shouldDisable'));
 });
+
+test('it should show a success message when it succeeds', function(assert) {
+  const scaleServiceAction = function(_0, _1, _2, deferred) {
+    return deferred.resolve();
+  };
+
+  this.subject({
+    service: Ember.Object.create({
+      containerSize: 1024,
+      containerCount: 1,
+      stack: Ember.Object.create({
+        sweetnessStackVersion: 'v2'
+      })
+    }),
+    containerCount: 2,
+    targetObject: { scaleServiceAction },
+    scaleService: "scaleServiceAction"
+  });
+
+  this.render();
+
+  Ember.run(() => {
+    this.$().find("button").click();
+  });
+
+  assert.ok(!this.$().find("div:contains(Some error)").length, "Has no error");
+  assert.ok(this.$().find("div:contains(scaled to)").length, "Has success");
+});
+
+test('it should not show a success message when it fails', function(assert) {
+  const scaleServiceAction = function(_0, _1, _2, deferred) {
+    return deferred.reject(new Error("Some error"));
+  };
+
+  this.subject({
+    service: Ember.Object.create({
+      containerSize: 1024,
+      containerCount: 1,
+      stack: Ember.Object.create({
+        sweetnessStackVersion: 'v2'
+      })
+    }),
+    containerCount: 2,
+    targetObject: { scaleServiceAction },
+    scaleService: "scaleServiceAction"
+  });
+
+  this.render();
+
+  Ember.run(() => {
+    this.$().find("button").click();
+  });
+
+  assert.ok(this.$().find("div:contains(Some error)").length, "Has error");
+  assert.ok(!this.$().find("div:contains(scaled to)").length, "Has no success");
+});
