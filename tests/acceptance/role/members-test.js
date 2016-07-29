@@ -98,7 +98,6 @@ test(`visiting ${pageUrl} role members can be added by account owners`, (assert)
   andThen(() => {
     findWithAssert('.aptable--empty');
     let select = $('.role__add-user select');
-    let optVal = $('.role__add-user option:last-of-type').val();
     fillIn(select, memberUser.id);
   });
   andThen(() => {
