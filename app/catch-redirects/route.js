@@ -20,7 +20,7 @@ export default Ember.Route.extend({
     let organizations = this.modelFor('dashboard').organizations;
 
     if (organizations.get('length') === 1 && organizations.get('firstObject.billingDetail.isRejected')) {
-       return this.transitionTo('welcome.payment-info');
+       return this.transitionTo('welcome.payment-info', organizations.get('firstObject.id'));
     }
   },
 
@@ -33,7 +33,7 @@ export default Ember.Route.extend({
     let userRoles = this.modelFor('dashboard').currentUserRoles;
 
     // Does the user have any roles for any organization that are not compliance user?
-    let complianceOnlyUser = !organizations.any((organization) => {
+    let complianceOnlyUser = userRoles.length > 0 && !organizations.any((organization) => {
       let organizationHref = organization.get('data.links.self');
       let userOrganizationRoles = userRoles.filterBy('data.links.organization', organizationHref);
 

@@ -12,5 +12,9 @@
     {{#link-to 'stack' stack tagName="li"}}
       {{link-to stack.handle 'stack' stack bubbles=false}}
     {{/link-to}}
+  {{else}}
+    <li>
+      {{link-to 'Requires payment method →' 'welcome.payment-info' organization.id classNames="requires-payment-link"}}
+    </li>
   {{/each}}
 </ul>

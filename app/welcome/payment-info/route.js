@@ -31,24 +31,18 @@ export default Ember.Route.extend({
         address_zip: model.zip
       };
 
-      let organization;
+      let organization = this.modelFor('welcome').organization;
       let stripeResponse;
       let pendingSubscription;
 
       saveProgress.set('currentStep', 1);
-      Ember.RSVP.hash({
-        stripeResponse: createStripeToken(options),
-        // TODO: the organization should probably be loaded
-        // when the route is entered and the name displayed when
-        // entering payment information
-        organizations: store.find('organization')
-      }).then(function(result) {
-        stripeResponse = result.stripeResponse;
-        organization = result.organizations.objectAt(0);
 
-        return store.find('billing-detail', organization.get('id')).catch(function() {
-          return null;
-        });
+      createStripeToken(options)
+      .then(function(stripeToken) {
+        stripeResponse = stripeToken;
+        // A billing detail should not be found
+        // If one is found, then we should skip creating a new one
+        return store.find('billing-detail', organization.get('id')).catch(Ember.$.noop);
       }).then(function(result) {
         saveProgress.set('currentStep', 2);
 
@@ -61,11 +55,13 @@ export default Ember.Route.extend({
         pendingSubscription = store.createRecord('billing-detail', {
           id: organization.get('id'),
           plan: welcomeModel.plan,
-          stripeToken: stripeResponse.id
+          stripeToken: stripeResponse.id,
+          organization
         });
 
         return pendingSubscription.save();
-      }).then(function(){
+      }).then(function(billingDetail){
+        organization.set('billingDetail', billingDetail);
         saveProgress.set('currentStep', 3);
 
         return store.createRecord('stack', {

@@ -28,7 +28,7 @@ test('with only one organization', function(assert) {
   });
 });
 
-test('with more than one organization', function(assert) {
+test('with more than one organization shows link to payment page', function(assert) {
   let organizations = [
     {
       id: 1, name: 'sprocket co',
@@ -47,7 +47,7 @@ test('with more than one organization', function(assert) {
   ];
   stubBillingDetail({ id: 1 });
   stubRequest('get', '/billing_details/2', (request) => request.notFound());
-  stubRequest('get', '/organizations', function(request) {
+  stubRequest('get', '/organizations', function() {
     return this.success({
       _links: {},_embedded: { organizations }
     });
@@ -58,6 +58,16 @@ test('with more than one organization', function(assert) {
   signInAndVisit('/');
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index', 'was not redirected to payment info');
-  })
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index',
+                 'was not redirected to payment info');
+    let paymentLink = findWithAssert('.layout-sidebar .requires-payment-link');
+    assert.equal(paymentLink.length, 1, 'shows requires payment link in sidebar');
+    visit('/organizations/2');
+  });
+
+  andThen(function() {
+    assert.equal(find('.alert:contains(missing payment information)').length, 1,
+                'shows alert warning on organization section');
+  });
 });
+

@@ -103,7 +103,7 @@
       </div>
       {{#unless errors.model.stackHandle}}
         <div class="skip-link">
-          {{link-to 'Do this later →' 'welcome.payment-info'}}
+          {{link-to 'Do this later →' 'welcome.payment-info' model.organization.id}}
         </div>
       {{/unless}}
     </div>

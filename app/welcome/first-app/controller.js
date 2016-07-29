@@ -38,8 +38,7 @@ export default Ember.Controller.extend(EmberValidationsMixin, {
       this.validate().then(() => {
         // model data is already stored on the parent
         // route (welcome). Just move forward.
-
-        this.transitionToRoute('welcome.payment-info');
+        this.transitionTo('welcome.payment-info', this.get('model.organization.id'));
       }).catch(() => {
         // Silence the validation exception, display it in UI
       });

@@ -173,6 +173,7 @@ Router.map(function() {
   });
 
   this.authenticatedRoute("welcome", {
+    path: '/welcome/:organization_id',
     resetNamespace: true
   }, function() {
     this.route("first-app");

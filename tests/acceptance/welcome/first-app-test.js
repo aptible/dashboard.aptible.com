@@ -21,7 +21,7 @@ module('Acceptance: WelcomeFirstApp', {
 });
 
 test('visiting /welcome/first-app when not logged in', function(assert) {
-  visit('/welcome/first-app');
+  visit('/welcome/1/first-app');
 
   andThen(function() {
     assert.equal(currentPath(), 'login');
@@ -30,6 +30,7 @@ test('visiting /welcome/first-app when not logged in', function(assert) {
 
 test('visiting /welcome/first-app logged in with stacks', function(assert) {
   stubStacks();
+  stubRequest('get', '/billing_details/1', (request) => request.notFound());
   stubOrganizations();
   stubOrganization();
   signInAndVisit('/welcome/first-app');
@@ -42,11 +43,13 @@ test('visiting /welcome/first-app logged in with stacks', function(assert) {
 test('submitting a first app directs to payment info', function(assert) {
   var appHandle = 'my-app';
 
+  stubRequest('get', '/billing_details/1', (request) => request.notFound());
   stubStacks({}, []);
   stubOrganizations();
-  signInAndVisit('/welcome/first-app');
+  signInAndVisit('/welcome/1/first-app');
 
   fillIn('input[name="app-handle"]', appHandle);
+
   click('button:contains(Get Started)');
   andThen(function() {
     assert.equal(currentPath(), 'welcome.payment-info', 'redirected to payment info');
@@ -56,7 +59,7 @@ test('submitting a first app directs to payment info', function(assert) {
 test('choosing a database type opens database pane, clicking it again closes', function(assert) {
   stubStacks({}, []);
   stubOrganizations();
-  signInAndVisit('/welcome/first-app');
+  signInAndVisit('/welcome/1/first-app');
 
   click('.select-option[title="Redis"]');
   andThen(() => {
