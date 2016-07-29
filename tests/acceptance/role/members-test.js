@@ -108,8 +108,8 @@ test(`visiting ${pageUrl} role members can be added by account owners`, (assert)
     clickButton('Add');
   });
   andThen(() => {
-    assert.equal(find('.aptable--empty').length, 0);
-    findWithAssert(`.profile--inline:contains(${memberUser.name})`);
+    assert.equal(find(`.profile--inline:contains(${memberUser.name})`).length,
+      1, 'Added user is rendered.');
   });
 });
 
