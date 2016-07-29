@@ -14,6 +14,6 @@ export default Ember.Route.extend({
       return this.transitionTo('no-organization');
     }
 
-    return Ember.RSVP.all(model.organizations.map(o => o.get('billingDetail')));
+    return Ember.RSVP.all(model.organizations.map(o => o.get('billingDetail'))).catch(Ember.$.noop);
   }
 });
