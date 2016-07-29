@@ -3,7 +3,7 @@
     <div class="col-xs-8">
       <div class="panel panel-default ">
         <div class="panel-heading">
-            <h3>Create a new endpoint</h3>
+            <h3>Create a New Endpoint</h3>
         </div>
         <div class="panel-body">
           {{#unless model.isValid}}
@@ -22,11 +22,11 @@
 
           {{#unless serviceHasDefaultVhost}}
               <div class="form-group">
-                <label class="block" for="domain-type">Endpoint type:</label>
+                <label class="block" for="domain-type">Endpoint Address</label>
                 <div class="radio">
                   <div>
                     {{#radio-button value=true groupValue=model.isDefault name="domain-type"}}
-                      {{#bs-tooltip placement="bottom" title='A default endpoint has an endpoint address in the format app-${id}.on-aptible.com.' bs-container=false}}
+                      {{#bs-tooltip placement="bottom" title='Aptible manages the SSL/TLS certificate for endpoints with default addresses.' bs-container=false}}
                           Use app-{{ model.app.id }}.on-aptible.com default endpoint address
                       {{/bs-tooltip}}
                     {{/radio-button}}
