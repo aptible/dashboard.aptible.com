@@ -103,13 +103,14 @@ test(`visiting ${pageUrl} role members can be added by account owners`, (assert)
       select.val(optVal);
       select.trigger('change');
     });
-  });
-  andThen(() => {
     clickButton('Add');
   });
   andThen(() => {
-    assert.equal(find(`.profile--inline:contains(${memberUser.name})`).length,
-      1, 'Added user is rendered.');
+    Ember.run(() => {
+      findWithAssert('.aptable__member-row');
+      assert.equal(find(`.profile--inline:contains(${memberUser.name})`).length,
+        1, 'Added user is rendered.');
+    });
   });
 });
 
