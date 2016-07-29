@@ -22,8 +22,10 @@ export default Ember.Route.extend({
 
   // Note: Memberships are removed by the membership table row component
   actions: {
-    addMember(user){
+    addMember() {
+      const user = this.controller.get('invitedUser');
       if (!user) { return; }
+
       const role = this.controller.get('role');
       const userLink = user.get('data.links.self');
       const membership = this.store.createRecord('membership', {
@@ -32,11 +34,14 @@ export default Ember.Route.extend({
       });
 
       membership.save().then(() => {
-        let message = `${user.get('name')} added to ${role.get('name')} role`;
+        let message = `${user.get('name')} added to ${role.get('name')}`;
+
+        role.get('users').pushObject(user);
+        membership.set('user', user);
+        role.get('memberships').pushObject(membership);
+
         this.controller.set('invitedUser', '');
         Ember.get(this, 'flashMessages').success(message);
-        role.get('users').pushObject(user);
-        role.get('memberships').pushObject(membership);
         return;
       });
     },
