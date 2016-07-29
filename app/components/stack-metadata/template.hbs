@@ -13,6 +13,11 @@
     {{/if}}
 
     <li class="resource-metadata-item">
+      <h5 class="resource-metadata-title">Stack</h5>
+      <h3 class="resource-metadata-value">{{model.sweetnessStack}}</h3>
+    </li>
+
+    <li class="resource-metadata-item">
       <h5 class="resource-metadata-title">{{model.totalAppCount}} {{plural-string "App" model.totalAppCount}}</h5>
       <h3 class="resource-metadata-value">Using {{model.appContainerCount}} {{plural-string "container" totalContainerCount}}</h3>
     </li>
