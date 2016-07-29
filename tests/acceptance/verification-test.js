@@ -37,7 +37,7 @@ test('visiting /verify/some-code creates verification', function(assert) {
   let userData = {verified: false};
   signInAndVisit(`/verify/${verificationCode}`, userData);
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
   });
 });
 
@@ -78,7 +78,7 @@ test('after verification, pending databases are provisioned', function(assert) {
 
   signInAndVisit('/verify/'+verificationCode);
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
   });
 });
 

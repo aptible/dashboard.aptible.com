@@ -57,7 +57,7 @@ test(`visiting ${url} with no certificates redirects to certificates new`, funct
 
   signInAndVisit(url);
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.certificates.new');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.certificates.new');
   });
 });
 

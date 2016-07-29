@@ -59,7 +59,7 @@ test(`visiting ${url} shows form to create new role`, (assert) => {
   setup('dev');
   signInAndVisit(url);
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.roles.new');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.roles.new');
     expectButton('Save');
     expectButton('Cancel');
     expectFocusedInput('role-name');
@@ -85,7 +85,7 @@ test(`visiting ${url} and creating new platform_user role`, (assert) => {
     clickButton('Save');
   });
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.role.members');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.role.members');
   });
 });
 
@@ -103,13 +103,13 @@ test(`visiting ${url} and creating new compliance_user role`, (assert) => {
 
   signInAndVisit(url);
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.roles.new');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.roles.new');
     fillInput('role-name', roleData.name);
     findWithAssert('.role-type-option[data-option-value=compliance_user]').click();
     clickButton('Save');
   });
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.role.members');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.role.members');
   });
 });
 

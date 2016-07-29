@@ -35,7 +35,7 @@ test('visiting /welcome/first-app logged in with stacks', function(assert) {
   signInAndVisit('/welcome/first-app');
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
   });
 });
 

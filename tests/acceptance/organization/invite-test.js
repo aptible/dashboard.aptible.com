@@ -55,7 +55,7 @@ test(`visiting ${url} shows form to invite`, function(assert) {
 
   signInAndVisit(url);
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.invite');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.invite');
     expectFocusedInput('email');
     expectInput('email');
     expectInput('role');
@@ -81,7 +81,7 @@ test(`visiting ${url} and clicking cancel`, function(assert) {
   clickButton('Cancel');
 
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.members.index');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.members.index');
   });
 });
 

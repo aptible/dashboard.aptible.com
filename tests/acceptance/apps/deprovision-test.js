@@ -83,7 +83,7 @@ test('/apps/:id/deprovision will deprovision with confirmation', function(assert
   click('button:contains(Deprovision)');
   andThen(function(){
     assert.ok(didDeprovision, 'deprovisioned');
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
   });
 });
 
@@ -121,6 +121,6 @@ test('/apps/:id/deprovision will show deprovision error', function(assert) {
   andThen(function(){
     var error = findWithAssert('.alert');
     assert.ok(error.text().indexOf(errorMessage) > -1, 'error message shown');
-    assert.equal(currentPath(), 'dashboard.requires-read-access.app.deprovision');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.app.deprovision');
   });
 });

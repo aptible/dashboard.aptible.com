@@ -2,6 +2,29 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   redirect() {
+    return this.handleNoOrganizations() ||
+           this.handleMissingBillingDetail() ||
+           this.handleComplianceOnlyUsers() ||
+           true;
+  },
+
+  handleNoOrganizations() {
+    let organizations = this.modelFor('dashboard').organizations;
+
+    if(organizations.get('length') === 0) {
+      return this.transitionTo('no-organization');
+    }
+  },
+
+  handleMissingBillingDetail() {
+    let organizations = this.modelFor('dashboard').organizations;
+
+    if (organizations.get('length') === 1 && organizations.get('firstObject.billingDetail.isRejected')) {
+       return this.transitionTo('welcome.payment-info');
+    }
+  },
+
+  handleComplianceOnlyUsers() {
     if (!this.features.get('trainee-dashboard')) {
       return;
     }
@@ -21,7 +44,7 @@ export default Ember.Route.extend({
     });
 
     if(complianceOnlyUser) {
-      this.transitionTo('trainee-dashboard');
+      return this.transitionTo('trainee-dashboard');
     }
   }
 });

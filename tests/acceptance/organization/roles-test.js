@@ -87,7 +87,7 @@ test(`visiting ${url} shows roles`, (assert) => {
   signInAndVisit(url, {}, roles[0]);
 
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.roles.platform');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.roles.platform');
 
     roles.forEach( (r) => {
       let roleDiv = find(`.role-details__heading:contains(${r.name})`);
@@ -127,6 +127,6 @@ test(`visit ${url} and click to show`, (assert) => {
   signInAndVisit(url);
   click(`a[title="Edit ${role.name} Permissions"]`);
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.role.members');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.role.members');
   });
 });

@@ -86,7 +86,7 @@ test(`visiting ${url} and deleting a certificate should delete the certificate`,
 
   andThen(function() {
     assert.ok(didDelete, 'certificate was deleted');
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.certificates.index');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.certificates.index');
   });
 
 });

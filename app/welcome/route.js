@@ -12,13 +12,7 @@ export default Ember.Route.extend({
   },
 
   beforeModel: function(){
-    if(this.session.get('isAuthenticated')) {
-      return this.store.find('stack').then((stacks) => {
-        if (stacks.get('length') !== 0) {
-          this.transitionTo('index');
-        }
-      });
-    } else {
+    if(!this.session.get('isAuthenticated')) {
       this.transitionTo('login');
     }
   },
@@ -47,6 +41,15 @@ export default Ember.Route.extend({
   afterModel: function(model) {
     if (!model.organization) {
       this.transitionTo('no-organization');
+    }
+
+    // If there is only one organization, double check that no stacks exist
+    if (model.organization.get('length') === 1) {
+      return this.store.find('stack').then((stacks) => {
+        if (stacks.get('length') !== 0) {
+          this.transitionTo('index');
+        }
+      });
     }
   }
 });
