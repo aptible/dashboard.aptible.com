@@ -68,31 +68,6 @@ test('Creating an account directs to welcome wizard', function(assert) {
   });
 });
 
-test('Signing up with a platform plan shows platform copy', function(assert) {
-  // for loading information on the welcome.first-app screen
-  stubStacks({}, []);
-  stubOrganizations();
-  url = `${url}?plan=platform`;
-
-  stubRequest('post', '/organizations', function(request){
-    let params = this.json(request);
-    assert.equal(params.name, userInput.organization, 'correct organization is passed');
-    return this.success({
-      id: 'my-organization',
-      name: userInput.organization
-    });
-  });
-
-  doSignupSteps(url, userInput, {clickButton:false});
-  fillInput('organization', userInput.organization);
-  clickButton('Create account');
-
-  andThen(function() {
-    assert.equal(currentPath(), 'welcome.first-app', 'directs to first app');
-    assert.ok(find(':contains(Create Your Aptible platform Environment)'));
-    assert.ok(find(':contains(Create a database to store PHI)'));
-  });
-});
 
 test('Signing up with no plan shows development copy', function(assert) {
   // for loading information on the welcome.first-app screen
@@ -114,8 +89,8 @@ test('Signing up with no plan shows development copy', function(assert) {
 
   andThen(function() {
     assert.equal(currentPath(), 'welcome.first-app', 'directs to first app');
-    assert.ok(find(':contains(Create Your Aptible development Environment)'));
-    assert.ok(find(':contains(Create a database for your app)'));
+    assert.ok(find(':contains(Create Your Aptible development Environment)'), 'has create environment');
+    assert.ok(find(':contains(Create a database for your app)'), 'has create database');
   });
 });
 

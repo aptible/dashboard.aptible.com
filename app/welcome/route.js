@@ -7,27 +7,15 @@ export function resetDBData(model){
 }
 
 export default Ember.Route.extend({
-  queryParams: {
-    plan: { }
-  },
-
-  beforeModel: function(){
-    if(this.session.get('isAuthenticated')) {
-      return this.store.find('stack').then((stacks) => {
-        if (stacks.get('length') !== 0) {
-          this.transitionTo('index');
-        }
-      });
-    } else {
+  beforeModel() {
+    if(!this.session.get('isAuthenticated')) {
       this.transitionTo('login');
     }
   },
 
-  model: function(params){
-    return this.store.find('organization').then((organizations) => {
-      const model = {
-        organization: organizations.objectAt(0)
-      };
+  model(params){
+    return this.store.find('organization', params.organization_id).then((organization) => {
+      const model = { organization };
 
       if (model.organization) {
         let plan = params.plan || 'development';
@@ -44,9 +32,17 @@ export default Ember.Route.extend({
     });
   },
 
-  afterModel: function(model) {
+  afterModel(model) {
     if (!model.organization) {
       this.transitionTo('no-organization');
     }
+
+    this.store.find('billing-detail', model.organization.get('id')).then(() => {
+      this.store.findStacksFor(model.organization).then((stacks) => {
+        if(stacks.get('length') > 0) {
+          this.transitionTo('stacks');
+        }
+      });
+    }).catch(Ember.$.noop);
   }
 });

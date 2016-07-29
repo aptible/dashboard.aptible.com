@@ -33,7 +33,7 @@ test(`visiting ${appVhostsUrl} without any endpoints redirects to ${appVhostsNew
   signInAndVisit(appVhostsUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.app.vhosts.new');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.app.vhosts.new');
   });
 });
 

@@ -36,7 +36,7 @@ test(`visiting ${url} shows form to create new environment`, (assert) => {
   stubStacks();
   signInAndVisit(url);
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.environments.new');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.environments.new');
     expectButton('Save environment');
     expectButton('Cancel');
     expectFocusedInput('environment-handle');
@@ -77,7 +77,7 @@ test(`visiting ${url} and creating new environment`, (assert) => {
     clickButton('Save environment');
   });
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.environments.index');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.environments.index');
   });
 });
 
@@ -119,7 +119,7 @@ test(`visiting ${url} and with duplicate handle`, (assert) => {
   });
   andThen(() => {
     //Still on new page
-    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.environments.new');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.environments.new');
   });
 });
 
@@ -157,7 +157,7 @@ test(`visiting ${url} and creating new prod environment`, (assert) => {
     clickButton('Save environment');
   });
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.environments.index');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.environments.index');
   });
 });
 
@@ -195,6 +195,6 @@ test(`Creating a new environment with non-phi plan offers a link to upgrade`, (a
     clickButton('Save environment');
   });
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.organization.environments.index');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.environments.index');
   });
 });

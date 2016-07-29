@@ -6,7 +6,8 @@ import { stubRequest } from '../../helpers/fake-server';
 
 let application;
 let oldCreateToken;
-let url = '/welcome/first-app';
+let url = '/welcome/1/first-app';
+let paymentsUrl = '/welcome/1/payment-info';
 let claimUrls = ['/claims/user', '/claims/account', '/claims/app', '/claims/database'];
 
 function visitPaymentInfoWithApp(options, userData){
@@ -74,17 +75,27 @@ module('Acceptance: WelcomePaymentInfo', {
   }
 });
 
-test('visiting /welcome/payment-info when not logged in', function() {
-  expectRequiresAuthentication('/welcome/payment-info');
+test('visiting /welcome/1/payment-info when not logged in', function() {
+  expectRequiresAuthentication(paymentsUrl);
 });
 
-test('visiting /welcome/payment-info logged in with stacks', function(assert) {
+test('visiting /welcome/1/payment-info logged in with billing detail', function(assert) {
   stubStacks();
   stubOrganizations();
-  signInAndVisit('/welcome/payment-info');
+  signInAndVisit(paymentsUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+  });
+});
+
+test('visiting /welcome/1/payment-info/ logged in WITHOUT billing detail', function(assert) {
+  stubStacks();
+  stubOrganizations();
+  signInAndVisit(paymentsUrl);
+
+  andThen(function() {
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
   });
 });
 
@@ -186,7 +197,7 @@ test('payment info should be submitted to stripe to create stripeToken', functio
     clickButton('Save');
   });
   andThen( () => {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
   });
 });
 
@@ -229,7 +240,7 @@ test('submitting valid payment info for development plan should create dev stack
     clickButton('Save');
   });
   andThen( () => {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.new');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.new');
   });
 });
 
@@ -255,7 +266,8 @@ test('submitting valid payment info on organization with existing stripe info sh
       _embedded: {
         organizations: [{
           _links: {
-            self: { href: '/organizations/1' }
+            self: { href: '/organizations/1' },
+            billing_detail: { href: '/billing_details/1' }
           },
           id: 1, name: 'Sprocket Co', type: 'organization',
           stripe_subscription_id: 'sub_xxx', stripe_customer_id: 'cus_xxx'
@@ -281,7 +293,7 @@ test('submitting valid payment info on organization with existing stripe info sh
   clickButton('Save');
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.new');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.new');
   });
 });
 
@@ -297,7 +309,6 @@ test('submitting valid payment info should create app', function(assert) {
 
   let stackHandle = 'sprocket-co';
   let appHandle = 'my-app-1';
-
 
   stubRequest('post', '/accounts', function(request){
     var params = this.json(request);
@@ -324,7 +335,7 @@ test('submitting valid payment info should create app', function(assert) {
   });
   clickButton('Save');
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
   });
 });
 
@@ -371,7 +382,7 @@ test('submitting valid payment info should create db', function(assert) {
   });
   clickButton('Save');
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.new');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.new');
   });
 });
 
@@ -426,7 +437,7 @@ test('submitting valid payment info when user is verified should provision db', 
   });
   clickButton('Save');
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.apps.new');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.new');
 
     assert.equal(databaseParams.handle, dbHandle,
           'db params has handle');

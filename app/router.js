@@ -53,7 +53,7 @@ const Router = Ember.Router.extend({
 
 Router.map(function() {
   this.authenticatedRoute("dashboard", { path: '/' }, function() {
-    this.route('requires-read-access', { path: '', resetNamespace: true }, function() {
+    this.route('catch-redirects', { path: '', resetNamespace: true }, function() {
       this.route("index", { path: '', resetNamespace: true });
 
       this.route("app", {
@@ -173,6 +173,7 @@ Router.map(function() {
   });
 
   this.authenticatedRoute("welcome", {
+    path: '/welcome/:organization_id',
     resetNamespace: true
   }, function() {
     this.route("first-app");

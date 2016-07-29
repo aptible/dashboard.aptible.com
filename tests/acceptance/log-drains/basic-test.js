@@ -87,7 +87,7 @@ test(`visit ${url} shows basic info`, function(assert){
   signInAndVisit(url);
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.log-drains.index');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.log-drains.index');
 
     expectButton('Add Log');
 
@@ -134,7 +134,7 @@ test(`visit ${url} shows pending and provisioning`, function(assert){
   signInAndVisit(url);
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.log-drains.index');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.log-drains.index');
 
     expectButton('Add Log');
 
@@ -160,7 +160,7 @@ test(`visit ${url} shows log tail explanation`, function(assert) {
   signInAndVisit(url);
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.log-drains.index');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.log-drains.index');
     assert.ok(!find('h5:contains(Host)').length, 'has no host section');
     assert.ok(find('h3:contains(log drain was automatically provisioned)').length, 'has tail explanation');
   });
@@ -171,7 +171,7 @@ test(`visit ${url} with no log drains will redirect to new log drains`, function
   signInAndVisit(url);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.log-drains.new');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.log-drains.new');
   });
 });
 
@@ -184,7 +184,7 @@ test(`visit ${url} with log drains and click add log shows form`, function(asser
   });
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.log-drains.new');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.log-drains.new');
     assert.equal(currentURL(), addLogUrl);
 
     let formEl = find('form.create-log');
@@ -269,12 +269,12 @@ test(`visit ${addLogUrl} and cancel`, function(assert){
   signInAndVisit(addLogUrl);
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.log-drains.new');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.log-drains.new');
     clickButton('Cancel');
   });
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.log-drains.index');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.log-drains.index');
   });
 });
 
@@ -330,7 +330,7 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
   });
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.log-drains.index');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.log-drains.index');
   });
 });
 
@@ -419,7 +419,7 @@ test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
   });
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.log-drains.index');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.log-drains.index');
   });
 });
 
@@ -474,7 +474,7 @@ test(`visit ${addLogUrl} and create log to HTTPS`, function(assert){
   });
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.log-drains.index');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.log-drains.index');
   });
 });
 
@@ -494,7 +494,7 @@ test(`visit ${addLogUrl} and create log failure`, function(assert){
     clickButton('Save Log', {context:formEl});
   });
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.requires-read-access.stack.log-drains.new');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.log-drains.new');
     let errorDiv = find('.alert');
     assert.ok( errorDiv.length, 'error div is shown');
     assert.ok( errorDiv.text().indexOf(errorMessage) > -1,
