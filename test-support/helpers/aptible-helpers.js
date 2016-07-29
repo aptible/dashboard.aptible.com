@@ -100,7 +100,7 @@ Ember.Test.registerAsyncHelper('expectRedirectsWhenLoggedIn', function(app, url)
   signInAndVisit(url);
 
   andThen(function(){
-    equal(currentPath(), 'dashboard.requires-read-access.stack.apps.index');
+    equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
   });
 });
 
