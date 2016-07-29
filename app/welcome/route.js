@@ -42,7 +42,7 @@ export default Ember.Route.extend({
         if(stacks.get('length') > 0) {
           this.transitionTo('stacks');
         }
-      })
+      });
     }).catch(Ember.$.noop);
   }
 });

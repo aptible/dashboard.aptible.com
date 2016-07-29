@@ -304,7 +304,6 @@ test('submitting valid payment info should create app', function(assert) {
   stubOrganization();
 
   stubRequest('get', '/billing_details/1', function(){
-    console.log("CATCHING");
     return this.notFound();
   });
 
