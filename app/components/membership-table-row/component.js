@@ -18,16 +18,16 @@ export default Ember.Component.extend({
 
   hasOwnerShield: Ember.computed('membership.user', 'memberUserRoles.[]', function() {
     let roles = this.get('memberUserRoles');
-
-    if (!this.get('user')) {
-      return false;
-    }
-
-    if (this.get('role.isCompliance')) {
-      return this.get('user').isComplianceOwner(roles, this.get('organization'));
-    }
-    return this.get('user').isPlatformOwner(roles, this.get('organization'));
+    return this.isRoleOwner(this.get('user'), roles);
   }),
+
+  isRoleOwner(user, roles) {
+    if (!this.get('user')) { return false; }
+    if (this.get('role.isCompliance')) {
+      return user.isComplianceOwner(roles, this.get('organization'));
+    }
+    return user.isPlatformOwner(roles, this.get('organization'));
+  },
 
   // Account | Platform | Compliance Owners effectively have admin privileges,
   // so it gets toggled and disabled.
