@@ -28,15 +28,27 @@ test('visiting /welcome/first-app when not logged in', function(assert) {
   });
 });
 
-test('visiting /welcome/first-app logged in with stacks', function(assert) {
+test('visiting /welcome/1/first-app logged in with no billing detail', function(assert) {
   stubStacks();
   stubRequest('get', '/billing_details/1', (request) => request.notFound());
   stubOrganizations();
   stubOrganization();
-  signInAndVisit('/welcome/first-app');
+  signInAndVisit('/welcome/1/first-app');
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'welcome.first-app', 'remain on welcome page');
+  });
+});
+
+test('visiting /welcome/1/first-app logged in with billing detail and stacks redirects to stacks', function(assert) {
+  stubStacks();
+  stubBillingDetail({ id: 1 });
+  stubOrganizations();
+  stubOrganization();
+  signInAndVisit('/welcome/1/first-app');
+
+  andThen(function() {
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index', 'remain on welcome page');
   });
 });
 
