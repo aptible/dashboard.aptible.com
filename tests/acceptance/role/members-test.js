@@ -99,18 +99,14 @@ test(`visiting ${pageUrl} role members can be added by account owners`, (assert)
     findWithAssert('.aptable--empty');
     let select = $('.role__add-user select');
     let optVal = $('.role__add-user option:last-of-type').val();
-    Ember.run(() => {
-      select.val(optVal);
-      select.trigger('change');
-    });
+    select.val(optVal);
+    select.trigger('change');
     clickButton('Add');
   });
   andThen(() => {
-    Ember.run(() => {
-      findWithAssert('.aptable__member-row');
-      assert.equal(find(`.profile--inline:contains(${memberUser.name})`).length,
-        1, 'Added user is rendered.');
-    });
+    findWithAssert('.aptable__member-row');
+    assert.equal(find(`.profile--inline:contains(${memberUser.name})`).length,
+      1, 'Added user is rendered.');
   });
 });
 
