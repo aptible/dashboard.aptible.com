@@ -5,27 +5,24 @@ export default Ember.Component.extend({
   tagName: 'tr',
   initialized: false,
   busy: false,
-  memberUserRoles: [],
-  currentUserRoles: [],
+  user: Ember.computed.reads('membership.user'),
+  memberUserRoles: Ember.computed.reads('membership.user.roles'),
+  currentUserRoles: Ember.computed.reads('currentUser.roles'),
 
+  // See note in togglePrivileged for why the initialized flag is set.
   setup: function() {
-    this.get('membership.user.roles').then((roles) => {
-      this.set('memberUserRoles', roles);
-    });
-    this.get('currentUser.roles').then((roles) => {
-      this.set('currentUserRoles', roles);
-    });
     Ember.run.next(() => {
       this.set('initialized', true);
     });
   }.on('init'),
 
-  hasOwnerShield: Ember.computed('memberUserRoles.[]', function() {
-    let user = this.get('membership.user');
-    return this.isRoleOwner(user, this.get('memberUserRoles'));
+  hasOwnerShield: Ember.computed('membership.user', 'memberUserRoles.[]', function() {
+    let roles = this.get('memberUserRoles');
+    return this.isRoleOwner(this.get('user'), roles);
   }),
 
   isRoleOwner(user, roles) {
+    if (!this.get('user')) { return false; }
     if (this.get('role.isCompliance')) {
       return user.isComplianceOwner(roles, this.get('organization'));
     }
