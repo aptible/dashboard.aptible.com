@@ -183,6 +183,8 @@ Router.map(function() {
   this.authenticatedRoute("trainee-dashboard", { resetNamespace: true });
   this.authenticatedRoute("elevate", { resetNamespace: true });
   this.authenticatedRoute("no-organization", { resetNamespace: true });
+  this.authenticatedRoute("no-stack", { resetNamespace: true });
+
 
   this.route("login");
   this.route("signup", {}, function(){

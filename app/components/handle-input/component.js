@@ -25,6 +25,6 @@ export default OneWayInput.extend(Autofocusable, {
       // FIXME: nonAlphaNumerics really should be replaced with an empty string,
       // however that breaks the `value` attr binding so that the first invalid
       // character is never actually stripped.
-      replace(nonAlphaNumerics, '-');
+      replace(nonAlphaNumerics, '');
   }
 });
