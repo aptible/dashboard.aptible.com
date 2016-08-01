@@ -30,11 +30,17 @@ export default Ember.Route.extend({
     create(){
       let app = this.currentModel;
       let route = this;
+      this.controller.set('isSaving', true);
 
       app.save({ stack: {id: app.get('stack.id')} }).then(() => {
-        let message = `${app.get('handle')} app created`;
         route.transitionTo('app', app);
+        let message = `${app.get('handle')} app created`;
         Ember.get(this, 'flashMessages').success(message);
+        Ember.run.later(() => {
+          this.controller.set('isSaving', false);
+        });
+      }, () => {
+        this.controller.set('isSaving', false);
       });
     },
 

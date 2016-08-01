@@ -3,8 +3,8 @@ import { buildCredentials } from "diesel/login/route";
 
 export default Ember.Mixin.create({
   actions: {
-    signup: function(user, organization){
-      let {email, password} = user.getProperties('email', 'password');
+    signup(user, organization){
+      let { email, password } = user.getProperties('email', 'password');
       this.controller.set('isSaving', true);
 
       user.save().then(() => {
@@ -14,6 +14,17 @@ export default Ember.Mixin.create({
         if (organization) {
           // standard signup flow, create organization at the same time
           return organization.save().then(() => {
+            let roles = this.session.get('currentUser.roles');
+            // Roles are used to determine the visibility of nav items once
+            // signup is complete.  We should force a reload here since
+            // organization#create bootstraps several roles for this user.
+            // We dont' need to wait on these since they won't be used
+            // immediately.
+
+            if(roles.get('isFulfilled')) {
+              roles.reload();
+            }
+
             this.transitionTo('welcome.first-app', organization.get('id'));
             this.controller.set('isSaving', false);
           });
@@ -30,4 +41,3 @@ export default Ember.Mixin.create({
     }
   }
 });
-
