@@ -1,0 +1,11 @@
+{{#error-page
+  title="Your account doesn't have access to any environments!"
+  message="This is likely because of an error during your account's initial setup.  Please contact support using the link below."
+  actionName="Logout"
+  actionDestination="settings.logout"}}
+
+  <p>
+    Note: you're still logged in as {{session.currentUser.name}};
+    if you are on a shared computer, log out now:
+  </p>
+{{/error-page}}

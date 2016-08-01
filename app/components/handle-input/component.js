@@ -22,6 +22,9 @@ export default OneWayInput.extend(Autofocusable, {
     return truncate(input, maxChars).
       replace(capitalLetters, replaceWithLower).
       replace(spaces, '-').
+      // FIXME: nonAlphaNumerics really should be replaced with an empty string,
+      // however that breaks the `value` attr binding so that the first invalid
+      // character is never actually stripped.
       replace(nonAlphaNumerics, '');
   }
 });
