@@ -112,3 +112,45 @@ test("Submitting the elevation form requires an elevated token, and does not des
     assert.equal(createTokenRequestCount, 1, "A single request was made to create a token");
   });
 });
+
+test("Submitting the elevation form redirects to redirectTo", function(assert) {
+  const user = createStubUser({ email: "foo@bar.com", password: "123" });
+  const redirectTo = 'settings.profile';
+
+  stubRequest('post', '/tokens', function() {
+    return this.success(createStubToken({ scope: "elevated" }, user));
+  });
+
+  signIn(user, {}, { scope: "manage" });
+
+  andThen(() => visit(`/elevate?redirectTo=${redirectTo}`));
+  andThen(() => {
+    fillInput("password", "123");
+    clickButton("Confirm");
+  });
+
+  andThen(() => assert.equal(currentPath(), `dashboard.${redirectTo}`));
+});
+
+test("When redirectTo is invalid, it is not echoed back on screen", function(assert) {
+  const user = createStubUser({ email: "foo@bar.com", password: "123" });
+
+  stubRequest('post', '/tokens', function() {
+    return this.success(createStubToken({ scope: "elevated" }, user));
+  });
+
+  signIn(user, {}, { scope: "manage" });
+
+  andThen(() => visit("/elevate?redirectTo=foobar\nbarqux"));
+  andThen(() => {
+    fillInput("password", "123");
+    clickButton("Confirm");
+  });
+
+  andThen(() => {
+    assert.equal(currentPath(), 'elevate');
+    assert.ok(find("div:contains(Route not found)").length, "Route error is shown");
+    assert.ok(!find("div:contains(foobar)").length, "Route name not shown");
+    assert.ok(!find("div:contains(barqux)").length, "Route name not shown");
+  });
+});
