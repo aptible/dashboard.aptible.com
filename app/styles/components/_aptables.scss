@@ -63,11 +63,6 @@
     td {
       background-color: #f7f8fb;
     }
-
-    .aptable__actions .btn {
-      visibility: visible;
-      opacity: 1;
-    }
   }
 }
 
@@ -83,13 +78,6 @@
 .aptable__actions {
   .btn {
     color: #999;
-    opacity: 0;
-    transition: opacity 0.25s ease-in-out;
-    visibility: hidden;
-
-    &:hover {
-      color: #999;
-    }
   }
 
   a.btn.btn-xs {
