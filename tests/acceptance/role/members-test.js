@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import {
   module,
-  test
+  test,
+  skip
 } from 'qunit';
 import startApp from 'diesel/tests/helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
@@ -114,6 +115,14 @@ test(`visiting ${pageUrl} role members can be added by account owners`, (assert)
   });
 });
 
-// TODO:
-//  - admin member toggle
-//  - remove
+skip(`visiting ${pageUrl} role members can be removed by account owners`, (assert) => {
+  assert.expect(1);
+});
+
+skip(`visiting ${pageUrl} role members' last role cannot be removed`, (assert) => {
+  assert.expect(1);
+});
+
+skip(`visiting ${pageUrl} role members can be made an admins`, (assert) => {
+  assert.expect(1);
+});

@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import {
   module,
-  test
+  test,
+  skip
 } from 'qunit';
 import startApp from 'diesel/tests/helpers/start-app';
 import { stubRequest } from 'diesel/tests/helpers/fake-server';
@@ -203,4 +204,12 @@ test(`visit ${url} allows removing user from organization`, function(assert){
   andThen(() => {
     assert.equal(currentPath(), 'dashboard.catch-redirects.organization.members.index');
   });
+});
+
+skip(`disables remove for the organization's security officer`, function(assert){
+  assert.expect(1);
+});
+
+skip(`disables remove for the organization's billing contact`, function(assert){
+  assert.expect(1);
 });
