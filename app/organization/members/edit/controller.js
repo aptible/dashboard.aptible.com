@@ -15,16 +15,25 @@ export default Ember.Controller.extend({
   isSecurityOfficer: Ember.computed('organization.securityOfficer.id', 'model.id', function() {
     return this.get('organization.securityOfficer.id') === this.get('model.id');
   }),
+
   isBillingContact: Ember.computed('organization.billingDetail.billingContact.id', 'model.id', function() {
     return this.get('organization.billingDetail.billingContact.id') === this.get('model.id');
   }),
-  disableRemoveMessage: Ember.computed('isSecurityOfficer', 'isBillingContact', function() {
-    if(this.get('isSecurityOfficer')) {
-      return `${this.get('model.name')} is this organization's Security Officer.`;
-    } else if(this.get('isBillingContact')) {
-      return `${this.get('model.name')} is this organization's Billing Contact.`;
-    }
 
+  removeMessage(userName, orgName, officer) {
+    return `${userName} is ${orgName}'s ${officer} and cannot be removed until
+            another user is assigned.`;
+  },
+
+  disableRemoveMessage: Ember.computed('isSecurityOfficer', 'isBillingContact', function() {
+    let userName = this.get('model.name');
+    let orgName = this.get('organization.name');
+    if (this.get('isSecurityOfficer')) {
+      return this.removeMessage(userName, orgName, 'Security Officer');
+    }
+    if (this.get('isBillingContact')) {
+      return this.removeMessage(userName, orgName, 'Billing Contact');
+    }
     return false;
   })
 });

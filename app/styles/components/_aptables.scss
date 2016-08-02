@@ -80,7 +80,7 @@
     color: #999;
   }
 
-  a.btn.btn-xs {
+  .btn.btn-xs.btn--link {
     padding: 1px 4px;
   }
   .x-toggle:checked + .x-toggle-light.x-toggle-btn {
@@ -88,6 +88,14 @@
   }
   .x-toggle-container-disabled {
     opacity: 0.6;
+  }
+  .btn__tip {
+    opacity: 0;
+    cursor: pointer;
+    height: 28px;
+    padding: 5px 8px 3px;
+    position: absolute;
+    transform: translate(25px, -28px);
   }
 }
 .aptable__actions--skinny {

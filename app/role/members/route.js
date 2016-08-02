@@ -22,6 +22,14 @@ export default Ember.Route.extend({
 
   // Note: Memberships are removed by the membership table row component
   actions: {
+    completedAction(message) {
+      Ember.get(this, 'flashMessages').success(message);
+    },
+
+    failedAction(message) {
+      Ember.get(this, 'flashMessages').danger(message);
+    },
+
     addMember() {
       const user = this.controller.get('invitedUser');
       if (!user) { return; }

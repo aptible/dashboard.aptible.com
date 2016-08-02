@@ -16,18 +16,28 @@ export default Ember.Component.extend({
     });
   }.on('init'),
 
-  hasOwnerShield: Ember.computed('membership.user', 'memberUserRoles.[]', function() {
-    let roles = this.get('memberUserRoles');
-    return this.isRoleOwner(this.get('user'), roles);
+  billingDetail: Ember.computed.reads('organization.billingDetail'),
+
+  isOnlyRole: Ember.computed('membership.user', 'memberUserRoles.[]', function() {
+    return this.get('memberUserRoles.length') === 1;
   }),
 
-  isRoleOwner(user, roles) {
-    if (!this.get('user')) { return false; }
-    if (this.get('role.isCompliance')) {
-      return user.isComplianceOwner(roles, this.get('organization'));
+  hasOwnerShield: Ember.computed('membership.user', 'memberUserRoles.[]', function() {
+    return this.isRoleOwner(this.get('user'), this.get('memberUserRoles'));
+  }),
+
+  removeTooltip: Ember.computed('organization.name', 'membership.user', 'memberUserRoles.[]', 'organization.securityOfficer.id', 'billingDetail.billingContact.id', function() {
+    if (!this.get('isOnlyRole')) {
+      return "Remove role membership";
     }
-    return user.isPlatformOwner(roles, this.get('organization'));
-  },
+    return `${this.get('user.name')} must be assigned to another role before
+      they can be removed from ${this.get('role.name')}.`;
+  }),
+
+  linkToEditMember: Ember.computed('currentUserRoles.[]', function() {
+    return this.get('isOnlyRole') &&
+      this.get('currentUser').isAccountOwner(this.get('currentUserRoles'), this.get('organization'));
+  }),
 
   // Account | Platform | Compliance Owners effectively have admin privileges,
   // so it gets toggled and disabled.
@@ -36,7 +46,7 @@ export default Ember.Component.extend({
       this.get('membership.privileged');
   }),
 
-  isDisabled: Ember.computed('memberUserRoles.[]', 'currentUserRoles.[]', function() {
+  isToggleDisabled: Ember.computed('memberUserRoles.[]', 'currentUserRoles.[]', function() {
     if (this.get('role.isOwner')) { return true; }
 
     // Disable if current user is not a role owner
@@ -47,6 +57,14 @@ export default Ember.Component.extend({
     // if they are an owner
     return this.isRoleOwner(this.get('membership.user'), this.get('memberUserRoles'));
   }),
+
+  isRoleOwner(user, roles) {
+    if (!this.get('user')) { return false; }
+    if (this.get('role.isCompliance')) {
+      return user.isComplianceOwner(roles, this.get('organization'));
+    }
+    return user.isPlatformOwner(roles, this.get('organization'));
+  },
 
   actions: {
     togglePrivileged(isOn) {
@@ -81,7 +99,8 @@ export default Ember.Component.extend({
       if (!confirm(confirmMsg)) { return false; }
 
       membership.destroyRecord().then(() => {
-        let message = `${user.get('name')} removed from ${role.get('name')} role`;
+        let message = `${user.get('name')} removed from ${role.get('name')}.`;
+
         this.sendAction('completedAction', message);
         // Ember Data relates users to roles (the membership relationship is inferred),
         // need to remove the user from the role's list of users

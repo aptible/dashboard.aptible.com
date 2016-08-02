@@ -7,12 +7,12 @@
   {{#aptible-ability scope="manage" user=session.currentUser role=invitation.role permittable=organization as |hasAbility|}}
     {{#if hasAbility}}
       <td class="aptable__actions aptable__actions--skinny">
-        <a class="btn btn-default btn-xs" {{action 'destroyInvitation' invitation}} href="#">
+        <a class="btn btn-default btn-xs btn--link" {{action 'destroyInvitation' invitation}} href="#">
           {{#bs-tooltip title="Delete Invitation"}}
             <i class="fa fa-times"></i>
           {{/bs-tooltip}}
         </a>
-        <a class="btn btn-default btn-xs" {{action 'resendInvitation' invitation}} href="#">
+        <a class="btn btn-default btn-xs btn--link" {{action 'resendInvitation' invitation}} href="#">
           {{#bs-tooltip title="Resend Invitation"}}
           <i class="fa fa-undo"></i>
           {{/bs-tooltip}}

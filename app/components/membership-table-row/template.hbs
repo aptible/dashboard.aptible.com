@@ -14,13 +14,28 @@
       toggled=isToggled
       toggle='togglePrivileged'
       showLabels=false
-      disabled=isDisabled
+      disabled=isToggleDisabled
       size='small'}}
 </td>
 <td class="aptable__actions aptable__actions--skinny">
-  <a class="btn btn-default btn-xs" {{action 'destroyMembership' membership}} href="#">
-    {{#bs-tooltip title="Remove role membership"}}
+  {{#if isOnlyRole}}
+    {{#if linkToEditMember}}
+      {{#link-to 'organization.members.edit' organization membership.user classNames='btn btn-default btn-xs'}}
+        {{#bs-tooltip title=removeTooltip}}
+          <i class="glyphicon glyphicon-pencil"></i> Edit
+        {{/bs-tooltip}}
+      {{/link-to}}
+    {{else}}
+      <button class="btn btn-default btn-xs" disabled>
+        <i class="fa fa-times"></i> Remove
+      </button>
+      {{#bs-tooltip title=removeTooltip}}
+        <i class="fa fa-exclamation-triangle btn__tip">Remove</i>
+      {{/bs-tooltip}}
+    {{/if}}
+  {{else}}
+    <button class="btn btn-default btn-xs" {{action 'destroyMembership'}}>
       <i class="fa fa-times"></i> Remove
-    {{/bs-tooltip}}
-  </a>
+    </button>
+  {{/if}}
 </td>
