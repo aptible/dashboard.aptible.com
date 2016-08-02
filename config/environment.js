@@ -101,7 +101,7 @@ module.exports = function(environment) {
     },
 
     contentSecurityPolicy: {
-      'connect-src': "'self' ws://aptible1.local:49152 http://aptible1.local:4200 http://aptible1.local:4000 http://aptible1.local:4001 http://aptible1.local:4002 http://aptible1.local:4004 http://localhost:4000 http://localhost:4001 http://localhost:4002 ws://localhost:35729 ws://0.0.0.0:35729 http://api.mixpanel.com http://api.segment.io https://auth.aptible-staging.com https://api.aptible-staging.com https://gridiron.aptible-staging.com https://api-ping.intercom.io wss://*.intercom.io https://*.intercom.io" + [
+      'connect-src': "'self' ws://aptible1.local:49152 http://aptible1.local:4200 http://aptible1.local:4000 http://aptible1.local:4001 http://aptible1.local:4002 http://aptible1.local:4004 http://localhost:4000 http://localhost:4001 http://localhost:4002 ws://localhost:35729 ws://0.0.0.0:35729 http://api.mixpanel.com http://api.segment.io https://auth.aptible-staging.com https://api.aptible-staging.com https://gridiron.aptible-staging.com https://api-ping.intercom.io wss://*.intercom.io https://*.intercom.io " + [
         metricsBaseUri, complianceBaseUri, authBaseUri, apiBaseUri,
         gridironBaseUri, billingBaseUri, dashboardBaseUri,
       ].join(' '),
