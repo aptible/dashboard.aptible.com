@@ -25,7 +25,23 @@ export default Ember.Route.extend({
       let authPromiseFactory = function(credentials) {
         return elevationService.createElevatedToken(credentials).then(() => {
           let redirectTo = route.currentModel.get("redirectTo") || "index";
-          route.transitionTo(redirectTo);
+
+          // redirectTo is persisted in the URL, which makes this page work
+          // after a reload. However, it means it can be spoofed by sending
+          // someone to this page with a invalid redirectTo. However unlikely,
+          // this could hypothetically be exploited to facilitate a social
+          // engineering attack. So, if we get a route not found error, let's
+          // replace it with a more generic one.
+          try {
+            route.transitionTo(redirectTo);
+          } catch(transitionError) {
+            if (transitionError.message.match(/route[^]+not found/)) {
+              const newError = new Error("Route not found.");
+              newError.originalError = transitionError;
+              throw newError;
+            }
+            throw transitionError;
+          }
         });
       };
 
