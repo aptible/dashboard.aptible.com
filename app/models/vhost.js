@@ -20,6 +20,7 @@ export default DS.Model.extend(ProvisionableMixin, {
   operations: DS.hasMany('operation', {async:true}),
 
   reloadWhileProvisioning: true,
+  useCertificate: true,
 
   commonName: Ember.computed.alias('virtualDomain'),
 
@@ -34,10 +35,14 @@ export default DS.Model.extend(ProvisionableMixin, {
     return !(this.get("isDefault") || this.get("isAcme"));
   }),
 
-  acmeActivationRequired: Ember.computed('isProvisioned', 'isAcme', 'acmeStatus', function() {
+  acmeIsPending: Ember.computed.equal("acmeStatus", "pending"),
+  acmeIsTransitioning: Ember.computed.equal("acmeStatus", "transitioning"),
+  acmeIsReady: Ember.computed.equal("acmeStatus", "ready"),
+
+  acmeActivationRequired: Ember.computed('isProvisioned', 'isAcme', 'acmeIsReady', function() {
     if (!this.get('isProvisioned')) { return false; }
     if (!this.get('isAcme')) { return false; }
-    return this.get('acmeStatus') !== 'ready';
+    return !this.get("acmeIsReady");
   }),
 
   actionsRequired: Ember.computed('acmeActivationRequired', function() {
