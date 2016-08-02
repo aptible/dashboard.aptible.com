@@ -39,15 +39,17 @@
           </div>
         </div>
 
-        <div class="slider-actions" data-visible="{{showActionButtons}}">
-          <button {{action "cancel"}} class="btn btn-xs btn-default btn-cancel">Cancel</button>
-          <button {{action "scale"}} class="btn btn-xs btn-primary slider-confirm" disabled={{ isSaving }}>
-            {{#if isSaving}}
-              Scaling...
-            {{else}}
-              Scale
-            {{/if}}
-          </button>
+        <div class="slider-actions">
+          {{#if showActionButtons}}
+            <button {{action "cancel"}} class="btn btn-xs btn-default btn-cancel">Cancel</button>
+            <button {{action "scale"}} class="btn btn-xs btn-primary slider-confirm" disabled={{ isSaving }}>
+              {{#if isSaving}}
+                Scaling...
+              {{else}}
+                Scale
+              {{/if}}
+            </button>
+          {{/if}}
         </div>
       </div>
 

@@ -110,12 +110,7 @@
 
   .slider-actions {
     text-align: right;
-    visibility: hidden;
     min-width: 64px;
-
-    &[data-visible='true'] {
-      visibility: visible;
-    }
 
     .btn {
       display: inline-block;

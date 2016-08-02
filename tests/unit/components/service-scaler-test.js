@@ -13,6 +13,13 @@ function buildFeaturesMock() {
   });
 }
 
+function scale(size) {
+  let slider = this.$().find('.slider');
+  slider.trigger('slide', size);
+  slider.trigger('set', size);
+  this.$().find("button:contains(Scale)").click();
+}
+
 moduleForComponent('service-scaler', 'ServiceScalerComponent', {
   unit: true,
   needs: ['component:no-ui-slider', 'component:estimated-cost'],
@@ -94,7 +101,7 @@ test('it should show a success message when it succeeds', function(assert) {
   const scaleServiceAction = function(_0, _1, _2, deferred) {
     return deferred.resolve();
   };
-
+  let newContainerCount = 2;
   this.subject({
     service: Ember.Object.create({
       containerSize: 1024,
@@ -103,15 +110,13 @@ test('it should show a success message when it succeeds', function(assert) {
         sweetnessStackVersion: 'v2'
       })
     }),
-    containerCount: 2,
     targetObject: { scaleServiceAction },
     scaleService: "scaleServiceAction"
   });
 
   this.render();
-
   Ember.run(() => {
-    this.$().find("button").click();
+    scale.call(this, newContainerCount);
   });
 
   assert.ok(!this.$().find("div:contains(Some error)").length, "Has no error");
@@ -122,6 +127,7 @@ test('it should not show a success message when it fails', function(assert) {
   const scaleServiceAction = function(_0, _1, _2, deferred) {
     return deferred.reject(new Error("Some error"));
   };
+  let newContainerCount = 2;
 
   this.subject({
     service: Ember.Object.create({
@@ -131,7 +137,6 @@ test('it should not show a success message when it fails', function(assert) {
         sweetnessStackVersion: 'v2'
       })
     }),
-    containerCount: 2,
     targetObject: { scaleServiceAction },
     scaleService: "scaleServiceAction"
   });
@@ -139,7 +144,7 @@ test('it should not show a success message when it fails', function(assert) {
   this.render();
 
   Ember.run(() => {
-    this.$().find("button").click();
+    scale.call(this, newContainerCount);
   });
 
   assert.ok(this.$().find("div:contains(Some error)").length, "Has error");

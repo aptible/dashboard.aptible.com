@@ -139,12 +139,14 @@ test(`visit ${url} allows scaling of services`, function(assert) {
 
   signInAndVisit(url);
   andThen(() => {
-    assert.equal($('.btn:contains("Scale")').css('visibility'), 'hidden', 'Scale button is hidden');
+    let scaleButton = find($('.btn:contains("Scale")'));
+    assert.equal(scaleButton.length, 0, 'Scale button is not visible');
     triggerSlider('.slider', newContainerCount);
   });
 
   andThen(() => {
-    assert.equal($('.btn:contains("Scale")').css('visibility'), 'visible', 'Scale button is visible');
+    let scaleButton = find($('.btn:contains("Scale")'));
+    assert.equal(scaleButton.length, 1, 'Scale button is visible');
     clickButton('Scale');
   });
 });
