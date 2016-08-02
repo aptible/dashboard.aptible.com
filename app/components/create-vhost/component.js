@@ -9,19 +9,22 @@ const VHOST_RESET_PROPERTIES = {};
 VHOST_RESET_PROPERTIES[VHOST_TYPE_GENERIC] = {
   "isDefault": false,
   "isAcme": false,
-  "userDomain": null
+  "userDomain": null,
+  "useCertificate": true
 };
 
 VHOST_RESET_PROPERTIES[VHOST_TYPE_DEFAULT] = {
   "isDefault": true,
   "isAcme": false,
-  "userDomain": null
+  "userDomain": null,
+  "useCertificate": false
 };
 
 VHOST_RESET_PROPERTIES[VHOST_TYPE_ACME] = {
   "isDefault": false,
   "isAcme": true,
-  "internal": false
+  "internal": false,
+  "useCertificate": false
 };
 
 export default Ember.Component.extend({
@@ -72,7 +75,6 @@ export default Ember.Component.extend({
 
   placementNeeded: Ember.computed.not("isAcme"),
   userDomainNeeded: Ember.computed.and("isAcme"),
-  certificateNeeded: Ember.computed.and("isGeneric"),
 
   defaultVhostAllowed: Ember.computed("vhosts.[]", function() {
     return !(this.get("vhosts").any((vhost) => {

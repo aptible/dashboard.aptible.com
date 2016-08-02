@@ -4,9 +4,25 @@
 </p>
 
 <p>
-  Once you've done so, click <i>{{actionLabel}}</i>, and Aptible will attempt to
-  generate a SSL certificate for your domain.
+  Once you've done so, click <strong>{{actionLabel}}</strong>, and Aptible will
+  attempt to generate a new SSL certificate for your domain.
 </p>
+
+{{#if vhost.acmeIsPending}}
+<p>
+<strong>
+  Note: you have not provided a transitional certificate. Your app will be
+  temporarily unavailable once you switch over DNS.
+</strong>
+</p>
+{{/if}}
+
+{{#if vhost.acmeIsTransitioning}}
+<p>
+Note: you have provided a transitional certificate. Your app will be available
+once you switch over DNS, and Managed SSL setup will happen in the background.
+</p>
+{{/if}}
 
 <button class="btn btn-default btn-xs" href="#" {{action 'renew'}} disabled={{isRenewing}}>
   {{#if isRenewing}}

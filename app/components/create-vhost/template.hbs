@@ -125,8 +125,30 @@
                    name to one provided by Aptible."}}
           {{/if}}
 
-          {{! TODO: Allow ACME transitional certificates}}
-          {{#if certificateNeeded}}
+          {{#if isAcme}}
+            <div class="form-group">
+              <label class="block">
+                Transitional Certificate
+              </label>
+              <p>
+                Managed SSL provisions a certificate for you, but this process
+                takes a little while. During this time, your application will
+                be unavailable. If you need to avoid downtime, you can provide
+                a transitional certificate, which will let Aptible provision
+                your Managed SSL certificate in the background, while your app
+                is running.
+              </p>
+              {{input type="checkbox"
+                name="acme-use-transitional"
+                id="acme-use-transitional"
+                checked=model.useCertificate}}
+                <label for="acme-use-transitional">
+                  Use a transitional certificate (recommended if your application is already live)
+                </label>
+            </div>
+          {{/if}}
+
+          {{#if model.useCertificate}}
             {{select-or-create-certificate certificates=certificates vhost=model}}
           {{/if}}
         </div>

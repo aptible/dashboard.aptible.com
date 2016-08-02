@@ -38,8 +38,7 @@ export default Ember.Route.extend({
 
       let promise;
 
-      // TODO: Allow ACME transitional certificates.
-      if (vhost.get("isGeneric")) {
+      if (vhost.get("useCertificate")) {
         if (vhost.get('certificateBody')) {
           let certificateBody = vhost.get('certificateBody');
           let privateKey = vhost.get('privateKey');
@@ -60,7 +59,8 @@ export default Ember.Route.extend({
           return vhost.save();
         });
       } else {
-        vhost.set('service', service);
+        vhost.setProperties({service, certificate: null,
+          certificateBody: null, privateKey: null});
         promise = vhost.save();
       }
 

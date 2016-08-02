@@ -341,9 +341,10 @@ test(`visit ${appVhostsNewUrl} and create vhost with existing certificates`, fun
 });
 
 test(`visit ${appVhostsNewUrl} and create vhost with new certificate`, function(assert) {
-  assert.expect(8);
+  assert.expect(9);
 
   const vhostId = 'new-vhost-id';
+  let hasCreatedCertificate = false;
 
   setupStubs({ withCertificates: false });
   signInAndVisit(appVhostsNewUrl);
@@ -353,6 +354,7 @@ test(`visit ${appVhostsNewUrl} and create vhost with new certificate`, function(
     assert.equal(json.certificate_body, 'my long cert');
     assert.equal(json.private_key, 'my long pk');
     assert.ok(true, 'creates certificate');
+    hasCreatedCertificate = true;
     return this.success({ id: certificateId, common_name: 'www.health.io',
                           _links: { self: { href: certificateHref }}});
   });
@@ -383,6 +385,10 @@ test(`visit ${appVhostsNewUrl} and create vhost with new certificate`, function(
     fillInput('certificate-body', 'my long cert');
     fillInput('private-key', 'my long pk');
     clickButton('Save Endpoint');
+  });
+
+  andThen(() => {
+    assert.ok(hasCreatedCertificate, "created certificate");
   });
 });
 
@@ -424,7 +430,7 @@ test(`visit ${appVhostsNewUrl} and create default endpoint`, function(assert) {
 });
 
 test(`visit ${appVhostsNewUrl} and create managed endpoint`, function(assert) {
-  assert.expect(11);
+  assert.expect(10);
 
   const userDomainInputSelector = "input[type=text]";
   const userDomain = "some.domain.com";
@@ -442,7 +448,6 @@ test(`visit ${appVhostsNewUrl} and create managed endpoint`, function(assert) {
     assert.equal(json.type, "http_proxy_protocol", "Proxy protocol is set");
     assert.equal(json.user_domain, userDomain, "User domain is set");
     assert.equal(json.acme, true, "ACME is set");
-    assert.equal(json.default, false, "Default is not set");
 
     return this.success({id:vhostId});
   });
@@ -469,6 +474,56 @@ test(`visit ${appVhostsNewUrl} and create managed endpoint`, function(assert) {
   });
 
   andThen(() => {
+    fillIn(findWithAssert(userDomainInputSelector), userDomain);
+  });
+
+  andThen(function(){
+    fillInput("domain-type", true);
+    clickButton("Save Endpoint");
+  });
+});
+
+test(`visit ${appVhostsNewUrl} and create a new transitonal managed endpoint`, function(assert) {
+  assert.expect(8);
+
+  const userDomainInputSelector = "input[type=text]";
+  const userDomain = "some.domain.com";
+  const vhostId = "new-vhost-id";
+
+  setupStubs({ withCertificates: true });
+  signInAndVisit(appVhostsNewUrl);
+
+  stubRequest('post', `/accounts/:stack-id/certificates`, function() {
+    assert.ok(false, 'should not create a new certificate');
+  });
+
+  stubRequest("post", `/services/${serviceId}/vhosts`, function(request){
+    let json = this.json(request);
+    assert.equal(json.default, false, "Default is not set");
+    assert.equal(json.certificate, certificateHref, "Certificate is provided");
+    assert.equal(json.certificate_body, null, "Certificate body is NULL");
+    assert.equal(json.private_key, null, "Certificate key is NULL");
+    assert.equal(json.type, "http_proxy_protocol", "Proxy protocol is set");
+    assert.equal(json.user_domain, userDomain, "User domain is set");
+    assert.equal(json.acme, true, "ACME is set");
+
+    return this.success({id:vhostId});
+  });
+
+  stubRequest("post", `/vhosts/${vhostId}/operations`, function(request){
+    let json = this.json(request);
+    assert.equal(json.type, "provision", "posts provision operation");
+    return this.success({id: "new-op-id"});
+  });
+
+  signInAndVisit(appVhostsNewUrl);
+
+  andThen(() => {
+    click(findWithAssert("label:contains(managed SSL)"));
+  });
+
+  andThen(() => {
+    click(findWithAssert("label:contains(Use a transitional certificate)"));
     fillIn(findWithAssert(userDomainInputSelector), userDomain);
   });
 

@@ -137,13 +137,15 @@ test(`visit ${appVhostsUrl} lists active endpoints`, function(assert) {
   });
 });
 
-test(`visit ${appVhostsUrl} lists endpoints with action required`, function(assert) {
+test(`visit ${appVhostsUrl} lists endpoints with action required with tips`, function(assert) {
+  assert.expect(15);
+
   var vhosts = [{
     id: 1,
     virtual_domain: 'www.health1.io',
     user_domain: 'www.health1.io',
     acme: true,
-    acme_status: 'transitional',
+    acme_status: 'transitioning',
     external_host: 'www.host1.com',
     status: 'provisioned',
   },{
@@ -168,7 +170,7 @@ test(`visit ${appVhostsUrl} lists endpoints with action required`, function(asse
 
   signInAndVisit(appVhostsUrl);
 
-  andThen(function(){
+  andThen(() => {
     assert.equal(find('.vhost').length, vhosts.length);
 
     vhosts.forEach(function(vhost, index){
@@ -185,6 +187,15 @@ test(`visit ${appVhostsUrl} lists endpoints with action required`, function(asse
       assert.ok(vhostEl.find(":contains(Action Required)").length,
          "has Action Required label");
 
+      if (vhost.acme_status === 'pending') {
+        assert.ok(vhostEl.find(":contains(temporarily unavailable)").length,
+                  "has temporarily unavailable tip");
+      } else {
+        assert.ok(vhostEl.find(":contains(in the background)").length,
+                  "has background tip");
+      }
+
+      // Note: those count in assert.expect
       expectNoButton('Edit', {context:vhostEl});
       expectButton('Delete', {context:vhostEl});
     });
