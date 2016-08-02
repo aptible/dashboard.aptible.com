@@ -117,7 +117,7 @@ test(`visiting ${overviewUrl}: basic UI`, function(assert) {
   signInAndVisit(overviewUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'compliance.compliance-organization.engines.training.index');
+    assert.equal(currentPath(), 'compliance.compliance-organization.compliance-engines.training.index');
     assert.equal(find('.workforce-members .user').length, 3, 'shows all 3 active users');
 
     // user 1 is only enrolled in basic

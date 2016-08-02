@@ -12,7 +12,6 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   model() {
     return this.store.find('criterion').then((criteria) => {
-      debugger;
       return Ember.RSVP.hash({
         policyManual: criteria.findBy('handle', 'policy_manual'),
         riskAssessment: criteria.findBy('handle', 'risk_assessment'),
@@ -21,7 +20,8 @@ export default Ember.Route.extend({
       })
     })
   },
+
   afterModel(model) {
-    debugger;
+
   }
 });

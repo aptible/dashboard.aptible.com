@@ -8,7 +8,7 @@ export function isTrainingCriterion(criterion) {
 export default Ember.Route.extend({
   model() {
     let handle = 'workforce_roles';
-    let organizationProfile = this.modelFor('engines');
+    let organizationProfile = this.modelFor('compliance-engines');
     let attestationParams = { handle, organizationProfile, document: [] };
     let attestation = Attestation.findOrCreate(attestationParams, this.store);
 

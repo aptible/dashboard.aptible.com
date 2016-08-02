@@ -69,7 +69,7 @@ test('Loading compliance with completed SPD does not redirect you', function(ass
   signInAndVisit(`/compliance/${orgId}/training`);
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.engines.training.index', 'remains on current path');
+    assert.equal(currentPath(), 'compliance.compliance-organization.compliance-engines.training.index', 'remains on current path');
   });
 });
 

@@ -29,6 +29,12 @@
             <div class="compliance-status-body">
               <a class="compliance-title" href="/risk/">Risk Assessment</a>
               <div class="compliance-effective">Updated 2 months ago</div>
+
+              <ul>
+              {{#each model.riskAssessment.documents as |document|}}
+                <li>Document: {{document.id}}</li>
+              {{/each}}
+              </ul>
             </div>
             <div class="compliance-status-nav">
               <ul class="nav nav-pills compliance-nav">
@@ -58,6 +64,11 @@
             <div class="compliance-status-body">
               <a class="compliance-title" href="/policy/">Policies and Procedures</a>
               <div class="compliance-effective">Updated 3 months ago</div>
+              <ul>
+              {{#each model.policyManual.documents as |document|}}
+                <li>Document: {{document.id}}</li>
+              {{/each}}
+              </ul>
             </div>
 
             <div class="compliance-status-nav">
@@ -90,6 +101,11 @@
             <div class="compliance-status-body">
               <a class="compliance-title" href="/security/">Application Security</a>
               <div class="compliance-effective">Completed for 1 app</div>
+              <ul>
+                {{#each model.appSecurityInterview.documents as |document|}}
+                  <li>Document: {{document.id}}</li>
+                {{/each}}
+              </ul>
             </div>
             <div class="compliance-status-nav">
               <ul class="nav nav-pills compliance-nav">
@@ -114,6 +130,11 @@
             <div class="compliance-status-body">
               <a class="compliance-title" href="/training/">Workforce Training</a>
               <div class="compliance-effective">Completed for 16 users</div>
+                <ul>
+                {{#each model.trainingLog.documents as |document|}}
+                  <li>Document: {{document.id}}</li>
+                {{/each}}
+              </ul>
             </div>
             <div class="compliance-status-nav">
               <ul class="nav nav-pills compliance-nav">

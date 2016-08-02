@@ -233,7 +233,7 @@ Router.map(function() {
 
   this.authenticatedRoute('compliance', { path: '/compliance' }, function() {
     this.route('compliance-organization', { path: '/:organization_id', resetNamespace: true }, function() {
-      this.route("engines", { path: '', resetNamespace: true }, function() {
+      this.route("compliance-engines", { path: '', resetNamespace: true }, function() {
 
         this.route("training", { path: '/training', resetNamespace: true }, function() {
           this.route("criterion", { path: ':criterion_handle' }, function() {});

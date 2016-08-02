@@ -20,6 +20,6 @@ export default Ember.Route.extend({
 
   renderTemplate() {
     this._super.apply(this, arguments);
-    this.render('sidebars/engine-sidebar', { into: 'engines', outlet: 'sidebar' });
+    this.render('sidebars/engine-sidebar', { into: 'compliance-engines', outlet: 'sidebar' });
   }
 });
