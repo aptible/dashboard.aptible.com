@@ -9,7 +9,7 @@ function errorToMessage(e) {
     case 400:
       return "Metrics server declined to serve the request";
     case 404:
-      return "No data available. If you just launched your containers, please try again later. Otherwise, please contact support (metrics are not available on some Aptible legacy stacks)";
+      return "No data available. If you just launched your containers, please try again later. Otherwise, please contact support (metrics are partially unavailable on Aptible legacy infrastructure)";
     case 500:
       return "Metrics server is unavailable; please try again later";
     default:

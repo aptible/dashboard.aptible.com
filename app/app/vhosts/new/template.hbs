@@ -1,1 +1,8 @@
-{{ create-vhost model=model services=services certificates=certificates vhostService=vhostService cancel="cancel" save="save" willTransition="willTransition" }}
+{{create-vhost
+  model=model
+  certificates=certificatesForNewVhost
+  services=services
+  vhosts=vhosts
+  cancel="cancel"
+  save="save"
+  willTransition="willTransition"}}

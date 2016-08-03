@@ -6,6 +6,15 @@ import { stubRequest } from '../../helpers/fake-server';
 let App;
 
 let appId = '1';
+let appHandle = 'my-app';
+
+let stackId = 'my-stack-1';
+let stackHandle = 'my-stack-1';
+
+let serviceId = 'the-service-id';
+let certificateId = 'my-cert-1';
+let certificateHref = `/certificates/${certificateId}`;
+
 let appVhostsUrl = '/apps/' + appId + '/vhosts';
 let appVhostsApiUrl = '/apps/' + appId + '/vhosts';
 let appVhostsNewUrl = '/apps/' + appId + '/vhosts/new';
@@ -22,81 +31,22 @@ module('Acceptance: App Endpoint New', {
   }
 });
 
-test('visit ' + appVhostsNewUrl + ' requires authentication', function() {
-  expectRequiresAuthentication(appVhostsNewUrl);
-});
-
-test(`visiting ${appVhostsUrl} without any endpoints redirects to ${appVhostsNewUrl}`, function(assert) {
-  stubStacks();
-  stubApp({ id: appId });
-  stubStack({ id: 'stubbed-stack' });
-  signInAndVisit(appVhostsUrl);
-
-  andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.app.vhosts.new');
-  });
-});
-
-test(`visit ${appVhostsNewUrl} shows creation form`, function(assert) {
-  var appId = 1;
-  var appHandle = 'whammo-com';
-  var stackHandle = 'moop-com';
-  stubStacks();
-
-  stubApp({
-    id: appId,
-    handle: appHandle,
-    _embedded: { services: [] },
-    _links: {
-      vhosts: { href: appVhostsApiUrl },
-      account: { href: `/accounts/${stackHandle}` }
-    }
-  });
-
-  stubRequest('get', appVhostsApiUrl, function(){
-    return this.success({
-      _embedded: { vhosts: [] }
-    });
-  });
-
-  stubStack({
-    id: stackHandle,
-    handle: stackHandle
-  });
-
-  signInAndVisit(appVhostsNewUrl);
-
-  andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
-       'has header');
-    expectInput('service', {input:'select'});
-    expectFocusedInput('service', {input:'select'});
-    expectInput('domain-type', {input:'radio'});
-    expectInput('certificate-body', {input:'textarea'});
-    expectInput('private-key', {input:'textarea'});
-    expectButton('Save Endpoint');
-    expectButton('Cancel');
-    expectTitle(`Add an endpoint - ${appHandle} - ${stackHandle}`);
-  });
-});
-
-test(`visit ${appVhostsNewUrl} shows creation form with existing certificates`, function(assert) {
-  let appId = 1;
-  let appHandle = 'my-app';
-  let serviceId = 'the-service-id';
-  let stackId = 'my-stack-1';
-  let stackHandle = 'my-stack-1';
-  let certificateId = 'my-cert-1';
-  let certificateHref = `/certificates/${certificateId}`;
+function setupStubs(options) {
+  options = options || {};
+  if (options.withCertificates === undefined) { options.withCertificates = true; }
+  if (options.withServiceDefaultVhost === undefined) { options.withServiceDefaultVhost = false; }
+  if (options.withAppDefaultVhost === undefined) { options.withAppDefaultVhost = false; }
+  if (options.sweetnessStackVersion === undefined) { options.sweetnessStackVersion = 'v2'; }
 
   stubRequest('get', `/accounts/${stackId}/certificates`, function(){
     return this.success({
       _links: {},
       _embedded: {
-        certificates: [
-          { id: 'cert-1', certificate_body: 'cert_body', private_key: 'private_key', common_name: '*.health.io', _links: { self: { href: certificateHref }} },
-          { id: 'cert-2', certificate_body: 'cert_body2', private_key: 'private_key2', common_name: 'health.io' }
-        ]
+        certificates: (options.withCertificates ? [
+          { id: 'cert-1', certificate_body: 'cert_body', private_key: 'private_key', common_name: '*.health.io', acme: false, _links: { self: { href: certificateHref }} },
+          { id: 'cert-2', certificate_body: 'cert_body2', private_key: 'private_key2', common_name: 'health.io', acme: false },
+          { id: 'acme-cert-1', certificate_body: 'acme_cert', private_key: 'acme_key', common_name: 'some.health.io', acme: true }
+        ] : [])
       }
     });
   });
@@ -110,12 +60,31 @@ test(`visit ${appVhostsNewUrl} shows creation form with existing certificates`, 
     _embedded: {},
     id: stackId,
     handle: stackHandle,
-    activated: true
+    activated: true,
+    sweetness_stack_version: options.sweetnessStackVersion
   });
+
+  const vhosts = [];
+
+  if (options.withServiceDefaultVhost) {
+    vhosts.push({
+      id: '1',
+      service_id: serviceId,
+      default: 'true'
+    });
+  }
+
+  if (options.withAppDefaultVhost) {
+    vhosts.push({
+      id: '2',
+      service_id: 'some-other-service',
+      default: 'true'
+    });
+  }
 
   stubRequest('get', appVhostsApiUrl, function(){
     return this.success({
-      _embedded: { vhosts: [] }
+      _embedded: { vhosts: vhosts }
     });
   });
 
@@ -126,7 +95,10 @@ test(`visit ${appVhostsNewUrl} shows creation form with existing certificates`, 
       _embedded: {
         services: [{ // Must have at least 1 service so that there is a service selected in the dropdown
           id: serviceId,
-          handle: 'the-hubot-service'
+          handle: 'the-hubot-service',
+          _links: {
+            account: { href: `/accounts/${stackId}` }
+          }
         }]
       },
       _links: {
@@ -135,15 +107,56 @@ test(`visit ${appVhostsNewUrl} shows creation form with existing certificates`, 
       }
     });
   });
+}
+
+test('visit ' + appVhostsNewUrl + ' requires authentication', function() {
+  expectRequiresAuthentication(appVhostsNewUrl);
+});
+
+test(`visiting ${appVhostsUrl} without any endpoints redirects to ${appVhostsNewUrl}`, function(assert) {
+  setupStubs();
+  signInAndVisit(appVhostsUrl);
+
+  andThen(function() {
+    assert.equal(currentPath(), 'dashboard.catch-redirects.app.vhosts.new');
+  });
+});
+
+test(`visit ${appVhostsNewUrl} shows creation form`, function(assert) {
+  setupStubs();
 
   signInAndVisit(appVhostsNewUrl);
 
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
+    assert.ok(find('.panel-heading:contains(Create a New Endpoint)').length,
+       'has header');
+    expectInput('service', {input:'select'});
+    expectFocusedInput('service', {input:'select'});
+    expectInput('domain-type', {input:'radio'});
+    expectButton('Save Endpoint');
+    expectButton('Cancel');
+    expectTitle(`Add an endpoint - ${appHandle} - ${stackHandle}`);
+  });
+});
+
+test(`visit ${appVhostsNewUrl} shows creation form with existing certificates`, function(assert) {
+  setupStubs();
+
+  signInAndVisit(appVhostsNewUrl);
+
+  andThen(() => {
+    expectFocusedInput('service', {input:'select'});
+  });
+
+  andThen(() => {
+    click(findWithAssert('label:contains(custom certificate)'));
+  });
+
+  andThen(function(){
+    assert.ok(find('.panel-heading:contains(Create a New Endpoint)').length,
        'has header');
     expectInput('domain-type', {input:'radio'});
     expectInput('service', {input:'select'});
-    expectFocusedInput('service', {input:'select'});
     expectInput('certificate', { input: 'select'});
     expectButton('Save Endpoint');
     expectButton('Cancel');
@@ -166,64 +179,23 @@ test(`visit ${appVhostsNewUrl} shows creation form with existing certificates`, 
 });
 
 test(`visit ${appVhostsNewUrl} shows creation form without certificates`, function(assert) {
-  let appId = 1;
-  let appHandle = 'my-app';
-  let serviceId = 'the-service-id';
-  let stackId = 'my-stack-1';
-  let stackHandle = 'my-stack-1';
-
-  stubRequest('get', `/accounts/${stackId}/certificates`, function(){
-    return this.success({
-      _links: {},
-      _embedded: {
-        certificates: []
-      }
-    });
-  });
-
-  stubStack({
-    _links: {
-      self: { href: `/accounts/${stackId}` },
-      organization: { href: '/organizations/1' },
-      certificates: { href: `/accounts/${stackId}/certificates` },
-    },
-    _embedded: {},
-    id: stackId,
-    handle: stackHandle,
-    activated: true
-  });
-
-  stubRequest('get', appVhostsApiUrl, function(){
-    return this.success({
-      _embedded: { vhosts: [] }
-    });
-  });
-
-  stubRequest('get', `/apps/${appId}`, function() {
-    return this.success({
-      id: appId,
-      handle: appHandle,
-      _embedded: {
-        services: [{ // Must have at least 1 service so that there is a service selected in the dropdown
-          id: serviceId,
-          handle: 'the-hubot-service'
-        }]
-      },
-      _links: {
-        vhosts: { href: appVhostsApiUrl },
-        account: { href: `/accounts/${stackId}` }
-      }
-    });
-  });
+  setupStubs({ withCertificates: false });
 
   signInAndVisit(appVhostsNewUrl);
 
+  andThen(() => {
+    expectFocusedInput('service', {input:'select'});
+  });
+
+  andThen(() => {
+    click(findWithAssert('label:contains(custom certificate)'));
+  });
+
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
+    assert.ok(find('.panel-heading:contains(Create a New Endpoint)').length,
        'has header');
     expectInput('domain-type', {input:'radio'});
     expectInput('service', {input:'select'});
-    expectFocusedInput('service', {input:'select'});
     expectInput('certificate-body', {input:'textarea'});
     expectInput('private-key', {input:'textarea'});
     expectButton('Save Endpoint');
@@ -233,67 +205,24 @@ test(`visit ${appVhostsNewUrl} shows creation form without certificates`, functi
 });
 
 test(`visit ${appVhostsNewUrl} should remove certificate form if default endpoint is clicked`, function(assert) {
-  let appId = 1;
-  let appHandle = 'my-app';
-  let serviceId = 'the-service-id';
-  let stackId = 'my-stack-1';
-  let stackHandle = 'my-stack-1';
-
-  stubRequest('get', `/accounts/${stackId}/certificates`, function(){
-    return this.success({
-      _links: {},
-      _embedded: {
-        certificates: []
-      }
-    });
-  });
-
-  stubStack({
-    _links: {
-      self: { href: `/accounts/${stackId}` },
-      organization: { href: '/organizations/1' },
-      certificates: { href: `/accounts/${stackId}/certificates` },
-    },
-    _embedded: {},
-    id: stackId,
-    handle: stackHandle,
-    activated: true
-  });
-
-  stubRequest('get', appVhostsApiUrl, function(){
-    return this.success({
-      _embedded: { vhosts: [] }
-    });
-  });
-
-  stubRequest('get', `/apps/${appId}`, function() {
-    return this.success({
-      id: appId,
-      handle: appHandle,
-      _embedded: {
-        services: [{ // Must have at least 1 service so that there is a service selected in the dropdown
-          id: serviceId,
-          handle: 'the-hubot-service'
-        }]
-      },
-      _links: {
-        vhosts: { href: appVhostsApiUrl },
-        account: { href: `/accounts/${stackId}` }
-      }
-    });
-  });
-
+  setupStubs({ withCertificates: false });
   signInAndVisit(appVhostsNewUrl);
 
+  andThen(() => {
+    expectFocusedInput('service', {input:'select'});
+  });
+
+  andThen(() => {
+    click(findWithAssert('label:contains(custom certificate)'));
+  });
 
   Error.stackTraceLimit = 1000;
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
+    assert.ok(find('.panel-heading:contains(Create a New Endpoint)').length,
       'has header');
 
     expectInput('domain-type', {input:'radio'});
     expectInput('service', {input:'select'});
-    expectFocusedInput('service', {input:'select'});
     expectInput('certificate-body', {input:'textarea'});
     expectInput('private-key', {input:'textarea'});
     expectButton('Save Endpoint');
@@ -302,8 +231,7 @@ test(`visit ${appVhostsNewUrl} should remove certificate form if default endpoin
   });
 
   andThen(function(){
-    let button = findWithAssert('label:contains(default endpoint address)');
-    click(button);
+    click(findWithAssert('label:contains(default endpoint)'));
   });
 
   andThen(function(){
@@ -312,135 +240,70 @@ test(`visit ${appVhostsNewUrl} should remove certificate form if default endpoin
   });
 });
 
-test(`visit ${appVhostsNewUrl} shows creation form for service with existing default endpoint`, function(assert) {
-  let appId = 1;
-  let appHandle = 'my-app';
-  let serviceId = 'the-service-id';
-  let stackId = 'my-stack-1';
-  let stackHandle = 'my-stack-1';
-
-  stubRequest('get', `/accounts/${stackId}/certificates`, function(){
-    return this.success({
-      _links: {},
-      _embedded: {
-        certificates: []
-      }
-    });
-  });
-
-  stubStack({
-    _links: {
-      self: { href: `/accounts/${stackId}` },
-      organization: { href: '/organizations/1' },
-      certificates: { href: `/accounts/${stackId}/certificates` },
-    },
-    _embedded: {},
-    id: stackId,
-    handle: stackHandle,
-    activated: true
-  });
-
-  stubRequest('get', appVhostsApiUrl, function(){
-    return this.success({
-      _embedded: { vhosts: [{
-        id: '1',
-        default: 'true',
-        service_id: serviceId
-      }] }
-    });
-  });
-
-  stubRequest('get', `/apps/${appId}`, function() {
-    return this.success({
-      id: appId,
-      handle: appHandle,
-      _embedded: {
-        services: [{ // Must have at least 1 service so that there is a service selected in the dropdown
-          id: serviceId,
-          handle: 'the-hubot-service'
-        }]
-      },
-      _links: {
-        vhosts: { href: appVhostsApiUrl },
-        account: { href: `/accounts/${stackId}` }
-      }
-    });
-  });
-
+test(`visit ${appVhostsNewUrl} shows creation form for app with existing default endpoint (on this service)`, function(assert) {
+  setupStubs({ withCertificates: false, withServiceDefaultVhost: true });
   signInAndVisit(appVhostsNewUrl);
 
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
+    assert.ok(find('.panel-heading:contains(Create a New Endpoint)').length,
       'has header');
 
+    findWithAssert('label:contains(Default endpoint unavailable)');
     expectInput('service', {input:'select'});
     expectFocusedInput('service', {input:'select'});
-    expectNoInput('domain-type', {input:'radio'});
-    expectInput('certificate-body', {input:'textarea'});
-    expectInput('private-key', {input:'textarea'});
+    expectInput('domain-type', {input:'radio'});
+    expectNoInput('vhost-type', {input:'radio'});
     expectButton('Save Endpoint');
     expectButton('Cancel');
     expectTitle(`Add an endpoint - ${appHandle} - ${stackHandle}`);
   });
 });
 
+test(`visit ${appVhostsNewUrl} shows creation form for app with existing default endpoint (on other service)`, function(assert) {
+  setupStubs({ withCertificates: false, withAppDefaultVhost: true });
+  signInAndVisit(appVhostsNewUrl);
+
+  andThen(function(){
+    assert.ok(find('.panel-heading:contains(Create a New Endpoint)').length,
+      'has header');
+
+    findWithAssert('label:contains(Default endpoint unavailable)');
+    expectInput('service', {input:'select'});
+    expectFocusedInput('service', {input:'select'});
+    expectInput('domain-type', {input:'radio'});
+    expectNoInput('vhost-type', {input:'radio'});
+    expectButton('Save Endpoint');
+    expectButton('Cancel');
+    expectTitle(`Add an endpoint - ${appHandle} - ${stackHandle}`);
+  });
+});
+
+test(`visit ${appVhostsNewUrl} shows creation form for app on v1 stack`, function(assert) {
+  setupStubs({ withCertificates: false, sweetnessStackVersion: 'v1' });
+  signInAndVisit(appVhostsNewUrl);
+
+  andThen(function(){
+    assert.ok(find('.panel-heading:contains(Create a New Endpoint)').length,
+      'has header');
+
+    findWithAssert('label:contains(Managed HTTPS unavailable)');
+    expectInput('service', {input:'select'});
+    expectFocusedInput('service', {input:'select'});
+    expectInput('domain-type', {input:'radio'});
+    expectNoInput('certificate-body', {input:'textarea'});
+    expectNoInput('private-key', {input:'textarea'});
+    expectButton('Save Endpoint');
+    expectButton('Cancel');
+    expectTitle(`Add an endpoint - ${appHandle} - ${stackHandle}`);
+  });
+});
 
 test(`visit ${appVhostsNewUrl} and create vhost with existing certificates`, function(assert) {
   assert.expect(5);
 
-  let appId = 1;
-  let serviceId = 'the-service-id';
-  let vhostId = 'new-vhost-id';
-  let stackId = 'my-stack-1';
-  let certificateId = 'my-cert-1';
-  let certificateHref = `/certificates/${certificateId}`;
+  const vhostId = 'new-vhost-id';
 
-  stubRequest('get', `/accounts/${stackId}/certificates`, function(){
-    return this.success({
-      _links: {},
-      _embedded: {
-        certificates: [
-          { id: 'cert-1', certificate_body: 'cert_body', private_key: 'private_key', common_name: '*.health.io', _links: { self: { href: certificateHref }} },
-          { id: 'cert-2', certificate_body: 'cert_body2', private_key: 'private_key2', common_name: 'health.io' }
-        ]
-      }
-    });
-  });
-
-  stubStack({
-    _links: {
-      self: { href: `/accounts/${stackId}` },
-      organization: { href: '/organizations/1' },
-      certificates: { href: `/accounts/${stackId}/certificates` },
-    },
-    _embedded: {},
-    id: stackId,
-    handle: 'my-stack-1',
-    activated: true
-  });
-
-  stubRequest('get', `/apps/${appId}`, function() {
-    return this.success({
-      id: appId,
-      _embedded: {
-        services: [{ // Must have at least 1 service so that there is a service selected in the dropdown
-          id: serviceId,
-          handle: 'the-hubot-service'
-        }]
-      },
-      _links: {
-        vhosts: { href: appVhostsApiUrl },
-        account: { href: `/accounts/${stackId}` }
-      }
-    });
-  });
-
-  stubRequest('get', appVhostsApiUrl, function(){
-    return this.success({
-      _embedded: { vhosts: [] }
-    });
-  });
-
+  setupStubs({ withCertificates: true });
   signInAndVisit(appVhostsNewUrl);
 
   // Note: This won't be hit unless something is wrong. It ensures that an
@@ -457,7 +320,7 @@ test(`visit ${appVhostsNewUrl} and create vhost with existing certificates`, fun
     assert.equal(json.private_key, null);
     assert.equal(json.type, 'http_proxy_protocol');
 
-    return this.success({id:vhostId});
+    return this.success({id: vhostId});
   });
 
   stubRequest('post', `/vhosts/${vhostId}/operations`, function(request){
@@ -466,51 +329,35 @@ test(`visit ${appVhostsNewUrl} and create vhost with existing certificates`, fun
     return this.success({id: 'new-op-id'});
   });
 
-  visit(appVhostsNewUrl);
+  signInAndVisit(appVhostsNewUrl);
+
+  andThen(() => {
+    click(findWithAssert('label:contains(custom certificate)'));
+  });
+
   andThen(function(){
     clickButton('Save Endpoint');
   });
 });
 
 test(`visit ${appVhostsNewUrl} and create vhost with new certificate`, function(assert) {
-  assert.expect(8);
+  assert.expect(9);
 
-  let appId = 1;
-  let serviceId = 'the-service-id';
-  let vhostId = 'new-vhost-id';
-  let certificateId = 'my-cert-1';
-  let certificateHref = `/certificates/${certificateId}`;
+  const vhostId = 'new-vhost-id';
+  let hasCreatedCertificate = false;
 
-  stubApp({
-    id: appId,
-    _embedded: {
-      services: [{ // Must have at least 1 service so that there is a service selected in the dropdown
-        id: serviceId,
-        handle: 'the-hubot-service'
-      }]
-    },
-    _links: {
-      vhosts: { href: appVhostsApiUrl }
-    }
-  });
-  stubStack({ id: 'stubbed-stack' });
+  setupStubs({ withCertificates: false });
+  signInAndVisit(appVhostsNewUrl);
 
-  stubRequest('get', appVhostsApiUrl, function(){
-    return this.success({
-      _embedded: { vhosts: [] }
-    });
-  });
-
-  stubRequest('post', '/accounts/stubbed-stack/certificates', function(request) {
+  stubRequest('post', `/accounts/${stackId}/certificates`, function(request) {
     let json = this.json(request);
     assert.equal(json.certificate_body, 'my long cert');
     assert.equal(json.private_key, 'my long pk');
     assert.ok(true, 'creates certificate');
+    hasCreatedCertificate = true;
     return this.success({ id: certificateId, common_name: 'www.health.io',
                           _links: { self: { href: certificateHref }}});
   });
-
-  signInAndVisit(appVhostsNewUrl);
 
   stubRequest('post', `/services/${serviceId}/vhosts`, function(request){
     let json = this.json(request);
@@ -528,46 +375,34 @@ test(`visit ${appVhostsNewUrl} and create vhost with new certificate`, function(
     return this.success({id: 'new-op-id'});
   });
 
-  visit(appVhostsNewUrl);
+  signInAndVisit(appVhostsNewUrl);
+
+  andThen(() => {
+    click(findWithAssert('label:contains(custom certificate)'));
+  });
+
   andThen(function(){
     fillInput('certificate-body', 'my long cert');
     fillInput('private-key', 'my long pk');
     clickButton('Save Endpoint');
+  });
+
+  andThen(() => {
+    assert.ok(hasCreatedCertificate, "created certificate");
   });
 });
 
 test(`visit ${appVhostsNewUrl} and create default endpoint`, function(assert) {
   assert.expect(6);
 
-  let appId = 1;
-  let serviceId = 'the-service-id';
-  let vhostId = 'new-vhost-id';
+  const vhostId = 'new-vhost-id';
 
-  stubApp({
-    id: appId,
-    _embedded: {
-      services: [{ // Must have at least 1 service so that there is a service selected in the dropdown
-        id: serviceId,
-        handle: 'the-hubot-service'
-      }]
-    },
-    _links: {
-      vhosts: { href: appVhostsApiUrl }
-    }
-  });
-  stubStack({ id: 'stubbed-stack' });
-
-  stubRequest('get', appVhostsApiUrl, function(){
-    return this.success({
-      _embedded: { vhosts: [] }
-    });
-  });
-
+  setupStubs();
   signInAndVisit(appVhostsNewUrl);
 
   stubRequest('post', `/services/${serviceId}/vhosts`, function(request){
     let json = this.json(request);
-    assert.equal(json.default, false);
+    assert.equal(json.default, true, "Type is default");
     assert.equal(json.certificate, null);
     assert.equal(json.certificate_body, null);
     assert.equal(json.private_key, null);
@@ -582,9 +417,118 @@ test(`visit ${appVhostsNewUrl} and create default endpoint`, function(assert) {
     return this.success({id: 'new-op-id'});
   });
 
-  visit(appVhostsNewUrl);
+  signInAndVisit(appVhostsNewUrl);
+
+  andThen(() => {
+    click(findWithAssert('label:contains(default endpoint)'));
+  });
+
   andThen(function(){
     fillInput('domain-type', true);
     clickButton('Save Endpoint');
+  });
+});
+
+test(`visit ${appVhostsNewUrl} and create managed endpoint`, function(assert) {
+  assert.expect(10);
+
+  const userDomainInputSelector = "input[type=text]";
+  const userDomain = "some.domain.com";
+  const vhostId = "new-vhost-id";
+
+  setupStubs();
+  signInAndVisit(appVhostsNewUrl);
+
+  stubRequest("post", `/services/${serviceId}/vhosts`, function(request){
+    let json = this.json(request);
+    assert.equal(json.default, false, "Default is not set");
+    assert.equal(json.certificate, null, "Certificate is NULL");
+    assert.equal(json.certificate_body, null, "Certificate body is NULL");
+    assert.equal(json.private_key, null, "Certificate key is NULL");
+    assert.equal(json.type, "http_proxy_protocol", "Proxy protocol is set");
+    assert.equal(json.user_domain, userDomain, "User domain is set");
+    assert.equal(json.acme, true, "ACME is set");
+
+    return this.success({id:vhostId});
+  });
+
+  stubRequest("post", `/vhosts/${vhostId}/operations`, function(request){
+    let json = this.json(request);
+    assert.equal(json.type, "provision", "posts provision operation");
+    return this.success({id: "new-op-id"});
+  });
+
+  signInAndVisit(appVhostsNewUrl);
+
+  andThen(() => {
+    click(findWithAssert("label:contains(Managed HTTPS)"));
+  });
+
+  andThen(() => {
+    const saveButton = findWithAssert("button:contains(Save Endpoint)");
+    assert.ok(saveButton.attr("disabled"), "Save button is disabled");
+
+    const userDomainInput = findWithAssert(userDomainInputSelector);
+    const userDomainInputhasError = userDomainInput.parent(".form-group").attr("class").indexOf("has-error") > 0;
+    assert.ok(userDomainInputhasError, "User Domain input has error");
+  });
+
+  andThen(() => {
+    fillIn(findWithAssert(userDomainInputSelector), userDomain);
+  });
+
+  andThen(function(){
+    fillInput("domain-type", true);
+    clickButton("Save Endpoint");
+  });
+});
+
+test(`visit ${appVhostsNewUrl} and create a new transitonal managed endpoint`, function(assert) {
+  assert.expect(8);
+
+  const userDomainInputSelector = "input[type=text]";
+  const userDomain = "some.domain.com";
+  const vhostId = "new-vhost-id";
+
+  setupStubs({ withCertificates: true });
+  signInAndVisit(appVhostsNewUrl);
+
+  stubRequest('post', `/accounts/:stack-id/certificates`, function() {
+    assert.ok(false, 'should not create a new certificate');
+  });
+
+  stubRequest("post", `/services/${serviceId}/vhosts`, function(request){
+    let json = this.json(request);
+    assert.equal(json.default, false, "Default is not set");
+    assert.equal(json.certificate, certificateHref, "Certificate is provided");
+    assert.equal(json.certificate_body, null, "Certificate body is NULL");
+    assert.equal(json.private_key, null, "Certificate key is NULL");
+    assert.equal(json.type, "http_proxy_protocol", "Proxy protocol is set");
+    assert.equal(json.user_domain, userDomain, "User domain is set");
+    assert.equal(json.acme, true, "ACME is set");
+
+    return this.success({id:vhostId});
+  });
+
+  stubRequest("post", `/vhosts/${vhostId}/operations`, function(request){
+    let json = this.json(request);
+    assert.equal(json.type, "provision", "posts provision operation");
+    return this.success({id: "new-op-id"});
+  });
+
+  signInAndVisit(appVhostsNewUrl);
+
+  andThen(() => {
+    click(findWithAssert("label:contains(Managed HTTPS)"));
+  });
+
+  andThen(() => {
+    click(findWithAssert("label:contains(Use a transitional certificate)"));
+    fillIn(findWithAssert(userDomainInputSelector), userDomain);
+  });
+
+  andThen(function(){
+    fillInput("domain-type", true);
+    clickButton("Save Endpoint");
   });
 });
