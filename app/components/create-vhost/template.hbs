@@ -3,7 +3,7 @@
     <div class="col-xs-8">
       <div class="panel panel-default ">
         <div class="panel-heading">
-            <h3>Create a new endpoint</h3>
+            <h3>Create a New Endpoint</h3>
         </div>
         <div class="panel-body">
           {{#unless model.isValid}}
@@ -22,26 +22,26 @@
 
               <div class="form-group">
                 <label class="block" for="domain-type">
-                  Endpoint type:
+                  Endpoint Type:
                     {{more-info-icon
                     title="Choosing an Endpoint Type"
                     bs-html=true
                     body="
                     <p>
                     For development apps and non-user facing APIs, choose a
-                    <strong>Default Endpoint</strong>: Aptible takes care of
-                    the domain name and SSL certificate for you.
+                    <strong>Default Endpoint</strong>: Aptible manages both the
+                    domain name and certificate for you.
                     </p>
                     <p>
-                    For other use cases, a <strong>custom domain with managed
-                    SSL</strong> is a good option: you use your own domain
-                    name, but Aptible handles provisioning and renewing your SSL
+                    For other use cases, a <strong>custom domain with Managed
+                    HTTPS</strong> is a good option: you use your own domain
+                    name, but Aptible handles provisioning and renewing your
                     certificate.
                     </p>
                     <p>
                     For more advanced use cases, like using an Extended
-                    Validation SSL certificate, use a <strong>custom domain
-                    with a custom SSL certificate</strong> for complete control.
+                    Validation certificate, use a <strong>custom domain with a
+                    custom certificate</strong> for complete control.
                     </p>"}}
 
                 </label>
@@ -54,7 +54,7 @@
                     {{else}}
                       <label class="disabled">
                         <input type="radio" class="ember-view" disabled>
-                        Default endpoint unavailable: this app already has one.
+                        Default endpoint unavailable: This app already has a default endpoint.
                       </label>
                     {{/if}}
                   </div>
@@ -62,12 +62,12 @@
                   <div>
                     {{#if acmeVhostAllowed}}
                       {{#radio-button value=TYPE_ACME groupValue=vhostType name="domain-type"}}
-                        Use a custom domain with managed SSL.
+                        Use a custom domain with Managed HTTPS.
                       {{/radio-button}}
                     {{else}}
                       <label class="disabled">
                         <input type="radio" class="ember-view" disabled>
-                        Managed SSL unavailable: this feature is not available
+                        Managed HTTPS unavailable: this feature is not available
                         on Aptible legacy infrastructure.
                       </label>
                     {{/if}}
@@ -75,7 +75,7 @@
 
                     <div>
                       {{#radio-button value=TYPE_GENERIC groupValue=vhostType name="domain-type"}}
-                        Use a custom domain and a custom SSL certificate.
+                        Use a custom domain with a custom certificate
                       {{/radio-button}}
                     </div>
                 </div>
@@ -113,7 +113,7 @@
               </div>
             {{else}}
               <p>
-                This Endpoint type does not support internal endpoints. The
+                This Endpoint type does not support internal placement. The
                 endpoint will be external.
               </p>
             {{/if}}
@@ -121,7 +121,7 @@
 
           {{#if userDomainNeeded}}
             {{domain-input domain=model.userDomain valid=userDomainValid
-              tip="You'll need to be able to create a CNAME from this domain
+              tip="You will need to be able to create a CNAME from this domain
                    name to one provided by Aptible."}}
           {{/if}}
 
@@ -131,12 +131,12 @@
                 Transitional Certificate
               </label>
               <p>
-                Managed SSL provisions a certificate for you, but this process
-                takes a little while. During this time, your application will
-                be unavailable. If you need to avoid downtime, you can provide
-                a transitional certificate, which will let Aptible provision
-                your Managed SSL certificate in the background, while your app
-                is running.
+                Managed HTTPS provisions a certificate for you, but this
+                process takes a little while. During this time, your
+                application will be unavailable. If you need to avoid downtime,
+                you can provide a transitional certificate, which will let
+                Aptible provision your Managed HTTPS certificate in the
+                background, while your app is running.
               </p>
               {{input type="checkbox"
                 name="acme-use-transitional"

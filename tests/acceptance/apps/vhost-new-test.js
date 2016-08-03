@@ -128,7 +128,7 @@ test(`visit ${appVhostsNewUrl} shows creation form`, function(assert) {
   signInAndVisit(appVhostsNewUrl);
 
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
+    assert.ok(find('.panel-heading:contains(Create a New Endpoint)').length,
        'has header');
     expectInput('service', {input:'select'});
     expectFocusedInput('service', {input:'select'});
@@ -149,11 +149,11 @@ test(`visit ${appVhostsNewUrl} shows creation form with existing certificates`, 
   });
 
   andThen(() => {
-    click(findWithAssert('label:contains(custom SSL)'));
+    click(findWithAssert('label:contains(custom certificate)'));
   });
 
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
+    assert.ok(find('.panel-heading:contains(Create a New Endpoint)').length,
        'has header');
     expectInput('domain-type', {input:'radio'});
     expectInput('service', {input:'select'});
@@ -188,11 +188,11 @@ test(`visit ${appVhostsNewUrl} shows creation form without certificates`, functi
   });
 
   andThen(() => {
-    click(findWithAssert('label:contains(custom SSL)'));
+    click(findWithAssert('label:contains(custom certificate)'));
   });
 
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
+    assert.ok(find('.panel-heading:contains(Create a New Endpoint)').length,
        'has header');
     expectInput('domain-type', {input:'radio'});
     expectInput('service', {input:'select'});
@@ -213,12 +213,12 @@ test(`visit ${appVhostsNewUrl} should remove certificate form if default endpoin
   });
 
   andThen(() => {
-    click(findWithAssert('label:contains(custom SSL)'));
+    click(findWithAssert('label:contains(custom certificate)'));
   });
 
   Error.stackTraceLimit = 1000;
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
+    assert.ok(find('.panel-heading:contains(Create a New Endpoint)').length,
       'has header');
 
     expectInput('domain-type', {input:'radio'});
@@ -245,7 +245,7 @@ test(`visit ${appVhostsNewUrl} shows creation form for app with existing default
   signInAndVisit(appVhostsNewUrl);
 
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
+    assert.ok(find('.panel-heading:contains(Create a New Endpoint)').length,
       'has header');
 
     findWithAssert('label:contains(Default endpoint unavailable)');
@@ -264,7 +264,7 @@ test(`visit ${appVhostsNewUrl} shows creation form for app with existing default
   signInAndVisit(appVhostsNewUrl);
 
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
+    assert.ok(find('.panel-heading:contains(Create a New Endpoint)').length,
       'has header');
 
     findWithAssert('label:contains(Default endpoint unavailable)');
@@ -283,10 +283,10 @@ test(`visit ${appVhostsNewUrl} shows creation form for app on v1 stack`, functio
   signInAndVisit(appVhostsNewUrl);
 
   andThen(function(){
-    assert.ok(find('.panel-heading:contains(Create a new endpoint)').length,
+    assert.ok(find('.panel-heading:contains(Create a New Endpoint)').length,
       'has header');
 
-    findWithAssert('label:contains(Managed SSL unavailable)');
+    findWithAssert('label:contains(Managed HTTPS unavailable)');
     expectInput('service', {input:'select'});
     expectFocusedInput('service', {input:'select'});
     expectInput('domain-type', {input:'radio'});
@@ -332,7 +332,7 @@ test(`visit ${appVhostsNewUrl} and create vhost with existing certificates`, fun
   signInAndVisit(appVhostsNewUrl);
 
   andThen(() => {
-    click(findWithAssert('label:contains(custom SSL)'));
+    click(findWithAssert('label:contains(custom certificate)'));
   });
 
   andThen(function(){
@@ -378,7 +378,7 @@ test(`visit ${appVhostsNewUrl} and create vhost with new certificate`, function(
   signInAndVisit(appVhostsNewUrl);
 
   andThen(() => {
-    click(findWithAssert('label:contains(custom SSL)'));
+    click(findWithAssert('label:contains(custom certificate)'));
   });
 
   andThen(function(){
@@ -461,7 +461,7 @@ test(`visit ${appVhostsNewUrl} and create managed endpoint`, function(assert) {
   signInAndVisit(appVhostsNewUrl);
 
   andThen(() => {
-    click(findWithAssert("label:contains(managed SSL)"));
+    click(findWithAssert("label:contains(Managed HTTPS)"));
   });
 
   andThen(() => {
@@ -519,7 +519,7 @@ test(`visit ${appVhostsNewUrl} and create a new transitonal managed endpoint`, f
   signInAndVisit(appVhostsNewUrl);
 
   andThen(() => {
-    click(findWithAssert("label:contains(managed SSL)"));
+    click(findWithAssert("label:contains(Managed HTTPS)"));
   });
 
   andThen(() => {
