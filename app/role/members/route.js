@@ -20,6 +20,19 @@ export default Ember.Route.extend({
     controller.set('currentUserRoles', model.currentUserRoles);
   },
 
+  redirect(model) {
+    let org = model.role.get('organization');
+    let currentUser = this.session.get('currentUser');
+    let currentUserMembership = model.memberships.filterBy('user.id', currentUser.get('id'))[0];
+
+    if ((model.role.get('isPlatform') && currentUser.canManagePlatform(model.currentUserRoles, org)) ||
+        (model.role.get('isCompliance') && currentUser.canManageCompliance(model.currentUserRoles, org)) ||
+        (currentUserMembership && currentUserMembership.get('privileged'))) {
+      return;
+    }
+    return this.transitionTo('organization.roles', org);
+  },
+
   // Note: Memberships are removed by the membership table row component
   actions: {
     completedAction(message) {

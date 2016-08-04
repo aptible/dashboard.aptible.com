@@ -1,8 +1,7 @@
 import Ember from 'ember';
 import {
   module,
-  test,
-  skip
+  test
 } from 'qunit';
 import startApp from 'diesel/tests/helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
@@ -14,19 +13,45 @@ let roleMembersUrl = `/roles/${roleId}/memberships`;
 let orgUsersUrl = `/organizations/${orgId}/users`;
 let pageUrl = `/roles/${roleId}/members`;
 
-const memberUser = {
-  id: 'org-user-1',
-  name: 'neo'
-};
-
 const ownerRole = {
   id: roleId,
   type: 'owner',
   name: 'Account Owner',
   _links: {
-    organization: { href: `/organizations/${orgId}` }
+    organization: { href: `/organizations/${orgId}` },
+    memberships: { href: roleMembersUrl }
   }
 };
+
+const nonOwnerRole = {
+  id: 'role-dbas-1',
+  type: 'platform_user',
+  name: 'Database Admins',
+  _links: {
+    organization: { href: `/organizations/${orgId}` },
+    memberships: { href: `/roles/role-dbas-1/memberships` }
+  }
+};
+
+const memberUser = {
+  id: 'org-user-1',
+  name: 'neo'
+};
+
+const deleteThisUser = {
+  id: 'org-user-2',
+  name: 'Mr. Smith'
+};
+
+// User with only one role
+const cannotDeleteThis = {
+  id: 'org-user-3',
+  name: 'Morpheus',
+  _embedded: {
+    roles: [ nonOwnerRole ]
+  }
+};
+
 
 let setUp = function(options) {
   let orgData = {
@@ -38,6 +63,10 @@ let setUp = function(options) {
     }
   };
 
+  if (!options.role) {
+    options.role = ownerRole;
+  }
+
   stubRequest('get', '/organizations', function() {
     return this.success({
       _links: {},
@@ -46,7 +75,7 @@ let setUp = function(options) {
   });
   stubOrganization(orgData);
 
-  stubRequest('get', `/roles/${roleId}`, function() {
+  stubRequest('get', `/roles/${options.role.id}`, function() {
     return this.success(options.role || ownerRole);
   });
 
@@ -54,8 +83,8 @@ let setUp = function(options) {
     return this.success({ _embedded: { users: options.roleUsers || [] } });
   });
 
-  stubRequest('get', roleMembersUrl, function(){
-    return this.success({ _embedded: { members: options.roleMembers || [] } });
+  stubRequest('get', (options.roleMembersUrl || roleMembersUrl), function(){
+    return this.success({ _embedded: { memberships: options.roleMembers || [] } });
   });
 };
 
@@ -72,11 +101,11 @@ module('Acceptance: Role Members', {
 
 test(`visiting ${pageUrl} requires authentication`, () => {
   expectRequiresAuthentication(pageUrl);
-})  ;
+});
 
 test(`visiting ${pageUrl} displays a message for a role with no members`, (assert) => {
   setUp({
-    roleUsers: [ memberUser ],
+    roleUsers: [ memberUser ]
   });
   signIn(null, ownerRole);
   visit(pageUrl);
@@ -115,14 +144,145 @@ test(`visiting ${pageUrl} role members can be added by account owners`, (assert)
   });
 });
 
-skip(`visiting ${pageUrl} role members can be removed by account owners`, (assert) => {
-  assert.expect(1);
+test(`visiting ${pageUrl} role members can be removed by account owners`, (assert) => {
+  const member1 = {
+    id: 'role-member-1',
+    _embedded: {
+      role: ownerRole,
+      user: deleteThisUser
+    }
+  };
+
+  setUp({
+    roleUsers: [ memberUser ],
+    roleMembers: [ member1 ]
+  });
+
+  stubRequest('put', `/memberships/${member1.id}`, function() {
+    return this.success(member1);
+  });
+  stubRequest('delete', `/memberships/${member1.id}`, function() {
+    return this.success(member1);
+  });
+
+  let _confirm = window.confirm;
+  window.confirm = () => { return true; };
+
+  signIn(null, ownerRole);
+  visit(pageUrl);
+  andThen(() => {
+    findWithAssert('.aptable__member-row');
+    assert.equal(find(`.profile--inline:contains(${deleteThisUser.name})`).length, 1);
+    clickButton('Remove');
+  });
+  andThen(() => {
+    assert.ok(find('.aptable--empty').text().match(/currently has no members/));
+    window.confirm = _confirm;
+  });
 });
 
-skip(`visiting ${pageUrl} role members' last role cannot be removed`, (assert) => {
-  assert.expect(1);
+test(`visiting ${pageUrl} role members' last role cannot be removed`, (assert) => {
+  const member1 = {
+    id: 'role-member-1',
+    _embedded: {
+      role: ownerRole,
+      user: cannotDeleteThis
+    }
+  };
+
+  setUp({
+    roleUsers: [ memberUser ],
+    roleMembers: [ member1 ]
+  });
+
+  stubRequest('put', `/memberships/${member1.id}`, function() {
+    return this.success(member1);
+  });
+  stubRequest('delete', `/memberships/${member1.id}`, function() {
+    return this.success(member1);
+  });
+
+  signIn(null, ownerRole);
+  visit(pageUrl);
+  andThen(() => {
+    findWithAssert('.aptable__member-row');
+    assert.equal(find(`.profile--inline:contains(${cannotDeleteThis.name})`).length, 1);
+    assert.equal(find(`.btn:contains('Remove')`).length, 0, 'no remove button');
+  });
 });
 
-skip(`visiting ${pageUrl} role members can be made an admins`, (assert) => {
-  assert.expect(1);
+test(`role members can be made role admins`, (assert) => {
+  cannotDeleteThis._embedded.roles = [nonOwnerRole];
+
+  const member1 = {
+    id: 'dbas-role-member-1',
+    privileged: false,
+    _embedded: {
+      role: nonOwnerRole,
+      user: cannotDeleteThis
+    }
+  };
+
+  memberUser._embedded = {
+    roles: [ownerRole]
+  };
+
+  setUp({
+    role: nonOwnerRole,
+    roleUsers: [ memberUser ],
+    roleMembers: [ member1 ],
+    roleMembersUrl: `/roles/${nonOwnerRole.id}/memberships`
+  });
+
+  stubRequest('put', `/memberships/${member1.id}`, function(request) {
+    let parsed = JSON.parse(request.requestBody);
+    assert.equal(parsed.privileged, !member1.privileged, 'Updates on toggle');
+    member1.privileged = parsed.privileged;
+    return this.success(member1);
+  });
+
+  signIn(memberUser, ownerRole);
+  visit(`/roles/${nonOwnerRole.id}/members`);
+
+  andThen(() => {
+    assert.equal(member1.privileged, false);
+    find('.x-toggle-btn').click();
+  });
+  andThen(() => {
+    assert.equal(member1.privileged, true);
+  });
+});
+
+test(`visiting ${pageUrl} redirects an unauthorized user to roles`, (assert) => {
+  cannotDeleteThis._embedded.roles = [nonOwnerRole];
+
+  const member1 = {
+    id: 'dbas-role-member-1',
+    privileged: false,
+    _embedded: {
+      role: nonOwnerRole,
+      user: cannotDeleteThis
+    }
+  };
+
+  memberUser._embedded = {
+    roles: [ownerRole]
+  };
+
+  setUp({
+    role: nonOwnerRole,
+    roleUsers: [ memberUser ],
+    roleMembers: [ member1 ],
+    roleMembersUrl: `/roles/${nonOwnerRole.id}/memberships`
+  });
+
+  signIn(cannotDeleteThis, nonOwnerRole);
+  visit(`/roles/${nonOwnerRole.id}/members`);
+  andThen(() => {
+    assert.equal(
+      currentPath(),
+      'dashboard.catch-redirects.organization.roles.platform',
+      'Unauthorized user is redirected to roles'
+    );
+  });
 });

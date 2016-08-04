@@ -49,7 +49,7 @@ export default Ember.Component.extend({
   isToggleDisabled: Ember.computed('memberUserRoles.[]', 'currentUserRoles.[]', function() {
     if (this.get('role.isOwner')) { return true; }
 
-    // Disable if current user is not a role owner
+    // Disable if current user is not a platform, compliance, or account owner
     if (!this.isRoleOwner(this.get('currentUser'), this.get('currentUserRoles'))) {
       return true;
     }
@@ -60,6 +60,9 @@ export default Ember.Component.extend({
 
   isRoleOwner(user, roles) {
     if (!this.get('user')) { return false; }
+    if (user.isAccountOwner(roles, this.get('organization'))) {
+      return true;
+    }
     if (this.get('role.isCompliance')) {
       return user.isComplianceOwner(roles, this.get('organization'));
     }
