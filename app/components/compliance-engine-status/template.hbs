@@ -1,0 +1,70 @@
+<div class="panel-heading">
+  <div class="panel-title">
+    <h5 class="panel-name">{{title}}</h5>
+    <div class="panel-status">
+      {{#if showDefaultStatus}}
+        {{#if isRed}}
+          Never completed.
+        {{/if}}
+
+        {{#if isYellow}}
+          Complete, but expired on {{lastExpirationDate}}
+        {{/if}}
+
+        {{#if isGreen}}
+          Last completed on {{lastCompletedDate}}. Expires on {{lastCompletedExpirationDate}}
+        {{/if}}
+      {{/if}}
+
+      {{#if isAppSecurity}}
+        {{appSecurityStatusText}}
+      {{/if}}
+
+      {{#if isBasicTraining}}
+        {{basicTrainingStatus}}
+      {{/if}}
+    </div>
+    <ul class="status-badges">
+
+      {{criterion-status-badge
+        criterion=criterion
+        criterionDocuments=criterionDocuments
+        productionApps=productionApps
+        users=users
+        tagName="li"}}
+    </ul>
+  </div>
+</div>
+
+<div class="panel-body">
+  <ul class="resource-metadata">
+    <li class="resource-metadata-item">
+      <h5 class="resource-metadata-title">Recent Activity</h5>
+      <div class="resource-metadata-value">
+        <ul class="document-activity-items">
+          {{#each criterionDocuments as |document|}}
+            <li class="document-activity-item">
+              <span class="document-title">
+                {{#if showDefaultStatus}}
+                  <i class="fa fa-check"></i>Completed {{title}}
+                {{/if}}
+                {{#if isAppSecurity}}
+                  <i class="fa fa-check"></i>Completed {{title}} for {{link-to document.app.handle 'app' document.app}}
+                {{/if}}
+
+                {{#if isBasicTraining}}
+
+                {{/if}}
+              </span>
+              <span class="date">
+                {{{format-utc-timestamp document.createdAt true}}}
+              </span>
+            </li>
+          {{else}}
+            <li><span class="date">No activity</span></li>
+          {{/each}}
+        </ul>
+      </div>
+    </li>
+  </ul>
+</div>

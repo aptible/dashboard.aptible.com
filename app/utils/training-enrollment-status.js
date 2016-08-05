@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { formatUtcTimestamp } from 'diesel/helpers/format-utc-timestamp';
+import CriterionStatusMixin from 'diesel/mixins/components/criterion-status';
 export const COURSE_NAMES = { training_log: 'Basic',
                               developer_training_log: 'Developer',
                               security_officer_training_log: 'Security' };
@@ -10,13 +10,7 @@ export const ENROLLMENT_STATUSES = {
   OVERDUE: 'overdue'
 };
 
-export const DEFAULT_DOCUMENT_EXPIRY_IN_YEARS = 1;
-
-function formatDate(date) {
-  return formatUtcTimestamp(date, true);
-}
-
-export var CourseEnrollmentStatus = Ember.Object.extend({
+export var CourseEnrollmentStatus = Ember.Object.extend(CriterionStatusMixin, {
   init(params) {
     this._super(...arguments);
 
@@ -53,20 +47,6 @@ export var CourseEnrollmentStatus = Ember.Object.extend({
     }
   }),
 
-  activeCriterionDocuments: Ember.computed('criterionDocuments.[]', function() {
-    return this.get('criterionDocuments').filter((document) => {
-      // if document has an expiry, check if today is > doc.expiry
-      // if document has no expirey, check if today is > doc.createdAt + 1 year
-
-      let defaultExpiration = new Date(document.get('createdAt').getTime());
-      defaultExpiration.setYear(defaultExpiration.getFullYear() + DEFAULT_DOCUMENT_EXPIRY_IN_YEARS);
-
-      let expiresAt = document.get('expiresAt') || defaultExpiration;
-
-      return new Date() < expiresAt;
-    });
-  }),
-
   enrollmentStatus: Ember.computed('activeCriterionDocuments.[]', 'required', 'criterionDocuments.[]', function() {
     if (this.get('activeCriterionDocuments.length') > 0) {
       // Has non-expired documents related to this criterion
@@ -84,30 +64,6 @@ export var CourseEnrollmentStatus = Ember.Object.extend({
     }
 
     return ENROLLMENT_STATUSES.EXPIRED;
-  }),
-
-  lastCompletedDate: Ember.computed('activeCriterionDocuments.[]', function() {
-    let completedDate = this.get('activeCriterionDocuments.firstObject.createdAt');
-
-    if (completedDate) {
-      return formatDate(completedDate);
-    }
-  }),
-
-  lastCompletedExpirationDate: Ember.computed('activeCriterionDocuments.[]', function() {
-    let expiresDate = this.get('activeCriterionDocuments.firstObject.expiresAt');
-
-    if (expiresDate) {
-      return formatDate(expiresDate);
-    }
-  }),
-
-  lastExpirationDate: Ember.computed('criterionDocuments.[]', function() {
-    let lastExpired = this.get('criterionDocuments.firstObject.expiresAt');
-
-    if(lastExpired) {
-      return formatDate(lastExpired);
-    }
   })
 });
 

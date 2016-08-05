@@ -1,6 +1,6 @@
 $unenrolled-badge-color: #d6d6d6;
 
-.training-enrollment {
+.status-badges {
   margin: 0;
   padding: 0;
   list-style-type: none;
@@ -16,11 +16,25 @@ $unenrolled-badge-color: #d6d6d6;
     color: #fff;
     margin: 5px 0;
     font-weight: $weight-normal;
+    background: $unenrolled-badge-color;
 
     .fa {
       display: none;
     }
+  }
+}
 
+/* Bootstrap is too damn specific sometimes */
+.panel-default > .panel-heading .badge {
+  font-size: 11px;
+  color: #fff;
+  font-weight: $weight-normal;
+  background: $unenrolled-badge-color;
+}
+
+
+.training-enrollment {
+  .badge {
     &.status-notEnrolled {
       background: $unenrolled-badge-color;
     }

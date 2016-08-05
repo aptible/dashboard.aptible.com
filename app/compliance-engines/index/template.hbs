@@ -7,165 +7,66 @@
   </div>
 </header>
 
+
 <div class="container main-body">
   <section class="compliance-section">
     <header>
       <i class="fa fa-check-circle-o"></i>
-      <span class="header-title">Compliance Status</span>
-      <span class="badge">2</span>
+      <span class="header-title">Compliance Alerts</span>
+      <span class="badge">0</span>
     </header>
 
-    <div class="panel compliance-status-panel white-panel">
-      <div class="panel-row">
-
-        <div class="panel-cell">
-          <div class="compliance-status-group">
-            <div class="compliance-status-icon">
-              <div class="compliance-icon icon-md">
-                <i class="compliance-green fa"></i>
-              </div>
-            </div>
-
-            <div class="compliance-status-body">
-              <a class="compliance-title" href="/risk/">Risk Assessment</a>
-              <div class="compliance-effective">Updated 2 months ago</div>
-
-              <ul>
-              {{#each model.riskAssessment.documents as |document|}}
-                <li>Document: {{document.id}}</li>
-              {{/each}}
-              </ul>
-            </div>
-            <div class="compliance-status-nav">
-              <ul class="nav nav-pills compliance-nav">
-                <li>
-                  <a data-placement="bottom" data-toggle="tooltip" href="/risk/" title="" data-original-title="View Risk Assessment">
-                    <i class="fa fa-search-plus"></i>
-                  </a>
-                </li>
-                <li>
-                  <a data-placement="bottom" data-toggle="tooltip" href="https://compliance.aptible.com/risk/risk_analyses/76.pdf" target="_blank" title="" data-original-title="Download Risk Assessment PDF">
-                    <i class="fa fa-file-text-o"></i>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel-cell">
-          <div class="compliance-status-group">
-            <div class="compliance-status-icon">
-              <div class="compliance-icon icon-md">
-                <i class="compliance-green fa"></i>
-              </div>
-            </div>
-
-            <div class="compliance-status-body">
-              <a class="compliance-title" href="/policy/">Policies and Procedures</a>
-              <div class="compliance-effective">Updated 3 months ago</div>
-              <ul>
-              {{#each model.policyManual.documents as |document|}}
-                <li>Document: {{document.id}}</li>
-              {{/each}}
-              </ul>
-            </div>
-
-            <div class="compliance-status-nav">
-              <ul class="nav nav-pills compliance-nav">
-                <li>
-                  <a data-placement="bottom" data-toggle="tooltip" href="/policy/" title="" data-original-title="View Policy Manual">
-                    <i class="fa fa-search-plus"></i>
-                  </a>
-                </li>
-                <li>
-                  <a data-placement="bottom" data-toggle="tooltip" href="https://compliance.aptible.com/policy/policy_manuals/78.pdf" target="_blank" title="" data-original-title="Download Policy Manual PDF">
-                    <i class="fa fa-file-text-o"></i>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div><!-- end panel-cell -->
-      </div><!--end panel-row -->
-
-      <div class="panel-row">
-        <div class="panel-cell">
-          <div class="compliance-status-group">
-            <div class="compliance-status-icon">
-              <div class="compliance-icon icon-md">
-                <i class="compliance-red fa"></i>
-              </div>
-            </div>
-
-            <div class="compliance-status-body">
-              <a class="compliance-title" href="/security/">Application Security</a>
-              <div class="compliance-effective">Completed for 1 app</div>
-              <ul>
-                {{#each model.appSecurityInterview.documents as |document|}}
-                  <li>Document: {{document.id}}</li>
-                {{/each}}
-              </ul>
-            </div>
-            <div class="compliance-status-nav">
-              <ul class="nav nav-pills compliance-nav">
-                <li>
-                  <a data-placement="bottom" data-toggle="tooltip" href="/security/" title="" data-original-title="Complete Application Security Interviews">
-                    <i class="fa fa-arrow-circle-right"></i>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div><!-- end panel-cell -->
-
-        <div class="panel-cell">
-          <div class="compliance-status-group">
-            <div class="compliance-status-icon">
-              <div class="compliance-icon icon-md">
-                <i class="compliance-red fa"></i>
-              </div>
-            </div>
-
-            <div class="compliance-status-body">
-              <a class="compliance-title" href="/training/">Workforce Training</a>
-              <div class="compliance-effective">Completed for 16 users</div>
-                <ul>
-                {{#each model.trainingLog.documents as |document|}}
-                  <li>Document: {{document.id}}</li>
-                {{/each}}
-              </ul>
-            </div>
-            <div class="compliance-status-nav">
-              <ul class="nav nav-pills compliance-nav">
-                <li>
-                  <a data-placement="bottom" data-toggle="tooltip" href="/training/users" title="" data-original-title="View Workforce Training Status">
-                    <i class="fa fa-users"></i>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div><!-- end panel-cell -->
-        </div><!-- end panel-row -->
-      </div><!-- end panel -->
+    <div class="row">
+      <div class="col-xs-12">
+        {{compliance-alerts alerts=alerts}}
+      </div>
     </div>
   </section>
 
   <section class="compliance-section">
     <header>
-      <i class="fa fa-bell"></i>
-      <span class="header-title">Alerts</span>
-      <span class="badge">2</span>
+      <i class="fa fa-check-circle-o"></i>
+      <span class="header-title">Compliance Engines</span>
+      <span class="badge">1</span>
     </header>
 
-    <div class="panel compliance-status-table-panel white-panel">
-      <div class="panel-row">
-        <a href="/training/">Thomas Test needs Basic HIPAA Training</a>
+    <div class="row">
+      <div class="col-xs-6">
+        {{compliance-engine-status
+          criterion=model.riskCriterion
+          criterionDocuments=model.riskAssessmentDocuments
+          productionApps=model.productionApps
+          users=model.users}}
       </div>
-      <div class="panel-row">
-        <a href="/training/">Thomas Orozco needs Basic HIPAA Training</a>
+
+      <div class="col-xs-6">
+        {{compliance-engine-status
+          criterion=model.policyCriterion
+          criterionDocuments=model.policyManualDocuments
+          productionApps=model.productionApps
+          users=model.users}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-6">
+        {{compliance-engine-status
+          criterion=model.appSecurityCriterion
+          criterionDocuments=model.appSecurityDocuments
+          organization=model.organization
+          productionApps=model.productionApps
+          users=model.users}}
+
+      </div>
+
+      <div class="col-xs-6">
+        {{compliance-engine-status
+          criterion=model.trainingCriterion
+          criterionDocuments=model.trainingDocuments
+          users=model.users
+          organization=model.organization
+          productionApps=model.productionApps}}
       </div>
     </div>
   </section>
-
 </div>

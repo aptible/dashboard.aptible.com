@@ -1,4 +1,12 @@
+ul.document-activity-items {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
 .document-activity-item {
+  line-height: 18px;
+
   .document-title {
     color: $color-primary;
     font-weight: $weight-semibold;
@@ -6,5 +14,10 @@
 
   .date {
     font-size: 11px;
+  }
+
+  .fa-check {
+    color: $color-success;
+    margin: 0 8px 0 0;
   }
 }
