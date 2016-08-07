@@ -30,19 +30,10 @@
         "PriceClass_100"
       ],
       "Description": "Price class for CloudFront distribution. See http://amzn.to/1Rmjv32 for details."
-    }
-  },
-  "Mappings": {
-    "DomainAWSResourceIdMap": {
-      "aptible.com": {
-        "IamCertificateId": "ASCAIIHAG2U3A2CIAFOSU"
-      },
-      "aptible-staging.com": {
-        "IamCertificateId": "ASCAIWRPADW2NPHDICMCA"
-      },
-      "aptible-sandbox.com": {
-        "IamCertificateId": "ASCAJJHNGQXFAFJ77ANTO"
-      }
+    },
+    "AcmCertificateArn": {
+      "Type": "String",
+      "Default": "arn:aws:acm:us-east-1:916150859591:certificate/77bc3323-0f5d-4635-bc1f-8cbe1c4c4e36"
     }
   },
   "Resources": {
@@ -103,7 +94,7 @@
           ],
           "PriceClass": { "Ref": "PriceClass" },
           "ViewerCertificate": {
-            "IamCertificateId": { "Fn::FindInMap": [ "DomainAWSResourceIdMap", { "Ref": "Domain" }, "IamCertificateId" ] },
+            "AcmCertificateArn": { "Ref": "AcmCertificateArn" },
             "SslSupportMethod": "sni-only"
           }
         }
