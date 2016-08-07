@@ -101,7 +101,7 @@
               "Id": { "Fn::Join": [ ".", [ { "Ref": "Subdomain" }, { "Ref": "Domain" } ] ] }
             }
           ],
-          "PriceClass": "PriceClass_100",
+          "PriceClass": { "Ref": "PriceClass" },
           "ViewerCertificate": {
             "IamCertificateId": { "Fn::FindInMap": [ "DomainAWSResourceIdMap", { "Ref": "Domain" }, "IamCertificateId" ] },
             "SslSupportMethod": "sni-only"
