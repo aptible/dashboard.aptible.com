@@ -200,40 +200,6 @@ a.panel-link .panel, a.panel {
   }
 }
 
-.panel-nav {
-  margin-bottom: -1px;
-
-  .tabs {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-  }
-
-  li {
-    display: inline-block;
-    font-size: 16px;
-    font-weight: $weight-semibold;
-    padding: 16px 20px;
-
-    .badge {
-      background: #bebebe;
-      padding: 3px 6px;
-      margin-left: 5px;
-    }
-
-    &.active {
-      background: #fff;
-      border: 1px solid #e5e5e5;
-      border-radius: 3px 3px 0 0;
-      border-bottom-color: #fff;
-      box-shadow: 0 -1px 2px 0 rgba(0, 0, 0, 0.03);
-
-      a {
-        color: $color-primary;
-      }
-    }
-  }
-}
 
 h3.panel-title {
   text-transform: uppercase;
