@@ -38,11 +38,25 @@ export default Ember.Route.extend({
 
     remove(user){
       let organization = this.modelFor('organization');
+      let billingDetail = organization.get('billingDetail');
+      let message = `${user.get('name')} removed from ${organization.get('name')}`;
+
+      if (user.get('id') === organization.get('securityOfficer.id')) {
+        message = `${user.get('name')} is ${organization.get('name')}'s Security
+                   Officer and cannot be removed until a new one is assigned.`;
+        Ember.get(this, 'flashMessages').failure(message);
+        return false;
+      }
+
+      if (user.get('id') === billingDetail.get('billingContact.id')) {
+        message = `${user.get('name')} is ${organization.get('name')}'s Billing
+                   Contact and cannot be removed until a new one is assigned.`;
+        Ember.get(this, 'flashMessages').failure(message);
+        return false;
+      }
 
       user.set('organizationId', organization.get('id'));
       user.destroyRecord().then(() => {
-        let message = `${user.get('name')} removed from ${organization.get('name')}`;
-
         this.transitionTo('organization.members');
         Ember.get(this, 'flashMessages').success(message);
       });
