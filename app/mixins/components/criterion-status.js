@@ -11,43 +11,20 @@ export const COMPLIANCE_STATUSES = {
   INCOMPLETE: 'incomplete'
 };
 
-
+export const RECENT_ACTIVITY_COUNT = 3
 
 export default Ember.Mixin.create({
   criterionDocuments: null,
+  recentActivityDocuments: Ember.computed('criterionDocuments.[]', function() {
+    return this.get('criterionDocuments').slice(0, RECENT_ACTIVITY_COUNT);
+  }),
 
   isAppSecurity: Ember.computed.equal('criterion.handle', 'app_security_interview'),
   isBasicTraining: Ember.computed.equal('criterion.handle', 'training_log'),
 
-  isRed: Ember.computed('showDefaultStatus', 'criterionDocuments.[]', 'activeApps.[]', 'productionApps.[]', 'users.[]', function() {
-    if(this.get('isAppSecurity')) {
-      let activeCount = this.get('activeApps.length');
-      let expiredCount = this.get('expiredApps.length');
-      let totalCount = this.get('productionApps.length');
-
-      return (activeCount + expiredCount) < totalCount;
-    }
-
-    if(this.get('isBasicTraining')) {
-      let activeUsersCount = this.get('activeUsers.length');
-      let expiredUsersCount = this.get('expiredUsers.lenght');
-      let totalUsers = this.get('users.length');
-
-      return (activeUsersCount + expiredUsersCount) < totalUsers;
-    }
-
-    return this.get('hasNoDocuments');
-  }),
-
-  isYellow: Ember.computed('criterionDocuments.[]', 'activeApps.[]', 'productionApps.[]', 'users.[]', function() {
-    if(this.get('isAppSecurity')) {
-
-    }
-  }),
-
-  isGreen: Ember.computed('criterionDocuments.[]', 'activeApps.[]', 'productionApps.[]', 'users.[]', function() {
-
-  }),
+  isRed: Ember.computed.equal('status', 'incomplete'),
+  isYellow: Ember.computed.equal('status', 'expired'),
+  isGreen: Ember.computed.equal('status', 'complete'),
 
   hasNoDocuments: Ember.computed.equal('criterionDocuments.length', 0),
   hasNoActiveDocuments: Ember.computed.equal('activeCriterionDocuments.length', 0),
@@ -90,6 +67,18 @@ export default Ember.Mixin.create({
     let expiredCount = this.get('expiredApps.length');
     let totalCount = this.get('productionApps.length');
 
+    return this.getStatusByCounts(activeCount, expiredCount, totalCount);
+  },
+
+  getBasicTrainingStatus() {
+    let activeCount = this.get('activeUsers.length');
+    let expiredCount = this.get('expiredUsers.length');
+    let totalCount = this.get('users.length');
+
+    return this.getStatusByCounts(activeCount, expiredCount, totalCount);
+  },
+
+  getStatusByCounts(activeCount, expiredCount, totalCount) {
     if(activeCount === totalCount) {
       return COMPLIANCE_STATUSES.ACTIVE;
     }
@@ -107,38 +96,26 @@ export default Ember.Mixin.create({
     }
 
     if(this.get('isBasicTraining')) {
-
+      return this.getBasicTrainingStatus();
     }
 
-    if(this.get('isRed')) {
-      return 'incomplete';
+    if(this.get('hasActiveDocuments')) {
+      return COMPLIANCE_STATUSES.ACTIVE;
     }
 
-    if(this.get('isYellow')) {
-      return 'expired';
+    if(this.get('hasNoDocuments')) {
+      return COMPLIANCE_STATUSES.INCOMPLETE;
     }
 
-    return 'complete';
+    return COMPLIANCE_STATUSES.NEEDS_ATTENTION;
   }),
 
-  defaultStatusText: Ember.computed('isRed', 'isGreen', 'isYellow', function() {
-    let lastCompletedExpirationDate = this.get('lastCompletedExpirationDate');
-    let lastCompletedDate = this.get('lastCompletedDate');
-    let lastExpirationDate = this.get('lastExpirationDate');
 
-    return {
-      incomplete: 'Never completed.',
-      expired: ``,
-      complete: ``
-    }[this.get('status')];
-  }),
-
-  // Application Security Mixins
   appStatuses: Ember.computed('isAppSecurity', 'criterionDocuments.@each.appUrl', 'productionApps.[]', function() {
     // This method maps over all apps and determines their compliance status
     // only a string is returned for each app.
     let documents = this.get('criterionDocuments');
-    debugger;
+
     return this.get('productionApps').map((app) => {
       let appDocuments = documents.filterBy('appUrl', app.get('data.links.self'));
       let activeDocuments = appDocuments.filterBy('isExpired', false);
@@ -146,7 +123,7 @@ export default Ember.Mixin.create({
 
       // Set the app directly on a document.  This is a cheat
       appDocuments.forEach((doc) => {
-        doc.set('app', app)
+        doc.set('app', app);
       });
 
       let status = 'incomplete';
@@ -161,6 +138,33 @@ export default Ember.Mixin.create({
     });
   }),
 
+  userStatuses: Ember.computed('isBasictraining', 'criterionDocuments.@each.userUrl', 'users.[]', function() {
+    // This method maps over all users and determines their compliance status
+    // only a string is returned for each app.
+    let documents = this.get('criterionDocuments');
+
+    return this.get('users').map((user) => {
+      let userDocuments = documents.filterBy('userUrl', user.get('data.links.self'));
+      let activeDocuments = userDocuments.filterBy('isExpired', false);
+      let expiredDocuments = userDocuments.filterBy('isExpired', true);
+
+      // Set the user directly on a document.  This is a cheat
+      userDocuments.forEach((doc) => {
+        doc.set('user', user);
+      });
+
+      let status = 'incomplete';
+
+      if(activeDocuments.length > 0) {
+        status = 'complete';
+      } else if(expiredDocuments.length > 0) {
+        status = 'expired';
+      }
+
+      return Ember.Object.create({ user, status });
+    });
+  }),
+
   expiredApps: Ember.computed.filterBy('appStatuses', 'status', 'expired'),
   activeApps: Ember.computed.filterBy('appStatuses', 'status', 'complete'),
   incompleteApps: Ember.computed.filterBy('appStatuses', 'status', 'incomplete'),
@@ -170,12 +174,19 @@ export default Ember.Mixin.create({
     });
   }),
 
+  expiredUsers: Ember.computed.filterBy('userStatuses', 'status', 'expired'),
+  activeUsers: Ember.computed.filterBy('userStatuses', 'status', 'complete'),
+  incompleteUsers: Ember.computed.filterBy('userStatuses', 'status', 'incomplete'),
+  notIncompleteUsers: Ember.computed('userStatuses.@each.status', function() {
+    return this.get('userStatuses').filter((appStatus) => {
+      return ['expired', 'complete'].indexOf(appStatus.get('status')) > -1;
+    });
+  }),
+
   appSecurityStatusText: Ember.computed('isAppSecurity', 'productionAppCount', 'activeAppsCount', function() {
-    let appStatuses = this.get('appStatuses');
-    let productionAppCount = this.get('productionApps.length')
+    let productionAppCount = this.get('productionApps.length');
     let expiredCount = this.get('expiredApps.length');
     let activeCount = this.get('activeApps.length');
-    let incompleteCount = this.get('incompleteApps.length');
     let notIncompleteCount = this.get('notIncompleteApps.length');
 
     // all apps have documents and non are expired
@@ -195,14 +206,13 @@ export default Ember.Mixin.create({
 
     // some apps have documents, some do not
     if(notIncompleteCount < productionAppCount && expiredCount > 0) {
-      return `Completed for ${activeCount} of ${productionAppCount} apps, however ${expiredCount} have expired.`;
+      return `Completed for ${notIncompleteCount} of ${productionAppCount} apps, however ${expiredCount} have expired.`;
     }
 
     return `Completed for ${activeCount} of ${productionAppCount} apps.`;
   }),
 
-  basicTrainingStatusText: Ember.computed('isBasicTraining', 'userCount', 'activeUserCount', function() {
-    let userStatuses = this.get('userStatuses');
+  basicTrainingStatusText: Ember.computed('isBasicTraining', 'users.[]', 'activeUsers.[]', function() {
     let userCount = this.get('users.length');
     let expiredUsersCount = this.get('expiredUsers.length');
     let activeUsersCount = this.get('activeUsers.length');
@@ -214,7 +224,22 @@ export default Ember.Mixin.create({
       return `All users have completed basic training.`
     }
 
-    // All users have completed training, but one or more is expired
+    // All have documents, but one or more is expired
+    if(notIncompleteUsersCount === userCount) {
+      return `All users have completed training, however ${expiredUsersCount} have expired`;
+    }
+
+    // No users have documents
+    if(notIncompleteUsersCount === 0) {
+      return `None of your ${userCount} users have completed Basic Training`;
+    }
+
+    // some users have documents, some do not
+    if(notIncomple < userCount && expiredUsersCount > 0) {
+      return `${notIncompleteUsersCount} users have completed basic training, however ${expiredUsersCount} have expired.`
+    }
+
+    return `${activeCount} of ${userCount} have completed basic training.`
 
   })
 });

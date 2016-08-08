@@ -1,11 +1,15 @@
-{{#if isRed}}
-  Never Completed
-{{/if}}
+{{#each allAlerts as |alert|}}
+  <div>
+    {{alert.message}}
+  </div>
+{{/each}}
 
-{{#if isGreen}}
-  Last completed on {{lastCompletedDate}}. Expires on {{lastCompletedExpirationDate}}
-{{/if}}
-
-{{#if isYellow}}
-  Complete, but expired on {{lastExpirationDate}}
-{{/if}}
+<table class="aptable">
+  <tbody>
+    {{#each alerts as |alert|}}
+      <tr>
+        <td class="aptable__row-heading">{{alert.message}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

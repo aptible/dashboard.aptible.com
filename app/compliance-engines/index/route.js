@@ -1,15 +1,7 @@
 import Ember from 'ember';
 
-// Compliance Dashboard
-// Criterion:
-// policy_manual
-// risk_assessment
-// app_security_interview
-// training_log
-// developer_training_log
-// security_officer_training_log
-//
 export default Ember.Route.extend({
+  complianceStatus: Ember.inject.service(),
   model() {
     let organization = this.modelFor('compliance-organization');
     let documentQuery = { organization: organization.get('data.links.self') };
@@ -21,8 +13,8 @@ export default Ember.Route.extend({
       let trainingCriterion = criteria.findBy('handle', 'training_log');
 
       return Ember.RSVP.hash({
-        criteria, policyCriterion, riskCriterion,
-        appSecurityCriterion, trainingCriterion,
+        criteria, policyCriterion, riskCriterion, appSecurityCriterion,
+        trainingCriterion, organization,
         policyManualDocuments: policyCriterion.get('documents', documentQuery),
         riskAssessmentDocuments: riskCriterion.get('documents', documentQuery),
         appSecurityDocuments: appSecurityCriterion.get('documents', documentQuery),
@@ -41,7 +33,11 @@ export default Ember.Route.extend({
     });
 
     model.productionApps = productionApps;
-    debugger;
+
+    let complianceStatus = this.get('complianceStatus');
+    complianceStatus.setProperties(model);
+    model.alerts = complianceStatus.get('allAlerts');
+
     controller.set('model', model);
   },
 

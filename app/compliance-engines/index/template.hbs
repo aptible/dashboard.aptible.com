@@ -1,33 +1,29 @@
-<header class="new-header">
+<header>
   <div class="container">
-    <div class="header-left">
-      <h2 class="sub-title">Compliance Engines</h2>
-      <h1 class="title">{{organizatin.name}} Compliance Dashboard</h1>
-    </div>
+    <h1 class="dashboard-header">{{model.organization.name}}</h1>
   </div>
 </header>
 
 
 <div class="container main-body">
-  <section class="compliance-section">
-    <header>
-      <i class="fa fa-check-circle-o"></i>
-      <span class="header-title">Compliance Alerts</span>
-      <span class="badge">0</span>
-    </header>
+  {{#if model.alerts}}
+    <section class="compliance-section">
+      <header>
+        <span class="header-title">Compliance Alerts</span>
+        <span class="badge">{{model.alerts.length}}</span>
+      </header>
 
-    <div class="row">
-      <div class="col-xs-12">
-        {{compliance-alerts alerts=alerts}}
+      <div class="row">
+        <div class="col-xs-12">
+          {{compliance-alerts alerts=model.alerts}}
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  {{/if}}
 
   <section class="compliance-section">
     <header>
-      <i class="fa fa-check-circle-o"></i>
       <span class="header-title">Compliance Engines</span>
-      <span class="badge">1</span>
     </header>
 
     <div class="row">
