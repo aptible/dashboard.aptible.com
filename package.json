@@ -1,6 +1,6 @@
 {
   "name": "diesel",
-  "version": "1.1.63",
+  "version": "1.1.64",
   "description": "Ember.js dashboard for the Aptible PaaS",
   "private": true,
   "directories": {
