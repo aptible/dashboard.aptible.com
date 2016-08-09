@@ -23,12 +23,9 @@ test('filters required courses correctly', function(assert) {
 });
 
 test('filters completed courses correctly', function(assert) {
-  let completedBasic = { criterion: { handle: 'training_log' },
-                            expiresAt: fromNow({ years: 2 }),
-                            createdAt: ago({ years: 1}) };
+  let completedBasic = { criterion: { handle: 'training_log' }, isExpired: false };
   let completedDeveloper = { criterion: { handle: 'developer_training_log' },
-                             expiresAt: fromNow({ years: 2 }),
-                             createdAt: ago({ years: 1}) };
+                             isExpired: false };
 
   let documents = [Ember.Object.create(completedBasic), Ember.Object.create(completedDeveloper)];
   let settings = { isRobot: false, isDeveloper: true, isSecurityOfficer: false };
@@ -42,15 +39,13 @@ test('filters completed courses correctly', function(assert) {
 test('filters expired courses correctly', function(assert) {
   // Test missing expiry (defaults to 1 year)
   let expiredBasic = { criterion: { handle: 'training_log' },
-                       createdAt: ago({ years: 2}) };
+                       isExpired: true };
 
   // Test specific expiration
   let expiredDeveloper = { criterion: { handle: 'developer_training_log' },
-                           expiresAt: ago({ years: 1 }),
-                           createdAt: ago({ years: 2}) };
+                           isExpired: true };
   let completedSecurity = { criterion: { handle: 'security_officer_training_log' },
-                            expiresAt: fromNow({ years: 2 }),
-                            createdAt: ago({ years: 1}) };
+                            isExpired: false };
 
   let documents = [Ember.Object.create(expiredBasic), Ember.Object.create(expiredDeveloper), Ember.Object.create(completedSecurity)];
   let settings = { isRobot: false, isDeveloper: true, isSecurityOfficer: true };

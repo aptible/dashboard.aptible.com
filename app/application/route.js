@@ -1,8 +1,6 @@
 import Ember from "ember";
 import config from '../config/environment';
 
-Error.stackTraceLimit = 999;
-
 export default Ember.Route.extend({
   raven: Ember.inject.service(),
   actions: {
@@ -10,7 +8,7 @@ export default Ember.Route.extend({
       this.transitionTo('login');
     },
 
-    xerror(err) {
+    error(err) {
       this.intermediateTransitionTo('error', err);
 
       if(!config.sentry.development)  {
