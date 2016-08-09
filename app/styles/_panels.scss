@@ -36,12 +36,10 @@
     box-shadow: none;
 
     padding: 9px 20px;
-    /*border-bottom: 1px solid #e5e5e5;
-    box-shadow: 0 1px 3px rgba(#000, .08);*/
     background: #fff;
 
     h5 {
-      margin: 5px 0;
+      margin: 10px 0;
       font-size: 14px;
       font-weight: $weight-semibold;
     }
@@ -115,6 +113,11 @@
 
 
 a.panel-link, a.panel {
+
+  .panel-body {
+    color: $color-light;
+  }
+
   &:hover, &:active, &:link {
     text-decoration: none;
     outline: none;
