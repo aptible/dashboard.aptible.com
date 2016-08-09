@@ -8,13 +8,12 @@ export default Ember.Route.extend({
       this.transitionTo('login');
     },
 
-    error(err) {
-      this.intermediateTransitionTo('error', err);
-
-      if(!config.sentry.development)  {
-        this.get('raven').captureException(err);
-      } else {
+    xerror(err) {
+      if(config.sentry.development)  {
         this._super(...arguments);
+      } else {
+        this.get('raven').captureException(err);
+        this.intermediateTransitionTo('error', err);
       }
     }
   }

@@ -6,17 +6,13 @@ export function isTrainingCriterion(criterion) {
 }
 
 export default Ember.Route.extend({
+  complianceStatus: Ember.inject.service(),
   model() {
     let handle = 'workforce_roles';
-    let organizationProfile = this.modelFor('compliance-engines');
+    let organizationProfile = this.get('complianceStatus.organizationProfile');
     let attestationParams = { handle, organizationProfile, document: [] };
     let attestation = Attestation.findOrCreate(attestationParams, this.store);
-
-    let criteria = new Ember.RSVP.Promise((resolve, reject) => {
-      this.store.find('criterion').then(function(criteria) {
-        resolve(criteria.filter(isTrainingCriterion));
-      }, reject);
-    });
+    let criteria = this.get('complianceStatus.criteria').filter(isTrainingCriterion);
 
     return Ember.RSVP.hash({ criteria, attestation });
   }

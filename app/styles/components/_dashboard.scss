@@ -5,17 +5,17 @@ h1.dashboard-header {
 }
 
 section.compliance-section {
-  margin: 0 0 30px;
+  margin: 0 0 10px;
 
   header {
     @extend %clearfix;
     color: #b8b8b8;
-    margin: 0 0 20px;
+    margin: 0 0 10px;
 
     .header-title {
       float: left;
       text-transform: uppercase;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: $weight-semibold;
       color: $color-light;
       margin-right: 7px;

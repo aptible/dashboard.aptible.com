@@ -14,8 +14,10 @@ const ADMIN_ROLE_DESCRIPTION = `Users in this role can add/delete compliance
                                 and security controls.`;
 
 export default Ember.Route.extend({
+  complianceStatus: Ember.inject.service(),
   model() {
-    let organization = this.modelFor('compliance-organization');
+    let complianceStatus = this.get('complianceStatus');
+    let { organization, invitations, users, roles } = complianceStatus.getProperties('organization', 'invitations', 'users', 'roles');
     let trainingOnlyRole = Role.findOrCreate({ organization,
                                                name: DEFAULT_TRAINING_ROLE_NAME,
                                                type: 'compliance_user' }, this.store);
@@ -25,9 +27,7 @@ export default Ember.Route.extend({
                                         type: 'compliance_owner' }, this.store);
 
     return Ember.RSVP.hash({
-      trainingOnlyRole, adminRole, organization,
-      invitations: organization.get('invitations'),
-      users: organization.get('users')
+      trainingOnlyRole, adminRole, organization, invitations, users, roles
     });
   },
 
@@ -36,7 +36,7 @@ export default Ember.Route.extend({
     model.adminRole.set('description', ADMIN_ROLE_DESCRIPTION);
 
     controller.set('model', model);
-    controller.set('roles', model.organization.get('roles'));
+    controller.set('roles', model.roles);
     controller.set('organization', model.organization);
   },
 

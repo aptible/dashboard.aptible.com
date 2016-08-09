@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import CriterionStatusMixin from 'diesel/mixins/components/criterion-status';
+import CriterionStatusMixin from 'diesel/mixins/services/criterion-status';
 export const COURSE_NAMES = { training_log: 'Basic',
                               developer_training_log: 'Developer',
                               security_officer_training_log: 'Security' };

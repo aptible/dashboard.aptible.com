@@ -14,9 +14,16 @@ export const COMPLIANCE_STATUSES = {
 export const RECENT_ACTIVITY_COUNT = 3;
 
 export default Ember.Mixin.create({
-  criterionDocuments: null,
-  recentActivityDocuments: Ember.computed('criterionDocuments.[]', function() {
-    return this.get('criterionDocuments').slice(0, RECENT_ACTIVITY_COUNT);
+  documents: null,
+  productionApps: Ember.computed.alias('complianceStatus.productionApps'),
+  users: Ember.computed.alias('complianceStatus.users'),
+
+  recentActivityDocuments: Ember.computed('documents.[]', function() {
+    if(!this.get('documents')) {
+      return [];
+    }
+
+    return this.get('documents').slice(0, RECENT_ACTIVITY_COUNT);
   }),
 
   isAppSecurity: Ember.computed.equal('criterion.handle', 'app_security_interview'),
@@ -26,32 +33,32 @@ export default Ember.Mixin.create({
   isYellow: Ember.computed.equal('status', 'expired'),
   isGreen: Ember.computed.equal('status', 'complete'),
 
-  hasNoDocuments: Ember.computed.equal('criterionDocuments.length', 0),
-  hasNoActiveDocuments: Ember.computed.equal('activeCriterionDocuments.length', 0),
-  hasActiveDocuments: Ember.computed.gt('activeCriterionDocuments.length', 0),
-  hasExpiredDocuments: Ember.computed.gt('expiredCriterionDocuments.length', 0),
+  hasNoDocuments: Ember.computed.equal('documents.length', 0),
+  hasNoActiveDocuments: Ember.computed.equal('activedocuments.length', 0),
+  hasActiveDocuments: Ember.computed.gt('activedocuments.length', 0),
+  hasExpiredDocuments: Ember.computed.gt('expireddocuments.length', 0),
 
-  activeCriterionDocuments: Ember.computed.filterBy('criterionDocuments', 'isExpired', false),
-  expiredCriterionDocuments: Ember.computed.filterBy('criterionDocuments', 'isExpired', true),
+  activedocuments: Ember.computed.filterBy('documents', 'isExpired', false),
+  expireddocuments: Ember.computed.filterBy('documents', 'isExpired', true),
 
-  lastCompletedDate: Ember.computed('activeCriterionDocuments.[]', function() {
-    let completedDate = this.get('activeCriterionDocuments.firstObject.createdAt');
+  lastCompletedDate: Ember.computed('activedocuments.[]', function() {
+    let completedDate = this.get('activedocuments.firstObject.createdAt');
 
     if (completedDate) {
       return formatDate(completedDate);
     }
   }),
 
-  lastCompletedExpirationDate: Ember.computed('activeCriterionDocuments.[]', function() {
-    let expiresDate = this.get('activeCriterionDocuments.firstObject.expiresAt');
+  lastCompletedExpirationDate: Ember.computed('activedocuments.[]', function() {
+    let expiresDate = this.get('activedocuments.firstObject.expiresAt');
 
     if (expiresDate) {
       return formatDate(expiresDate);
     }
   }),
 
-  lastExpirationDate: Ember.computed('criterionDocuments.[]', function() {
-    let lastExpired = this.get('criterionDocuments.firstObject.expiresAt');
+  lastExpirationDate: Ember.computed('documents.[]', function() {
+    let lastExpired = this.get('documents.firstObject.expiresAt');
 
     if(lastExpired) {
       return formatDate(lastExpired);
@@ -90,7 +97,7 @@ export default Ember.Mixin.create({
     return COMPLIANCE_STATUSES.INCOMPLETE;
   },
 
-  status: Ember.computed('criterionDocuments.[]', 'activeApps.[]', 'productionApps.[]', 'users.[]', function() {
+  status: Ember.computed('documents.[]', 'activeApps.[]', 'productionApps.[]', 'users.[]', function() {
     if(this.get('isAppSecurity')) {
       return this.getAppSecurityStatus();
     }
@@ -111,10 +118,10 @@ export default Ember.Mixin.create({
   }),
 
 
-  appStatuses: Ember.computed('isAppSecurity', 'criterionDocuments.@each.appUrl', 'productionApps.[]', function() {
+  appStatuses: Ember.computed('isAppSecurity', 'documents.@each.appUrl', 'productionApps.[]', function() {
     // This method maps over all apps and determines their compliance status
     // only a string is returned for each app.
-    let documents = this.get('criterionDocuments');
+    let documents = this.get('documents');
 
     return this.get('productionApps').map((app) => {
       let appDocuments = documents.filterBy('appUrl', app.get('data.links.self'));
@@ -138,10 +145,10 @@ export default Ember.Mixin.create({
     });
   }),
 
-  userStatuses: Ember.computed('isBasictraining', 'criterionDocuments.@each.userUrl', 'users.[]', function() {
+  userStatuses: Ember.computed('isBasictraining', 'documents.@each.userUrl', 'users.[]', function() {
     // This method maps over all users and determines their compliance status
     // only a string is returned for each app.
-    let documents = this.get('criterionDocuments');
+    let documents = this.get('documents');
 
     return this.get('users').map((user) => {
       let userDocuments = documents.filterBy('userUrl', user.get('data.links.self'));

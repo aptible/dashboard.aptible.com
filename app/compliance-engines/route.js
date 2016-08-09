@@ -1,10 +1,9 @@
 import Ember from 'ember';
-import OrganizationProfile from 'diesel/models/organization-profile';
 
 export default Ember.Route.extend({
+  complianceStatus: Ember.inject.service(),
   model() {
-    let organization = this.modelFor('compliance-organization');
-    return OrganizationProfile.findOrCreate(organization, this.store);
+    return this.get('complianceStatus.organizationProfile');
   },
 
   afterModel(model) {

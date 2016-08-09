@@ -6,16 +6,16 @@
 
 
 <div class="container">
-  {{#if model.alerts}}
+  {{#if model.allAlerts}}
     <section class="compliance-section">
       <header>
         <span class="header-title">Compliance Alerts</span>
-        <span class="badge">{{model.alerts.length}}</span>
+        <span class="badge">{{model.alertCount}}</span>
       </header>
 
       <div class="row">
         <div class="col-xs-12">
-          {{compliance-alerts alerts=model.alerts}}
+          {{compliance-alerts}}
         </div>
       </div>
     </section>
@@ -29,21 +29,13 @@
     <div class="row">
       <div class="col-xs-6">
         {{#link-to 'risk-assessments' class="panel-link"}}
-          {{compliance-engine-status
-            criterion=model.riskCriterion
-            criterionDocuments=model.riskAssessmentDocuments
-            productionApps=model.productionApps
-            users=model.users}}
+          {{compliance-engine-status status=model.risk}}
         {{/link-to}}
       </div>
 
       <div class="col-xs-6">
         {{#link-to-aptible 'compliance' path='policy' class="panel-link"}}
-          {{compliance-engine-status
-            criterion=model.policyCriterion
-            criterionDocuments=model.policyManualDocuments
-            productionApps=model.productionApps
-            users=model.users}}
+          {{compliance-engine-status status=model.policy}}
         {{/link-to-aptible}}
       </div>
     </div>
@@ -51,23 +43,13 @@
     <div class="row">
       <div class="col-xs-6">
         {{#link-to-aptible app='compliance' path='security' class="panel-link"}}
-          {{compliance-engine-status
-            criterion=model.appSecurityCriterion
-            criterionDocuments=model.appSecurityDocuments
-            organization=model.organization
-            productionApps=model.productionApps
-            users=model.users}}
-          {{/link-to-aptible}}
+          {{compliance-engine-status status=model.security}}
+        {{/link-to-aptible}}
       </div>
 
       <div class="col-xs-6">
         {{#link-to 'training' class="panel-link" class="panel-link"}}
-          {{compliance-engine-status
-            criterion=model.trainingCriterion
-            criterionDocuments=model.trainingDocuments
-            users=model.users
-            organization=model.organization
-            productionApps=model.productionApps}}
+          {{compliance-engine-status status=model.training}}
         {{/link-to}}
       </div>
     </div>
