@@ -11,7 +11,7 @@ export const COMPLIANCE_STATUSES = {
   INCOMPLETE: 'incomplete'
 };
 
-export const RECENT_ACTIVITY_COUNT = 3
+export const RECENT_ACTIVITY_COUNT = 3;
 
 export default Ember.Mixin.create({
   criterionDocuments: null,
@@ -201,7 +201,7 @@ export default Ember.Mixin.create({
 
     // No apps have documents
     if(notIncompleteCount === 0) {
-      return `Completed for none of ${productionAppCount} apps.`
+      return `Completed for none of ${productionAppCount} apps.`;
     }
 
     // some apps have documents, some do not
@@ -216,12 +216,11 @@ export default Ember.Mixin.create({
     let userCount = this.get('users.length');
     let expiredUsersCount = this.get('expiredUsers.length');
     let activeUsersCount = this.get('activeUsers.length');
-    let incompleteUsersCount = this.get('incompleteUsers.length');
     let notIncompleteUsersCount = this.get('notIncompleteUsers.length');
 
     // All users have completed basic training
     if(activeUsersCount === userCount) {
-      return `All users have completed basic training.`
+      return `All users have completed basic training.`;
     }
 
     // All have documents, but one or more is expired
@@ -235,11 +234,11 @@ export default Ember.Mixin.create({
     }
 
     // some users have documents, some do not
-    if(notIncomple < userCount && expiredUsersCount > 0) {
-      return `${notIncompleteUsersCount} users have completed basic training, however ${expiredUsersCount} have expired.`
+    if(notIncompleteUsersCount < userCount && expiredUsersCount > 0) {
+      return `${notIncompleteUsersCount} users have completed basic training, however ${expiredUsersCount} have expired.`;
     }
 
-    return `${activeCount} of ${userCount} have completed basic training.`
+    return `${activeUsersCount} of ${userCount} have completed basic training.`;
 
   })
 });

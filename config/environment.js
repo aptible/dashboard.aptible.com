@@ -40,8 +40,8 @@ module.exports = function(environment) {
     ],
 
     complianceTools: [
-      { name: 'Incident Response', path: 'incidents', app: 'compliance' },
-      { name: 'Contract Management', path: 'contracts', app: 'compliance' }
+      { name: 'Incident Response', description: 'Manage and respond to incidents', path: 'incidents', app: 'compliance' },
+      { name: 'Contract Management', description: 'Store contracts and BAAs in one central location', path: 'contracts', app: 'compliance' }
     ],
 
     'ember-cli-toggle': {

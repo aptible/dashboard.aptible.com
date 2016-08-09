@@ -1,10 +1,10 @@
 import Ember from 'ember';
 export const STEPS = [
-  { key: 'organization',      name: 'Organization' },
-  { key: 'locations',         name: 'Locations' },
-  { key: 'team',              name: 'Workforce' },
-  { key: 'data-environments', name: 'Data Environments' },
-  { key: 'security-controls', name: 'Security Controls' },
+  { key: 'organization',      name: 'Organization', description: 'Basic information about your organization' },
+  { key: 'locations',         name: 'Locations', description: 'Manage your workforce locations' },
+  { key: 'team',              name: 'Workforce', description: 'Configure training roles and Compliance admins'},
+  { key: 'data-environments', name: 'Data Environments', description: 'Identify systems used to store PHI' },
+  { key: 'security-controls', name: 'Security Controls', description: 'Configure organizational security controls' },
   { key: 'finish',            name: 'Finish' }
 ];
 
