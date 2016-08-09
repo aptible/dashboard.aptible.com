@@ -42,4 +42,34 @@ section.compliance-section {
   }
 }
 
+.compliance-status-table-panel {
+  .panel-row {
+    @extend %clearfix;
+    padding: 15px;
 
+    &:first-child {
+      border-radius: 3px 3px 0 0;
+    }
+
+    &:last-child {
+      border: 0;
+      border-radius: 3px 3px 0 0;
+    }
+
+    > a, > h3 {
+      font-weight: $weight-semibold;
+      font-size: 14px;
+      display: inline-block;
+      margin: 0 7px 0 0;
+    }
+
+    .description {
+      font-size: 12px;
+      color: $color-light;
+    }
+
+    &:nth-child(even) {
+      background: $color-bg-gray;
+    }
+  }
+}

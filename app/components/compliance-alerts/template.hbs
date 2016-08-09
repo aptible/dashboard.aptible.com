@@ -1,15 +1,7 @@
-{{#each allAlerts as |alert|}}
-  <div>
-    {{alert.message}}
-  </div>
-{{/each}}
-
-<table class="aptable">
-  <tbody>
-    {{#each alerts as |alert|}}
-      <tr>
-        <td class="aptable__row-heading">{{alert.message}}</td>
-      </tr>
-    {{/each}}
-  </tbody>
-</table>
+<div class="panel compliance-status-table-panel white-panel">
+  {{#each alerts as |alert|}}
+    <div class="panel-row">
+      <h3>{{alert.message}}</h3>
+    </div>
+  {{/each}}
+</div>

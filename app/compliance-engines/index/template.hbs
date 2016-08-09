@@ -28,40 +28,47 @@
 
     <div class="row">
       <div class="col-xs-6">
-        {{compliance-engine-status
-          criterion=model.riskCriterion
-          criterionDocuments=model.riskAssessmentDocuments
-          productionApps=model.productionApps
-          users=model.users}}
+        {{#link-to 'risk-assessments' class="panel-link"}}
+          {{compliance-engine-status
+            criterion=model.riskCriterion
+            criterionDocuments=model.riskAssessmentDocuments
+            productionApps=model.productionApps
+            users=model.users}}
+        {{/link-to}}
       </div>
 
       <div class="col-xs-6">
-        {{compliance-engine-status
-          criterion=model.policyCriterion
-          criterionDocuments=model.policyManualDocuments
-          productionApps=model.productionApps
-          users=model.users}}
+        {{#link-to-aptible 'compliance' path='policy' class="panel-link"}}
+          {{compliance-engine-status
+            criterion=model.policyCriterion
+            criterionDocuments=model.policyManualDocuments
+            productionApps=model.productionApps
+            users=model.users}}
+        {{/link-to-aptible}}
       </div>
     </div>
 
     <div class="row">
       <div class="col-xs-6">
-        {{compliance-engine-status
-          criterion=model.appSecurityCriterion
-          criterionDocuments=model.appSecurityDocuments
-          organization=model.organization
-          productionApps=model.productionApps
-          users=model.users}}
-
+        {{#link-to-aptible app='compliance' path='security' class="panel-link"}}
+          {{compliance-engine-status
+            criterion=model.appSecurityCriterion
+            criterionDocuments=model.appSecurityDocuments
+            organization=model.organization
+            productionApps=model.productionApps
+            users=model.users}}
+          {{/link-to-aptible}}
       </div>
 
       <div class="col-xs-6">
-        {{compliance-engine-status
-          criterion=model.trainingCriterion
-          criterionDocuments=model.trainingDocuments
-          users=model.users
-          organization=model.organization
-          productionApps=model.productionApps}}
+        {{#link-to 'training' class="panel-link" class="panel-link"}}
+          {{compliance-engine-status
+            criterion=model.trainingCriterion
+            criterionDocuments=model.trainingDocuments
+            users=model.users
+            organization=model.organization
+            productionApps=model.productionApps}}
+        {{/link-to}}
       </div>
     </div>
   </section>
