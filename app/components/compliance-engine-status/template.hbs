@@ -2,27 +2,7 @@
   <div class="panel-title">
     <h5 class="panel-name">{{title}}</h5>
     <div class="panel-status">
-      {{#if status.showDefaultStatus}}
-        {{#if status.isRed}}
-          Never completed.
-        {{/if}}
-
-        {{#if status.isYellow}}
-          Complete, but expired on {{status.lastExpirationDate}}
-        {{/if}}
-
-        {{#if status.isGreen}}
-          Last completed on {{status.lastCompletedDate}}. Expires on {{status.lastCompletedExpirationDate}}
-        {{/if}}
-      {{/if}}
-
-      {{#if status.isAppSecurity}}
-        {{status.appSecurityStatusText}}
-      {{/if}}
-
-      {{#if status.isBasicTraining}}
-        {{status.basicTrainingStatusText}}
-      {{/if}}
+      {{status.statusText}}
     </div>
     <ul class="status-badges">
       {{criterion-status-badge status=status tagName="li"}}

@@ -1,11 +1,11 @@
 import Ember from 'ember';
 import OrganizationProfile from 'diesel/models/organization-profile';
-import CriterionStatusMixin from 'diesel/mixins/services/criterion-status';
+import GenericCriterionStatus from 'diesel/utils/generic-criterion-status';
+import AppCriterionStatus from 'diesel/utils/app-criterion-status';
+import UserCriterionStatus from 'diesel/utils/user-criterion-status';
+import CriterionAlertsMixin from 'diesel/mixins/services/criterion-alerts';
 
-let Alert = Ember.Object.extend();
-let CriterionStatus = Ember.Object.extend(CriterionStatusMixin, {});
-
-export default Ember.Service.extend({
+export default Ember.Service.extend(CriterionAlertsMixin, {
   store: Ember.inject.service(),
 
   loadOrganizationStatus(organization) {
@@ -46,22 +46,34 @@ export default Ember.Service.extend({
           roles: organization.get('roles'),
           invitations: organization.get('invitations'),
           users: organization.get('users'),
-          organizationProfile: OrganizationProfile.findOrCreate(organization, store)
+          organizationProfile: OrganizationProfile.findOrCreate(organization, store),
+          billingDetail: organization.get('billingDetail')
         });
       })
       .then((models) => {
-        let { organization, criteria, stacks, securityOfficer, roles, invitations, users, organizationProfile } = models;
+        let {
+          organization,
+          criteria,
+          stacks,
+          securityOfficer,
+          roles,
+          invitations,
+          users,
+          organizationProfile,
+          billingDetail
+        } = models;
+
         // Transform the above hash into something more readable
         model = {
           // Various things
-          organization, criteria, stacks, securityOfficer, roles, invitations, users, organizationProfile,
+          organization, criteria, stacks, securityOfficer, roles, invitations, users, organizationProfile, billingDetail,
           // Engines are wrapped in CriterionStatus object
           // CriterionStatus objects have methods for converting criteiron status into readable strings
-          policy: CriterionStatus.create({ complianceStatus, criterion: models.policyCriterion, documents: models.policyManualDocuments }),
-          risk:  CriterionStatus.create({ complianceStatus, criterion: models.riskCriterion, documents: models.riskAssessmentDocuments }),
-          training: CriterionStatus.create({ complianceStatus, criterion: models.trainingCriterion, documents: models.trainingDocuments }),
-          securityOfficerTraining: CriterionStatus.create({ complianceStatus, criterion: models.securityOfficerTrainingCriterion, documents: models.securityOfficerTrainingDocuments }),
-          security: CriterionStatus.create({ complianceStatus, criterion: models.appSecurityCriterion, documents: models.appSecurityDocuments })
+          policy: GenericCriterionStatus.create({ complianceStatus, criterion: models.policyCriterion, documents: models.policyManualDocuments }),
+          risk:  GenericCriterionStatus.create({ complianceStatus, criterion: models.riskCriterion, documents: models.riskAssessmentDocuments }),
+          training: UserCriterionStatus.create({ complianceStatus, criterion: models.trainingCriterion, documents: models.trainingDocuments }),
+          securityOfficerTraining: UserCriterionStatus.create({ complianceStatus, criterion: models.securityOfficerTrainingCriterion, documents: models.securityOfficerTrainingDocuments }),
+          security: AppCriterionStatus.create({ complianceStatus, criterion: models.appSecurityCriterion, documents: models.appSecurityDocuments })
         };
 
         // Apps are loaded as a `hasMany` on stacks
@@ -84,90 +96,7 @@ export default Ember.Service.extend({
         resolve(this);
       });
     });
-  },
-
-  alertCount: Ember.computed.reads('allAlerts.length'),
-  allAlerts: Ember.computed('riskAssessmentAlerts.[]', 'policyManualAlerts.[]', 'appSecurityAlerts.[]', 'basicTrainingAlerts.[]', function() {
-    let alerts = [];
-
-    alerts = alerts.concat(this.get('riskAssessmentAlerts'));
-    alerts = alerts.concat(this.get('policyManualAlerts'));
-    alerts = alerts.concat(this.get('appSecurityAlerts'));
-    alerts = alerts.concat(this.get('basicTrainingAlerts'));
-
-    return alerts;
-  }),
-
-  riskAssessmentAlerts: Ember.computed('risk.activeDocuments.[]', function() {
-    if(this.get('risk.hasNoActiveDocuments')) {
-      let message = 'Missing Risk Assessment';
-
-      if(this.get('risk.documents.length') > 0) {
-        message = 'Risk Assessment expired.';
-      }
-
-      return [Alert.create({ type: 'riskAssessment', message })];
-    }
-
-    return [];
-  }),
-
-  policyManualAlerts: Ember.computed('policy.activeDocuments.[]', function() {
-    if(this.get('policy.hasNoActiveDocuments')) {
-      let message = 'Missing Policy Manual';
-
-      if(this.get('policy.documents.length') > 0) {
-        message = 'Policy Manual Expired';
-      }
-
-      return [Alert.create({ type: 'policyManual', message })];
-    }
-
-    return [];
-  }),
-
-  appSecurityAlerts: Ember.computed('productionApps.[]', 'security.documents.[]', function() {
-    let alerts = [];
-
-    this.get('productionApps').forEach((app) => {
-      let appUrl = app.get('data.links.self');
-      let appDocuments = this.get('security.documents').filterBy('appUrl', appUrl);
-
-      if(appDocuments.filterBy('isExpired', false).length === 0) {
-        let handle = app.get('handle');
-        let message = `Missing Application Security Interview for ${handle}`;
-
-        if(appDocuments.get('length') > 0 ) {
-          message = `Application Security Interview expired for ${handle}`;
-        }
-
-        alerts.push(Alert.create({ type: 'appSecurity', message }));
-      }
-    });
-
-    return alerts;
-  }),
-
-  basicTrainingAlerts: Ember.computed('users.[]', 'training.documents.[]', function() {
-    let alerts = [];
-    this.get('users').forEach((user) => {
-      let userUrl = user.get('data.links.self');
-      let userDocuments = this.get('training.documents').filterBy('userUrl', userUrl);
-
-      if(userDocuments.filterBy('isExpired', false).length === 0) {
-        let name = user.get('name');
-        let message = `Missing Basic Training for ${name}`;
-
-        if(userDocuments.get('length') > 0) {
-          message = `Basic Training expired for ${name}`;
-        }
-
-        alerts.push(Alert.create({ type: 'basicTraining', message }));
-      }
-    });
-
-    return alerts;
-  })
+  }
 });
 
 

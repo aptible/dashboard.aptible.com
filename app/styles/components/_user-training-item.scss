@@ -35,7 +35,7 @@ $unenrolled-badge-color: #d6d6d6;
 
 .training-enrollment {
   .badge {
-    &.status-notEnrolled {
+    &.status-not-required {
       background: $unenrolled-badge-color;
     }
 

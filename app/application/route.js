@@ -8,7 +8,7 @@ export default Ember.Route.extend({
       this.transitionTo('login');
     },
 
-    xerror(err) {
+    error(err) {
       if(config.sentry.development)  {
         this._super(...arguments);
       } else {

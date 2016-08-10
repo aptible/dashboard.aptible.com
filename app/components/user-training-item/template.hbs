@@ -1,23 +1,15 @@
 <div class="panel-heading">
   <div class="user-gravatar">
-    {{gravatar-image email=user.email size=25}}
+    {{gravatar-image email=userStatus.user.email size=25}}
   </div>
 
   <div class="user-title">
-    <h5 class="user-name">{{user.name}}</h5>
-    <div class="user-email">{{user.email}}</div>
-    <ul class="training-enrollment badge-list">
-      {{training-enrollment-badge
-          user=user
-          criterion=complianceStatus.training
-          tagName="li"}}
-
-      {{training-enrollment-badge
-          user=user
-          criterion=complianceStatus.securityOfficerTraining
-          tagName="li"}}
-    </ul>
+    <h5 class="user-name">{{userStatus.user.name}}</h5>
+    <div class="user-email">{{userStatus.user.email}}</div>
   </div>
+  <ul class="status-badges training-enrollment">
+    {{training-enrollment-badge userStatus=userStatus tagName="li"}}
+  </ul>
 </div>
 
 <div class="panel-body">
@@ -25,7 +17,7 @@
     <li class="resource-metadata-item">
       <h5 class="resource-metadata-title">Recent Activity</h5>
       <h3 class="resource-metadata-value">
-        {{#each status.documents as |document|}}
+        {{#each userStatus.documents as |document|}}
           {{document-activity-item document=document}}
         {{else}}
           No Training Activity Yet

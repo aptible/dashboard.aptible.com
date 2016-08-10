@@ -34,10 +34,9 @@
 
       <div class="resource-list-grid workforce-members">
         <div class="row">
-          {{#each model.users as |user|}}
+          {{#each model.training.userStatuses as |userStatus|}}
             <div class="col-xs-4">
-              {{user-training-item complianceStatus=model user=user}}
-              {{user.name}}
+              {{user-training-item userStatus=userStatus}}
             </div>
           {{/each}}
         </div>

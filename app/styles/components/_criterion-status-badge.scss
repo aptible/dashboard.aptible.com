@@ -1,5 +1,8 @@
-/* Bootstrap specificity is awful here */
-.panel-default > .panel-heading .badge {
+.status-badges {
+  clear: both;
+}
+
+.panel-default > .panel-heading .badge { /* Bootstrap specificity is awful here */
   &.status-incomplete {
     background: $color-danger;
 

@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import CriterionStatusMixin from 'diesel/mixins/services/criterion-status';
+import DocumentStatusMixin from 'diesel/mixins/services/document-status';
 export const COURSE_NAMES = { training_log: 'Basic',
                               developer_training_log: 'Developer',
                               security_officer_training_log: 'Security' };
@@ -10,7 +10,7 @@ export const ENROLLMENT_STATUSES = {
   OVERDUE: 'overdue'
 };
 
-export var CourseEnrollmentStatus = Ember.Object.extend(CriterionStatusMixin, {
+export var CourseEnrollmentStatus = Ember.Object.extend(DocumentStatusMixin, {
   init(params) {
     this._super(...arguments);
 
