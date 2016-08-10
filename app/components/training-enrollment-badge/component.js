@@ -1,10 +1,17 @@
 import Ember from 'ember';
 import { ENROLLMENT_STATUSES } from 'diesel/utils/training-enrollment-status';
 
+// Need to refactor this badge to work with new compliance status setup
+
+
 export default Ember.Component.extend({
   classNames: ['training-enrollment-badge'],
 
-  hoverMessage: Ember.computed('courseStatus.enrollmentStatus', 'user', function() {
+  enrollmentStatus: Ember.computed('user', 'criterion.handle', function() {
+
+  }),
+
+  hoverMessage: Ember.computed('enrollmentStatus', 'user', function() {
     let name = this.get('user.name');
     let { title, enrollmentStatus, lastCompletedDate, lastCompletedExpirationDate, lastExpirationDate } = this.get('courseStatus').getProperties('title', 'enrollmentStatus', 'lastCompletedDate', 'lastCompletedExpirationDate', 'lastExpirationDate');
 

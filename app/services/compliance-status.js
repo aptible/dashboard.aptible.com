@@ -31,6 +31,7 @@ export default Ember.Service.extend({
         let riskCriterion = criteria.findBy('handle', 'risk_assessment');
         let appSecurityCriterion = criteria.findBy('handle', 'app_security_interview');
         let trainingCriterion = criteria.findBy('handle', 'training_log');
+        let securityOfficerTrainingCriterion = criteria.findBy('handle', 'security_officer_training_log');
 
         return Ember.RSVP.hash({
           criteria, policyCriterion, riskCriterion, appSecurityCriterion,
@@ -39,6 +40,7 @@ export default Ember.Service.extend({
           riskAssessmentDocuments: riskCriterion.get('documents', documentQuery),
           appSecurityDocuments: appSecurityCriterion.get('documents', documentQuery),
           trainingDocuments: trainingCriterion.get('documents', documentQuery),
+          securityOfficerTrainingDocuments: securityOfficerTrainingCriterion.get('documents', documentQuery),
           stacks: store.findStacksFor(organization),
           securityOfficer: organization.get('securityOfficer'),
           roles: organization.get('roles'),
@@ -58,6 +60,7 @@ export default Ember.Service.extend({
           policy: CriterionStatus.create({ complianceStatus, criterion: models.policyCriterion, documents: models.policyManualDocuments }),
           risk:  CriterionStatus.create({ complianceStatus, criterion: models.riskCriterion, documents: models.riskAssessmentDocuments }),
           training: CriterionStatus.create({ complianceStatus, criterion: models.trainingCriterion, documents: models.trainingDocuments }),
+          securityOfficerTraining: CriterionStatus.create({ complianceStatus, criterion: models.securityOfficerTrainingCriterion, documents: models.securityOfficerTrainingDocuments }),
           security: CriterionStatus.create({ complianceStatus, criterion: models.appSecurityCriterion, documents: models.appSecurityDocuments })
         };
 

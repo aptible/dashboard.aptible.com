@@ -19,6 +19,31 @@
   </header>
 
   <div class="container main-body">
-    {{outlet}}
+
+    <section class="compliance-section">
+      <header>
+        <span class="header-title">{{model.organization.name}} Training Overview</span>
+      </header>
+      {{training-progress-bar complianceStatus=model}}
+    </section>
+
+    <section class="compliance-section">
+      <header>
+        <span class="header-title">Training Status By User</span>
+      </header>
+
+      <div class="resource-list-grid workforce-members">
+        <div class="row">
+          {{#each model.users as |user|}}
+            <div class="col-xs-4">
+              {{user-training-item complianceStatus=model user=user}}
+              {{user.name}}
+            </div>
+          {{/each}}
+        </div>
+      </div>
+    </section>
+
+
   </div>
 </main>

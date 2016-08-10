@@ -1,43 +1,35 @@
 import Ember from 'ember';
 export const LABEL_VISIBLE_WIDTH = 160;
+
+function getWidth(numerator, denominator) {
+  if (!numerator) { return 0; }
+  return numerator/denominator*100;
+}
+
 export default Ember.Component.extend({
   classNames: ['training-progress-bar', 'stacked-bar'],
 
   totalRequirements: Ember.computed('users.[]', 'users.@each.enrollmentStatus', function() {
-    let users = this.get('users').filterBy('settings.isRobot', false);
-    let developerCount = users.filterBy('settings.isDeveloper', true).get('length');
-    let securityCount = users.filterBy('settings.isSecurityOfficer', true).get('length');
-
-    return users.get('length') + developerCount + securityCount;
+    return this.get('complianceStatus.users.length');
   }),
 
-  completedCounts: Ember.computed.mapBy('users', 'completedCourses.length'),
-  totalCompleted: Ember.computed.sum('completedCounts'),
+  userStatuses: Ember.computed.alias('complianceStatus.training.userStatuses'),
+  completed: Ember.computed.filterBy('userStatuses', 'status', 'complete'),
+  expired: Ember.computed.filterBy('userStatuses', 'status', 'expired'),
+  overdue: Ember.computed.filterBy('userStatuses', 'status', 'incomplete'),
 
-  expiredCounts: Ember.computed.mapBy('users', 'expiredCourses.length'),
-  totalExpired: Ember.computed.sum('expiredCounts'),
+  completedWidth: Ember.computed('completed.[]', 'totalRequirements', function() {
+    let totalCompleted = this.get('completed.length');
+    let totalRequirements = this.get('totalRequirements');
 
-  overdueCounts: Ember.computed.mapBy('users', 'overdueCourses.length'),
-  totalOverdue: Ember.computed.sum('overdueCounts'),
-
-  completedWidth: Ember.computed('totalCompleted', 'totalRequirements', function() {
-    let { totalCompleted, totalRequirements } = this.getProperties('totalCompleted', 'totalRequirements');
-
-    if (totalCompleted === 0) {
-      return 0;
-    }
-
-    return totalCompleted/totalRequirements*100;
+    return getWidth(totalCompleted, totalRequirements);
   }),
 
   expiredWidth: Ember.computed('totalExpired', 'totalRequirements', function() {
-    let { totalExpired, totalRequirements } = this.getProperties('totalExpired', 'totalRequirements');
+    let totalExpired = this.get('expired.length');
+    let totalRequirements = this.get('totalRequirements');
 
-    if (totalExpired === 0) {
-      return 0;
-    }
-
-    return totalExpired/totalRequirements*100;
+    return getWidth(totalExpired, totalRequirements);
   }),
 
   overdueMargin: Ember.computed('expireWidth', 'completedWidth', function() {

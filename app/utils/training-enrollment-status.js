@@ -14,15 +14,14 @@ export var CourseEnrollmentStatus = Ember.Object.extend(CriterionStatusMixin, {
   init(params) {
     this._super(...arguments);
 
-    let { title, handle, documents, user, settings } = params;
+    let { title, handle, documents, user } = params;
 
     Ember.assert('`documents` must be included in `CourseEnrollmentStatus` initialization params', documents);
     Ember.assert('`user` must be included in `CourseEnrollmentStatus` initialization params', user);
-    Ember.assert('`settings` must be included in `CourseEnrollmentStatus` initialization params', settings);
     Ember.assert('`title` must be included in `CourseEnrollmentStatus` initialization params', title);
     Ember.assert('`handle` must be included in `CourseEnrollmentStatus` initialization params', handle);
 
-    this.setProperties({ title, handle, documents, user, settings });
+    this.setProperties({ title, handle, documents, user });
   },
 
   criterionDocuments: Ember.computed('handle', 'documents.[]', function() {
@@ -33,17 +32,13 @@ export var CourseEnrollmentStatus = Ember.Object.extend(CriterionStatusMixin, {
     });
   }),
 
-  required: Ember.computed('settings', 'handle', function() {
+  required: Ember.computed('isSecurityOfficer', 'handle', function() {
     let handle = this.get('handle');
-    let settings = this.get('settings');
 
-    switch(handle) {
-      case 'training_log':
+    if(handle === 'training_log') {
       return true;
-      case 'developer_training_log':
-      return settings.isDeveloper;
-      case 'security_officer_training_log':
-      return settings.isSecurityOfficer;
+    } else if (handle === 'security_officer_training_log' && this.get('isSecurityOfficer')) {
+      return true;
     }
   }),
 
@@ -73,22 +68,21 @@ export default Ember.Object.extend({
 
     let courses = {};
     let coursesCollection = [];
-    let { documents, user, settings } = params;
+    let { documents, user } = params;
 
     Ember.assert('`documents` must be included in `TrainingEnrollmentStatus` initialization params', !!documents);
     Ember.assert('`user` must be included in `TrainingEnrollmentStatus` initialization params', !!user);
-    Ember.assert('`settings` must be included in `TrainingEnrollmentStatus` initialization params', !!settings);
 
     for (var handle in COURSE_NAMES) {
       let title = COURSE_NAMES[handle];
 
       courses[handle] = new CourseEnrollmentStatus({
-        title, handle, documents, user, settings
+        title, handle, documents, user
       });
       coursesCollection.push(courses[handle]);
     }
 
-    this.setProperties({ courses, coursesCollection, documents, user, settings });
+    this.setProperties({ courses, coursesCollection, documents, user });
   },
 
   requiredCourses: Ember.computed.filterBy('coursesCollection', 'required', true),
