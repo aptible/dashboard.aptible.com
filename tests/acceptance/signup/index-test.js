@@ -62,7 +62,7 @@ test('Creating an account directs to welcome wizard', function(assert) {
 
   doSignupSteps(url, userInput, {clickButton:false});
   fillInput('organization', userInput.organization);
-  clickButton('Create account');
+  clickButton('Create Account');
   andThen(function(){
     assert.equal(currentPath(), 'welcome.first-app', 'directs to first app');
   });
@@ -85,7 +85,7 @@ test('Signing up with no plan shows development copy', function(assert) {
 
   doSignupSteps(url, userInput, {clickButton:false});
   fillInput('organization', userInput.organization);
-  clickButton('Create account');
+  clickButton('Create Account');
 
   andThen(function() {
     assert.equal(currentPath(), 'welcome.first-app', 'directs to first app');
@@ -99,7 +99,7 @@ test(`visiting ${url} and signing up with too-short organization name shows erro
 
   doSignupSteps(url, userInput, {clickButton:false});
   fillInput('organization', tooShortOrganizationName);
-  clickButton('Create account');
+  clickButton('Create Account');
   andThen(() => {
     assert.equal(currentPath(), signupIndexPath, 'path does not change');
     let error = find(':contains(minimum is 3 characters)');
@@ -127,7 +127,7 @@ test(`visiting ${url} and signing up with invalid data shows errors`, function(a
 
 test('Creating an account shows validation errors', function(assert) {
   visit(url);
-  clickButton('Create account');
+  clickButton('Create Account');
   andThen(function(){
     assert.equal(currentPath(), signupIndexPath, 'path does not change');
 
