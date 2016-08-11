@@ -175,6 +175,10 @@ test('With no data environments configured it redirects back to data environment
 function stubRequests() {
   stubValidOrganization();
   stubSchemasAPI();
+  stubCriterionDocuments({});
+  stubStacks();
+  stubBillingDetail();
+  stubCriteria();
 
   stubRequest('get', rolesHref, function() {
     return this.success({ _embedded: { roles } });

@@ -55,6 +55,8 @@
     "expectRedirectsWhenLoggedIn",
     "stubOrganizations",
     "stubOrganization",
+    "stubCriterionDocuments",
+    "stubCriteria",
     "stubSchemasAPI",
     "stubValidOrganization",
     "stubCurrentAttestations",

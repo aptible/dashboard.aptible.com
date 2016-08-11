@@ -198,6 +198,10 @@ function stubRequests() {
   stubValidOrganization();
   stubSchemasAPI();
   stubProfile({ hasCompletedSetup: true });
+  stubCriterionDocuments({});
+  stubStacks();
+  stubBillingDetail();
+  stubCriteria();
 
   stubRequest('get', rolesHref, function() {
     return this.success({ _embedded: { roles } });

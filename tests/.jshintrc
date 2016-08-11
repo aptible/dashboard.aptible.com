@@ -55,6 +55,8 @@
     "expectRequiresAuthentication",
     "expectRedirectsWhenLoggedIn",
     "stubOrganizations",
+    "stubCriterionDocuments",
+    "stubCriteria",
     "stubOrganization",
     "stubSchemasAPI",
     "stubProfile",

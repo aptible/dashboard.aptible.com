@@ -447,6 +447,10 @@ function stubRequests(options = {}) {
   stubSchemasAPI();
   stubCurrentAttestations({ workforce_locations: [] });
   stubProfile({ hasCompletedSetup: true, currentStep: 'team' });
+  stubCriterionDocuments({});
+  stubStacks();
+  stubBillingDetail();
+  stubCriteria();
 
   stubRequest('get', usersHref, function() {
     return this.success({ _embedded: { users }});

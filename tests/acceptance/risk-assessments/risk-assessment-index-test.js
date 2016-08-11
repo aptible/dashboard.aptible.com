@@ -74,6 +74,10 @@ test(`visiting ${riskAssessmentsUrl}: basic UI`, function(assert) {
 function stubRequests() {
   stubValidOrganization();
   stubProfile({ hasCompletedSetup: true });
+  stubCriterionDocuments({});
+  stubStacks();
+  stubBillingDetail();
+  stubCriteria();
 
   stubRequest('get', `/organization_profiles/${orgId}/risk-assessments`, function() {
     return this.success({ _embedded: { risk_assessments: riskAssessments  } });

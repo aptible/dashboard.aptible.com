@@ -1,5 +1,6 @@
 import { test } from 'ember-qunit';
 import Ember from 'ember';
+import { ago } from '../../helpers/date';
 import TrainingEnrollmentStatus from 'diesel/utils/training-enrollment-status';
 
 module('Unit: TrainingEnrollmentStatus');

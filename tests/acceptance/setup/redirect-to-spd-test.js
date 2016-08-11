@@ -69,7 +69,7 @@ test('Loading compliance with completed SPD does not redirect you', function(ass
   signInAndVisit(`/compliance/${orgId}/training`);
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.compliance-engines.training.index', 'remains on current path');
+    assert.equal(currentPath(), 'compliance.compliance-organization.compliance-engines.training', 'remains on current path');
   });
 });
 
@@ -79,10 +79,10 @@ function stubRequests() {
   stubCurrentAttestations({ workforce_roles: [
     { email: users[0].email, isDeveloper: false, isSecurityOfficer: false, isRobot: false, hasAptibleAccount: true }
   ] });
-
-  stubRequest('get', '/criteria', function() {
-    return this.success({ _embedded: { criteria: [] }});
-  });
+  stubCriterionDocuments({});
+  stubStacks();
+  stubBillingDetail();
+  stubCriteria();
 
   stubRequest('get', '/documents', function() {
     return this.success({ _embedded: { documents: [] } });

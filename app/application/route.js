@@ -9,7 +9,7 @@ export default Ember.Route.extend({
     },
 
     error(err) {
-      if(config.sentry.development)  {
+      if(config.environment !== 'test' && config.sentry.development)  {
         this._super(...arguments);
       } else {
         this.get('raven').captureException(err);

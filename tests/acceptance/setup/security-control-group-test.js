@@ -181,6 +181,10 @@ test('clicking previous will go to index when on first group', function(assert) 
 function stubRequests() {
   stubValidOrganization();
   stubSchemasAPI();
+  stubCriterionDocuments({});
+  stubStacks();
+  stubBillingDetail();
+  stubCriteria();
 
   stubRequest('get', rolesHref, function() {
     return this.success({ _embedded: { roles } });

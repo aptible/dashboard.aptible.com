@@ -162,6 +162,11 @@ function clickSaveButton() {
 function stubRequests() {
   stubValidOrganization();
   stubSchemasAPI();
+  stubCriterionDocuments({});
+  stubStacks();
+  stubBillingDetail();
+  stubCriteria();
+
   stubProfile({ hasCompletedSetup: true });
 
   stubRequest('get', rolesHref, function() {
