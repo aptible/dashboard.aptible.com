@@ -94,7 +94,7 @@ Ember.Test.registerHelper('stubValidOrganization', function(options) {
     _links: {
       organization: { href: `/organizations/${orgId}` }
     }
-  }
+  };
 
   stubRequest('get', `/organizations/${orgId}`, function() {
     return this.success(organization);
