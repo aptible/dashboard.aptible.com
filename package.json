@@ -67,6 +67,7 @@
     "ember-truth-helpers": "^1.2.0",
     "ember-validations": "2.0.0-alpha.3",
     "express": "^4.8.5",
+    "testem": "^1.8.1",
     "glob": "^4.0.5",
     "liquid-fire": "0.22.0",
     "silent-error": "^1.0.0",

@@ -1,4 +1,5 @@
 {
+  "parallel": 8,
   "framework": "qunit",
   "test_page": "tests/index.html?hidepassed",
   "disable_watching": true,
