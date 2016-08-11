@@ -1,11 +1,11 @@
 <div class="panel panel-default">
   {{#if isDevelopment}}
-    <h3>Need to store PHI?</h3>
-    <button class="btn btn-default btn-sm"  {{action 'setPlan' 'platform' }}>Switch to PHI-ready Platform plan</button>
+    <h3>Need your own private stack?</h3>
+    <button class="btn btn-default btn-sm"  {{action 'setPlan' 'platform' }}>Switch to a Platform Account</button>
   {{/if}}
 
   {{#if isPlatform}}
-    <h3>Not ready for PHI Yet?</h3>
-    <button class="btn btn-default btn-sm" {{action 'setPlan' 'development'}}>Switch to Development plan</button>
+    <h3>Just looking?</h3>
+    <button class="btn btn-default btn-sm" {{action 'setPlan' 'development'}}>Switch to a Development Account</button>
   {{/if}}
 </div>
