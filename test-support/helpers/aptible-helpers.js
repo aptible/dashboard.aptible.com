@@ -269,7 +269,19 @@ Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
           databases: [{
             id: 1,
             handle: 'my-db-1-stack-1',
-            status: 'provisioned'
+            status: 'provisioned',
+             _embedded: {
+              service: {
+                id: '1',
+                handle: 'the-service',
+                container_count: 1,
+                container_memory_limit_mb: 2048
+              },
+              disk: {
+                id: '1',
+                size: 500
+              }
+            }
           }, {
             id: 2,
             handle: 'my-db-2-stack-1',
