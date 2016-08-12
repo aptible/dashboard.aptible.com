@@ -1,9 +1,13 @@
 .profile-image {
   border-radius: 3px;
+  border-radius: 4px;
 }
+
 .profile--inline {
   min-width: 220px;
+  font-weight: $weight-semibold;
+
   .profile-image {
-    margin-right: 10px;
+    margin-right: 6px;
   }
 }

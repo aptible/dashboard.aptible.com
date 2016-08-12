@@ -33,7 +33,7 @@
       {{#each role.memberships as |membership|}}
         <li class="workforce-role__user">
           <div class="workforce-role__user-name">
-            {{gravatar-image email=membership.user.email size=50}}
+            {{gravatar-image email=membership.user.email size=50 retina=true}}
             {{membership.user.name}}
           </div>
           <div class="workforce-role__user-actions">
