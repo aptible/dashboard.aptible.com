@@ -104,6 +104,26 @@
   }
 }
 
+.panel {
+  .panel-title {
+    margin: 20px 0;
+  }
+
+  h5.panel-name {
+    font-size: 16px;
+    margin: 0 0 8px;
+  }
+
+  .panel-status {
+    color: $color-light;
+    font-size: 14px;
+  }
+
+  .status-badges {
+    margin: 10px 0 0;
+  }
+}
+
 .resource-actions {
   .btn {
     margin-right: 10px;

@@ -40,3 +40,29 @@ test('creating POSTs to correct url', function(assert) {
     });
   });
 });
+
+test('`isExpired` returns true after `expiresAt`', function(assert) {
+  let expiredDate = new Date();
+  expiredDate.setYear(expiredDate.getFullYear() - 2);
+
+  var model = this.subject();
+  Ember.run(() => {
+    model.setProperties({ createdAt: new Date(), expiresAt: expiredDate });
+
+    assert.equal(model.get('isExpired'), true,
+                '`isExpired` returns true for passed expiresAt date');
+  });
+});
+
+test('`isExpired` returns false when before `expiresAt`', function(assert) {
+  let expiredDate = new Date();
+  expiredDate.setYear(expiredDate.getFullYear() + 2);
+
+  let model = this.subject();
+  Ember.run(() => {
+    model.setProperties({ createdAt: new Date(), expiresAt: expiredDate });
+
+    assert.equal(model.get('isExpired'), false,
+                '`isExpired` returns false before expiresAt date');
+  });
+});
