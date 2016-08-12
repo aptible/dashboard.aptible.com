@@ -1,0 +1,11 @@
+{{#if isRed}}
+  Never Completed
+{{/if}}
+
+{{#if isGreen}}
+  Completed on {{lastCompletedDate}} -- expires {{lastCompletedExpirationDate}}
+{{/if}}
+
+{{#if isYellow}}
+  Complete, but expired on {{lastExpirationDate}}
+{{/if}}

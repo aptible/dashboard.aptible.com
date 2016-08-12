@@ -48,7 +48,7 @@ test('Organization settings page basic UI', function(assert) {
   signInAndVisit(organizationUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.engines.compliance-settings.organization', 'on organization settings page');
+    assert.equal(currentPath(), 'compliance.compliance-organization.compliance-engines.compliance-settings.organization', 'on organization settings page');
     assert.ok(find('.panel-section-title:contains(About Your Organization)'));
     assert.ok(find('.panel-section-title:contains(Description of your productions)'));
     assert.ok(find('textarea[name="aboutOrganization"]'));
@@ -102,6 +102,10 @@ function stubRequests() {
   stubValidOrganization();
   stubSchemasAPI();
   stubProfile({ hasCompletedSetup: true });
+  stubCriterionDocuments({});
+  stubStacks();
+  stubBillingDetail();
+  stubCriteria();
 
   stubRequest('get', rolesHref, function() {
     return this.success({ _embedded: { roles } });

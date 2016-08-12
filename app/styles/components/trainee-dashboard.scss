@@ -1,14 +1,17 @@
 .trainee-dashboard {
   margin-top: 130px;
+
   .panel {
     text-align: center;
     min-height: 150px;
   }
+
   .panel-link .white-panel {
     border: 1px solid $color-border-gray;
     transition-property: border, box-shadow;
     transition-duration: 0.5s;
     transition-timing-function: ease-in-out;
+
     &:hover, &:focus {
       .white-panel {
         border: 1px solid #3498db;

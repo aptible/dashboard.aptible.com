@@ -231,16 +231,11 @@ Router.map(function() {
     });
   });
 
-  this.authenticatedRoute('compliance', { path: '/compliance' }, function() {
-    this.route('compliance-organization', { path: '/:organization_id', resetNamespace: true }, function() {
-      this.route("engines", { path: '', resetNamespace: true }, function() {
-
-        this.route("training", { path: '/training', resetNamespace: true }, function() {
-          this.route("criterion", { path: ':criterion_handle' }, function() {});
-        });
-
+  this.authenticatedRoute('compliance', { path: 'compliance' }, function() {
+    this.route('compliance-organization', { path: ':organization_id', resetNamespace: true }, function() {
+      this.route("compliance-engines", { path: '', resetNamespace: true }, function() {
+        this.route("training", { path: 'training', resetNamespace: true });
         this.route("risk-assessments", { path: 'risk_assessments', resetNamespace: true });
-
         this.route('policies');
         this.route('security');
         this.route('contracts');

@@ -1,0 +1,25 @@
+.status-badges {
+  clear: both;
+}
+
+.panel-default > .panel-heading .badge { /* Bootstrap specificity is awful here */
+  &.status-incomplete {
+    background: $color-danger;
+
+    .fa-exclamation-circle {
+      display: inline;
+    }
+  }
+
+  &.status-complete {
+    background: $color-success;
+
+    .fa-check {
+      display: inline;
+    }
+  }
+
+  &.status-expired {
+    background: $color-warning;
+  }
+}

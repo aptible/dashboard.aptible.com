@@ -56,7 +56,7 @@ test(`visiting ${riskAssessmentsUrl}: basic UI`, function(assert) {
   signInAndVisit(riskAssessmentsUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'compliance.compliance-organization.engines.risk-assessments', 'on risk assessment url');
+    assert.equal(currentPath(), 'compliance.compliance-organization.compliance-engines.risk-assessments', 'on risk assessment url');
 
     assert.equal(find('.ra__status-header--draft').length, 1, 'has one draft risk assessment');
     assert.equal(find('.ra__status-header--current').length, 1, 'has one active risk assessment');
@@ -74,6 +74,10 @@ test(`visiting ${riskAssessmentsUrl}: basic UI`, function(assert) {
 function stubRequests() {
   stubValidOrganization();
   stubProfile({ hasCompletedSetup: true });
+  stubCriterionDocuments({});
+  stubStacks();
+  stubBillingDetail();
+  stubCriteria();
 
   stubRequest('get', `/organization_profiles/${orgId}/risk-assessments`, function() {
     return this.success({ _embedded: { risk_assessments: riskAssessments  } });

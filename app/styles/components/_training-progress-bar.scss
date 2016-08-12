@@ -3,6 +3,7 @@
   height: 40px;
   overflow: hidden;
   border-radius: 5px;
+  margin-bottom: 20px;
 
   .column {
     position: relative;
@@ -11,7 +12,7 @@
     background: $color-danger;
     height: 100%;
 
-    .label {
+    .bar-label {
       font-weight: $weight-semibold;
       text-transform: uppercase;
       color: #fff;
@@ -20,10 +21,10 @@
       width: 100%;
       font-size: 13px;
       display: none;
-      padding: 15px 0;
+      padding: 12px 0;
     }
 
-    &.show-label .label {
+    &.show-label .bar-label {
       display: block;
     }
 

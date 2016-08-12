@@ -1,0 +1,45 @@
+<section class="compliance-section">
+  <header>
+    <span class="header-title">Compliance Tools</span>
+  </header>
+
+  <div class="row">
+    {{#each complianceTools as |tool| }}
+      <div class="col-xs-6">
+        {{#link-to-aptible app='compliance' path=tool.path class="panel-link"}}
+          <div class="panel panel-default compliance-tool resource-list-item">
+            <div class="panel-heading">
+              <h5>{{tool.name}}</h5>
+            </div>
+            <div class="panel-body">
+              {{tool.description}}
+            </div>
+          </div>
+        {{/link-to-aptible}}
+      </div>
+    {{/each}}
+  </div>
+</section>
+
+<section class="compliance-section">
+  <header>
+    <span class="header-title">Security Program</span>
+  </header>
+
+  <div class="row">
+    {{#each securityProgramSteps as |step|}}
+      <div class="col-xs-6">
+        {{#link-to step.path class="panel-link"}}
+          <div class="panel panel-default security-program-step resource-list-item">
+            <div class="panel-heading">
+              <h5>{{step.name}}</h5>
+            </div>
+            <div class="panel-body">
+              {{step.description}}
+            </div>
+          </div>
+        {{/link-to}}
+      </div>
+    {{/each}}
+  </div>
+</section>

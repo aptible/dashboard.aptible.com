@@ -1,0 +1,61 @@
+<main class="layout-content">
+  <header>
+    <div class="container">
+      <h1 class="dashboard-header">{{model.organization.name}}</h1>
+    </div>
+  </header>
+
+
+  <div class="container">
+    {{#if model.allAlerts}}
+      <section class="compliance-section">
+        <header>
+          <span class="header-title">Compliance Alerts</span>
+          <span class="badge">{{model.alertCount}}</span>
+        </header>
+
+        <div class="row">
+          <div class="col-xs-12">
+            {{compliance-alerts}}
+          </div>
+        </div>
+      </section>
+    {{/if}}
+
+    <section class="compliance-section">
+      <header>
+        <span class="header-title">Compliance Engines</span>
+      </header>
+
+      <div class="row">
+        <div class="col-xs-6">
+          {{#link-to 'risk-assessments' class="panel-link"}}
+            {{compliance-engine-status status=model.risk}}
+          {{/link-to}}
+        </div>
+
+        <div class="col-xs-6">
+          {{#link-to-aptible 'compliance' path='policy' class="panel-link"}}
+            {{compliance-engine-status status=model.policy}}
+          {{/link-to-aptible}}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-6">
+          {{#link-to-aptible app='compliance' path='security' class="panel-link"}}
+            {{compliance-engine-status status=model.security}}
+          {{/link-to-aptible}}
+        </div>
+
+        <div class="col-xs-6">
+          {{#link-to 'training' class="panel-link" class="panel-link"}}
+            {{compliance-engine-status status=model.training}}
+          {{/link-to}}
+        </div>
+      </div>
+    </section>
+
+    {{compliance-dashboard-nav}}
+  </div>
+</main>

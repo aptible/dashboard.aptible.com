@@ -4,10 +4,72 @@ import { stubRequest } from 'ember-cli-fake-server';
 export var orgId = '1';
 export var rolesHref = `/organizations/${orgId}/roles`;
 export var usersHref = `/organizations/${orgId}/users`;
-export var billingDetailHref = `/billing-details/${orgId}`;
+export var billingDetailHref = `/billing_details/${orgId}`;
 export var invitationsHref = `/organizations/${orgId}/invitations`;
 export var securityOfficerId = 'security-officer-3';
 export var securityOfficerHref = `/users/${securityOfficerId}`;
+export var trainingCriterionId = 'training-criterion-1';
+export var developerCriterionId = 'developer-criterion-2';
+export var securityCriterionId = 'training-criterion-3';
+export var riskCriterionId = 'risk-criterion-4';
+export var policyCriterionId = 'policy-criterion-5';
+export var appSecCriterionId = 'app-security-criterion-6';
+export var criteria = [
+  {
+    id: trainingCriterionId,
+    scope: 'user',
+    name: 'Training Log',
+    handle: 'training_log',
+    _links: {
+      documents: { href: `/criteria/${trainingCriterionId}/documents` }
+    }
+  },
+  {
+    id: developerCriterionId,
+    scope: 'user',
+    name: 'Developer Training Log',
+    handle: 'developer_training_log',
+    _links: {
+      documents: { href: `/criteria/${developerCriterionId}/documents` }
+    }
+  },
+  {
+    id: securityCriterionId,
+    scope: 'user',
+    name: 'Security Officer Training Log',
+    handle: 'security_officer_training_log',
+    _links: {
+      documents: { href: `/criteria/${securityCriterionId}/documents` }
+    }
+  },
+  {
+    id: riskCriterionId,
+    scope: 'user',
+    name: 'Risk Assessment',
+    handle: 'risk_assessment',
+    _links: {
+      documents: { href: `/criteria/${riskCriterionId}/documents` }
+    }
+  },
+  {
+    id: policyCriterionId,
+    scope: 'user',
+    name: 'Policy Manual',
+    handle: 'policy_manual',
+    _links: {
+      documents: { href: `/criteria/${policyCriterionId}/documents` }
+    }
+  },
+  {
+    id: appSecCriterionId,
+    scope: 'user',
+    name: 'Application Security Interview',
+    handle: 'app_security_interview',
+    _links: {
+      documents: { href: `/criteria/${appSecCriterionId}/documents` }
+    }
+  },
+];
 
 Ember.Test.registerHelper('stubValidOrganization', function(options) {
   if (!!options && !!options.orgId) {
@@ -26,6 +88,14 @@ Ember.Test.registerHelper('stubValidOrganization', function(options) {
     }
   };
 
+  let billingDetail = {
+    id: orgId,
+    plan: 'pilot',
+    _links: {
+      organization: { href: `/organizations/${orgId}` }
+    }
+  };
+
   stubRequest('get', `/organizations/${orgId}`, function() {
     return this.success(organization);
   });
@@ -35,7 +105,7 @@ Ember.Test.registerHelper('stubValidOrganization', function(options) {
   });
 
   stubRequest('get', `/billing_details/${orgId}`, function() {
-    return this.success({ _embedded: { organizations: [organization] }});
+    return this.success(billingDetail);
   });
 });
 
@@ -86,5 +156,45 @@ Ember.Test.registerHelper('stubCurrentAttestations', function(_app, attestationP
     }
 
     return this.success({ _embedded: { attestations } });
+  });
+});
+
+Ember.Test.registerHelper('stubCriteria', function(app, customCriteria) {
+  if(customCriteria) { criteria = customCriteria; }
+
+  stubRequest('get', '/criteria', function() {
+    return this.success({ _embedded: { criteria }});
+  });
+
+  criteria.forEach((criterion) => {
+    stubRequest('get', `/criteria/${criterion.id}`, function() {
+      return this.success(criterion);
+    });
+  });
+});
+
+Ember.Test.registerHelper('stubCriterionDocuments', function(app, criteriaDocuments) {
+  stubRequest('get', `/criteria/${policyCriterionId}/documents`, function() {
+    return this.success({ _embedded: { documents: criteriaDocuments[policyCriterionId] || [] } });
+  });
+
+  stubRequest('get', `/criteria/${riskCriterionId}/documents`, function() {
+    return this.success({ _embedded: { documents: criteriaDocuments[riskCriterionId] || [] } });
+  });
+
+  stubRequest('get', `/criteria/${appSecCriterionId}/documents`, function() {
+    return this.success({ _embedded: { documents: criteriaDocuments[appSecCriterionId] || [] } });
+  });
+
+  stubRequest('get', `/criteria/${trainingCriterionId}/documents`, function() {
+    return this.success({ _embedded: { documents: criteriaDocuments[trainingCriterionId] || [] } });
+  });
+
+  stubRequest('get', `/criteria/${securityCriterionId}/documents`, function() {
+    return this.success({ _embedded: { documents: criteriaDocuments[securityCriterionId] || [] } });
+  });
+
+  stubRequest('get', `/criteria/${securityOfficerId}/documents`, function() {
+    return this.success({ _embedded: { documents: criteriaDocuments[securityOfficerId] || [] } });
   });
 });

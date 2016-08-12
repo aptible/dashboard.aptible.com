@@ -1,7 +1,7 @@
-{{#bs-tooltip title=hoverMessage}}
-  <span class="badge status-{{courseStatus.enrollmentStatus}}">
+{{#bs-tooltip title=userStatus.statusText}}
+  <span class="badge status-{{userStatus.status}}">
     <i class="fa fa-check"></i>
     <i class="fa fa-exclamation-circle"></i>
-    {{courseStatus.title}}
+    {{userStatus.title}}
   </span>
 {{/bs-tooltip}}

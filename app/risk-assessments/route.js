@@ -8,7 +8,7 @@ export default Ember.Route.extend({
 
   model() {
     let organization = this.modelFor('compliance-organization');
-    let organizationProfile = this.modelFor('engines');
+    let organizationProfile = this.modelFor('compliance-engines');
     let riskAssessments =  organizationProfile.get('riskAssessments');
 
     return Ember.RSVP.hash({

@@ -1,17 +1,13 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  complianceStatus: Ember.inject.service(),
   model(params) {
-    return this.store.find('organization', params.organization_id);
-  },
+    let organizations = this.modelFor('compliance');
+    let organization = organizations.findBy('id', params.organization_id);
+    let complianceStatus = this.get('complianceStatus');
 
-  afterModel(model) {
-    return Ember.RSVP.hash({
-      users: model.get('users'),
-      securityOfficer: model.get('securityOfficer'),
-      roles: model.get('roles'),
-      invitations: model.get('invitations')
-    });
+    return complianceStatus.loadOrganizationStatus(organization);
   },
 
   setupController(controller, model) {

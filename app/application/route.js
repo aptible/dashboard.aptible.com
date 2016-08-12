@@ -1,4 +1,5 @@
 import Ember from "ember";
+import config from '../config/environment';
 
 export default Ember.Route.extend({
   raven: Ember.inject.service(),
@@ -8,8 +9,12 @@ export default Ember.Route.extend({
     },
 
     error(err) {
-      this.intermediateTransitionTo('error', err);
-      this.get('raven').captureException(err);
+      if(config.environment !== 'test' && config.sentry.development)  {
+        this._super(...arguments);
+      } else {
+        this.get('raven').captureException(err);
+        this.intermediateTransitionTo('error', err);
+      }
     }
   }
 });

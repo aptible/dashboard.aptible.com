@@ -158,6 +158,10 @@ test('Clicking back should return you to previous step', function(assert) {
 function stubRequests(options) {
   stubValidOrganization(options);
   stubSchemasAPI();
+  stubCriterionDocuments({});
+  stubStacks();
+  stubBillingDetail();
+  stubCriteria();
 
   stubRequest('get', `/roles/${developerRoleId}/users`, function() {
     return this.success({ _embedded: { users: [users[1]] }});

@@ -68,11 +68,14 @@
 
 .aptable__row-heading {
   font-size: 13px;
-  color: #4a4a4a;
+  font-weight: $weight-semibold;
+  color: $color-primary;
 }
 
 .aptable__capitalized-list {
   text-transform: capitalize;
+  font-weight: $weight-semibold;
+  color: $color-light;
 }
 
 .aptable__actions {

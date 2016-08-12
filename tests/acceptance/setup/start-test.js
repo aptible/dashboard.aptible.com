@@ -100,6 +100,10 @@ test('Existing organization profiles should redirect to future step', function(a
 function stubRequests() {
   stubValidOrganization();
   stubSchemasAPI();
+  stubCriterionDocuments({});
+  stubStacks();
+  stubBillingDetail();
+  stubCriteria();
 
   stubRequest('get', rolesHref, function() {
     return this.success({ _embedded: { roles } });

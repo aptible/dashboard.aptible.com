@@ -1,0 +1,45 @@
+<div class="panel-heading">
+  <div class="panel-title">
+    <h5 class="panel-name">{{title}}</h5>
+    <div class="panel-status">
+      {{status.statusText}}
+    </div>
+    <ul class="status-badges">
+      {{criterion-status-badge status=status tagName="li"}}
+    </ul>
+  </div>
+</div>
+
+<div class="panel-body">
+  <ul class="resource-metadata">
+    <li class="resource-metadata-item">
+      <h5 class="resource-metadata-title">Recent Activity</h5>
+      <div class="resource-metadata-value">
+        <ul class="document-activity-items">
+          {{#each status.recentActivityDocuments as |document|}}
+            <li class="document-activity-item">
+              <span class="document-title">
+                {{#if status.showDefaultStatus}}
+                  <i class="fa fa-check"></i>Completed {{title}}
+                {{/if}}
+                {{#if status.isAppSecurity}}
+                  <i class="fa fa-check"></i>Completed {{title}} for {{link-to document.app.handle 'app' document.app}}
+                {{/if}}
+
+                {{#if status.isBasicTraining}}
+                  <i class="fa fa-check"></i>
+                  {{document.user.name}} Completed Basic Training
+                {{/if}}
+              </span>
+              <span class="date">
+                {{{format-utc-timestamp document.createdAt true}}}
+              </span>
+            </li>
+          {{else}}
+            <li><span class="date">No activity</span></li>
+          {{/each}}
+        </ul>
+      </div>
+    </li>
+  </ul>
+</div>

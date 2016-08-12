@@ -1,17 +1,17 @@
 <div class="column completed" style="width:{{completedWidth}}%">
-  <div class="label">
-  {{totalCompleted}} Completed
+  <div class="bar-label">
+    {{completed.length}} Completed
   </div>
 </div>
 
 <div class="column expired" style="width:{{expiredWidth}}%">
-  <div class="label">
-    {{totalExpired}} Expired
+  <div class="bar-label">
+    {{expired.length}} Expired
   </div>
 </div>
 
 <div class="column overdue" style="margin-left: {{overdueMargin}}%">
-  <div class="label">
-    {{totalOverdue}} Overdue
+  <div class="bar-label">
+    {{overdue.length}} Overdue
   </div>
 </div>

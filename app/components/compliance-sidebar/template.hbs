@@ -39,7 +39,7 @@
 
 <ul class="nav sidebar-nav">
   <li class="title">Security Program</li>
-  {{#each steps as |step|}}
+  {{#each securityProgramSteps as |step|}}
     <li class="{{if step.current 'active'}}">
       {{link-to step.name step.path}}
     </li>
