@@ -1,13 +1,15 @@
 import Ember from 'ember';
 import Role from 'diesel/models/role';
 
-export const DEFAULT_TRAINING_ROLE_NAME = 'Training Only Users';
+export const DEFAULT_TRAINING_ROLE_NAME = 'Training-Only Users';
 export const DEFAULT_DEVELOPER_ROLE_NAME = 'Developers';
 export const DEFAULT_ADMIN_ROLE_NAME = 'Compliance Owners';
 
-const TRAINING_ROLE_DESCRIPTION = `Add users to this role who do not need
-                                   access to manage any Aptible resources, but
-                                   should still receive Basic HIPAA Training.`;
+const TRAINING_ROLE_DESCRIPTION = `Users in this role have no Aptible 
+                                   permissions. Use it for workforce members
+                                   who need Basic Privacy & Security Training,
+                                   but do not need to access or manage any
+                                   other Aptible functions.`;
 
 const ADMIN_ROLE_DESCRIPTION = `Users in this role can add/delete compliance
                                 roles, risk assessments, policies, procedures,

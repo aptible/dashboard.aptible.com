@@ -10,13 +10,77 @@
 <div class="container main-body">
   <div class="panel panel-striped">
     <div class="panel-section">
-      <div class="panel-section-title">Briefly describe your organization:</div>
+      <p>
+        This section is designed to give a broad overview of your business. Phrase your answers for a general audience and use the third person (<i>E.g.: WidgetCo makes digital widgets for widgeteers...</i>).
+      </p>
+      <p>
+        The bulleted questions are only intended to help you form your descriptions - they are not required.
+      </p>
+      <div class="panel-section-title">Briefly describe {{organization.name}}, as an organization:</div>
+      <p>
+        <ul>
+          <li>What do you do?</li>
+          <li>How does it work?</li>
+          <li>Who are your customers?</li>
+        </ul>
+      </p>
       {{textarea value=model.aboutOrganization rows="5" class="form-control" name="aboutOrganization"}}
     </div>
 
     <div class="panel-section">
-      <div class="panel-section-title">Briefly describe your production apps and architecture:</div>
+      <div class="panel-section-title">Briefly describe your products and services:</div>
       {{textarea value=model.aboutProduct rows="5" class="form-control" name="aboutProduct"}}
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-title">Briefly describe your production apps and architecture:</div>
+       <p>
+        <ul>
+          <li>What are the different services, or sets of services?</li>
+          <li>Do the components communicate with each other? How?</li>
+          <li>Are there any especially critical APIs or third party services involved?</li>
+        </ul>
+      </p>
+      {{! this question was formerly "aboutProduct" - it should be named something else now }}
+      {{textarea rows="5" class="form-control" name="aboutArchitecture"}}
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-title">Briefly describe your business model:</div>
+       <p>
+        <ul>
+          <li>How do you make money?</li>
+          <li>Are your users different than your customers?</li>
+        </ul>
+      </p>
+      {{!-- needs a model --}}
+      {{textarea rows="5" class="form-control" name="businessModel"}}
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-title">Briefly describe your team:</div>
+       <p>
+        <ul>
+          <li>How do you divide responsibilities within {{organization.name}}?</li>
+          <li>What are {{organization.name}}'s major groups or functional areas?</li>
+        </ul>
+      </p>
+      {{!-- needs a model --}}
+      {{textarea rows="5" class="form-control" name="aboutTeam"}}
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-title">Briefly describe your go-to-market strategy:</div>
+       <p>
+        <ul>
+          <li>How far along are you in your push to market?</li>
+          <li>Do you have a live product and users? If you are launched, what are your major metrics and their values?</li>
+          <li>What are your major milestones for the next 12 months?</li>
+          <li>What metrics do you aim to scale in the next 12 months?</li>
+        </ul>
+      </p>
+      {{!-- needs a model --}}
+      {{textarea rows="5" class="form-control" name="aboutGoToMarket"}}
     </div>
   </div>
 </div>

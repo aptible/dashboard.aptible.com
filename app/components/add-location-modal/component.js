@@ -1,6 +1,4 @@
 import Ember from 'ember';
-var description = `A remote workforce may expose you to increased risk. Use the
-                  form below to add a new workforce location.`;
 
 export default Ember.Component.extend({
   classNames: ['add-location-form'],
@@ -12,7 +10,6 @@ export default Ember.Component.extend({
     let { schema } = this.getProperties('schema');
 
     this.set('locationProperties', schema.itemProperties);
-    this.set('description', description);
   },
 
   actions: {
