@@ -1,10 +1,10 @@
 <ul class="nav nav-pills resource-navigation">
-  {{#activating-item currentWhen="database.activity" tagName="li"}}
-    {{link-to "Activity" "database.activity"}}
-  {{/activating-item}}
-
   {{#activating-item currentWhen="database.metrics" tagName="li"}}
     {{link-to "Metrics" "database.metrics"}}
+  {{/activating-item}}
+
+  {{#activating-item currentWhen="database.activity" tagName="li"}}
+    {{link-to "Activity" "database.activity"}}
   {{/activating-item}}
 
   {{#activating-item currentWhen="database.backups" tagName="li"}}

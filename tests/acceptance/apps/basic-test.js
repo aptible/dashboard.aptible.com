@@ -91,7 +91,7 @@ test(`visiting ${url} shows list of apps`, function(assert) {
 });
 
 test(`visiting ${url} shows all pages of apps`, function(assert) {
-  assert.expect(3);
+  assert.expect(7);
 
   let orgId = 1;
   let stackHandle = 'my-stack-1';
@@ -104,7 +104,8 @@ test(`visiting ${url} shows all pages of apps`, function(assert) {
       services: [{
         id: '1',
         handle: 'the-service',
-        container_count: 1
+        container_count: 3,
+        container_memory_limit_mb: 2048
       }]
     },
     _links: {
@@ -118,7 +119,7 @@ test(`visiting ${url} shows all pages of apps`, function(assert) {
       services: [{
         id: '2',
         handle: 'the-service-2',
-        container_count: 1
+        container_count: 0
       }]
     },
     _links: {
@@ -157,7 +158,16 @@ test(`visiting ${url} shows all pages of apps`, function(assert) {
 
   signInAndVisit(url);
   andThen(function() {
-    assert.equal(find('.panel.app').length, 2, '2 apps');
+    let apps = find('.panel.app');
+    let app1 = apps.eq(0);
+    let app2 = apps.eq(1);
+
+    assert.equal(apps.length, 2, '2 apps');
+    assert.equal(app1.find('.in-service').length, 1, 'app is in service');
+    assert.equal(Ember.$.trim(app1.find('.service-container-count').text()), '2GB', 'shows correct container size');
+    assert.equal(app1.find('.count').text(), '3', 'shows correct count');
+
+    assert.equal(app2.find('.in-service').length, 0, 'app 2 not in service');
   });
 });
 

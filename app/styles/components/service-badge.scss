@@ -1,27 +1,30 @@
 .service-badge {
   display: inline-block;
-  margin: 0 2px 8px 0;
+  margin: 0 4px 8px 0;
   border-radius: 3px;
-  @include linear-gradient(#fff, #eaeaea);
-  box-shadow: 0 1px 1px 0 rgba(#000, .06);
+  background: #fff;
   color: $color-subdued;
   font-weight: $weight-semibold;
-  font-size: 11px;
+  font-size: 12px;
   padding: 0;
 
   .service-name {
-    border: 1px solid #ccc;
+    border: 1px solid #e0e0e0;
     border-width: 1px 0 1px 1px;
-    padding: 3px 5px 2px;
+    padding: 5px;
     border-radius: 3px 0 0 3px;
+  }
+
+  .times {
+    color: #aaa;
   }
 
   .service-container-count {
     color: #fff;
-    background: $color-bright-blue;
-    border: 1px solid $color-bright-blue;
+    padding: 5px;
+    background: #aaa;
+    border: 1px solid #aaa;
     border-width: 1px 1px 1px 0;
-    padding: 3px 5px 2px;
     border-radius: 0 3px 3px 0;
     margin-left: -4px;
 
@@ -35,5 +38,12 @@
       margin: 0 6px 0 0;
       vertical-align: 0;
     }
+  }
+}
+
+.service-badge.in-service {
+  .service-container-count {
+    border-color: $color-bright-blue;
+    background-color: $color-bright-blue;
   }
 }

@@ -45,8 +45,12 @@ test('visiting /stacks/my-stack-1/databases shows list of databases', function(a
   signInAndVisit('/stacks/my-stack-1/databases');
 
   andThen(function() {
-    var row = findWithAssert('.panel.database');
-    assert.equal(row.length, 2, 'shows 2 databases');
+    let databases = findWithAssert('.panel.database');
+    let database = databases.eq(0);
+    assert.equal(databases.length, 2, 'shows 2 databases');
+
+    assert.equal(database.find('.in-service').length, 1, 'db shows as in service');
+    assert.equal(Ember.$.trim(database.find('.service-container-count').text()), '2GB', 'shows correct container size');
   });
 });
 
