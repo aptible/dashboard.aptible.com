@@ -1,7 +1,7 @@
 {{#each truncatedUsers as |user|}}
   <li class="user-gravatar">
     {{#bs-tooltip title=user.email}}
-      {{gravatar-image email=user.email size=size}}
+      {{gravatar-image email=user.email size=size retina=true}}
     {{/bs-tooltip}}
   </li>
 {{else}}

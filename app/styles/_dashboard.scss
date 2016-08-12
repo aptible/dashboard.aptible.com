@@ -96,6 +96,13 @@ header.resource-header {
     margin: 0;
     padding: 0;
 
+    .resource-metadata-item.resource-metadata-button {
+    }
+
+    .resource-metadata-item.with-image {
+      margin-left: 40px;
+    }
+
     .resource-metadata-item {
       float: left;
       margin: 25px 30px 0 0;
@@ -119,7 +126,7 @@ header.resource-header {
   }
 }
 
-.resource-metadata-button {
+.resource-metadata-item.resource-metadata-button {
   cursor: pointer;
   height: 30px;
   width: 30px;
