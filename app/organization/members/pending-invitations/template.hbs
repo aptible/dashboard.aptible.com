@@ -1,11 +1,9 @@
 <div class="row">
   <div class="col-xs-12">
-    <div class="pull-right">
-      {{invite-member-button
-          organization=organization
-          currentUserRoles=currentUserRoles
-          currentUser=session.currentUser}}
-    </div>
+    {{invite-member-button
+        organization=organization
+        currentUserRoles=currentUserRoles
+        currentUser=session.currentUser}}
   </div>
 </div>
 
@@ -26,6 +24,10 @@
     <tbody>
       {{#each sortedInvites as |invitation|}}
         {{partial 'organization/invited-user-table-row'}}
+      {{else}}
+        <tr>
+          <td colspan="5" class="empty-row">No Pending Invitations</td>
+        </tr>
       {{/each}}
     </tbody>
   </table>

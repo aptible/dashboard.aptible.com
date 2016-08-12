@@ -6,14 +6,15 @@
     {{#activating-item currentWhen="organization.members.index" tagName="li"}}
       {{link-to "Members" "organization.members.index" organization bubbles=false}}
     {{/activating-item}}
-    {{#if organization.invitations}}
-      {{#activating-item currentWhen="organization.members.pending-invitations" tagName="li"}}
-        {{link-to "Pending Invitations" "organization.members.pending-invitations" organization bubbles=false}}
-      {{/activating-item}}
-    {{/if}}
+
+    {{#activating-item currentWhen="organization.members.pending-invitations" tagName="li"}}
+      {{link-to "Pending Invitations" "organization.members.pending-invitations" organization bubbles=false}}
+    {{/activating-item}}
+
     {{#with-active-class route="role" tagName="li"}}
       {{link-to "Roles" "organization.roles" organization bubbles=false}}
     {{/with-active-class}}
+
     {{#link-to 'organization.environments' organization tagName="li"}}
       {{link-to "Environments" "organization.environments" organization bubbles=false}}
     {{/link-to}}
