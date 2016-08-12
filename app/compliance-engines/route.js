@@ -15,10 +15,5 @@ export default Ember.Route.extend({
   setupController(controller) {
     controller.set('organizations', this.modelFor('compliance'));
     controller.set('organization', this.modelFor('compliance-organization'));
-  },
-
-  renderTemplate() {
-    this._super.apply(this, arguments);
-    this.render('sidebars/engine-sidebar', { into: 'compliance-engines', outlet: 'sidebar' });
   }
 });
