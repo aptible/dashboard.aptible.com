@@ -10,8 +10,14 @@ export default Ember.Component.extend({
   isDeleting: false,
 
   actions: {
-    delete: function(){
+    delete() {
       let vhost = this.get('vhost');
+      let message = `Confirm Delete\n\nAre you sure you want to delete ${vhost.get('commonName')}?`;
+
+      if (!confirm(message)) {
+        return;
+      }
+
       let op = this.get('store').createRecord('operation', {
         type: 'deprovision',
         vhost: vhost

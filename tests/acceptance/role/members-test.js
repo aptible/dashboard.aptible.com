@@ -110,7 +110,7 @@ test(`visiting ${pageUrl} displays a message for a role with no members`, (asser
   signIn(null, ownerRole);
   visit(pageUrl);
   andThen(() => {
-    assert.ok(find('.aptable--empty').text().match(/currently has no members/));
+    assert.ok(find('.empty-row').text().match(/currently has no members/));
   });
 });
 
@@ -176,7 +176,7 @@ test(`visiting ${pageUrl} role members can be removed by account owners`, (asser
     clickButton('Remove');
   });
   andThen(() => {
-    assert.ok(find('.aptable--empty').text().match(/currently has no members/));
+    assert.ok(find('.empty-row').text().match(/currently has no members/));
     window.confirm = _confirm;
   });
 });

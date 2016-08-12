@@ -19,9 +19,13 @@
 
       {{#if app.isProvisioned}}
         {{#each app.services as |service|}}
-          <span class="service-badge">
-            <span class="service-name">{{service.processType}}</span>
-            <span class="service-container-count">{{service.containerCount}}</span>
+          <span class="service-badge {{if service.inService 'in-service'}}">
+            <span class="service-name">
+              <span class="count">{{service.containerCount}}</span> <span class="times">&times;</span> {{service.processType}}
+            </span>
+            <span class="service-container-count">
+              {{service.containerSizeGB}}GB
+            </span>
           </span>
         {{else}}
           <span class="empty-service">No Services Configured</span>

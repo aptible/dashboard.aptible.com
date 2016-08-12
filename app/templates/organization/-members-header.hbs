@@ -5,7 +5,7 @@
       <h1>{{organization.name}} Members</h1>
     </div>
 
-    <ul class="resource-metadata resource-metadata--flex">
+    <ul class="resource-metadata resource-metadata">
       {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
         {{#if hasAbility}}
           {{#link-to 'organization.contact-settings' tagName='li' classNames='resource-metadata-item resource-metadata-button'}}
@@ -18,7 +18,7 @@
 
       <li class="resource-metadata-item with-image">
         <div class="resource-metadata-image">
-          {{gravatar-image email=organization.securityOfficer.email size=30}}
+          {{gravatar-image email=organization.securityOfficer.email size=30 retina=true}}
         </div>
 
         <h5 class="resource-metadata-title">Security Officer</h5>
@@ -27,7 +27,7 @@
 
       <li class="resource-metadata-item with-image">
         <div class="resource-metadata-image">
-          {{gravatar-image email=organization.billingDetail.billingContact.email size=30}}
+          {{gravatar-image email=organization.billingDetail.billingContact.email size=30 retina=true}}
         </div>
 
         <h5 class="resource-metadata-title">Billing Contact</h5>

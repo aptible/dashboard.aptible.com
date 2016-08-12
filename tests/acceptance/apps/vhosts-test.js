@@ -300,8 +300,44 @@ test(`visit ${appVhostsUrl} lists deprovisioning`, function(assert) {
   });
 });
 
+test(`attempting to delete an endpoint should confirm`, function(assert) {
+  assert.expect(1);
+
+  window.confirm = function() {
+    assert.ok(true, '`window.confirm` called before deleting');
+    return false;
+  };
+
+  let vhostId = 'vhost-1';
+  var vhosts = [{id: vhostId, status: 'provisioned'}];
+
+  stubApp({
+    id: appId,
+    _embedded: { services: [] },
+    _links: { vhosts: { href: appVhostsApiUrl } }
+  });
+
+  stubRequest('get', appVhostsApiUrl, function(){
+    return this.success({ _embedded: { vhosts: vhosts } });
+  });
+
+  stubRequest('post', `/vhosts/${vhostId}/operations`, function(){
+    assert.ok(false, 'does not deprovision');
+  });
+
+  signInAndVisit(appVhostsUrl);
+
+  andThen(function(){
+    click(findButton('Delete'));
+  });
+});
+
 test(`visit ${appVhostsUrl} allows deleting endpoint`, function(assert) {
   assert.expect(2);
+
+  window.confirm = function() {
+    return true;
+  };
 
   let vhostId = 'vhost-1';
   var vhosts = [{id: vhostId, status: 'provisioned'}];
@@ -334,6 +370,10 @@ test(`visit ${appVhostsUrl} allows deleting endpoint`, function(assert) {
 
 test(`visit ${appVhostsUrl} and delete endpoint has error`, function(assert) {
   assert.expect(2);
+
+  window.confirm = function() {
+    return true;
+  };
 
   let vhostId = 'vhost-1';
   var vhosts = [{id: vhostId, status: 'provisioned'}];

@@ -15,7 +15,7 @@
       </h1>
     </div>
 
-    <ul class="resource-metadata resource-metadata--flex">
+    <ul class="resource-metadata resource-metadata">
       {{#if model.isDeprovisioned}}
         <li class="resource-metadata-item">
           <h5 class="resource-metadata-title">Status</h5>
@@ -43,8 +43,12 @@
       {{#if model.isProvisioned}}
         {{#if model.disk}}
           <li class="resource-metadata-item">
-            <h5 class="resource-metadata-title">Size</h5>
+            <h5 class="resource-metadata-title">Disk Size</h5>
             <h3 class="resource-metadata-value db-size">{{model.disk.size}} GB</h3>
+          </li>
+          <li class="resource-metadata-item">
+            <h5 class="resource-metadata-title">Container Size</h5>
+            <h3 class="resource-metadata-value db-size">{{model.service.containerSizeGB}} GB</h3>
           </li>
         {{/if}}
         <li class="resource-metadata-item">
