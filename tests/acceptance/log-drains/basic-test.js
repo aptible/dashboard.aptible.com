@@ -279,11 +279,11 @@ test(`visit ${addLogUrl} and cancel`, function(assert){
 });
 
 test(`visit ${addLogUrl} and create log success`, function(assert){
-  assert.expect(9);
+  assert.expect(8);
 
   this.prepareStubs();
 
-  let drainHost = 'abc-host.com',
+  var drainHost = 'abc-host.com',
       drainPort = '1234',
       handle = 'my-log-name',
       drainType = 'syslog_tls_tcp',
@@ -299,13 +299,14 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
     assert.equal(json.handle, handle);
 
     json.id = logDrainId;
+    json.status='provisioning';
     return this.success(json);
   });
 
-  stubRequest('get', '/log_drains/:id', function(request){
+  stubRequest('get', `/log_drains/${logDrainId}`, function(){
     assert.ok(true, 'polls for updates');
     return this.success({
-      id: request.params.id,
+      id: logDrainId,
       handle: handle,
       drain_host: drainHost,
       drain_port: drainPort
@@ -351,7 +352,7 @@ test(`visit ${addLogUrl} without elasticsearch databases`, function(assert){
 });
 
 test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
-  assert.expect(9);
+  assert.expect(8);
 
   let drainUser = 'someUser',
       drainPassword = 'somePw',
@@ -388,6 +389,7 @@ test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
     assert.equal(json.drain_username, drainUser);
 
     json.id = logDrainId;
+    json.status = 'provisioning';
     return this.success(json);
   });
 
@@ -395,10 +397,12 @@ test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
     return this.success();
   });
 
-  stubRequest('get', '/log_drains/:id', function(request){
+  stubRequest('get', `/log_drains/${logDrainId}`, function(){
     assert.ok(true, 'polls for updates');
+
     return this.success({
-      id: request.params.id,
+      id: logDrainId,
+      status: 'provisioned',
       drainHost: drainHost,
       drainPort: drainPort,
       handle: logDrainId,

@@ -1,50 +1,43 @@
 {{#if isDevelopment}}
   <div class="price">
     <span class="amount">$0</span>
-    <span class="interval">/month</span>
+    <span class="interval">/month base fee, plus usage</span>
   </div>
 
-  {{#if app.appHandle}}
-    <h2>Provision {{app.appHandle}} using your Development Account.</h2>
-  {{else}}
-    <h2>Development Account</h2>
-  {{/if}}
+  <h2>Development Account</h2>
 
   <p>
-    An Aptible Development Account is ideal for development or staging environments that do not handle PHI.  There are no upfront costs;  you are billed only for the resources you use.
+    You have selected a Development Account, ideal for development or staging environments that do not handle sensitive or regulated information.  There are no upfront costs: You are billed only for the resources you use.
   </p>
 
   <h4>Your Development Account includes:</h4>
   <ul class="plan-feature-list">
     <li><i class="fa fa-check-circle"></i> No upfront costs, pay as you go</li>
     <li><i class="fa fa-check-circle"></i> Perfect for development or staging environments</li>
-    <li><i class="fa fa-check-circle"></i> Upgrade to PHI-Ready environments at any time</li>
+    <li><i class="fa fa-check-circle"></i> Upgrade to a dedicated stack any time</li>
   </ul>
 {{/if}}
 
 {{#if isPlatform}}
   <div class="price">
     <span class="amount">$999</span>
-    <span class="interval">/month</span>
+    <span class="interval">/month base fee, plus usage</span>
   </div>
 
-  {{#if app.appHandle}}
-    <h2>Provision {{app.appHandle}} into your PHI-Ready environment.</h2>
-  {{else}}
-    <h2>Platform Account</h2>
-  {{/if}}
+  <h2>Platform Account</h2>
 
   <p>
-    Platform Accounts can create PHI-Ready deployment environments. You can start deploying HIPAA-compliant apps in minutes.
+    You have selected a Platform Account. This includes a private stack of infrastructure dedicated for your own use. Platform Accounts can be used to support regulated or high-security workloads, such as HIPAA, ISO, or SOC.
   </p>
 
-  <h4>The Platform account includes:</h4>
+  <h4>Your Platform Account includes:</h4>
   <ul class="plan-feature-list">
-    <li><i class="fa fa-check-circle"></i> 1 virtual private cloud</li>
-    <li><i class="fa fa-check-circle"></i> Unlimited PHI-Ready and Dev environments</li>
-    <li><i class="fa fa-check-circle"></i> 6 containers, 1TB of storage, and 4 endpoints</li>
+    <li><i class="fa fa-check-circle"></i> 1 VPC/private network</li>
+    <li><i class="fa fa-check-circle"></i> Unlimited environments</li>
+    <li><i class="fa fa-check-circle"></i> 6 GB containers, 1TB database disk, and 4 endpoints</li>
     <li><i class="fa fa-check-circle"></i> Use your included resources across all environments</li>
-    <li><i class="fa fa-check-circle"></i> 24/7 Technical Support</li>
-    <li><i class="fa fa-check-circle"></i> Signed Business Associate Agreement</li>
+    <li><i class="fa fa-check-circle"></i> 24/7 Support, 99.95% SLA</li>
+    <li><i class="fa fa-check-circle"></i> 99.95% SLA</li>
+    <li><i class="fa fa-check-circle"></i> Business Associate Agreement available</li>
   </ul>
 {{/if}}
