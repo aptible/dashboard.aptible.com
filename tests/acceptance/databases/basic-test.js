@@ -73,7 +73,7 @@ test('visiting /stacks/my-stack-1/databases then clicking on an database visits 
   });
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.database.activity', 'show page is visited');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.database.metrics', 'show page is visited');
   });
 });
 
