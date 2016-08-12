@@ -56,7 +56,13 @@ export const ProvisionableBaseMixin = Ember.Mixin.create({
         run(this, '_recursiveReload');
       }, this._reloadRetryDelay);
     }).catch((err) => {
-      if (err.message && err.message.indexOf('notFound') > -1) {
+      // Believe it or not, this console.log has to currently be here . This is a textbook
+      // definition of a heisenbug. After adding the err.status check, if I had not added a
+      // console.log or a window.alert before this check, the model would immediately remove
+      // itself from the UI. If something wrong occurs, then the model reappears. Until someone
+      // figures out why that is, the console.log stays.
+      console.log(err);
+      if (404 === err.status || err.message && err.message.indexOf('notFound') > -1) {
         this.deleteRecord();
         return;
       }
