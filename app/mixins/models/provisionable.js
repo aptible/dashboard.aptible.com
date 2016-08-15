@@ -42,7 +42,10 @@ export const ProvisionableBaseMixin = Ember.Mixin.create({
     } = this.getProperties('status', 'reloadWhileProvisioning', 'isDestroying', 'isDestroyed');
     let inReloadStatus = ReloadStatuses.indexOf(status) > -1;
 
-    return SHOULD_RELOAD && reloadWhileProvisioning && inReloadStatus && !isDestroyed && !isDestroying;
+    let currentState = this.get('currentState.stateName');
+    let inLoadedState = currentState !== 'root.empty' && currentState !== 'root.deleted.uncommitted';
+
+    return SHOULD_RELOAD && inLoadedState && reloadWhileProvisioning && inReloadStatus && !isDestroyed && !isDestroying;
   },
 
   // we should refactor this away from using observers once
@@ -56,7 +59,7 @@ export const ProvisionableBaseMixin = Ember.Mixin.create({
         run(this, '_recursiveReload');
       }, this._reloadRetryDelay);
     }).catch((err) => {
-      // Believe it or not, this console.log has to currently be here . This is a textbook
+      // Believe it or not, this console.log has to currently be here. This is a textbook
       // definition of a heisenbug. After adding the err.status check, if I had not added a
       // console.log or a window.alert before this check, the model would immediately remove
       // itself from the UI. If something wrong occurs, then the model reappears. Until someone
