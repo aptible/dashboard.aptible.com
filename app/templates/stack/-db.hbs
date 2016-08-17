@@ -5,19 +5,18 @@
     </div>
     <div class="panel-body">
       <span class="service-badge  {{if database.service.inService 'in-service'}}">
-        <span class="service-name">{{database.type}}</span>
-        {{#if (or database.isDeprovisioning database.isProvisioning)}}
-          <span class="service-container-count pending">
+        <span class="service-name">{{database.type}}
+          {{#if (or database.isDeprovisioning database.isProvisioning)}}
             <i class="fa fa-spinner fa-spin"></i>
-          </span>
-        {{else if (or database.hasFailedProvision database.hasFailedDeprovision) }}
-          <span class="service-container-count">FAILED</span>
-        {{else}}
-          <span class="service-name">{{database.disk.size}}GB <span class="times">Disk</span>{{database.type}}</span>
-          <span class="service-container-count">
-             {{if database.service.containerSizeGB database.service.containerSizeGB 1}}GB
-          </span>
-        {{/if}}
+          {{else if (or database.hasFailedProvision database.hasFailedDeprovision) }}
+              <span class="service-container-count">FAILED</span>
+          {{else}}
+            {{database.disk.size}}GB <span class="times">Disk</span>
+          {{/if}}
+        </span>
+        <span class="service-container-count">
+           {{if database.service.containerSizeGB database.service.containerSizeGB 1}}GB
+        </span>
       </span>
     </div>
   </div>
