@@ -48,6 +48,7 @@ test('/databases/:id/deprovision will not deprovision without confirmation', fun
 
 test('/databases/:id/deprovision will deprovision with confirmation', function(assert) {
   let databaseId = 1;
+  let operationId = 1;
   let databaseName = 'foo-bar';
   let didDeprovision = false;
 
@@ -71,6 +72,24 @@ test('/databases/:id/deprovision will deprovision with confirmation', function(a
     });
   });
 
+  stubRequest('put', `/databases/${databaseId}`, function(){
+    didDeprovision = true;
+    return this.success({
+      id: '1',
+      status: 'queued',
+      type: 'deprovision'
+    });
+  });
+
+  stubRequest('get', `/operations/${operationId}`, function(){
+    didDeprovision = true;
+    return this.success({
+      id: '1',
+      status: 'succeeded',
+      type: 'deprovision'
+    });
+  });
+
   stubStacks();
   stubOrganization();
 
@@ -85,8 +104,8 @@ test('/databases/:id/deprovision will deprovision with confirmation', function(a
   click('button:contains(Deprovision)');
   andThen(() => {
     assert.ok(didDeprovision, 'deprovisioned', 'received successful response');
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.databases.new',
-      'with no dbs, user is routed to create one');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.databases.index',
+      'should first redirect to index page');
   });
 });
 

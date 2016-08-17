@@ -47,6 +47,7 @@ test('/apps/:id/deprovision will not deprovision without confirmation', function
 
 test('/apps/:id/deprovision will deprovision with confirmation', function(assert) {
   var appId = 1;
+  var operationId = 1;
   var appName = 'foo-bar';
   var didDeprovision = false;
   stubStacks();
@@ -63,10 +64,18 @@ test('/apps/:id/deprovision will deprovision with confirmation', function(assert
   });
 
   stubRequest('post', `/apps/${appId}/operations`, function(){
-    didDeprovision = true;
     return this.success({
       id: '1',
       status: 'queued',
+      type: 'deprovision'
+    });
+  });
+
+  stubRequest('get', `/operations/${operationId}`, function(){
+    didDeprovision = true;
+    return this.success({
+      id: '1',
+      status: 'succeeded',
       type: 'deprovision'
     });
   });

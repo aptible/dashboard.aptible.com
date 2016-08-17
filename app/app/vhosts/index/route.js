@@ -23,6 +23,10 @@ export default Ember.Route.extend({
 
     completeDeletion() {
       this.controller.set('error', null);
-    }
+    },
+
+    forceRedirect() {
+      return this.transitionTo('app.vhosts.new', this.modelFor('app'));
+    },
   }
 });

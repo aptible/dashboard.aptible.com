@@ -4,18 +4,20 @@
       <h5 class='database-handle'>{{database.handle}}</h5>
     </div>
     <div class="panel-body">
-      <span class="service-badge {{if database.service.inService 'in-service'}}">
-        <span class="service-name">
-          {{#if database.service}}
-            {{database.disk.size}}GB <span class="times">Disk </span>
-          {{else}}
+      <span class="service-badge  {{if database.service.inService 'in-service'}}">
+        <span class="service-name">{{database.type}}</span>
+        {{#if (or database.isDeprovisioning database.isProvisioning)}}
+          <span class="service-container-count pending">
             <i class="fa fa-spinner fa-spin"></i>
-          {{/if}}{{database.type}}
-        </span>
-
-        <span class="service-container-count">
-          {{if database.service.containerSizeGB database.service.containerSizeGB 1}}GB
-        </span>
+          </span>
+        {{else if (or database.hasFailedProvision database.hasFailedDeprovision) }}
+          <span class="service-container-count">FAILED</span>
+        {{else}}
+          <span class="service-name">{{database.disk.size}}GB <span class="times">Disk</span>{{database.type}}</span>
+          <span class="service-container-count">
+             {{if database.service.containerSizeGB database.service.containerSizeGB 1}}GB
+          </span>
+        {{/if}}
       </span>
     </div>
   </div>

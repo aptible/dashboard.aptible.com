@@ -76,6 +76,10 @@ test('after verification, pending databases are provisioned', function(assert) {
     });
   });
 
+  stubRequest('get', `/operations/op-id`, function(){
+    return this.success(201, {id: 'op-id', status: 'succeeded'});
+  });
+
   signInAndVisit('/verify/'+verificationCode);
   andThen(function(){
     assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');

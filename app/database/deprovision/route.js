@@ -12,7 +12,7 @@ export default Ember.Route.extend({
       let route = this;
       let controller = this.controller;
       let store = this.store;
-      let message = `${database.get('handle')} has been deprovisioned`;
+      let message = `${database.get('handle')} is now deprovisioning`;
       controller.set('error', null);
 
       database.get('stack').then(function(stack) {
@@ -20,8 +20,14 @@ export default Ember.Route.extend({
           type: 'deprovision',
           database: database
         });
-        op.save().then(function(){
-          database.deleteRecord();
+        op
+          .save()
+          .then(function() {
+            database.set('status', 'deprovisioning');
+            // This is kind of crappy, but the reloading doesn't work properly unless the model is saved.
+            database.save();
+          })
+          .then(function() {
           route.transitionTo('databases', stack);
           Ember.get(route, 'flashMessages').success(message);
         }, function(e){

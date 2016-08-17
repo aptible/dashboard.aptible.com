@@ -424,6 +424,10 @@ test('submitting valid payment info when user is verified should provision db', 
     return this.success(201, {id: 'op-id'});
   });
 
+  stubRequest('get', `/operations/op-id`, function(){
+    return this.success(201, {id: 'op-id', status: 'succeeded'});
+  });
+
   stubOrganizations();
   mockSuccessfulPayment();
 
