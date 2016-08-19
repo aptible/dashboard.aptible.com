@@ -28,7 +28,9 @@ export default DS.Model.extend(ProvisionableMixin, {
       isDestroyed
     } = this.getProperties('status', 'reloadWhileProvisioning', 'isDestroying', 'isDestroyed');
     let inReloadStatus = ReloadStatuses.indexOf(status) > -1;
-    let inLoadedState = this.get('currentState.stateName') !== 'root.empty';
+
+    let currentState = this.get('currentState.stateName');
+    let inLoadedState = currentState !== 'root.empty' && currentState !== 'root.deleted.uncommitted';
 
     return SHOULD_RELOAD && inLoadedState && reloadWhileProvisioning && inReloadStatus && !isDestroyed && !isDestroying;
   },
