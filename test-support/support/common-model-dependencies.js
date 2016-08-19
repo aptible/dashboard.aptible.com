@@ -11,6 +11,7 @@ export default [
   'model:stack',
   'model:app',
   'model:database',
+  'model:database-image',
   'model:operation',
   'model:vhost',
   'model:permission',
