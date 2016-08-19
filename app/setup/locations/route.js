@@ -51,6 +51,11 @@ export default Ember.Route.extend(SPDRouteMixin, {
       this.controller.addNewLocation();
     },
 
+    onRemoveLocation(location) {
+      let { schemaDocument } = this.currentModel;
+      schemaDocument.removeObject(location);
+    },
+
     onCreateLocation() {
       let { schemaDocument, attestation } = this.currentModel;
 

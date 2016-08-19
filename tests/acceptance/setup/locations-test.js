@@ -240,6 +240,49 @@ test('Saving progress', function(assert) {
   andThen(clickSaveButton);
 });
 
+test('Clicking `X` should remove a location', function(assert) {
+  expect(6);
+  let existingAttestationData = [
+    {
+      description: 'HQ', streetAddress: '155 Water', city: 'Brooklyn',
+      state: 'New York', zip: '10000'
+    },
+    {
+      description: 'Satellite', streetAddress: '100 Fire', city: 'SF',
+      state: 'California', zip: '20000'
+    }
+  ];
+
+  stubProfile({ currentStep: 'locations' });
+  stubCurrentAttestations({ workforce_locations: existingAttestationData });
+  stubRequests();
+  signInAndVisit(locationsUrl);
+
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
+    let json = this.json(request);
+
+    assert.ok(true, 'posts to /attestations');
+    assert.equal(json.handle, 'workforce_locations');
+    assert.equal(json.document.length, 1, 'only one location included in attestation');
+
+    return this.success({ id: 1 });
+  });
+
+  andThen(() => {
+    assert.equal(currentPath(), 'compliance.compliance-organization.setup.locations', 'remains on locations step');
+    assert.equal(find('.locations-index table tbody tr').length, 2, 'has two locations');
+
+    let firstRemoveButton = findWithAssert('.remove-location').eq(0);
+    firstRemoveButton.click();
+  });
+
+  andThen(() => {
+    assert.equal(find('.locations-index table tbody tr').length, 1, 'has one location');
+  });
+
+  andThen(clickSaveButton);
+});
+
 function clickSaveButton() {
   let button = findWithAssert('button.spd-nav-save');
   button.click();
