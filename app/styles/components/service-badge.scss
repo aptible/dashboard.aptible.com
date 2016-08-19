@@ -9,6 +9,7 @@
   padding: 0;
 
   .service-name {
+    display: inline-block;
     border: 1px solid #e0e0e0;
     border-width: 1px 0 1px 1px;
     padding: 5px;
@@ -20,6 +21,7 @@
   }
 
   .service-container-count {
+    display: inline-block;
     color: #fff;
     padding: 5px;
     background: #aaa;
