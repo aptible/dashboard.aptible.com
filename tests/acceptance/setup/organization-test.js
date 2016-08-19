@@ -49,10 +49,9 @@ test('Organization settings page basic UI', function(assert) {
 
   andThen(() => {
     assert.equal(currentPath(), 'compliance.compliance-organization.setup.organization', 'on organization setup page');
-    assert.ok(find('.panel-section-title:contains(About Your Organization)'));
-    assert.ok(find('.panel-section-title:contains(Description of your productions)'));
-    assert.ok(find('textarea[name="aboutOrganization"]'));
-    assert.ok(find('textarea[name="aboutProduct"]'));
+    assert.ok(find('textarea[name="aboutOrganization"]'), 'has about organization');
+    assert.ok(find('textarea[name="aboutProduct"]'), 'has about product');
+    assert.ok(find('textarea[name="aboutArchitecture"]'), 'has about architecture');
   });
 });
 

@@ -10,7 +10,7 @@ let inflector = new Ember.Inflector(Ember.Inflector.defaultRules);
 function spdSteps() {
   this.modal('add-location-modal', {
     withParams: ['newLocation'],
-    otherParams: ['document', 'schema', 'newLocation', 'locationProperty'],
+    otherParams: ['schemaDocument', 'schema', 'newLocation', 'locationProperty'],
     dismissWithOutsideClick: false
   });
 

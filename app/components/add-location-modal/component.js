@@ -18,9 +18,9 @@ export default Ember.Component.extend({
     },
 
     onDismiss() {
-      let { newLocation, document } = this.getProperties('newLocation', 'document');
+      let { newLocation, schemaDocument } = this.getProperties('newLocation', 'schemaDocument');
 
-      document.removeObject(newLocation);
+      schemaDocument.removeObject(newLocation);
 
       this.set('errors', null);
       this.sendAction('dismiss');
@@ -28,7 +28,7 @@ export default Ember.Component.extend({
 
     addLocation() {
       this.set('errors', null);
-      let { newLocation, document, locationProperty } = this.getProperties('newLocation', 'document', 'locationProperty');
+      let { newLocation, schemaDocument, locationProperty } = this.getProperties('newLocation', 'schemaDocument', 'locationProperty');
 
       if(!locationProperty.isValid(newLocation.values)) {
         this.set('errors', `Error: ${locationProperty.required.join(', ')} are required fields`);
@@ -38,7 +38,7 @@ export default Ember.Component.extend({
       this.sendAction('onLocationCreated', newLocation);
 
       Ember.run.later(() => {
-        this.set('newLocation', document.addItem());
+        this.set('newLocation', schemaDocument.addItem());
         this.sendAction('dismiss');
       });
     },
