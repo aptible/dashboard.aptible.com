@@ -14,6 +14,7 @@ export default DS.Model.extend(ProvisionableMixin, {
   stack: DS.belongsTo('stack', {async: true}),
   operations: DS.hasMany('operation', {async:true}),
   disk: DS.belongsTo('disk', {async:true}),
+  databaseImage: DS.belongsTo('database-image', {async: true}),
   initializeFrom: DS.belongsTo('database', {async: true, inverse: 'dependents'}),
   dependents: DS.hasMany('database', {async: true, inverse: 'initializeFrom'}),
   service: DS.belongsTo('service', {async:true}),
