@@ -4,15 +4,15 @@ export default Ember.Controller.extend({
   setup: Ember.inject.controller(),
 
   addNewLocation() {
-    let { document, schema, locationProperty } = this.getProperties('document', 'schema', 'locationProperty');
-    let newLocation = document.addItem();
+    let { schemaDocument, schema, locationProperty } = this.getProperties('schemaDocument', 'schema', 'locationProperty');
+    let newLocation = schemaDocument.addItem();
 
-    this.get('setup').setProperties({ newLocation, schema, document,
+    this.get('setup').setProperties({ newLocation, schema, schemaDocument,
                                       locationProperty });
   },
 
-  locations: Ember.computed('document', function() {
-    return this.get('document.values');
+  locations: Ember.computed('schemaDocument', function() {
+    return this.get('schemaDocument.values');
   }),
 
   validLocations: Ember.computed('locations.[]', function() {
