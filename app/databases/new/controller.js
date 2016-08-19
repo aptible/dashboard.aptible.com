@@ -28,6 +28,10 @@ export default Ember.Controller.extend(EmberValidationsMixin, {
 
     selectDbType: function(type){
       this.set('model.type', type);
+    },
+
+    imageSelected: function(type){
+      this.set('model.databaseImage', type);
     }
   }
 });

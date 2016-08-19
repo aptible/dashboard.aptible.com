@@ -53,6 +53,11 @@
             </div>
           </div>
 
+          <div>
+              <label>Database version</label>
+            {{ database-version-selector type=model.type databaseImages=databaseImages imageSelected="imageSelected" }}
+          </div>
+
           <div class="">
             <label>Disk Size</label>
             <div class="slider-input-wrapper disk-size-slider">
