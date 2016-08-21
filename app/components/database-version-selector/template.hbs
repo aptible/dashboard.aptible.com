@@ -1,1 +1,7 @@
-{{ ultimate-select items=visibleDatabaseImages name="databaseImage" itemKey="id" itemValue="description" update=(action (mut dbImage)) selected=selectedDatabaseImage }}
+{{ ultimate-select
+  items=visibleDatabaseImages
+  name="databaseImage"
+  itemKey="id"
+  itemValue="description"
+  update=(action selectImage)
+  selected=selectedDatabaseImage }}

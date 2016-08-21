@@ -9,10 +9,11 @@ export default Ember.Component.extend({
   }),
 
   visibleDatabaseImages: Ember.computed('type', function() {
-    return this.get('databaseImages').filter((image) => image.get('type') == this.get('type'))
+    return this.get('databaseImages').filter((image) => image.get('type') == this.get('type'));
   }),
 
-  selectImage: function () {
+  selectImage(dbImage) {
+    this.set('dbImage', dbImage);
     this.sendAction('imageSelected', this.get('dbImage'));
-  }.observes('dbImage')
+  }
 });
