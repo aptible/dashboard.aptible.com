@@ -1,9 +1,7 @@
 import Ember from 'ember';
-import layout from '../../templates/components/confirmation-modal';
 
 export default Ember.Component.extend({
   confirmationModalService: Ember.inject.service('confirmation-modal'),
-  layout: layout,
   classNames: ['flex-wrapper confirmation-modal-wrapper'],
   model: Ember.computed.reads('modal.model'),
 

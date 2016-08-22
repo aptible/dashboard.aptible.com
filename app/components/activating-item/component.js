@@ -1,11 +1,9 @@
 import Ember from 'ember';
-import layout from '../../templates/components/activating-item';
 
 const ALLOWED_PREFIXES = ['', 'dashboard.', 'dashboard.catch-redirects.'];
 
 export default Ember.Component.extend({
   routingService: Ember.inject.service('routing'),
-  layout: layout,
   classNameBindings: ['active'],
 
   currentWhen: null,
