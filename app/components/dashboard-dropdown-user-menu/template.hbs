@@ -1,0 +1,33 @@
+{{#dashboard-dropdown-item classNames='title'}}
+  {{user.name}}
+{{/dashboard-dropdown-item}}
+
+{{#dashboard-dropdown-item}}
+  {{link-to 'Profile' 'settings.profile'}}
+{{/dashboard-dropdown-item}}
+
+{{#dashboard-dropdown-item}}
+  {{link-to 'Account' 'settings.requires-elevation.admin'}}
+{{/dashboard-dropdown-item}}
+
+{{#dashboard-dropdown-item}}
+  {{link-to 'SSH Keys' 'settings.ssh'}}
+{{/dashboard-dropdown-item}}
+
+{{#if user.superuser}}
+  {{#dashboard-dropdown-item}}
+    {{link-to 'Impersonate' 'settings.impersonate'}}
+  {{/dashboard-dropdown-item}}
+{{/if}}
+
+{{dashboard-dropdown-divider}}
+
+<div>
+  {{#dashboard-dropdown-item}}
+    <a href="#" {{action "showIntercom"}}>Announcements</a>
+  {{/dashboard-dropdown-item}}
+
+  {{#dashboard-dropdown-item}}
+    {{link-to 'Logout' 'settings.logout'}}
+  {{/dashboard-dropdown-item}}
+</div>

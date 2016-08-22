@@ -3,9 +3,9 @@ import {
   module,
   test
 } from 'qunit';
-import startApp from 'diesel/tests/helpers/start-app';
+import startApp from '../../../helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
-import { didTrackEventWith } from 'diesel/tests/helpers/mock-analytics';
+import { didTrackEventWith } from '../../../helpers/mock-analytics';
 import { UPGRADE_PLAN_REQUEST_EVENT } from 'diesel/models/organization';
 
 let application;

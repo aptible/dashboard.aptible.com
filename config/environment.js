@@ -54,7 +54,6 @@ module.exports = function(environment) {
       defaultOn: 'True'        // defaults to 'On'
     },
 
-    authTokenKey: '_aptible_authToken',
     stripePublishableKey: 'pk_test_eiw5HXHTAgTwyNnV9I5ruCrA',
     replaceLocation: true,
     replaceTitle: true,
@@ -141,9 +140,6 @@ module.exports = function(environment) {
     ENV.APP.LOG_VIEW_LOOKUPS = false;
 
     ENV.APP.rootElement = '#ember-testing';
-
-    ENV.authTokenKey = '_aptible_authToken-test';
-
     ENV.replaceLocation = false;
     ENV.replaceTitle = false;
 

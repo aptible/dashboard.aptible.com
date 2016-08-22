@@ -1,6 +1,5 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
-
 .DS_Store
 
 # compiled output
@@ -19,3 +18,4 @@
 npm-debug.log
 testem.log
 *.swp
+.idea

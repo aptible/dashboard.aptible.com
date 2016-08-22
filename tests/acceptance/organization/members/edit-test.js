@@ -4,8 +4,8 @@ import {
   test,
   skip
 } from 'qunit';
-import startApp from 'diesel/tests/helpers/start-app';
-import { stubRequest } from 'diesel/tests/helpers/fake-server';
+import startApp from '../../../helpers/start-app';
+import { stubRequest } from '../../../helpers/fake-server';
 
 let application;
 let orgId = 'o1';

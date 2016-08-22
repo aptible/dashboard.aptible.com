@@ -3,8 +3,8 @@ import {
   module,
   test
 } from 'qunit';
-import startApp from 'diesel/tests/helpers/start-app';
-import { stubRequest } from 'diesel/tests/helpers/fake-server';
+import startApp from '../../../helpers/start-app';
+import { stubRequest } from '../../../helpers/fake-server';
 
 let application;
 let orgId = 1; // FIXME this is hardcoded to match the value for signIn in aptible-helpers

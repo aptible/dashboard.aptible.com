@@ -1,5 +1,5 @@
 import Ember from "ember";
-import Cookies from "ember-cli-aptible-shared/utils/cookies";
+import Cookies from "diesel/utils/cookies";
 import Location from "../utils/location";
 import DisallowAuthenticated from "diesel/mixins/routes/disallow-authenticated";
 

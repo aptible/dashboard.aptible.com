@@ -1,0 +1,28 @@
+<header class="navbar navbar-static-top current-user-header">
+  <div class="navbar-header">
+    {{link-to "Aptible" "index" class="navbar-brand"}}
+  </div>
+
+  <nav class="main-navigation">
+    {{app-navigation
+        class="nav nav-pills"
+        currentUser=session.currentUser}}
+  </nav>
+
+  <nav>
+    <ul class="nav nav-pills navbar-right user-nav">
+      <li class="dropdown current-user">
+        {{#dashboard-dropdown user=session.currentUser actor=session.currentActor defaultPath="settings" app="dashboard"}}
+
+          {{#each session.currentUser.organizations as |organization|}}
+            {{dashboard-dropdown-organization-menu organization=organization app="dashboard"}}
+            {{dashboard-dropdown-divider}}
+          {{/each}}
+
+          {{dashboard-dropdown-user-menu user=session.currentUser}}
+
+        {{/dashboard-dropdown}}
+      </li>
+    </ul>
+  </nav>
+</header>
