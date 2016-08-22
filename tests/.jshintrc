@@ -66,6 +66,7 @@
     "stubApp",
     "stubDatabase",
     "stubDatabases",
+    "stubDatabaseImages",
     "stubUser",
     "expectPaginationElements",
     "clickNextPageLink",

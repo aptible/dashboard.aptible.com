@@ -44,6 +44,7 @@ test(`visiting /stacks/:stack_id/databases without any databases redirects to ${
   stubStacks({}, [stack]);
   stubStack(stack);
   stubOrganization();
+  stubDatabaseImages();
   signInAndVisit(`/stacks/${stackId}/databases`);
 
   andThen(function() {
@@ -58,6 +59,7 @@ test(`visit ${url} when stack has no databases does not show cancel`, function(a
   };
   stubStacks({}, [stack]);
   stubStack(stack);
+  stubDatabaseImages();
   stubRequest('get', '/accounts/my-stack-1/databases', function(){
     return this.success({
       _links: {},
@@ -84,6 +86,7 @@ test(`visit ${url} shows basic info`, function(assert) {
   };
   stubStacks({ includeDatabases: true });
   stubStack(stack);
+  stubDatabaseImages();
   stubOrganization();
   signInAndVisit(url);
 
@@ -91,6 +94,7 @@ test(`visit ${url} shows basic info`, function(assert) {
     assert.equal(currentPath(), 'dashboard.catch-redirects.stack.databases.new');
 
     expectInput('handle');
+    expectInput('databaseImage');
     expectFocusedInput('handle');
     expectButton('Save Database');
     expectButton('Cancel');
@@ -114,11 +118,19 @@ test(`visit ${url} shows basic info`, function(assert) {
 });
 
 test(`visit ${url} and create`, function(assert) {
-  assert.expect(6);
+  assert.expect(7);
 
   var dbHandle = 'my-new-db',
       dbId = 'mydb-id',
       diskSize = 10;
+
+  stubDatabaseImages([{
+    id: 1,
+    dockerRepo: 'quay.io/aptible/redis:3.0',
+    description: 'redis 3.0',
+    type: 'redis',
+    default: true
+  }]);
 
   // Just needed to stub /stack/my-stack-1/databases
   stubStacks({ includeDatabases: true });
@@ -162,6 +174,7 @@ test(`visit ${url} and create`, function(assert) {
     var json = this.json(request);
     assert.equal(json.handle, dbHandle, 'posts db handle');
     assert.equal(json.type, 'redis', 'posts db type of redis');
+    assert.equal(json.database_image_id, 1, 'posts correct database image id');
 
     return this.success(201, {
       id: dbId,
@@ -192,6 +205,7 @@ test(`visit ${url} and create`, function(assert) {
   andThen(function(){
     fillInput('handle', dbHandle);
     click('.select-option[title="Redis"]');
+    fillInput('databaseImage', 1);
     clickButton('Save Database');
   });
 
@@ -211,6 +225,8 @@ test(`visit ${url} with duplicate handle`, function(assert) {
 
   var dbHandle = 'my-new-db',
       dbId = 'mydb-id';
+
+  stubDatabaseImages();
 
   // Just needed to stub /stack/my-stack-1/databases
   stubStacks({ includeDatabases: true });
@@ -265,6 +281,8 @@ test(`visit ${url} with duplicate handle`, function(assert) {
 
 test(`visit ${url} and click cancel button`, function(assert) {
   assert.expect(2);
+  stubDatabaseImages();
+
   stubStacks({ includeDatabases: true});
   var dbHandle = 'my-new-db';
 
@@ -283,6 +301,7 @@ test(`visit ${url} and click cancel button`, function(assert) {
 
 test(`diskSize is reset when leaving ${url} (#372)`, function(assert) {
   assert.expect(1);
+  stubDatabaseImages();
   stubStacks({ includeDatabases: true});
   var diskSize = 30;
 
@@ -302,6 +321,8 @@ test(`diskSize is reset when leaving ${url} (#372)`, function(assert) {
 
 test(`visit ${url} and transition away`, function(assert) {
   assert.expect(2);
+  stubDatabaseImages();
+
   stubStacks({ includeDatabases: true});
   var dbHandle = 'a-new-db-handle';
 
@@ -320,6 +341,7 @@ test(`visit ${url} and transition away`, function(assert) {
 
 test(`visit ${url} when user is not verified shows "Cannot create" message`, function(assert) {
   let userData = {verified: false};
+  stubDatabaseImages();
   stubStacks({ includeDatabases: true});
   signInAndVisit(url, userData);
   andThen( () => {
