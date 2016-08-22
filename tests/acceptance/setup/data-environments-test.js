@@ -62,7 +62,7 @@ test('Lists all data environments', function(assert) {
   signInAndVisit(dataEnvironmentsUrl);
 
   andThen(() => {
-    assert.equal(find('tr:contains(Aptible)').length, 0, 'has no Aptible row');
+    assert.equal(find('tr:contains(Aptible)').length, 1, 'has no Aptible row');
 
     dataEnvironments.forEach(function(de) {
       if (de !== 'Aptible') {
