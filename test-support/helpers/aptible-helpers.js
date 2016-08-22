@@ -604,6 +604,16 @@ Ember.Test.registerHelper('stubDatabases', function(app, dbData){
   });
 });
 
+Ember.Test.registerHelper('stubDatabaseImages', function(app, imageData){
+  stubRequest('get', '/database_images', function(request){
+    return this.success({
+      _embedded: {
+        databaseImages: imageData
+      }
+    });
+  });
+});
+
 Ember.Test.registerHelper('stubUser', function(app, userData={}){
   stubRequest('get', '/users/:user_id', function(request){
     userData.id = request.params.user_id;
