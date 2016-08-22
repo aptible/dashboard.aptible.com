@@ -1,0 +1,19 @@
+{{#if isValidating}}
+  <i class="fa fa-spin fa-spinner"></i>
+{{else}}
+
+  {{#if showError}}
+    {{#bs-tooltip placement="right" title=errorText bs-trigger="immediate" bs-container=false}}
+      <i class="fa fa-times-circle"></i>
+    {{/bs-tooltip}}
+  {{/if}}
+
+  {{#if showSuccess}}
+    <i class="fa fa-check-circle"></i>
+  {{/if}}
+
+  {{#if showNothing}}
+    <i class="fa visibility-hidden"></i>
+  {{/if}}
+
+{{/if}}

@@ -1,0 +1,41 @@
+footer.aptible-footer-small {
+  border-top: 1px solid #f0f0f0;
+  padding: 20px 0;
+  margin: 50px 0 0;
+
+  .aptible-mark {
+    width: 22px;
+    height: 21px;
+    float: left;
+    text-indent: -9000em;
+    background-size: 22px 21px;
+    background-repeat: no-repeat;
+    background-image: url('/assets/images/aptible-mark-gray.jpg');
+  }
+
+  .footer-nav {
+    margin-top: 3px;
+    > li {
+      font-size: 11px;
+      color: $color-light;
+      margin: 0 20px;
+      strong {
+        color: $color-primary;
+        font-weight: $weight-semibold;
+      }
+      > a {
+        padding: 0;
+        margin: 0;
+        color: $color-light;
+        font-weight: $weight-semibold;
+        &:hover {
+          color: $color-bright-blue;
+          background: none;
+        }
+      }
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}

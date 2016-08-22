@@ -28,7 +28,6 @@
     "core-object": "^1.1.0",
     "ember-cli": "1.13.15",
     "ember-cli-app-version": "^1.0.0",
-    "ember-cli-aptible-shared": "0.0.108",
     "ember-cli-babel": "^5.1.5",
     "ember-cli-content-security-policy": "0.4.0",
     "ember-cli-dependency-checker": "^1.1.0",
@@ -45,7 +44,7 @@
     "ember-cli-jshint": "1.0.4",
     "ember-cli-pretender": "^0.3.1",
     "ember-cli-qunit": "^2.0.0",
-    "ember-cli-release": "^0.2.5",
+    "ember-cli-release": "^0.2.8",
     "ember-cli-sentry": "2.3.3",
     "ember-cli-sri": "^1.2.0",
     "ember-cli-template-lint": "0.1.1",
@@ -71,7 +70,9 @@
     "liquid-fire": "0.22.0",
     "silent-error": "^1.0.0",
     "testem": "^1.8.1",
-    "torii": "^0.6.0-beta.4"
+    "torii": "^0.6.0-beta.4",
+    "ember-data-hal-9000": "~0.2.1",
+    "ember-inflector": "^1.6.2"
   },
   "ember-addon": {
     "paths": [

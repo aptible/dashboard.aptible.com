@@ -3,7 +3,7 @@ import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 import { AFTER_AUTH_COOKIE } from 'diesel/login/route';
-import Cookies from "ember-cli-aptible-shared/utils/cookies";
+import Cookies from "diesel/utils/cookies";
 import {
   signupInputsTest,
   doSignupSteps

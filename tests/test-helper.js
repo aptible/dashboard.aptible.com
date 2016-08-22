@@ -10,7 +10,7 @@ import storage from '../utils/storage';
 import MockLocation from './helpers/mock-location';
 import MockTitle from './helpers/mock-title';
 import './helpers/authentication';
-import Cookies from 'ember-cli-aptible-shared/utils/cookies';
+import Cookies from 'diesel/utils/cookies';
 import { AFTER_AUTH_COOKIE } from '../app';
 
 setResolver(resolver);

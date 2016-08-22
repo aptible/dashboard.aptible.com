@@ -1,0 +1,222 @@
+.panel {
+  border-radius: 3px;
+  background: $color-bg-gray;
+  border: 1px solid #e5e5e5;
+  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .06);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .06);
+
+  &.panel-focused {
+    border: 1px solid $color-bright-blue;
+    -moz-box-shadow: 0 0 8px rgba($color-bright-blue, .5);
+    box-shadow: 0 0 8px rgba($color-bright-blue, .5);
+  }
+
+  &.panel-danger {
+    border: 1px solid #f00;
+    box-shadow: 0 0 8px rgba(#f00, .5);
+  }
+
+  &.white-panel {
+    background: #fff;
+  }
+
+  &.panel-striped {
+    .panel-section:nth-child(1) {
+      background: #fff;
+    }
+
+    .panel-section:last-child {
+      border: 0;
+    }
+  }
+
+  > .panel-heading {
+    @extend %clearfix;
+    border: 0;
+    box-shadow: none;
+
+    padding: 9px 20px;
+    background: #fff;
+
+    h5 {
+      margin: 10px 0;
+      font-size: 14px;
+      font-weight: $weight-semibold;
+    }
+
+    h3 {
+      margin: 11px 0 9px;
+      font-size: 16px;
+      font-weight: $weight-semibold;
+    }
+
+    &.with-nav {
+      h3 {
+        margin-top: 11px;
+        float: left;
+      }
+    }
+
+    .nav-pills {
+      float: right;
+      margin-top: 3px;
+    }
+  }
+
+  .panel-section-title {
+    font-size: 16px;
+    font-weight: $weight-semibold;
+    margin: 0 0 20px;
+  }
+
+  .panel-section {
+    border-bottom: 1px solid $color-border-gray;
+    padding: 30px;
+
+    p {
+      color: $color-light;
+      margin: 20px 0;
+      font-size: 14px;
+    }
+
+    &:first-child {
+      border-radius: 3px 3px 0 0;
+    }
+
+    &:last-child {
+      border: 0;
+      border-radius: 0 0 3px 3px;
+    }
+  }
+
+  .panel-sub-heading {
+    background: #fff;
+    padding: 20px 20px 15px;
+    border-bottom: 1px solid #e5e5e5;
+    box-shadow: 0 1px 3px rgba(#000, .08);
+  }
+}
+
+.panel-body {
+  padding: 20px;
+}
+
+.panel-group {
+  .panel {
+    margin: 0 0 10px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+
+a.panel-link, a.panel {
+
+  .panel-body {
+    color: $color-light;
+  }
+
+  &:hover, &:active, &:link {
+    text-decoration: none;
+    outline: none;
+  }
+}
+
+a.panel-link .panel, a.panel {
+  &:hover {
+    border: 1px solid $color-bright-blue;
+    box-shadow: 0 0 5px rgba($color-bright-blue, 0.25);
+    transition-duration: .5s;
+  }
+}
+
+
+.panel-heading {
+  .nav.nav-pills {
+    > li {
+      margin-right: 10px;
+
+      &:last-child {
+        margin: 0;
+      }
+    }
+  }
+
+  .compliance-icon {
+    float: left;
+
+    .icon-xs {
+      margin-top: 2px;
+    }
+  }
+
+  .compliance-label {
+    margin-left: 20px;
+  }
+}
+
+
+.panel.panel-steps {
+  .panel-step {
+    background: $color-bg-gray;
+    border-bottom: 1px solid $color-border-gray;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  .panel-step-num {
+    background: $color-bg-gray;
+    width: 80px;
+    float: left;
+
+    i.fa {
+      font-size: 36px;
+      text-align: center;
+      margin: 30px 0 0;
+      width: 100%;
+    }
+
+    h3 {
+      color: $color-bright-blue;
+      font-size: 36px;
+      font-weight: $weight-semibold;
+      text-align: center;
+      margin-top: 30px;
+    }
+  }
+
+  .panel-step-info {
+    h3 {
+      font-size: 18px;
+      font-weight: $weight-semibold;
+      margin: 0 0 16px;
+    }
+
+    margin-left: 80px;
+    padding: 30px;
+    border-left: 1px solid $color-bg-gray;
+    background: white;
+  }
+}
+
+
+h3.panel-title {
+  text-transform: uppercase;
+  font-size: 12px;
+  color: $color-light;
+  font-weight: $weight-semibold;
+  margin: 0 0 10px;
+}
+
+.panel-footer {
+  border-top-color: #eaeaea;
+  background: $color-bg-gray;
+}
+
+.icon--highlight {
+  color: #4a90e2;
+}

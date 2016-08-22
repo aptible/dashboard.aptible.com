@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import startApp from '../../helpers/start-app';
-import { stubRequest } from 'diesel/tests/helpers/fake-server';
+import { stubRequest } from '../../helpers/fake-server';
 
 let App;
 let jqTransitionSupport;

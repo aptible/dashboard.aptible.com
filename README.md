@@ -124,4 +124,3 @@ The `.travis.yml` file will be updated with a new value for `env.secure`. Commit
 Copyright (c) 2015 [Aptible](https://www.aptible.com). All rights reserved.
 
 [<img src="https://s.gravatar.com/avatar/9b58236204e844e3181e43e05ddb0809?s=60" style="border-radius: 50%;" alt="@sandersonet" />](https://github.com/sandersonet)
-

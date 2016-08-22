@@ -4,7 +4,7 @@ import startApp from '../helpers/start-app';
 import { stubRequest } from '../helpers/fake-server';
 import successfulTokenResponse from '../helpers/successful-token-response';
 import { AFTER_AUTH_COOKIE } from '../../login/route';
-import Cookies from "ember-cli-aptible-shared/utils/cookies";
+import Cookies from "diesel/utils/cookies";
 
 let App;
 let signupIndexPath = 'signup.index';

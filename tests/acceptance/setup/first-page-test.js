@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { module, skip } from 'qunit';
-import startApp from 'diesel/tests/helpers/start-app';
+import startApp from '../../helpers/start-app';
 
 let application;
 

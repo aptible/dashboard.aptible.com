@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
-import startApp from 'diesel/tests/helpers/start-app';
+import startApp from '../../helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
 import { orgId, rolesHref, usersHref, invitationsHref,
          securityOfficerHref } from '../../helpers/organization-stub';

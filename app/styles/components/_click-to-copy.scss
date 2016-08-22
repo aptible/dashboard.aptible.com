@@ -1,0 +1,54 @@
+// Click To Copy Component
+// See also
+//  - app/templates/components/click-to-copy.hbs
+//  - app/components/click-to-copy/component.js
+// Styles a span tag with expected attributes
+// `<span class="click-to-copy" data-message="Copied!" ... >Copy</span>`
+.click-to-copy {
+  color: $color-bright-blue;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+  &.tooltipped {
+    position: relative;
+    // This is the tooltip bubble
+    &:after {
+      -webkit-font-smoothing: subpixel-antialiased;
+      background-color: rgba(0,0,0,0.75);
+      border-radius: 3px;
+      color: white;
+      content: attr(data-message);
+      display: inline-block;
+      font: normal normal 11px/1.5;
+      letter-spacing: normal;
+      margin-top: 5px;
+      padding: 5px 8px;
+      pointer-events: none;
+      position: absolute;
+      right: 50%;
+      text-align: center;
+      top: 100%;
+      transform: translateX(50%);
+      white-space: pre;
+      z-index: 1000000;
+    }
+    // This is the tooltip arrow
+    &:before {
+      border: 5px solid transparent;
+      border-bottom-color: rgba(0,0,0,0.75);
+      bottom: -5px;
+      color: rgba(0,0,0,0.75);
+      content: "";
+      display: inline-block;
+      height: 0;
+      margin-right: -5px;
+      pointer-events: none;
+      position: absolute;
+      right: 50%;
+      top: auto;
+      width: 0;
+      z-index: 1000001;
+    }
+  }
+}

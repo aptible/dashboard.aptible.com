@@ -3,7 +3,7 @@ import {
   module,
   test
 } from 'qunit';
-import startApp from 'diesel/tests/helpers/start-app';
+import startApp from '../../helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
 
 let application;

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import DisallowAuthenticated from "diesel/mixins/routes/disallow-authenticated";
 import SignupRouteMixin from "diesel/mixins/routes/signup";
-import Cookies from "ember-cli-aptible-shared/utils/cookies";
+import Cookies from "diesel/utils/cookies";
 import { AFTER_AUTH_COOKIE } from 'diesel/login/route';
 
 export default Ember.Route.extend(DisallowAuthenticated, SignupRouteMixin, {

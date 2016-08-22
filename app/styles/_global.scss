@@ -1,0 +1,97 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-size: 13px;
+  text-rendering: optimizeLegibility;
+  @include heading-font-family;
+}
+
+.gravatar {
+  display: inline-block;
+  overflow: hidden;
+  border-radius: 3px;
+
+  img {
+    width: 100%;
+    vertical-align: top;
+  }
+
+  &.xs {
+    height: 16px;
+    width: 16px;
+    margin: 0 5px 0 0;
+  }
+
+  &.sm {
+    height: 24px;
+    width: 24px;
+  }
+
+  &.md {
+    height: 40px;
+    width: 40px;
+  }
+
+  &.lg {
+    height: 64px;
+    width: 64px;
+  }
+
+  &.xl {
+    height: 100px;
+    width: 100px;
+  }
+
+}
+
+i.fa {
+  &.error, &.danger {
+    color: #f00;
+  }
+
+  &.success {
+    color: $color-success;
+  }
+
+  &.primary {
+    color: $color-bright-blue;
+  }
+}
+
+code {
+  font-family: "Inconsolata", Menlo, Monaco, monospace, Courier;
+  font-size: 13px;
+  color: $color-primary;
+  background: $color-bg-gray;
+}
+
+pre.code,
+.code-block {
+  padding: 6px 10px;
+  border: 0;
+  background: $color-bg-gray;
+  margin: 15px 0;
+
+  code {
+    display: block;
+  }
+}
+
+.support-instructions {
+  h4 {
+    font-size: 16px;
+    font-weight: $weight-semibold;
+    margin: 15px 0;
+  }
+
+  p {
+    margin: 15px 0;
+  }
+
+  .instructions-section {
+    margin: 0 0 15px;
+  }
+}
