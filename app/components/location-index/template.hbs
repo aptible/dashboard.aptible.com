@@ -22,7 +22,9 @@
           <td class="row-actions one-action">
             <ul class="row-action-nav">
               <li>
-                <a><i class="fa fa-times danger"></i></a>
+                <a {{action "removeLocation" location}}>
+                  <i class="fa fa-times danger remove-location"></i>
+                </a>
               </li>
             </ul>
           </td>

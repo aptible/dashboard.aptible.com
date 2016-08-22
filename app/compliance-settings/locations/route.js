@@ -20,11 +20,10 @@ export default Ember.Route.extend({
 
   setupController(controller, model) {
     let { schemaDocument, schema, attestation } = model;
+    let locationProperty = new Property(schema._schema.items);
 
-    controller.set('schema', schema);
-    controller.set('attestation', attestation);
-    controller.set('document', schemaDocument);
-    controller.set('locationProperty', new Property(schema._schema.items));
+    controller.setProperties({ schema, attestation, schemaDocument,
+                               locationProperty });
   },
 
   afterModel(model) {

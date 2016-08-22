@@ -5,6 +5,7 @@ import Attestation from 'diesel/models/attestation';
 import loadSchema from 'diesel/utils/load-schema';
 
 export default Ember.Route.extend(SPDRouteMixin, {
+  complianceStatus: Ember.inject.service(),
   model() {
     let organizationProfile = this.modelFor('setup');
     let handle = 'workforce_locations';
@@ -21,11 +22,11 @@ export default Ember.Route.extend(SPDRouteMixin, {
 
   setupController(controller, model) {
     let { schemaDocument, schema, attestation } = model;
+    let organization = this.get('complianceStatus.organization');
+    let locationProperty = new Property(schema._schema.items);
 
-    controller.set('schema', schema);
-    controller.set('document', schemaDocument);
-    controller.set('attestation', attestation);
-    controller.set('locationProperty', new Property(schema._schema.items));
+    controller.setProperties({ schema, schemaDocument, attestation,
+                               organization, locationProperty });
   },
 
   actions: {
@@ -48,6 +49,11 @@ export default Ember.Route.extend(SPDRouteMixin, {
 
     onAddLocation() {
       this.controller.addNewLocation();
+    },
+
+    onRemoveLocation(location) {
+      let { schemaDocument } = this.currentModel;
+      schemaDocument.removeObject(location);
     },
 
     onCreateLocation() {

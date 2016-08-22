@@ -5,10 +5,10 @@ import buildSecurityControlGroups from 'diesel/utils/build-security-control-grou
 
 export default Ember.Route.extend(SPDRouteMixin, {
   stepName: 'security-controls',
-
+  complianceStatus: Ember.inject.service(),
   model() {
     let handle = 'selected_data_environments';
-    let organization = this.modelFor('compliance-organization');
+    let organization = this.get('complianceStatus.organization');
     let organizationProfile = this.modelFor('setup');
     let attestationParams = { handle, organizationProfile, document: [] };
 

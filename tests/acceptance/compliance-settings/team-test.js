@@ -76,7 +76,7 @@ let roles = [
   {
     id: trainingOnlyRoleId,
     type: 'compliance_user',
-    name: 'Training Only Users',
+    name: 'Training-Only Users',
     _links: {
       self: { href: `/roles/${trainingOnlyRoleId}` },
       users: { href: `/roles/${trainingOnlyRoleId}/users`},
@@ -252,7 +252,7 @@ test('Setup Inviting users if a role doesn\'t exist will create role', function(
 function testBasicUI(assert) {
   andThen(() => {
     // Shows 2 role panels: Training Only, Compliance Owners
-    let trainingPanel = findWithAssert('.workforce-role:contains(Training Only Users)');
+    let trainingPanel = findWithAssert('.workforce-role:contains(Training-Only Users)');
     let adminPanel = findWithAssert('.workforce-role:contains(Compliance Owners)');
 
     assert.equal(trainingPanel.length, 1, 'shows training only role');
@@ -349,7 +349,7 @@ function testFindOrCreateRole(assert) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to create new role');
-    assert.equal(json.name, 'Training Only Users', 'uses correct name');
+    assert.equal(json.name, 'Training-Only Users', 'uses correct name');
     assert.equal(json.type, 'compliance_user', 'uses correct type');
 
     json.id = trainingOnlyRoleId;
@@ -367,7 +367,7 @@ function testFindOrCreateRole(assert) {
   });
 
   andThen(function() {
-    let adminPanel = findWithAssert('.workforce-role:contains(Training Only Users)');
+    let adminPanel = findWithAssert('.workforce-role:contains(Training-Only Users)');
     let button = adminPanel.find('.invite-more-users');
     assert.equal(button.length, 1, 'shows invite new users button');
 
@@ -383,7 +383,7 @@ function testFindOrCreateRole(assert) {
   });
 
   andThen(function() {
-    let adminPanel = findWithAssert('.workforce-role:contains(Training Only Users)');
+    let adminPanel = findWithAssert('.workforce-role:contains(Training-Only Users)');
     let adminInvites = adminPanel.find('.workforce-role__invitation .workforce-role__user-name');
 
     assert.equal(find('.lf-dialog').length, 0, 'dialog is closed');

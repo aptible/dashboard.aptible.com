@@ -62,7 +62,7 @@ test('Lists all data environments', function(assert) {
   signInAndVisit(dataEnvironmentsUrl);
 
   andThen(() => {
-    assert.equal(find('tr:contains(Aptible)').length, 0, 'has no Aptible row');
+    assert.equal(find('tr:contains(Aptible)').length, 1, 'has Aptible row');
 
     dataEnvironments.forEach(function(de) {
       if (de !== 'Aptible') {
@@ -114,6 +114,7 @@ test('Should load existing selections when attestation already exists', function
   let expectedDataEnvironmentPayload = {
     amazonS3: false,
     gmail: true,
+    aptible: true
   };
 
   stubCurrentAttestations({ selected_data_environments: existingSelection });

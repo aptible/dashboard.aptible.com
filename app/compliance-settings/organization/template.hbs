@@ -16,17 +16,9 @@
   </div>
 </header>
 
+{{partial 'spd/organization'}}
+
 <div class="container main-body">
   {{spd-errors errors=errors}}
-  <div class="panel panel-striped">
-    <div class="panel-section">
-      <div class="panel-section-title">About your organization</div>
-      {{textarea value=model.aboutOrganization rows="5" class="form-control" name="aboutOrganization"}}
-    </div>
-
-    <div class="panel-section">
-      <div class="panel-section-title">About your products</div>
-      {{textarea value=model.aboutProduct rows="5" class="form-control" name="aboutProduct"}}
-    </div>
-  </div>
+  {{partial 'spd/organization'}}
 </div>

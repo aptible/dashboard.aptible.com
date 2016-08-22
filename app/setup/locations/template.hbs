@@ -8,7 +8,7 @@
 }}
   <div class="description">
     <p>
-      Add all locations from which your organization regularly performs work.
+      Add all commercial locations at which {{organization.name}} workforce members regularly work. Home offices and temporary remote locations do not need to be added.
     </p>
   </div>
 {{/spd-nav}}
@@ -20,5 +20,5 @@
     </div>
   </div>
 
-  {{location-index locations=validLocations}}
+  {{location-index locations=validLocations removeLocation="onRemoveLocation"}}
 </div>
