@@ -35,7 +35,9 @@ test('it maps schema errors to `validationErrors` property', function(assert) {
 
   return Ember.run(() => {
     model.save().catch(() => {
-      assert.deepEqual(model.get('validationErrors'), [expected]);
+      let result = model.get('validationErrors.firstObject')
+                        .getProperties('path', 'propertyName', 'error');
+      assert.deepEqual(result, expected);
     }).finally(done);
   });
 });
@@ -62,7 +64,39 @@ test('validation errors for required fields are mapped correctly', function(asse
 
   return Ember.run(() => {
     model.save().catch(() => {
-      assert.deepEqual(model.get('validationErrors'), [expected]);
+      let result = model.get('validationErrors.firstObject')
+                        .getProperties('path', 'propertyName', 'error');
+      assert.deepEqual(result, expected);
     }).finally(done);
   });
 });
+
+test('validation errors map nested properties correctly', function(assert) {
+  let model = this.subject();
+  let done = assert.async();
+
+  stubRequest('post', '/attestations', function() {
+    assert.ok(true, 'calls with correct URL');
+
+    return this.error(422, {
+      code: 422,
+      error: 'internal_server_error',
+      message: "The property '#/security_controls/application_unified_logging/technologies' value \"\" did not match one of the following values: ElasticSearch, Papertrail, Splunk, SumoLogic, Other"
+    });
+  });
+
+  let expected = {
+    path: 'security_controls.application_unified_logging.technologies',
+    propertyName: 'Technologies',
+    error: 'does not match one of the following values: ElasticSearch, Papertrail, Splunk, SumoLogic, Other'
+  };
+
+  return Ember.run(() => {
+    model.save().catch(() => {
+      let result = model.get('validationErrors.firstObject')
+                        .getProperties('path', 'propertyName', 'error');
+      assert.deepEqual(result, expected);
+    }).finally(done);
+  });
+});
+
