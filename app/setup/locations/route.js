@@ -34,7 +34,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
       let { schemaDocument, attestation } = this.currentModel;
       let profile = this.modelFor('setup');
 
-      attestation.set('document', schemaDocument.dump({ excludeInvalid: true }));
+      attestation.set('document', schemaDocument.dump({ excludeInvalid: true }) || []);
       attestation.setUser(this.session.get('currentUser'));
       attestation.save().then(() => {
         profile.next(this.get('stepName'));
