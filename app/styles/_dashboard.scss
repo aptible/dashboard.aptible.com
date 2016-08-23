@@ -311,6 +311,14 @@ header.new-header {
       display: inline-block;
       margin-left: 10px;
     }
+
+    .fa-exclamation-circle {
+      color: $color-danger;
+    }
+
+    .fa-check-circle {
+      color: $color-success;
+    }
   }
 }
 

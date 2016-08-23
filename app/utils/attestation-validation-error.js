@@ -7,7 +7,7 @@ const MISSING_REQUIRED_PROPERTY_TEST = /did not contain a required property/;
 const MISSING_ITEM_PROPERTY_TEST = /did not contain a minimum number of items/;
 const ENUM_MISMATCH_PROPERTY_TEST = /did not match one of the following values/;
 
-function humanize(property) {
+export function humanize(property) {
   return capitalize(decamelize(property).replace(/_/ig, ' '));
 }
 
