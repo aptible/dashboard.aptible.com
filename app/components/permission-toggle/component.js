@@ -3,15 +3,8 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   busy: false,
   hasPermissions: Ember.computed.gt('permissions.length', 0),
-  initialized: false,
   permission: null,
   store: Ember.inject.service(),
-
-  setup: function() {
-    Ember.run.next(() => {
-      this.set('initialized', true);
-    });
-  }.on('init'),
 
   isChecked: Ember.computed('stack.@each.permissions', function() {
     if (this.get('role').get('isPlatformUser')) {
@@ -29,14 +22,13 @@ export default Ember.Component.extend({
   }),
 
   actions: {
-    onToggle(isOn) {
-      // NOTE: This version of the toggle component calls onToggle on init,
-      // so we return if that's the case.
-      if (!this.get('initialized') || this.get('busy')) { return; }
-
-      let role = this.get('role');
-      let scope = this.get('scope');
-      let stack = this.get('stack');
+    onToggle(valueOptions) {
+      let isOn = valueOptions.newValue;
+      if([true,false].indexOf(isOn) === -1) {
+        // Not a valid boolean value
+        return;
+      }
+      let { role, scope, stack } = this.getProperties('role', 'scope', 'stack');
       let permission = stack.findPermission(role, scope);
 
       // NOTE: No error occurs if a permission with this role and scope already

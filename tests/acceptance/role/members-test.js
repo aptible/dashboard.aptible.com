@@ -181,7 +181,7 @@ test(`visiting ${pageUrl} role members can be removed by account owners`, (asser
   });
 });
 
-test(`visiting ${pageUrl} role members' last role cannot be removed`, (assert) => {
+test(`visiting ${pageUrl} role members last role cannot be removed`, (assert) => {
   const member1 = {
     id: 'role-member-1',
     _embedded: {
@@ -245,11 +245,11 @@ test(`role members can be made role admins`, (assert) => {
   visit(`/roles/${nonOwnerRole.id}/members`);
 
   andThen(() => {
-    assert.equal(member1.privileged, false);
-    find('.x-toggle-btn').click();
+    assert.equal(member1.privileged, false, 'member is not privileged');
+    findWithAssert('.x-toggle-btn').click();
   });
   andThen(() => {
-    assert.equal(member1.privileged, true);
+    assert.equal(member1.privileged, true, 'member is updated to privileged');
   });
 });
 

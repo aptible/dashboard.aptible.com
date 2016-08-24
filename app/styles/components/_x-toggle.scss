@@ -1,8 +1,22 @@
+/* x-toggle
 .x-toggle-container {
   display: block;
   height: 20px;
 
   label.x-toggle-btn {
     margin-bottom: 0;
+  }
+}
+*/
+
+
+.x-toggle-light.medium {
+  height: 1.9em;
+}
+
+.x-toggle-component {
+  label {
+    margin-bottom: 0;
+    font-size: auto;
   }
 }

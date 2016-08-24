@@ -56,7 +56,7 @@ test('Organization settings page basic UI', function(assert) {
 });
 
 test('Clicking continue saves organization profile and moves to next step', function(assert) {
-  expect(6);
+  expect(7);
 
   let expectedAboutOrganization = 'Secure, private cloud deployment for digital health.';
   let expectedAboutProduct = 'Seamlessly integrate advanced compliance tools';
@@ -87,7 +87,16 @@ test('Clicking continue saves organization profile and moves to next step', func
   andThen(clickContinueButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.setup.locations');
+    assert.equal(currentPath(), 'compliance.compliance-organization.setup.organization', 'remain on current step when form is incomplete');
+    fillIn('textarea[name="aboutArchitecture"]', 'Test');
+    fillIn('textarea[name="aboutBusinessModel"]', 'Test');
+    fillIn('textarea[name="aboutTeam"]', 'Test');
+    fillIn('textarea[name="aboutGoToMarket"]', 'Test');
+  });
+
+  andThen(clickContinueButton);
+  andThen(() => {
+    assert.equal(currentPath(), 'compliance.compliance-organization.setup.locations', 'moved to next step');
   });
 });
 

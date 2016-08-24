@@ -252,7 +252,7 @@ function clickSaveButton() {
 }
 
 function toggleDataEnvironment(environment) {
-  let toggle = findWithAssert(`tr:contains(${environment}) td:last input[type="checkbox"]`);
+  let toggle = findWithAssert(`tr:contains(${environment}) td:last .x-toggle-btn`);
   toggle.click();
 }
 

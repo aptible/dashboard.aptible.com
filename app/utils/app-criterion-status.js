@@ -26,7 +26,6 @@ export default Ember.Object.extend(CriterionStatusMixin, {
   }),
 
   appStatuses: Ember.computed('documents.@each.appUrl', 'productionApps.[]', function() {
-    console.log("Building App Statuses");
     // This method maps over all apps and determines their compliance status
     // only a string is returned for each app.
     let documents = this.get('documents');

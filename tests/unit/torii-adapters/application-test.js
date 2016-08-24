@@ -61,7 +61,6 @@ test('#close destroys token, storage by default', function(assert){
   });
 
   Ember.run(function(){
-    console.log(config);
     adapter.close({token: token}).then(function(){
       assert.ok(true, 'session is opened with an auth_token');
       assert.equal(removedKey, config.authTokenKey, 'removes token value');

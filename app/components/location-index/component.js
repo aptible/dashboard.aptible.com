@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   classNames: ['locations-index'],
-
+  classNameBindings: ['remoteOnly'],
   actions: {
     removeLocation(location) {
       let message = `About to remove ${location.values.description} Location. Are you sure?`;

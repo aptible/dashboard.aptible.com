@@ -3,18 +3,10 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   classNames: ['aptable__member-row'],
   tagName: 'tr',
-  initialized: false,
   busy: false,
   user: Ember.computed.reads('membership.user'),
   memberUserRoles: Ember.computed.reads('membership.user.roles'),
   currentUserRoles: Ember.computed.reads('currentUser.roles'),
-
-  // See note in togglePrivileged for why the initialized flag is set.
-  setup: function() {
-    Ember.run.next(() => {
-      this.set('initialized', true);
-    });
-  }.on('init'),
 
   billingDetail: Ember.computed.reads('organization.billingDetail'),
 
@@ -70,12 +62,14 @@ export default Ember.Component.extend({
   },
 
   actions: {
-    togglePrivileged(isOn) {
-      let membership = this.get('membership');
+    togglePrivileged(valueOptions) {
+      let isOn = valueOptions.newValue;
+      if([true,false].indexOf(isOn) === -1) {
+        // dont' trigger a toggle if a boolean isn't set
+        return;
+      }
 
-      // No changes if this is the init call
-      // NOTE: new versions of x-toggle don't call the toggle on init
-      if (!this.get('initialized') || this.get('busy')) { return; }
+      let membership = this.get('membership');
 
       // No need to update if this user is an owner.
       if (this.isRoleOwner(membership.get('user'), this.get('memberUserRoles'))) { return; }

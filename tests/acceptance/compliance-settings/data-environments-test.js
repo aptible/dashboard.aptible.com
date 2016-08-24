@@ -151,7 +151,7 @@ test('Should load existing selections when attestation already exists', function
 });
 
 function toggleDataEnvironment(environment) {
-  let toggle = findWithAssert(`tr:contains(${environment}) input[type="checkbox"]`);
+  let toggle = findWithAssert(`tr:contains(${environment}) .x-toggle-btn`);
   toggle.click();
 }
 

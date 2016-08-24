@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import SPDRouteMixin from 'diesel/mixins/routes/spd-route';
-import { humanize } from 'diesel/utils/attestation-validation-error';
 
 export default Ember.Route.extend(SPDRouteMixin, {
   complianceStatus: Ember.inject.service(),
