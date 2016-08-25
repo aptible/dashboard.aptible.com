@@ -50,7 +50,7 @@ test('Locations page basic UI, with no existing locations', function(assert) {
 
   andThen(() => {
     assert.equal(currentPath(), 'compliance.compliance-organization.setup.locations', 'remains on locations step');
-    assert.ok(find('.empty-row:contains(No locations.  Add one above.)').length,
+    assert.ok(find('.empty-row:contains(No locations)').length,
 
               'shows empty row with no locations');
     assert.ok(find('.spd-nav-continue').is(':disabled'),
@@ -67,6 +67,44 @@ test('Locations page basic UI, with no existing locations', function(assert) {
               'has state select with 50 options');
     assert.ok(find('button[type="submit"]:contains(Add)').length,
               'has a submit button');
+  });
+});
+
+test('Locations page requires a location, unless remote only is indicated', function(assert) {
+  expect(6);
+  stubProfile({ currentStep: 'locations' });
+  stubCurrentAttestations({ workforce_locations: []});
+  stubRequests();
+  signInAndVisit(locationsUrl);
+
+  andThen(clickContinueButton);
+
+  stubRequest('put', `/organization_profiles/${orgId}`, function(request) {
+    let json = this.json(request);
+    json.id = orgId;
+    return this.success(json);
+  });
+
+  stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
+    let json = this.json(request);
+
+    assert.ok(true, 'posts to /attestations');
+    assert.equal(json.handle, 'workforce_locations');
+    assert.deepEqual(json.document, [], 'empty locations document');
+
+    return this.success({ id: 1 });
+  });
+
+  andThen(() => {
+    assert.equal(currentPath(), 'compliance.compliance-organization.setup.locations', 'remain on current location');
+    let remoteToggle = findWithAssert('.remote-only-workforce .x-toggle-btn');
+    remoteToggle.click();
+  });
+
+  andThen(clickContinueButton);
+  andThen(() => {
+    assert.equal(find('.header-actions fa-exclamation-circle').length, 0, 'spd nav header error removed');
+    assert.equal(currentPath(), 'compliance.compliance-organization.setup.team', 'moved to next page');
   });
 });
 
@@ -241,7 +279,8 @@ test('Saving progress', function(assert) {
 });
 
 test('Clicking `X` should remove a location', function(assert) {
-  expect(6);
+  expect(7);
+
   let existingAttestationData = [
     {
       description: 'HQ', streetAddress: '155 Water', city: 'Brooklyn',
@@ -257,6 +296,11 @@ test('Clicking `X` should remove a location', function(assert) {
   stubCurrentAttestations({ workforce_locations: existingAttestationData });
   stubRequests();
   signInAndVisit(locationsUrl);
+
+  window.confirm = function() {
+    assert.ok(true, 'confirms before removing');
+    return true;
+  };
 
   stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);

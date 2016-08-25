@@ -1,4 +1,3 @@
-
 <div class="panel panel-striped">
   <div class="panel-section">
     <div class="panel-section-title">Briefly describe {{organization.name}}, as an organization:</div>
@@ -7,8 +6,14 @@
       <li>How does it work?</li>
       <li>Who are your customers?</li>
     </ul>
-    {{textarea value=model.aboutOrganization rows="5" class="form-control" name="aboutOrganization"}}
+    {{textarea
+      value=model.aboutOrganization
+      rows="5"
+      class=(if errors.model.aboutOrganization 'form-control with-error' 'form-control')
+      name="aboutOrganization"
+      }}
   </div>
+
 
   <div class="panel-section">
     <div class="panel-section-title">Briefly describe your products and services:</div>
@@ -31,7 +36,7 @@
       <li>How do you make money?</li>
       <li>Are your users different than your customers?</li>
     </ul>
-    {{textarea value=model.aboutBusinessModel rows="5" class="form-control" name="businessModel"}}
+    {{textarea value=model.aboutBusinessModel rows="5" class="form-control" name="aboutBusinessModel"}}
   </div>
 
   <div class="panel-section">

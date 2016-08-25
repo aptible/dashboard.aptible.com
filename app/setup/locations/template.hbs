@@ -15,10 +15,34 @@
 
 <div class="container main-body">
   <div class="spd-filterbar">
-    <div class="pull-right">
-      <button class="btn btn-default add-location-button" {{action "onAddLocation"}}><i class="fa fa-plus"></i> Location</button>
+    <button
+      class="btn btn-default add-location-button pull-right"
+      {{action "onAddLocation"}}
+      disabled={{remoteOnly}}>
+        <i class="fa fa-plus"></i> Location
+    </button>
+
+
+    <div class="remote-only-workforce">
+      <div class="title">
+        Is your workforce remote?
+      </div>
+      <div class="toggle-box">
+        {{x-toggle
+          value=remoteOnly
+          showLabels=true
+          size='medium'
+          onLabel='Yes::true'
+          offLabel='No::false'
+          onToggle=(mut remoteOnly)
+        }}
+      </div>
     </div>
   </div>
 
-  {{location-index locations=validLocations removeLocation="onRemoveLocation"}}
+  {{location-index
+    locations=validLocations
+    removeLocation="onRemoveLocation"
+    remoteOnly=remoteOnly
+    onAddLocation="onAddLocation"}}
 </div>

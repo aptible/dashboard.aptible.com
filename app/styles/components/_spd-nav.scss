@@ -66,3 +66,41 @@
   @extend %clearfix;
   padding: 0 0 30px;
 }
+
+.remote-only-workforce {
+  @extend %clearfix;
+  float: left;
+  margin-top: 9px;
+
+  .title {
+    float: left;
+    font-weight: $weight-semibold;
+    margin: 0 10px 0 0;
+  }
+
+  .toggle-text {
+    font-size: 11px;
+    font-weight: $weight-semibold;
+    color: $color-light;
+    text-transform: uppercase;
+  }
+
+  .toggle-box {
+    float: left;
+    margin-left: 8px;
+  }
+
+  /* x-toggle
+  .x-toggle-container .toggle-text.small {
+    margin-top: -3px;
+  }
+  */
+}
+
+.locations-index.remote-only {
+  opacity: 0.3;
+  pointer-events: none;
+  transition: opacity .25s ease-in-out;
+  -moz-transition: opacity .25s ease-in-out;
+  -webkit-transition: opacity .25s ease-in-out;
+}

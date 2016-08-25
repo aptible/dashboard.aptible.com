@@ -11,9 +11,11 @@
 </td>
 <td class="aptable__actions aptable__actions--checkbox">
   {{x-toggle
-      toggled=isToggled
-      toggle='togglePrivileged'
+      value=isToggled
+      onToggle=(action 'togglePrivileged')
       showLabels=false
+      onLabel=true
+      offLabel=false
       disabled=isToggleDisabled
       size='small'}}
 </td>
