@@ -5,13 +5,20 @@ sudo: false
 cache:
   directories:
   - node_modules
+
+cache:
+  directories:
+    - "travis_phantomjs"
+    - node_modules
 before_install:
-- mkdir phantomjs-2.0.0
-- wget https://s3.amazonaws.com/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -O phantomjs-2.0.0/phantomjs-2.0.0-ubuntu-12.04.tar.bz2
-- tar -xvf phantomjs-2.0.0/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -C phantomjs-2.0.0/
-- export PATH=$PWD/phantomjs-2.0.0:$PATH
-- npm config set spin false
-- npm install -g npm@^2
+  - "export PHANTOMJS_VERSION=2.1.1"
+  - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then rm -rf $PWD/travis_phantomjs; mkdir -p $PWD/travis_phantomjs; fi"
+  - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then wget https://github.com/Medium/phantomjs/releases/download/v$PHANTOMJS_VERSION/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -O $PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2; fi"
+  - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then tar -xvf $PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -C $PWD/travis_phantomjs; fi"
+  - "export PATH=$PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64/bin:$PATH"
+  - "phantomjs --version"
+  - npm config set spin false
+  - npm install -g npm@^2
 install:
 - npm install -g bower
 - npm install
