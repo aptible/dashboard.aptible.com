@@ -31,13 +31,6 @@
 </ul>
 
 <ul class="nav sidebar-nav">
-  <li class="title">Alerts</li>
-  <li>
-    {{#link-to-aptible app='compliance' path='/'}}Alerts{{/link-to-aptible}}
-  </li>
-</ul>
-
-<ul class="nav sidebar-nav">
   <li class="title">Security Program</li>
   {{#each securityProgramSteps as |step|}}
     <li class="{{if step.current 'active'}}">
