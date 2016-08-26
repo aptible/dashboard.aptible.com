@@ -77,6 +77,13 @@
               </div>
             </div>
 
+          <div class="form-group">
+              <div>
+                  <label>Database version</label>
+                {{ database-version-selector type=model.dbType databaseImages=model.databaseImages imageSelected="imageSelected" }}
+              </div>
+          </div>
+
             <div class="form-group">
               <label>Disk Size</label>
               <div class="slider-input-wrapper disk-size-slider">

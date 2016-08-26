@@ -19,7 +19,12 @@ function visitPaymentInfoWithApp(options, userData){
   andThen(function(){
     if (options.dbType) {
       click(`.${options.dbType} a`);
+
+      if(options.dbVersion) {
+        fillInput('databaseImage', options.dbVersion);
+      }
     }
+
     if (options.dbInitialDiskSize) {
       triggerSlider('.slider', options.dbInitialDiskSize);
     }
@@ -27,7 +32,7 @@ function visitPaymentInfoWithApp(options, userData){
       let dasherized = prop.dasherize();
 
       // non-fillIn-able inputs
-      if ('db-type db-initial-disk-size'.w().indexOf(dasherized) !== -1) {
+      if ('db-version db-type db-initial-disk-size'.w().indexOf(dasherized) !== -1) {
         continue;
       }
       fillInput(dasherized, options[prop]);
@@ -81,6 +86,7 @@ test('visiting /welcome/1/payment-info when not logged in', function() {
 
 test('visiting /welcome/1/payment-info logged in with billing detail', function(assert) {
   stubStacks();
+  stubDatabaseImages();
   stubOrganizations();
   signInAndVisit(paymentsUrl);
 
@@ -91,6 +97,7 @@ test('visiting /welcome/1/payment-info logged in with billing detail', function(
 
 test('visiting /welcome/1/payment-info/ logged in WITHOUT billing detail', function(assert) {
   stubStacks();
+  stubDatabaseImages();
   stubOrganizations();
   signInAndVisit(paymentsUrl);
 
@@ -111,6 +118,7 @@ test('submitting empty payment info raises an error', function(assert) {
   };
 
   stubStacks({}, []);
+  stubDatabaseImages();
   stubOrganizations();
 
   visitPaymentInfoWithApp();
@@ -127,6 +135,7 @@ test('payment info should be submitted to stripe to create stripeToken', functio
   assert.expect(8);
 
   stubStacks({}, []);
+  stubDatabaseImages();
   stubOrganization();
   stubRequest('get', '/billing_details/1', function(){
     return this.notFound();
@@ -205,6 +214,7 @@ test('submitting valid payment info for development plan should create dev stack
   assert.expect(4);
 
   stubStacks({}, []);
+  stubDatabaseImages();
 
   stubRequest('get', '/billing_details/1', function(){
     return this.notFound();
@@ -248,6 +258,7 @@ test('submitting valid payment info on organization with existing stripe info sh
   stubBillingDetail({id: 1});
   stubStacks({}, []);
   stubOrganization();
+  stubDatabaseImages();
 
   stubRequest('post', '/accounts', function(request) {
     var params = this.json(request);
@@ -302,6 +313,7 @@ test('submitting valid payment info should create app', function(assert) {
   stubStacks({}, []);
   // This is to load apps.index
   stubOrganization();
+  stubDatabaseImages();
 
   stubRequest('get', '/billing_details/1', function(){
     return this.notFound();
@@ -340,9 +352,24 @@ test('submitting valid payment info should create app', function(assert) {
 });
 
 test('submitting valid payment info should create db', function(assert) {
-  assert.expect(4);
+  assert.expect(5);
 
   stubStacks({}, []);
+  stubDatabaseImages([
+    {
+      id: 1,
+      dockerRepo: 'quay.io/aptible/redis:3.0',
+      description: 'redis 3.0',
+      type: 'redis',
+      default: true
+    },
+    {
+      id: 2,
+      dockerRepo: 'quay.io/aptible/redis:2.8',
+      description: 'redis 2.8',
+      type: 'redis',
+      default: false
+  }]);
 
   stubRequest('get', '/billing_details/1', function(){
     return this.notFound();
@@ -353,6 +380,7 @@ test('submitting valid payment info should create db', function(assert) {
   let stackHandle = 'sprocket-co';
   let dbHandle = 'my-db-1';
   let dbType = 'redis';
+  let dbVersion = 2;
   let dbInitialDiskSize = '67';
 
   stubRequest('post', '/accounts', function(request){
@@ -364,6 +392,7 @@ test('submitting valid payment info should create db', function(assert) {
   stubRequest('post', `/accounts/${stackHandle}/databases`, function(request){
     var params = this.json(request);
     assert.equal(params.handle, dbHandle, 'db handle is correct');
+    assert.equal(params.database_image_id, dbVersion, 'db version is correct');
     assert.equal(params.initial_disk_size, dbInitialDiskSize, 'disk size is correct');
     assert.equal(params.type, dbType, 'db type is correct');
     return this.success({id: dbHandle});
@@ -375,6 +404,7 @@ test('submitting valid payment info should create db', function(assert) {
   visitPaymentInfoWithApp({
     dbHandle: dbHandle,
     dbType: dbType,
+    dbVersion: dbVersion,
     dbInitialDiskSize: dbInitialDiskSize
   });
   andThen(function(){
@@ -390,6 +420,7 @@ test('submitting valid payment info when user is verified should provision db', 
   assert.expect(4);
 
   stubStacks({}, []);
+  stubDatabaseImages();
   // This is to load apps.index
   stubOrganization();
   stubRequest('get', '/billing_details/1', function() {

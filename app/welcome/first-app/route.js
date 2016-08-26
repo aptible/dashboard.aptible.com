@@ -5,6 +5,10 @@ export var firstAppKey = '_aptible_firstAppData';
 
 export default Ember.Route.extend({
   actions: {
+    imageSelected: function(dbVersion){
+      Ember.set(this.currentModel, 'dbVersion', dbVersion);
+    },
+
     selectDbType: function(dbType){
       let currentType = Ember.get(this.currentModel, 'dbType');
       if (currentType === dbType) {
