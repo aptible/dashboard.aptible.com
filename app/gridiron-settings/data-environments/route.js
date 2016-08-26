@@ -5,7 +5,7 @@ import loadSchema from 'diesel/utils/load-schema';
 export default Ember.Route.extend({
   model() {
     let handle = 'selected_data_environments';
-    let organizationProfile = this.modelFor('compliance-settings');
+    let organizationProfile = this.modelFor('gridiron-settings');
 
     return loadSchema(handle).then((schema) => {
       let attestationParams = { handle, schemaId: schema.id, organizationProfile,

@@ -13,7 +13,7 @@ export default Ember.Route.extend({
   },
 
   setupController(controller) {
-    controller.set('organizations', this.modelFor('compliance'));
-    controller.set('organization', this.modelFor('compliance-organization'));
+    controller.set('organizations', this.modelFor('gridiron'));
+    controller.set('organization', this.modelFor('gridiron-organization'));
   }
 });

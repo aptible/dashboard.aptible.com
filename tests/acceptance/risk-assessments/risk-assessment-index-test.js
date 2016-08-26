@@ -9,7 +9,7 @@ import baselineRiskGraph from '.././../fixtures/risk-graph';
 let application;
 let userId = 'basic-user-1';
 let basicRoleId = 'basic-role-1';
-let riskAssessmentsUrl = `/compliance/${orgId}/risk_assessments`;
+let riskAssessmentsUrl = `/gridiron/${orgId}/admin/risk_assessments`;
 
 let riskAssessments = [
   { id: 'ra1', status: 'draft', _embedded: baselineRiskGraph },
@@ -56,7 +56,7 @@ test(`visiting ${riskAssessmentsUrl}: basic UI`, function(assert) {
   signInAndVisit(riskAssessmentsUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'compliance.compliance-organization.compliance-engines.risk-assessments', 'on risk assessment url');
+    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.risk-assessments', 'on risk assessment url');
 
     assert.equal(find('.ra__status-header--draft').length, 1, 'has one draft risk assessment');
     assert.equal(find('.ra__status-header--current').length, 1, 'has one active risk assessment');

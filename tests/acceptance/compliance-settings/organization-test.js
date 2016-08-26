@@ -6,7 +6,7 @@ import { orgId, rolesHref, usersHref, invitationsHref,
          securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
-let organizationUrl = `/compliance/${orgId}/settings/organization`;
+let organizationUrl = `/gridiron/${orgId}/admin/settings/organization`;
 let roleId = 'owners-role';
 let userId = 'u1';
 let roles = [
@@ -48,7 +48,7 @@ test('Organization settings page basic UI', function(assert) {
   signInAndVisit(organizationUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.compliance-engines.compliance-settings.organization', 'on organization settings page');
+    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.gridiron-settings.organization', 'on organization settings page');
     assert.ok(find('.panel-section-title:contains(About Your Organization)'));
     assert.ok(find('.panel-section-title:contains(Description of your productions)'));
     assert.ok(find('textarea[name="aboutOrganization"]'));

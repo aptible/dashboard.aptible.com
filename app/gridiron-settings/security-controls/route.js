@@ -6,7 +6,7 @@ export default Ember.Route.extend({
   model() {
     let handle = 'selected_data_environments';
     let organization = this.get('complianceStatus.organization');
-    let organizationProfile = this.modelFor('compliance-settings');
+    let organizationProfile = this.modelFor('gridiron-settings');
     let attestationParams = { handle, organizationProfile, document: [] };
 
     return new Ember.RSVP.Promise((resolve, reject) => {

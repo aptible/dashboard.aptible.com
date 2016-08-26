@@ -6,7 +6,7 @@ import { orgId, rolesHref, usersHref, invitationsHref, securityOfficerId,
          securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
-let teamUrl = `/compliance/${orgId}/setup/team`;
+let teamUrl = `/gridiron/${orgId}/admin/setup/team`;
 let userId = 'basic-user-1';
 let developerId = 'developer-user-2';
 let basicRoleId = 'basic-role-1';
@@ -130,7 +130,7 @@ test('You are redirected to correct step if not ready for team step', function(a
   signInAndVisit(teamUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.setup.organization', 'redirected to organization step');
+    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.organization', 'redirected to organization step');
   });
 });
 
@@ -151,7 +151,7 @@ test('Clicking back should return you to previous step', function(assert) {
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.setup.locations', 'returned to locations step');
+    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.locations', 'returned to locations step');
   });
 });
 

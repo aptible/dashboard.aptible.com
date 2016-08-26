@@ -55,19 +55,26 @@ Ember.Test.registerHelper('createStubToken', function(app, tokenData, stubUser) 
   return Ember.$.extend(true, defaultTokenData, tokenData);
 });
 
-Ember.Test.registerHelper('signIn', function(app, userData, roleData, tokenData){
-  userData = createStubUser(userData);
-  roleData = createStubRole(roleData);
-  tokenData = createStubToken(tokenData, userData);
+Ember.Test.registerHelper('signIn', function(app, userData, roleData, tokenData) {
 
-  stubRequest('get', `/roles/${roleData.id}`, function(){
-    return this.success(roleData);
+  if(!Array.isArray(roleData)) {
+    roleData = [roleData];
+  }
+
+  roleData = roleData.map((role) => createStubRole(role));
+  roleData.forEach((role) => {
+    stubRequest('get', `/roles/${role.id}`, function(){
+      return this.success(role);
+    });
   });
+
+  userData = createStubUser(userData);
+  tokenData = createStubToken(tokenData, userData);
 
   stubRequest('get', `/users/${userData.id}/roles`, function(){
     return this.success({
       _embedded: {
-        roles: [roleData]
+        roles: roleData
       }
     });
   });

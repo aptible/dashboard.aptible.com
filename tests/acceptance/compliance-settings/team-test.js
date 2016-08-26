@@ -15,8 +15,8 @@ let complianceOwnerId = 'compliance-owner-role-4';
 
 let adminRoleId = 'admin-role-3';
 
-let settingsTeamUrl = `/compliance/${orgId}/settings/team`;
-let setupTeamUrl = `/compliance/${orgId}/setup/team`;
+let settingsTeamUrl = `/gridiron/${orgId}/admin/settings/team`;
+let setupTeamUrl = `/gridiron/${orgId}/admin/setup/team`;
 
 let users = [
   {

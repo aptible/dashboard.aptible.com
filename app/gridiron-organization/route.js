@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   complianceStatus: Ember.inject.service(),
   model(params) {
-    let organizations = this.modelFor('compliance');
+    let organizations = this.modelFor('gridiron');
     let organization = organizations.findBy('id', params.organization_id);
     let complianceStatus = this.get('complianceStatus');
 
@@ -12,6 +12,6 @@ export default Ember.Route.extend({
 
   setupController(controller, model) {
     controller.set('model', model);
-    controller.set('organizations', this.modelFor('compliance'));
+    controller.set('organizations', this.modelFor('gridiron'));
   }
 });

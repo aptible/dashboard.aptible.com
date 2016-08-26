@@ -2,7 +2,7 @@ import LocationsController from 'diesel/setup/locations/controller';
 import Ember from 'ember';
 
 export default LocationsController.extend({
-  settings: Ember.inject.controller('compliance-settings'),
+  settings: Ember.inject.controller('gridiron-settings'),
 
   addNewLocation() {
     let { schemaDocument, schema, locationProperty } = this.getProperties('schemaDocument', 'schema', 'locationProperty');

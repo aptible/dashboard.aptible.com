@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model() {
-    return this.modelFor('compliance-settings');
+    return this.modelFor('gridiron-settings');
   },
   actions: {
     save() {

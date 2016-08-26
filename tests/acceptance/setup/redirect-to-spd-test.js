@@ -9,7 +9,7 @@ let application;
 let userId = 'basic-user-1';
 let basicRoleId = 'basic-role-1';
 let developerRoleId = 'developer-role-2';
-
+let trainingUrl = `/gridiron/${orgId}/admin/training`;
 let users = [
   {
     id: userId,
@@ -56,20 +56,20 @@ module('Acceptance: Security Program Design: Required', {
 test('Loading compliance without completing SPD redirects you to start SPD', function(assert) {
   stubProfile({ hasCompletedSetup: false });
   stubRequests();
-  signInAndVisit(`/compliance/${orgId}/training`);
+  signInAndVisit(trainingUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.setup.start', 'redirected to start SPD');
+    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.start', 'redirected to start SPD');
   });
 });
 
 test('Loading compliance with completed SPD does not redirect you', function(assert) {
   stubProfile({ hasCompletedSetup: true });
   stubRequests();
-  signInAndVisit(`/compliance/${orgId}/training`);
+  signInAndVisit(trainingUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.compliance-engines.training', 'remains on current path');
+    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.training', 'remains on current path');
   });
 });
 

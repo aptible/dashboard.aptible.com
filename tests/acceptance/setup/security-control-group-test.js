@@ -6,7 +6,7 @@ import { orgId, rolesHref, usersHref, invitationsHref,
          securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
-let securityControlsUrl = `/compliance/${orgId}/setup/security-controls`;
+let securityControlsUrl = `/gridiron/${orgId}/admin/setup/security-controls`;
 let roleId = 'owners-role';
 let userId = 'u1';
 let roles = [
@@ -125,7 +125,7 @@ test('clicking next will finish SPD if on last group', function(assert) {
   andThen(clickContinueButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.setup.finish');
+    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.finish');
   });
 });
 
@@ -174,7 +174,7 @@ test('clicking previous will go to index when on first group', function(assert) 
   andThen(clickBackButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.setup.security-controls.index', 'on security control index page');
+    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.security-controls.index', 'on security control index page');
   });
 });
 

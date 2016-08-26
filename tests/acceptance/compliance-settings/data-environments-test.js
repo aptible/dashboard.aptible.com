@@ -7,7 +7,7 @@ import { orgId, rolesHref, usersHref, invitationsHref,
 
 let application;
 let attestationHandle = 'selected_data_environments';
-let dataEnvironmentsUrl = `/compliance/${orgId}/settings/data-environments`;
+let dataEnvironmentsUrl = `/gridiron/${orgId}/admin/settings/data-environments`;
 let userId = 'basic-user-1';
 let basicRoleId = 'basic-role-1';
 let developerRoleId = 'developer-role-2';

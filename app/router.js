@@ -7,6 +7,25 @@ const RISK_ASSESSMENT_COMPONENTS = ["threat_events", "predisposing_conditions",
 
 let inflector = new Ember.Inflector(Ember.Inflector.defaultRules);
 
+const Router = Ember.Router.extend({
+  analytics: Ember.inject.service(),
+  elevation: Ember.inject.service(),
+  location: config.locationType,
+
+  onBeforeTransition: Ember.on('willTransition', function(transition) {
+    // TODO: Can this be added to the requires-elevation route instead?
+    return this.get("elevation").tryDropPrivileges(transition);
+  }),
+
+  onTransition: Ember.on('didTransition', function() {
+    this.get('analytics').page();
+
+    if(config.flashMessageDefaults.sticky) {
+      this.get('flashMessages').clearMessages();
+    }
+  })
+});
+
 function spdSteps() {
   this.modal('add-location-modal', {
     withParams: ['newLocation'],
@@ -31,25 +50,6 @@ function spdSteps() {
     this.route('show', { path: ':handle' });
   });
 }
-
-const Router = Ember.Router.extend({
-  analytics: Ember.inject.service(),
-  elevation: Ember.inject.service(),
-  location: config.locationType,
-
-  onBeforeTransition: function(transition) {
-    // TODO: Can this be added to the requires-elevation route instead?
-    return this.get("elevation").tryDropPrivileges(transition);
-  }.on('willTransition'),
-
-  onTransition: function() {
-    this.get('analytics').page();
-
-    if(config.flashMessageDefaults.sticky) {
-      this.get('flashMessages').clearMessages();
-    }
-  }.on('didTransition')
-});
 
 Router.map(function() {
   this.authenticatedRoute("dashboard", { path: '/' }, function() {
@@ -180,7 +180,6 @@ Router.map(function() {
     this.route("payment-info");
   });
 
-  this.authenticatedRoute("trainee-dashboard", { resetNamespace: true });
   this.authenticatedRoute("elevate", { resetNamespace: true });
   this.authenticatedRoute("no-organization", { resetNamespace: true });
   this.authenticatedRoute("no-stack", { resetNamespace: true });
@@ -231,23 +230,22 @@ Router.map(function() {
     });
   });
 
-  this.authenticatedRoute('compliance', { path: 'compliance' }, function() {
-    this.route('compliance-organization', { path: ':organization_id', resetNamespace: true }, function() {
-      this.route("compliance-engines", { path: '', resetNamespace: true }, function() {
+  this.authenticatedRoute('gridiron', { path: 'gridiron' }, function() {
+    this.route('gridiron-organization', { path: ':organization_id', resetNamespace: true }, function() {
+      this.route("gridiron-user", { path: 'user', resetNamespace: true });
+      this.route("gridiron-admin", { path: 'admin', resetNamespace: true }, function() {
         this.route("training", { path: 'training', resetNamespace: true });
         this.route("risk-assessments", { path: 'risk_assessments', resetNamespace: true });
         this.route('policies');
         this.route('security');
         this.route('contracts');
         this.route('incidents');
-
-        this.route('compliance-settings', { path: 'settings', resetNamespace: true }, spdSteps);
-      });
-
-      this.route('setup', { path: 'setup', resetNamespace: true}, function() {
-        this.route('start');
-        this.route('finish');
-        spdSteps.call(this);
+        this.route('gridiron-settings', { path: 'settings', resetNamespace: true }, spdSteps);
+        this.route('setup', { path: 'setup', resetNamespace: true}, function() {
+          this.route('start');
+          this.route('finish');
+          spdSteps.call(this);
+        });
       });
     });
   });

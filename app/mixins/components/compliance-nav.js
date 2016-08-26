@@ -28,7 +28,7 @@ export default Ember.Mixin.create({
     steps.map((step, stepIndex) => {
       Ember.setProperties(step, {
         current: (stepIndex === currentStepIndex),
-        path:`compliance-settings.${step.key}`
+        path:`gridiron-settings.${step.key}`
       });
 
       return step;

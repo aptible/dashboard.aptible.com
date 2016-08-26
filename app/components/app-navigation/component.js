@@ -31,7 +31,7 @@ export default Ember.Component.extend({
 
   sheriffActive: Ember.computed('routingService.currentPath', function() {
     let currentPath = this.get('routingService.currentPath');
-    return /^compliance\.compliance-organization/.test(currentPath);
+    return /^gridiron\.gridiron-organization/.test(currentPath);
   }),
 
   opsActive: Ember.computed('routingService.currentPath', function() {
@@ -40,6 +40,6 @@ export default Ember.Component.extend({
 
   settingsActive: Ember.computed('routingService.currentPath', function() {
     let currentPath = this.get('routingService.currentPath');
-    return /members|contact|billing|settings|roles|invite|environments/.test(currentPath);
+    return /members|contact|billing|roles|invite|environments/.test(currentPath);
   })
 });

@@ -118,7 +118,7 @@ export default Ember.Route.extend({
       Ember.assert('Must pass inviteList to `inviteTeam`', inviteList);
       Ember.assert('Must pass a role to `inviteTeam`', role);
 
-      let organization = this.modelFor('compliance-organization');
+      let organization = this.modelFor('gridiron-organization');
 
       role.save().then(() => {
         inviteList.map((email) => {

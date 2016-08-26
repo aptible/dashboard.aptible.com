@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  settings: Ember.inject.controller('compliance-settings'),
+  settings: Ember.inject.controller('gridiron-settings'),
 
   showInviteModal() {
     this.get('settings').set('showInviteModal', true);

@@ -15,18 +15,18 @@ function doSetup() {
 }
 
 module('Acceptance: Trainee Dashboard', {
-  beforeEach: function() {
+  beforeEach() {
     application = startApp();
     doSetup();
   },
 
-  afterEach: function() {
+  afterEach() {
     Ember.run(application, 'destroy');
   }
 });
 
-test('visiting / without read access on any stacks redirects to the trainee-dashboard', function(assert) {
+test('visiting / without read access on any stacks redirects to the gridiron-user', function(assert) {
   andThen(function() {
-    assert.equal(currentPath(), 'trainee-dashboard');
+    assert.equal(currentPath(), 'gridiron-user');
   });
 });

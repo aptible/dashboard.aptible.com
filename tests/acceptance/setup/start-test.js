@@ -6,7 +6,7 @@ import { orgId, rolesHref, usersHref, invitationsHref,
          securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
-let startUrl = `/compliance/${orgId}/setup/start`;
+let startUrl = `/gridiron/${orgId}/admin/setup/start`;
 let userId = 'basic-user-1';
 let basicRoleId = 'basic-role-1';
 let developerRoleId = 'developer-role-2';
@@ -81,7 +81,7 @@ test('Basic setup start page UI', function(assert) {
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.setup.organization', 'moved to next step');
+    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.organization', 'moved to next step');
   });
 });
 
@@ -92,7 +92,7 @@ test('Existing organization profiles should redirect to future step', function(a
   signInAndVisit(startUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.setup.locations', 'redirected to current step');
+    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.locations', 'redirected to current step');
   });
 });
 

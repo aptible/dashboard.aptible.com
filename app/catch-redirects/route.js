@@ -25,7 +25,7 @@ export default Ember.Route.extend({
   },
 
   handleComplianceOnlyUsers() {
-    if (!this.features.get('trainee-dashboard')) {
+    if (!this.features.get('gridiron-user')) {
       return;
     }
 
@@ -44,7 +44,7 @@ export default Ember.Route.extend({
     });
 
     if(complianceOnlyUser) {
-      return this.transitionTo('trainee-dashboard');
+      return this.transitionTo('gridiron-user');
     }
   }
 });
