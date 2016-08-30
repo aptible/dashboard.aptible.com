@@ -2,13 +2,12 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model() {
-    const organization = this.modelFor('organization');
-    return this.store.find('billing-detail', organization.get('id'));
+    return this.modelFor('organization');
   },
 
   setupController(controller, model){
-    controller.set('model', model);
-    controller.set('organization', this.modelFor('organization'));
+    controller.set('model', model.get('billingDetail'));
+    controller.set('organization', model.get('organization'));
   },
 
   actions: {

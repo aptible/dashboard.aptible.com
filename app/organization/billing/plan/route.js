@@ -7,7 +7,7 @@ export default Ember.Route.extend({
 
   model(){
     const model = this.modelFor('organization.billing');
-    return model.billingDetail;
+    return model.get('billingDetail');
   },
 
   actions: {

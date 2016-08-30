@@ -4,28 +4,22 @@ import { CREATE_NEW_PRODUCTION_ENVIRONMENT_EVENT } from 'diesel/models/organizat
 export default Ember.Route.extend({
   analytics: Ember.inject.service(),
   model() {
-    let organization = this.modelFor('organization');
-    const billingDetail = this.store.find('billing-detail', organization.get('id'));
-    const stack = this.store.createRecord('stack', {
-      organization
-    });
-
-    return Ember.RSVP.hash({
-      stack: stack,
-      billingDetail: billingDetail
-    });
+    let context = this.modelFor('organization');
+    let organization = context.get('organization');
+    return this.store.createRecord('stack', { organization });
   },
 
   setupController(controller, model) {
-    let organization = this.modelFor('organization');
-    controller.set('organization', organization);
-    controller.set('model', model.stack);
-    controller.set('billingDetail', model.billingDetail);
-    controller.set('allowPHI', false);
+    let context = this.modelFor('organization');
+    let organization = context.get('organization');
+    let billingDetail = context.get('billingDetail');
+    let allowPHI = false;
+
+    controller.setProperties({ organization, model, billingDetail, allowPHI });
   },
 
   _trackEnvironmentCreation() {
-      let stack = this.currentModel.stack;
+      let stack = this.currentModel;
       let organization = this.modelFor('organization');
       let eventName = CREATE_NEW_PRODUCTION_ENVIRONMENT_EVENT;
       let eventAttributes = {
@@ -40,7 +34,7 @@ export default Ember.Route.extend({
 
   actions: {
     willTransition() {
-      this.currentModel.stack.rollback();
+      this.currentModel.rollback();
     },
 
     cancel() {
@@ -48,7 +42,7 @@ export default Ember.Route.extend({
     },
 
     save() {
-      let stack = this.currentModel.stack;
+      let stack = this.currentModel;
       let allowPHI = this.controller.get('allowPHI');
 
       if (allowPHI) {

@@ -1,9 +1,10 @@
 <div class="row">
   <div class="col-xs-12">
-    {{invite-member-button
-        organization=organization
-        currentUserRoles=currentUserRoles
-        currentUser=session.currentUser}}
+    {{#if model.isOrganizationAdmin}}
+      {{#link-to 'organization.invite' class="btn btn-primary"}}
+        Invite New Member
+      {{/link-to}}
+    {{/if}}
   </div>
 </div>
 
@@ -18,7 +19,7 @@
         <th>Roles</th>
         <th>Owner</th>
         <th>2FA</th>
-        {{#if isAccountOwner}}
+        {{#if model.isOrganizationAdmin}}
           <th>Actions</th>
         {{/if}}
       </tr>
@@ -26,9 +27,9 @@
     <tbody>
       {{#each sortedMembers as |user|}}
         {{user-table-row
-            organization=organization
+            organization=model.organization
             user=user
-            isAccountOwner=isAccountOwner}}
+            isAccountOwner=model.isOrganizationAdmin}}
       {{/each}}
     </tbody>
   </table>

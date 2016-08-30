@@ -1,33 +1,33 @@
-{{#each session.currentUser.organizations as |organization|}}
+{{#each authorization.organizations as |organization|}}
   <ul class="nav sidebar-nav">
     <li class="title">
       {{organization.name}} Settings
     </li>
     {{#activating-item currentWhen="organization.members.index" tagName="li"}}
-      {{link-to "Members" "organization.members.index" organization bubbles=false}}
+      {{link-to "Members" "organization.members.index" organization.id bubbles=false}}
     {{/activating-item}}
 
     {{#activating-item currentWhen="organization.members.pending-invitations" tagName="li"}}
-      {{link-to "Pending Invitations" "organization.members.pending-invitations" organization bubbles=false}}
+      {{link-to "Pending Invitations" "organization.members.pending-invitations" organization.id bubbles=false}}
     {{/activating-item}}
 
     {{#with-active-class route="role" tagName="li"}}
-      {{link-to "Roles" "organization.roles" organization bubbles=false}}
+      {{link-to "Roles" "organization.roles" organization.id bubbles=false}}
     {{/with-active-class}}
 
-    {{#link-to 'organization.environments' organization tagName="li"}}
-      {{link-to "Environments" "organization.environments" organization bubbles=false}}
+    {{#link-to 'organization.environments' organization.id tagName="li"}}
+      {{link-to "Environments" "organization.environments" organization.id bubbles=false}}
     {{/link-to}}
 
     {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
       {{#if hasAbility}}
-        {{#link-to 'organization.contact-settings' organization tagName="li"}}
-          {{link-to "Contact Settings" "organization.contact-settings" organization bubbles=false}}
+        {{#link-to 'organization.contact-settings' organization.id tagName="li"}}
+          {{link-to "Contact Settings" "organization.contact-settings" organization.id bubbles=false}}
         {{/link-to}}
 
         {{#if features.organizationBillingSettings}}
-          {{#link-to 'organization.billing' organization tagName="li"}}
-            {{link-to "Billing" "organization.billing" organization bubbles=false}}
+          {{#link-to 'organization.billing' organization.id tagName="li"}}
+            {{link-to "Billing" "organization.billing" organization.id bubbles=false}}
           {{/link-to}}
         {{/if}}
       {{/if}}

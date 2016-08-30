@@ -1,7 +1,12 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  setupController(controller, model){
-    controller.set('organization', model);
+  model() {
+    return this.modelFor('organization');
+  },
+
+  setupController(controller, model) {
+    controller.set('model', model);
+    controller.set('organization', model.get('organization'));
   }
 });

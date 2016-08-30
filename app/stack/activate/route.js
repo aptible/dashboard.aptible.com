@@ -1,10 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  model: function() {
+  model() {
     return this.modelFor('stack');
   },
-  redirect: function() {
+
+  redirect() {
     let stack = this.modelFor('stack');
 
     if(stack.get('activated')) {

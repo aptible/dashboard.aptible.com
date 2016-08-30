@@ -30,7 +30,8 @@ function expectCanManageEnclave(assert) {
   visit(enclaveUrl);
   andThen(() => {
     // Is not redirected
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index', 'visiting enclave dashboard remains on enclave dashboard');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index',
+                'visiting enclave dashboard remains on enclave dashboard');
 
     // Sees stacks
 
@@ -97,16 +98,16 @@ test('Users in `Owners` Role', function(assert) {
   signIn({}, roles);
 
   // Should be able to view/manage Enclave
-  andThen(expectCanManageEnclave(assert));
+  expectCanManageEnclave(assert);
 
   // Should be able to view/manage Gridiron Admin
-  andThen(expectCanManageGridironAdmin(assert));
+  expectCanManageGridironAdmin(assert);
 
   // Should be able to view/manage Organization
-  andThen(expectCanManageOrganizationAdmin(assert));
+  expectCanManageOrganizationAdmin(assert);
 
   // Should be able to view "My Gridiron"
-  andThen(expectCanManageMyGridiron(assert));
+  expectCanManageMyGridiron(assert);
 
   assert.ok(true);
 });
@@ -117,16 +118,16 @@ test('Users ONLY in `Platform Owner` role', function(assert) {
   // Manage  | Deny           | Manage      | Deny
 
   // Should not be able to view gridiron Admin
-  andThen(expectDenyGridironAdmin(assert));
+  expectDenyGridironAdmin(assert);
 
   // Should be able to view "My Gridiron"
-  andThen(expectCanManageMyGridiron(assert));
+  expectCanManageMyGridiron(assert);
 
   // Should be able to view/manage Enclave
-  andThen(expectCanManageEnclave(assert));
+  expectCanManageEnclave(assert);
 
   // Should be able to view/manage Organization
-  andThen(expectDenyOrganizationAdmin(assert));
+  expectDenyOrganizationAdmin(assert);
 
   assert.ok(true);
 });
@@ -137,19 +138,19 @@ test('Users ONLY in `Compliance Owner` role', function(assert) {
   // Deny    | Manage          | Manage      | Deny
 
   // Should not be able to view Enclave
-  andThen(expectDenyEnclave(assert));
+  expectDenyEnclave(assert);
 
   // Should be redirected to Gridiron Admin
-  andThen(expectEnclaveTogridironRedirect(assert));
+  expectEnclaveTogridironRedirect(assert);
 
   // Should be able to view/manage Gridiron Admin
-  andThen(expectCanManageGridironAdmin(assert));
+  expectCanManageGridironAdmin(assert);
 
   // Should be able to view "My Gridiron"
-  andThen(expectCanManageMyGridiron(assert));
+  expectCanManageMyGridiron(assert);
 
   // Should not be able to view/manage Organization
-  andThen(expectDenyOrganizationAdmin(assert));
+  expectDenyOrganizationAdmin(assert);
 
   assert.ok(true);
 });
@@ -160,16 +161,16 @@ test('Users in `Platform Owner` and `Compliance Owner`', function(assert) {
   // Manage  | Manage         | Manage      | Deny
 
   // Should be able to view/manage Enclave
-  andThen(expectCanManageEnclave(assert));
+  expectCanManageEnclave(assert);
 
   // Should be able to view/manage Gridiron Admin
-  andThen(expectCanManageGridironAdmin(assert));
+  expectCanManageGridironAdmin(assert);
 
   // Should be able to view "My Gridiron"
-  andThen(expectCanManageMyGridiron(assert));
+  expectCanManageMyGridiron(assert);
 
   // Should not be able to view/manage Organization
-  andThen(expectCanManageMyGridiron(assert));
+  expectCanManageMyGridiron(assert);
 
   assert.ok(true);
 });
@@ -182,16 +183,16 @@ test('Users ONLY in `Platform User` with no stack permissions', function(assert)
 
   // Should not be able to view Enclave
   // Should see see error message in Enclave
-  andThen(expectErrorOnEnclave(assert));
+  expectErrorOnEnclave(assert);
 
   // Should not be able to view/manage Gridiron Admin
-  andThen(expectDenyGridironAdmin(assert));
+  expectDenyGridironAdmin(assert);
 
   // Should be able to view "My Gridiron"
-  andThen(expectCanManageMyGridiron(assert));
+  expectCanManageMyGridiron(assert);
 
   // Should not be able to view/manage Organization
-  andThen(expectDenyOrganizationAdmin(assert));
+  expectDenyOrganizationAdmin(assert);
   assert.ok(true);
 });
 
@@ -206,13 +207,13 @@ test('Users ONLY in `Platform User` with stack permissions', function(assert) {
   // TODO
 
   // Should not be able to view/manage Gridiron Admin
-  andThen(expectDenyGridironAdmin(assert));
+  expectDenyGridironAdmin(assert);
 
   // Should be able to view "My Gridiron"
-  andThen(expectCanManageMyGridiron(assert));
+  expectCanManageMyGridiron(assert);
 
   // Should not be able to view/manage Organization
-  andThen(expectDenyOrganizationAdmin(assert));
+  expectDenyOrganizationAdmin(assert);
 
   assert.ok(true);
 });
@@ -223,16 +224,16 @@ test('Users ONLY in `Compliance User` with no product permissions', function(ass
   // Deny    | Warn           | Manage      | Deny
 
   // Should not be able to view Enclave
-  andThen(expectDenyEnclave(assert));
+  expectDenyEnclave(assert);
 
   // Should be able to access Gridiron Admin, but with error
   //TODO
 
   // Should be able to veiw "My Gridiron"
-  andThen(expectCanManageMyGridiron(assert));
+  expectCanManageMyGridiron(assert);
 
   // Should not be able to view/manage Organization
-  andThen(expectDenyOrganizationAdmin(assert));
+  expectDenyOrganizationAdmin(assert);
   assert.ok(true);
 });
 
@@ -242,15 +243,15 @@ skip('Users ONLY in `Compliance User` with some product permissions', function(a
   // Deny    | Manage Partial | Manage      | Deny
 
   // Should not be able to viwe Enclave
-  andThen(expectDenyEnclave(assert));
+  expectDenyEnclave(assert);
 
   // Should be able to access Gridiron Admin, but limited apps
   // TODO
 
   // Should be able to view "My Gridiron"
-  andThen(expectCanManageMyGridiron(assert));
+  expectCanManageMyGridiron(assert);
 
   // Should not be able to view/manage Organization
-  andThen(expectDenyOrganizationAdmin(assert));
+  expectDenyOrganizationAdmin(assert);
 });
 

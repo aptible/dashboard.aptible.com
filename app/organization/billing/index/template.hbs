@@ -78,7 +78,7 @@
       apps=apps
       databases=databases
       services=services
-      stacks=model
+      stacks=stacks
       allowance=billingDetail.containersInPlan
       hourlyRate=billingDetail.containerCentsPerHour
       plan=billingDetail.plan
@@ -86,7 +86,7 @@
     }}
 
     {{usage-quote-by-resource
-      stacks=model
+      stacks=stacks
       allowance=billingDetail.diskSpaceInPlan
       hourlyRate=billingDetail.diskCentsPerHour
       plan=billingDetail.plan
@@ -94,7 +94,7 @@
     }}
 
     {{usage-quote-by-resource
-      stacks=model
+      stacks=stacks
       allowance=billingDetail.domainsInPlan
       hourlyRate=billingDetail.domainCentsPerHour
       plan=billingDetail.plan

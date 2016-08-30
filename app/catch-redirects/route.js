@@ -5,22 +5,31 @@ export default Ember.Route.extend({
     return this.handleNoOrganizations() ||
            this.handleMissingBillingDetail() ||
            this.handleComplianceOnlyUsers() ||
+           this.handleNoStacks() ||
            true;
   },
 
   handleNoOrganizations() {
-    let organizations = this.modelFor('dashboard').organizations;
-
-    if(organizations.get('length') === 0) {
+    if(this.get('authorization.hasNoOrganizations')) {
       return this.transitionTo('no-organization');
     }
   },
 
   handleMissingBillingDetail() {
-    let organizations = this.modelFor('dashboard').organizations;
+    // If they have more than one organization, we won't redirect
+    // Instead, we will put an icon on any account missing payment
+    // with a link to setup payment
+    if (!this.get('authorization.organizationContexts.hasSingleOrganization')) {
+      return;
+    }
 
-    if (organizations.get('length') === 1 && organizations.get('firstObject.billingDetail.isRejected')) {
-       return this.transitionTo('welcome.payment-info', organizations.get('firstObject.id'));
+    // User's only organization is missing billing detail. get out of here
+    let context = this.get('authorization.organizationContexts.firstObject');
+    if (context.get('hasNoBillingDetail')) {
+      let message = `You cannot view Enclave until you have provided a payment
+                    method`;
+      Ember.get(this, 'flashMessages').danger(message);
+      return this.transitionTo('welcome.payment-info', context.get('organization.id'));
     }
   },
 
@@ -29,22 +38,19 @@ export default Ember.Route.extend({
       return;
     }
 
-    let organizations = this.modelFor('dashboard').organizations;
-    let userRoles = this.modelFor('dashboard').currentUserRoles;
-
-    // Does the user have any roles for any organization that are not compliance user?
-    let complianceOnlyUser = userRoles.length > 0 && !organizations.any((organization) => {
-      let organizationHref = organization.get('data.links.self');
-      let userOrganizationRoles = userRoles.filterBy('data.links.organization', organizationHref);
-
-      // Does the user have any roles that are not compliance user?
-      return userOrganizationRoles.any((role) => {
-        return role.get('type') !== 'compliance_user';
-      });
-    });
-
-    if(complianceOnlyUser) {
+    // If no organization context has any enclave access, get out of here
+    if (!this.get('authorization.hasAnyEnclaveAccess')) {
+      let message = `You do not have access to view Enclave resources. If this
+                     is a mistake, please contact either your account owner or
+                     support@aptible.com`;
+      Ember.get(this, 'flashMessages').danger(message);
       return this.transitionTo('gridiron-user');
+    }
+  },
+
+  handleNoStacks() {
+    if(this.get('authorization.hasNoStacks')) {
+      return this.transitionTo('no-stack');
     }
   }
 });

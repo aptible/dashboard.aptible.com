@@ -2,30 +2,26 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model(){
-    let organization = this.modelFor('organization');
-
-    return Ember.RSVP.hash({
-      roles: organization.get('roles'),
-      organization: organization,
-      currentUserRoles: this.session.get('currentUser.roles'),
-      billingDetail: organization.get('billingDetail')
-    });
+    let context = this.modelFor('organization');
+    return context.get('roles');
   },
 
   setupController(controller, model){
-    controller.set('model', model.roles);
-    controller.set('stacks', this.store.findStacksFor(model.organization));
-    controller.set('organization', model.organization);
-    controller.set('billingDetail', model.billingDetail);
-    controller.set('currentUserRoles', model.currentUserRoles);
-    controller.set('isAccountOwner', this.session.get('currentUser')
-                    .isAccountOwner(model.currentUserRoles, model.organization));
+    let context = this.modelFor('organization');
+    let {
+      stacks,
+      organization,
+      billingDetail,
+      currentUserRoles } = context.getProperties('stacks', 'organization', 'billingDetail', 'currentUserRoles');
+
+    controller.setProperties({ model, stacks, organization, billingDetail, currentUserRoles });
+    controller.set('isAccountOwner', context.get('isOrganizationAdmin'));
   },
 
   redirect(model) {
-    let currentUser = this.session.get('currentUser');
+    let context = this.modelFor('organization');
 
-    if (currentUser.complianceRolesOnly(model.currentUserRoles, model.organization)) {
+    if(!context.get('hasEnclaveAccess')) {
       this.transitionTo('organization.roles.compliance');
     }
   }

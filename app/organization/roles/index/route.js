@@ -2,21 +2,16 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model() {
-    let organization = this.modelFor('organization');
-
-    return Ember.RSVP.hash({
-      organization: organization,
-      currentUserRoles: this.session.get('currentUser.roles')
-    });
+    return this.modelFor('organization');
   },
 
   redirect(model) {
-    let currentUser = this.session.get('currentUser');
+    let context = this.modelFor('organization');
 
-    if (currentUser.complianceRolesOnly(model.currentUserRoles, model.organization)) {
+    if (context.get('hasEnclaveAccess')) {
+      this.transitionTo('organization.roles.platform');
+    } else {
       this.transitionTo('organization.roles.compliance');
-      return;
     }
-    this.transitionTo('organization.roles.platform');
   }
 });

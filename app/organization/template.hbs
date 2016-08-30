@@ -1,9 +1,9 @@
-{{#if model.billingDetail.isRejected}}
+{{#if model.hasNoBillingDetail}}
   <div style="margin: 30px 30px 0;">
     {{#bs-alert alert="warning" as |component|}}
       {{bs-alert-dismiss target=component}}
-        It looks like we're missing payment information for {{model.name}}.
-        {{link-to 'Add payment info now' 'welcome.payment-info' model.id class="btn btn-default btn-xs"}}
+        It looks like we're missing payment information for {{model.organization.name}}.
+        {{link-to 'Add payment info now' 'welcome.payment-info' model.organization.id class="btn btn-default btn-xs"}}
     {{/bs-alert}}
   </div>
 {{/if}}

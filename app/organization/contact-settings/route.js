@@ -3,24 +3,12 @@ import DS from 'ember-data';
 
 export default Ember.Route.extend({
   model() {
-    const organization = this.modelFor('organization');
-    const billingDetail = this.store.find('billing-detail', organization.get('id'));
-    return Ember.RSVP.hash({
-      organization: organization,
-      billingDetail: billingDetail
-    });
+    return this.modelFor('organization');
   },
 
   setupController(controller, model) {
-    controller.set('model', model.organization);
-    controller.set('billingDetail', model.billingDetail);
-  },
-
-  afterModel(model) {
-    return Ember.RSVP.all([
-      model.organization.get('users'),
-      model.organization.get('securityOfficer')
-    ]);
+    controller.set('model', model.get('organization'));
+    controller.set('billingDetail', model.get('billingDetail'));
   },
 
   resetController(controller) {
