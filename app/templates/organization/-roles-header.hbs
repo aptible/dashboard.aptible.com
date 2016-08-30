@@ -2,9 +2,9 @@
   <div class="layout-container">
     <div class="resource-title">
       <i class="resource-icon resource-org"></i>
-      <h1>{{organization.name}} Roles</h1>
+      <h1>{{context.organization.name}} Roles</h1>
       <div class="resource-actions pull-right">
-        {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
+        {{#aptible-ability scope="manage" user=session.currentUser permittable=context.organization as |hasAbility|}}
           {{#if hasAbility}}
             {{#link-to 'organization.roles.new' classNames='btn btn-primary'}}Create Role{{/link-to}}
           {{/if}}

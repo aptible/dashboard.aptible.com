@@ -9,9 +9,9 @@ export default Ember.Route.extend({
     let context = this.modelFor('organization');
 
     if (context.get('hasEnclaveAccess')) {
-      this.transitionTo('organization.roles.platform');
+      this.transitionTo('organization.roles.type', 'platform');
     } else {
-      this.transitionTo('organization.roles.compliance');
+      this.transitionTo('organization.roles.type', 'compliance');
     }
   }
 });

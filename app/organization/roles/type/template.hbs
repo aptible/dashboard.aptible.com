@@ -1,0 +1,41 @@
+{{partial 'organization/roles-header'}}
+
+<div class="layout-container">
+  <div class="row">
+    {{#each ownerRoles as |role|}}
+      {{#link-to "role" role title=(concat-params "View " role.name " Permissions") classNames="panel-link"}}
+        {{partial 'organization/role'}}
+      {{/link-to}}
+    {{/each}}
+  </div>
+
+  {{#if context.organizationHasGridironProduct}}
+    <ul class='nav nav-pills resource-navigation role-type-nav'>
+      {{#link-to 'organization.roles.type' 'platform' tagName="li"}}
+        {{link-to "Platform Roles" "organization.roles.type" 'platform' bubbles=false}}
+      {{/link-to}}
+
+      {{#link-to 'organization.roles.type' 'compliance' tagName="li"}}
+        {{link-to "Compliance Roles" "organization.roles.type" 'compliance' bubbles=false}}
+      {{/link-to}}
+    </ul>
+  {{/if}}
+
+  <div class="row">
+    {{#each ownerRoles as |role|}}
+      <div class="col-xs-12">
+        {{#link-to 'role' role title=(concat-params "View " role.name " Permissions") classNames="panel-link"}}
+          {{partial 'organization/role'}}
+        {{/link-to}}
+      </div>
+    {{/each}}
+
+    {{#each userRoles as |role|}}
+      <div class="col-xs-12">
+        {{#link-to 'role' role title=(concat-params "View " role.name " Permissions") classNames="panel-link"}}
+          {{partial 'organization/role'}}
+        {{/link-to}}
+      </div>
+    {{/each}}
+  </div>
+</div>

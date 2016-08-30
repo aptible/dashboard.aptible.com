@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-xs-12">
-    {{#if model.isOrganizationAdmin}}
+    {{#if model.userIsOrganizationAdmin}}
       {{#link-to 'organization.invite' class="btn btn-primary"}}
         Invite New Member
       {{/link-to}}
@@ -19,7 +19,7 @@
         <th>Roles</th>
         <th>Owner</th>
         <th>2FA</th>
-        {{#if model.isOrganizationAdmin}}
+        {{#if model.userIsOrganizationAdmin}}
           <th>Actions</th>
         {{/if}}
       </tr>
@@ -29,7 +29,7 @@
         {{user-table-row
             organization=model.organization
             user=user
-            isAccountOwner=model.isOrganizationAdmin}}
+            isAccountOwner=model.userIsOrganizationAdmin}}
       {{/each}}
     </tbody>
   </table>

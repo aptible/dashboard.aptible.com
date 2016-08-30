@@ -48,19 +48,30 @@ export default Ember.Object.extend({
     });
   },
 
+  // Computed related to organization's roles
+  organizationOwnerRoles: Ember.computed.filterBy('roles', 'type', 'owner'),
+  organizationPlatformUserRoles: Ember.computed.filterBy('roles', 'type', 'platform_user'),
+  organizationPlatformAdminRoles: Ember.computed.filterBy('roles', 'type', 'platform_owner'),
+  organizationComplianceUserRoles: Ember.computed.filterBy('roles', 'type', 'compliance_user'),
+  organizationComplianceAdminRoles: Ember.computed.filterBy('roles', 'type', 'compliance_owner'),
+  organizationHasGridironProduct: Ember.computed.match('billingDetail.plan', /pilot|production/),
+
+  // TODO: This will have to be a plan match once Enclave is separate from gridiron
+  organizationHasEnclaveProduct: true,
+
   hasNoBillingDetail: Ember.computed.equal('billingDetail.isRejected', true),
   hasBillingDetail: Ember.computed.not('hasNoBillingDetail'),
 
-  platformUserRoles: Ember.computed.filterBy('currentUserRoles', 'type', 'platform_user'),
-  platformAdminRoles: Ember.computed.filterBy('currentUserRoles', 'type', 'platform_owner'),
-  gridironUserRoles: Ember.computed.filterBy('currentUserRoles', 'type', 'compliance_user'),
-  gridironAdminRoles: Ember.computed.filterBy('currentUserRoles', 'type', 'compliance_owner'),
-  organizationAdminRoles: Ember.computed.filterBy('currentUserRoles', 'type', 'owner'),
+  // Computeds related to user's roles in organization
+  userPlatformUserRoles: Ember.computed.filterBy('currentUserRoles', 'type', 'platform_user'),
+  userPlatformAdminRoles: Ember.computed.filterBy('currentUserRoles', 'type', 'platform_owner'),
+  userGridironUserRoles: Ember.computed.filterBy('currentUserRoles', 'type', 'compliance_user'),
+  userGridironAdminRoles: Ember.computed.filterBy('currentUserRoles', 'type', 'compliance_owner'),
+  userOrganizationAdminRoles: Ember.computed.filterBy('currentUserRoles', 'type', 'owner'),
+  userIsEnclaveUser: Ember.computed.gt('userPlatformUserRoles.length', 0),
+  userIsEnclaveAdmin: Ember.computed.gt('userPlatformAdminRoles.length', 0),
+  userIsGridironAdmin: Ember.computed.gt('userGridironAdminRoles.length', 0),
+  userIsOrganizationAdmin: Ember.computed.gt('userOrganizationAdminRoles.length', 0),
 
-  isEnclaveUser: Ember.computed.gt('platformUserRoles.length', 0),
-  isEnclaveAdmin: Ember.computed.gt('platformAdminRoles.length', 0),
-  isGridironAdmin: Ember.computed.gt('gridironAdminRoles.length', 0),
-  isOrganizationAdmin: Ember.computed.gt('organizationAdminRoles.length', 0),
-
-  hasEnclaveAccess: Ember.computed.or('isEnclaveUser', 'isOrganizationAdmin')
+  hasEnclaveAccess: Ember.computed.or('userIsEnclaveUser', 'userIsOrganizationAdmin')
 });

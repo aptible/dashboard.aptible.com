@@ -132,8 +132,7 @@ Router.map(function() {
           this.route("edit", {path: ":user_id/edit"});
         });
         this.route("roles", {}, function() {
-          this.route("platform");
-          this.route("compliance");
+          this.route("type", { path: ':type' });
           this.route('new');
         });
         this.route("invite");
