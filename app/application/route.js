@@ -29,13 +29,13 @@ export default Ember.Route.extend({
       this.transitionTo('login');
     },
 
-    // error(err) {
-    //   if(config.environment !== 'test' && config.sentry.development)  {
-    //     this._super(...arguments);
-    //   } else {
-    //     this.get('raven').captureException(err);
-    //     this.intermediateTransitionTo('error', err);
-    //   }
-    // }
+    error(err) {
+      if(config.environment !== 'test' && config.sentry.development)  {
+        this._super(...arguments);
+      } else {
+        this.get('raven').captureException(err);
+        this.intermediateTransitionTo('error', err);
+      }
+    }
   }
 });

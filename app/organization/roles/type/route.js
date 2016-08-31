@@ -18,7 +18,6 @@ export default Ember.Route.extend({
   },
 
   redirect(model) {
-    return;
     let context = this.modelFor('organization');
 
     // If current type is platform but org doesn't have Enclave plan, change

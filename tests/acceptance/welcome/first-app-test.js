@@ -32,8 +32,8 @@ test('visiting /welcome/1/first-app logged in with no billing detail', function(
   stubStacks();
   stubDatabaseImages();
   stubRequest('get', '/billing_details/1', (request) => request.notFound());
-  stubOrganizations();
   stubOrganization();
+  stubRequest('get', '/billing_details/1', (request) => request.notFound());
   signInAndVisit('/welcome/1/first-app');
 
   andThen(function() {
@@ -45,7 +45,6 @@ test('visiting /welcome/1/first-app logged in with billing detail and stacks red
   stubStacks();
   stubDatabaseImages();
   stubBillingDetail({ id: 1 });
-  stubOrganizations();
   stubOrganization();
   signInAndVisit('/welcome/1/first-app');
 
@@ -60,7 +59,8 @@ test('submitting a first app directs to payment info', function(assert) {
   stubRequest('get', '/billing_details/1', (request) => request.notFound());
   stubStacks({}, []);
   stubDatabaseImages();
-  stubOrganizations();
+  stubOrganization();
+
   signInAndVisit('/welcome/1/first-app');
 
   fillIn('input[name="app-handle"]', appHandle);
@@ -73,8 +73,9 @@ test('submitting a first app directs to payment info', function(assert) {
 
 test('choosing a database type opens database pane, clicking it again closes', function(assert) {
   stubStacks({}, []);
-  stubOrganizations();
   stubDatabaseImages();
+  stubOrganization();
+
   signInAndVisit('/welcome/1/first-app');
 
   click('.select-option[title="Redis"]');

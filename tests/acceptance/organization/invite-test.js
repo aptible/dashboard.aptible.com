@@ -7,7 +7,7 @@ import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
 var application;
-let orgId = 'big-co';
+let orgId = '1';
 let url = `/organizations/${orgId}/invite`;
 let apiRolesUrl = `/organizations/${orgId}/roles`;
 let apiInvitationsUrl = `/organizations/${orgId}/invitations`;
@@ -19,20 +19,25 @@ let roles = [{
   name: 'restricted'
 }];
 let invitations = [];
-
+let organization = {
+  id: orgId,
+  _links: {
+    roles: { href: apiRolesUrl },
+    invitations: { href: apiInvitationsUrl }
+  }
+};
 
 module('Acceptance: Organizations: Invite Member', {
   beforeEach: function() {
     application = startApp();
     stubStacks();
-    stubOrganizations();
-    stubOrganization({
-      id: orgId,
-      _links: {
-        roles: { href: apiRolesUrl },
-        invitations: { href: apiInvitationsUrl }
-      }
+
+    stubOrganization(organization);
+
+    stubRequest('get', '/organizations', function() {
+      return this.success({ _embedded: { organizations: [organization] }});
     });
+
     stubRequest('get', apiRolesUrl, function(){
       return this.success({ _embedded: { roles } });
     });

@@ -11,15 +11,13 @@ let application;
 // FIXME this is hardcoded to match the value for signIn in
 // aptible-helpers
 const organizationId = 'o1';
-
-
-const contactSettingsUrl = `/organizations/${organizationId}/contact-settings`;
+const contactSettingsUrl = `/organizations/${organizationId}/admin/contact-settings`;
 const url = contactSettingsUrl;
 const organizationApiUrl = `/organizations/${organizationId}`;
 const billingDetailApiUrl = `/billing_details/${organizationId}`;
 
 function buildUserData(){
-  const ref = Ember.uuid();
+  let ref = Ember.uuid();
   return {
     id: ref,
     name: `User ${ref}`
@@ -44,7 +42,6 @@ function buildOrganizationData(data){
 module('Acceptance: OrganizationContactSettings', {
   beforeEach: function() {
     application = startApp();
-    stubOrganizations();
     stubStacks();
   },
 
@@ -66,14 +63,21 @@ test(`visiting ${url}`, function(assert) {
       self: {href: organizationApiUrl},
       security_officer: {href: `/users/${securityOfficerData.id}`},
       billing_contact: {href: `/users/${billingContactData.id}`},
+      billing_detail: { href: `/billing_details/${organizationId}`},
       users: {href: `${organizationApiUrl}/users`}
     }
   });
 
+  stubRequest('get', '/organizations', function() {
+    return this.success({ _embedded: { organizations: [organizationData] }});
+  });
+
   stubOrganization(organizationData, {
+    id: organizationId,
     _links: {
       self: {href: billingDetailApiUrl},
-      billing_contact: {href: `/users/${billingContactData.id}`}
+      billing_contact: {href: `/users/${billingContactData.id}`},
+      organization: { href: `/organizations/${organizationId}` }
     }
   });
   stubUser(securityOfficerData);
@@ -92,7 +96,7 @@ test(`visiting ${url}`, function(assert) {
   signInAndVisit(url);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.contact-settings');
+    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.admin.contact-settings');
     expectInput('name', {value: organizationData.name});
     expectInput('primary-phone', {value: organizationData.primaryPhone});
     expectInput('emergency-phone', {value: organizationData.emergencyPhone});
@@ -119,14 +123,17 @@ test(`visiting ${url} and saving`, function(assert) {
       self: {href: organizationApiUrl},
       security_officer: {href: `/users/${securityOfficerData.id}`},
       billing_contact: {href: `/users/${billingContactData.id}`},
-      users: {href: `${organizationApiUrl}/users`}
+      users: {href: `${organizationApiUrl}/users`},
+      billing_detail: { href: `/billing_details/${organizationId}`}
     }
   });
   const newName = "Mike";
 
-  stubOrganization(organizationData);
   stubUser(securityOfficerData);
   stubUser(billingContactData);
+  stubRequest('get', '/organizations', function() {
+    return this.success({ _embedded: { organizations: [organizationData] }});
+  });
   stubRequest('get', `${organizationApiUrl}/users`, function() {
     return this.success({
       _embedded: {
@@ -137,10 +144,12 @@ test(`visiting ${url} and saving`, function(assert) {
       }
     });
   });
-  stubBillingDetail({
+  stubOrganization(organizationData, {
+    id: organizationId,
     _links: {
       self: {href: billingDetailApiUrl},
-      billing_contact: {href: `/users/${billingContactData.id}`}
+      billing_contact: {href: `/users/${billingContactData.id}`},
+      organization: { href: `/organizations/${organizationId}` }
     }
   });
 
@@ -182,18 +191,26 @@ test(`visiting ${url} and saving with error`, function(assert) {
       self: {href: organizationApiUrl},
       security_officer: {href: `/users/${securityOfficerData.id}`},
       billing_contact: {href: `/users/${billingContactData.id}`},
-      users: {href: `${organizationApiUrl}/users`}
+      users: {href: `${organizationApiUrl}/users`},
+      billing_detail: { href: `/billing_details/${organizationId}`}
     }
   });
-  stubBillingDetail({
-    _links: {
-      self: {href: billingDetailApiUrl},
-      billing_contact: {href: `/users/${billingContactData.id}`}
-    }
-  });
+
   const newName = "Mike";
 
-  stubOrganization(organizationData);
+  stubOrganization(organizationData, {
+    id: organizationId,
+    _links: {
+      self: {href: billingDetailApiUrl},
+      billing_contact: {href: `/users/${billingContactData.id}`},
+      organization: { href: `/organizations/${organizationId}` }
+    }
+  });
+
+  stubRequest('get', '/organizations', function() {
+    return this.success({ _embedded: { organizations: [organizationData] }});
+  });
+
   stubUser(securityOfficerData);
   stubUser(billingContactData);
   stubRequest('get', `${organizationApiUrl}/users`, function() {
@@ -213,6 +230,11 @@ test(`visiting ${url} and saving with error`, function(assert) {
       error: 'unprocessable_entity',
       message: 'Name is not valid'
     });
+  });
+
+   stubRequest('put', billingDetailApiUrl, function(request) {
+    const body = this.json(request);
+    return this.success(body);
   });
 
   signInAndVisit(url);

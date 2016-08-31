@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   redirect() {
-    this.transitionTo('organization.members');
+    let context = this.modelFor('organization');
+    this.transitionTo('organization.members', context);
   }
 });

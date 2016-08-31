@@ -41,6 +41,9 @@ test(`visiting ${url} requires authentication`, () => {
 });
 
 test(`visiting ${aptibleSettingsUrl} shows link to billing`, () => {
+  stubOrganization();
+    stubOrganizations();
+    stubStacks();
   signInAndVisit(aptibleSettingsUrl);
   andThen(() => {
     expectLink(billingUrl);

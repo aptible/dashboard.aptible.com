@@ -3,20 +3,14 @@ import Changeset from "diesel/utils/changeset";
 
 export default Ember.Route.extend({
   model(params){
-    return this.store.find('user', params.user_id);
-  },
-
-  afterModel(model) {
-    return Ember.RSVP.hash({
-      roles: model.get('roles'),
-      securityOfficer: this.modelFor('organization').get('securityOfficer')
-    });
+    let context = this.modelFor('organization');
+    return context.get('users').findBy('id', params.user_id);
   },
 
   setupController(controller, model){
+    let context = this.modelFor('organization');
     controller.set('model', model);
-    controller.set('organization', this.modelFor('organization'));
-    controller.set('currentUser', this.session.get('currentUser'));
+    controller.set('context', context);
 
     let changeset = Changeset.create({
       key(keyData) {
@@ -37,8 +31,8 @@ export default Ember.Route.extend({
     },
 
     remove(user){
-      let organization = this.modelFor('organization');
-      let billingDetail = organization.get('billingDetail');
+      let context = this.modelFor('organization');
+      let { organization, billingDetail } = context.getProperties('organization', 'billingDetail');
       let message = `${user.get('name')} removed from ${organization.get('name')}`;
 
       if (user.get('id') === organization.get('securityOfficer.id')) {

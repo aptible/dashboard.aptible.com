@@ -30,13 +30,13 @@
       <div class="row">
         <div class="col-xs-6">
           {{#link-to 'risk-assessments' class="panel-link"}}
-            {{compliance-engine-status status=model.risk}}
+            {{compliance-engine-status status=model.risk class="risk-engine-status"}}
           {{/link-to}}
         </div>
 
         <div class="col-xs-6">
           {{#link-to-aptible 'compliance' path='policy' class="panel-link"}}
-            {{compliance-engine-status status=model.policy}}
+            {{compliance-engine-status status=model.policy class="policy-engine-status"}}
           {{/link-to-aptible}}
         </div>
       </div>
@@ -44,13 +44,13 @@
       <div class="row">
         <div class="col-xs-6">
           {{#link-to-aptible app='compliance' path='security' class="panel-link"}}
-            {{compliance-engine-status status=model.security}}
+            {{compliance-engine-status status=model.security class="security-engine-status"}}
           {{/link-to-aptible}}
         </div>
 
         <div class="col-xs-6">
           {{#link-to 'training' class="panel-link" class="panel-link"}}
-            {{compliance-engine-status status=model.training}}
+            {{compliance-engine-status status=model.training class="training-engine-status"}}
           {{/link-to}}
         </div>
       </div>

@@ -17,7 +17,7 @@ export default Ember.Object.extend({
 
   load() {
     let { organization } = this.getProperties('organization');
-    return new Ember.RSVP.Promise((resolve) => {
+    return new Ember.RSVP.Promise((resolve, reject) => {
       Ember.RSVP.hash({
         users: organization.get('users'),
         invitations: organization.get('invitations'),
@@ -43,8 +43,15 @@ export default Ember.Object.extend({
 
         this.set('permissions', permissions);
 
+        if (this.get('hasBillingDetail')) {
+          return this.get('billingDetail.billingContact');
+        }
+      })
+      .then((billingContact) => {
+        this.set('billingContact', billingContact);
         resolve(this);
-      });
+      })
+      .catch((e) => reject(e));
     });
   },
 
@@ -59,7 +66,7 @@ export default Ember.Object.extend({
   // TODO: This will have to be a plan match once Enclave is separate from gridiron
   organizationHasEnclaveProduct: true,
 
-  hasNoBillingDetail: Ember.computed.equal('billingDetail.isRejected', true),
+  hasNoBillingDetail: Ember.computed.equal('billingDetail.', undefined),
   hasBillingDetail: Ember.computed.not('hasNoBillingDetail'),
 
   // Computeds related to user's roles in organization
@@ -73,5 +80,37 @@ export default Ember.Object.extend({
   userIsGridironAdmin: Ember.computed.gt('userGridironAdminRoles.length', 0),
   userIsOrganizationAdmin: Ember.computed.gt('userOrganizationAdminRoles.length', 0),
 
-  hasEnclaveAccess: Ember.computed.or('userIsEnclaveUser', 'userIsOrganizationAdmin')
+  userIsEnclaveOrOrganizationAdmin: Ember.computed.or('userIsEnclaveAdmin', 'userIsOrganizationAdmin'),
+  hasEnclaveAccess: Ember.computed.or('userIsEnclaveUser', 'userIsOrganizationAdmin'),
+
+  canUserManageRolePermissions(role) {
+    if(this.get('userIsOrganizationAdmin')) {
+      return true;
+    }
+
+    if(role.get('type').match(/platform/) && this.get('userIsEnclaveAdmin')) {
+      return true;
+    }
+
+    if(role.get('type').match(/compliance/) && this.get('userIsGridironAdmin')) {
+      return true;
+    }
+
+    return false;
+  },
+
+  canUserInviteIntoRole(role) {
+    if(this.doesUserHavePrivilegedMembershipForRole(role)) {
+      return true;
+    }
+
+    return this.canUserManageRolePermissions(role);
+  },
+
+  doesUserHavePrivilegedMembershipForRole(role) {
+    let roleHref = role.get('data.links.self');
+    let roleMembership = this.get('currentUserMemberships').findBy('data.links.role', roleHref);
+
+    return !!roleMembership && roleMembership.get('privileged');
+  }
 });

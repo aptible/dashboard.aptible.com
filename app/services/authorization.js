@@ -13,23 +13,24 @@ export default Ember.Service.extend({
     let { session, store } = this.getProperties('session', 'store');
     let currentUser = session.get('currentUser');
 
-    return new Ember.RSVP.Promise((resolve) => {
+    return new Ember.RSVP.Promise((resolve, reject) => {
       // Load basics
       Ember.RSVP.hash({
         stacks: store.find('stack'),
         organizations: store.find('organization'),
         currentUserRoles: session.get('currentUser.roles'),
+        currentUserMemberships: session.get('currentUser.memberships'),
         currentUser: session.get('currentUser')
       })
       .then((initialParams) => {
         this.setProperties(initialParams);
 
         //For each organization, eagerly load their entire context
-        let { organizations, stacks, currentUserRoles } = initialParams;
+        let { organizations, stacks, currentUserRoles, currentUserMemberships } = initialParams;
 
         let contextPromises = organizations.map((organization) => {
           return UserOrganizationContext.create({
-            organization, currentUserRoles, stacks, currentUser
+            organization, currentUserRoles, stacks, currentUser, currentUserMemberships
           }).load();
         });
 
@@ -38,12 +39,17 @@ export default Ember.Service.extend({
       .then((organizationContexts) => {
         this.setProperties({ organizationContexts });
         resolve(this);
-      });
+      })
+      .catch((e) => reject(e));
     });
   },
 
   getContext(organizationId) {
     return this.get('organizationContexts').findBy('organization.id', organizationId);
+  },
+
+  getContextByHref(organizationHref) {
+    return this.get('organizationContexts').findBy('organization.data.links.self', organizationHref);
   },
 
   hasSingleOrganization: Ember.computed.equal('organizationContexts.length', 1),

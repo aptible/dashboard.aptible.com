@@ -19,7 +19,7 @@ export default Ember.Route.extend({
     // If they have more than one organization, we won't redirect
     // Instead, we will put an icon on any account missing payment
     // with a link to setup payment
-    if (!this.get('authorization.organizationContexts.hasSingleOrganization')) {
+    if (!this.get('authorization.hasSingleOrganization')) {
       return;
     }
 

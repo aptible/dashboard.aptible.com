@@ -12,7 +12,7 @@ let application;
 
 // FIXME this is hardcoded to match the value for signIn in
 // aptible-helpers
-const organizationId = 'o1';
+const organizationId = '1';
 
 const planUrl = `/organizations/${organizationId}/billing/plan`;
 const url = planUrl;
@@ -192,7 +192,7 @@ test(`on plan "development": clicking the upgrade platform shows modal`, () => {
   });
 });
 
-test(`on plan "development": clicking the upgrade platform updates organization's plan`, (assert) => {
+test(`on plan "development": clicking the upgrade platform updates organizations plan`, (assert) => {
   assert.expect(5);
 
   let plan = 'development';

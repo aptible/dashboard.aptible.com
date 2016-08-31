@@ -1,12 +1,12 @@
 {{#if hasAccessToPlatform}}
   <li class="{{if opsActive 'active' null}}">
-    {{link-to 'Apps and Databases' 'stacks'}}
+    {{link-to 'Apps and Databases' 'stacks' class="enclave-nav"}}
   </li>
 {{/if}}
 {{#if hasAccessToCompliance}}
   {{#if showSheriff}}
     <li class="{{if sheriffActive 'active' null}}">
-      {{link-to 'Compliance Tools' 'gridiron'}}
+      {{link-to 'Compliance Tools' 'gridiron' class="gridiron-nav"}}
     </li>
   {{else}}
     <li>
@@ -17,7 +17,7 @@
 
 {{#each currentUser.organizations as |organization|}}
   <li class="{{if settingsActive 'active' null}}">
-    {{link-to organization.name 'organization' organization}}
+    {{link-to organization.name 'organization' organization class="organization-nav"}}
   </li>
 {{/each}}
 

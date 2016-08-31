@@ -3,7 +3,7 @@ import config from '../../config/environment';
 
 export default Ember.Component.extend({
   tagName: 'ul',
-  classNames: ['nav', 'nav-pills'],
+  classNames: ['nav', 'nav-pills', 'application-nav'],
   routingService: Ember.inject.service('routing'),
 
   showSheriff: Ember.computed(function() {

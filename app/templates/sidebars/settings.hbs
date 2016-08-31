@@ -1,59 +1,58 @@
 {{#each authorization.organizations as |organization|}}
-  <ul class="nav sidebar-nav">
+  <ul class="nav sidebar-nav organization-settings">
     <li class="title">
       {{organization.name}} Settings
     </li>
     {{#activating-item currentWhen="organization.members.index" tagName="li"}}
-      {{link-to "Members" "organization.members.index" organization.id bubbles=false}}
+      {{link-to "Members" "organization.members.index" organization.id bubbles=false class="members-index"}}
     {{/activating-item}}
 
     {{#activating-item currentWhen="organization.members.pending-invitations" tagName="li"}}
-      {{link-to "Pending Invitations" "organization.members.pending-invitations" organization.id bubbles=false}}
+      {{link-to "Pending Invitations" "organization.members.pending-invitations" organization.id bubbles=false class="pending-invitations"}}
     {{/activating-item}}
 
     {{#with-active-class route="role" tagName="li"}}
-      {{link-to "Roles" "organization.roles" organization.id bubbles=false}}
+      {{link-to "Roles" "organization.roles" organization.id bubbles=false class="role-index"}}
     {{/with-active-class}}
 
     {{#link-to 'organization.environments' organization.id tagName="li"}}
-      {{link-to "Environments" "organization.environments" organization.id bubbles=false}}
+      {{link-to "Environments" "organization.environments" organization.id bubbles=false class="environments-index"}}
     {{/link-to}}
 
     {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
       {{#if hasAbility}}
         {{#link-to 'organization.contact-settings' organization.id tagName="li"}}
-          {{link-to "Contact Settings" "organization.contact-settings" organization.id bubbles=false}}
+          {{link-to "Contact Settings" "organization.contact-settings" organization.id bubbles=false class="contact-settings"}}
         {{/link-to}}
 
-        {{#if features.organizationBillingSettings}}
-          {{#link-to 'organization.billing' organization.id tagName="li"}}
-            {{link-to "Billing" "organization.billing" organization.id bubbles=false}}
-          {{/link-to}}
-        {{/if}}
+        {{#link-to 'organization.billing' organization.id tagName="li"}}
+          {{link-to "Billing" "organization.billing" organization.id bubbles=false class="billing-index"}}
+        {{/link-to}}
       {{/if}}
     {{/aptible-ability}}
   </ul>
 {{/each}}
 
-<ul class='nav sidebar-nav'>
+<ul class='nav sidebar-nav user-settings'>
   <li class="title">
     {{session.currentUser.name}} Settings
   </li>
+
   {{#activating-item currentWhen='settings.profile' tagName='li'}}
-    {{link-to 'Profile' 'settings.profile'}}
+    {{link-to 'Profile' 'settings.profile' class="profile"}}
   {{/activating-item}}
 
   {{#activating-item currentWhen='settings.requires-elevation.admin' tagName='li'}}
-    {{link-to 'Account Settings' 'settings.requires-elevation.admin'}}
+    {{link-to 'Account Settings' 'settings.requires-elevation.admin' class="account-settings"}}
   {{/activating-item}}
 
   {{#activating-item currentWhen='settings.ssh' tagName='li'}}
-    {{link-to 'SSH Keys' 'settings.ssh'}}
+    {{link-to 'SSH Keys' 'settings.ssh' class="ssh-index"}}
   {{/activating-item}}
 
   {{#if session.currentUser.superuser}}
     {{#activating-item currentWhen='settings.impersonate' tagName='li'}}
-      {{link-to 'Impersonate' 'settings.impersonate'}}
+      {{link-to 'Impersonate' 'settings.impersonate' class="impersonate"}}
     {{/activating-item}}
   {{/if}}
 </ul>

@@ -9,12 +9,5 @@ export default Ember.Controller.extend({
       return 'Compliance Roles';
     }
     return 'Roles';
-  }),
-
-  backToRolesRoute: Ember.computed('model.type', function() {
-    if (this.get('model.isComplianceOwner') || this.get('model.isComplianceUser')) {
-      return 'organization.roles.compliance';
-    }
-    return 'organization.roles.platform';
   })
 });

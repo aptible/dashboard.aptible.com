@@ -6,7 +6,7 @@ import {
 import startApp from '../../../helpers/start-app';
 
 let application;
-const organizationId = 'o1';
+const organizationId = '1';
 const overviewUrl = `/organizations/${organizationId}/billing`;
 const url = overviewUrl;
 

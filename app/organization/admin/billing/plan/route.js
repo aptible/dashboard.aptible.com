@@ -28,7 +28,7 @@ export default Ember.Route.extend({
   },
 
   _trackUpgradeRequest() {
-      const organization = this.modelFor('organization');
+      const organization = this.modelFor('organization').get('organization');
       const eventName = UPGRADE_PLAN_REQUEST_EVENT;
       const eventAttributes = {
         organization_id: organization.get('id'),

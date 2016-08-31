@@ -46,8 +46,7 @@ const stacks = [{
 }];
 
 function setup(plan){
-  stubOrganization({id:orgId});
-  stubBillingDetail({ id: orgId, plan });
+  stubOrganization({id:orgId}, { id: orgId, plan });
   stubStacks({}, stacks);
 }
 
@@ -56,7 +55,7 @@ test(`visiting ${url} requires authentication`, () => {
 });
 
 test(`visiting ${url} shows form to create new role`, (assert) => {
-  setup('dev');
+  setup('development');
   signInAndVisit(url);
   andThen(() => {
     assert.equal(currentPath(), 'dashboard.catch-redirects.organization.roles.new');

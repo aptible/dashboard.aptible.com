@@ -178,8 +178,6 @@ test('payment info should be submitted to stripe to create stripeToken', functio
     });
   });
 
-  stubOrganizations();
-
   mockStripe.card.createToken = function(options, fn) {
     assert.equal(options.name, cardOptions.name, 'name is correct');
     assert.equal(options.number, cardOptions.cardNumber, 'card number is correct');
@@ -242,7 +240,6 @@ test('submitting valid payment info for development plan should create dev stack
     return this.success(Ember.merge({id:params.handle }, params));
   });
 
-  stubOrganizations();
   mockSuccessfulPayment();
 
   visitPaymentInfoWithApp();

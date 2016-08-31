@@ -3,9 +3,11 @@
 <div class="layout-container">
   <div class="row">
     {{#each ownerRoles as |role|}}
-      {{#link-to "role" role title=(concat-params "View " role.name " Permissions") classNames="panel-link"}}
-        {{partial 'organization/role'}}
-      {{/link-to}}
+      <div class="col-xs-12">
+        {{#link-to "role" role title=(concat-params "View " role.name " Permissions") classNames="panel-link"}}
+          {{partial 'organization/role'}}
+        {{/link-to}}
+      </div>
     {{/each}}
   </div>
 
@@ -22,7 +24,7 @@
   {{/if}}
 
   <div class="row">
-    {{#each ownerRoles as |role|}}
+    {{#each adminRoles as |role|}}
       <div class="col-xs-12">
         {{#link-to 'role' role title=(concat-params "View " role.name " Permissions") classNames="panel-link"}}
           {{partial 'organization/role'}}

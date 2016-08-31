@@ -1,15 +1,22 @@
 {{#if canManageMemberships}}
-  <div class="row">
+  <div class="row invite-new-members-to-role">
     <div class="col-xs-12 flex-row">
       <form class="flex-row-item role__add-user">
         <h3 class="heading--caps heading--sm">Add Existing User</h3>
         <div class="invite-user">
-          <button class="btn btn-primary" {{action "addMember" invitedUser}} type="submit">Add</button>
+          <button class="btn btn-primary" {{action "addMember" invitedUser}} type="submit">
+            Add
+          </button>
           <div class="user-select-container">
             {{ultimate-select
-                class="user-select" name="invited-user" prompt="Select..."
-                items=nonmembers itemKey="id" itemValue="name"
-                update=(action (mut invitedUser)) selected=invitedUser}}
+                class="user-select"
+                name="invited-user"
+                prompt="Select..."
+                items=nonmembers
+                itemKey="id"
+                itemValue="name"
+                update=(action (mut invitedUser))
+                selected=invitedUser}}
           </div>
 
         </div>

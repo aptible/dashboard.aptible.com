@@ -1,6 +1,6 @@
 <ul class="nav sidebar-nav">
   <li class="title">
-    {{#link-to 'organization' organization}}
+    {{#link-to 'organization' organization.id}}
       {{#bs-tooltip title="Organization Settings"}}
         <i class="fa fa-cog"></i>
       {{/bs-tooltip}}
@@ -9,7 +9,7 @@
   </li>
 
   {{#each sortedStacks as |stack|}}
-    {{#link-to 'stack' stack tagName="li"}}
+    {{#link-to 'stack' stack tagName="li" class="sidebar-stack-item"}}
       {{link-to stack.handle 'stack' stack bubbles=false}}
     {{/link-to}}
   {{else}}

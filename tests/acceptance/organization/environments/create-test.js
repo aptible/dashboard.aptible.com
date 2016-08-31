@@ -48,14 +48,7 @@ test(`visiting ${url} and creating new environment`, (assert) => {
   const handle = 'some-handle';
 
   setupBillingDetail();
-
-  stubRequest('get', `/accounts`, function(){
-    return this.success({
-      _embedded: {
-      }
-    });
-  });
-
+  stubStacks();
   stubRequest('post', `/accounts`, function(request){
     assert.ok(true, 'posts to /accounts');
     let json = this.json(request);
@@ -85,14 +78,7 @@ test(`visiting ${url} and with duplicate handle`, (assert) => {
   const handle = 'some-handle';
 
   setupBillingDetail();
-
-  stubRequest('get', `/accounts`, function(){
-    return this.success({
-      _embedded: {
-      }
-    });
-  });
-
+  stubStacks();
   stubRequest('post', `/accounts`, function(request){
     assert.ok(true, 'posts to /accounts');
     let json = this.json(request);
@@ -127,14 +113,7 @@ test(`visiting ${url} and creating new prod environment`, (assert) => {
   const handle = 'some-handle';
 
   setupBillingDetail();
-
-  stubRequest('get', `/accounts`, function(){
-    return this.success({
-      _embedded: {
-      }
-    });
-  });
-
+  stubStacks();
   stubRequest('post', `/accounts`, function(request){
     assert.ok(true, 'posts to /accounts');
     let json = this.json(request);
@@ -165,14 +144,7 @@ test(`Creating a new environment with non-phi plan offers a link to upgrade`, (a
   const handle = 'some-handle';
 
   setupBillingDetail('development');
-
-  stubRequest('get', `/accounts`, function(){
-    return this.success({
-      _embedded: {
-      }
-    });
-  });
-
+  stubStacks();
   stubRequest('post', `/accounts`, function(request){
     assert.ok(true, 'posts to /accounts');
     let json = this.json(request);

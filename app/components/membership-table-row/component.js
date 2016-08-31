@@ -63,13 +63,13 @@ export default Ember.Component.extend({
 
   actions: {
     togglePrivileged(valueOptions) {
-      let isOn = valueOptions.newValue;
-      if([true,false].indexOf(isOn) === -1) {
-        // dont' trigger a toggle if a boolean isn't set
+      let isOn = !!valueOptions.newValue;
+      let membership = this.get('membership');
+
+      if(isOn === membership.get('privileged')) {
+        // No need to re-save if value isn't changed
         return;
       }
-
-      let membership = this.get('membership');
 
       // No need to update if this user is an owner.
       if (this.isRoleOwner(membership.get('user'), this.get('memberUserRoles'))) { return; }

@@ -136,13 +136,16 @@ Router.map(function() {
           this.route('new');
         });
         this.route("invite");
-        this.route('contact-settings');
-        this.route('environments', function() {
-          this.route('new');
-        });
-        this.route("billing", {}, function() {
-          this.route('plan');
-          this.route('payment-method');
+
+        this.route('admin', {}, function() {
+          this.route('contact-settings');
+          this.route('environments', function() {
+            this.route('new');
+          });
+          this.route("billing", {}, function() {
+            this.route('plan');
+            this.route('payment-method');
+          });
         });
       });
 

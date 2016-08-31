@@ -20,11 +20,11 @@ let Role = DS.Model.extend({
   isCompliance: Ember.computed.or('isAccountOwner', 'isComplianceOwner', 'isComplianceUser'),
   isPlatform: Ember.computed.or('isAccountOwner', 'isPlatformOwner', 'isPlatformUser'),
 
+
+
   privileged: Ember.computed.deprecatingAlias('isOwner'),
 
-  persistedInvitations: Ember.computed('invitations.[]', function() {
-    return this.get('invitations').rejectBy('isNew');
-  })
+  persistedInvitations: Ember.computed.filterBy('invitations', 'isNew', false)
 });
 
 Role.reopenClass({
