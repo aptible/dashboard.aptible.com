@@ -7,14 +7,14 @@ export default Ember.Route.extend({
 
   setupController(controller, model) {
     let contextHref = model.get('data.links.organization');
-    let context = this.get('authorization').getContextByHref(contextHref);
-    let { organization, currentUserRoles } = context;
-    let canManageMemberships = context.canUserInviteIntoRole(model);
+    let authorizationContext = this.get('authorization').getContextByHref(contextHref);
+    let { organization, currentUserRoles } = authorizationContext;
+    let canManageMemberships = authorizationContext.canUserInviteIntoRole(model);
 
     controller.set('role', model);
     controller.set('memberships', model.get('memberships'));
     controller.set('pendingInvitations', model.get('invitations'));
-    controller.setProperties({ context, organization, currentUserRoles, canManageMemberships });
+    controller.setProperties({ authorizationContext, organization, currentUserRoles, canManageMemberships });
   },
 
   actions: {

@@ -66,11 +66,10 @@
         {{#each memberships as |membership|}}
           {{membership-table-row
               membership=membership
-              organization=organization
+              authorizationContext=authorizationContext
               role=role
               completedAction='completedAction'
-              failedAction='failedAction'
-              currentUser=session.currentUser}}
+              failedAction='failedAction'}}
         {{else}}
           <td class="empty-row" colspan="6">
             {{role.name}} currently has no members.

@@ -4,7 +4,7 @@
       <div class="resource-title">
         {{#if roleTypeSubTitle}}
           <h2 class="heading--caps heading--sm">
-            {{#link-to 'organization.roles.type' model.type class="return-link"}}
+            {{#link-to 'organization.roles.type' context.organization.id roleTypeParam class="return-link"}}
               {{roleTypeSubTitle}}
             {{/link-to}}
           </h2>

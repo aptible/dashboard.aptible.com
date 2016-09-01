@@ -9,5 +9,14 @@ export default Ember.Controller.extend({
       return 'Compliance Roles';
     }
     return 'Roles';
+  }),
+
+  roleTypeParam: Ember.computed('model.type', function() {
+    let type = this.get("model.type");
+    if(type.match(/platform/)) {
+      return 'platform';
+    }
+
+    return 'compliance';
   })
 });

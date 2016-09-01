@@ -6,28 +6,26 @@ export default Ember.Component.extend({
   permission: null,
   store: Ember.inject.service(),
 
-  isChecked: Ember.computed('stack.@each.permissions', function() {
+  init() {
+    this._super(...arguments);
+    Ember.run.later(() => this.set('initialized', true));
+  },
+
+  isChecked: Ember.computed('stack.permissions.[]', function() {
     if (this.get('role').get('isPlatformUser')) {
       return this.get('stack').hasRoleScope(this.get('role'), this.get('scope'));
     }
     return true;
   }),
 
-  isDisabled: Ember.computed('currentUser.roles.[]', function() {
-    let currentUserRoles = this.get('currentUserRoles');
-    if (this.get('role').get('isPlatformUser')) {
-      return !this.get('currentUser').canManagePlatform(currentUserRoles, this.get('organization'));
-    }
-    return true;
-  }),
+  isDisabled: Ember.computed.not('authorizationContext.userIsEnclaveOrOrganizationAdmin'),
 
   actions: {
     onToggle(valueOptions) {
-      let isOn = valueOptions.newValue;
-      if([true,false].indexOf(isOn) === -1) {
-        // Not a valid boolean value
+      if(!this.get('initialized')) {
         return;
       }
+      let isOn = !!valueOptions.newValue;
       let { role, scope, stack } = this.getProperties('role', 'scope', 'stack');
       let permission = stack.findPermission(role, scope);
 
@@ -41,7 +39,7 @@ export default Ember.Component.extend({
         this.get('store').createRecord('permission', {
           stack,
           scope,
-          role: role.get('data.links.self')
+          role
         }).save().then(() => { this.set('busy', false); });
       }
       else {
@@ -49,6 +47,8 @@ export default Ember.Component.extend({
           this.set('busy', false);
         });
       }
+
+      return true;
     }
   }
 });

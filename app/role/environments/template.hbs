@@ -43,10 +43,8 @@
                   <td class="aptable__row-heading">Read</td>
                   <td class="aptable__actions aptable__actions--skinny">
                     {{permission-toggle
-                        currentUser=session.currentUser
-                        currentUserRoles=currentUserRoles
+                        authorizationContext=authorizationContext
                         role=model
-                        organization=organization
                         scope="read"
                         stack=stack}}
                   </td>
@@ -55,10 +53,8 @@
                   <td class="aptable__row-heading">Manage</td>
                   <td class="aptable__actions">
                     {{permission-toggle
-                        currentUser=session.currentUser
-                        currentUserRoles=currentUserRoles
+                        authorizationContext=authorizationContext
                         role=model
-                        organization=organization
                         scope="manage"
                         stack=stack}}
                   </td>
