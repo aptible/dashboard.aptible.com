@@ -165,7 +165,6 @@ function stubRequests() {
   stubSchemasAPI();
   stubCriterionDocuments({});
   stubStacks();
-  stubBillingDetail();
   stubCriteria();
 
   stubProfile({ hasCompletedSetup: true });

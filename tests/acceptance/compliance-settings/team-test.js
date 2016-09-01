@@ -181,6 +181,9 @@ test('Setup Team settings basic UI', function(assert) {
   stubRequests();
   stubAllRoles();
   signInAndVisit(setupTeamUrl);
+  andThen(() => {
+    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.team', 'on workforce page');
+  });
   testBasicUI(assert);
 });
 
@@ -449,7 +452,6 @@ function stubRequests(options = {}) {
   stubProfile({ hasCompletedSetup: true, currentStep: 'team' });
   stubCriterionDocuments({});
   stubStacks();
-  stubBillingDetail();
   stubCriteria();
 
   stubRequest('get', usersHref, function() {

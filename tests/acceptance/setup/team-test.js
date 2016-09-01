@@ -160,7 +160,6 @@ function stubRequests(options) {
   stubSchemasAPI();
   stubCriterionDocuments({});
   stubStacks();
-  stubBillingDetail();
   stubCriteria();
 
   stubRequest('get', `/roles/${developerRoleId}/users`, function() {

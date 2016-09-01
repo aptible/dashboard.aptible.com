@@ -104,7 +104,7 @@ Ember.Test.registerHelper('stubValidOrganization', function(app, orgData, billin
     return this.success({ _embedded: { organizations: [organization] }});
   });
 
-  stubRequest('get', `/billing_details/${orgId}`, function() {
+  stubRequest('get', billingDetailHref, function() {
     return this.success(billingDetail);
   });
 });

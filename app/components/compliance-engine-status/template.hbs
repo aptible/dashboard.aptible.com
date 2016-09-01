@@ -6,6 +6,13 @@
     </div>
     <ul class="status-badges">
       {{criterion-status-badge status=status tagName="li"}}
+      {{#if latestDocumentDownload}}
+        <li class="download-badge">
+          <a href="{{latestDocumentDownload}}" target="_blank">
+            Download Latest {{title}}
+          </a>
+        </li>
+      {{/if}}
     </ul>
   </div>
 </div>
@@ -33,7 +40,13 @@
               </span>
               <span class="date">
                 {{{format-utc-timestamp document.createdAt true}}}
+                {{#if document.printVersionUrl}}
+                   <a href="{{document.printVersionUrl}}" target="_blank">
+                    Download
+                    </a>
+                {{/if}}
               </span>
+
             </li>
           {{else}}
             <li><span class="date">No activity</span></li>

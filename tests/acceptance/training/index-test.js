@@ -85,7 +85,7 @@ test(`visiting ${overviewUrl}: basic UI`, function(assert) {
     assert.equal(find('.workforce-members .user').length, 3, 'shows all 3 active users');
     let user1 = find('.workforce-members .user').eq(0);
 
-    assert.equal(user1.find('.user-name').text(), users[0].name, 'shows user name');
+    assert.equal(user1.find('.panel-name').text(), users[0].name, 'shows user name');
     assert.equal(user1.find('.status-incomplete').length, 1, 'user 1 has one overdue');
     assert.equal(find('.status-incomplete').length, 3, 'all three are incomplete');
 
@@ -141,7 +141,6 @@ test(`visiting ${overviewUrl}: training documents`, function(assert) {
 function stubRequests() {
   stubValidOrganization();
   stubStacks();
-  stubBillingDetail();
   stubProfile({ hasCompletedSetup: true });
   stubCriteria(criteria);
 

@@ -73,7 +73,7 @@ export default Ember.Object.extend(CriterionStatusMixin, {
         status = 'expired';
       }
 
-      return UserCriterionStatus.create({ user, status, userDocuments, criterion: this.get('criterion') });
+      return UserCriterionStatus.create({ user, status, documents: userDocuments, criterion: this.get('criterion') });
     });
   }),
 

@@ -1,15 +1,11 @@
 <div class="panel-heading">
-  <div class="user-gravatar">
-    {{gravatar-image email=userStatus.user.email size=25 retina=true}}
+  <div class="panel-title">
+    <h5 class="panel-name">{{userStatus.user.name}}</h5>
+    <div class="user-email panel-status">{{userStatus.user.email}}</div>
+    <ul class="status-badges training-enrollment">
+      {{training-enrollment-badge userStatus=userStatus tagName="li"}}
+    </ul>
   </div>
-
-  <div class="user-title">
-    <h5 class="user-name">{{userStatus.user.name}}</h5>
-    <div class="user-email">{{userStatus.user.email}}</div>
-  </div>
-  <ul class="status-badges training-enrollment">
-    {{training-enrollment-badge userStatus=userStatus tagName="li"}}
-  </ul>
 </div>
 
 <div class="panel-body">

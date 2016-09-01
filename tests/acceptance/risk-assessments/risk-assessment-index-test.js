@@ -7,7 +7,7 @@ import { orgId, rolesHref, usersHref, invitationsHref,
 import baselineRiskGraph from '.././../fixtures/risk-graph';
 
 let application;
-let userId = 'basic-user-1';
+let userId = 'basic-user1';
 let basicRoleId = 'basic-role-1';
 let riskAssessmentsUrl = `/gridiron/${orgId}/admin/risk_assessments`;
 
@@ -76,7 +76,6 @@ function stubRequests() {
   stubProfile({ hasCompletedSetup: true });
   stubCriterionDocuments({});
   stubStacks();
-  stubBillingDetail();
   stubCriteria();
 
   stubRequest('get', `/organization_profiles/${orgId}/risk-assessments`, function() {

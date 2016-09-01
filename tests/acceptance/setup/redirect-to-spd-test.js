@@ -81,7 +81,6 @@ function stubRequests() {
   ] });
   stubCriterionDocuments({});
   stubStacks();
-  stubBillingDetail();
   stubCriteria();
 
   stubRequest('get', '/documents', function() {

@@ -1,36 +1,48 @@
-<div class="main-wrapper">
-  <header class="layout-header">
-    {{partial "header"}}
-    {{verification-code-reset user=session.currentUser}}
-
-    {{#if flashMessages.queue}}
-      <div class="notifications">
-        {{#each flashMessages.queue as |flash|}}
-          {{flash-message flash=flash}}
-        {{/each}}
-      </div>
-    {{/if}}
+<main class="layout-content">
+  <header>
+    <div class="container">
+      <h1 class="dashboard-header">
+        My Gridiron Status
+      </h1>
+    </div>
   </header>
 
-  <div class="layout-body">
-    <div class="container">
 
-       <div class="activate-notice">
-        <div class="row">
-          <div class="col-xs-8 col-xs-offset-2">
-            <h1>Welcome to Aptible, {{session.currentUser.name}}!</h1>
-            <h2>
-              You currently do not have permission to view or edit any resources on your Aptible account.  If this is a mistake, please contact your Aptible Account Owner.
-            </h2>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-6">
+        <section class="compliance-section">
+          <header>
+            <span class="header-title">
+              {{authorizationContext.organization.name}} Policy Manual
+            </span>
+          </header>
+
+          <div class="row">
+            <div class="col-xs-12">
+              {{!-- download organization policy manual--}}
+              {{compliance-engine-status
+                status=complianceStatus.policy
+                class="policy-engine-status"}}
+            </div>
           </div>
-        </div>
+        </section>
+      </div>
 
+      <div class="col-xs-6">
+        <section class="compliance-section">
+          <header>
+            <span class="header-title">My Training History</span>
+          </header>
+
+          {{user-training-item
+            userStatus=userStatus
+            documents=documents
+          }}
+        </section>
       </div>
     </div>
+
+
   </div>
-
-
-  <footer class="layout-footer">
-    {{partial "nav-footer"}}
-  </footer>
-</div>
+</main>

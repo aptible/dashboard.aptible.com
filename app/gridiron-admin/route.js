@@ -14,7 +14,7 @@ export default Ember.Route.extend({
 
   setupController(controller) {
     let organization = this.get('complianceStatus.organization');
-    controller.set('organizations', this.modelFor('gridiron'));
+    controller.set('organizations', this.modelFor('gridiron').get('organization'));
     controller.set('organization', organization);
   },
 
