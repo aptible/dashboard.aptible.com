@@ -106,7 +106,7 @@ Ember.Test.registerAsyncHelper('expectRedirectsWhenLoggedIn', function(app, url)
   signInAndVisit(url);
 
   andThen(function(){
-    equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    equal(currentPath(), 'enclave.stack.apps.index');
   });
 });
 
@@ -469,7 +469,7 @@ Ember.Test.registerHelper('stubOrganization', function(app, orgData, billingDeta
   };
   orgData = Ember.$.extend(true, defaultData, orgData || {});
 
-  stubRequest('get', '/organizations', function(request) {
+  stubRequest('get', '/organizations', function() {
     return this.success({ _embedded: { organizations: [orgData]}});
   });
 

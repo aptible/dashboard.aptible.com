@@ -81,7 +81,10 @@ export default Ember.Object.extend({
   userIsOrganizationAdmin: Ember.computed.gt('userOrganizationAdminRoles.length', 0),
 
   userIsEnclaveOrOrganizationAdmin: Ember.computed.or('userIsEnclaveAdmin', 'userIsOrganizationAdmin'),
-  hasEnclaveAccess: Ember.computed.or('userIsEnclaveUser', 'userIsOrganizationAdmin'),
+  userIsGridironOrOrganizationAdmin: Ember.computed.or('userIsGridironAdmin', 'userIsOrganizationAdmin'),
+
+  userHasEnclaveAccess: Ember.computed.or('userIsEnclaveAdmin', 'userIsEnclaveUser'),
+  hasEnclaveAccess: Ember.computed.or('userHasEnclaveAccess', 'userIsOrganizationAdmin'),
 
   canUserManageRolePermissions(role) {
     if(this.get('userIsOrganizationAdmin')) {

@@ -17,7 +17,7 @@
           actor=session.currentActor
           defaultPath="settings" app="dashboard"}}
 
-          {{#each authorizationContexts as |authorizationContext|}}
+          {{#each authorization.organizationContexts as |authorizationContext|}}
             {{dashboard-dropdown-organization-menu
               authorizationContext=authorizationContext
               app="dashboard"}}

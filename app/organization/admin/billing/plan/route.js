@@ -6,7 +6,7 @@ export default Ember.Route.extend({
   confirmationModal: Ember.inject.service(),
 
   model(){
-    const model = this.modelFor('organization.billing');
+    const model = this.modelFor('organization.admin.billing');
     return model.get('billingDetail');
   },
 

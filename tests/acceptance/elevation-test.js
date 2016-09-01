@@ -25,7 +25,7 @@ test("Visiting an URL requiring elevation with an elevated token does not redire
 
   andThen(() => { visit("/settings/protected/admin"); });
   andThen(() => {
-    assert.equal(currentPath(), "dashboard.settings.requires-elevation.admin");
+    assert.equal(currentPath(), "settings.requires-elevation.admin");
   });
 });
 
@@ -129,7 +129,7 @@ test("Submitting the elevation form redirects to redirectTo", function(assert) {
     clickButton("Confirm");
   });
 
-  andThen(() => assert.equal(currentPath(), `dashboard.${redirectTo}`));
+  andThen(() => assert.equal(currentPath(), `${redirectTo}`));
 });
 
 test("When redirectTo is invalid, it is not echoed back on screen", function(assert) {

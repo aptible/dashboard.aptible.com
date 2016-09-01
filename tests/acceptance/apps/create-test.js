@@ -51,7 +51,7 @@ test(`visiting /stacks/:stack_id/apps without any apps redirects to ${url}`, fun
   signInAndVisit(`/stacks/${stackId}/apps`);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.new');
+    assert.equal(currentPath(), 'enclave.stack.apps.new');
   });
 });
 
@@ -61,7 +61,7 @@ test(`visit ${url} shows basic info`, function(assert) {
   stubOrganizations();
   signInAndVisit(url);
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.new');
+    assert.equal(currentPath(), 'enclave.stack.apps.new');
     expectInput('handle');
     expectButton('Save App');
     expectButton('Cancel');
@@ -85,7 +85,7 @@ test(`visit ${url} and cancel`, function(assert) {
   });
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'enclave.stack.apps.index');
 
     assert.ok( !findApp(appHandle).length,
         'does not show app');
@@ -107,7 +107,7 @@ test(`visit ${url} without apps show no cancel button`, function(assert) {
   signInAndVisit(url);
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.new');
+    assert.equal(currentPath(), 'enclave.stack.apps.new');
     let button = findButton('Cancel');
     assert.ok(!button.length, 'Cancel button is not present');
   });
@@ -125,7 +125,7 @@ test(`visit ${url} and transition away`, function(assert) {
   });
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'enclave.stack.apps.index');
 
     assert.ok( !findApp(appHandle).length,
         'does not show app');
@@ -162,7 +162,7 @@ test(`visit ${url} and create an app`, function(assert) {
 
   clickButton('Save App');
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.app.deploy');
+    assert.equal(currentPath(), 'enclave.app.deploy');
 
     assert.ok( findApp(appHandle).length > 0,
         'lists new app on index' );
@@ -189,7 +189,7 @@ test(`visit ${url} and with duplicate handle`, function(assert) {
     assert.ok(submitButton.is(':disabled'), 'submit is disabled');
 
     clickButton('Save App');
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.new');
+    assert.equal(currentPath(), 'enclave.stack.apps.new');
   });
 });
 

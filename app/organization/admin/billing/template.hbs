@@ -2,14 +2,14 @@
 
 <div class="layout-container billing-payment-method">
   <ul class='nav nav-pills resource-navigation'>
-    {{#activating-item currentWhen="organization.billing.index" tagName="li"}}
-      {{link-to "Overview" "organization.billing.index"}}
+    {{#activating-item currentWhen="organization.admin.billing.index" tagName="li"}}
+      {{link-to "Overview" "organization.admin.billing.index"}}
     {{/activating-item}}
-    {{#activating-item currentWhen="organization.billing.plan" tagName="li"}}
-      {{link-to "Plan" "organization.billing.plan"}}
+    {{#activating-item currentWhen="organization.admin.billing.plan" tagName="li"}}
+      {{link-to "Plan" "organization.admin.billing.plan"}}
     {{/activating-item}}
-    {{#activating-item currentWhen="organization.billing.payment-method" tagName="li"}}
-      {{link-to "Payment Method" "organization.billing.payment-method"}}
+    {{#activating-item currentWhen="organization.admin.billing.payment-method" tagName="li"}}
+      {{link-to "Payment Method" "organization.admin.billing.payment-method"}}
     {{/activating-item}}
   </ul>
 

@@ -8,9 +8,11 @@ import startApp from '../helpers/start-app';
 let application;
 
 function doSetup() {
-  stubOrganizations();
+  stubOrganization();
+  stubProfile({ hasCompletedSetup: true });
+  stubCriterionDocuments({});
+  stubCriteria();
   stubStacks();
-  // Ensure the current user's role is NOT an owner
   signInAndVisit('/', {}, { type: 'compliance_user' });
 }
 
@@ -27,6 +29,7 @@ module('Acceptance: Trainee Dashboard', {
 
 test('visiting / without read access on any stacks redirects to the gridiron-user', function(assert) {
   andThen(function() {
-    assert.equal(currentPath(), 'gridiron-user');
+    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-user',
+                'redirected to "My Gridiron" page');
   });
 });

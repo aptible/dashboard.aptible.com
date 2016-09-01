@@ -48,7 +48,7 @@ test(`visiting /stacks/:stack_id/databases without any databases redirects to ${
   signInAndVisit(`/stacks/${stackId}/databases`);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.databases.new');
+    assert.equal(currentPath(), 'enclave.stack.databases.new');
   });
 });
 
@@ -72,7 +72,7 @@ test(`visit ${url} when stack has no databases does not show cancel`, function(a
   signInAndVisit(url);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.databases.new');
+    assert.equal(currentPath(), 'enclave.stack.databases.new');
     let button = findButton('Cancel');
     assert.ok(!button.length, 'has no cancel button');
   });
@@ -91,7 +91,7 @@ test(`visit ${url} shows basic info`, function(assert) {
   signInAndVisit(url);
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.databases.new');
+    assert.equal(currentPath(), 'enclave.stack.databases.new');
 
     expectInput('handle');
     expectInput('databaseImage');
@@ -213,7 +213,7 @@ test(`visit ${url} and create`, function(assert) {
   // TODO test that moving the slider changes the disk size
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.databases.index');
+    assert.equal(currentPath(), 'enclave.stack.databases.index');
 
     assert.ok( findDatabase(dbHandle).length,
         'db list shows new db' );
@@ -275,7 +275,7 @@ test(`visit ${url} with duplicate handle`, function(assert) {
     assert.ok(submitButton.is(':disabled'), 'submit button is disabled');
 
     submitButton.click();
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.databases.new');
+    assert.equal(currentPath(), 'enclave.stack.databases.new');
   });
 });
 
@@ -292,7 +292,7 @@ test(`visit ${url} and click cancel button`, function(assert) {
     clickButton('Cancel');
   });
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.databases.index');
+    assert.equal(currentPath(), 'enclave.stack.databases.index');
 
     assert.ok( !findDatabase(dbHandle).length,
         'does not show database in list' );
@@ -332,7 +332,7 @@ test(`visit ${url} and transition away`, function(assert) {
     visit(dbIndexUrl);
   });
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.databases.index');
+    assert.equal(currentPath(), 'enclave.stack.databases.index');
 
     assert.ok( !findDatabase(dbHandle).length,
         'does not show database in list' );

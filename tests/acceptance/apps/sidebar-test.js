@@ -63,7 +63,7 @@ test('includes breadcrumb to parent stack', function(assert) {
   });
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'enclave.stack.apps.index');
   });
 });
 

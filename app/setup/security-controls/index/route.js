@@ -8,7 +8,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
   },
 
   setupController(controller, model) {
-    let organizationUrl = this.modelFor('gridiron-organization').get('data.links.self');
+    let organizationUrl = this.modelFor('gridiron-organization').get('organization.data.links.self');
 
     controller.set('model', model);
     controller.set('organizationUrl', organizationUrl);

@@ -12,7 +12,7 @@ let application;
 // aptible-helpers
 const organizationId = 1;
 
-const billingUrl = `/organizations/${organizationId}/billing`;
+const billingUrl = `/organizations/${organizationId}/admin/billing`;
 const url = billingUrl;
 const aptibleSettingsUrl = `/organizations/${organizationId}`;
 const planUrl = `${billingUrl}/plan`;

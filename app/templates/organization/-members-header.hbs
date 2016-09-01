@@ -8,7 +8,7 @@
     <ul class="resource-metadata resource-metadata">
       {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
         {{#if hasAbility}}
-          {{#link-to 'organization.contact-settings' tagName='li' classNames='resource-metadata-item resource-metadata-button'}}
+          {{#link-to 'organization.admin.contact-settings' tagName='li' classNames='resource-metadata-item resource-metadata-button'}}
             {{#bs-tooltip title="Edit Contact Settings"}}
               <i class="fa fa-cog"></i>
             {{/bs-tooltip}}

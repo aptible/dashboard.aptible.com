@@ -1,13 +1,14 @@
-{{#if hasAccessToPlatform}}
-  <li class="{{if opsActive 'active' null}}">
-    {{link-to 'Apps and Databases' 'stacks' class="enclave-nav"}}
-  </li>
+{{#if authorization.hasAnyOrganizationsWithEnclaveProduct}}
+  {{#link-to 'enclave' tagName="li"}}
+    {{link-to 'Apps and Databases' 'enclave' class="enclave-nav" bubbles=false}}
+  {{/link-to}}
 {{/if}}
-{{#if hasAccessToCompliance}}
+
+{{#if authorization.hasAnyOrganizationsWithGridironProduct}}
   {{#if showSheriff}}
-    <li class="{{if sheriffActive 'active' null}}">
-      {{link-to 'Compliance Tools' 'gridiron' class="gridiron-nav"}}
-    </li>
+    {{#link-to 'gridiron' tagName="li"}}
+      {{link-to 'Compliance Tools' 'gridiron' class="gridiron-nav" bubbles=false}}
+    {{/link-to}}
   {{else}}
     <li>
       {{#link-to-aptible app="compliance" path=""}}Compliance Tools{{/link-to-aptible}}
@@ -16,8 +17,8 @@
 {{/if}}
 
 {{#each currentUser.organizations as |organization|}}
-  <li class="{{if settingsActive 'active' null}}">
-    {{link-to organization.name 'organization' organization class="organization-nav"}}
-  </li>
+  {{#link-to 'organization' organization.id tagName="li"}}
+    {{link-to organization.name 'organization' organization.id class="organization-nav" bubbles=false}}
+  {{/link-to}}
 {{/each}}
 

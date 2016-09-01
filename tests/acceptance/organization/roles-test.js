@@ -87,7 +87,7 @@ test(`visiting ${url} shows roles`, (assert) => {
   signInAndVisit(url, {}, roles[0]);
 
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.roles.type');
+    assert.equal(currentPath(), 'organization.roles.type');
 
     roles.forEach( (r) => {
       let roleDiv = find(`.role-details__heading:contains(${r.name})`);
@@ -134,6 +134,6 @@ test(`visit ${url} and click to show`, (assert) => {
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.role.members');
+    assert.equal(currentPath(), 'enclave.role.members');
   });
 });

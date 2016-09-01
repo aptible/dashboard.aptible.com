@@ -118,7 +118,7 @@ test(`visiting ${appVhostsUrl} without any endpoints redirects to ${appVhostsNew
   signInAndVisit(appVhostsUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.app.vhosts.new');
+    assert.equal(currentPath(), 'enclave.app.vhosts.new');
   });
 });
 

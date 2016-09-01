@@ -13,7 +13,7 @@ let application;
 // aptible-helpers
 const organizationId = '1';
 
-const paymentMethodUrl = `/organizations/${organizationId}/billing/payment-method`;
+const paymentMethodUrl = `/organizations/${organizationId}/admin/billing/payment-method`;
 const url = paymentMethodUrl;
 
 const updatePaymentMethodButton = "Edit";

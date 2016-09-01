@@ -39,11 +39,11 @@ test('it is active when matching', function(assert) {
             'active when app path is subset of currentWhen path');
 });
 
-test('it is active when matching with dashboard prefix', function(assert) {
+test('it is active when matching with enclave prefix', function(assert) {
   assert.expect(5);
 
   let mockRoutingService = {
-    currentPath: 'dashboard.abc'
+    currentPath: 'enclave.abc'
   };
 
   // creates the component instance

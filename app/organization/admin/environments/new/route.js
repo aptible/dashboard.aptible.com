@@ -38,7 +38,7 @@ export default Ember.Route.extend({
     },
 
     cancel() {
-      this.transitionTo('organization.environments');
+      this.transitionTo('organization.admin.environments');
     },
 
     save() {
@@ -58,7 +58,7 @@ export default Ember.Route.extend({
           this._trackEnvironmentCreation();
         }
 
-        this.transitionTo('organization.environments');
+        this.transitionTo('organization.admin.environments');
         Ember.get(this, 'flashMessages').success(message);
       });
     }

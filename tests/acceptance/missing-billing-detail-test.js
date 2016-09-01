@@ -16,7 +16,6 @@ module('Acceptance: Missing Billing Detail', {
 });
 
 test('with only one organization', function(assert) {
-  stubOrganizations();
   stubStacks();
   stubDatabaseImages();
   stubOrganization({ id: 1 });
@@ -46,20 +45,23 @@ test('with more than one organization shows link to payment page', function(asse
       }
     }
   ];
-  stubBillingDetail({ id: 1 });
-  stubRequest('get', '/billing_details/2', (request) => request.notFound());
   stubRequest('get', '/organizations', function() {
-    return this.success({
-      _links: {},_embedded: { organizations }
+    return this.success({ _embedded: { organizations }});
+  });
+
+  organizations.forEach((o) => {
+    stubRequest('get', `/organizations/${o.id}`, function() {
+      return this.success(o);
     });
   });
-  stubOrganization({ id: 1 });
 
+  stubBillingDetail({ id: 1 });
+  stubRequest('get', '/billing_details/2', (request) => request.notFound());
   stubStacks();
   signInAndVisit('/');
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index',
+    assert.equal(currentPath(), 'enclave.stack.apps.index',
                  'was not redirected to payment info');
     let paymentLink = findWithAssert('.layout-sidebar .requires-payment-link');
     assert.equal(paymentLink.length, 1, 'shows requires payment link in sidebar');

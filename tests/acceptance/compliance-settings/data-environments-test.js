@@ -26,7 +26,7 @@ let users = [
 let roles = [
   {
     id: basicRoleId,
-    type: 'platform_user',
+    type: 'compliance_owner',
     name: 'Basic Role',
     _links: {
       self: { href: `/roles/${basicRoleId}` },

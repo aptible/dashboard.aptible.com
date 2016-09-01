@@ -15,13 +15,16 @@ let apiRoleUrl = `/roles/${roleId}`;
 const roleData = {
   id: roleId,
   name: 'the role name',
-  _links: { self: { href: apiRoleUrl } }
+  _links: {
+    self: { href: apiRoleUrl },
+    organization: { href: `/organizations/${orgId}` }
+  }
 };
 
 module('Acceptance: Organizations: Roles: New', {
   beforeEach: function() {
     application = startApp();
-    stubOrganizations();
+    stubOrganization();
     stubStacks();
   },
 
@@ -58,7 +61,7 @@ test(`visiting ${url} shows form to create new role`, (assert) => {
   setup('development');
   signInAndVisit(url);
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.roles.new');
+    assert.equal(currentPath(), 'organization.roles.new');
     expectButton('Save');
     expectButton('Cancel');
     expectFocusedInput('role-name');
@@ -83,8 +86,9 @@ test(`visiting ${url} and creating new platform_user role`, (assert) => {
     findWithAssert('.role-type-option');
     clickButton('Save');
   });
+  
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.role.members');
+    assert.equal(currentPath(), 'enclave.role.members');
   });
 });
 
@@ -102,13 +106,13 @@ test(`visiting ${url} and creating new compliance_user role`, (assert) => {
 
   signInAndVisit(url);
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.roles.new');
+    assert.equal(currentPath(), 'organization.roles.new');
     fillInput('role-name', roleData.name);
     findWithAssert('.role-type-option[data-option-value=compliance_user]').click();
     clickButton('Save');
   });
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.role.members');
+    assert.equal(currentPath(), 'enclave.role.members');
   });
 });
 

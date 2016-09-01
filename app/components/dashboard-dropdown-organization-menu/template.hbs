@@ -4,11 +4,11 @@
 
 {{#if authorizationContext.userIsOrganizationAdmin}}
   {{#dashboard-dropdown-item}}
-    {{link-to 'Members' 'organization.members' authorizationContext.organization.id class="organization-members"}}
+    {{link-to 'Settings' 'organization' authorizationContext.organization.id class="organization-settings"}}
   {{/dashboard-dropdown-item}}
 {{else}}
   {{#dashboard-dropdown-item}}
-    {{link-to 'Settings' 'organization' authorizationContext.organization.id class="organization-settings"}}
+    {{link-to 'Members' 'organization.members' authorizationContext.organization.id class="organization-members"}}
   {{/dashboard-dropdown-item}}
 {{/if}}
 
@@ -17,7 +17,7 @@
     {{link-to 'My Gridiron Status' 'gridiron-user' authorizationContext.organization.id class="gridiron-user"}}
   {{/dashboard-dropdown-item}}
 
-  {{#if authorizationContext.userIsGridironAdmin}}
+  {{#if authorizationContext.userIsGridironOrOrganizationAdmin}}
     {{#dashboard-dropdown-item}}
       {{link-to 'Gridiron Admin' 'gridiron-admin' authorizationContext.organization.id class="gridiron-admin"}}
     {{/dashboard-dropdown-item}}

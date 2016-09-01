@@ -103,7 +103,7 @@ test(`visiting ${url} shows users info and all roles with checkboxes`, function(
   signInAndVisit(url);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.members.edit');
+    assert.equal(currentPath(), 'organization.members.edit');
     assert.ok(find(`:contains(${user.name})`).length, `user name "${user.name}" is on the page`);
 
     expectButton('Save');
@@ -213,7 +213,7 @@ test(`visit ${url} allows removing user from organization`, function(assert){
   signInAndVisit(url);
   clickButton(`Remove from ${orgName}`);
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.members.index');
+    assert.equal(currentPath(), 'organization.members.index');
   });
 });
 

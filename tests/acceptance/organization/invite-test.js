@@ -60,7 +60,7 @@ test(`visiting ${url} shows form to invite`, function(assert) {
 
   signInAndVisit(url);
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.invite');
+    assert.equal(currentPath(), 'organization.invite');
     expectFocusedInput('email');
     expectInput('email');
     expectInput('role');
@@ -86,7 +86,7 @@ test(`visiting ${url} and clicking cancel`, function(assert) {
   clickButton('Cancel');
 
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.members.index');
+    assert.equal(currentPath(), 'organization.members.index');
   });
 });
 

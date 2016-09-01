@@ -13,13 +13,15 @@ export default Ember.Route.extend({
   },
 
   setupController(controller) {
+    let organization = this.get('complianceStatus.organization');
     controller.set('organizations', this.modelFor('gridiron'));
-    controller.set('organization', this.modelFor('gridiron-organization'));
+    controller.set('organization', organization);
   },
 
   redirect() {
     let context = this.get('complianceStatus.authorizationContext');
-    if (!context.get('userIsGridironAdmin')) {
+
+    if (!context.get('userIsGridironOrOrganizationAdmin')) {
       let message = `Access Denied: You must be a Gridiron Owner in order to view this page`;
       Ember.get(this, 'flashMessages').danger(message);
 

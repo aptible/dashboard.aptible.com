@@ -15,18 +15,19 @@
       {{link-to "Roles" "organization.roles" organization.id bubbles=false class="role-index"}}
     {{/with-active-class}}
 
-    {{#link-to 'organization.environments' organization.id tagName="li"}}
-      {{link-to "Environments" "organization.environments" organization.id bubbles=false class="environments-index"}}
-    {{/link-to}}
-
     {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
       {{#if hasAbility}}
-        {{#link-to 'organization.contact-settings' organization.id tagName="li"}}
-          {{link-to "Contact Settings" "organization.contact-settings" organization.id bubbles=false class="contact-settings"}}
+
+        {{#link-to 'organization.admin.environments' organization.id tagName="li"}}
+          {{link-to "Environments" "organization.admin.environments" organization.id bubbles=false class="environments-index"}}
         {{/link-to}}
 
-        {{#link-to 'organization.billing' organization.id tagName="li"}}
-          {{link-to "Billing" "organization.billing" organization.id bubbles=false class="billing-index"}}
+        {{#link-to 'organization.admin.contact-settings' organization.id tagName="li"}}
+          {{link-to "Contact Settings" "organization.admin.contact-settings" organization.id bubbles=false class="contact-settings"}}
+        {{/link-to}}
+
+        {{#link-to 'organization.admin.billing' organization.id tagName="li"}}
+          {{link-to "Billing" "organization.admin.billing" organization.id bubbles=false class="billing-index"}}
         {{/link-to}}
       {{/if}}
     {{/aptible-ability}}

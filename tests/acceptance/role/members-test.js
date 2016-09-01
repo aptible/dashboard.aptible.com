@@ -281,7 +281,7 @@ test(`visiting ${pageUrl} as an unauthorized user to roles does not redirect, bu
   andThen(() => {
     assert.equal(
       currentPath(),
-      'dashboard.catch-redirects.role.members',
+      'enclave.role.members',
       'remains on current path'
     );
 

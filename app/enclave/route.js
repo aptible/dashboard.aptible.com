@@ -1,6 +1,10 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  model() {
+    return this.get('authorization').load();
+  },
+
   redirect() {
     return this.handleNoOrganizations() ||
            this.handleMissingBillingDetail() ||
@@ -34,17 +38,20 @@ export default Ember.Route.extend({
   },
 
   handleComplianceOnlyUsers() {
-    if (!this.features.get('gridiron-user')) {
-      return;
-    }
-
     // If no organization context has any enclave access, get out of here
     if (!this.get('authorization.hasAnyEnclaveAccess')) {
       let message = `You do not have access to view Enclave resources. If this
                      is a mistake, please contact either your account owner or
                      support@aptible.com`;
       Ember.get(this, 'flashMessages').danger(message);
-      return this.transitionTo('gridiron-user');
+      let context = this.get('authorization.organizationContexts.firstObject');
+      let organization = context.get('organization.id');
+
+      if(context.get('userIsGridironAdmin')) {
+        return this.transitionTo('gridiron-admin', organization);
+      }
+
+      return this.transitionTo('gridiron-user', organization);
     }
   },
 

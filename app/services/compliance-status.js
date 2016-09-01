@@ -8,10 +8,13 @@ import CriterionAlertsMixin from 'diesel/mixins/services/criterion-alerts';
 export default Ember.Service.extend(CriterionAlertsMixin, {
   store: Ember.inject.service(),
 
-  loadOrganizationStatus(organization) {
-    Ember.assert('An organization is requried in order to load compliance status', organization);
+  loadOrganizationStatus(authorizationContext) {
+    Ember.assert('An authorizationContext is requried in order to load compliance status', authorizationContext);
+    let organization = authorizationContext.get('organization');
 
     this.set('organization', organization);
+    this.set('authorizationContext', authorizationContext);
+
     let documentQuery = { organization: organization.get('data.links.self') };
     let store = this.get('store');
     let complianceStatus = this;

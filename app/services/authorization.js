@@ -57,4 +57,9 @@ export default Ember.Service.extend({
   hasNoStacks: Ember.computed.equal('stacks.length', 0),
   contextsWithEnclaveAccess: Ember.computed.filterBy('organizationContexts', 'hasEnclaveAccess', true),
   hasAnyEnclaveAccess: Ember.computed.gt('contextsWithEnclaveAccess.length', 0),
+
+  contextsWithEnclaveProduct: Ember.computed.filterBy('organizationContexts', 'organizationHasEnclaveProduct', true),
+  contextsWithGridironProduct: Ember.computed.filterBy('organizationContexts', 'organizationHasGridironProduct', true),
+  hasAnyOrganizationsWithEnclaveProduct: Ember.computed.gt('contextsWithEnclaveProduct.length', 0),
+  hasAnyOrganizationsWithGridironProduct: Ember.computed.gt('contextsWithGridironProduct.length', 0)
 });

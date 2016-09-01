@@ -56,7 +56,7 @@ test('Organization settings page basic UI', function(assert) {
 });
 
 test('Clicking continue saves organization profile and moves to next step', function(assert) {
-  expect(7);
+  expect(8);
 
   let expectedAboutOrganization = 'Secure, private cloud deployment for digital health.';
   let expectedAboutProduct = 'Seamlessly integrate advanced compliance tools';
@@ -80,6 +80,7 @@ test('Clicking continue saves organization profile and moves to next step', func
   });
 
   andThen(() => {
+    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.organization', 'on organization setup page');
     fillIn('textarea[name="aboutOrganization"]', expectedAboutOrganization);
     fillIn('textarea[name="aboutProduct"]', expectedAboutProduct);
   });

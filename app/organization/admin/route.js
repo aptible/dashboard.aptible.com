@@ -8,10 +8,6 @@ export default Ember.Route.extend({
       let message = `Access Denied: You must be an organization owner in order to view that page`;
       Ember.get(this, 'flashMessages').danger(message);
       this.transitionTo('organization.members');
-    } else {
-      this.transitionTo('contact-settings');
     }
-
-    this.transitionTo('organization.members', context);
   }
 });

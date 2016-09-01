@@ -14,7 +14,7 @@ let application;
 // aptible-helpers
 const organizationId = '1';
 
-const planUrl = `/organizations/${organizationId}/billing/plan`;
+const planUrl = `/organizations/${organizationId}/admin/billing/plan`;
 const url = planUrl;
 const apiOrganizationUrl = `/billing_details/${organizationId}`;
 const activePanelClass = 'active';
@@ -24,7 +24,6 @@ module('Acceptance: Organizations: Billing: Plan', {
   beforeEach: function() {
     application = startApp();
     stubStacks();
-    stubOrganizations();
   },
 
   afterEach: function() {
@@ -48,10 +47,10 @@ function findPlanPanel(assert, planType){
 
 test(`shows 3 plan types: development, platform and managed`, (assert) => {
   stubOrganization();
-  stubBillingDetail();
   signInAndVisit(url);
 
   andThen(() => {
+    assert.equal(currentPath(), 'organization.admin.billing.plan');
     expectDisplayedPlanType(assert, 'Development');
     expectDisplayedPlanType(assert, 'Platform');
     expectDisplayedPlanType(assert, 'Managed');
@@ -61,11 +60,11 @@ test(`shows 3 plan types: development, platform and managed`, (assert) => {
 
 test(`on plan "development": highlights the current plan, shows upgrade button`, (assert) => {
   let plan = 'development';
-  stubOrganization();
-  stubBillingDetail({plan});
+  stubOrganization({}, {plan});
   signInAndVisit(url);
 
   andThen(() => {
+    assert.equal(currentPath(), 'organization.admin.billing.plan');
     let panel = findPlanPanel(assert, 'Development');
     assert.ok(panel.hasClass(activePanelClass),
               'panel "Development" is active');
@@ -82,11 +81,11 @@ test(`on plan "development": highlights the current plan, shows upgrade button`,
 
 test(`on plan "development": shows default allowances for "platform" upgrade`, (assert) => {
   let plan = 'development';
-  stubOrganization();
-  stubBillingDetail({plan: plan, containerAllowance: 15, diskAllowance: 2500, domainAllowance: 10});
+  stubOrganization({}, {plan: plan, containerAllowance: 15, diskAllowance: 2500, domainAllowance: 10});
   signInAndVisit(url);
 
   andThen(() => {
+    assert.equal(currentPath(), 'organization.admin.billing.plan');
     let containers = find('.platform-plan .plan-items li:eq(1)');
     let diskSpace = find('.platform-plan .plan-items li:eq(2)');
     let domains = find('.platform-plan .plan-items li:eq(3)');
@@ -99,11 +98,11 @@ test(`on plan "development": shows default allowances for "platform" upgrade`, (
 
 test(`on plan "platform": shows custom allowances`, (assert) => {
   let plan = 'platform';
-  stubOrganization();
-  stubBillingDetail({plan: plan, containerAllowance: 15, diskAllowance: 2500, domainAllowance: 10});
+  stubOrganization({}, {plan: plan, containerAllowance: 15, diskAllowance: 2500, domainAllowance: 10});
   signInAndVisit(url);
 
   andThen(() => {
+    assert.equal(currentPath(), 'organization.admin.billing.plan');
     let containers = find('.platform-plan .plan-items li:eq(1)');
     let diskSpace = find('.platform-plan .plan-items li:eq(2)');
     let domains = find('.platform-plan .plan-items li:eq(3)');
@@ -116,11 +115,11 @@ test(`on plan "platform": shows custom allowances`, (assert) => {
 
 test(`on plan "production": shows custom allowances`, (assert) => {
   let plan = 'production';
-  stubOrganization();
-  stubBillingDetail({plan: plan, containerAllowance: 15, diskAllowance: 2500, domainAllowance: 10});
+  stubOrganization({}, {plan: plan, containerAllowance: 15, diskAllowance: 2500, domainAllowance: 10});
   signInAndVisit(url);
 
   andThen(() => {
+    assert.equal(currentPath(), 'organization.admin.billing.plan');
     let containers = find('.platform-plan .plan-items li:eq(1)');
     let diskSpace = find('.platform-plan .plan-items li:eq(2)');
     let domains = find('.platform-plan .plan-items li:eq(3)');
@@ -133,11 +132,11 @@ test(`on plan "production": shows custom allowances`, (assert) => {
 
 test(`on plan "platform": highlights the current plan, shows "contact support to downgrade" button`, (assert) => {
   let plan = 'platform';
-  stubOrganization();
-  stubBillingDetail({plan});
+  stubOrganization({}, {plan});
   signInAndVisit(url);
 
   andThen(() => {
+    assert.equal(currentPath(), 'organization.admin.billing.plan');
     let panel = findPlanPanel(assert, 'Platform');
     assert.ok(panel.hasClass(activePanelClass),
               'panel "Platform" is active');
@@ -154,11 +153,11 @@ test(`on plan "platform": highlights the current plan, shows "contact support to
 
 test(`on plan "production": highlights the current plan, shows "contact support to downgrade" button for both platform and development`, (assert) => {
   let plan = 'production';
-  stubOrganization();
-  stubBillingDetail({plan});
+  stubOrganization({}, {plan});
   signInAndVisit(url);
 
   andThen(() => {
+    assert.equal(currentPath(), 'organization.admin.billing.plan');
     let panel = findPlanPanel(assert, 'Managed');
     assert.ok(panel.hasClass(activePanelClass),
               'panel "Managed" is active');
@@ -177,15 +176,15 @@ test(`on plan "production": highlights the current plan, shows "contact support 
   });
 });
 
-test(`on plan "development": clicking the upgrade platform shows modal`, () => {
-  let billingDetail = {
-    id: organizationId,
-    plan: 'development'
-  };
-  stubOrganization({}, billingDetail);
+test(`on plan "development": clicking the upgrade platform shows modal`, (assert) => {
+  let plan = 'development';
+  stubOrganization({}, { plan });
   signInAndVisit(url);
 
-  clickButton('Upgrade to Platform');
+  andThen(() => {
+    assert.equal(currentPath(), 'organization.admin.billing.plan');
+    clickButton('Upgrade to Platform');
+  });
 
   andThen(() => {
     expectButton('Confirm Upgrade');
@@ -193,11 +192,10 @@ test(`on plan "development": clicking the upgrade platform shows modal`, () => {
 });
 
 test(`on plan "development": clicking the upgrade platform updates organizations plan`, (assert) => {
-  assert.expect(5);
+  assert.expect(6);
 
   let plan = 'development';
-  stubOrganization();
-  stubBillingDetail({plan});
+  stubOrganization({}, { plan });
 
   stubRequest('put', apiOrganizationUrl, (request) => {
     assert.ok(true, 'updates organization');
@@ -214,6 +212,7 @@ test(`on plan "development": clicking the upgrade platform updates organizations
   signInAndVisit(url);
 
   andThen(() => {
+    assert.equal(currentPath(), 'organization.admin.billing.plan');
     let panel = findPlanPanel(assert, 'Platform');
     assert.ok(!panel.hasClass(activePanelClass),
               'precond - panel is not active before upgrading');
@@ -232,11 +231,11 @@ test(`on plan "development": clicking the upgrade platform updates organizations
 test(`clicking "${contactAptibleButtonName}" triggers a tracking event, shows modal`, (assert) => {
   let organizationName = 'the organization';
   stubOrganization({name: organizationName});
-  stubBillingDetail();
   signInAndVisit(url);
   clickButton(contactAptibleButtonName);
 
   andThen(() => {
+    assert.equal(currentPath(), 'organization.admin.billing.plan');
     assert.ok(didTrackEventWith(UPGRADE_PLAN_REQUEST_EVENT, 'organization_id', organizationId),
               `tracked event "${UPGRADE_PLAN_REQUEST_EVENT}" with {organization_id: ${organizationId}}`);
 
@@ -251,8 +250,7 @@ test(`clicking "${contactAptibleButtonName}" triggers a tracking event, shows mo
 test('shows error message if the server has error', (assert) => {
   let errorMessage = `Stripe error: This plan cannot be upgraded`;
   let plan = 'development';
-  stubOrganization();
-  stubBillingDetail({plan});
+  stubOrganization({}, { plan });
 
   stubRequest('put', apiOrganizationUrl, (request) => {
     assert.ok(true, 'updates organization');
@@ -268,6 +266,7 @@ test('shows error message if the server has error', (assert) => {
   clickButton('Upgrade to Platform');
   clickButton('Confirm Upgrade'); // <-- modal
   andThen(() => {
+    assert.equal(currentPath(), 'organization.admin.billing.plan');
     let error = findWithAssert('.alert');
     assert.ok(error.text().indexOf(errorMessage) > -1, 'error message shown');
 

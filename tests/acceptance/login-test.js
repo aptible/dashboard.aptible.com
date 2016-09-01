@@ -136,7 +136,7 @@ test('logging in with correct credentials', function(assert) {
   fillInput('password', password);
   clickButton('Log in');
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'enclave.stack.apps.index');
   });
 });
 
@@ -176,17 +176,23 @@ test('logging in with a valid OTP token', function(assert) {
   fillInput('otp-token', otpToken);
   clickButton('Log in');
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'enclave.stack.apps.index');
   });
 });
 
 test('after logging in, nav header shows user name', function(assert) {
   stubStacks();
   stubOrganization();
-  stubOrganizations();
-
   let userUrl = '/user-url',
       userName = 'Joe Hippa';
+  let roleData = {
+    id: 'r1',
+    type: 'owner',
+    _links: {
+      self: { href: '/roles/r1' },
+      organization: { href: '/organizations/1' }
+    }
+  };
 
   stubRequest('post', '/tokens', function(){
     return successfulTokenResponse(this, userUrl);
@@ -195,8 +201,15 @@ test('after logging in, nav header shows user name', function(assert) {
   stubRequest('get', userUrl, function(){
     return this.success({
       id: 'some-id',
-      name: userName
+      name: userName,
+      _links: {
+        roles: { href: '/users/some-id/roles' }
+      }
     });
+  });
+
+  stubRequest('get', '/users/some-id/roles', function() {
+    return this.success({ _embedded: { roles: [roleData] }});
   });
 
   visit('/login');
@@ -210,7 +223,6 @@ test('after logging in, nav header shows user name', function(assert) {
 test('when redirect cookie is set, after logging in, the location is visited', function() {
   stubStacks();
   stubOrganization();
-  stubOrganizations();
 
   let locationUrl = 'example.org/foobar',
       userUrl = '/user-url',
@@ -252,11 +264,10 @@ test('/login links to signup', function(assert) {
 test('visit /login while already logged in redirects to stack', function(assert) {
   stubStacks();
   stubOrganization();
-  stubOrganizations();
   signInAndVisit('/login');
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'enclave.stack.apps.index');
   });
 });
 

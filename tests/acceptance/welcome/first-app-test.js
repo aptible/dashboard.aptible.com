@@ -49,7 +49,7 @@ test('visiting /welcome/1/first-app logged in with billing detail and stacks red
   signInAndVisit('/welcome/1/first-app');
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index', 'remain on welcome page');
+    assert.equal(currentPath(), 'enclave.stack.apps.index', 'remain on welcome page');
   });
 });
 

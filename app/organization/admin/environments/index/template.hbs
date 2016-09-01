@@ -60,7 +60,7 @@
     <div class="resource-actions">
       {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
         {{#if hasAbility}}
-          {{#link-to 'organization.environments.new' class="btn btn-primary"}}
+          {{#link-to 'organization.admin.environments.new' class="btn btn-primary"}}
             Create New Environment
           {{/link-to}}
         {{/if}}

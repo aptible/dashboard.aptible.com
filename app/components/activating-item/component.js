@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const ALLOWED_PREFIXES = ['', 'dashboard.', 'dashboard.catch-redirects.'];
+const ALLOWED_PREFIXES = ['', 'enclave.'];
 
 export default Ember.Component.extend({
   routingService: Ember.inject.service('routing'),

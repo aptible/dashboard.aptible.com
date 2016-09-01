@@ -57,7 +57,7 @@ test(`visiting ${url} with no certificates redirects to certificates new`, funct
 
   signInAndVisit(url);
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.certificates.new');
+    assert.equal(currentPath(), 'enclave.stack.certificates.new');
   });
 });
 

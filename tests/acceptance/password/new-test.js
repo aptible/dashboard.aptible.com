@@ -29,7 +29,7 @@ test('visiting /password/new/:reset_code/:user_id signed in redirects to index',
   var resetCode = 'defResetCode';
   signInAndVisit(`/password/new/${resetCode}/${userId}`);
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'enclave.stack.apps.index');
   });
 });
 
