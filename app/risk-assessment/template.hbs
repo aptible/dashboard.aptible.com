@@ -33,9 +33,9 @@
     <div class="risk-assessment-container">
       <ul class="nav nav-tabs risk-assessment-header__tabs">
 
-        {{#activating-item currentWhen="risk-assessment" tagName="li"}}
-          {{link-to 'Components' 'risk-assessment' model}}
-        {{/activating-item}}
+        {{#link-to 'risk-assessment' tagName="li"}}
+          {{link-to 'Components' 'risk-assessment' model bubbles=false}}
+        {{/link-to}}
 
         {{!--
         {{#activating-item currentWhen="risk-assessment.activity" tagName="li"}}

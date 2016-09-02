@@ -1,31 +1,31 @@
 <ul class="nav nav-pills resource-navigation">
-  {{#activating-item currentWhen="database.metrics" tagName="li"}}
-    {{link-to "Metrics" "database.metrics"}}
-  {{/activating-item}}
+  {{#link-to 'database.metrics' tagName="li"}}
+    {{link-to "Metrics" "database.metrics" bubbles=false}}
+  {{/link-to}}
 
-  {{#activating-item currentWhen="database.activity" tagName="li"}}
-    {{link-to "Activity" "database.activity"}}
-  {{/activating-item}}
+  {{#link-to 'database.activity' tagName="li"}}
+    {{link-to "Activity" "database.activity" bubbles=false}}
+  {{/link-to}}
 
-  {{#activating-item currentWhen="database.backups" tagName="li"}}
-    {{link-to "Backups" "database.backups"}}
-  {{/activating-item}}
+  {{#link-to 'database.backups' tagName="li"}}
+    {{link-to "Backups" "database.backups" bubbles=false}}
+  {{/link-to}}
 
   {{#if model.supportsReplication}}
-    {{#activating-item currentWhen="database.replicate" tagName="li"}}
-      {{link-to "Replicate" "database.replicate"}}
-    {{/activating-item}}
+    {{#link-to 'database.replicate' tagName="li"}}
+      {{link-to "Replicate" "database.replicate" bubbles=false}}
+    {{/link-to}}
   {{/if}}
 
   {{#if model.supportsClustering}}
-    {{#activating-item currentWhen="database.cluster" tagName="li"}}
-      {{link-to "Cluster" "database.cluster"}}
-    {{/activating-item}}
+    {{#link-to 'database.cluster' tagName="li"}}
+      {{link-to "Cluster" "database.cluster" bubbles=false}}
+    {{/link-to}}
   {{/if}}
 
   {{#unless model.hasBeenDeprovisioned}}
-    {{#activating-item currentWhen="database.deprovision" tagName="li"}}
-      {{link-to "Deprovision" "database.deprovision"}}
-    {{/activating-item}}
+    {{#link-to 'database.deprovision' tagName="li"}}
+      {{link-to "Deprovision" "database.deprovision" bubbles=false}}
+    {{/link-to}}
   {{/unless}}
 </ul>
