@@ -30,6 +30,7 @@ test('visiting /welcome/first-app when not logged in', function(assert) {
 
 test('visiting /welcome/1/first-app logged in with no billing detail', function(assert) {
   stubStacks();
+  stubDatabaseImages();
   stubRequest('get', '/billing_details/1', (request) => request.notFound());
   stubOrganizations();
   stubOrganization();
@@ -42,6 +43,7 @@ test('visiting /welcome/1/first-app logged in with no billing detail', function(
 
 test('visiting /welcome/1/first-app logged in with billing detail and stacks redirects to stacks', function(assert) {
   stubStacks();
+  stubDatabaseImages();
   stubBillingDetail({ id: 1 });
   stubOrganizations();
   stubOrganization();
@@ -57,6 +59,7 @@ test('submitting a first app directs to payment info', function(assert) {
 
   stubRequest('get', '/billing_details/1', (request) => request.notFound());
   stubStacks({}, []);
+  stubDatabaseImages();
   stubOrganizations();
   signInAndVisit('/welcome/1/first-app');
 
@@ -71,14 +74,17 @@ test('submitting a first app directs to payment info', function(assert) {
 test('choosing a database type opens database pane, clicking it again closes', function(assert) {
   stubStacks({}, []);
   stubOrganizations();
+  stubDatabaseImages();
   signInAndVisit('/welcome/1/first-app');
 
   click('.select-option[title="Redis"]');
   andThen(() => {
     assert.ok(find('input[name="db-handle"]').length === 1, 'db handle input on the page');
+    assert.ok(find('select[name="databaseImage"]').length === 1, 'db version input on the page');
   });
   click('.select-option[title="Redis"]');
   andThen(() => {
     assert.ok(find('input[name="db-handle"]').length === 0, 'db handle input not on the page');
+    assert.ok(find('select[name="databaseImage"]').length === 0, 'db version input not on the page');
   });
 });

@@ -18,6 +18,7 @@ module('Acceptance: Missing Billing Detail', {
 test('with only one organization', function(assert) {
   stubOrganizations();
   stubStacks();
+  stubDatabaseImages();
   stubOrganization({ id: 1 });
   stubRequest('get', '/billing_details/1', (request) => request.notFound());
 

@@ -8,10 +8,18 @@ export default Ember.Route.extend({
 
   model() {
     var stack = this.modelFor('stack');
-    return this.store.createRecord('database', {
-      stack: stack,
-      type: 'postgresql'
+    return Ember.RSVP.hash({
+      databaseImages: this.store.find('database-image'),
+      database: this.store.createRecord('database', {
+        stack: stack,
+        type: 'postgresql'
+      })
     });
+  },
+
+  setupController(controller, model) {
+    controller.set('model', model.database);
+    controller.set('databaseImages', model.databaseImages);
   },
 
   renderTemplate(controller) {
@@ -33,7 +41,7 @@ export default Ember.Route.extend({
     },
 
     create() {
-      var db = this.currentModel,
+      var db = this.currentModel.database,
           route = this,
           controller = this.controller,
           store = this.store;

@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export function resetDBData(model){
   Ember.set(model, 'dbType', null);
+  Ember.set(model, 'dbVersion', null);
   Ember.set(model, 'initialDiskSize', 10);
   Ember.set(model, 'dbHandle', '');
 }
@@ -14,9 +15,15 @@ export default Ember.Route.extend({
   },
 
   model(params){
-    return this.store.find('organization', params.organization_id).then((organization) => {
-      const model = { organization };
-
+    return this.store
+      .find('organization', params.organization_id)
+      .then((organization) => {
+          return Ember.RSVP.hash({
+            organization: organization,
+            databaseImages: this.store.find('database-image')
+          });
+      })
+      .then((model) => {
       if (model.organization) {
         let plan = params.plan || 'development';
         if(plan === 'production') {
