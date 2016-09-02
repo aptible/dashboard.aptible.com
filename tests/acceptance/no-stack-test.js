@@ -8,7 +8,7 @@ let App;
 module("Acceptance: No Stacks Page", {
   beforeEach: function() {
     App = startApp();
-    stubOrganizations();
+    stubOrganization();
 
     stubRequest("get", "/accounts", function() {
       return this.success({

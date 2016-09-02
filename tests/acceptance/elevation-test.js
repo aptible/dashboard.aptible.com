@@ -12,7 +12,6 @@ module('Acceptance: Elevation', {
     user = createStubUser();
     stubUser(user);
     stubStacks();
-    stubOrganizations();
     stubOrganization({ id: 'o1'});
   },
   afterEach: function() {

@@ -12,7 +12,6 @@ module('Acceptance: Database Sidebar', {
     stubStacks({ includeApps: true, includeDatabases: true });
     stubStack({ id: 'my-stack-1' });
     stubOrganization();
-    stubOrganizations();
     stubRequest('get', `/databases/${databaseId}`, function() {
       return this.success({
         id: databaseId,

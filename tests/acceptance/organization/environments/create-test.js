@@ -17,7 +17,6 @@ var setupBillingDetail = function(plan='production') {
 module('Acceptance: Organizations: Environments: New', {
   beforeEach: function() {
     application = startApp();
-    stubOrganizations();
     stubOrganization({ id:orgId });
   },
 

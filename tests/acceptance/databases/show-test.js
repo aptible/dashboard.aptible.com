@@ -8,7 +8,7 @@ var App;
 module('Acceptance: Databases Show', {
   beforeEach: function() {
     App = startApp();
-    stubOrganizations();
+    stubOrganization();
     stubStacks();
   },
   afterEach: function() {

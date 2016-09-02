@@ -32,7 +32,6 @@ test(`visiting ${url} with no apps redirects to apps new`, function(assert) {
   stubStacks({ includeApps: false });
   stubStack({ id: stackId });
   stubOrganization();
-  stubOrganizations();
 
   signInAndVisit(url);
   andThen(function(){
@@ -58,7 +57,6 @@ test(`visiting ${url}`, function(assert) {
     id: orgId,
     name: orgName
   });
-  stubOrganizations();
   signInAndVisit(url);
 
   andThen(function() {
@@ -82,7 +80,6 @@ test(`visiting ${url} shows list of apps`, function(assert) {
     }
   });
   stubOrganization();
-  stubOrganizations();
 
   signInAndVisit(url);
   andThen(function() {
@@ -154,7 +151,6 @@ test(`visiting ${url} shows all pages of apps`, function(assert) {
     }
   });
   stubOrganization();
-  stubOrganizations();
 
   signInAndVisit(url);
   andThen(function() {
@@ -208,7 +204,6 @@ test(`visiting ${url} shows list of provisioning apps`, function(assert) {
     }
   });
   stubOrganization();
-  stubOrganizations();
 
   signInAndVisit(url);
   andThen(function() {
@@ -254,7 +249,6 @@ test(`visiting ${url} shows list of deprovisioning apps`, function(assert) {
     }
   });
   stubOrganization();
-  stubOrganizations();
 
   signInAndVisit(url);
   andThen(function() {
@@ -264,7 +258,6 @@ test(`visiting ${url} shows list of deprovisioning apps`, function(assert) {
 });
 
 test(`visiting ${url} then clicking on an app visits the app`, function(assert) {
-  stubOrganizations();
   stubOrganization();
   stubStacks({ includeApps: true });
   stubStack({
@@ -295,7 +288,6 @@ test(`visit ${url} shows create app button if user is verified`, function() {
     }
   };
   stubOrganization();
-  stubOrganizations();
   stubStacks({ includeApps: true }, [stack]);
   stubStack(stack);
 
@@ -308,7 +300,6 @@ test(`visit ${url} shows create app button if user is verified`, function() {
 
 test(`visit ${url} does not show create app button if user is not verified`, function() {
   stubOrganization();
-  stubOrganizations();
   stubStacks({ includeApps: true });
   stubStack({
     id: stackId,

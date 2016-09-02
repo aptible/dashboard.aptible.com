@@ -19,7 +19,6 @@ export default Ember.Component.extend({
     return ALLOWED_PREFIXES.some((prefix) => {
       // NOTE: Perhaps we could have babel give us startsWith?
       let prefixedCurrentWhen = `${prefix}${currentWhen}`;
-      console.log(currentPath, currentWhen, prefixedCurrentWhen);
       return currentPath.substring(0, prefixedCurrentWhen.length) === prefixedCurrentWhen;
     });
   })

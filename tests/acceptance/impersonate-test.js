@@ -59,7 +59,6 @@ module('Acceptance: Impersonation', {
     App = startApp();
     stubStacks();
     stubOrganization();
-    stubOrganizations();
 
     stubRequest('get', adminUserUrl, function (request) {
       request.ok(adminUserData);

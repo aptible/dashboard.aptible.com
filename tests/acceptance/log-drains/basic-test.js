@@ -15,8 +15,8 @@ let stackHandle = 'my-stack-handle',
 module('Acceptance: Log Drains', {
   beforeEach: function() {
     App = startApp();
-    stubOrganizations();
     stubStacks();
+    stubOrganization({id: orgId, name: orgName});
   },
   afterEach: function() {
     Ember.run(App, 'destroy');
@@ -53,7 +53,6 @@ module('Acceptance: Log Drains', {
 
     databasesPayload = databasesPayload || [{id: 'db-1', type: 'elasticsearch'}];
     stubStackDatabases(stackId, databasesPayload);
-    stubOrganization({id: orgId, name: orgName});
   }
 });
 

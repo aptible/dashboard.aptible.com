@@ -22,7 +22,7 @@ module('Acceptance: Organizations: Billing: Payment Method', {
   beforeEach: function() {
     application = startApp();
     stubStacks();
-    stubOrganizations();
+    stubOrganization();
   },
 
   afterEach: function() {

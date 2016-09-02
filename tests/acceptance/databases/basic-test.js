@@ -21,7 +21,6 @@ module('Acceptance: Databases', {
     stubStack(stack);
     stubStacks({includeDatabases:true}, [stack]);
     stubOrganization();
-    stubOrganizations();
   },
   afterEach: function() {
     Ember.run(App, 'destroy');

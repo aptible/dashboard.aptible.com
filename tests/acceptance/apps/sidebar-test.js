@@ -12,7 +12,6 @@ module('Acceptance: App Sidebar', {
     stubStacks({ includeApps: true, includeDatabases: true });
     stubStack({ id: 'my-stack-1' });
     stubOrganization();
-    stubOrganizations();
     stubRequest('get', '/users/user1/ssh_keys', function(){
       return this.success({
         _embedded: {

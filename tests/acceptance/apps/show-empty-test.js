@@ -20,7 +20,6 @@ module('Acceptance: Apps Show - Never deployed (app.status === "pending")', {
     assert.expectNoTab = expectNoTab;
     assert.expectNoTabs = expectNoTabs;
     stubStacks();
-    stubOrganizations();
   },
 
   afterEach: function() {
@@ -29,7 +28,6 @@ module('Acceptance: Apps Show - Never deployed (app.status === "pending")', {
 });
 
 function setupAjaxStubs(sshKeys){
-  stubOrganizations();
   stubOrganization();
   stubStack({ id: 'stubbed-stack' });
   stubApp({
@@ -177,7 +175,6 @@ test(`visit ${deployStepsUrl} with app services should redirect to services page
   });
   stubStacks();
 
-  stubOrganizations();
   stubOrganization();
   stubStack({ id: 'stubbed-stack' });
   stubApp({

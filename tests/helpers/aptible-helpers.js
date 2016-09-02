@@ -412,49 +412,6 @@ Ember.Test.registerHelper('stubBillingDetail', function(app, billingDetailData){
   });
 });
 
-
-Ember.Test.registerHelper('stubOrganizations', function() {
-  let orgData = {
-    _links: {
-      self: { href: '/organizations/1' },
-      billing_detail: { href: '/billing_details/1' }
-    },
-    id: 1,
-    name: 'Sprocket Co',
-    handle: 'sprocket-co',
-    type: 'organization'
-  };
-
-  let billingContactData = {
-    id: `billing-contact-user-1`,
-    name: 'Billing Contact',
-    email: 'billing@healthco.com'
-  };
-
-  stubRequest('get', '/organizations', function(){
-    return this.success({
-      _links: {},
-      _embedded: { organizations: [orgData] }
-    });
-  });
-
-  stubRequest('get', '/organizations/:org_id', function(){
-    return this.success(orgData);
-  });
-
-  stubRequest('get', `/users/${billingContactData.id}`, function() {
-    return this.success(billingContactData);
-  });
-
-  stubBillingDetail({
-    id: orgData.id,
-    _links: {
-      self: { href: `/billing_details/${orgData.id}` },
-      billing_contact: { href: `/users/${billingContactData.id}` }
-    }
-  });
-});
-
 Ember.Test.registerHelper('stubOrganization', function(app, orgData, billingDetailData){
   let orgId = 1;
   if (orgData) {
@@ -679,5 +636,4 @@ Ember.Test.registerHelper('stubInvitation', function(app, invitationData={}){
 Ember.Test.registerHelper('stubIndexRequests', function(){
   stubStacks();
   stubOrganization();
-  stubOrganizations();
 });

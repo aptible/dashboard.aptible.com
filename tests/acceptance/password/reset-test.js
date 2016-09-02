@@ -25,7 +25,6 @@ test('visiting /password/reset works', function(assert) {
 
 test('visiting /password/reset signed in redirects to index', function(assert) {
   stubOrganization();
-  stubOrganizations();
   stubStacks();
   signInAndVisit('/password/reset');
   andThen(function(){

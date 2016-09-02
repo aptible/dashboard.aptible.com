@@ -17,7 +17,7 @@ module('Acceptance: App Services', {
   beforeEach: function() {
     App = startApp();
     stubStacks();
-    stubOrganizations();
+    stubOrganization();
     stubRequest('get', '/users/user1/ssh_keys', function(){
       return this.success({
         _embedded: {

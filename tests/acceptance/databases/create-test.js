@@ -20,7 +20,6 @@ module('Acceptance: Database Create', {
         organization: { href: '/organizations/1' }
       }
     });
-    stubOrganizations();
     stubOrganization();
   },
   afterEach: function() {

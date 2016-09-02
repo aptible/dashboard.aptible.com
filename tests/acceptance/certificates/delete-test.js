@@ -47,7 +47,6 @@ module('Acceptance: Certificate Delete', {
     };
     stubStacks({}, [stack]);
     stubOrganization();
-    stubOrganizations();
     stubCertificatesAndVhosts();
   },
   afterEach: function() {

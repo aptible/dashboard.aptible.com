@@ -22,7 +22,7 @@ module('Acceptance: App Endpoint Edit', {
   beforeEach: function() {
     App = startApp();
     stubStacks();
-    stubOrganizations();
+    stubOrganization();
     stubApp({
       id: appId,
       handle: appHandle,

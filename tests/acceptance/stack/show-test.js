@@ -35,7 +35,6 @@ test(`visit ${url} shows basic stack info`, function(assert) {
   };
   stubStack(stackData);
   stubStacks([stackData]);
-  stubOrganizations();
   stubOrganization();
 
   let appData = [{

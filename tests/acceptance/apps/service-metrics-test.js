@@ -100,8 +100,8 @@ module("Acceptance: App Service Metrics", {
   beforeEach: function() {
     App = startApp();
     stubStacks();
-    stubOrganizations();
     stubStack(stack);
+    stubOrganization();
     stubApp(app);
     stubRequest("get", `/releases/${releaseId}`, function() {
       return this.success(release);

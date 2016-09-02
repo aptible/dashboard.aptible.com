@@ -8,7 +8,7 @@ var App;
 module('Acceptance: Database Deprovision', {
   beforeEach: function() {
     App = startApp();
-    stubOrganizations();
+    stubOrganization();
     stubStacks();
   },
   afterEach: function() {

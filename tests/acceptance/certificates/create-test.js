@@ -68,7 +68,6 @@ test(`visiting ${url} and creating new certificate`, function(assert) {
   stubStacks({ includeApps: false });
   stubStack({ id: stackId });
   stubOrganization();
-  stubOrganizations();
 
   signInAndVisit(url);
   andThen(function(){

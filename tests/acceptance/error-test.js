@@ -9,7 +9,6 @@ module("Acceptance: Error Page", {
   beforeEach: function() {
     App = startApp();
     stubOrganization();
-    stubOrganizations();
   },
   afterEach: function() {
     Ember.run(App, "destroy");

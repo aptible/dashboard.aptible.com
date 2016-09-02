@@ -9,7 +9,7 @@ var stackHandle = 'rrriggi';
 module('Acceptance: Database: Replicate: Clustering', {
   beforeEach: function() {
     App = startApp();
-    stubOrganizations();
+    stubOrganization();
     stubStacks();
 
     stubStack({

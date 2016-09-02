@@ -13,7 +13,7 @@ const url = overviewUrl;
 module('Acceptance: Organizations: Billing: Overview', {
   beforeEach: function() {
     application = startApp();
-    stubOrganizations();
+    stubOrganization();
     stubStacks();
   },
 

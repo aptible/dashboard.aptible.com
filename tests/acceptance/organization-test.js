@@ -18,7 +18,6 @@ module('Acceptance: Organization', {
 });
 
 test('visiting /organization', function(assert) {
-  stubOrganizations();
   stubStacks();
   stubOrganization({ id: 1 });
   stubBillingDetail({ id: 1 });

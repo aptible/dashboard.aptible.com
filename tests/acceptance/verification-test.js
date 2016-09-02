@@ -21,7 +21,6 @@ test('visiting /verify/some-code requires authentication', function() {
 test('visiting /verify/some-code creates verification', function(assert) {
   stubStacks(); // For loading index
   stubOrganization();
-  stubOrganizations();
   stubUser();
   var verificationCode = 'some-code';
 
@@ -45,7 +44,6 @@ test('after verification, pending databases are provisioned', function(assert) {
   assert.expect(5);
   stubStacks(); // For loading index
   stubOrganization();
-  stubOrganizations();
   var verificationCode = 'some-code';
   let dbId = 'db-id';
   let diskSize = '10';
@@ -94,7 +92,6 @@ test('visiting / when not verified shows verification message with resend button
   };
 
   stubStacks();
-  stubOrganizations();
   stubOrganization();
 
   stubRequest('post', '/resets', function(request){

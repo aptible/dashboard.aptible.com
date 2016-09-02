@@ -23,7 +23,6 @@ module('Acceptance: App Endpoint New', {
   beforeEach: function() {
     App = startApp();
     stubStacks();
-    stubOrganizations();
     stubOrganization();
   },
   afterEach: function() {

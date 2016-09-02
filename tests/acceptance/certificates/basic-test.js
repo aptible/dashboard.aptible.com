@@ -21,7 +21,6 @@ module('Acceptance: Certificates', {
     };
     stubStacks({}, [stack]);
     stubOrganization();
-    stubOrganizations();
   },
   afterEach: function() {
     Ember.run(App, 'destroy');
@@ -52,8 +51,6 @@ test(`visiting ${url} with no certificates redirects to certificates new`, funct
   });
   stubStacks({ includeApps: false });
   stubStack({ id: stackId });
-  stubOrganization();
-  stubOrganizations();
 
   signInAndVisit(url);
   andThen(function(){

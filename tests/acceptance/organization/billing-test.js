@@ -4,7 +4,6 @@ import {
   test
 } from 'qunit';
 import startApp from '../../helpers/start-app';
-import { stubRequest } from 'ember-cli-fake-server';
 
 let application;
 
@@ -26,9 +25,6 @@ function expectNav(assert, tabName) {
 module('Acceptance: Organizations: Billing', {
   beforeEach: function() {
     application = startApp();
-    stubOrganization();
-    stubOrganizations();
-    stubStacks();
   },
 
   afterEach: function() {
@@ -37,13 +33,14 @@ module('Acceptance: Organizations: Billing', {
 });
 
 test(`visiting ${url} requires authentication`, () => {
+  stubOrganization();
+  stubStacks();
   expectRequiresAuthentication(url);
 });
 
 test(`visiting ${aptibleSettingsUrl} shows link to billing`, () => {
   stubOrganization();
-    stubOrganizations();
-    stubStacks();
+  stubStacks();
   signInAndVisit(aptibleSettingsUrl);
   andThen(() => {
     expectLink(billingUrl);
@@ -51,7 +48,8 @@ test(`visiting ${aptibleSettingsUrl} shows link to billing`, () => {
 });
 
 test(`visiting ${url} shows "Plan" tab`, (assert) => {
-  stubBillingDetail({id: organizationId });
+  stubOrganization();
+  stubStacks();
   signInAndVisit(url);
   andThen(() => {
     expectNav(assert, 'Plan');
@@ -60,7 +58,8 @@ test(`visiting ${url} shows "Plan" tab`, (assert) => {
 });
 
 test(`visiting ${url} shows "Payment Method" tab`, (assert) => {
-  stubBillingDetail({id: organizationId });
+  stubOrganization();
+  stubStacks();
   signInAndVisit(url);
   andThen(() => {
     expectNav(assert, 'Payment Method');
@@ -69,22 +68,17 @@ test(`visiting ${url} shows "Payment Method" tab`, (assert) => {
 });
 
 test(`visiting ${billingUrl} displays "Billing" header`, (assert) => {
-  const billingDetailUrl = `/billing_details/${organizationId}`;
+  let billingDetailData = {
+    id: organizationId,
+    plan: 'production',
+    payment_method_name: 'VISA',
+    payment_method_display: '4242',
+    next_invoice_date: '2015-06-29T11:06:48.000-04:00',
+    _links: { organization: { href: `/organizations/${organizationId}` } }
+  };
 
-  stubOrganization({
-    _links: { billing_detail: { href: billingDetailUrl } }
-  });
-
-  stubRequest('get', billingDetailUrl, (request) => {
-    request.ok({
-      id: 'b-d-id',
-      plan: 'production',
-      payment_method_name: 'VISA',
-      payment_method_display: '4242',
-      next_invoice_date: '2015-06-29T11:06:48.000-04:00',
-      _links: { organization: { href: `/organizations/${organizationId}` } }
-    });
-  });
+  stubOrganization({ id: organizationId}, billingDetailData);
+  stubStacks();
 
   signInAndVisit(url);
   andThen(() => {

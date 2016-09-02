@@ -53,7 +53,7 @@ test('Creating an account directs to welcome wizard', function(assert) {
   };
   stubStacks({}, []);
   stubDatabaseImages();
-  stubOrganizations(orgData);
+  stubOrganization(orgData);
   stubRequest('get', '/billing_details/my-organization', function() {
     return this.notFound();
   });
@@ -75,7 +75,7 @@ test('Creating an account directs to welcome wizard', function(assert) {
 
 test('Signing up with no plan shows development copy', function(assert) {
   stubStacks({}, []);
-  stubOrganizations();
+  stubOrganization();
   stubDatabaseImages();
 
   stubRequest('get', '/billing_details/my-organization', function() {

@@ -23,7 +23,6 @@ test('visiting /password/new/:reset_code/:user_id works', function(assert) {
 
 test('visiting /password/new/:reset_code/:user_id signed in redirects to index', function(assert) {
   stubOrganization();
-  stubOrganizations();
   stubStacks();
   var userId = 'abcUserId';
   var resetCode = 'defResetCode';
