@@ -81,7 +81,7 @@ test(`visit ${url} when app has not been deployed`, function(assert){
 
   signInAndVisit(url);
   andThen(function(){
-    assert.equal(currentPath(), 'enclave.app.deploy');
+    assert.equal(currentPath(), 'requires-authorization.enclave.app.deploy');
 
     assert.ok( find(`.first-time-app-deploy h2:contains(${appHandle})`).length,
         'display app handle');
@@ -164,7 +164,7 @@ test(`visit ${url} when app has not been deployed, click destroy link`, function
 
   click(`a:contains(Destroy ${appHandle})`);
   andThen(function(){
-    assert.equal(currentPath(), 'enclave.stack.apps.new', 'redirected to apps');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.new', 'redirected to apps');
   });
 });
 
@@ -206,6 +206,6 @@ test(`visit ${deployStepsUrl} with app services should redirect to services page
   signInAndVisit(deployStepsUrl);
 
   andThen(function(){
-    assert.equal(currentPath(), 'enclave.app.services.index', 'redirected to app services');
+    assert.equal(currentPath(), 'requires-authorization.enclave.app.services.index', 'redirected to app services');
   });
 });

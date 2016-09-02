@@ -182,7 +182,7 @@ test('Setup Team settings basic UI', function(assert) {
   stubAllRoles();
   signInAndVisit(setupTeamUrl);
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.team', 'on workforce page');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.team', 'on workforce page');
   });
   testBasicUI(assert);
 });

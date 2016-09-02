@@ -136,7 +136,7 @@ test('logging in with correct credentials', function(assert) {
   fillInput('password', password);
   clickButton('Log in');
   andThen(() => {
-    assert.equal(currentPath(), 'enclave.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 
@@ -176,7 +176,7 @@ test('logging in with a valid OTP token', function(assert) {
   fillInput('otp-token', otpToken);
   clickButton('Log in');
   andThen(() => {
-    assert.equal(currentPath(), 'enclave.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 
@@ -267,7 +267,7 @@ test('visit /login while already logged in redirects to stack', function(assert)
   signInAndVisit('/login');
 
   andThen(function(){
-    assert.equal(currentPath(), 'enclave.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 

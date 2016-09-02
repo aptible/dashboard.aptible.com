@@ -36,7 +36,7 @@ test(`visiting ${url} shows form to create new environment`, (assert) => {
   stubStacks();
   signInAndVisit(url);
   andThen(() => {
-    assert.equal(currentPath(), 'organization.admin.environments.new');
+    assert.equal(currentPath(), 'requires-authorization.organization.admin.environments.new');
     expectButton('Save environment');
     expectButton('Cancel');
     expectFocusedInput('environment-handle');
@@ -70,7 +70,7 @@ test(`visiting ${url} and creating new environment`, (assert) => {
     clickButton('Save environment');
   });
   andThen(() => {
-    assert.equal(currentPath(), 'organization.admin.environments.index');
+    assert.equal(currentPath(), 'requires-authorization.organization.admin.environments.index');
   });
 });
 
@@ -105,7 +105,7 @@ test(`visiting ${url} and with duplicate handle`, (assert) => {
   });
   andThen(() => {
     //Still on new page
-    assert.equal(currentPath(), 'organization.admin.environments.new');
+    assert.equal(currentPath(), 'requires-authorization.organization.admin.environments.new');
   });
 });
 
@@ -136,7 +136,7 @@ test(`visiting ${url} and creating new prod environment`, (assert) => {
     clickButton('Save environment');
   });
   andThen(() => {
-    assert.equal(currentPath(), 'organization.admin.environments.index');
+    assert.equal(currentPath(), 'requires-authorization.organization.admin.environments.index');
   });
 });
 
@@ -167,6 +167,6 @@ test(`Creating a new environment with non-phi plan offers a link to upgrade`, (a
     clickButton('Save environment');
   });
   andThen(() => {
-    assert.equal(currentPath(), 'organization.admin.environments.index');
+    assert.equal(currentPath(), 'requires-authorization.organization.admin.environments.index');
   });
 });

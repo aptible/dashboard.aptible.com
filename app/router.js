@@ -52,119 +52,139 @@ function spdSteps() {
 }
 
 Router.map(function() {
-  this.authenticatedRoute("organization", { resetNamespace: true, path: "/organizations/:organization_id" }, function() {
-    this.route("members", {}, function() {
-      this.route('pending-invitations');
-      this.route("edit", {path: ":user_id/edit"});
+  this.authenticatedRoute('requires-authorization', { path: '/', resetNamespace: true }, function() {
+    this.route('settings', { resetNamespace: true }, function() {
+      this.route('requires-elevation', { path: 'protected' }, function() {
+        // REVIEW: We *need* to have a path for this, otherwise the index
+        // redirect to profile won't work. Is /protected/ the "right" path?
+        this.route('admin');
+      });
+      this.route('profile');
+      this.route('ssh');
+      this.route('impersonate');
+      this.route('logout');
     });
-    this.route("roles", {}, function() {
-      this.route("type", { path: ':type' });
-      this.route('new');
-    });
-    this.route("invite");
 
-    this.route('admin', {}, function() {
-      this.route('contact-settings');
-      this.route('environments', function() {
+    this.route("organization", { resetNamespace: true, path: "organizations/:organization_id" }, function() {
+      this.route("members", {}, function() {
+        this.route('pending-invitations');
+        this.route("edit", {path: ":user_id/edit"});
+      });
+      this.route("roles", {}, function() {
+        this.route("type", { path: ':type' });
         this.route('new');
       });
-      this.route("billing", {}, function() {
-        this.route('plan');
-        this.route('payment-method');
-      });
-    });
-  });
+      this.route("invite");
 
-  this.authenticatedRoute("enclave", { path: '/' }, function() {
-    this.route("index", { path: '', resetNamespace: true });
-
-    this.route("app", {
-      resetNamespace: true,
-      path: "apps/:app_id"
-    }, function() {
-      this.route("services", function () {
-        this.route('metrics', {
-          path: ':service_id/metrics'
+      this.route('admin', {}, function() {
+        this.route('contact-settings');
+        this.route('environments', function() {
+          this.route('new');
         });
-      });
-      this.route("vhosts", {}, function(){
-        this.route('new');
-        this.route('edit', {
-          path: ':vhost_id/edit'
-        });
-      });
-      this.route("activity");
-      this.route("deprovision");
-      this.route("deploy");
-    });
-
-    this.route("database", {
-      resetNamespace: true,
-      path: "databases/:database_id"
-    }, function() {
-      this.route("activity");
-      this.route("metrics");
-      this.route("backups");
-      this.route("replicate");
-      this.route("cluster");
-      this.route("deprovision");
-    });
-
-    this.route("stack", {
-      resetNamespace: true,
-      path: "stacks/:stack_id"
-    }, function() {
-      this.route("activate", { path: 'activate'});
-      this.route("log-drains", {
-        path: 'logging'
-      }, function(){
-        this.route("new");
-      });
-
-      this.route("apps", {
-        resetNamespace: true
-      }, function() {
-        this.route("new");
-      });
-
-      this.route("databases", {
-        resetNamespace: true
-      }, function() {
-        this.route("new");
-      });
-
-      this.route("certificates", {
-        resetNamespace: true
-      }, function() {
-        this.route("new");
-        this.route('edit', {
-          path: ':certificate_id/edit'
+        this.route("billing", {}, function() {
+          this.route('plan');
+          this.route('payment-method');
         });
       });
     });
 
-    this.route("stacks", { resetNamespace: true });
+    this.route("enclave", { path: '', resetNamespace: true }, function() {
+      this.route("app", {
+        resetNamespace: true,
+        path: "apps/:app_id"
+      }, function() {
+        this.route("services", function () {
+          this.route('metrics', {
+            path: ':service_id/metrics'
+          });
+        });
+        this.route("vhosts", {}, function(){
+          this.route('new');
+          this.route('edit', {
+            path: ':vhost_id/edit'
+          });
+        });
+        this.route("activity");
+        this.route("deprovision");
+        this.route("deploy");
+      });
 
-    this.route("role", {
-      resetNamespace: true,
-      path: "roles/:role_id"
-    }, function() {
-      this.route('members');
-      this.route('environments');
-      this.route('settings');
-    });
-  });
+      this.route("database", {
+        resetNamespace: true,
+        path: "databases/:database_id"
+      }, function() {
+        this.route("activity");
+        this.route("metrics");
+        this.route("backups");
+        this.route("replicate");
+        this.route("cluster");
+        this.route("deprovision");
+      });
 
-  this.authenticatedRoute('settings', { resetNamespace: true }, function() {
-    this.route('requires-elevation', { path: 'protected' }, function() {
-      // REVIEW: We *need* to have a path for this, otherwise the index
-      // redirect to profile won't work. Is /protected/ the "right" path?
-      this.route('admin');
+      this.route("stack", {
+        resetNamespace: true,
+        path: "stacks/:stack_id"
+      }, function() {
+        this.route("activate", { path: 'activate'});
+        this.route("log-drains", {
+          path: 'logging'
+        }, function(){
+          this.route("new");
+        });
+
+        this.route("apps", {
+          resetNamespace: true
+        }, function() {
+          this.route("new");
+        });
+
+        this.route("databases", {
+          resetNamespace: true
+        }, function() {
+          this.route("new");
+        });
+
+        this.route("certificates", {
+          resetNamespace: true
+        }, function() {
+          this.route("new");
+          this.route('edit', {
+            path: ':certificate_id/edit'
+          });
+        });
+      });
+
+      this.route("stacks", { resetNamespace: true });
+
+      this.route("role", {
+        resetNamespace: true,
+        path: "roles/:role_id"
+      }, function() {
+        this.route('members');
+        this.route('environments');
+        this.route('settings');
+      });
     });
-    this.route('profile');
-    this.route('ssh');
-    this.route('impersonate');
-    this.route('logout');
+
+    this.route('gridiron', { path: 'gridiron', resetNamespace: true }, function() {
+      this.route('gridiron-organization', { path: ':organization_id', resetNamespace: true }, function() {
+        this.route("gridiron-user", { path: 'user', resetNamespace: true });
+        this.route("gridiron-admin", { path: 'admin', resetNamespace: true }, function() {
+          this.route("training", { path: 'training', resetNamespace: true });
+          this.route("risk-assessments", { path: 'risk_assessments', resetNamespace: true });
+          this.route('policies');
+          this.route('security');
+          this.route('contracts');
+          this.route('incidents');
+          this.route('gridiron-settings', { path: 'settings', resetNamespace: true }, spdSteps);
+          this.route('setup', { path: 'setup', resetNamespace: true}, function() {
+            this.route('start');
+            this.route('finish');
+            spdSteps.call(this);
+          });
+        });
+      });
+    });
   });
 
   this.authenticatedRoute("welcome", {
@@ -216,26 +236,6 @@ Router.map(function() {
 
     this.route(showRoute, { path: showPath, resetNamespace: true }, function() {
       this.route('edit');
-    });
-  });
-
-  this.authenticatedRoute('gridiron', { path: 'gridiron' }, function() {
-    this.route('gridiron-organization', { path: ':organization_id', resetNamespace: true }, function() {
-      this.route("gridiron-user", { path: 'user', resetNamespace: true });
-      this.route("gridiron-admin", { path: 'admin', resetNamespace: true }, function() {
-        this.route("training", { path: 'training', resetNamespace: true });
-        this.route("risk-assessments", { path: 'risk_assessments', resetNamespace: true });
-        this.route('policies');
-        this.route('security');
-        this.route('contracts');
-        this.route('incidents');
-        this.route('gridiron-settings', { path: 'settings', resetNamespace: true }, spdSteps);
-        this.route('setup', { path: 'setup', resetNamespace: true}, function() {
-          this.route('start');
-          this.route('finish');
-          spdSteps.call(this);
-        });
-      });
     });
   });
 

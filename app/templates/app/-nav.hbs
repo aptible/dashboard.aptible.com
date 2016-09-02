@@ -1,23 +1,23 @@
 <ul class="nav nav-pills resource-navigation">
   {{#if model.hasBeenDeployed}}
-    {{#activating-item tagName="li" currentWhen="app.services"}}
-      {{link-to "Services" "app.services"}}
-    {{/activating-item}}
+    {{#link-to 'app.services' model tagName="li"}}
+      {{link-to "Services" "app.services" model bubbles=false}}
+    {{/link-to}}
 
-    {{#activating-item tagName="li" currentWhen="app.vhosts"}}
-      {{link-to "Endpoints" "app.vhosts"}}
-    {{/activating-item}}
+    {{#link-to 'app.vhosts' model tagName="li"}}
+      {{link-to "Endpoints" "app.vhosts" model bubbles=false}}
+    {{/link-to}}
   {{else}}
-    {{#activating-item tagName="li" currentWhen="app.deploy"}}
-      {{link-to "Deploy" "app.deploy"}}
-    {{/activating-item}}
+    {{#link-to 'app.deploy' model tagName="li"}}
+      {{link-to "Deploy" "app.deploy" model bubbles=false}}
+    {{/link-to}}
   {{/if}}
 
-  {{#activating-item tagName="li" currentWhen="app.activity"}}
-    {{link-to "Activity" "app.activity"}}
-  {{/activating-item}}
+  {{#link-to 'app.activity' model tagName="li"}}
+    {{link-to "Activity" "app.activity" model bubbles=false}}
+  {{/link-to}}
 
-  {{#activating-item tagName="li" currentWhen="app.deprovision"}}
-    {{link-to "Deprovision" "app.deprovision"}}
-  {{/activating-item}}
+  {{#link-to 'app.deprovision' model tagName="li"}}
+    {{link-to "Deprovision" "app.deprovision" model bubbles=false}}
+  {{/link-to}}
 </ul>

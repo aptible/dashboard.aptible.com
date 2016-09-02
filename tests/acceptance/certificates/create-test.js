@@ -72,13 +72,13 @@ test(`visiting ${url} and creating new certificate`, function(assert) {
 
   signInAndVisit(url);
   andThen(function(){
-    assert.equal(currentPath(), 'enclave.stack.certificates.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.certificates.new');
     fillInput('body', cert);
     fillInput('private-key', pKey);
     clickButton('Save Certificate');
   });
 
   andThen(function() {
-    assert.equal(currentPath(), 'enclave.stack.certificates.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.certificates.index');
   });
 });

@@ -36,7 +36,7 @@ test(`visiting ${url} with no apps redirects to apps new`, function(assert) {
 
   signInAndVisit(url);
   andThen(function(){
-    assert.equal(currentPath(), 'enclave.stack.apps.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.new');
   });
 });
 
@@ -62,7 +62,7 @@ test(`visiting ${url}`, function(assert) {
   signInAndVisit(url);
 
   andThen(function() {
-    assert.equal(currentPath(), 'enclave.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
     expectTitle(`${stackHandle} Apps`);
   });
 });
@@ -282,7 +282,7 @@ test(`visiting ${url} then clicking on an app visits the app`, function(assert) 
   });
 
   andThen(function(){
-    assert.equal(currentPath(), 'enclave.app.services.index', 'app show page is visited');
+    assert.equal(currentPath(), 'requires-authorization.enclave.app.services.index', 'app show page is visited');
   });
 });
 

@@ -89,7 +89,7 @@ test('Clicking back should return you to previous step', function(assert) {
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.team', 'returned to team step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.team', 'returned to team step');
   });
 });
 
@@ -134,7 +134,7 @@ test('Clicking continue saves data environment selections to organization profil
   andThen(clickContinueButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.security-controls.index', 'proceeds to next step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.security-controls.index', 'proceeds to next step');
   });
 });
 
@@ -195,7 +195,7 @@ test('Should load existing selections when attestation already exists', function
   andThen(clickContinueButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.security-controls.index', 'proceeds to next step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.security-controls.index', 'proceeds to next step');
   });
 });
 

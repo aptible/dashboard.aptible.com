@@ -358,7 +358,7 @@ function stubRequests(roles = [], users = [], invitations = []) {
 function expectCanManageEnclave(assert) {
   visit(enclaveUrl);
   andThen(() => {
-    assert.equal(currentPath(), 'enclave.stack.apps.index',
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index',
                 'expectCanManageEnclave: visiting enclave dashboard remains on enclave dashboard');
     assert.equal(find('.sidebar-nav .sidebar-stack-item').length, 2,
                 'expectCanManageEnclave: shows both stacks');
@@ -371,7 +371,7 @@ function expectCanManageGridironAdmin(assert) {
   let expectedEngines = ['risk', 'policy', 'training', 'security'];
   visit(gridironAdminUrl);
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.index',
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.index',
                 'expectCanManageGridironAdmin: remain on gridiron admin');
     expectedEngines.forEach((engine) => {
       assert.equal(find(`.${engine}-engine-status`).length, 1,
@@ -392,7 +392,7 @@ function expectCanManageGridironAdmin(assert) {
 function expectCanManageOrganizationAdmin(assert) {
   visit(organizationAdminUrl);
   andThen(() => {
-    assert.equal(currentPath(), 'organization.admin.contact-settings',
+    assert.equal(currentPath(), 'requires-authorization.organization.admin.contact-settings',
                 'expectCanManageOrganizationAdmin: remains on contact settings page');
 
     assert.equal(find('.organization-settings .contact-settings').length, 1,
@@ -403,7 +403,7 @@ function expectCanManageOrganizationAdmin(assert) {
 function expectCanManageMyGridiron(assert) {
   visit(myGridironUrl);
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-user',
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-user',
                 'expectCanManageMyGridiron: remains on gridiron user');
   });
 
@@ -419,7 +419,7 @@ function expectCanManageMyGridiron(assert) {
 function expectDenyGridironAdmin(assert) {
   visit(gridironAdminUrl);
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-user',
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-user',
                 'expectDenyGridironAdmin: redirected to gridiron user');
     // assert.equal(find('.danger:contains(Access Denied)').length, 1,
     //             'expectDenyGridironAdmin: shows access denied error message');
@@ -437,7 +437,7 @@ function expectDenyEnclave(assert) {
   visit(enclaveUrl);
   andThen(() => {
     // Should be redirected to "My Gridiron" with error message
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-user',
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-user',
                 'expectDenyEnclave: redirected to "My Compliance" page');
     // assert.equal(find('.danger:contains(Access Denied)').length, 1,
     //             'expectDenyEnclave: shows access denied error message');
@@ -449,7 +449,7 @@ function expectDenyEnclave(assert) {
 function expectDenyOrganizationAdmin(assert) {
   visit(organizationAdminUrl);
   andThen(() => {
-    assert.equal(currentPath(), 'organization.members.index',
+    assert.equal(currentPath(), 'requires-authorization.organization.members.index',
                 'expectDenyOrganizationAdmin: redirected to organization members index');
   });
 
@@ -468,7 +468,7 @@ function expectDenyOrganizationAdmin(assert) {
 function expectEnclaveToGridironAdminRedirect(assert) {
   visit(enclaveUrl);
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.index',
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.index',
                 'expectEnclaveToGridironAdminRedirect: redirected to gridiron admin when accessing enclave');
   });
 }
@@ -477,7 +477,7 @@ function expectEnclaveToGridironUserRedirect(assert) {
   visit(enclaveUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-user',
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-user',
                 'expectEnclaveToGridironUserRedirect: redirected to "My Compliance"');
   });
 }
@@ -491,7 +491,7 @@ function expectDenyMyGridiron(assert) {
   visit(myGridironUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'enclave.stack.apps.index',
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index',
                 'expectDenyMyGridiron: redirected off my gridiron to enclave');
   });
   andThen(openUserToggle);

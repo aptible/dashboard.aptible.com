@@ -57,7 +57,7 @@ test('includes breadcrumb to parent stack', function(assert) {
   });
 
   andThen(function() {
-    assert.equal(currentPath(), 'enclave.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 

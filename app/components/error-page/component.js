@@ -9,5 +9,5 @@ export default Ember.Component.extend({
   message: "That's all we know",
 
   actionName: "Back to Home",
-  actionDestination: "index"
+  actionDestination: "enclave"
 });

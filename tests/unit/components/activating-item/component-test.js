@@ -43,7 +43,7 @@ test('it is active when matching with enclave prefix', function(assert) {
   assert.expect(5);
 
   let mockRoutingService = {
-    currentPath: 'enclave.abc'
+    currentPath: 'requires-authorization.enclave.abc'
   };
 
   // creates the component instance

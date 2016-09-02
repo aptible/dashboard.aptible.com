@@ -182,7 +182,7 @@ test('Impersonation fails', function(assert) {
     findWithAssert(`header.navbar:contains('${adminUserName}')`);
     findWithAssert("div:contains('Error: Invalid grant')");
     assert.equal(find(`header.navbar:contains('${targetUserName}')`).length, 0, 'user is not in navbar');
-    assert.equal(currentPath(), 'settings.impersonate', 'remained in impersonation settings');
+    assert.equal(currentPath(), 'requires-authorization.settings.impersonate', 'remained in impersonation settings');
   });
 });
 

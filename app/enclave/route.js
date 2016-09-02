@@ -1,10 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  model() {
-    return this.get('authorization').load();
-  },
-
   redirect() {
     return this.handleNoOrganizations() ||
            this.handleMissingBillingDetail() ||

@@ -25,7 +25,7 @@ test('visiting /organization', function(assert) {
   setFeature('organization-settings', true);
   signInAndVisit('/organizations/1');
   andThen(function() {
-    assert.equal(currentPath(), 'organization.members.index');
+    assert.equal(currentPath(), 'requires-authorization.organization.members.index');
     expectLink('/organizations/1/members');
     expectLink('/organizations/1/roles');
   });

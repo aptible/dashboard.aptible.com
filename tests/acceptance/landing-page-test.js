@@ -32,7 +32,7 @@ test('visiting / when logged in with more than one stacks redirects to stacks in
   signInAndVisit('/');
 
   andThen(function() {
-    assert.equal(currentPath(), 'enclave.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 
@@ -63,7 +63,7 @@ test('visiting / when logged in with only one stack redirects to first stack pag
 
   andThen(function() {
     assert.equal(currentURL(), `/stacks/${stackId}/apps`);
-    assert.equal(currentPath(), 'enclave.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
 
     expectLink(`stacks/${stackId}/databases`);
     expectLink(`stacks/${stackId}/logging`);

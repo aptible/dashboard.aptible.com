@@ -67,7 +67,7 @@ test('Basic UI', function(assert) {
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.security-controls.show');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.security-controls.show');
   });
 });
 
@@ -89,7 +89,7 @@ test('Resuming with existing attestations', function(assert) {
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.security-controls.show', 'on show page');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.security-controls.show', 'on show page');
 
     assert.ok(find('input[name="security_controls.security.implemented"]').is(':checked'), 'Existing attestation is loaded');
   });
@@ -116,7 +116,7 @@ test('Clicking next will resume to first unfinished group', function(assert) {
   andThen(clickContinueButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.security-controls.show');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.security-controls.show');
     let title = findWithAssert('.security-control-group-title');
     assert.ok(title.is(':contains(Google)'), 'on google security control group');
   });
@@ -157,7 +157,7 @@ test('Clicking next with all completed groups will finish SPD', function(assert)
   andThen(clickContinueButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.finish');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.finish');
   });
 });
 
@@ -168,7 +168,7 @@ test('With no data environments configured it redirects back to data environment
   signInAndVisit(securityControlsUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.data-environments');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.data-environments');
   });
 });
 

@@ -49,7 +49,7 @@ test('Locations page basic UI, with no existing locations', function(assert) {
   signInAndVisit(locationsUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.locations', 'remains on locations step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.locations', 'remains on locations step');
     assert.ok(find('.empty-row:contains(No locations)').length,
 
               'shows empty row with no locations');
@@ -96,7 +96,7 @@ test('Locations page requires a location, unless remote only is indicated', func
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.locations', 'remain on current location');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.locations', 'remain on current location');
     let remoteToggle = findWithAssert('.remote-only-workforce .x-toggle-btn');
     remoteToggle.click();
   });
@@ -104,7 +104,7 @@ test('Locations page requires a location, unless remote only is indicated', func
   andThen(clickContinueButton);
   andThen(() => {
     assert.equal(find('.header-actions fa-exclamation-circle').length, 0, 'spd nav header error removed');
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.team', 'moved to next page');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.team', 'moved to next page');
   });
 });
 
@@ -126,7 +126,7 @@ test('Locations page, with existing location attestation', function(assert) {
   signInAndVisit(locationsUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.locations', 'remains on locations step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.locations', 'remains on locations step');
     assert.equal(find('.locations-index table tbody tr').length, 2, 'has two locations');
     assert.ok(find('td:contains(HQ)').length, 'Has first location');
     assert.ok(find('td:contains(Satellite)').length, 'Has second location');
@@ -162,7 +162,7 @@ test('Clicking back should return you to previous step', function(assert) {
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.organization', 'returned to organization step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.organization', 'returned to organization step');
   });
 });
 
@@ -193,7 +193,7 @@ test('Visiting location page without completing previous step should return to p
   signInAndVisit(locationsUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.organization', 'returned to organization step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.organization', 'returned to organization step');
   });
 });
 
@@ -206,7 +206,7 @@ test('Adding an incomplete location shows an error message', function(assert) {
   andThen(openLocationDialog);
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.locations', 'remains on location step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.locations', 'remains on location step');
     fillInLocation();
   });
 
@@ -252,7 +252,7 @@ test('Clicking continue creates locations attestation', function(assert) {
   andThen(clickAddButton);
   andThen(clickContinueButton);
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.team', 'on next setup step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.team', 'on next setup step');
   });
 });
 
@@ -313,7 +313,7 @@ test('Clicking `X` should remove a location', function(assert) {
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.locations', 'remains on locations step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.locations', 'remains on locations step');
     assert.equal(find('.locations-index table tbody tr').length, 2, 'has two locations');
 
     let firstRemoveButton = findWithAssert('.remove-location').eq(0);

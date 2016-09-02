@@ -81,7 +81,7 @@ test(`visiting ${overviewUrl}: basic UI`, function(assert) {
   signInAndVisit(overviewUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.training');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.training');
     assert.equal(find('.workforce-members .user').length, 3, 'shows all 3 active users');
     let user1 = find('.workforce-members .user').eq(0);
 
@@ -121,7 +121,7 @@ test(`visiting ${overviewUrl}: training documents`, function(assert) {
   signInAndVisit(overviewUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.training');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.training');
     let userPanels = find('.workforce-members .user');
     assert.equal(userPanels.length, 3, 'shows all 3 active users');
     let user1 = userPanels.eq(0);

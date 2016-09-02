@@ -38,7 +38,7 @@ export default Ember.Route.extend({
       });
 
       verification.save().then( () => {
-        this.replaceWith('index');
+        this.replaceWith('enclave.index');
       }, () => {
         this.controllerFor('claim').set('error', `
           There was an error accepting this invitation. Perhaps

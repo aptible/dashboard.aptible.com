@@ -50,7 +50,7 @@ test(`shows 3 plan types: development, platform and managed`, (assert) => {
   signInAndVisit(url);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.admin.billing.plan');
+    assert.equal(currentPath(), 'requires-authorization.organization.admin.billing.plan');
     expectDisplayedPlanType(assert, 'Development');
     expectDisplayedPlanType(assert, 'Platform');
     expectDisplayedPlanType(assert, 'Managed');
@@ -64,7 +64,7 @@ test(`on plan "development": highlights the current plan, shows upgrade button`,
   signInAndVisit(url);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.admin.billing.plan');
+    assert.equal(currentPath(), 'requires-authorization.organization.admin.billing.plan');
     let panel = findPlanPanel(assert, 'Development');
     assert.ok(panel.hasClass(activePanelClass),
               'panel "Development" is active');
@@ -85,7 +85,7 @@ test(`on plan "development": shows default allowances for "platform" upgrade`, (
   signInAndVisit(url);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.admin.billing.plan');
+    assert.equal(currentPath(), 'requires-authorization.organization.admin.billing.plan');
     let containers = find('.platform-plan .plan-items li:eq(1)');
     let diskSpace = find('.platform-plan .plan-items li:eq(2)');
     let domains = find('.platform-plan .plan-items li:eq(3)');
@@ -102,7 +102,7 @@ test(`on plan "platform": shows custom allowances`, (assert) => {
   signInAndVisit(url);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.admin.billing.plan');
+    assert.equal(currentPath(), 'requires-authorization.organization.admin.billing.plan');
     let containers = find('.platform-plan .plan-items li:eq(1)');
     let diskSpace = find('.platform-plan .plan-items li:eq(2)');
     let domains = find('.platform-plan .plan-items li:eq(3)');
@@ -119,7 +119,7 @@ test(`on plan "production": shows custom allowances`, (assert) => {
   signInAndVisit(url);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.admin.billing.plan');
+    assert.equal(currentPath(), 'requires-authorization.organization.admin.billing.plan');
     let containers = find('.platform-plan .plan-items li:eq(1)');
     let diskSpace = find('.platform-plan .plan-items li:eq(2)');
     let domains = find('.platform-plan .plan-items li:eq(3)');
@@ -136,7 +136,7 @@ test(`on plan "platform": highlights the current plan, shows "contact support to
   signInAndVisit(url);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.admin.billing.plan');
+    assert.equal(currentPath(), 'requires-authorization.organization.admin.billing.plan');
     let panel = findPlanPanel(assert, 'Platform');
     assert.ok(panel.hasClass(activePanelClass),
               'panel "Platform" is active');
@@ -157,7 +157,7 @@ test(`on plan "production": highlights the current plan, shows "contact support 
   signInAndVisit(url);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.admin.billing.plan');
+    assert.equal(currentPath(), 'requires-authorization.organization.admin.billing.plan');
     let panel = findPlanPanel(assert, 'Managed');
     assert.ok(panel.hasClass(activePanelClass),
               'panel "Managed" is active');
@@ -182,7 +182,7 @@ test(`on plan "development": clicking the upgrade platform shows modal`, (assert
   signInAndVisit(url);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.admin.billing.plan');
+    assert.equal(currentPath(), 'requires-authorization.organization.admin.billing.plan');
     clickButton('Upgrade to Platform');
   });
 
@@ -212,7 +212,7 @@ test(`on plan "development": clicking the upgrade platform updates organizations
   signInAndVisit(url);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.admin.billing.plan');
+    assert.equal(currentPath(), 'requires-authorization.organization.admin.billing.plan');
     let panel = findPlanPanel(assert, 'Platform');
     assert.ok(!panel.hasClass(activePanelClass),
               'precond - panel is not active before upgrading');
@@ -235,7 +235,7 @@ test(`clicking "${contactAptibleButtonName}" triggers a tracking event, shows mo
   clickButton(contactAptibleButtonName);
 
   andThen(() => {
-    assert.equal(currentPath(), 'organization.admin.billing.plan');
+    assert.equal(currentPath(), 'requires-authorization.organization.admin.billing.plan');
     assert.ok(didTrackEventWith(UPGRADE_PLAN_REQUEST_EVENT, 'organization_id', organizationId),
               `tracked event "${UPGRADE_PLAN_REQUEST_EVENT}" with {organization_id: ${organizationId}}`);
 
@@ -266,7 +266,7 @@ test('shows error message if the server has error', (assert) => {
   clickButton('Upgrade to Platform');
   clickButton('Confirm Upgrade'); // <-- modal
   andThen(() => {
-    assert.equal(currentPath(), 'organization.admin.billing.plan');
+    assert.equal(currentPath(), 'requires-authorization.organization.admin.billing.plan');
     let error = findWithAssert('.alert');
     assert.ok(error.text().indexOf(errorMessage) > -1, 'error message shown');
 

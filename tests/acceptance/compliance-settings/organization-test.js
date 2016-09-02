@@ -48,7 +48,7 @@ test('Organization settings page basic UI', function(assert) {
   signInAndVisit(organizationUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.gridiron-settings.organization', 'on organization settings page');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.gridiron-settings.organization', 'on organization settings page');
     assert.ok(find('.panel-section-title:contains(About Your Organization)'));
     assert.ok(find('.panel-section-title:contains(Description of your productions)'));
     assert.ok(find('textarea[name="aboutOrganization"]'));

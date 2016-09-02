@@ -39,7 +39,7 @@ test(settingsProfileUrl + ' requires authentication', function() {
 test('visit ' + settingsUrl + ' redirects to profile', function(assert) {
   signInAndVisit(settingsUrl);
   andThen(function(){
-    assert.equal(currentPath(), 'settings.profile');
+    assert.equal(currentPath(), 'requires-authorization.settings.profile');
   });
 });
 

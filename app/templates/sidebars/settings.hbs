@@ -3,17 +3,18 @@
     <li class="title">
       {{organization.name}} Settings
     </li>
-    {{#activating-item currentWhen="organization.members.index" tagName="li"}}
+
+    {{#link-to 'organization.members.index' organization.id tagName="li"}}
       {{link-to "Members" "organization.members.index" organization.id bubbles=false class="members-index"}}
-    {{/activating-item}}
+    {{/link-to}}
 
-    {{#activating-item currentWhen="organization.members.pending-invitations" tagName="li"}}
+    {{#link-to 'organization.members.pending-invitations' organization.id tagName="li"}}
       {{link-to "Pending Invitations" "organization.members.pending-invitations" organization.id bubbles=false class="pending-invitations"}}
-    {{/activating-item}}
+    {{/link-to}}
 
-    {{#with-active-class route="role" tagName="li"}}
-      {{link-to "Roles" "organization.roles" organization.id bubbles=false class="role-index"}}
-    {{/with-active-class}}
+    {{#link-to 'organization.roles' organization.id tagName="li"}}
+      {{link-to "Roles" "organization.roles" organization.id bubbles=false class="role-index" bubbles=false}}
+    {{/link-to}}
 
     {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
       {{#if hasAbility}}
@@ -39,21 +40,21 @@
     {{session.currentUser.name}} Settings
   </li>
 
-  {{#activating-item currentWhen='settings.profile' tagName='li'}}
-    {{link-to 'Profile' 'settings.profile' class="profile"}}
-  {{/activating-item}}
+  {{#link-to 'settings.profile' tagName="li"}}
+    {{link-to 'Profile' 'settings.profile' class="profile" bubbles=false}}
+  {{/link-to}}
 
-  {{#activating-item currentWhen='settings.requires-elevation.admin' tagName='li'}}
-    {{link-to 'Account Settings' 'settings.requires-elevation.admin' class="account-settings"}}
-  {{/activating-item}}
+  {{#link-to 'settings.requires-elevation.admin' tagName="li"}}
+    {{link-to 'Account Settings' 'settings.requires-elevation.admin' class="account-settings" bubbles=false}}
+  {{/link-to}}
 
-  {{#activating-item currentWhen='settings.ssh' tagName='li'}}
-    {{link-to 'SSH Keys' 'settings.ssh' class="ssh-index"}}
-  {{/activating-item}}
+  {{#link-to 'settings.ssh' tagName="li"}}
+    {{link-to 'SSH Keys' 'settings.ssh' class="ssh-index" bubbles=false}}
+  {{/link-to}}
 
   {{#if session.currentUser.superuser}}
-    {{#activating-item currentWhen='settings.impersonate' tagName='li'}}
-      {{link-to 'Impersonate' 'settings.impersonate' class="impersonate"}}
-    {{/activating-item}}
+    {{#link-to 'settings.impersonate' tagName="li"}}
+      {{link-to 'Impersonate' 'settings.impersonate' class="impersonate" bubbles=false}}
+    {{/link-to}}
   {{/if}}
 </ul>

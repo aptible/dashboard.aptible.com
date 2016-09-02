@@ -2,11 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model(params) {
-    return new Ember.RSVP.Promise((resolve) => {
-      this.authorization.load().then((authorization) => {
-        resolve(authorization.getContext(params.organization_id));
-      });
-    });
+    return this.get('authorization').getContext(params.organization_id);
   },
 
   renderTemplate() {

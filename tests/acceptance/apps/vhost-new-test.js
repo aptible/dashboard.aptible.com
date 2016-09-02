@@ -118,7 +118,7 @@ test(`visiting ${appVhostsUrl} without any endpoints redirects to ${appVhostsNew
   signInAndVisit(appVhostsUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'enclave.app.vhosts.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.app.vhosts.new');
   });
 });
 

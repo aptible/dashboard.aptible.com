@@ -86,7 +86,7 @@ test(`visiting ${url} and deleting a certificate should delete the certificate`,
 
   andThen(function() {
     assert.ok(didDelete, 'certificate was deleted');
-    assert.equal(currentPath(), 'enclave.stack.certificates.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.certificates.index');
   });
 
 });

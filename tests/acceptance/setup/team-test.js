@@ -130,7 +130,7 @@ test('You are redirected to correct step if not ready for team step', function(a
   signInAndVisit(teamUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.organization', 'redirected to organization step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.organization', 'redirected to organization step');
   });
 });
 
@@ -151,7 +151,7 @@ test('Clicking back should return you to previous step', function(assert) {
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.locations', 'returned to locations step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.locations', 'returned to locations step');
   });
 });
 

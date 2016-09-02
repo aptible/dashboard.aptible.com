@@ -41,7 +41,7 @@ export function executeAuthAttempt(authPromiseFactory) {
 }
 
 export default Ember.Route.extend(DisallowAuthenticated, {
-  model: function() {
+  model() {
     var model = Ember.Object.create({
       email: '',
       password: '',
@@ -57,14 +57,14 @@ export default Ember.Route.extend(DisallowAuthenticated, {
     return model;
   },
 
-  redirect: function(){
+  redirect(){
     if (this.session.get('isAuthenticated')) {
-      this.transitionTo('index');
+      this.transitionTo('requires-authorization');
     }
   },
 
   actions: {
-    login: function() {
+    login() {
       let route = this;
 
       let authPromiseFactory = function(credentials) {
@@ -76,7 +76,7 @@ export default Ember.Route.extend(DisallowAuthenticated, {
             Location.replace(route.currentModel.get('afterAuthUrl'));
           } else {
             route.currentModel.set('isSuccessful', true);  // TODO: Is this used anywhere?
-            route.transitionTo('index');
+            route.transitionTo('requires-authorization');
           }
         });
       };

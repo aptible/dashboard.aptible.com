@@ -92,7 +92,7 @@ test('/apps/:id/deprovision will deprovision with confirmation', function(assert
   click('button:contains(Deprovision)');
   andThen(function(){
     assert.ok(didDeprovision, 'deprovisioned');
-    assert.equal(currentPath(), 'enclave.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 
@@ -130,6 +130,6 @@ test('/apps/:id/deprovision will show deprovision error', function(assert) {
   andThen(function(){
     var error = findWithAssert('.alert');
     assert.ok(error.text().indexOf(errorMessage) > -1, 'error message shown');
-    assert.equal(currentPath(), 'enclave.app.deprovision');
+    assert.equal(currentPath(), 'requires-authorization.enclave.app.deprovision');
   });
 });

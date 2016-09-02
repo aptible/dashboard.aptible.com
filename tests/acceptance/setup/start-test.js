@@ -81,7 +81,7 @@ test('Basic setup start page UI', function(assert) {
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.organization', 'moved to next step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.organization', 'moved to next step');
   });
 });
 
@@ -92,7 +92,7 @@ test('Existing organization profiles should redirect to future step', function(a
   signInAndVisit(startUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.setup.locations', 'redirected to current step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.locations', 'redirected to current step');
   });
 });
 

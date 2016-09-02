@@ -16,7 +16,7 @@
   {{/if}}
 {{/if}}
 
-{{#each currentUser.organizations as |organization|}}
+{{#each authorization.organizations as |organization|}}
   {{#link-to 'organization' organization.id tagName="li"}}
     {{link-to organization.name 'organization' organization.id class="organization-nav" bubbles=false}}
   {{/link-to}}

@@ -66,7 +66,7 @@ test('visiting /apps/my-app-id shows basic app info', function(assert) {
   signInAndVisit('/apps/' + appId);
 
   andThen(function() {
-    assert.equal(currentPath(), 'enclave.app.services.index', 'show page is visited');
+    assert.equal(currentPath(), 'requires-authorization.enclave.app.services.index', 'show page is visited');
 
     let app = find('.resource-title:contains(my-app)');
     assert.ok(app.length, 'shows app handle');

@@ -61,7 +61,7 @@ test('with more than one organization shows link to payment page', function(asse
   signInAndVisit('/');
 
   andThen(function() {
-    assert.equal(currentPath(), 'enclave.stack.apps.index',
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index',
                  'was not redirected to payment info');
     let paymentLink = findWithAssert('.layout-sidebar .requires-payment-link');
     assert.equal(paymentLink.length, 1, 'shows requires payment link in sidebar');

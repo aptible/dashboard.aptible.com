@@ -96,7 +96,7 @@ test(`visiting ${url}`, function(assert) {
   signInAndVisit(url);
 
   andThen(function() {
-    assert.equal(currentPath(), 'organization.admin.contact-settings');
+    assert.equal(currentPath(), 'requires-authorization.organization.admin.contact-settings');
     expectInput('name', {value: organizationData.name});
     expectInput('primary-phone', {value: organizationData.primaryPhone});
     expectInput('emergency-phone', {value: organizationData.emergencyPhone});

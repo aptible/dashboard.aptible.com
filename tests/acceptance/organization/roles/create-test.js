@@ -61,7 +61,7 @@ test(`visiting ${url} shows form to create new role`, (assert) => {
   setup('development');
   signInAndVisit(url);
   andThen(() => {
-    assert.equal(currentPath(), 'organization.roles.new');
+    assert.equal(currentPath(), 'requires-authorization.organization.roles.new');
     expectButton('Save');
     expectButton('Cancel');
     expectFocusedInput('role-name');
@@ -88,7 +88,7 @@ test(`visiting ${url} and creating new platform_user role`, (assert) => {
   });
   
   andThen(() => {
-    assert.equal(currentPath(), 'enclave.role.members');
+    assert.equal(currentPath(), 'requires-authorization.enclave.role.members');
   });
 });
 
@@ -106,13 +106,13 @@ test(`visiting ${url} and creating new compliance_user role`, (assert) => {
 
   signInAndVisit(url);
   andThen(function() {
-    assert.equal(currentPath(), 'organization.roles.new');
+    assert.equal(currentPath(), 'requires-authorization.organization.roles.new');
     fillInput('role-name', roleData.name);
     findWithAssert('.role-type-option[data-option-value=compliance_user]').click();
     clickButton('Save');
   });
   andThen(function() {
-    assert.equal(currentPath(), 'enclave.role.members');
+    assert.equal(currentPath(), 'requires-authorization.enclave.role.members');
   });
 });
 

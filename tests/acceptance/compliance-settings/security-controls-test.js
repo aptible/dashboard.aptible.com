@@ -67,7 +67,7 @@ test('Basic UI', function(assert) {
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.gridiron-settings.security-controls.show', 'on show page');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.gridiron-settings.security-controls.show', 'on show page');
   });
 });
 
@@ -89,7 +89,7 @@ test('Resuming with existing attestations', function(assert) {
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'gridiron.gridiron-organization.gridiron-admin.gridiron-settings.security-controls.show');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.gridiron-settings.security-controls.show');
 
     assert.ok(find('input[name="security_controls.security.implemented"]').is(':checked'), 'Existing attestation is loaded');
   });

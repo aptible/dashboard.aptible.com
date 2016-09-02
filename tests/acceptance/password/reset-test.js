@@ -29,7 +29,7 @@ test('visiting /password/reset signed in redirects to index', function(assert) {
   stubStacks();
   signInAndVisit('/password/reset');
   andThen(function(){
-    assert.equal(currentPath(), 'enclave.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 

@@ -36,7 +36,7 @@ test('visiting /stacks/:stack_id/databases', function(assert) {
   signInAndVisit('/stacks/my-stack-1/databases');
 
   andThen(function() {
-    assert.equal(currentPath(), 'enclave.stack.databases.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.databases.index');
     expectTitle('my-stack-1 Databases');
   });
 });
@@ -73,7 +73,7 @@ test('visiting /stacks/my-stack-1/databases then clicking on an database visits 
   });
 
   andThen(function(){
-    assert.equal(currentPath(), 'enclave.database.metrics', 'show page is visited');
+    assert.equal(currentPath(), 'requires-authorization.enclave.database.metrics', 'show page is visited');
   });
 });
 

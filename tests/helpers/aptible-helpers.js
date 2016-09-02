@@ -106,7 +106,7 @@ Ember.Test.registerAsyncHelper('expectRedirectsWhenLoggedIn', function(app, url)
   signInAndVisit(url);
 
   andThen(function(){
-    equal(currentPath(), 'enclave.stack.apps.index');
+    equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 

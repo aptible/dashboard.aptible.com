@@ -57,7 +57,7 @@ test(`visiting ${url} with no certificates redirects to certificates new`, funct
 
   signInAndVisit(url);
   andThen(function(){
-    assert.equal(currentPath(), 'enclave.stack.certificates.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.certificates.new');
   });
 });
 
