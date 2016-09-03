@@ -1,0 +1,104 @@
+<div class="row">
+  <div class="col-xs-12 sort-group">
+    <div class="sort-header">Current Plan</div>
+
+    <div class="panel panel-default resource-usage">
+      <div class="panel-heading with-actions">
+        <h3>{{capitalize-string billingDetail.plan}} Plan Base Rate</h3>
+        <div class="resource-usage-total">
+          <span class="usage-label">
+            Monthly Price:
+          </span>
+          <span class="usage-value">
+            {{format-currency billingDetail.planRate}}
+          </span>
+        </div>
+      </div>
+      <ul class="usage-quote-items">
+        <li class="usage-quote-item">
+          <div class="usage-label">
+            Includes
+            {{billingDetail.containersInPlan}} GBs of containers,
+            {{billingDetail.domainsInPlan}} endpoints, and
+            {{gb-to-tb billingDetail.diskSpaceInPlan}}TB of disk
+          </div>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+{{#if billingDetail.hasDiscounts}}
+  <div class="row">
+    <div class="col-xs-12 sort-group">
+      <div class="sort-header">Discounts</div>
+
+      {{#if billingDetail.hasCredit}}
+        <div class="panel panel-default resource-usage">
+          <div class="panel-heading with-actions">
+            <h3>Credit</h3>
+            <div class="resource-usage-total">
+              <span class="usage-label">Remaining:</span>
+              <span class="usage-value">
+                {{format-currency billingDetail.accountCredit}}
+              </span>
+            </div>
+          </div>
+          <ul class="usage-quote-items">
+            <li class="usage-quote-item">
+              <div class="usage-label">Any credit remaining on your account</div>
+            </li>
+          </ul>
+        </div>
+      {{/if}}
+
+      {{#if billingDetail.coupon}}
+        <div class="panel panel-default resource-usage">
+          <div class="panel-heading with-actions">
+            <h3>{{billingDetail.coupon.id}}</h3>
+          </div>
+          <ul class="usage-quote-items">
+            <li class="usage-quote-item">
+              <div class="usage-label">Any discounts or coupons applied to your subscription</div>
+            </li>
+          </ul>
+        </div>
+      {{/if}}
+
+    </div>
+  </div>
+{{/if}}
+
+<div class="row">
+  <div class="col-xs-12 sort-group">
+    <h5 class="sort-header">Current Platform Usage</h5>
+
+    {{usage-quote-by-resource
+      apps=apps
+      databases=databases
+      services=services
+      stacks=stacks
+      allowance=billingDetail.containersInPlan
+      hourlyRate=billingDetail.containerCentsPerHour
+      plan=billingDetail.plan
+      resource='container'
+    }}
+
+    {{usage-quote-by-resource
+      stacks=stacks
+      allowance=billingDetail.diskSpaceInPlan
+      hourlyRate=billingDetail.diskCentsPerHour
+      plan=billingDetail.plan
+      resource='disk'
+    }}
+
+    {{usage-quote-by-resource
+      stacks=stacks
+      allowance=billingDetail.domainsInPlan
+      hourlyRate=billingDetail.domainCentsPerHour
+      plan=billingDetail.plan
+      resource='domain'
+    }}
+  </div>
+</div>

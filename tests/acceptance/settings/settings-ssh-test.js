@@ -12,7 +12,6 @@ module('Acceptance: User Settings: Ssh', {
   beforeEach: function() {
     App = startApp();
     stubStacks();
-    stubOrganizations();
     stubOrganization({ id: 'o1'});
   },
   afterEach: function() {
@@ -170,7 +169,6 @@ test(`visiting ${settingsSshUrl} as unverified user shows verification message`,
   stubGetKeys([]);
   let userData = {verified: false};
   stubOrganization();
-  stubOrganizations();
   signInAndVisit(settingsSshUrl, userData);
 
   andThen(() => {

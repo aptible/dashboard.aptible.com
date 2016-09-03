@@ -47,7 +47,6 @@ module('Acceptance: Certificate Delete', {
     };
     stubStacks({}, [stack]);
     stubOrganization();
-    stubOrganizations();
     stubCertificatesAndVhosts();
   },
   afterEach: function() {
@@ -86,7 +85,7 @@ test(`visiting ${url} and deleting a certificate should delete the certificate`,
 
   andThen(function() {
     assert.ok(didDelete, 'certificate was deleted');
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.certificates.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.certificates.index');
   });
 
 });

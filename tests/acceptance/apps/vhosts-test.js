@@ -16,7 +16,7 @@ module('Acceptance: App Endpoints', {
   beforeEach: function() {
     App = startApp();
     stubStacks();
-    stubOrganizations();
+    stubOrganization();
     stubStack({ id: 'stubbed-stack' });
     stubRequest('get', '/users/user1/ssh_keys', function(){
       return this.success({

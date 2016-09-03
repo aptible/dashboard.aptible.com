@@ -117,7 +117,6 @@ module.exports = function(environment) {
       'notifications': false,
       'organization-billing-settings': true,
       'sheriff': true,
-      'trainee-dashboard': true
     }
 
   };
@@ -160,7 +159,6 @@ module.exports = function(environment) {
 
     ENV.featureFlags['price-estimator'] = true;
     ENV.featureFlags['sheriff'] = false;
-    ENV.featureFlags['trainee-dashboard'] = false;
 
     ENV.sentry.whitelistUrls = ['dashboard.aptible-staging.com'];
     ENV.sentry.development = false;
@@ -179,7 +177,6 @@ module.exports = function(environment) {
     ENV.featureFlags['notifications'] = true;
     ENV.featureFlags['organization-billing-settings'] = true;
     ENV.featureFlags['sheriff'] = false;
-    ENV.featureFlags['trainee-dashboard'] = false;
 
     ENV.sentry.whitelistUrls = ['dashboard.aptible.com'];
     ENV.sentry.development = false;

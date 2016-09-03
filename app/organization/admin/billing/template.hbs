@@ -1,0 +1,19 @@
+{{billing-header billingDetail=billingDetail stacks=stacks}}
+
+<div class="layout-container billing-payment-method">
+  <ul class='nav nav-pills resource-navigation'>
+    {{#link-to 'organization.admin.billing.index' tagName="li"}}
+      {{link-to "Overview" "organization.admin.billing.index" bubbles=false}}
+    {{/link-to}}
+
+    {{#link-to 'organization.admin.billing.plan' tagName="li"}}
+      {{link-to "Plan" "organization.admin.billing.plan" bubbles=false}}
+    {{/link-to}}
+
+    {{#link-to 'organization.admin.billing.payment-method' tagName="li"}}
+      {{link-to "Payment Method" "organization.admin.billing.payment-method" bubbles=false}}
+    {{/link-to}}
+  </ul>
+
+  {{outlet}}
+</div>

@@ -35,7 +35,6 @@ test(`visit ${url} shows basic stack info`, function(assert) {
   };
   stubStack(stackData);
   stubStacks([stackData]);
-  stubOrganizations();
   stubOrganization();
 
   let appData = [{
@@ -68,7 +67,7 @@ test(`visit ${url} shows basic stack info`, function(assert) {
   signInAndVisit(url);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
     assert.ok(find('ul.resource-navigation li.active a:contains(Apps)').length,
               'Has active apps link');
 

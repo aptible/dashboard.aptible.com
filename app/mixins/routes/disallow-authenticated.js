@@ -3,7 +3,7 @@ import Ember from "ember";
 // If a user is authenticated, redirect them to `/`. If they
 // are not authenticated, allow them to continue.
 export default Ember.Mixin.create({
-  beforeModel: function(){
+  beforeModel() {
 
     return new Ember.RSVP.Promise((resolve, reject) => {
       var isAuthenticated = this.get('session.isAuthenticated');
@@ -15,7 +15,7 @@ export default Ember.Mixin.create({
         resolve();
       }
     }).catch(() => {
-      this.transitionTo('index');
+      this.transitionTo('requires-authorization');
     });
   }
 

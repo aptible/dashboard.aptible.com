@@ -20,7 +20,6 @@ module('Acceptance: User Settings: Profile', {
   beforeEach: function() {
     App = startApp();
     stubStacks();
-    stubOrganizations();
     stubOrganization({ id: 'o1'});
   },
   afterEach: function() {
@@ -39,7 +38,7 @@ test(settingsProfileUrl + ' requires authentication', function() {
 test('visit ' + settingsUrl + ' redirects to profile', function(assert) {
   signInAndVisit(settingsUrl);
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.settings.profile');
+    assert.equal(currentPath(), 'requires-authorization.settings.profile');
   });
 });
 

@@ -1,9 +1,10 @@
 <div class="row">
   <div class="col-xs-12">
-    {{invite-member-button
-        organization=organization
-        currentUserRoles=currentUserRoles
-        currentUser=session.currentUser}}
+    {{#if model.userIsOrganizationAdmin}}
+      {{#link-to 'organization.invite' class="btn btn-primary"}}
+        Invite New Member
+      {{/link-to}}
+    {{/if}}
   </div>
 </div>
 

@@ -2,23 +2,28 @@
   {{gravatar-image email=membership.user.email size=25 retina=true class="profile-image"}}
   {{membership.user.name}}
 </td>
+
 <td>{{membership.user.email}}</td>
+
 <td>{{format-utc-timestamp membership.createdAt true}}</td>
+
 <td>
   {{#if hasOwnerShield}}
     <div class="label label-owner"><i class="fa fa-shield"></i> Owner</div>
   {{/if}}
 </td>
+
 <td class="aptable__actions aptable__actions--checkbox">
   {{x-toggle
-      value=isToggled
-      onToggle=(action 'togglePrivileged')
-      showLabels=false
-      onLabel=true
-      offLabel=false
-      disabled=isToggleDisabled
-      size='small'}}
+    value=isToggled
+    onToggle=(action 'togglePrivileged')
+    showLabels=false
+    onLabel=true
+    offLabel=false
+    disabled=isToggleDisabled
+    size='medium'}}
 </td>
+
 <td class="aptable__actions aptable__actions--skinny">
   {{#if isOnlyRole}}
     {{#if linkToEditMember}}

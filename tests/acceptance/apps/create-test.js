@@ -47,21 +47,19 @@ test(`visiting /stacks/:stack_id/apps without any apps redirects to ${url}`, fun
     });
   });
   stubOrganization();
-  stubOrganizations();
   signInAndVisit(`/stacks/${stackId}/apps`);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.new');
   });
 });
 
 test(`visit ${url} shows basic info`, function(assert) {
   assert.expect(6);
   stubOrganization();
-  stubOrganizations();
   signInAndVisit(url);
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.new');
     expectInput('handle');
     expectButton('Save App');
     expectButton('Cancel');
@@ -75,7 +73,6 @@ test(`visit ${url} shows basic info`, function(assert) {
 
 test(`visit ${url} and cancel`, function(assert) {
   stubOrganization();
-  stubOrganizations();
   let appHandle = 'abc-my-app-handle';
   signInAndVisit(url);
 
@@ -85,7 +82,7 @@ test(`visit ${url} and cancel`, function(assert) {
   });
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
 
     assert.ok( !findApp(appHandle).length,
         'does not show app');
@@ -102,12 +99,11 @@ test(`visit ${url} without apps show no cancel button`, function(assert) {
     });
   });
   stubOrganization();
-  stubOrganizations();
   stubStack({id: stackId}); // stubs a stack with no apps
   signInAndVisit(url);
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.new');
     let button = findButton('Cancel');
     assert.ok(!button.length, 'Cancel button is not present');
   });
@@ -115,7 +111,6 @@ test(`visit ${url} without apps show no cancel button`, function(assert) {
 
 test(`visit ${url} and transition away`, function(assert) {
   stubOrganization();
-  stubOrganizations();
   let appHandle = 'abc-my-app-handle';
   signInAndVisit(url);
 
@@ -125,7 +120,7 @@ test(`visit ${url} and transition away`, function(assert) {
   });
 
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
 
     assert.ok( !findApp(appHandle).length,
         'does not show app');
@@ -134,7 +129,6 @@ test(`visit ${url} and transition away`, function(assert) {
 
 test(`visit ${url} and create an app`, function(assert) {
   stubOrganization();
-  stubOrganizations();
   assert.expect(3);
   let appHandle = 'abc-my-app-handle';
 
@@ -162,7 +156,7 @@ test(`visit ${url} and create an app`, function(assert) {
 
   clickButton('Save App');
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.app.deploy');
+    assert.equal(currentPath(), 'requires-authorization.enclave.app.deploy');
 
     assert.ok( findApp(appHandle).length > 0,
         'lists new app on index' );
@@ -171,7 +165,6 @@ test(`visit ${url} and create an app`, function(assert) {
 
 test(`visit ${url} and with duplicate handle`, function(assert) {
   stubOrganization();
-  stubOrganizations();
   assert.expect(3);
   let appHandle = 'abc-my-app-handle';
 
@@ -189,7 +182,7 @@ test(`visit ${url} and with duplicate handle`, function(assert) {
     assert.ok(submitButton.is(':disabled'), 'submit is disabled');
 
     clickButton('Save App');
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.new');
   });
 });
 
@@ -197,7 +190,6 @@ test(`visit ${url} and with duplicate handle`, function(assert) {
 test(`visit ${url} when user is not verified shows "Cannot create" message`, function(assert) {
   let userData = {verified: false};
   stubOrganization();
-  stubOrganizations();
   signInAndVisit(url, userData);
   andThen( () => {
     expectNoButton('Save App');

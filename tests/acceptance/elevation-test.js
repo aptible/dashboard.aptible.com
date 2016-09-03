@@ -12,7 +12,6 @@ module('Acceptance: Elevation', {
     user = createStubUser();
     stubUser(user);
     stubStacks();
-    stubOrganizations();
     stubOrganization({ id: 'o1'});
   },
   afterEach: function() {
@@ -25,7 +24,7 @@ test("Visiting an URL requiring elevation with an elevated token does not redire
 
   andThen(() => { visit("/settings/protected/admin"); });
   andThen(() => {
-    assert.equal(currentPath(), "dashboard.settings.requires-elevation.admin");
+    assert.equal(currentPath(), "requires-authorization.settings.requires-elevation.admin");
   });
 });
 
@@ -129,7 +128,7 @@ test("Submitting the elevation form redirects to redirectTo", function(assert) {
     clickButton("Confirm");
   });
 
-  andThen(() => assert.equal(currentPath(), `dashboard.${redirectTo}`));
+  andThen(() => assert.equal(currentPath(), `requires-authorization.${redirectTo}`));
 });
 
 test("When redirectTo is invalid, it is not echoed back on screen", function(assert) {

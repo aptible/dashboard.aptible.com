@@ -6,9 +6,9 @@ export default Ember.Component.extend({
   busy: false,
   user: Ember.computed.reads('membership.user'),
   memberUserRoles: Ember.computed.reads('membership.user.roles'),
-  currentUserRoles: Ember.computed.reads('currentUser.roles'),
-
-  billingDetail: Ember.computed.reads('organization.billingDetail'),
+  currentUserRoles: Ember.computed.reads('authorizationContext.currentUserRoles'),
+  organization: Ember.computed.reads('authorizationContext.organization'),
+  billingDetail: Ember.computed.reads('authorizationContext.billingDetail'),
 
   isOnlyRole: Ember.computed('membership.user', 'memberUserRoles.[]', function() {
     return this.get('memberUserRoles.length') === 1;
@@ -26,9 +26,8 @@ export default Ember.Component.extend({
       they can be removed from ${this.get('role.name')}.`;
   }),
 
-  linkToEditMember: Ember.computed('currentUserRoles.[]', function() {
-    return this.get('isOnlyRole') &&
-      this.get('currentUser').isAccountOwner(this.get('currentUserRoles'), this.get('organization'));
+  linkToEditMember: Ember.computed('authorizationContext.currentUserRoles.[]', function() {
+    return this.get('isOnlyRole') && this.get('authorizationContext.userIsOrganizationAdmin');
   }),
 
   // Account | Platform | Compliance Owners effectively have admin privileges,
@@ -38,11 +37,11 @@ export default Ember.Component.extend({
       this.get('membership.privileged');
   }),
 
-  isToggleDisabled: Ember.computed('memberUserRoles.[]', 'currentUserRoles.[]', function() {
+  isToggleDisabled: Ember.computed('memberUserRoles.[]', 'authorizationContext.currentUserRoles.[]', function() {
     if (this.get('role.isOwner')) { return true; }
 
     // Disable if current user is not a platform, compliance, or account owner
-    if (!this.isRoleOwner(this.get('currentUser'), this.get('currentUserRoles'))) {
+    if (!this.isRoleOwner(this.get('authorizationContext.currentUser'), this.get('authorizationContext.currentUserRoles'))) {
       return true;
     }
     // If current user is a role owner, check this role member and disable
@@ -63,13 +62,13 @@ export default Ember.Component.extend({
 
   actions: {
     togglePrivileged(valueOptions) {
-      let isOn = valueOptions.newValue;
-      if([true,false].indexOf(isOn) === -1) {
-        // dont' trigger a toggle if a boolean isn't set
+      let isOn = !!valueOptions.newValue;
+      let membership = this.get('membership');
+
+      if(isOn === membership.get('privileged')) {
+        // No need to re-save if value isn't changed
         return;
       }
-
-      let membership = this.get('membership');
 
       // No need to update if this user is an owner.
       if (this.isRoleOwner(membership.get('user'), this.get('memberUserRoles'))) { return; }
@@ -87,7 +86,7 @@ export default Ember.Component.extend({
       let user = membership.get('user');
 
       let subject = user.get('name');
-      if (user.get('id') === this.get('currentUser.id')) {
+      if (user.get('id') === this.get('authorizationContext.currentUser.id')) {
         subject = 'yourself';
       }
 

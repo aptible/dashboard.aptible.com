@@ -29,20 +29,8 @@ export default DS.Model.extend({
 
   // check ability, returns a promise
   // e.g.: user.can('manage', stack).then(function(boolean){ ... });
-  can: function(scope, stack){
+  can(scope, stack){
     return can(this, scope, stack);
-  },
-
-  complianceRolesOnly(roles, organization) {
-    const organizationUrl = organization.get('data.links.self');
-    let platformRoles = [];
-    let complianceRoles = [];
-
-    roles.filterBy('data.links.organization', organizationUrl).forEach((role) => {
-      if (role.get('isPlatform')) { platformRoles.push(role); }
-      if (role.get('isCompliance')) { complianceRoles.push(role); }
-    });
-    return platformRoles.length === 0 && complianceRoles.length > 0;
   },
 
   isRoleType(types, roles, organization) {
@@ -72,14 +60,6 @@ export default DS.Model.extend({
 
   isPlatformOwner(roles, organization) {
     return this.isRoleType(['platform_owner'], roles, organization);
-  },
-
-  canManageCompliance(roles, organization) {
-    return this.isRoleType(['owner', 'compliance_owner'], roles, organization);
-  },
-
-  canManagePlatform(roles, organization) {
-    return this.isRoleType(['owner', 'platform_owner'], roles, organization);
   },
 
   organizations: Ember.computed('roles.@each.organization', function() {

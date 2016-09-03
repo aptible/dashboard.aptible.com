@@ -10,7 +10,6 @@ module("Acceptance: User Settings: Logout", {
   beforeEach() {
     App = startApp();
     stubStacks();
-    stubOrganizations();
     stubOrganization({ id: 'o1'});
   },
 

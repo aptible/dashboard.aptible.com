@@ -7,7 +7,7 @@ import { orgId, rolesHref, usersHref, invitationsHref,
 
 let application;
 let attestationHandle = 'selected_data_environments';
-let dataEnvironmentsUrl = `/compliance/${orgId}/settings/data-environments`;
+let dataEnvironmentsUrl = `/gridiron/${orgId}/admin/settings/data-environments`;
 let userId = 'basic-user-1';
 let basicRoleId = 'basic-role-1';
 let developerRoleId = 'developer-role-2';
@@ -26,7 +26,7 @@ let users = [
 let roles = [
   {
     id: basicRoleId,
-    type: 'platform_user',
+    type: 'compliance_owner',
     name: 'Basic Role',
     _links: {
       self: { href: `/roles/${basicRoleId}` },
@@ -165,7 +165,6 @@ function stubRequests() {
   stubSchemasAPI();
   stubCriterionDocuments({});
   stubStacks();
-  stubBillingDetail();
   stubCriteria();
 
   stubProfile({ hasCompletedSetup: true });

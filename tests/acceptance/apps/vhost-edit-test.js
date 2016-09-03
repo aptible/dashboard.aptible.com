@@ -22,7 +22,7 @@ module('Acceptance: App Endpoint Edit', {
   beforeEach: function() {
     App = startApp();
     stubStacks();
-    stubOrganizations();
+    stubOrganization();
     stubApp({
       id: appId,
       handle: appHandle,
@@ -92,7 +92,7 @@ test(`visit ${url} shows form with certificates`, function(assert) {
 
   signInAndVisit(url);
   andThen( () => {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.app.vhosts.edit');
+    assert.equal(currentPath(), 'requires-authorization.enclave.app.vhosts.edit');
     expectTitle(`Edit ${virtualDomain} - ${appHandle}`);
     assert.equal(find('.panel-heading h3').text(), `Edit ${virtualDomain}`);
 
@@ -130,7 +130,7 @@ test(`visit ${url} shows form without certificates`, function(assert) {
 
   signInAndVisit(url);
   andThen( () => {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.app.vhosts.edit');
+    assert.equal(currentPath(), 'requires-authorization.enclave.app.vhosts.edit');
     expectTitle(`Edit ${virtualDomain} - ${appHandle}`);
     assert.equal(find('.panel-heading h3').text(), `Edit ${virtualDomain}`);
 
@@ -206,7 +206,7 @@ test(`visit ${url} click save`, function(assert) {
   });
 
   andThen( () => {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.app.vhosts.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.app.vhosts.index');
 
     assert.ok( find(`.vhost .vhost-virtualdomain:contains(health.io)`).length,
         'shows new endpoint health.io');
@@ -243,7 +243,7 @@ test(`visit ${url} click save and error`, function(assert) {
   });
 
   andThen( () => {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.app.vhosts.edit');
+    assert.equal(currentPath(), 'requires-authorization.enclave.app.vhosts.edit');
 
     assert.ok(find('.alert').length, 'has error div');
     assert.ok(find('.alert').text().indexOf(errorMsg) > -1,
@@ -272,7 +272,7 @@ test(`visit ${url} and click cancel`, function(assert) {
   });
 
   andThen( () => {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.app.vhosts.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.app.vhosts.index');
     assert.ok(!find(`.vhost .vhost-virtualdomain:contains(${newVirtualDomain})`).length,
        `does not show new virtual domain: "${newVirtualDomain}"`);
     assert.ok(find(`.vhost .vhost-virtualdomain:contains(${virtualDomain})`).length,
@@ -291,7 +291,7 @@ test(`visit ${url} and transition away`, function(assert) {
   });
 
   andThen( () => {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.app.vhosts.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.app.vhosts.index');
 
     assert.ok(!find(`.vhost .vhost-virtualdomain:contains(${newVirtualDomain})`).length,
        `does not show new virtual domain: "${newVirtualDomain}"`);

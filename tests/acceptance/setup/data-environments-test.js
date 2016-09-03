@@ -7,7 +7,7 @@ import { orgId, rolesHref, usersHref, invitationsHref,
 
 let application;
 let attestationHandle = 'selected_data_environments';
-let dataEnvironmentsUrl = `/compliance/${orgId}/setup/data-environments`;
+let dataEnvironmentsUrl = `/gridiron/${orgId}/admin/setup/data-environments`;
 let userId = 'basic-user-1';
 let basicRoleId = 'basic-role-1';
 let developerRoleId = 'developer-role-2';
@@ -89,7 +89,7 @@ test('Clicking back should return you to previous step', function(assert) {
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.setup.team', 'returned to team step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.team', 'returned to team step');
   });
 });
 
@@ -134,7 +134,7 @@ test('Clicking continue saves data environment selections to organization profil
   andThen(clickContinueButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.setup.security-controls.index', 'proceeds to next step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.security-controls.index', 'proceeds to next step');
   });
 });
 
@@ -195,7 +195,7 @@ test('Should load existing selections when attestation already exists', function
   andThen(clickContinueButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.setup.security-controls.index', 'proceeds to next step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.security-controls.index', 'proceeds to next step');
   });
 });
 
@@ -261,7 +261,6 @@ function stubRequests() {
   stubSchemasAPI();
   stubCriterionDocuments({});
   stubStacks();
-  stubBillingDetail();
   stubCriteria();
 
   stubRequest('get', rolesHref, function() {

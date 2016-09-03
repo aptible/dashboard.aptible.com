@@ -6,7 +6,7 @@ import { orgId, rolesHref, usersHref, invitationsHref,
          securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
-let locationsUrl = `/compliance/${orgId}/settings/locations`;
+let locationsUrl = `/gridiron/${orgId}/admin/settings/locations`;
 let roleId = 'owners-role';
 let userId = 'u1';
 let roles = [
@@ -60,7 +60,7 @@ test('Locations page, with existing location attestation', function(assert) {
   signInAndVisit(locationsUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.compliance-engines.compliance-settings.locations', 'remains on locations step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.gridiron-settings.locations', 'remains on locations step');
     assert.equal(find('.locations-index table tbody tr').length, 2, 'has two locations');
     assert.ok(find('td:contains(HQ)').length, 'Has first location');
     assert.ok(find('td:contains(Satellite)').length, 'Has second location');
@@ -108,7 +108,7 @@ test('Adding an incomplete location shows an error message', function(assert) {
   andThen(openLocationDialog);
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.compliance-engines.compliance-settings.locations', 'remains on location step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.gridiron-settings.locations', 'remains on location step');
     fillInLocation();
   });
 
@@ -200,7 +200,6 @@ function stubRequests() {
   stubProfile({ hasCompletedSetup: true });
   stubCriterionDocuments({});
   stubStacks();
-  stubBillingDetail();
   stubCriteria();
 
   stubRequest('get', rolesHref, function() {

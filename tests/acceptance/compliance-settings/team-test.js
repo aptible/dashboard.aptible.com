@@ -15,8 +15,8 @@ let complianceOwnerId = 'compliance-owner-role-4';
 
 let adminRoleId = 'admin-role-3';
 
-let settingsTeamUrl = `/compliance/${orgId}/settings/team`;
-let setupTeamUrl = `/compliance/${orgId}/setup/team`;
+let settingsTeamUrl = `/gridiron/${orgId}/admin/settings/team`;
+let setupTeamUrl = `/gridiron/${orgId}/admin/setup/team`;
 
 let users = [
   {
@@ -181,6 +181,9 @@ test('Setup Team settings basic UI', function(assert) {
   stubRequests();
   stubAllRoles();
   signInAndVisit(setupTeamUrl);
+  andThen(() => {
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.team', 'on workforce page');
+  });
   testBasicUI(assert);
 });
 
@@ -449,7 +452,6 @@ function stubRequests(options = {}) {
   stubProfile({ hasCompletedSetup: true, currentStep: 'team' });
   stubCriterionDocuments({});
   stubStacks();
-  stubBillingDetail();
   stubCriteria();
 
   stubRequest('get', usersHref, function() {

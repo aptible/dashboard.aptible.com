@@ -2,38 +2,21 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model() {
-    let role = this.modelFor('role');
-
-    return Ember.RSVP.hash({
-      role: role,
-      memberships: role.get('memberships'),
-      currentUserRoles: this.session.get('currentUser.roles')
-    });
+    return this.modelFor('role');
   },
 
   setupController(controller, model) {
-    controller.set('role', model.role);
-    controller.set('memberships', model.memberships);
-    controller.set('platformRole', model.role.get('platform'));
-    controller.set('pendingInvitations', model.role.get('invitations'));
-    controller.set('organization', model.role.get('organization'));
-    controller.set('currentUserRoles', model.currentUserRoles);
+    let contextHref = model.get('data.links.organization');
+    let authorizationContext = this.get('authorization').getContextByHref(contextHref);
+    let { organization, currentUserRoles } = authorizationContext;
+    let canManageMemberships = authorizationContext.canUserInviteIntoRole(model);
+
+    controller.set('role', model);
+    controller.set('memberships', model.get('memberships'));
+    controller.set('pendingInvitations', model.get('invitations'));
+    controller.setProperties({ authorizationContext, organization, currentUserRoles, canManageMemberships });
   },
 
-  redirect(model) {
-    let org = model.role.get('organization');
-    let currentUser = this.session.get('currentUser');
-    let currentUserMembership = model.memberships.filterBy('user.id', currentUser.get('id'))[0];
-
-    if ((model.role.get('isPlatform') && currentUser.canManagePlatform(model.currentUserRoles, org)) ||
-        (model.role.get('isCompliance') && currentUser.canManageCompliance(model.currentUserRoles, org)) ||
-        (currentUserMembership && currentUserMembership.get('privileged'))) {
-      return;
-    }
-    return this.transitionTo('organization.roles', org);
-  },
-
-  // Note: Memberships are removed by the membership table row component
   actions: {
     completedAction(message) {
       Ember.get(this, 'flashMessages').success(message);
@@ -48,22 +31,17 @@ export default Ember.Route.extend({
       if (!user) { return; }
 
       const role = this.controller.get('role');
-      const userLink = user.get('data.links.self');
-      const membership = this.store.createRecord('membership', {
-        role,
-        userUrl: userLink
-      });
+      const userUrl = user.get('data.links.self');
+      const membership = this.store.createRecord('membership', { role, userUrl, user });
 
       membership.save().then(() => {
         let message = `${user.get('name')} added to ${role.get('name')}`;
 
         role.get('users').pushObject(user);
-        membership.set('user', user);
         role.get('memberships').pushObject(membership);
 
         this.controller.set('invitedUser', '');
         Ember.get(this, 'flashMessages').success(message);
-        return;
       });
     },
 

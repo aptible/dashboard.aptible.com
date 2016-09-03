@@ -1,0 +1,48 @@
+<main class="layout-content">
+  <header>
+    <div class="container">
+      <h1 class="dashboard-header">
+        My Gridiron Status
+      </h1>
+    </div>
+  </header>
+
+
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-6">
+        <section class="compliance-section">
+          <header>
+            <span class="header-title">
+              {{authorizationContext.organization.name}} Policy Manual
+            </span>
+          </header>
+
+          <div class="row">
+            <div class="col-xs-12">
+              {{!-- download organization policy manual--}}
+              {{compliance-engine-status
+                status=complianceStatus.policy
+                class="policy-engine-status"}}
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="col-xs-6">
+        <section class="compliance-section">
+          <header>
+            <span class="header-title">My Training History</span>
+          </header>
+
+          {{user-training-item
+            userStatus=userStatus
+            documents=documents
+          }}
+        </section>
+      </div>
+    </div>
+
+
+  </div>
+</main>

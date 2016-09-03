@@ -4,7 +4,13 @@ import DS from 'ember-data';
 let roleUrlRegex = new RegExp('/roles/([a-zA-Z0-9\-]+)$');
 
 function getRoleIdFromPermission(permission){
-  var roleUrl = permission.get('data.links.role');
+  // New permissions won't have a role href in links, but should have a
+  // direct role relationship already loaded
+  if(permission.get('isNew')) {
+    return permission.get('role.id');
+  }
+
+  let roleUrl = permission.get('data.links.role');
   return roleUrlRegex.exec(roleUrl)[1];
 }
 

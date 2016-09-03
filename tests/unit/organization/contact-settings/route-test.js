@@ -3,7 +3,7 @@ import {
   test
 } from 'ember-qunit';
 
-moduleFor('route:organization/contact-settings', {
+moduleFor('route:organization/admin/contact-settings', {
   unit: true,
   needs: ['service:analytics', 'service:elevation']
 });

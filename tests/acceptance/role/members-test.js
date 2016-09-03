@@ -253,7 +253,7 @@ test(`role members can be made role admins`, (assert) => {
   });
 });
 
-test(`visiting ${pageUrl} redirects an unauthorized user to roles`, (assert) => {
+test(`visiting ${pageUrl} as an unauthorized user to roles does not redirect, but hides membership edit`, (assert) => {
   cannotDeleteThis._embedded.roles = [nonOwnerRole];
 
   const member1 = {
@@ -281,8 +281,10 @@ test(`visiting ${pageUrl} redirects an unauthorized user to roles`, (assert) => 
   andThen(() => {
     assert.equal(
       currentPath(),
-      'dashboard.catch-redirects.organization.roles.platform',
-      'Unauthorized user is redirected to roles'
+      'requires-authorization.enclave.role.members',
+      'remains on current path'
     );
+
+    assert.equal(find('.invite-new-members-to-role').length, 0, 'does not show invite members UI');
   });
 });

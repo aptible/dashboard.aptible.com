@@ -23,13 +23,12 @@ test('visiting /password/new/:reset_code/:user_id works', function(assert) {
 
 test('visiting /password/new/:reset_code/:user_id signed in redirects to index', function(assert) {
   stubOrganization();
-  stubOrganizations();
   stubStacks();
   var userId = 'abcUserId';
   var resetCode = 'defResetCode';
   signInAndVisit(`/password/new/${resetCode}/${userId}`);
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 

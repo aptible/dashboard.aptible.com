@@ -8,7 +8,7 @@ var App;
 module('Acceptance: Databases Show', {
   beforeEach: function() {
     App = startApp();
-    stubOrganizations();
+    stubOrganization();
     stubStacks();
   },
   afterEach: function() {
@@ -42,7 +42,7 @@ test('visiting /databases/my-db-id shows the database', function(assert) {
 
   signInAndVisit('/databases/my-db-id');
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.database.metrics', 'show page is visited');
+    assert.equal(currentPath(), 'requires-authorization.enclave.database.metrics', 'show page is visited');
     var contentNode = findWithAssert('*:contains(my-database)');
     assert.ok(contentNode.length > 0, 'my-database is on the page');
   });
@@ -83,7 +83,7 @@ test('visiting /databases/my-db-id with provisioned database and disk shows disk
 
   signInAndVisit('/databases/my-db-id');
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.database.metrics', 'show page is visited');
+    assert.equal(currentPath(), 'requires-authorization.enclave.database.metrics', 'show page is visited');
     var sizeNode = findWithAssert('.db-size:contains(10 GB)');
     var urlNode = findWithAssert('.db-connection-url:contains(postgresql://me:pw@10.0.0.0/db)');
     assert.ok(sizeNode.length > 0, 'shows database size');
@@ -114,7 +114,7 @@ test('visiting /databases/my-db-id with provisioning database shows a spinner', 
 
   signInAndVisit('/databases/my-db-id');
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.database.metrics', 'show page is visited');
+    assert.equal(currentPath(), 'requires-authorization.enclave.database.metrics', 'show page is visited');
     var contentNode = findWithAssert('.db-status:contains(Provisioning)');
     assert.ok(contentNode.length > 0, 'shows provisioning status');
   });
@@ -143,7 +143,7 @@ test('visiting /databases/my-db-id with provisioned database but no disk doesn\'
 
   signInAndVisit('/databases/my-db-id');
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.database.metrics', 'show page is visited');
+    assert.equal(currentPath(), 'requires-authorization.enclave.database.metrics', 'show page is visited');
     var contentNode = find('.db-size');
     assert.ok(contentNode.length === 0, 'my-database is on the page');
   });

@@ -13,7 +13,7 @@ let userId = 'basic-user-1';
 let developerId = 'developer-user-2';
 let basicRoleId = 'basic-role-1';
 let developerRoleId = 'developer-role-2';
-let overviewUrl = `/compliance/${orgId}/training`;
+let overviewUrl = `/gridiron/${orgId}/admin/training`;
 
 
 let users = [
@@ -81,11 +81,11 @@ test(`visiting ${overviewUrl}: basic UI`, function(assert) {
   signInAndVisit(overviewUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'compliance.compliance-organization.compliance-engines.training');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.training');
     assert.equal(find('.workforce-members .user').length, 3, 'shows all 3 active users');
     let user1 = find('.workforce-members .user').eq(0);
 
-    assert.equal(user1.find('.user-name').text(), users[0].name, 'shows user name');
+    assert.equal(user1.find('.panel-name').text(), users[0].name, 'shows user name');
     assert.equal(user1.find('.status-incomplete').length, 1, 'user 1 has one overdue');
     assert.equal(find('.status-incomplete').length, 3, 'all three are incomplete');
 
@@ -121,7 +121,7 @@ test(`visiting ${overviewUrl}: training documents`, function(assert) {
   signInAndVisit(overviewUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.compliance-engines.training');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.training');
     let userPanels = find('.workforce-members .user');
     assert.equal(userPanels.length, 3, 'shows all 3 active users');
     let user1 = userPanels.eq(0);
@@ -141,7 +141,6 @@ test(`visiting ${overviewUrl}: training documents`, function(assert) {
 function stubRequests() {
   stubValidOrganization();
   stubStacks();
-  stubBillingDetail();
   stubProfile({ hasCompletedSetup: true });
   stubCriteria(criteria);
 

@@ -1,0 +1,71 @@
+<header class="resource-header">
+  <div class="layout-container">
+    <div class="resource-title">
+      <i class="resource-icon resource-org"></i>
+      <h1>{{organization.name}} Environments</h1>
+    </div>
+  </div>
+</header>
+
+<div class="layout-container">
+  <div class="resource-list-grid">
+
+
+    <div class="sort-group">
+      {{#if hasPending}}
+        <h5 class="sort-header">Provisioned Environments</h5>
+      {{/if}}
+      <div class="row">
+        {{#each sortedActivatedStacks as |environment|}}
+          <div class="col-xs-4">
+
+            <div class="panel panel-default resource-list-item">
+              <div class="panel-heading">
+                <h5>{{environment.handle}}</h5>
+              </div>
+
+              <div class="panel-body">
+                {{stack-metadata model=environment}}
+              </div>
+            </div>
+
+          </div>
+        {{/each}}
+      </div>
+    </div>
+
+    {{#if hasPending}}
+      <div class="sort-group">
+        <h5 class="sort-header">Pending Environments</h5>
+        <div class="row">
+          {{#each sortedPendingStacks as |environment|}}
+            <div class="col-xs-4">
+
+              <div class="panel panel-default resource-list-item">
+                <div class="panel-heading">
+                  <h5>{{environment.handle}}</h5>
+                </div>
+
+                <div class="panel-body">
+                  {{stack-metadata model=environment}}
+                </div>
+              </div>
+
+            </div>
+          {{/each}}
+        </div>
+      </div>
+    {{/if}}
+
+    <div class="resource-actions">
+      {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
+        {{#if hasAbility}}
+          {{#link-to 'organization.admin.environments.new' class="btn btn-primary"}}
+            Create New Environment
+          {{/link-to}}
+        {{/if}}
+      {{/aptible-ability}}
+    </div>
+  </div>
+</div>
+

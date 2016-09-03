@@ -8,7 +8,7 @@ var App;
 module('Acceptance: Database Deprovision', {
   beforeEach: function() {
     App = startApp();
-    stubOrganizations();
+    stubOrganization();
     stubStacks();
   },
   afterEach: function() {
@@ -104,7 +104,7 @@ test('/databases/:id/deprovision will deprovision with confirmation', function(a
   click('button:contains(Deprovision)');
   andThen(() => {
     assert.ok(didDeprovision, 'deprovisioned', 'received successful response');
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.databases.index',
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.databases.index',
       'should first redirect to index page');
   });
 });
@@ -141,6 +141,6 @@ test('/databases/:id/deprovision will show deprovision error', function(assert) 
   andThen(function(){
     var error = findWithAssert('.alert');
     assert.ok(error.text().indexOf(errorMessage) > -1, 'error message shown');
-    assert.equal(currentPath(), 'dashboard.catch-redirects.database.deprovision');
+    assert.equal(currentPath(), 'requires-authorization.enclave.database.deprovision');
   });
 });

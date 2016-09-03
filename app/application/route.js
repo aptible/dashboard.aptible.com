@@ -1,41 +1,28 @@
 import Ember from "ember";
 import config from '../config/environment';
 
+// Defining an error action at all will cause errors to be swallowed.
+// This makes debugging in development impossible.  Use sentry.development
+// flag to determine if we should even define an error action.
+let onError = null;
+
+if(config.environment === 'test' || !config.sentry.development) {
+  onError = function(err) {
+    this.get('raven').captureException(err);
+    this.intermediateTransitionTo('error', err);
+  };
+}
+
 export default Ember.Route.extend({
   requireAuthentication: false,
   title: 'Aptible Dashboard',
   raven: Ember.inject.service(),
-  activate() {
-    if (this.get('features').isEnabled('notifications')) {
-      this._oldOnError = Ember.onerror;
-      this._errorHandler = (e) => {
-        this.get('flashMessages').danger(e);
-        if (this._oldOnError) {
-          this._oldOnError(e);
-        }
-      };
-      Ember.onerror = this._errorHandler;
-    }
-  },
-
-  deactivate() {
-    if (this.get('features').isEnabled('notifications')) {
-      Ember.onerror = this._oldOnError;
-    }
-  },
 
   actions: {
     accessDenied() {
       this.transitionTo('login');
     },
 
-    error(err) {
-      if(config.environment !== 'test' && config.sentry.development)  {
-        this._super(...arguments);
-      } else {
-        this.get('raven').captureException(err);
-        this.intermediateTransitionTo('error', err);
-      }
-    }
+    error: onError
   }
 });

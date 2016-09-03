@@ -87,22 +87,24 @@ test('visiting /welcome/1/payment-info when not logged in', function() {
 test('visiting /welcome/1/payment-info logged in with billing detail', function(assert) {
   stubStacks();
   stubDatabaseImages();
-  stubOrganizations();
+  stubOrganization();
+
   signInAndVisit(paymentsUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 
 test('visiting /welcome/1/payment-info/ logged in WITHOUT billing detail', function(assert) {
   stubStacks();
   stubDatabaseImages();
-  stubOrganizations();
+  stubOrganization();
+
   signInAndVisit(paymentsUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 
@@ -119,7 +121,7 @@ test('submitting empty payment info raises an error', function(assert) {
 
   stubStacks({}, []);
   stubDatabaseImages();
-  stubOrganizations();
+  stubOrganization();
 
   visitPaymentInfoWithApp();
   clickButton('Save');
@@ -178,8 +180,6 @@ test('payment info should be submitted to stripe to create stripeToken', functio
     });
   });
 
-  stubOrganizations();
-
   mockStripe.card.createToken = function(options, fn) {
     assert.equal(options.name, cardOptions.name, 'name is correct');
     assert.equal(options.number, cardOptions.cardNumber, 'card number is correct');
@@ -206,7 +206,7 @@ test('payment info should be submitted to stripe to create stripeToken', functio
     clickButton('Save');
   });
   andThen( () => {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 
@@ -215,6 +215,7 @@ test('submitting valid payment info for development plan should create dev stack
 
   stubStacks({}, []);
   stubDatabaseImages();
+  stubOrganization();
 
   stubRequest('get', '/billing_details/1', function(){
     return this.notFound();
@@ -242,7 +243,6 @@ test('submitting valid payment info for development plan should create dev stack
     return this.success(Ember.merge({id:params.handle }, params));
   });
 
-  stubOrganizations();
   mockSuccessfulPayment();
 
   visitPaymentInfoWithApp();
@@ -250,12 +250,12 @@ test('submitting valid payment info for development plan should create dev stack
     clickButton('Save');
   });
   andThen( () => {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.new');
   });
 });
 
 test('submitting valid payment info on organization with existing stripe info should not recreate the subscription', function(assert) {
-  stubBillingDetail({id: 1});
+  stubOrganization({}, {id: 1});
   stubStacks({}, []);
   stubOrganization();
   stubDatabaseImages();
@@ -304,7 +304,7 @@ test('submitting valid payment info on organization with existing stripe info sh
   clickButton('Save');
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.new');
   });
 });
 
@@ -338,7 +338,6 @@ test('submitting valid payment info should create app', function(assert) {
     return this.success({ id: appHandle, handle: appHandle });
   });
 
-  stubOrganizations();
   mockSuccessfulPayment();
 
   visitPaymentInfoWithApp({appHandle: appHandle});
@@ -347,7 +346,7 @@ test('submitting valid payment info should create app', function(assert) {
   });
   clickButton('Save');
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 
@@ -398,7 +397,6 @@ test('submitting valid payment info should create db', function(assert) {
     return this.success({id: dbHandle});
   });
 
-  stubOrganizations();
   mockSuccessfulPayment();
 
   visitPaymentInfoWithApp({
@@ -412,7 +410,7 @@ test('submitting valid payment info should create db', function(assert) {
   });
   clickButton('Save');
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.new');
   });
 });
 
@@ -459,7 +457,6 @@ test('submitting valid payment info when user is verified should provision db', 
     return this.success(201, {id: 'op-id', status: 'succeeded'});
   });
 
-  stubOrganizations();
   mockSuccessfulPayment();
 
   let userData = {id: 'user-id', verified: true};
@@ -472,7 +469,7 @@ test('submitting valid payment info when user is verified should provision db', 
   });
   clickButton('Save');
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.new');
 
     assert.equal(databaseParams.handle, dbHandle,
           'db params has handle');

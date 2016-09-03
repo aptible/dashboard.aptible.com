@@ -10,7 +10,7 @@ module('Acceptance: Apps Show', {
   beforeEach: function() {
     App = startApp();
     stubStacks();
-    stubOrganizations();
+    stubOrganization();
     stubRequest('get', '/users/user1/ssh_keys', function(){
       return this.success({
         _embedded: {
@@ -33,7 +33,7 @@ test('visiting /apps/my-app-id shows basic app info', function(assert) {
 
   let deployUserName = 'Skylar Anderson';
   let currentGitRef = 'b2bac0d8f9';
-  stubOrganizations();
+  stubOrganization();
   stubStack({
     id: 'my-stack-1',
     handle: 'my-stack-1'
@@ -66,7 +66,7 @@ test('visiting /apps/my-app-id shows basic app info', function(assert) {
   signInAndVisit('/apps/' + appId);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.app.services.index', 'show page is visited');
+    assert.equal(currentPath(), 'requires-authorization.enclave.app.services.index', 'show page is visited');
 
     let app = find('.resource-title:contains(my-app)');
     assert.ok(app.length, 'shows app handle');
@@ -91,7 +91,7 @@ test('visiting /apps/my-app-id shows basic app info', function(assert) {
 
 test('visiting /apps/my-app-id when the app is deprovisioned', function(assert) {
   var appId = 'my-app-id';
-  stubOrganizations();
+  stubOrganization();
   stubApp({id: appId, status: 'deprovisioned'});
   stubStack({ id: 'stubbed-stack' });
 
@@ -107,7 +107,7 @@ test(`visit /apps/app-id shows current tab with active class`, function(assert) 
   let appName = 'foo';
   let stackHandle = 'bar';
 
-  stubOrganizations();
+  stubOrganization();
   stubApp({
     id: appId,
     handle: appName,

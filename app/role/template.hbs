@@ -4,7 +4,7 @@
       <div class="resource-title">
         {{#if roleTypeSubTitle}}
           <h2 class="heading--caps heading--sm">
-            {{#link-to backToRolesRoute model.organization class="return-link"}}
+            {{#link-to 'organization.roles.type' context.organization.id roleTypeParam class="return-link"}}
               {{roleTypeSubTitle}}
             {{/link-to}}
           </h2>
@@ -17,22 +17,24 @@
   <div class="layout-container">
     <h1>{{platformRole}}</h1>
     <ul class='nav nav-pills resource-navigation'>
-      {{#activating-item currentWhen='role.members' tagName='li'}}
-        {{link-to 'Members' 'role.members' model}}
-      {{/activating-item}}
+
+      {{#link-to 'role.members' tagName="li"}}
+        {{link-to 'Members' 'role.members' model bubbles=false}}
+      {{/link-to}}
+
       {{#if model.isPlatform}}
-        {{#activating-item currentWhen='role.environments' tagName='li'}}
-          {{link-to 'Environments' 'role.environments' model}}
-        {{/activating-item}}
+
+        {{#link-to 'role.environments' tagName="li"}}
+          {{link-to 'Environments' 'role.environments' model bubbles=false}}
+        {{/link-to}}
       {{/if}}
-      {{#if model.isUser}}
-        {{#aptible-ability user=session.currentUser scope='manage' permittable=model.organization as |hasAbility|}}
-          {{#if hasAbility}}
-            {{#activating-item currentWhen='role.settings' tagName='li'}}
-              {{link-to 'Settings' 'role.settings' model}}
-            {{/activating-item}}
-          {{/if}}
-        {{/aptible-ability}}
+
+      {{#if model.isUser}}{{!-- can only change settings on user types role --}}
+        {{#if context.userIsEnclaveOrOrganizationAdmin}}
+          {{#link-to 'role.settings' tagName="li"}}
+            {{link-to 'Settings' 'role.settings' model bubbles=false}}
+          {{/link-to}}
+        {{/if}}
       {{/if}}
     </ul>
 

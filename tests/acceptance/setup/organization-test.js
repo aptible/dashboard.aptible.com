@@ -6,7 +6,7 @@ import { orgId, rolesHref, usersHref, invitationsHref,
          securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
-let organizationUrl = `/compliance/${orgId}/setup/organization`;
+let organizationUrl = `/gridiron/${orgId}/admin/setup/organization`;
 let roleId = 'owners-role';
 let userId = 'u1';
 let roles = [
@@ -48,7 +48,7 @@ test('Organization settings page basic UI', function(assert) {
   signInAndVisit(organizationUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.setup.organization', 'on organization setup page');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.organization', 'on organization setup page');
     assert.ok(find('textarea[name="aboutOrganization"]'), 'has about organization');
     assert.ok(find('textarea[name="aboutProduct"]'), 'has about product');
     assert.ok(find('textarea[name="aboutArchitecture"]'), 'has about architecture');
@@ -56,7 +56,7 @@ test('Organization settings page basic UI', function(assert) {
 });
 
 test('Clicking continue saves organization profile and moves to next step', function(assert) {
-  expect(7);
+  expect(8);
 
   let expectedAboutOrganization = 'Secure, private cloud deployment for digital health.';
   let expectedAboutProduct = 'Seamlessly integrate advanced compliance tools';
@@ -80,6 +80,7 @@ test('Clicking continue saves organization profile and moves to next step', func
   });
 
   andThen(() => {
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.organization', 'on organization setup page');
     fillIn('textarea[name="aboutOrganization"]', expectedAboutOrganization);
     fillIn('textarea[name="aboutProduct"]', expectedAboutProduct);
   });
@@ -87,7 +88,7 @@ test('Clicking continue saves organization profile and moves to next step', func
   andThen(clickContinueButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.setup.organization', 'remain on current step when form is incomplete');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.organization', 'remain on current step when form is incomplete');
     fillIn('textarea[name="aboutArchitecture"]', 'Test');
     fillIn('textarea[name="aboutBusinessModel"]', 'Test');
     fillIn('textarea[name="aboutTeam"]', 'Test');
@@ -96,7 +97,7 @@ test('Clicking continue saves organization profile and moves to next step', func
 
   andThen(clickContinueButton);
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.setup.locations', 'moved to next step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.locations', 'moved to next step');
   });
 });
 
@@ -141,7 +142,6 @@ function stubRequests() {
   stubSchemasAPI();
   stubCriterionDocuments({});
   stubStacks();
-  stubBillingDetail();
   stubCriteria();
 
   stubRequest('get', rolesHref, function() {

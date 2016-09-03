@@ -21,7 +21,6 @@ test('visiting /verify/some-code requires authentication', function() {
 test('visiting /verify/some-code creates verification', function(assert) {
   stubStacks(); // For loading index
   stubOrganization();
-  stubOrganizations();
   stubUser();
   var verificationCode = 'some-code';
 
@@ -37,7 +36,7 @@ test('visiting /verify/some-code creates verification', function(assert) {
   let userData = {verified: false};
   signInAndVisit(`/verify/${verificationCode}`, userData);
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 
@@ -45,7 +44,6 @@ test('after verification, pending databases are provisioned', function(assert) {
   assert.expect(5);
   stubStacks(); // For loading index
   stubOrganization();
-  stubOrganizations();
   var verificationCode = 'some-code';
   let dbId = 'db-id';
   let diskSize = '10';
@@ -82,7 +80,7 @@ test('after verification, pending databases are provisioned', function(assert) {
 
   signInAndVisit('/verify/'+verificationCode);
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 
@@ -94,7 +92,6 @@ test('visiting / when not verified shows verification message with resend button
   };
 
   stubStacks();
-  stubOrganizations();
   stubOrganization();
 
   stubRequest('post', '/resets', function(request){

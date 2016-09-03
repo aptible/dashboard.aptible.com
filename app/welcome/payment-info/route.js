@@ -121,7 +121,7 @@ export default Ember.Route.extend({
         route.get('analytics').track(NEW_SIGNUP_EVENT_NAME, eventTraits);
 
         saveProgress.set('currentStep', 6);
-        route.transitionTo('index');
+        route.transitionTo('enclave');
       }, function(error) {
         error = error.message || error.responseJSON.message;
         saveProgress.set('currentStep', 0);

@@ -33,9 +33,9 @@ module('Acceptance: Databases Backups', {
     $.support.transition = false;
     App = startApp();
     stubStacks();
-    stubOrganizations();
     stubStack(stack);
     stubDatabase(database);
+    stubOrganization();
   },
   afterEach: function() {
     Ember.run(App, 'destroy');

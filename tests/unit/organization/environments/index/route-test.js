@@ -1,6 +1,6 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('route:organization/environments/index', {
+moduleFor('route:organization/admin/environments/index', {
   unit: true,
   needs: ['service:analytics', 'service:elevation']
 });

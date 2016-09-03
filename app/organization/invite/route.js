@@ -9,7 +9,9 @@ export default Ember.Route.extend({
   },
 
   model(params, transition){
-    let organization = this.modelFor('organization');
+    let context = this.modelFor('organization');
+    let organization = context.get('organization');
+
     let options = { organization };
     if (transition.queryParams.role) {
       options.role = transition.queryParams.role;
@@ -23,7 +25,8 @@ export default Ember.Route.extend({
   },
 
   setupController(controller, model) {
-    let organization = this.modelFor('organization');
+    let context = this.modelFor('organization');
+    let organization = context.get('organization');
 
     if(!model.get('role.id')) {
       model.set('role', organization.get('roles.firstObject'));

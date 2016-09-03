@@ -4,7 +4,7 @@
 @import "setup";
 @import "ember-json-schema-views";
 
-
+@import "loading-indicator";
 @import "components/aptables";
 @import "components/labels";
 @import "components/panel";
@@ -39,7 +39,7 @@
 @import "components/verification-code-reset";
 @import "components/vhost-panel";
 @import "components/welcome";
-@import "components/trainee-dashboard";
+@import "components/gridiron-user";
 @import "components/add-location-form";
 @import "components/compliance-icon";
 @import "components/dashboard";

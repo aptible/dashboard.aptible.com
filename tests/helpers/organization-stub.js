@@ -71,11 +71,11 @@ export var criteria = [
   },
 ];
 
-Ember.Test.registerHelper('stubValidOrganization', function(options) {
-  if (!!options && !!options.orgId) {
-    orgId = options.ordId;
+Ember.Test.registerHelper('stubValidOrganization', function(app, orgData, billingDetailData) {
+  if (orgData && orgData.orgId) {
+    orgId = orgData.ordId;
   }
-  let organization = {
+  let organization = Ember.$.extend({
     id: orgId,
     name: orgId,
     _links: {
@@ -86,15 +86,15 @@ Ember.Test.registerHelper('stubValidOrganization', function(options) {
       security_officer: { href: `/users/${securityOfficerId}` },
       self: { href: `/organizations/${orgId}` }
     }
-  };
+  }, orgData);
 
-  let billingDetail = {
+  let billingDetail = Ember.$.extend({
     id: orgId,
     plan: 'pilot',
     _links: {
       organization: { href: `/organizations/${orgId}` }
     }
-  };
+  }, billingDetailData);
 
   stubRequest('get', `/organizations/${orgId}`, function() {
     return this.success(organization);
@@ -104,7 +104,7 @@ Ember.Test.registerHelper('stubValidOrganization', function(options) {
     return this.success({ _embedded: { organizations: [organization] }});
   });
 
-  stubRequest('get', `/billing_details/${orgId}`, function() {
+  stubRequest('get', billingDetailHref, function() {
     return this.success(billingDetail);
   });
 });

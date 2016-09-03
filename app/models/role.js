@@ -21,10 +21,7 @@ let Role = DS.Model.extend({
   isPlatform: Ember.computed.or('isAccountOwner', 'isPlatformOwner', 'isPlatformUser'),
 
   privileged: Ember.computed.deprecatingAlias('isOwner'),
-
-  persistedInvitations: Ember.computed('invitations.[]', function() {
-    return this.get('invitations').rejectBy('isNew');
-  })
+  persistedInvitations: Ember.computed.filterBy('invitations', 'isNew', false)
 });
 
 Role.reopenClass({

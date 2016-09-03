@@ -21,7 +21,6 @@ module('Acceptance: Certificates', {
     };
     stubStacks({}, [stack]);
     stubOrganization();
-    stubOrganizations();
   },
   afterEach: function() {
     Ember.run(App, 'destroy');
@@ -52,12 +51,10 @@ test(`visiting ${url} with no certificates redirects to certificates new`, funct
   });
   stubStacks({ includeApps: false });
   stubStack({ id: stackId });
-  stubOrganization();
-  stubOrganizations();
 
   signInAndVisit(url);
   andThen(function(){
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.certificates.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.certificates.new');
   });
 });
 

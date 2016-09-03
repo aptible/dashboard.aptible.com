@@ -151,7 +151,6 @@ module('Acceptance: User Settings: Account', {
     App = startApp();
     showedOtpUri = false;
     stubStacks();
-    stubOrganizations();
     stubOrganization({ id: 'o1'});
   },
   afterEach: function() {

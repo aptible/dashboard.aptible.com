@@ -2,17 +2,17 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model() {
-    return Ember.RSVP.hash({
-      role: this.modelFor('role'),
-      currentUserRoles: this.session.get('currentUser.roles')
-    });
+    return this.modelFor('role');
   },
 
   setupController(controller, model) {
-    controller.set('model', model.role);
-    controller.set('stacks', this.store.findStacksFor(model.role.get('organization')));
-    controller.set('organization', model.role.get('organization'));
-    controller.set('platformRole', model.role.get('platform'));
-    controller.set('currentUserRoles', model.currentUserRoles);
+    let contextHref = model.get('data.links.organization');
+    let context = this.get('authorization').getContextByHref(contextHref);
+
+    controller.set('model', model);
+    controller.set('stacks', context.get('stacks'));
+    controller.set('organization', context.get('organization'));
+    controller.set('currentUserRoles', context.get('currentUserRoles'));
+    controller.set('authorizationContext', context);
   }
 });

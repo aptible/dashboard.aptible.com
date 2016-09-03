@@ -28,18 +28,16 @@ test('visiting / redirects to login page', function(assert) {
 test('visiting / when logged in with more than one stacks redirects to stacks index page', function(assert) {
   stubStacks();
   stubOrganization();
-  stubOrganizations();
   signInAndVisit('/');
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 
 test('visiting / when logged in with only one stack redirects to first stack page', function(assert) {
   let stackId = 'my-stack-1';
   stubStacks();
-  stubOrganizations();
   stubRequest('get', '/accounts', function(){
     return this.success({
       id: stackId,
@@ -63,7 +61,7 @@ test('visiting / when logged in with only one stack redirects to first stack pag
 
   andThen(function() {
     assert.equal(currentURL(), `/stacks/${stackId}/apps`);
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
 
     expectLink(`stacks/${stackId}/databases`);
     expectLink(`stacks/${stackId}/logging`);

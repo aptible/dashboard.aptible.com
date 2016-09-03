@@ -55,19 +55,26 @@ Ember.Test.registerHelper('createStubToken', function(app, tokenData, stubUser) 
   return Ember.$.extend(true, defaultTokenData, tokenData);
 });
 
-Ember.Test.registerHelper('signIn', function(app, userData, roleData, tokenData){
-  userData = createStubUser(userData);
-  roleData = createStubRole(roleData);
-  tokenData = createStubToken(tokenData, userData);
+Ember.Test.registerHelper('signIn', function(app, userData, roleData, tokenData) {
 
-  stubRequest('get', `/roles/${roleData.id}`, function(){
-    return this.success(roleData);
+  if(!Array.isArray(roleData)) {
+    roleData = [roleData];
+  }
+
+  roleData = roleData.map((role) => createStubRole(role));
+  roleData.forEach((role) => {
+    stubRequest('get', `/roles/${role.id}`, function(){
+      return this.success(role);
+    });
   });
+
+  userData = createStubUser(userData);
+  tokenData = createStubToken(tokenData, userData);
 
   stubRequest('get', `/users/${userData.id}/roles`, function(){
     return this.success({
       _embedded: {
-        roles: [roleData]
+        roles: roleData
       }
     });
   });
@@ -99,7 +106,7 @@ Ember.Test.registerAsyncHelper('expectRedirectsWhenLoggedIn', function(app, url)
   signInAndVisit(url);
 
   andThen(function(){
-    equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 
@@ -380,12 +387,17 @@ Ember.Test.registerHelper('expectStackHeader', function(app, stackHandle){
 
 
 Ember.Test.registerHelper('stubBillingDetail', function(app, billingDetailData){
+  let id = 1;
+  if (billingDetailData) {
+    id = Ember.getWithDefault(billingDetailData, 'id', id);
+  }
+
   let defaultData = {
     _links: {
       self: { href: '/billing_details/1' },
       organization: { href: '' }
     },
-   id: 1,
+   id: id,
    paymentMethodName: 'Visa',
    paymentMethodDisplay: '4242',
    type: 'billingDetail',
@@ -393,50 +405,31 @@ Ember.Test.registerHelper('stubBillingDetail', function(app, billingDetailData){
   };
 
   billingDetailData = Ember.$.extend(true, defaultData, billingDetailData || {});
-  stubRequest('get', '/billing_details/:org_id', function(request){
-    billingDetailData.id = request.params.org_id;
+  stubRequest('get', `/billing_details/${id}`, function() {
     billingDetailData._links.self.href = `/billing_details/${billingDetailData.id}`;
     billingDetailData._links.organization.href = `/organizations/${billingDetailData.id}`;
     return this.success( billingDetailData );
   });
 });
 
-
-Ember.Test.registerHelper('stubOrganizations', function(){
-  let orgData = {
-    _links: {
-      self: { href: '/organizations/1' },
-      billing_detail: { href: '/billing_details/1' }
-    },
-    id: 1,
-    name: 'Sprocket Co',
-    handle: 'sprocket-co',
-    type: 'organization'
-  };
-  stubRequest('get', '/organizations', function(){
-    return this.success({
-      _links: {},
-      _embedded: { organizations: [orgData] }
-    });
-  });
-  stubRequest('get', '/organizations/:org_id', function(){
-    return this.success(orgData);
-  });
-  stubBillingDetail({
-    id: orgData.id,
-    _links: { self: `/billing_details/${orgData.id}` }
-  });
-});
-
 Ember.Test.registerHelper('stubOrganization', function(app, orgData, billingDetailData){
+  let orgId = 1;
+  if (orgData) {
+    orgId = Ember.getWithDefault(orgData, 'id', orgId);
+  }
   let defaultData = {
     _links: {
-      self: { href: '/organizations/1' },
-      billing_detail: { href: '' },
+      self: { href: `/organizations/${orgId}` },
+      billing_detail: { href: `/billing_details/${orgId}` }
     },
-    id: 1, name: 'Sprocket Co', handle:'sprocket-co', type: 'organization'
+    id: orgId, name: 'Sprocket Co', handle:'sprocket-co', type: 'organization'
   };
   orgData = Ember.$.extend(true, defaultData, orgData || {});
+
+  stubRequest('get', '/organizations', function() {
+    return this.success({ _embedded: { organizations: [orgData]}});
+  });
+
   stubRequest('get', '/organizations/:org_id', function(request){
     orgData.id = request.params.org_id;
     orgData._links.self.href = `/organizations/${orgData.id}`;
@@ -445,8 +438,8 @@ Ember.Test.registerHelper('stubOrganization', function(app, orgData, billingDeta
   });
 
   let defaultBillingDetail = {
-    id: orgData.id,
-    _links: { self: `/billing_details/${orgData.id}` }
+    id: orgId,
+    _links: { self: `/billing_details/${orgId}` }
   };
   billingDetailData = Ember.$.extend(true, defaultBillingDetail, billingDetailData || {});
   stubBillingDetail(billingDetailData);
@@ -643,5 +636,4 @@ Ember.Test.registerHelper('stubInvitation', function(app, invitationData={}){
 Ember.Test.registerHelper('stubIndexRequests', function(){
   stubStacks();
   stubOrganization();
-  stubOrganizations();
 });

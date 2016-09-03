@@ -12,7 +12,7 @@ let url = `/organizations/${orgId}/roles`;
 let rolesUrl = url;
 
 module('Acceptance: Organizations: Roles', {
-  beforeEach: function() {
+  beforeEach() {
     application = startApp();
     stubRequest('get', '/organizations', function(){
       return this.success({
@@ -32,7 +32,7 @@ module('Acceptance: Organizations: Roles', {
     });
   },
 
-  afterEach: function() {
+  afterEach() {
     Ember.run(application, 'destroy');
   }
 });
@@ -87,7 +87,7 @@ test(`visiting ${url} shows roles`, (assert) => {
   signInAndVisit(url, {}, roles[0]);
 
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.roles.platform');
+    assert.equal(currentPath(), 'requires-authorization.organization.roles.type');
 
     roles.forEach( (r) => {
       let roleDiv = find(`.role-details__heading:contains(${r.name})`);
@@ -115,7 +115,10 @@ test(`visit ${url} and click to show`, (assert) => {
   let role = {
     id: 'role1',
     name: 'Dev',
-    type: 'platform_user'
+    type: 'platform_user',
+    _links: {
+      organization: { href: `/organizations/${orgId}` }
+    }
   };
 
   stubRequest('get', rolesUrl, function() {
@@ -125,8 +128,12 @@ test(`visit ${url} and click to show`, (assert) => {
   stubStacks();
 
   signInAndVisit(url);
-  click(`a[title="Edit ${role.name} Permissions"]`);
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.role.members');
+    let panelLink = findWithAssert(`.panel-link:contains(${role.name})`);
+    click(panelLink);
+  });
+
+  andThen(() => {
+    assert.equal(currentPath(), 'requires-authorization.enclave.role.members');
   });
 });

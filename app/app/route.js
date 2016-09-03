@@ -31,7 +31,7 @@ export default Ember.Route.extend({
   renderTemplate() {
     this._super.apply(this, arguments);
     this.render('sidebars/stack', {
-      into: 'dashboard',
+      into: 'enclave',
       outlet: 'sidebar'
     });
   }

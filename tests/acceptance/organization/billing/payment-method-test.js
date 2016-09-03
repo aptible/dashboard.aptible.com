@@ -11,9 +11,9 @@ let application;
 
 // FIXME this is hardcoded to match the value for signIn in
 // aptible-helpers
-const organizationId = 'o1';
+const organizationId = '1';
 
-const paymentMethodUrl = `/organizations/${organizationId}/billing/payment-method`;
+const paymentMethodUrl = `/organizations/${organizationId}/admin/billing/payment-method`;
 const url = paymentMethodUrl;
 
 const updatePaymentMethodButton = "Edit";
@@ -22,7 +22,7 @@ module('Acceptance: Organizations: Billing: Payment Method', {
   beforeEach: function() {
     application = startApp();
     stubStacks();
-    stubOrganizations();
+    stubOrganization();
   },
 
   afterEach: function() {

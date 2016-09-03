@@ -2,7 +2,7 @@ import Ember from 'ember';
 import { provisionDatabases } from '../models/database';
 
 export default Ember.Route.extend({
-  model: function(params){
+  model(params){
     var options = {
       verificationCode: params.verification_code,
       type: 'email'
@@ -19,8 +19,8 @@ export default Ember.Route.extend({
     });
   },
 
-  afterModel: function() {
-    this.replaceWith('index');
+  afterModel() {
+    this.replaceWith('enclave');
   }
 
 });

@@ -6,7 +6,7 @@ import { orgId, rolesHref, usersHref, invitationsHref,
          securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
-let securityControlsUrl = `/compliance/${orgId}/settings/security-controls`;
+let securityControlsUrl = `/gridiron/${orgId}/admin/settings/security-controls`;
 let roleId = 'owners-role';
 let userId = 'u1';
 let roles = [
@@ -67,7 +67,7 @@ test('Basic UI', function(assert) {
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.compliance-engines.compliance-settings.security-controls.show', 'on show page');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.gridiron-settings.security-controls.show', 'on show page');
   });
 });
 
@@ -89,7 +89,7 @@ test('Resuming with existing attestations', function(assert) {
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'compliance.compliance-organization.compliance-engines.compliance-settings.security-controls.show');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.gridiron-settings.security-controls.show');
 
     assert.ok(find('input[name="security_controls.security.implemented"]').is(':checked'), 'Existing attestation is loaded');
   });
@@ -100,7 +100,6 @@ function stubRequests() {
   stubSchemasAPI();
   stubCriterionDocuments({});
   stubStacks();
-  stubBillingDetail();
   stubCriteria();
 
   stubRequest('get', rolesHref, function() {

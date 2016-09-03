@@ -1,20 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  model(){
-    let organization = this.modelFor('organization');
-
-    return Ember.RSVP.hash({
-      organization: organization,
-      currentUserRoles: this.session.get('currentUser.roles'),
-      invitations: organization.get('invitations')
-    });
-  },
-
-  setupController(controller, model){
-    controller.set('invitations', model.invitations);
-    controller.set('organization', model.organization);
-    controller.set('currentUserRoles', model.currentUserRoles);
+  model() {
+    return this.modelFor('organization');
   },
 
   actions: {

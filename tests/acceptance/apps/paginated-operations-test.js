@@ -16,7 +16,7 @@ var sharedTestOptions = {
 };
 
 function doSetup() {
-  stubOrganizations();
+  stubOrganization();
   stubStacks();
 }
 

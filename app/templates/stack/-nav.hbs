@@ -1,17 +1,17 @@
 <ul class="nav nav-pills resource-navigation">
-  {{#activating-item tagName="li" currentWhen="stack.apps"}}
-    {{link-to 'Apps' 'apps.index'}}
-  {{/activating-item}}
+  {{#link-to 'apps.index' model tagName="li"}}
+    {{link-to 'Apps' 'apps.index' bubbles=false}}
+  {{/link-to}}
 
-  {{#activating-item tagName="li" currentWhen="stack.databases"}}
-    {{link-to 'Databases' 'databases.index'}}
-  {{/activating-item}}
+  {{#link-to 'databases.index' model tagName="li"}}
+    {{link-to 'Databases' 'databases.index' bubbles=false}}
+  {{/link-to}}
 
-  {{#activating-item tagName="li" currentWhen="stack.log-drains"}}
-    {{link-to 'Logging' 'stack.log-drains'}}
-  {{/activating-item}}
+  {{#link-to 'stack.log-drains' model tagName="li"}}
+    {{link-to 'Logging' 'stack.log-drains' bubbles=false}}
+  {{/link-to}}
 
-  {{#activating-item tagName="li" currentWhen="stack.certificates"}}
-    {{link-to 'Certificates' 'certificates.index'}}
-  {{/activating-item}}
+  {{#link-to 'certificates.index' model tagName="li"}}
+    {{link-to 'Certificates' 'certificates.index' bubbles=false}}
+  {{/link-to}}
 </ul>

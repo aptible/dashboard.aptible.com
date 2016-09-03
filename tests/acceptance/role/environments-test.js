@@ -18,7 +18,6 @@ let url = `/roles/${roleId}/members`;
 module('Acceptance: Role Environments', {
   beforeEach: function() {
     application = startApp();
-    stubOrganizations();
     stubStacks();
   },
 

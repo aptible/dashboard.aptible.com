@@ -8,6 +8,7 @@ var App;
 module('Acceptance: App Deprovision', {
   beforeEach: function() {
     App = startApp();
+    stubOrganization();
   },
   afterEach: function() {
     Ember.run(App, 'destroy');
@@ -22,7 +23,6 @@ test('/apps/:id/deprovision will not deprovision without confirmation', function
   var appId = 1;
   var appName = 'foo-bar';
   var stackHandle = 'krwee-zing';
-  stubOrganizations();
   stubApp({
     id: appId,
     handle: appName,
@@ -81,8 +81,6 @@ test('/apps/:id/deprovision will deprovision with confirmation', function(assert
   });
 
   stubStacks();
-  stubOrganization();
-  stubOrganizations();
 
   signInAndVisit(`/apps/${appId}/deprovision`);
   fillIn('input[type=text]', appName);
@@ -92,7 +90,7 @@ test('/apps/:id/deprovision will deprovision with confirmation', function(assert
   click('button:contains(Deprovision)');
   andThen(function(){
     assert.ok(didDeprovision, 'deprovisioned');
-    assert.equal(currentPath(), 'dashboard.catch-redirects.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 
@@ -102,7 +100,6 @@ test('/apps/:id/deprovision will show deprovision error', function(assert) {
   var errorMessage = 'Some bad error';
   stubStacks();
   stubStack({id: '1'});
-  stubOrganizations();
 
   stubApp({
     id: appId,
@@ -130,6 +127,6 @@ test('/apps/:id/deprovision will show deprovision error', function(assert) {
   andThen(function(){
     var error = findWithAssert('.alert');
     assert.ok(error.text().indexOf(errorMessage) > -1, 'error message shown');
-    assert.equal(currentPath(), 'dashboard.catch-redirects.app.deprovision');
+    assert.equal(currentPath(), 'requires-authorization.enclave.app.deprovision');
   });
 });

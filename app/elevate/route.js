@@ -24,7 +24,7 @@ export default Ember.Route.extend({
 
       let authPromiseFactory = function(credentials) {
         return elevationService.createElevatedToken(credentials).then(() => {
-          let redirectTo = route.currentModel.get("redirectTo") || "index";
+          let redirectTo = route.currentModel.get("redirectTo") || "enclave";
 
           // redirectTo is persisted in the URL, which makes this page work
           // after a reload. However, it means it can be spoofed by sending

@@ -6,14 +6,14 @@ import {
 import startApp from '../../../helpers/start-app';
 
 let application;
-const organizationId = 'o1';
-const overviewUrl = `/organizations/${organizationId}/billing`;
+const organizationId = '1';
+const overviewUrl = `/organizations/${organizationId}/admin/billing`;
 const url = overviewUrl;
 
 module('Acceptance: Organizations: Billing: Overview', {
   beforeEach: function() {
     application = startApp();
-    stubOrganizations();
+    stubOrganization();
     stubStacks();
   },
 

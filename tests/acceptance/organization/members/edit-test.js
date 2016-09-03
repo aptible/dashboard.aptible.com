@@ -8,7 +8,7 @@ import startApp from '../../../helpers/start-app';
 import { stubRequest } from '../../../helpers/fake-server';
 
 let application;
-let orgId = 'o1';
+let orgId = '1';
 let orgName = 'big company';
 let roles = [{
   id: 'r1',
@@ -38,7 +38,7 @@ let apiMemberUrl = `/users/${userId}`;
 let apiRolesUrl = `/organizations/${orgId}/roles`;
 let apiUserRolesUrl = `/users/${userId}/roles`;
 let url = `/organizations/${orgId}/members/${userId}/edit`;
-
+let orgUsersUrl =  `/organizations/${orgId}/users`;
 let user = {
   id: userId,
   name: 'Bob LastName',
@@ -46,6 +46,17 @@ let user = {
   _links: {
     roles: { href: apiUserRolesUrl },
     self: { href: apiUserUrl }
+  },
+  _embedded: { roles: [roles[0]] }
+};
+
+let organization = {
+  id: orgId,
+  name: orgName,
+  _links: {
+    roles: { href: apiRolesUrl },
+    users: { href: orgUsersUrl },
+    billing_detail: { href: `/billing_details/${orgId}` }
   }
 };
 
@@ -53,17 +64,17 @@ module('Acceptance: Organization Members: Member', {
   beforeEach: function() {
     application = startApp();
     stubStacks();
-    stubOrganizations();
-    stubOrganization({
-      id: orgId,
-      name: orgName,
-      _links: {
-        roles: { href: apiRolesUrl }
-      }
+    stubOrganization(organization, {});
+    stubRequest('get', `/organizations`, function() {
+      return this.success({ _embedded: { organizations: [organization] }});
     });
 
     stubRequest('get', apiMemberUrl, function(){
       return this.success(user);
+    });
+
+    stubRequest('get', orgUsersUrl, function() {
+      return this.success({ _embedded: { users: [user] }});
     });
 
     // all org roles
@@ -86,14 +97,14 @@ test(`visiting ${url} requires authentication`, function() {
   expectRequiresAuthentication(url);
 });
 
-test(`visiting ${url} shows user's info and all roles with checkboxes`, function(assert) {
+test(`visiting ${url} shows users info and all roles with checkboxes`, function(assert) {
   assert.expect(4 + 3*roles.length);
 
   signInAndVisit(url);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.members.edit');
-    assert.ok(find(`:contains(${user.name})`).length, `user name "${user.name} is on the page`);
+    assert.equal(currentPath(), 'requires-authorization.organization.members.edit');
+    assert.ok(find(`:contains(${user.name})`).length, `user name "${user.name}" is on the page`);
 
     expectButton('Save');
     expectButton(`Remove from ${orgName}`);
@@ -127,7 +138,7 @@ test(`visiting ${url} does not show "Remove user" button if the user is looking 
   });
 });
 
-test(`visiting ${url} allows changing user's roles`, function(assert){
+test(`visiting ${url} allows changing users roles`, function(assert){
   assert.expect(4);
 
   stubRequest('post', `/roles/${roles[1].id}/memberships`, function(request){
@@ -202,7 +213,7 @@ test(`visit ${url} allows removing user from organization`, function(assert){
   signInAndVisit(url);
   clickButton(`Remove from ${orgName}`);
   andThen(() => {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.organization.members.index');
+    assert.equal(currentPath(), 'requires-authorization.organization.members.index');
   });
 });
 

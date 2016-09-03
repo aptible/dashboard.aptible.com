@@ -1,20 +1,22 @@
 <ul class="nav sidebar-nav">
   <li class="title">
-    {{#link-to 'organization' organization}}
+    {{#link-to 'organization' authorizationContext.organization.id}}
       {{#bs-tooltip title="Organization Settings"}}
         <i class="fa fa-cog"></i>
       {{/bs-tooltip}}
     {{/link-to}}
-    {{organization.name}} Environments
+    {{authorizationContext.organization.name}} Environments
   </li>
 
   {{#each sortedStacks as |stack|}}
-    {{#link-to 'stack' stack tagName="li"}}
+    {{#link-to 'stack' stack tagName="li" class="sidebar-stack-item"}}
       {{link-to stack.handle 'stack' stack bubbles=false}}
     {{/link-to}}
-  {{else}}
-    <li>
-      {{link-to 'Requires payment method →' 'welcome.payment-info' organization.id classNames="requires-payment-link"}}
-    </li>
   {{/each}}
+
+  {{#if authorizationContext.hasNoBillingDetail}}
+    <li>
+      {{link-to 'Requires payment method →' 'welcome.payment-info' organization.id classNames="requires-payment-link danger"}}
+    </li>
+  {{/if}}
 </ul>

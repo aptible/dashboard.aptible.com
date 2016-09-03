@@ -23,7 +23,6 @@ module('Acceptance: App Endpoint New', {
   beforeEach: function() {
     App = startApp();
     stubStacks();
-    stubOrganizations();
     stubOrganization();
   },
   afterEach: function() {
@@ -118,7 +117,7 @@ test(`visiting ${appVhostsUrl} without any endpoints redirects to ${appVhostsNew
   signInAndVisit(appVhostsUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'dashboard.catch-redirects.app.vhosts.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.app.vhosts.new');
   });
 });
 
