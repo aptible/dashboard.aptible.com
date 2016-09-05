@@ -1,5 +1,27 @@
 <div class="resource-list-grid">
 
+  {{#if hasNoApps}}
+    <div class="activate-notice activate-notice--micro">
+      <div class="row">
+        <div class="col-xs-8 col-xs-offset-2">
+          <h2><strong>{{stack.handle}}</strong> has no apps yet.</h2>
+          {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
+            {{#if hasAbility}}
+              {{#if session.currentUser.verified}}
+                <div class="call-to-action">
+                  <a {{action 'openCreateAppModal'}} class="btn btn-primary">
+                    Create App
+                  </a>
+                </div>
+              {{/if}}
+            {{/if}}
+          {{/aptible-ability}}
+        </div>
+      </div>
+    </div>
+  {{/if}}
+
+
   {{#if hasActive}}
     <div class="sort-group deployed-apps">
       {{#if showSortableHeader}}
@@ -54,17 +76,19 @@
       </div>
   {{/if}}
 
-  <div class="resource-actions">
-    {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
-      {{#if hasAbility}}
-        {{#if session.currentUser.verified}}
-          <a {{action 'openCreateAppModal'}} class="btn btn-primary">
-            Create App
-          </a>
+  {{#unless hasNoApps}}
+    <div class="resource-actions">
+      {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
+        {{#if hasAbility}}
+          {{#if session.currentUser.verified}}
+            <a {{action 'openCreateAppModal'}} class="btn btn-primary">
+              Create App
+            </a>
+          {{/if}}
         {{/if}}
-      {{/if}}
-    {{/aptible-ability}}
-  </div>
+      {{/aptible-ability}}
+    </div>
+  {{/unless}}
 </div>
 
 

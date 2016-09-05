@@ -5,6 +5,7 @@ export default Ember.Controller.extend({
   sortBy: ['handle:asc'],
 
   persistedApps: Ember.computed.filterBy('model', 'isNew', false),
+  hasNoApps: Ember.computed.equal('persistedApps.length', 0),
   // Apps by status
   deployedApps: Ember.computed.filterBy('persistedApps', 'isProvisioned'),
   pendingApps: Ember.computed.filterBy('persistedApps', 'isPending'),

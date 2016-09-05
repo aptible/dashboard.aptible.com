@@ -57,11 +57,12 @@
 .modal-dismiss {
   float: right;
   cursor: pointer;
+  margin-top: -10px;
 
   .modal-esc {
     opacity: 0;
     float: left;
-    margin: 14px 8px 0 0;
+    margin: 16px 8px 0 0;
     color: $color-light;
     text-transform: uppercase;
     font-size: 10px;

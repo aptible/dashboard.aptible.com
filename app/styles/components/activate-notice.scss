@@ -1,7 +1,12 @@
 .activate-notice {
   background: #fafafa;
-  border-radius: 3px;
+  border-radius: 5px;
   padding: 30px;
+
+
+  &.activate-notice--micro {
+    padding: 12px;
+  }
 
   h1 {
     line-height: 32px;
@@ -14,8 +19,18 @@
   }
 
   h2 {
+    margin: 20px 0;
     font-size: 14px;
     line-height: 1.4em;
     color: $color-light;
+
+    strong {
+      color: $color-primary;
+    }
+  }
+
+  .call-to-action {
+    text-align: center;
+    margin-bottom: 10px;
   }
 }

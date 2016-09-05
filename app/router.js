@@ -135,6 +135,7 @@ Router.map(function() {
         this.route("apps", {
           resetNamespace: true
         }, function() {
+
           this.modal('modal-create-app', {
             withParams: ['newApp'],
             otherParams: ['stack'],
@@ -148,7 +149,14 @@ Router.map(function() {
         this.route("databases", {
           resetNamespace: true
         }, function() {
-          this.route("new");
+          this.modal('modal-create-db', {
+            withParams: ['newDb'],
+            otherParams: ['stack', 'diskSize', 'databaseImages'],
+            dismissWithOutsideClick: false,
+            actions: {
+              onCreateDb: 'onCreateDb'
+            }
+          });
         });
 
         this.route("certificates", {
