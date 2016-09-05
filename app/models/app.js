@@ -17,6 +17,7 @@ export default DS.Model.extend(ProvisionableMixin, {
   lastDeployOperation: DS.belongsTo('operation', {async:true}),
   currentImage: DS.belongsTo('image', {async:true}),
 
+  reloadWhileProvisioning: true,
   serviceUsage: Ember.computed.mapBy('services', 'usage'),
   usage: Ember.computed.sum('serviceUsage')
 });
