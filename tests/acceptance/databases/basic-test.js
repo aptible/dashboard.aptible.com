@@ -10,6 +10,7 @@ let url = `/stacks/${stackId}/databases`;
 module('Acceptance: Databases', {
   beforeEach: function() {
     App = startApp();
+    stubDatabaseImages([]);
     let stack = {
       id: stackId,
       handle: 'my-stack-1',

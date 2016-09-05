@@ -23,8 +23,9 @@ export default Ember.Component.extend(EmberValidationsMixin, {
 
   dismissOnSave: Ember.observer('newApp.isNew', function() {
     if(this.get('newApp.isNew') === false) {
-      this.sendAction('dismiss');
-      this.set('dismissOnSave', Ember.$.noop);
+      if (!this.isDestroyed) {
+        this.sendAction('dismiss');
+      }
     }
   }),
 
@@ -47,7 +48,6 @@ export default Ember.Component.extend(EmberValidationsMixin, {
   actions: {
     onDismiss() {
       this.get('newApp').rollback();
-      this.sendAction('dismiss');
     },
 
     createApp() {

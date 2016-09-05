@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import fetchAllPages from '../utils/fetch-all-pages';
-
+const DEFAULT_DISK_SIZE = 10;
 export default Ember.Route.extend({
   title(){
     let stack = this.modelFor('stack');
@@ -22,6 +22,7 @@ export default Ember.Route.extend({
     openCreateDbModal() {
       let stack = this.modelFor('stack');
       this.controller.set('newDb', this.store.createRecord('database', { stack }));
+      this.controller.set('diskSize', DEFAULT_DISK_SIZE);
     },
 
     onCreateDb(database) {
@@ -38,7 +39,7 @@ export default Ember.Route.extend({
       }).then(() => {
         let message = `${handle} database created`;
 
-        route.transitionTo('databases.index');
+        this.transitionTo('databases.index');
         Ember.get(this, 'flashMessages').success(message);
       }, (e) => {
         let defaultMessage = `There was an error saving ${handle}`;

@@ -9,7 +9,7 @@
             {{#if hasAbility}}
               {{#if session.currentUser.verified}}
                 <div class="call-to-action">
-                  <a {{action 'openCreateDbModal'}} class="btn btn-primary">
+                  <a {{action 'openCreateDbModal'}} class="btn btn-primary open-db-modal">
                     Create Database
                   </a>
                 </div>
@@ -106,7 +106,7 @@
       {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
         {{#if hasAbility}}
           {{#if session.currentUser.verified}}
-            <a {{action 'openCreateDbModal'}} class="btn btn-primary">
+            <a {{action 'openCreateDbModal'}} class="btn btn-primary open-db-modal">
               Create Database
             </a>
           {{/if}}

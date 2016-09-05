@@ -24,7 +24,6 @@ export default Ember.Component.extend(EmberValidationsMixin, {
   dismissOnSave: Ember.observer('newDb.isNew', function() {
     if(this.get('newDb.isNew') === false) {
       this.sendAction('dismiss');
-      this.set('dismissOnSave', Ember.$.noop);
     }
   }),
 
@@ -47,7 +46,6 @@ export default Ember.Component.extend(EmberValidationsMixin, {
   actions: {
     onDismiss() {
       this.get('newDb').rollback();
-      this.sendAction('dismiss');
     },
 
     createDb() {

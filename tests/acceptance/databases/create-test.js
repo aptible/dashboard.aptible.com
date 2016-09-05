@@ -4,8 +4,7 @@ import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
 var App;
-let url = '/stacks/my-stack-1/databases/new';
-let dbIndexUrl = '/stacks/my-stack-1/databases';
+let url = '/stacks/my-stack-1/databases';
 let stackId = 'my-stack-1';
 let stackHandle = 'my-stack-1';
 
@@ -31,11 +30,16 @@ function findDatabase(dbName){
   return find(`.database-handle:contains(${dbName})`);
 }
 
+function openModal() {
+  let openButton = findWithAssert('.open-db-modal').eq(0);
+  openButton.click();
+}
+
 test(`visit ${url} requires authentication`, function() {
   expectRequiresAuthentication(url);
 });
 
-test(`visiting /stacks/:stack_id/databases without any databases redirects to ${url}`, function(assert) {
+test(`visiting /stacks/:stack_id/databases without any databases shows message`, function(assert) {
   let stack = {
     id: stackId,
     _links: { organization: { href: '/organizations/1' } }
@@ -44,36 +48,12 @@ test(`visiting /stacks/:stack_id/databases without any databases redirects to ${
   stubStack(stack);
   stubOrganization();
   stubDatabaseImages();
-  signInAndVisit(`/stacks/${stackId}/databases`);
-
-  andThen(function() {
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.databases.new');
-  });
-});
-
-test(`visit ${url} when stack has no databases does not show cancel`, function(assert) {
-  let stack = {
-    id: stackId,
-    _links: { organization: { href: '/organizations/1' } }
-  };
-  stubStacks({}, [stack]);
-  stubStack(stack);
-  stubDatabaseImages();
-  stubRequest('get', '/accounts/my-stack-1/databases', function(){
-    return this.success({
-      _links: {},
-      _embedded: {
-        databases: []
-      }
-    });
-  });
-  stubOrganization();
   signInAndVisit(url);
 
   andThen(function() {
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.databases.new');
-    let button = findButton('Cancel');
-    assert.ok(!button.length, 'has no cancel button');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.databases.index');
+    assert.equal(find('.activate-notice:contains(has no databases)').length, 1, 'shows notice of no databases');
+    assert.equal(find('.open-db-modal:contains(Create Database)').length, 1, 'Shows create db button');
   });
 });
 
@@ -88,9 +68,10 @@ test(`visit ${url} shows basic info`, function(assert) {
   stubDatabaseImages();
   stubOrganization();
   signInAndVisit(url);
+  andThen(openModal);
 
   andThen(function(){
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.databases.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.databases.index');
 
     expectInput('handle');
     expectInput('databaseImage');
@@ -112,7 +93,7 @@ test(`visit ${url} shows basic info`, function(assert) {
     var diskSizeSlider = findWithAssert('.slider.disk-size');
     assert.ok(diskSizeSlider.length, 'has disk size slider');
 
-    expectTitle(`Create a Database - ${stackHandle}`);
+    expectTitle(`${stackHandle} Databases`);
   });
 });
 
@@ -200,7 +181,7 @@ test(`visit ${url} and create`, function(assert) {
   });
 
   signInAndVisit(url);
-
+  andThen(openModal);
   andThen(function(){
     fillInput('handle', dbHandle);
     click('.select-option[title="Redis"]');
@@ -265,7 +246,7 @@ test(`visit ${url} with duplicate handle`, function(assert) {
   });
 
   signInAndVisit(url);
-
+  andThen(openModal);
   andThen(() => { fillInput('handle', dbHandle); });
 
   andThen(function(){
@@ -274,7 +255,7 @@ test(`visit ${url} with duplicate handle`, function(assert) {
     assert.ok(submitButton.is(':disabled'), 'submit button is disabled');
 
     submitButton.click();
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.databases.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.databases.index');
   });
 });
 
@@ -286,6 +267,7 @@ test(`visit ${url} and click cancel button`, function(assert) {
   var dbHandle = 'my-new-db';
 
   signInAndVisit(url);
+  andThen(openModal);
   andThen(function(){
     fillInput('handle', dbHandle);
     clickButton('Cancel');
@@ -305,15 +287,16 @@ test(`diskSize is reset when leaving ${url} (#372)`, function(assert) {
   var diskSize = 30;
 
   signInAndVisit(url);
+  andThen(openModal);
   andThen(function(){
     triggerSlider('.disk-size', diskSize);
     clickButton('Cancel');
   });
+  visit('/');
   visit(url);
-
+  andThen(openModal);
   andThen(function() {
-    let slider = find('.disk-size');
-
+    let slider = findWithAssert('.disk-size');
     assert.equal(slider.val(), '10.00');
   });
 });
@@ -326,9 +309,10 @@ test(`visit ${url} and transition away`, function(assert) {
   var dbHandle = 'a-new-db-handle';
 
   signInAndVisit(url);
+  andThen(openModal);
   andThen(function(){
     fillInput('handle', dbHandle);
-    visit(dbIndexUrl);
+    visit(url);
   });
   andThen(function(){
     assert.equal(currentPath(), 'requires-authorization.enclave.stack.databases.index');
@@ -338,16 +322,13 @@ test(`visit ${url} and transition away`, function(assert) {
   });
 });
 
-test(`visit ${url} when user is not verified shows "Cannot create" message`, function(assert) {
+test(`visit ${url} when user is not verified doesnt show create button`, function() {
   let userData = {verified: false};
   stubDatabaseImages();
   stubStacks({ includeDatabases: true});
   signInAndVisit(url, userData);
+
   andThen( () => {
-    expectNoButton('Save Database');
-    expectNoButton('Cancel');
-    let message = find('.activate-notice h1');
-    assert.ok(message.text().indexOf('Cannot create a new database') > -1,
-       'shows cannot create db message');
+    expectNoButton('Create Database');
   });
 });

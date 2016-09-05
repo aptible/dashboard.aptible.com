@@ -250,7 +250,7 @@ test('submitting valid payment info for development plan should create dev stack
     clickButton('Save');
   });
   andThen( () => {
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 
@@ -304,7 +304,7 @@ test('submitting valid payment info on organization with existing stripe info sh
   clickButton('Save');
 
   andThen(function() {
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 
@@ -410,7 +410,7 @@ test('submitting valid payment info should create db', function(assert) {
   });
   clickButton('Save');
   andThen(function() {
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 
@@ -469,7 +469,7 @@ test('submitting valid payment info when user is verified should provision db', 
   });
   clickButton('Save');
   andThen(function() {
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
 
     assert.equal(databaseParams.handle, dbHandle,
           'db params has handle');

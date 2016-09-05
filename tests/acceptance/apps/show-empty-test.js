@@ -162,7 +162,7 @@ test(`visit ${url} when app has not been deployed, click destroy link`, function
 
   click(`a:contains(Destroy ${appHandle})`);
   andThen(function(){
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.new', 'redirected to apps');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index', 'redirected to apps');
   });
 });
 
