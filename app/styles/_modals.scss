@@ -1,8 +1,13 @@
+.navbar-static-top {
+  z-index: 2; /* bootstrap sets this to 1000  so it's visible over our modal overlays */
+}
+
 .lm-container {
   cursor: default;
 }
 
 .lf-overlay {
+  z-index: 3;
   background-color: #fff;
   opacity: .95
 }
@@ -13,6 +18,7 @@
   padding: 0;
   border: 0;
   background: none;
+  margin-top: -100px; /*Offset these upwards just a bit */
 }
 
 .modal-header {

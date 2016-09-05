@@ -10,5 +10,27 @@ export default Ember.Route.extend({
   model() {
     var stack = this.modelFor('stack');
     return fetchAllPages(this.store, stack, 'app');
+  },
+
+  setupController(controller, model) {
+    let stack = this.modelFor('stack');
+    controller.setProperties({ model, stack });
+  },
+
+  actions: {
+    openCreateAppModal() {
+      let stack = this.modelFor('stack');
+      this.controller.set('newApp', this.store.createRecord('app', { stack }));
+    },
+
+    onCreateApp(app) {
+      let stack = this.modelFor('stack');
+
+      app.save({ stack: { id: stack.get('id') } }).then(() => {
+        this.transitionTo('app', app);
+        let message = `${app.get('handle')} app created`;
+        Ember.get(this, 'flashMessages').success(message);
+      });
+    }
   }
 });

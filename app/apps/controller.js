@@ -1,13 +1,15 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  newApp: null, // Set this to open new app modal
   sortBy: ['handle:asc'],
 
+  persistedApps: Ember.computed.filterBy('model', 'isNew', false),
   // Apps by status
-  deployedApps: Ember.computed.filterBy('model', 'isProvisioned'),
-  pendingApps: Ember.computed.filterBy('model', 'isPending'),
-  deprovisionedApps: Ember.computed.filterBy('model', 'hasBeenDeprovisioned'),
-  failedDeprovisionApps: Ember.computed.filterBy('model', 'hasFailedDeprovision'),
+  deployedApps: Ember.computed.filterBy('persistedApps', 'isProvisioned'),
+  pendingApps: Ember.computed.filterBy('persistedApps', 'isPending'),
+  deprovisionedApps: Ember.computed.filterBy('persistedApps', 'hasBeenDeprovisioned'),
+  failedDeprovisionApps: Ember.computed.filterBy('persistedApps', 'hasFailedDeprovision'),
 
   // Sorted apps by status
   sortedDeployedApps: Ember.computed.sort('deployedApps', 'sortBy'),

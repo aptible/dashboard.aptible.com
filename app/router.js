@@ -135,7 +135,14 @@ Router.map(function() {
         this.route("apps", {
           resetNamespace: true
         }, function() {
-          this.route("new");
+          this.modal('modal-create-app', {
+            withParams: ['newApp'],
+            otherParams: ['stack'],
+            dismissWithOutsideClick: false,
+            actions: {
+              onCreateApp: 'onCreateApp'
+            }
+          });
         });
 
         this.route("databases", {
