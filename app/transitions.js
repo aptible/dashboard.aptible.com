@@ -15,7 +15,10 @@ export function buildSPDTransition(context, from, to) {
 }
 
 export default function() {
-
+  this.transition(
+    this.outletName('sidebar'),
+  this.use('toLeft')
+  );
   // Sadly, these transitions are causing massive performance issues when exiting
   // the security controls step.  I suspect there is a rendering issue with
   // ember-json-schema-views that is exacerbated by ember-liquid fire.
