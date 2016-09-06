@@ -127,7 +127,7 @@ Router.map(function() {
       }, function() {
         this.route("activate", { path: 'activate'});
         this.route("log-drains", {
-          path: 'logging'
+          path: 'logging', resetNamespace: true
         }, function(){
           this.modal('modal-create-log-drain', {
             withParams: ['newLogDrain'],
