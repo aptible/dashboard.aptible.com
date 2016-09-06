@@ -1,0 +1,74 @@
+{{#modal-wrapper title=title description=description onDismiss="onDismiss"}}
+  <div class="panel panel-default white-panel">
+    <div class="panel-body">
+      <form class="create-log">
+        {{#if newLogDrain.errors.length}}
+          <div class="alert alert-warning">
+            {{#each newLogDrain.errors.messages as |message|}}
+            <p>{{message}}</p>
+            {{/each}}
+          </div>
+        {{/if}}
+
+        <div class="form-group">
+          <label class="block" for="drain-handle">Handle</label>
+          {{handle-input class="form-control" update=(action (mut newLogDrain.handle)) value=newLogDrain.handle name='handle' autofocus=true}}
+        </div>
+
+        <div class="form-group">
+          <label class="block" for="drain-type">Type</label>
+          <div class="radio">
+            <div>
+              {{#radio-button value="syslog_tls_tcp" groupValue=newLogDrain.drainType name="drain-type"}}
+                Syslog TLS TCP
+              {{/radio-button}}
+            </div>
+            <div>
+              {{#radio-button value="elasticsearch" groupValue=newLogDrain.drainType name="drain-type"}}
+                Elasticsearch
+              {{/radio-button}}
+            </div>
+            <div>
+              {{#radio-button value="https" groupValue=newLogDrain.drainType name="drain-type" changed="httpsSelected"}}
+                HTTPS
+              {{/radio-button}}
+            </div>
+          </div>
+        </div>
+
+        {{#if isHostPortDrain }}
+          <div class="form-group">
+            <label class="block" for="drain-host">Host</label>
+            {{input name='drain-host' value=newLogDrain.drainHost class="form-control"}}
+          </div>
+          <div class="form-group">
+            <label class="block" for="drain-port">Port</label>
+            {{input name='drain-port' value=newLogDrain.drainPort class="form-control"}}
+          </div>
+        {{else}}
+          {{#if esDatabases}}
+            <label class="block" for="database-selector">Elasticsearch Database</label>
+            {{ultimate-select name="database-selector" prompt="Select database" items=esDatabases itemKey="id" itemValue="handle" update=(action (mut esDatabase))}}
+          {{else}}
+            <div class="no-es-databases-warning">
+              {{stack.handle}} doesn't have any Elasticsearch Databases.
+              {{link-to 'Create one' 'databases.index' stack}}.
+            </div>
+          {{/if}}
+        {{/if}}
+
+        <button class="btn btn-primary create-log-drain" type="submit" {{action "createLogDrain"}} disabled={{disableSave}}>
+          {{#if newLogDrain.isSaving}}
+            <i class='fa fa-spin fa-spinner'></i> Saving...
+          {{else}}
+            Save Log Drain
+          {{/if}}
+        </button>
+        <a class="cancel-log-drain" style="margin-left:10px;" type="reset" {{action "onDismiss"}}>
+          Cancel
+        </a>
+
+      </form>
+    </div>
+  </div>
+{{/modal-wrapper}}

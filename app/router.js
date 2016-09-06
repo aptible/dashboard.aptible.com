@@ -129,7 +129,14 @@ Router.map(function() {
         this.route("log-drains", {
           path: 'logging'
         }, function(){
-          this.route("new");
+          this.modal('modal-create-log-drain', {
+            withParams: ['newLogDrain'],
+            otherParams: ['stack', 'esDatabases'],
+            dismissWithOutsideClick: false,
+            actions: {
+              onCreateLogDrain: 'onCreateLogDrain'
+            }
+          });
         });
 
         this.route("apps", {
