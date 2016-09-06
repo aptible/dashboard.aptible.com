@@ -84,11 +84,3 @@ test(`visiting ${url} when user is verified shows Create Database button`, funct
     expectButton('Create Database');
   });
 });
-
-test(`visiting ${url} when user is not verified shows no Create Database button`, function() {
-  let userData = {verified: false};
-  signInAndVisit(url, userData);
-  andThen( () => {
-    expectNoButton('Create Database');
-  });
-});

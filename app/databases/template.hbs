@@ -14,6 +14,13 @@
                   </a>
                 </div>
               {{/if}}
+            {{else}}
+              <div class="call-to-action">
+                <a disabled=true class="btn btn-primary">Create Database</a>
+                {{#bs-tooltip title="You do not have permission to create databases for this environment"}}
+                  <i class="fa fa-question-circle"></i>
+                {{/bs-tooltip}}
+              </div>
             {{/if}}
           {{/aptible-ability}}
         </div>
@@ -110,6 +117,11 @@
               Create Database
             </a>
           {{/if}}
+        {{else}}
+        <a disabled=true class="btn btn-primary">Create Database</a>
+          {{#bs-tooltip title="You do not have permission to create databases for this environment"}}
+            <i class="fa fa-question-circle"></i>
+          {{/bs-tooltip}}
         {{/if}}
       {{/aptible-ability}}
     </div>

@@ -172,12 +172,12 @@ test(`visit ${url} and with duplicate handle`, function(assert) {
   });
 });
 
-
-test(`visit ${url} when user is not verified does not show create app button`, function() {
+test(`visit ${url} when user is not verified: button is disabled`, function(assert) {
   let userData = {verified: false};
   stubOrganization();
   signInAndVisit(url, userData);
   andThen( () => {
-    expectNoButton('Create App');
+    let createButton = findWithAssert('.btn:contains(Create App)');
+    assert.ok(createButton.attr('disabled'), 'button is disabled');
   });
 });

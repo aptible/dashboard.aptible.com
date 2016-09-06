@@ -14,6 +14,13 @@
                   </a>
                 </div>
               {{/if}}
+            {{else}}
+              <div class="call-to-action">
+                <a disabled=true class="btn btn-primary disabled">Create App</a>
+                {{#bs-tooltip title="You do not have permission to create apps for this environment"}}
+                  <i class="fa fa-question-circle"></i>
+                {{/bs-tooltip}}
+              </div>
             {{/if}}
           {{/aptible-ability}}
         </div>
@@ -85,6 +92,11 @@
               Create App
             </a>
           {{/if}}
+        {{else}}
+          <a disabled=true class="btn btn-primary">Create App</a>
+          {{#bs-tooltip title="You do not have permission to create apps for this environment"}}
+            <i class="fa fa-question-circle"></i>
+          {{/bs-tooltip}}
         {{/if}}
       {{/aptible-ability}}
     </div>

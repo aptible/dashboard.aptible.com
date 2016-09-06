@@ -322,13 +322,14 @@ test(`visit ${url} and transition away`, function(assert) {
   });
 });
 
-test(`visit ${url} when user is not verified doesnt show create button`, function() {
+test(`visit ${url} when user is not verified: button is disabled`, function(assert) {
   let userData = {verified: false};
   stubDatabaseImages();
   stubStacks({ includeDatabases: true});
   signInAndVisit(url, userData);
 
   andThen( () => {
-    expectNoButton('Create Database');
+    let createButton = findWithAssert('.btn:contains(Create Database)');
+    assert.ok(createButton.attr('disabled'), 'button is disabled');
   });
 });
