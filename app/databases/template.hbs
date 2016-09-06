@@ -1,5 +1,33 @@
 <div class="resource-list-grid">
 
+  {{#if hasNoDatabases}}
+    <div class="activate-notice activate-notice--micro">
+      <div class="row">
+        <div class="col-xs-8 col-xs-offset-2">
+          <h2><strong>{{stack.handle}}</strong> has no databases yet.</h2>
+          {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
+            {{#if hasAbility}}
+              {{#if session.currentUser.verified}}
+                <div class="call-to-action">
+                  <a {{action 'openCreateDbModal'}} class="btn btn-primary open-db-modal">
+                    Create Database
+                  </a>
+                </div>
+              {{/if}}
+            {{else}}
+              <div class="call-to-action">
+                <a disabled=true class="btn btn-primary">Create Database</a>
+                {{#bs-tooltip title="You do not have permission to create databases for this environment"}}
+                  <i class="fa fa-question-circle"></i>
+                {{/bs-tooltip}}
+              </div>
+            {{/if}}
+          {{/aptible-ability}}
+        </div>
+      </div>
+    </div>
+  {{/if}}
+
   {{#if hasActive}}
     <div class="sort-group active-databases">
       {{#if showSortableHeader}}
@@ -80,13 +108,22 @@
       </div>
   {{/if}}
 
-  <div class="resource-list-actions">
-    {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
-      {{#if hasAbility}}
-        {{#if session.currentUser.verified}}
-          {{link-to 'Create Database' 'databases.new' class="btn btn-primary"}}
+  {{#unless hasNoDatabases}}
+    <div class="resource-list-actions">
+      {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
+        {{#if hasAbility}}
+          {{#if session.currentUser.verified}}
+            <a {{action 'openCreateDbModal'}} class="btn btn-primary open-db-modal">
+              Create Database
+            </a>
+          {{/if}}
+        {{else}}
+        <a disabled=true class="btn btn-primary">Create Database</a>
+          {{#bs-tooltip title="You do not have permission to create databases for this environment"}}
+            <i class="fa fa-question-circle"></i>
+          {{/bs-tooltip}}
         {{/if}}
-      {{/if}}
-    {{/aptible-ability}}
-  </div>
+      {{/aptible-ability}}
+    </div>
+  {{/unless}}
 </div>

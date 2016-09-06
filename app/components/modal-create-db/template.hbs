@@ -1,0 +1,87 @@
+{{#modal-wrapper title=title description=description onDismiss="onDismiss"}}
+  <div class="panel panel-default white-panel">
+    <div class="panel-body">
+      <form>
+        {{#unless newDb.isValid}}
+          <div class="alert alert-warning fade in">
+            <a class="close" data-dismiss="alert">×</a>
+            {{#each errors.newDb.messages as |message|}}
+              <p>{{message}}</p>
+            {{/each}}
+          </div>
+        {{/unless}}
+
+        <div class="form-group">
+          <label class="block">
+            Database handle
+            <span class="label-helper">Lowercase alphanumerics, periods, and dashes only</span>
+          </label>
+          <div class="input-group">
+            {{handle-input class="database-name form-control sanitize-handler"
+              placeholder="e.g., postgresql-prod"
+              name="handle"
+              autofocus=true
+              update=(action (mut newDb.handle))
+              value=newDb.handle
+            }}
+
+            {{validation-feedback
+              error=errors.newDb.handle
+              value=newDb.handle
+              fieldName='Database handle'
+              isValidating=newDb.isValidating
+            }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Type</label>
+
+          <div class="select-options-container database-select row">
+            {{#db-selector action="selectDbType" as |dbType selectCallback|}}
+              {{db-selector-option
+                    selectCallback=selectCallback
+                    dbType=dbType
+                    selectedDbType=newDb.type}}
+            {{/db-selector}}
+          </div>
+        </div>
+
+        <div class="form-group">
+            <label>Database version</label>
+          {{ database-version-selector type=newDb.type databaseImages=databaseImages imageSelected="imageSelected" }}
+        </div>
+
+        <div class="form-group">
+          <label>Disk Size</label>
+          <div class="slider-input-wrapper disk-size-slider">
+            <div class="container-count">
+              {{diskSize}} GB
+            </div>
+            <div class="slider-wrapper">
+              {{no-ui-slider didSlide="didSlide"
+                               classNames="disk-size"
+                               start=diskSize rangeMin=10 rangeMax=200 step=10}}
+              <div class="label-wrapper">
+                <div class="label pull-left">10 GB</div>
+                <div class="label pull-right">200 GB</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary create-db" type="submit" {{action "createDb"}} disabled={{disableSave}}>
+          {{#if newDb.isSaving}}
+            <i class='fa fa-spin fa-spinner'></i> Saving...
+          {{else}}
+            Save Database
+          {{/if}}
+        </button>
+        <a class="cancel-db" style="margin-left:10px;" type="reset" {{action "onDismiss"}}>
+          Cancel
+        </a>
+
+      </form>
+    </div>
+  </div>
+{{/modal-wrapper}}

@@ -1,26 +1,19 @@
 import Ember from 'ember';
 
-export default Ember.Component.extend({
+export default Ember.Controller.extend({
+  newDatabase: null, // Set this to open new db modal
+  diskSize: 10,
   sortBy: ['handle:asc'],
 
-  arrayChanged: function() {
-    Ember.run.once(this, 'checkModelArray');
-  }.observes('model.[]'),
+  persistedDatabases: Ember.computed.filterBy('model', 'isNew', false),
+  hasNoDatabases: Ember.computed.equal('persistedDatabases.length', 0),
+  deployedDatabases: Ember.computed.filterBy('persistedDatabases', 'isProvisioned'),
+  pendingDatabases: Ember.computed.filterBy('persistedDatabases', 'isProvisioning'),
+  deprovisioningDatabases: Ember.computed.filterBy('persistedDatabases', 'isDeprovisioning'),
 
-  checkModelArray: function() {
-    if(this.get('model').get('length') === 0) {
-      this.sendAction('redirect');
-    }
-  },
-
-  // Databases by status
-  deployedDatabases: Ember.computed.filterBy('model', 'isProvisioned'),
-  pendingDatabases: Ember.computed.filterBy('model', 'isProvisioning'),
-  deprovisioningDatabases: Ember.computed.filterBy('model', 'isDeprovisioning'),
-
-  deprovisionedDatabases: Ember.computed.filterBy('model', 'isDeprovisioned'),
-  failedProvisionDatabases: Ember.computed.filterBy('model', 'hasFailedProvision'),
-  failedDeprovisionDatabases: Ember.computed.filterBy('model', 'hasFailedDeprovision'),
+  deprovisionedDatabases: Ember.computed.filterBy('persistedDatabases', 'isDeprovisioned'),
+  failedProvisionDatabases: Ember.computed.filterBy('persistedDatabases', 'hasFailedProvision'),
+  failedDeprovisionDatabases: Ember.computed.filterBy('persistedDatabases', 'hasFailedDeprovision'),
 
   // Sorted databases by status
   sortedDeployedDatabases: Ember.computed.sort('deployedDatabases', 'sortBy'),
@@ -36,11 +29,5 @@ export default Ember.Component.extend({
   hasDeprovisioned: Ember.computed.gt('deprovisionedDatabases.length', 0),
   hasFailedProvision: Ember.computed.gt('failedProvisionDatabases.length', 0),
   hasFailedDeprovision: Ember.computed.gt('failedDeprovisionDatabases.length', 0),
-  showSortableHeader: Ember.computed.or('hasPending', 'hasDeprovisioning', 'hasFailedProvision', 'hasFailedProvision'),
-
-  actions: {
-    redirect() {
-      this.sendAction('forceRedirect');
-    }
-  }
+  showSortableHeader: Ember.computed.or('hasPending', 'hasDeprovisioning', 'hasFailedProvision', 'hasFailedProvision')
 });

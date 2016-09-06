@@ -6,7 +6,7 @@ export default DS.Model.extend(ProvisionableMixin, {
   name: DS.attr('string'),
   handle: DS.attr('string'),
   connectionUrl: DS.attr('string'),
-  type: DS.attr('string'), // postgresql, redis, etc.
+  type: DS.attr('string', { defaultValue: 'postgresql'}), // postgresql, redis, etc.
   createdAt: DS.attr('iso-8601-timestamp'),
   initialDiskSize: DS.attr('number'),
 

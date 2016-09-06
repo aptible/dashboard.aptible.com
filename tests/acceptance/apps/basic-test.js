@@ -20,25 +20,6 @@ test(`visiting ${url} requires authentication`, function() {
   expectRequiresAuthentication(url);
 });
 
-test(`visiting ${url} with no apps redirects to apps new`, function(assert) {
-  stubRequest('get', '/accounts/my-stack-1/apps', function() {
-    return this.success({
-      _links: {},
-      _embedded: {
-        apps: []
-      }
-    });
-  });
-  stubStacks({ includeApps: false });
-  stubStack({ id: stackId });
-  stubOrganization();
-
-  signInAndVisit(url);
-  andThen(function(){
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.new');
-  });
-});
-
 test(`visiting ${url}`, function(assert) {
   let orgId = 1, orgName = 'Sprocket Co';
   let stackHandle = 'my-stack-1';
@@ -298,19 +279,3 @@ test(`visit ${url} shows create app button if user is verified`, function() {
   });
 });
 
-test(`visit ${url} does not show create app button if user is not verified`, function() {
-  stubOrganization();
-  stubStacks({ includeApps: true });
-  stubStack({
-    id: stackId,
-    _links: {
-      apps: { href: `/accounts/${stackId}/apps` }
-    }
-  });
-
-  let userData = {id: 'user1', verified: false};
-  signInAndVisit(url, userData);
-  andThen( () => {
-    expectNoButton('Create App');
-  });
-});

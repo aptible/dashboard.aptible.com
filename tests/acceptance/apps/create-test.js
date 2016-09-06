@@ -4,8 +4,7 @@ import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
 var App;
-let url = '/stacks/my-stack-1/apps/new';
-let appIndexUrl = '/stacks/my-stack-1/apps';
+let url = '/stacks/my-stack-1/apps';
 let stackId = 'my-stack-1';
 let stackHandle = 'my-stack-1';
 
@@ -32,13 +31,13 @@ function findApp(appHandle){
   return find(`:contains(${appHandle})`);
 }
 
-test(`${url} requires authentication`, function() {
-  expectRequiresAuthentication(url);
-});
+function openModal() {
+  let openButton = findWithAssert('.open-app-modal').eq(0);
+  openButton.click();
+}
 
-test(`visiting /stacks/:stack_id/apps without any apps redirects to ${url}`, function(assert) {
-  stubStack({ id: stackId , apps: [] });
-  stubRequest('get', '/accounts/my-stack-1/apps', function(){
+test(`visiting ${url} with no apps shows message`, function(assert) {
+  stubRequest('get', '/accounts/my-stack-1/apps', function() {
     return this.success({
       _links: {},
       _embedded: {
@@ -46,24 +45,29 @@ test(`visiting /stacks/:stack_id/apps without any apps redirects to ${url}`, fun
       }
     });
   });
+  stubStacks({ includeApps: false });
+  stubStack({ id: stackId });
   stubOrganization();
-  signInAndVisit(`/stacks/${stackId}/apps`);
 
-  andThen(function() {
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.new');
+  signInAndVisit(url);
+  andThen(function(){
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
+    assert.equal(find('.activate-notice:contains(has no apps)').length, 1, 'shows notice of no apps');
+    assert.equal(find('.open-app-modal:contains(Create App)').length, 1, 'Shows create app button');
   });
 });
 
-test(`visit ${url} shows basic info`, function(assert) {
+test(`visit ${url} and opening create modal shows basic info`, function(assert) {
   assert.expect(6);
   stubOrganization();
   signInAndVisit(url);
+  andThen(openModal);
   andThen(function(){
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index', 'remain on index');
     expectInput('handle');
     expectButton('Save App');
     expectButton('Cancel');
-    expectTitle(`Create an App - ${stackHandle}`);
+    expectTitle(`${stackHandle} Apps`);
   });
 
   andThen(function() {
@@ -71,11 +75,11 @@ test(`visit ${url} shows basic info`, function(assert) {
   });
 });
 
-test(`visit ${url} and cancel`, function(assert) {
+test(`visit ${url} and cancel modal`, function(assert) {
   stubOrganization();
   let appHandle = 'abc-my-app-handle';
   signInAndVisit(url);
-
+  andThen(openModal);
   andThen(function(){
     fillInput('handle', appHandle);
     clickButton('Cancel');
@@ -89,34 +93,14 @@ test(`visit ${url} and cancel`, function(assert) {
   });
 });
 
-test(`visit ${url} without apps show no cancel button`, function(assert) {
-  stubRequest('get', '/accounts/my-stack-1/apps', function(){
-    return this.success({
-      _links: {},
-      _embedded: {
-        apps: []
-      }
-    });
-  });
-  stubOrganization();
-  stubStack({id: stackId}); // stubs a stack with no apps
-  signInAndVisit(url);
-
-  andThen(function(){
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.new');
-    let button = findButton('Cancel');
-    assert.ok(!button.length, 'Cancel button is not present');
-  });
-});
-
 test(`visit ${url} and transition away`, function(assert) {
   stubOrganization();
   let appHandle = 'abc-my-app-handle';
   signInAndVisit(url);
-
+  andThen(openModal);
   andThen(function(){
     fillInput('handle', appHandle);
-    visit( appIndexUrl );
+    visit( url );
   });
 
   andThen(function(){
@@ -152,6 +136,7 @@ test(`visit ${url} and create an app`, function(assert) {
   });
 
   signInAndVisit(url);
+  andThen(openModal);
   fillInput('handle', appHandle);
 
   clickButton('Save App');
@@ -174,6 +159,7 @@ test(`visit ${url} and with duplicate handle`, function(assert) {
   });
 
   signInAndVisit(url);
+  andThen(openModal);
   andThen(() => { fillInput('handle', appHandle); });
 
   andThen(function(){
@@ -182,20 +168,16 @@ test(`visit ${url} and with duplicate handle`, function(assert) {
     assert.ok(submitButton.is(':disabled'), 'submit is disabled');
 
     clickButton('Save App');
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 
-
-test(`visit ${url} when user is not verified shows "Cannot create" message`, function(assert) {
+test(`visit ${url} when user is not verified: button is disabled`, function(assert) {
   let userData = {verified: false};
   stubOrganization();
   signInAndVisit(url, userData);
   andThen( () => {
-    expectNoButton('Save App');
-    expectNoButton('Cancel');
-    let message = find('.activate-notice h1');
-    assert.ok(message.text().indexOf('Cannot create a new app') > -1,
-       'shows cannot create app message');
+    let createButton = findWithAssert('.btn:contains(Create App)');
+    assert.ok(createButton.attr('disabled'), 'button is disabled');
   });
 });

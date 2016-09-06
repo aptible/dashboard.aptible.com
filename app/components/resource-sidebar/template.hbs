@@ -10,16 +10,6 @@
   <ul class="nav sidebar-nav">
     <li class="title">
       {{link-to 'Apps' 'apps' stack classNames='title-link'}}
-
-      {{#aptible-ability scope="manage" user=user permittable=stack as |hasAbility|}}
-        {{#if hasAbility}}
-          {{#link-to 'apps.new' stack }}
-            {{#bs-tooltip title='Create new app'}}
-              <i class="fa fa-plus"></i>
-            {{/bs-tooltip}}
-          {{/link-to}}
-        {{/if}}
-      {{/aptible-ability}}
     </li>
 
     {{#each sortedApps as |app|}}
@@ -34,16 +24,6 @@
   <ul class="nav sidebar-nav">
     <li class="title">
       {{link-to 'Databases' 'databases' stack classNames='title-link'}}
-
-      {{#aptible-ability scope="manage" user=user permittable=stack as |hasAbility|}}
-        {{#if hasAbility}}
-          {{#link-to 'databases.new' stack}}
-            {{#bs-tooltip title='Create new database'}}
-              <i class="fa fa-plus"></i>
-            {{/bs-tooltip}}
-          {{/link-to}}
-        {{/if}}
-      {{/aptible-ability}}
     </li>
 
     {{#each sortedDatabases as |database|}}

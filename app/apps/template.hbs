@@ -1,1 +1,106 @@
-{{outlet}}
+<div class="resource-list-grid">
+
+  {{#if hasNoApps}}
+    <div class="activate-notice activate-notice--micro">
+      <div class="row">
+        <div class="col-xs-8 col-xs-offset-2">
+          <h2><strong>{{stack.handle}}</strong> has no apps yet.</h2>
+          {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
+            {{#if hasAbility}}
+              {{#if session.currentUser.verified}}
+                <div class="call-to-action">
+                  <a {{action 'openCreateAppModal'}} class="btn btn-primary open-app-modal">
+                    Create App
+                  </a>
+                </div>
+              {{/if}}
+            {{else}}
+              <div class="call-to-action">
+                <a disabled=true class="btn btn-primary disabled">Create App</a>
+                {{#bs-tooltip title="You do not have permission to create apps for this environment"}}
+                  <i class="fa fa-question-circle"></i>
+                {{/bs-tooltip}}
+              </div>
+            {{/if}}
+          {{/aptible-ability}}
+        </div>
+      </div>
+    </div>
+  {{/if}}
+
+
+  {{#if hasActive}}
+    <div class="sort-group deployed-apps">
+      {{#if showSortableHeader}}
+        <h5 class="sort-header">Deployed Apps</h5>
+      {{/if}}
+      <div class="row">
+        {{#each sortedDeployedApps as |app|}}
+          <div class="col-xs-4">
+            {{partial 'stack/app'}}
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  {{/if}}
+
+  {{#if hasPending}}
+    <div class="sort-group pending-apps">
+      <h5 class="sort-header">Pending Apps</h5>
+      <div class="row">
+        {{#each sortedPendingApps as |app|}}
+        <div class="col-xs-4">
+          {{partial 'stack/app'}}
+        </div>
+      {{/each}}
+      </div>
+    </div>
+  {{/if}}
+
+  {{#if hasDeprovisioning}}
+    <div class="sort-group deprovisioning-apps">
+      <h5 class="sort-header">Deprovisioned Apps</h5>
+      <div class="row">
+        {{#each sortedDeprovisionedApps as |app|}}
+          <div class="col-xs-4">
+            {{partial 'stack/app'}}
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  {{/if}}
+
+  {{#if hasFailedDeprovision}}
+      <div class="sort-group deprovisioning-apps">
+          <h5 class="sort-header">Apps that failed to deprovision</h5>
+          <div class="row">
+            {{#each sortedFailedDeprovisionApps as |app|}}
+                <div class="col-xs-4">
+                  {{partial 'stack/app'}}
+                </div>
+            {{/each}}
+          </div>
+      </div>
+  {{/if}}
+
+  {{#unless hasNoApps}}
+    <div class="resource-actions">
+      {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
+        {{#if hasAbility}}
+          {{#if session.currentUser.verified}}
+            <a {{action 'openCreateAppModal'}} class="btn btn-primary open-app-modal">
+              Create App
+            </a>
+          {{/if}}
+        {{else}}
+          <a disabled=true class="btn btn-primary">Create App</a>
+          {{#bs-tooltip title="You do not have permission to create apps for this environment"}}
+            <i class="fa fa-question-circle"></i>
+          {{/bs-tooltip}}
+        {{/if}}
+      {{/aptible-ability}}
+    </div>
+  {{/unless}}
+</div>
+
+

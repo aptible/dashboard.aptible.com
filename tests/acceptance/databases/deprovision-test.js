@@ -9,6 +9,7 @@ module('Acceptance: Database Deprovision', {
   beforeEach: function() {
     App = startApp();
     stubOrganization();
+    stubDatabaseImages();
     stubStacks();
   },
   afterEach: function() {

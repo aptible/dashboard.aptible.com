@@ -1,0 +1,54 @@
+{{#modal-wrapper title=title description=description onDismiss="onDismiss"}}
+  <div class="panel panel-default white-panel">
+    <div class="panel-body">
+      <form>
+        {{#unless newApp.isValid}}
+          <div class="alert alert-warning fade in">
+            <a class="close" data-dismiss="alert">×</a>
+            {{#each errors.newApp.messages as |message|}}
+              <p>{{message}}</p>
+            {{/each}}
+          </div>
+        {{/unless}}
+
+        <div class="form-group">
+          <label class="block">
+            App handle
+            <span class="label-helper">
+              Lowercase alphanumerics, periods, and dashes only
+            </span>
+          </label>
+
+          <div class="input-group">
+            {{handle-input class="app-name form-control sanitize-handler"
+              placeholder="e.g., app-prod"
+              name="handle"
+              update=(action (mut newApp.handle))
+              value=newApp.handle
+              autofocus="true"
+            }}
+            {{validation-feedback
+              isSaving=isSaving
+              error=errors.newApp.handle
+              value=newApp.handle
+              fieldName='App handle'
+              isValidating=newApp.isValidating
+            }}
+          </div>
+        </div>
+
+        <button class="btn btn-primary create-app" type="submit" {{action "createApp"}} disabled={{disableSave}}>
+          {{#if newApp.isSaving}}
+            <i class='fa fa-spin fa-spinner'></i> Saving...
+          {{else}}
+            Save App
+          {{/if}}
+        </button>
+        <a class="cancel-app" style="margin-left:10px;" type="reset" {{action "onDismiss"}}>
+          Cancel
+        </a>
+
+      </form>
+    </div>
+  </div>
+{{/modal-wrapper}}
