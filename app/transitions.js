@@ -8,6 +8,11 @@ export default function() {
   );
 
   this.transition(
+    this.fromRoute(['stack', 'apps', 'databases', 'log-drains', 'certificates', 'stack.loading', 'app', 'database']),
+    this.use('fade')
+  );
+
+  this.transition(
     this.inHelper('liquid-modal'),
     this.use('fade', { duration: DEFAULT_DURATION, easing: DEFAULT_EASING })
   );

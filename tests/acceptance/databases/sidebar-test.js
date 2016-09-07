@@ -12,6 +12,7 @@ module('Acceptance: Database Sidebar', {
     stubStacks({ includeApps: true, includeDatabases: true });
     stubStack({ id: 'my-stack-1' });
     stubOrganization();
+    stubDatabaseImages();
     stubRequest('get', `/databases/${databaseId}`, function() {
       return this.success({
         id: databaseId,
@@ -56,7 +57,7 @@ test('includes breadcrumb to parent stack', function(assert) {
   });
 
   andThen(function() {
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.databases.index');
   });
 });
 

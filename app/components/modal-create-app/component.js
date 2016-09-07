@@ -24,7 +24,6 @@ export default Ember.Component.extend(EmberValidationsMixin, {
   dismissOnSave: Ember.observer('newApp.isNew', function() {
     if(this.get('newApp.isNew') === false) {
       if (!this.isDestroyed) {
-        console.log("DISMISSING");
         this.sendAction('dismiss');
       }
     }

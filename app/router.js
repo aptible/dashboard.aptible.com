@@ -128,11 +128,9 @@ Router.map(function() {
         this.route("deprovision");
       });
 
-      this.route("stack", {
-        resetNamespace: true,
-        path: "stacks/:stack_id"
-      }, function() {
+      this.route("stack", { resetNamespace: true, path: "stacks/:stack_id" }, function() {
         this.route("activate", { path: 'activate'});
+
         this.route("log-drains", {
           path: 'logging', resetNamespace: true
         }, function(){
