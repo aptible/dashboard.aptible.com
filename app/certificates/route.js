@@ -2,21 +2,37 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   title() {
-    var stack = this.modelFor('stack');
+    let stack = this.modelFor('stack');
     return `${stack.get('handle')} Certificates`;
   },
 
   model() {
-    var stack = this.modelFor('stack');
+    let stack = this.modelFor('stack');
     return stack.get('certificates');
   },
 
-  afterModel(model) {
-    return Ember.RSVP.all(model.map(certificate => certificate.get('apps')));
+  setupController(controller, model) {
+    let stack = this.modelFor('stack');
+    controller.setProperties({ model, stack });
   },
 
   actions: {
-    delete: function(model){
+    openCreateCertificateModal() {
+      let stack = this.modelFor('stack');
+      this.controller.set('newCertificate', this.store.createRecord('certificate', { stack }));
+    },
+
+    onCreateCertificate(certificate) {
+      let stack = this.modelFor('stack');
+
+      certificate.save({ stack: {id: stack.get('id') } }).then(() => {
+        let message = `${certificate.get('commonName')} created.`;
+        this.transitionTo('certificates.index');
+        Ember.get(this, 'flashMessages').success(message);
+      });
+    },
+
+    delete(model) {
       // Confirm...
       let confirmMsg = `\nAre you sure you want to delete ${model.get('commonName')}?\n`;
       if (!confirm(confirmMsg)) { return false; }

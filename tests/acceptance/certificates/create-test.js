@@ -4,7 +4,7 @@ import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
 var App;
-let url = '/stacks/my-stack-1/certificates/new';
+let url = '/stacks/my-stack-1/certificates';
 let stackId = 'my-stack-1';
 let stackHandle = 'my-stack-1';
 
@@ -31,6 +31,11 @@ test(`${url} requires authentication`, function() {
   expectRequiresAuthentication(url);
 });
 
+
+function openModal() {
+  let openButton = findWithAssert('.open-certificate-modal').eq(0);
+  openButton.click();
+}
 
 test(`visiting ${url} and creating new certificate`, function(assert) {
   let cert = 'my cert';
@@ -64,14 +69,14 @@ test(`visiting ${url} and creating new certificate`, function(assert) {
     return this.success({ common_name: 'health.io', certificate_body: cert, private_key: pKey});
   });
 
-
   stubStacks({ includeApps: false });
   stubStack({ id: stackId });
   stubOrganization();
 
   signInAndVisit(url);
+  andThen(openModal);
   andThen(function(){
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.certificates.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.certificates.index');
     fillInput('body', cert);
     fillInput('private-key', pKey);
     clickButton('Save Certificate');
@@ -79,5 +84,6 @@ test(`visiting ${url} and creating new certificate`, function(assert) {
 
   andThen(function() {
     assert.equal(currentPath(), 'requires-authorization.enclave.stack.certificates.index');
+    assert.equal(find('.certificate').length, 1, 'shows certificate');
   });
 });

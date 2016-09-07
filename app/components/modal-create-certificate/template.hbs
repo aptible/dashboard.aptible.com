@@ -2,49 +2,45 @@
   <div class="panel panel-default white-panel">
     <div class="panel-body">
       <form>
-        {{#unless newApp.isValid}}
+         {{#unless newCertificate.isValid}}
           <div class="alert alert-warning fade in">
             <a class="close" data-dismiss="alert">×</a>
-            {{#each errors.newApp.messages as |message|}}
+            {{#each newCertificate.errors.messages as |message|}}
               <p>{{message}}</p>
             {{/each}}
           </div>
         {{/unless}}
 
         <div class="form-group">
-          <label class="block">
-            App handle
-            <span class="label-helper">
-              Lowercase alphanumerics, periods, and dashes only
-            </span>
-          </label>
-
-          <div class="input-group">
-            {{handle-input class="app-name form-control sanitize-handler"
-              placeholder="e.g., app-prod"
-              name="handle"
-              update=(action (mut newApp.handle))
-              value=newApp.handle
-              autofocus="true"
-            }}
-            {{validation-feedback
-              isSaving=isSaving
-              error=errors.newApp.handle
-              value=newApp.handle
-              fieldName='App handle'
-              isValidating=newApp.isValidating
-            }}
-          </div>
+          <label>Certificate</label>
+          <p>
+            Drag and drop your certificate file or paste its contents in the
+            textarea below.
+          </p>
+          <p>
+            If you have a bundled certificate chain, drag and drop all of the
+            certificate files or paste their contents in the textarea below.4
+          </p>
+          {{file-textarea value=newCertificate.certificateBody name="body" rows=10 autofocus=true}}
         </div>
 
-        <button class="btn btn-primary create-app" type="submit" {{action "createApp"}} disabled={{disableSave}}>
-          {{#if newApp.isSaving}}
+        <div class="form-group">
+          <label>Private Key</label>
+          <p>
+            Drag and drop your private key file or paste its contents in the
+            textarea below.
+          </p>
+          {{file-textarea value=newCertificate.privateKey name="private-key" rows=10}}
+        </div>
+
+        <button class="btn btn-primary create-certificate" type="submit" {{action "createCertificate"}} disabled={{disableSave}}>
+          {{#if newCertificate.isSaving}}
             <i class='fa fa-spin fa-spinner'></i> Saving...
           {{else}}
-            Save App
+            Save Certificate
           {{/if}}
         </button>
-        <a class="cancel-app" style="margin-left:10px;" type="reset" {{action "onDismiss"}}>
+        <a class="cancel-certificate" style="margin-left:10px;" type="reset" {{action "onDismiss"}}>
           Cancel
         </a>
 

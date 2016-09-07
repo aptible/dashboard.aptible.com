@@ -1,6 +1,4 @@
 import Ember from 'ember';
-import config from "../../config/environment";
-import EmberValidationsMixin from "ember-validations/mixin";
 
 // We create an anchor since that is, afaik, the easiest way to parse a url in javascript
 function parseUrl(url) {

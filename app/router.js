@@ -169,9 +169,13 @@ Router.map(function() {
         this.route("certificates", {
           resetNamespace: true
         }, function() {
-          this.route("new");
-          this.route('edit', {
-            path: ':certificate_id/edit'
+         this.modal('modal-create-certificate', {
+            withParams: ['newCertificate'],
+            otherParams: ['stack'],
+            dismissWithOutsideClick: false,
+            actions: {
+              onCreateCertificate: 'onCreateCertificate'
+            }
           });
         });
       });
