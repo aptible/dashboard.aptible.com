@@ -9,7 +9,7 @@ import { stubRequest } from '../../../helpers/fake-server';
 let application;
 let orgId = 1; // FIXME this is hardcoded to match the value for signIn in aptible-helpers
 let roleId = 'r1';
-let url = `/organizations/${orgId}/roles/new`;
+let url = `/organizations/${orgId}/roles/platform`;
 let apiRoleUrl = `/roles/${roleId}`;
 
 const roleData = {
@@ -32,6 +32,11 @@ module('Acceptance: Organizations: Roles: New', {
     Ember.run(application, 'destroy');
   }
 });
+
+function openModal() {
+  let openButton = findWithAssert('.open-role-modal').eq(0);
+  openButton.click();
+}
 
 const apiOrgUrl = `/organizations/${orgId}`;
 // must include link to org url so that the route
@@ -60,11 +65,23 @@ test(`visiting ${url} requires authentication`, () => {
 test(`visiting ${url} shows form to create new role`, (assert) => {
   setup('development');
   signInAndVisit(url);
+  andThen(openModal);
   andThen(() => {
-    assert.equal(currentPath(), 'requires-authorization.organization.roles.new');
+    assert.equal(currentPath(), 'requires-authorization.organization.roles.type');
     expectButton('Save');
     expectButton('Cancel');
-    expectFocusedInput('role-name');
+    expectInput('role-name');
+  });
+});
+
+test(`visiting ${url} and clicking cancel`, (assert) => {
+  setup('development');
+  signInAndVisit(url);
+  andThen(openModal);
+  andThen(() => {
+    assert.equal(currentPath(), 'requires-authorization.organization.roles.type');
+    clickButton('Cancel');
+    assert.equal(currentPath(), 'requires-authorization.organization.roles.type');
   });
 });
 
@@ -81,12 +98,13 @@ test(`visiting ${url} and creating new platform_user role`, (assert) => {
   });
 
   signInAndVisit(url);
+  andThen(openModal);
   andThen(() => {
     fillInput('role-name', roleData.name);
     findWithAssert('.role-type-option');
     clickButton('Save');
   });
-  
+
   andThen(() => {
     assert.equal(currentPath(), 'requires-authorization.enclave.role.members');
   });
@@ -105,8 +123,8 @@ test(`visiting ${url} and creating new compliance_user role`, (assert) => {
   });
 
   signInAndVisit(url);
+  andThen(openModal);
   andThen(function() {
-    assert.equal(currentPath(), 'requires-authorization.organization.roles.new');
     fillInput('role-name', roleData.name);
     findWithAssert('.role-type-option[data-option-value=compliance_user]').click();
     clickButton('Save');
@@ -119,6 +137,7 @@ test(`visiting ${url} and creating new compliance_user role`, (assert) => {
 test(`org visiting ${url} without a compliance allowed plan sees no role type options`, (assert) => {
   setup('dev');
   signInAndVisit(url);
+  andThen(openModal);
   andThen(() => {
     assert.equal(find('.role-type-option').length, 0, 'no role options displayed');
   });

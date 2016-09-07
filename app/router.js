@@ -72,7 +72,14 @@ Router.map(function() {
       });
       this.route("roles", {}, function() {
         this.route("type", { path: ':type' });
-        this.route('new');
+        this.modal('modal-create-role', {
+          withParams: ['newRole'],
+          otherParams: ['authorizationContext'],
+          dismissWithOutsideClick: false,
+          actions: {
+            onCreateRole: 'onCreateRole'
+          }
+        });
       });
       this.route("invite");
 
@@ -121,15 +128,20 @@ Router.map(function() {
         this.route("deprovision");
       });
 
-      this.route("stack", {
-        resetNamespace: true,
-        path: "stacks/:stack_id"
-      }, function() {
+      this.route("stack", { resetNamespace: true, path: "stacks/:stack_id" }, function() {
         this.route("activate", { path: 'activate'});
+
         this.route("log-drains", {
-          path: 'logging'
+          path: 'logging', resetNamespace: true
         }, function(){
-          this.route("new");
+          this.modal('modal-create-log-drain', {
+            withParams: ['newLogDrain'],
+            otherParams: ['stack', 'esDatabases'],
+            dismissWithOutsideClick: false,
+            actions: {
+              onCreateLogDrain: 'onCreateLogDrain'
+            }
+          });
         });
 
         this.route("apps", {
@@ -162,9 +174,13 @@ Router.map(function() {
         this.route("certificates", {
           resetNamespace: true
         }, function() {
-          this.route("new");
-          this.route('edit', {
-            path: ':certificate_id/edit'
+         this.modal('modal-create-certificate', {
+            withParams: ['newCertificate'],
+            otherParams: ['stack'],
+            dismissWithOutsideClick: false,
+            actions: {
+              onCreateCertificate: 'onCreateCertificate'
+            }
           });
         });
       });

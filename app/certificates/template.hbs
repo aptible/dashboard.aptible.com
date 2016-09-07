@@ -1,1 +1,56 @@
-{{outlet}}
+{{#if hasNoCertificates}}
+  <div class="activate-notice activate-notice--micro">
+    <div class="row">
+      <div class="col-xs-8 col-xs-offset-2">
+        <h2><strong>{{stack.handle}}</strong> has no certificates yet.</h2>
+        {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
+          {{#if hasAbility}}
+            {{#if session.currentUser.verified}}
+              <div class="call-to-action">
+                <a {{action 'openCreateCertificateModal'}} class="btn btn-primary open-certificate-modal">
+                  Create Certificate
+                </a>
+              </div>
+            {{/if}}
+          {{else}}
+            <div class="call-to-action">
+              <a disabled=true class="btn btn-primary disabled">Create Certificate</a>
+              {{#bs-tooltip title="You do not have permission to create certificates for this environment"}}
+                <i class="fa fa-question-circle"></i>
+              {{/bs-tooltip}}
+            </div>
+          {{/if}}
+        {{/aptible-ability}}
+      </div>
+    </div>
+  </div>
+{{/if}}
+
+<div class="sort-group certificates">
+  <div class="row">
+    {{#each persistedCertificates as |certificate|}}
+      <div class="col-xs-12">
+        {{partial "stack/certificate"}}
+      </div>
+    {{/each}}
+  </div>
+</div>
+
+{{#unless hasNoCertificates}}
+  <div class="resource-actions">
+    {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
+      {{#if hasAbility}}
+        {{#if session.currentUser.verified}}
+          <a {{action 'openCreateCertificateModal'}} class="btn btn-primary open-certificate-modal">
+            Create Certificate
+          </a>
+        {{/if}}
+      {{else}}
+        <a disabled=true class="btn btn-primary">Create Certificate</a>
+        {{#bs-tooltip title="You do not have permission to create certificates for this environment"}}
+          <i class="fa fa-question-circle"></i>
+        {{/bs-tooltip}}
+      {{/if}}
+    {{/aptible-ability}}
+  </div>
+{{/unless}}

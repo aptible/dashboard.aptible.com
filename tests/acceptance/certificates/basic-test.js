@@ -31,7 +31,7 @@ test(`visiting ${url} requires authentication`, function() {
   expectRequiresAuthentication(url);
 });
 
-test(`visiting ${url} with no certificates redirects to certificates new`, function(assert) {
+test(`visiting ${url} with no certificates shows create message`, function(assert) {
   stubRequest('get', '/accounts/my-stack-1/certificates', function(){
     return this.success({
       _links: {},
@@ -54,7 +54,9 @@ test(`visiting ${url} with no certificates redirects to certificates new`, funct
 
   signInAndVisit(url);
   andThen(function(){
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.certificates.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.certificates.index');
+    assert.equal(find('.activate-notice:contains(has no certificates)').length, 1, 'shows notice of no certificates');
+    assert.equal(find('.open-certificate-modal:contains(Create Certificate)').length, 1, 'Shows create certificate button');
   });
 });
 

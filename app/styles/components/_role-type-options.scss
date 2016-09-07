@@ -2,6 +2,7 @@
   display: block;
   width: 100%;
 }
+
 .role-type-option {
   background: #FFFFFF;
   border: 1px solid #E0E0E0;
@@ -13,10 +14,11 @@
   padding: 40px 35px;
   cursor: pointer;
   display: block;
-  float: left;
-  width: 207px;
-  &:first-of-type {
-    margin-right: 20px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: $color-bright-blue;
+    box-shadow: 0 0 8px rgba($color-bright-blue, .5);
   }
 }
 
@@ -24,22 +26,28 @@
   .role-type-option[data-option-value=platform_user],
 .role-type-select[data-role-type=compliance_user]
   .role-type-option[data-option-value=compliance_user] {
-  background: #4A90E2;
-  border-color: #4a90e2;
+  background: $color-bright-blue;
+  border-color: $color-bright-blue;
   .role-type-option__name {
     color: #FFFFFF;
   }
   .role-type-option__info {
     color: #C7EFFF;
   }
+
+  &:hover {
+    box-shadow: none;
+  }
 }
 
 .role-type-option__name {
   color: #4A4A4A;
+  font-weight: $weight-semibold;
   font-size: 16px;
   margin-bottom: 15px;
   margin-top: 0;
 }
+
 .role-type-option__info {
   color: #9B9B9B;
   font-size: 14px;

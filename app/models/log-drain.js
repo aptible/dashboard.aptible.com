@@ -11,7 +11,7 @@ export default DS.Model.extend(ProvisionableMixin, {
   handle: DS.attr('string'),
   drainHost: DS.attr('string'),
   drainPort: DS.attr('string'),
-  drainType: DS.attr('string'),
+  drainType: DS.attr('string', { defaultValue: 'syslog_tls_tcp' }),
   drainUsername: DS.attr('string'),
   drainPassword: DS.attr('string'),
 

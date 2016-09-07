@@ -9,8 +9,7 @@ let stackHandle = 'my-stack-handle',
     stackId = 'my-stack-id',
     orgName = 'my org',
     orgId = 'org-1',
-    url = `stacks/${stackId}/logging`,
-    addLogUrl = `/stacks/${stackId}/logging/new`;
+    url = `stacks/${stackId}/logging`;
 
 module('Acceptance: Log Drains', {
   beforeEach: function() {
@@ -56,6 +55,12 @@ module('Acceptance: Log Drains', {
   }
 });
 
+function openModal() {
+  let openButton = findWithAssert('.open-log-drain-modal').eq(0);
+  openButton.click();
+}
+
+
 test(`visit ${url} requires authentication`, function(){
   expectRequiresAuthentication(url);
 });
@@ -88,10 +93,10 @@ test(`visit ${url} shows basic info`, function(assert){
   andThen(function(){
     assert.equal(currentPath(), 'requires-authorization.enclave.stack.log-drains.index');
 
-    expectButton('Add Log');
+    expectButton('Create Log Drain');
 
     let logDrainEls = find('.log-drain');
-    assert.equal( logDrainEls.length, logDrains.length );
+    assert.equal( logDrainEls.length, logDrains.length, 'shows all 3 log drains');
 
     logDrains.forEach(function(logDrain, i){
       let logDrainEl = find(`.log-drain:eq(${i})`);
@@ -135,7 +140,7 @@ test(`visit ${url} shows pending and provisioning`, function(assert){
   andThen(function(){
     assert.equal(currentPath(), 'requires-authorization.enclave.stack.log-drains.index');
 
-    expectButton('Add Log');
+    expectButton('Create Log Drain');
 
     let logDrainEls = find('.log-drain');
     assert.equal( logDrainEls.length, logDrains.length );
@@ -165,12 +170,14 @@ test(`visit ${url} shows log tail explanation`, function(assert) {
   });
 });
 
-test(`visit ${url} with no log drains will redirect to new log drains`, function(assert) {
+test(`visit ${url} with no log drains will show message`, function(assert) {
   this.prepareStubs({logDrains:[]});
   signInAndVisit(url);
 
   andThen(function() {
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.log-drains.new');
+     assert.equal(currentPath(), 'requires-authorization.enclave.stack.log-drains.index');
+    assert.equal(find('.activate-notice:contains(has no log drains)').length, 1, 'shows notice of no apps');
+    assert.equal(find('.open-log-drain-modal:contains(Create Log Drain)').length, 1, 'Shows create log drain button');
   });
 });
 
@@ -178,14 +185,9 @@ test(`visit ${url} with log drains and click add log shows form`, function(asser
   this.prepareStubs();
   signInAndVisit(url);
 
-  andThen(function(){
-    clickButton('Add Log');
-  });
+  andThen(openModal);
 
-  andThen(function(){
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.log-drains.new');
-    assert.equal(currentURL(), addLogUrl);
-
+  andThen(function() {
     let formEl = find('form.create-log');
     assert.ok( formEl.length, 'has form');
 
@@ -291,12 +293,11 @@ test(`visit ${url} with log drains and deprovisions one`, function(assert){
   });
 });
 
-test(`visit ${addLogUrl} and cancel`, function(assert){
+test(`visit ${url} and cancel`, function(assert){
   this.prepareStubs();
-  signInAndVisit(addLogUrl);
-
+  signInAndVisit(url);
+  andThen(openModal);
   andThen(function(){
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.log-drains.new');
     clickButton('Cancel');
   });
 
@@ -305,7 +306,7 @@ test(`visit ${addLogUrl} and cancel`, function(assert){
   });
 });
 
-test(`visit ${addLogUrl} and create log success`, function(assert){
+test(`visit ${url} and create log success`, function(assert){
   assert.expect(8);
 
   this.prepareStubs();
@@ -346,7 +347,8 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
     return this.success();
   });
 
-  signInAndVisit(addLogUrl);
+  signInAndVisit(url);
+  andThen(openModal);
   andThen(function(){
     let formEl = find('form.create-log');
     let context = formEl;
@@ -362,10 +364,11 @@ test(`visit ${addLogUrl} and create log success`, function(assert){
   });
 });
 
-test(`visit ${addLogUrl} without elasticsearch databases`, function(assert){
+test(`visit ${url} without elasticsearch databases`, function(assert){
   this.prepareStubs(null, []);
 
-  signInAndVisit(addLogUrl);
+  signInAndVisit(url);
+  andThen(openModal);
   andThen(function(){
     click( find('label:contains(Elasticsearch)')); // click elasticsearch radio button
   });
@@ -378,7 +381,7 @@ test(`visit ${addLogUrl} without elasticsearch databases`, function(assert){
   });
 });
 
-test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
+test(`visit ${url} and create log to elasticsearch`, function(assert){
   assert.expect(8);
 
   let drainUser = 'someUser',
@@ -438,7 +441,8 @@ test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
     });
   });
 
-  signInAndVisit(addLogUrl);
+  signInAndVisit(url);
+  andThen(openModal);
   andThen(function(){
     let formEl = find('form.create-log');
     let context = formEl;
@@ -454,7 +458,7 @@ test(`visit ${addLogUrl} and create log to elasticsearch`, function(assert){
   });
 });
 
-test(`visit ${addLogUrl} and create log to HTTPS`, function(assert){
+test(`visit ${url} and create log to HTTPS`, function(assert){
   assert.expect(7);
 
   this.prepareStubs();
@@ -493,7 +497,8 @@ test(`visit ${addLogUrl} and create log to HTTPS`, function(assert){
     return this.success();
   });
 
-  signInAndVisit(addLogUrl);
+  signInAndVisit(url);
+  andThen(openModal);
   andThen(function(){
     let formEl = find('form.create-log');
     let context = formEl;
@@ -509,7 +514,7 @@ test(`visit ${addLogUrl} and create log to HTTPS`, function(assert){
   });
 });
 
-test(`visit ${addLogUrl} and create log failure`, function(assert){
+test(`visit ${url} and create log failure`, function(assert){
   this.prepareStubs();
   let errorMessage = 'The log drain is invalid';
 
@@ -519,13 +524,14 @@ test(`visit ${addLogUrl} and create log failure`, function(assert){
     return this.error({ message: errorMessage });
   });
 
-  signInAndVisit(addLogUrl);
+  signInAndVisit(url);
+  andThen(openModal);
   andThen(function(){
     let formEl = find('form.create-log');
     clickButton('Save Log', {context:formEl});
   });
   andThen(function(){
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.log-drains.new');
+    assert.equal(currentPath(), 'requires-authorization.enclave.stack.log-drains.index');
     let errorDiv = find('.alert');
     assert.ok( errorDiv.length, 'error div is shown');
     assert.ok( errorDiv.text().indexOf(errorMessage) > -1,
@@ -533,15 +539,12 @@ test(`visit ${addLogUrl} and create log failure`, function(assert){
   });
 });
 
-test(`visit ${addLogUrl} when unverified shows cannot create message`, function(assert) {
+test(`visit ${url} when unverified disables create button`, function(assert) {
   this.prepareStubs();
   let userData = {verified: false};
-  signInAndVisit(addLogUrl, userData);
+  signInAndVisit(url, userData);
   andThen( () => {
-    expectNoButton('Save Log Drain');
-    expectNoButton('Cancel');
-    let message = find('.activate-notice h1');
-    assert.ok(message.text().indexOf('Cannot create a new log') > -1,
-       'shows cannot create log message');
+    let createButton = findWithAssert('.btn:contains(Create Log Drain)');
+    assert.ok(createButton.attr('disabled'), 'button is disabled');
   });
 });

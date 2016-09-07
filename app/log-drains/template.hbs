@@ -1,3 +1,31 @@
+{{#if hasNoLogDrains}}
+  <div class="activate-notice activate-notice--micro">
+      <div class="row">
+        <div class="col-xs-8 col-xs-offset-2">
+          <h2><strong>{{stack.handle}}</strong> has no log drains yet.</h2>
+          {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
+            {{#if hasAbility}}
+              {{#if session.currentUser.verified}}
+                <div class="call-to-action">
+                  <a {{action 'openCreateLogDrainModal'}} class="btn btn-primary open-log-drain-modal">
+                    Create Log Drain
+                  </a>
+                </div>
+              {{/if}}
+            {{else}}
+              <div class="call-to-action">
+                <a disabled=true class="btn btn-primary">Create Log Drain</a>
+                {{#bs-tooltip title="You do not have permission to create log drains for this environment"}}
+                  <i class="fa fa-question-circle"></i>
+                {{/bs-tooltip}}
+              </div>
+            {{/if}}
+          {{/aptible-ability}}
+        </div>
+      </div>
+    </div>
+{{/if}}
+
 {{#if hasActive}}
     <div class="sort-group provisioned-log-drains">
       {{#if showSortableHeader}}
@@ -65,6 +93,21 @@
     </div>
 {{/if}}
 
-<div class="resource-actions">
-  {{link-to 'Add Log Drain' 'stack.log-drains.new' class="btn btn-primary"}}
-</div>
+{{#unless hasNoLogDrains}}
+   <div class="resource-list-actions">
+      {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
+        {{#if hasAbility}}
+          {{#if session.currentUser.verified}}
+            <a {{action 'openCreateLogDrainModal'}} class="btn btn-primary open-log-drain-modal">
+              Create Log Drain
+            </a>
+          {{/if}}
+        {{else}}
+        <a disabled=true class="btn btn-primary">Create Log Drain</a>
+          {{#bs-tooltip title="You do not have permission to create log drains for this environment"}}
+            <i class="fa fa-question-circle"></i>
+          {{/bs-tooltip}}
+        {{/if}}
+      {{/aptible-ability}}
+    </div>
+{{/unless}}

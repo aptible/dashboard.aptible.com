@@ -1,0 +1,45 @@
+{{#modal-wrapper title=title description=description onDismiss="onDismiss"}}
+  <div class="panel panel-default white-panel">
+    <div class="panel-body">
+      <form>
+        {{server-validation-errors model=newRole}}
+
+        <div class="form-group">
+          <label for="role-name">Name</label>
+          <div class="input-group">
+            {{input
+              name="role-name" type="text"
+              value=newRole.name
+              autofocus=true
+              class="form-control"}}
+            {{validation-feedback
+                isSaving=isSaving
+                error=errors.newRole.name
+                value=newRole.name
+                fieldName='Role name'
+                isValidating=newRole.isValidating
+              }}
+            </div>
+        </div>
+
+        {{#if authorizationContext.organizationHasGridironProduct}}
+          <div class="form-group">
+            {{role-type-options role=newRole}}
+          </div>
+        {{/if}}
+
+        <button class="btn btn-primary create-role" type="submit" {{action "createRole"}} disabled={{disableSave}}>
+          {{#if newRole.isSaving}}
+            <i class='fa fa-spin fa-spinner'></i> Saving...
+          {{else}}
+            Save Role
+          {{/if}}
+        </button>
+        <a class="cancel-role" style="margin-left:10px;" type="reset" {{action "onDismiss"}}>
+          Cancel
+        </a>
+
+      </form>
+    </div>
+  </div>
+{{/modal-wrapper}}
