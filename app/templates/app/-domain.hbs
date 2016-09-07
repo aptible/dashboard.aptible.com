@@ -63,7 +63,17 @@
             </div>
           </h3>
         {{else}}
-          <h3 class="resource-metadata-value">{{vhost.commonName}} is {{vhost.status}}...</h3>
+          {{#if vhost.failedToProvision}}
+            <h3 class="resource-metadata-value">
+              <span class="danger failed-warning-message">
+                {{vhost.commonName}} failed to provision, please{{#link-to-aptible app="contact"}}contact Support{{/link-to-aptible}}
+              </span>
+            </h3>
+          {{else}}
+          <h3 class="resource-metadata-value">
+            {{vhost.commonName}} is {{vhost.status}}...
+          </h3>
+          {{/if}}
         {{/if}}
       {{/if}}
     </div>
