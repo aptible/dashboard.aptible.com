@@ -1,17 +1,8 @@
 import Ember from 'ember';
 import DS from 'ember-data';
+import STATUSES from './statuses';
 
 export let RELOAD_RETRY_DELAY = 30000;
-
-export const STATUSES = {
-  PENDING:              'pending',
-  PROVISIONING:         'provisioning',
-  DEPROVISIONED:        'deprovisioned',
-  PROVISIONED:          'provisioned',
-  DEPROVISIONING:       'deprovisioning',
-  PROVISION_FAILED:     'provision_failed',
-  DEPROVISION_FAILED:   'deprovision_failed'
-};
 
 const {
   observer,

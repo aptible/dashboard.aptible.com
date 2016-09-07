@@ -1,6 +1,7 @@
 import Ember from "ember";
 import DS from 'ember-data';
 import ProvisionableMixin from '../mixins/models/provisionable';
+import STATUSES from '../mixins/models/statuses';
 
 export default DS.Model.extend(ProvisionableMixin, {
   externalHost: DS.attr('string'),
@@ -21,7 +22,7 @@ export default DS.Model.extend(ProvisionableMixin, {
 
   useCertificate: true,
 
-  reloadOn: ['provisioning', 'deprovisioning'],
+  reloadOn: [STATUSES.PROVISIONING, STATUSES.DEPROVISIONING],
 
   commonName: Ember.computed.alias('virtualDomain'),
 

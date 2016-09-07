@@ -1,6 +1,7 @@
 import DS from 'ember-data';
 import Ember from 'ember';
 import ProvisionableMixin from '../mixins/models/provisionable';
+import STATUSES from '../mixins/models/statuses';
 
 export default DS.Model.extend(ProvisionableMixin, {
   name: DS.attr('string'),
@@ -27,7 +28,7 @@ export default DS.Model.extend(ProvisionableMixin, {
             type === 'mysql');
   }),
 
-  reloadOn: ['provisioning', 'deprovisioning'],
+  reloadOn: [STATUSES.PROVISIONING, STATUSES.DEPROVISIONING],
 
   supportsClustering: Ember.computed.equal('type', 'mongodb'),
 

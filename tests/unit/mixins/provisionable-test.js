@@ -1,9 +1,9 @@
 import Ember from 'ember';
 import { module, test, skip } from 'qunit';
 import {
-  ProvisionableBaseMixin,
-  STATUSES
+  ProvisionableBaseMixin
 } from '../../../mixins/models/provisionable';
+import STATUSES from '../../../mixins/models/statuses';
 
 // minimum setTimeout resolution is 10 ms
 const TEST_RELOAD_RETRY_DELAY = 10;
