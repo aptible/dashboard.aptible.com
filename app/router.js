@@ -72,7 +72,14 @@ Router.map(function() {
       });
       this.route("roles", {}, function() {
         this.route("type", { path: ':type' });
-        this.route('new');
+        this.modal('modal-create-role', {
+          withParams: ['newRole'],
+          otherParams: ['authorizationContext'],
+          dismissWithOutsideClick: false,
+          actions: {
+            onCreateRole: 'onCreateRole'
+          }
+        });
       });
       this.route("invite");
 
