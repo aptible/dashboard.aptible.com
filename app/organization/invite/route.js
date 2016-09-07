@@ -54,7 +54,7 @@ export default Ember.Route.extend({
 
         let newInvite = this.store.createRecord('invitation');
         this.controller.set('model', newInvite);
-        this.transitionTo('organization.members.pending-invitations');
+        this.transitionTo('organization.pending-invitations');
         let successMessage = `Invitation sent to ${invitation.get('email')}`;
         Ember.get(this, 'flashMessages').success(successMessage);
       }).catch((e) => {
