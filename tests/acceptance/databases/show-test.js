@@ -48,8 +48,13 @@ test('visiting /databases/my-db-id shows the database', function(assert) {
   });
 });
 
-test('visiting /databases/my-db-id with provisioned database and disk shows disk size', function(assert) {
+test('visiting /databases/my-db-id with provisioned database and disk shows disk size and version', function(assert) {
   stubStack({ id: 'my-stack-1' });
+  stubRequest('get', '/database_images/1', function() {
+    let image = { id: 1, name: 'postgres', description: 'PostgreSQL 9.3', type: 'postgresql' };
+    return this.success(image);
+  });
+
   stubRequest('get', '/databases/my-db-id', function(){
     return this.success({
       id: 'my-db-id',
@@ -58,7 +63,8 @@ test('visiting /databases/my-db-id with provisioned database and disk shows disk
       connectionUrl: 'postgresql://me:pw@10.0.0.0/db',
       _links: {
         account: { href: '/accounts/my-stack-1' },
-        disk: { href: '/disks/my-disk-1' }
+        disk: { href: '/disks/my-disk-1' },
+        database_image: { href: '/database_images/1' }
       }
     });
   });
@@ -88,6 +94,7 @@ test('visiting /databases/my-db-id with provisioned database and disk shows disk
     var urlNode = findWithAssert('.db-connection-url:contains(postgresql://me:pw@10.0.0.0/db)');
     assert.ok(sizeNode.length > 0, 'shows database size');
     assert.ok(urlNode.length > 0, 'shows database connection url');
+    assert.equal(find('.db-version:contains(PostgreSQL 9.3)').length, 1, 'has db version vield');
   });
 });
 
