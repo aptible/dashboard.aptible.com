@@ -16,6 +16,8 @@ export default Ember.Route.extend(DisallowAuthenticated, {
   actions: {
     reset(model) {
       model.save().then( () => {
+        let message = `A password reset email has been sent to ${model.get('email')}`;
+        Ember.get(this, 'flashMessages').success(message);
         this.transitionTo('login');
       }, () => {
         this.controller.set(
@@ -23,6 +25,7 @@ export default Ember.Route.extend(DisallowAuthenticated, {
       });
     },
     willTransition() {
+      this.currentModel.rollback();
       this.controllerFor('password/reset').set('error', null);
     }
   }
