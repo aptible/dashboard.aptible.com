@@ -8,6 +8,8 @@ export default DS.Model.extend(ProvisionableMixin, {
   gitRepo: DS.attr('string'),
   createdAt: DS.attr('iso-8601-timestamp'),
 
+  reloadOn: ['deprovisioning'],
+
   // relationships
   stack: DS.belongsTo('stack', {async: true}),
   services: DS.hasMany('service', {async:true}),
@@ -17,7 +19,6 @@ export default DS.Model.extend(ProvisionableMixin, {
   lastDeployOperation: DS.belongsTo('operation', {async:true}),
   currentImage: DS.belongsTo('image', {async:true}),
 
-  reloadWhileProvisioning: true,
   serviceUsage: Ember.computed.mapBy('services', 'usage'),
   usage: Ember.computed.sum('serviceUsage')
 });

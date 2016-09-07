@@ -19,8 +19,9 @@ export default DS.Model.extend(ProvisionableMixin, {
   app: DS.belongsTo('app', { async: true }),
   operations: DS.hasMany('operation', {async:true}),
 
-  reloadWhileProvisioning: true,
   useCertificate: true,
+
+  reloadOn: ['provisioning', 'deprovisioning'],
 
   commonName: Ember.computed.alias('virtualDomain'),
 

@@ -1,12 +1,6 @@
 import Ember from 'ember';
 import DS from 'ember-data';
 
-export let SHOULD_RELOAD = true;
-
-export function SET_SHOULD_RELOAD(bool) {
-  SHOULD_RELOAD = bool;
-}
-
 export let RELOAD_RETRY_DELAY = 30000;
 
 export const STATUSES = {
@@ -19,11 +13,6 @@ export const STATUSES = {
   DEPROVISION_FAILED:   'deprovision_failed'
 };
 
-const ReloadStatuses = [
-  STATUSES.PROVISIONING,
-  STATUSES.DEPROVISIONING
-];
-
 const {
   observer,
   computed,
@@ -33,19 +22,18 @@ const {
 
 export const ProvisionableBaseMixin = Ember.Mixin.create({
   _reloadRetryDelay: RELOAD_RETRY_DELAY,
+
   _shouldReload: function() {
     let {
       status,
-      reloadWhileProvisioning,
       isDestroying,
       isDestroyed
-    } = this.getProperties('status', 'reloadWhileProvisioning', 'isDestroying', 'isDestroyed');
-    let inReloadStatus = ReloadStatuses.indexOf(status) > -1;
-
+    } = this.getProperties('status', 'isDestroying', 'isDestroyed');
+    let inReloadStatus = this.get('reloadOn').indexOf(status) > -1;
     let currentState = this.get('currentState.stateName');
     let inLoadedState = currentState !== 'root.empty' && currentState !== 'root.deleted.uncommitted';
 
-    return SHOULD_RELOAD && inLoadedState && reloadWhileProvisioning && inReloadStatus && !isDestroyed && !isDestroying;
+    return inLoadedState && inReloadStatus && !isDestroyed && !isDestroying;
   },
 
   // we should refactor this away from using observers once
