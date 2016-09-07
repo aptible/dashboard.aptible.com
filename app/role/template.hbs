@@ -18,21 +18,21 @@
     <h1>{{platformRole}}</h1>
     <ul class='nav nav-pills resource-navigation'>
 
-      {{#link-to 'role.members' tagName="li"}}
-        {{link-to 'Members' 'role.members' model bubbles=false}}
+      {{#link-to 'role.members' model.id tagName="li"}}
+        {{link-to 'Members' 'role.members' model.id bubbles=false}}
       {{/link-to}}
 
       {{#if model.isPlatform}}
 
-        {{#link-to 'role.environments' tagName="li"}}
-          {{link-to 'Environments' 'role.environments' model bubbles=false}}
+        {{#link-to 'role.environments' model.id tagName="li"}}
+          {{link-to 'Environments' 'role.environments' model.id bubbles=false}}
         {{/link-to}}
       {{/if}}
 
       {{#if model.isUser}}{{!-- can only change settings on user types role --}}
         {{#if context.userIsEnclaveOrOrganizationAdmin}}
-          {{#link-to 'role.settings' tagName="li"}}
-            {{link-to 'Settings' 'role.settings' model bubbles=false}}
+          {{#link-to 'role.settings' model.id tagName="li"}}
+            {{link-to 'Settings' 'role.settings' model.id bubbles=false}}
           {{/link-to}}
         {{/if}}
       {{/if}}
