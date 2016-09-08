@@ -13,7 +13,7 @@ export default Ember.Route.extend({
 
     controller.set('role', model);
     controller.set('memberships', model.get('memberships'));
-    controller.set('pendingInvitations', model.get('invitations'));
+    controller.set('invitations', model.get('invitations'));
     controller.setProperties({ authorizationContext, organization, currentUserRoles, canManageMemberships });
   },
 

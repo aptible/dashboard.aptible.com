@@ -5,6 +5,11 @@ export default Ember.Route.extend({
     return this.modelFor('organization');
   },
 
+  setupController(controller, model) {
+    controller.set('authorizationContext', model);
+    controller.set('organization', model.get('organization'));
+  },
+
   actions: {
     resendInvitation(invitation){
       let reset = this.store.createRecord('reset');
@@ -15,7 +20,7 @@ export default Ember.Route.extend({
 
       reset.save().then(() => {
         let message = `Invitation resent to ${invitation.get('email')}`;
-        this.transitionTo('organization.members.pending-invitations');
+        this.transitionTo('organization.pending-invitations');
         Ember.get(this, 'flashMessages').success(message);
       });
     },
@@ -23,7 +28,7 @@ export default Ember.Route.extend({
     destroyInvitation(invitation){
       invitation.destroyRecord().then(() => {
         let message = `Deleted invitation for ${invitation.get('email')}`;
-        this.transitionTo('organization.members.pending-invitations');
+        this.transitionTo('organization.pending-invitations');
         Ember.get(this, 'flashMessages').success(message);
       });
     },

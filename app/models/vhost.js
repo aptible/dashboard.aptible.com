@@ -51,5 +51,6 @@ export default DS.Model.extend(ProvisionableMixin, {
     return actions;
   }),
 
-  hasActionRequired: Ember.computed.gt('actionsRequired.length', 0)
+  hasActionRequired: Ember.computed.gt('actionsRequired.length', 0),
+  failedToProvision: Ember.computed.equal('status', 'provision_failed')
 });

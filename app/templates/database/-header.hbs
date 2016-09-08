@@ -40,6 +40,11 @@
         <h3 class="resource-metadata-value">{{model.type}}</h3>
       </li>
 
+      <li class="resource-metadata-item">
+        <h5 class="resource-metadata-title">Version</h5>
+        <h3 class="resource-metadata-value db-version">{{model.databaseImage.description}}</h3>
+      </li>
+
       {{#if model.isProvisioned}}
         {{#if model.disk}}
           <li class="resource-metadata-item">

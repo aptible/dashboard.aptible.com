@@ -50,6 +50,12 @@
       font-weight: $weight-semibold;
     }
 
+    .subdued {
+      color: $color-light;
+      font-weight: $weight-normal;
+      font-size: 12px;
+    }
+
     &.with-nav {
       h3 {
         margin-top: 11px;

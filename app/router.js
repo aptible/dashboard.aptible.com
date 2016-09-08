@@ -67,9 +67,9 @@ Router.map(function() {
 
     this.route("organization", { resetNamespace: true, path: "organizations/:organization_id" }, function() {
       this.route("members", {}, function() {
-        this.route('pending-invitations');
         this.route("edit", {path: ":user_id/edit"});
       });
+      this.route('pending-invitations');
       this.route("roles", {}, function() {
         this.route("type", { path: ':type' });
         this.modal('modal-create-role', {

@@ -1,3 +1,5 @@
+{{partial "flash-messages"}}
+
 {{#login-box}}
   <div class="row">
     <div class="col-xs-6 col-xs-offset-3">
@@ -23,19 +25,22 @@
                 </div>
               {{/if}}
             {{/if}}
-            <div class="form-group">
-              {{input type="email"
-                name='email'
-                value=model.email
-                class="form-control"
-                placeholder="Email"}}
-            </div>
+            <form>
+              <div class="form-group">
+                {{focusable-input type="email"
+                  name='email'
+                  value=model.email
+                  class="form-control"
+                  autofocus="true"
+                  placeholder="Email"}}
+              </div>
 
-            <div class="panel-submit">
-              <button class="btn btn-primary btn-block btn-lg" {{action "reset" model}}>
-                Email me reset instructions
-              </button>
-            </div>
+              <div class="panel-submit">
+                <button class="btn btn-primary btn-block btn-lg" {{action "reset" model}}>
+                  Email me reset instructions
+                </button>
+              </div>
+            </form>
           {{/if}}
         </div>
       </div>
