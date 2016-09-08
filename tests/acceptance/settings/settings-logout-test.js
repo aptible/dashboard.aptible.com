@@ -107,3 +107,51 @@ test(`${logoutUrl} shows an error if one occurs`, function(assert) {
     assert.ok(find("div.alert:contains(Internal Server Error)").length);
   });
 });
+
+test(`${logoutUrl} ignores an expired_token error for regular logout`, function(assert) {
+  assert.expect(1);
+
+  stubOrganization();
+  stubRequest("delete", "/tokens/stubbed-token-id", function() {
+    return this.error(401, {
+      code: 401,
+      error: "expired_token",
+      message: "Expired Token"
+    });
+  });
+
+  signInAndVisit(logoutUrl);
+
+  andThen(() => {
+    clickButton("Log Out");
+  });
+
+  andThen(() => {
+    expectReplacedLocation('/');
+  });
+});
+
+test(`${logoutUrl} does not ignore an expired_token for a revoke logout`, function(assert) {
+  assert.expect(1);
+
+  stubOrganization();
+
+  stubRequest("post", "/tokens/revoke_all_accessible", function() {
+    return this.error(401, {
+      code: 401,
+      error: "expired_token",
+      message: "Expired Token"
+    });
+  });
+
+  signInAndVisit(logoutUrl);
+
+  andThen(() => {
+    check("revoke-all-accessible");
+    clickButton("Log Out");
+  });
+
+  andThen(() => {
+    assert.ok(find("div.alert:contains(Expired Token)").length);
+  });
+});

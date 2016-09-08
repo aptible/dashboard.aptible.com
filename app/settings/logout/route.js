@@ -26,6 +26,13 @@ export default Ember.Route.extend({
       } else {
         logoutPromise = this.session.close('application', {
           token: this.get('session.token')
+        }).catch((e) => {
+          if (e.responseJSON && e.responseJSON.error === 'expired_token') {
+            // If the user's token has expired, then we don't care to log them
+            // out "further".
+            return;
+          }
+          throw e;
         });
       }
 
