@@ -197,6 +197,10 @@ test(`visiting ${url} shows list of deprovisioning apps`, function(assert) {
   let orgId = 1;
   let stackHandle = 'my-stack-1';
 
+  stubRequest('get', '/apps/1', function(){
+    return this.notFound(404);
+  });
+
   stubRequest('get', '/accounts/my-stack-1/apps', function(){
     return this.success({
       _links: {},
@@ -234,7 +238,7 @@ test(`visiting ${url} shows list of deprovisioning apps`, function(assert) {
   signInAndVisit(url);
   andThen(function() {
     let el = find('.deprovisioning-apps');
-    assert.equal(el.find('.panel.app').length, 1, '1 deprovisioning apps');
+    assert.equal(el.find('.panel.app').length, 0, 'no deprovisioning apps');
   });
 });
 

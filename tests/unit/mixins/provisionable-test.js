@@ -1,31 +1,21 @@
 import Ember from 'ember';
 import { module, test, skip } from 'qunit';
 import {
-  ProvisionableBaseMixin,
-  STATUSES,
-  SHOULD_RELOAD,
-  SET_SHOULD_RELOAD
+  ProvisionableBaseMixin
 } from '../../../mixins/models/provisionable';
+import STATUSES from '../../../mixins/models/statuses';
 
 // minimum setTimeout resolution is 10 ms
 const TEST_RELOAD_RETRY_DELAY = 10;
 
 const FakeModel = Ember.Object.extend(ProvisionableBaseMixin, {
   _reloadRetryDelay: TEST_RELOAD_RETRY_DELAY,
-  reloadWhileProvisioning: true,
   reload() {
     return Ember.RSVP.resolve();
   }
 });
 
 module('mixin:provisionable', {
-  beforeEach() {
-    this.originalShouldReload = SHOULD_RELOAD;
-  },
-
-  afterEach() {
-    SET_SHOULD_RELOAD(this.originalShouldReload);
-  }
 });
 
 
@@ -33,41 +23,30 @@ test('will not reload when status is not STATUSES.PROVISIONING', function(assert
   assert.expect(1);
 
   let model = FakeModel.create({
-    status: STATUSES.PROVISIONED
+    status: STATUSES.PROVISIONED,
+    reloadOn: [STATUSES.PROVISIONING]
   });
 
   assert.equal(model._shouldReload(), false);
 });
 
-test('will not reload when reloadWhileProvisioning is false', function(assert) {
+test('will not reload when reloadOn is empty', function(assert) {
   assert.expect(1);
 
   let model = FakeModel.create({
     status: STATUSES.PROVISIONING,
-
-    reloadWhileProvisioning: false
+    reloadOn: []
   });
 
   assert.equal(model._shouldReload(), false);
 });
 
-test('will not reload when SHOULD_RELOAD is false', function(assert) {
-  assert.expect(1);
-
-  SET_SHOULD_RELOAD(false);
-
-  let model = FakeModel.create({
-    status: STATUSES.PROVISIONING
-  });
-
-  assert.equal(model._shouldReload(), false);
-});
-
-test('will reload when STATUS.PROVISIONING', function(assert) {
+test('will reload when STATUS.PROVISIONING and reloadOn is set to STATUS.PROVISIONING', function(assert) {
   assert.expect(1);
 
   let model = FakeModel.create({
-    status: STATUSES.PROVISIONING
+    status: STATUSES.PROVISIONING,
+    reloadOn: [STATUSES.PROVISIONING]
   });
 
   assert.equal(model._shouldReload(), true);
@@ -81,6 +60,7 @@ skip('recursively calls reload while STATUSES.PROVISIONING', function(assert) {
 
   let model = FakeModel.create({
     status: STATUSES.PROVISIONING,
+    reloadOn: [STATUSES.PROVISIONING],
     count: 0,
 
     reload() {

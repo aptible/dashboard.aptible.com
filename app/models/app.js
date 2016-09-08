@@ -1,12 +1,15 @@
 import DS from 'ember-data';
 import Ember from 'ember';
 import ProvisionableMixin from '../mixins/models/provisionable';
+import STATUSES from '../mixins/models/statuses';
 
 export default DS.Model.extend(ProvisionableMixin, {
   // properties
   handle: DS.attr('string'),
   gitRepo: DS.attr('string'),
   createdAt: DS.attr('iso-8601-timestamp'),
+
+  reloadOn: [STATUSES.DEPROVISIONING],
 
   // relationships
   stack: DS.belongsTo('stack', {async: true}),

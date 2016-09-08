@@ -20,8 +20,7 @@ export default Ember.Route.extend({
           app: app
         });
         return op.save()
-          .then((operation) => operation.reloadUntilStatusChanged(operation, 1000 * 60 * 15 /* minutes */))
-          .then(() => app.reload())
+          .then(() => app.set('status', 'deprovisioning'))
           .then(() => route.transitionTo('apps', stack), (e) => controller.set('error', e));
       });
     }

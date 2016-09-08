@@ -1,6 +1,7 @@
 import DS from 'ember-data';
 import Ember from 'ember';
 import ProvisionableMixin from '../mixins/models/provisionable';
+import STATUSES from '../mixins/models/statuses';
 
 export default DS.Model.extend(ProvisionableMixin, {
   name: DS.attr('string'),
@@ -20,14 +21,14 @@ export default DS.Model.extend(ProvisionableMixin, {
   service: DS.belongsTo('service', {async:true}),
   backups: DS.hasMany('backups', {async: true}),
 
-  reloadWhileProvisioning: true,
-
   supportsReplication: Ember.computed('type', function () {
     let type = this.get('type');
     return (type === 'redis' ||
             type === 'postgresql' ||
             type === 'mysql');
   }),
+
+  reloadOn: [STATUSES.PROVISIONING, STATUSES.DEPROVISIONING],
 
   supportsClustering: Ember.computed.equal('type', 'mongodb'),
 

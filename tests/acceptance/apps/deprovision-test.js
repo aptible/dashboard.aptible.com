@@ -47,9 +47,7 @@ test('/apps/:id/deprovision will not deprovision without confirmation', function
 
 test('/apps/:id/deprovision will deprovision with confirmation', function(assert) {
   var appId = 1;
-  var operationId = 1;
   var appName = 'foo-bar';
-  var didDeprovision = false;
   stubStacks();
   stubStack({id: '1'});
 
@@ -71,15 +69,6 @@ test('/apps/:id/deprovision will deprovision with confirmation', function(assert
     });
   });
 
-  stubRequest('get', `/operations/${operationId}`, function(){
-    didDeprovision = true;
-    return this.success({
-      id: '1',
-      status: 'succeeded',
-      type: 'deprovision'
-    });
-  });
-
   stubStacks();
 
   signInAndVisit(`/apps/${appId}/deprovision`);
@@ -89,7 +78,6 @@ test('/apps/:id/deprovision will deprovision with confirmation', function(assert
   });
   click('button:contains(Deprovision)');
   andThen(function(){
-    assert.ok(didDeprovision, 'deprovisioned');
     assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
