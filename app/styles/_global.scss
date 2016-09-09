@@ -6,7 +6,7 @@ body {
 body {
   font-size: 13px;
   text-rendering: optimizeLegibility;
-  @include heading-font-family;
+  @include global-font-family;
 }
 
 .gravatar {
