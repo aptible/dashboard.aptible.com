@@ -6,6 +6,7 @@ export default Ember.Route.extend({
   },
 
   setupController(controller, model) {
+    controller.set('model', model);
     controller.set('authorizationContext', model);
     controller.set('organization', model.get('organization'));
   },
