@@ -1,5 +1,5 @@
 .popover {
-  font-family: "proxima-nova", Helvetica, sans-serif;
+  @include global-font-family;
   max-width: none;
 }
 
