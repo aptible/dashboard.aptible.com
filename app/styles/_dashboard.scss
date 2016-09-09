@@ -187,7 +187,41 @@ header.resource-header {
       display: inline-block;
       margin-left: 6px;
     }
+
+    .reveal-link {
+      margin: 0;
+    }
+
+    &.db-connection-url-value {
+      min-width: 600px;
+    }
   }
+}
+
+.sensitive-indicator {
+  background: $color-danger;
+  font-size: 10px;
+  font-weight: $weight-semibold;
+  border-radius: 3px;
+  padding: 4px;
+  color: #fff;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+@-webkit-keyframes yellow-fade {
+   0% {background: yellow;}
+   100% {background: none;}
+}
+
+@keyframes yellow-fade {
+   0% {background: yellow;}
+   100% {background: none;}
+}
+
+.highlight {
+   -webkit-animation: yellow-fade 1s ease-in 1;
+   animation: yellow-fade 1s ease-in 1;
 }
 
 // Flex box header row option to keep columns from wrapping

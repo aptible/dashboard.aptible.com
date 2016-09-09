@@ -58,9 +58,14 @@
         {{/if}}
         <li class="resource-metadata-item">
           <h5 class="resource-metadata-title">Connection URL</h5>
-          <h3 class="resource-metadata-value">
-            <span class="db-connection-url">{{model.connectionUrl}}</span>
-            {{click-to-copy text=model.connectionUrl}}
+          <h3 class="resource-metadata-value db-connection-url-value">
+            {{#click-to-reveal text="Reveal"}}
+              <span class="sensitive-indicator">Sensitive</span>
+              <span class="db-connection-url">
+                {{model.connectionUrl}}
+              </span>
+              {{click-to-copy text=model.connectionUrl}}
+            {{/click-to-reveal}}
           </h3>
         </li>
       {{else if model.isProvisioning}}
