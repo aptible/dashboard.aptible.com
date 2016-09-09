@@ -1,0 +1,5 @@
+{{#liquid-if hidden class="click-to-reveal"}}
+  <a class="reveal-link" {{action "reveal"}}>{{text}}</a>
+{{else}}
+  <span class="highlight">{{yield}}</span>
+{{/liquid-if}}

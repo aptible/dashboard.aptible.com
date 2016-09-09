@@ -90,11 +90,18 @@ test('visiting /databases/my-db-id with provisioned database and disk shows disk
   signInAndVisit('/databases/my-db-id');
   andThen(function() {
     assert.equal(currentPath(), 'requires-authorization.enclave.database.metrics', 'show page is visited');
-    var sizeNode = findWithAssert('.db-size:contains(10 GB)');
-    var urlNode = findWithAssert('.db-connection-url:contains(postgresql://me:pw@10.0.0.0/db)');
+    let sizeNode = findWithAssert('.db-size:contains(10 GB)');
     assert.ok(sizeNode.length > 0, 'shows database size');
-    assert.ok(urlNode.length > 0, 'shows database connection url');
     assert.equal(find('.db-version:contains(PostgreSQL 9.3)').length, 1, 'has db version vield');
+
+    let urlNode = find('.db-connection-url:contains(postgresql://me:pw@10.0.0.0/db)');
+    assert.equal(urlNode.length, 0, 'connection URL is hidden by default');
+  });
+
+  andThen(() => {
+    let reveal = findWithAssert('.click-to-reveal .reveal-link');
+    reveal.click();
+    assert.equal(find('.db-connection-url:contains(postgresql://me:pw@10.0.0.0/db)').length, 1, 'reveals shows connection url');
   });
 });
 

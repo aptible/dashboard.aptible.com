@@ -9,6 +9,11 @@ export default function() {
                     'settings.ssh', 'settings.impersonate', 'organization.admin.environments',
                     'organization.admin.contact-settings', 'organization.admin.billing'];
   this.transition(
+    this.hasClass('click-to-reveal'),
+    this.use('crossFade')
+  );
+
+  this.transition(
     this.outletName('sidebar'),
     this.use('toLeft', { duration: DEFAULT_DURATION, easing: DEFAULT_EASING })
   );
