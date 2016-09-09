@@ -3,7 +3,7 @@
 <div class="layout-container">
   <div class="row">
     <div class="col-xs-12">
-      {{#if model.userIsOrganizationAdmin}}
+      {{#if authorizationContext.userIsOrganizationAdmin}}
         {{#link-to 'organization.invite' class="btn btn-primary"}}
           Invite New Member
         {{/link-to}}

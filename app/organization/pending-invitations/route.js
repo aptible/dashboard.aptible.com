@@ -6,12 +6,14 @@ export default Ember.Route.extend({
   },
 
   setupController(controller, model) {
+    controller.set('model', model);
     controller.set('authorizationContext', model);
     controller.set('organization', model.get('organization'));
   },
 
   actions: {
     resendInvitation(invitation){
+      debugger;
       let reset = this.store.createRecord('reset');
       reset.setProperties({
         type: 'invitation',
