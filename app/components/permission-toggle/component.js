@@ -12,13 +12,15 @@ export default Ember.Component.extend({
   },
 
   isChecked: Ember.computed('stack.permissions.[]', function() {
-    if (this.get('role').get('isPlatformUser')) {
-      return this.get('stack').hasRoleScope(this.get('role'), this.get('scope'));
-    }
-    return true;
+    return this.get('stack').hasRoleScope(this.get('role'), this.get('scope'));
   }),
 
-  isDisabled: Ember.computed.not('authorizationContext.userIsEnclaveOrOrganizationAdmin'),
+  roleIsOwner: Ember.computed.or('role.isAccountOwner', 'role.isPLatformOwner'),
+  ownerTooltipTitle: Ember.computed('role.name', 'stack.handle', function() {
+    return `${this.get('role.name')} is granted all permissions for ${this.get('stack.handle')}`;
+  }),
+  userIsAuthorized: Ember.computed.equal('authorizationContext.userIsEnclaveOrOrganizationAdmin'),
+  userIsUnauthorized: Ember.computed.not('userIsUnauthorized'),
 
   actions: {
     onToggle(valueOptions) {
@@ -27,6 +29,7 @@ export default Ember.Component.extend({
       }
       let isOn = !!valueOptions.newValue;
       let { role, scope, stack } = this.getProperties('role', 'scope', 'stack');
+
       let permission = stack.findPermission(role, scope);
 
       // NOTE: No error occurs if a permission with this role and scope already

@@ -13,7 +13,6 @@ export default Ember.Route.extend({
 
   actions: {
     resendInvitation(invitation){
-      debugger;
       let reset = this.store.createRecord('reset');
       reset.setProperties({
         type: 'invitation',

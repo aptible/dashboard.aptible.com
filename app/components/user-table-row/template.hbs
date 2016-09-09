@@ -8,12 +8,16 @@
 </td>
 <td>{{user.email}}</td>
 <td>
-  {{format-list (filter-by-organization user.roles organization) 'name' ', '}}
-</td>
-<td>
-  {{#if hasOwnerShield}}
-    <div class="label label-owner"><i class="fa fa-shield"></i> Owner</div>
-  {{/if}}
+  {{#each organizationRoles as |role index|}}
+    {{#link-to 'role' role.id}}
+      {{#if (eq role.type 'owner')}}
+        {{#bs-tooltip title="Account Owner"}}
+          <i class="fa fa-shield bright-blue"></i>
+        {{/bs-tooltip}}
+      {{/if}}
+      {{role.name}}{{if (eq index csvLastIndex) '' ', '}}
+    {{/link-to}}
+  {{/each}}
 </td>
 <td>{{otp-status otpEnabled=user.otpEnabled}}</td>
 {{#if isAccountOwner}}

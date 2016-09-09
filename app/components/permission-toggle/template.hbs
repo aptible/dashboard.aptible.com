@@ -1,8 +1,14 @@
-{{x-toggle
-    disabled=isDisabled
+{{#if roleIsOwner}}
+  {{#bs-tooltip title=ownerTooltipTitle}}
+  <i class="fa fa-check success"></i>
+  {{/bs-tooltip}}
+{{else}}
+  {{x-toggle
+    disabled=userIsUnauthorizedß
     value=isChecked
     onToggle=(action 'onToggle')
     onLabel=true
     offLabel=false
     showLabels=false
     size='medium'}}
+{{/if}}
