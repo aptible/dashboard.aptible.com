@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  model: function(params){
+  model(params){
     let invitationId = params.invitation_id;
     let verificationCode = params.verification_code;
 
@@ -27,7 +27,7 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    claim: function(){
+    claim() {
       let invitation = this.controller.get('model');
       let verificationCode = this.controller.get('verificationCode');
 
