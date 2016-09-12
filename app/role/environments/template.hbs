@@ -42,23 +42,27 @@
                 <tr>
                   <td class="aptable__row-heading">Read</td>
                   <td class="aptable__actions aptable__actions--skinny">
-                    {{permission-toggle
+                    {{#aptible-ability scope="manage" permittable=model as |hasAbility|}}
+                      {{permission-toggle
                         authorizationContext=authorizationContext
-                        currentUserCanManagePermissions=canManagePermissions
+                        currentUserCanManagePermissions=hasAbility
                         role=model
                         scope="read"
                         stack=stack}}
+                    {{/aptible-ability}}
                   </td>
                 </tr>
                 <tr>
                   <td class="aptable__row-heading">Manage</td>
                   <td class="aptable__actions">
-                    {{permission-toggle
+                    {{#aptible-ability scope="manage" permittable=model as |hasAbility|}}
+                      {{permission-toggle
                         authorizationContext=authorizationContext
-                        currentUserCanManagePermissions=canManagePermissions
+                        currentUserCanManagePermissions=hasAbility
                         role=model
                         scope="manage"
                         stack=stack}}
+                    {{/aptible-ability}}
                   </td>
                 </tr>
               </tbody>

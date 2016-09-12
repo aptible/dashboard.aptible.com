@@ -83,11 +83,7 @@ export default Ember.Object.extend({
 
   userIsEnclaveOrOrganizationAdmin: Ember.computed.or('userIsEnclaveAdmin', 'userIsOrganizationAdmin'),
   userIsGridironOrOrganizationAdmin: Ember.computed.or('userIsGridironAdmin', 'userIsOrganizationAdmin'),
-
-  // Can the user use enclave? TODO revisit these two:
-  userHasEnclaveAccess: Ember.computed.or('userIsEnclaveAdmin', 'userIsEnclaveUser'),
-  hasEnclaveAccess: Ember.computed.or('userHasEnclaveAccess', 'userIsOrganizationAdmin'),
-  // End
+  userHasEnclaveAccess: Ember.computed.or('userIsEnclaveAdmin', 'userIsEnclaveUser', 'userIsOrganizationAdmin'),
 
   doesUserHavePrivilegedMembershipForRole(role) {
     // This method is dumb and counts on memberhsips being loaded on the role

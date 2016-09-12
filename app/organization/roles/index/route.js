@@ -6,7 +6,7 @@ export default Ember.Route.extend({
   },
 
   redirect(model) {
-    if (model.get('hasEnclaveAccess')) {
+    if (model.get('userHasEnclaveAccess')) {
       this.transitionTo('organization.roles.type', 'platform');
     } else {
       this.transitionTo('organization.roles.type', 'compliance');

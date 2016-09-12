@@ -82,7 +82,7 @@ export default Ember.Service.extend({
   hasSingleOrganization: Ember.computed.equal('organizationContexts.length', 1),
   hasNoOrganizations: Ember.computed.equal('organizationContexts.length', 0),
   hasNoStacks: Ember.computed.equal('stacks.length', 0),
-  contextsWithEnclaveAccess: Ember.computed.filterBy('organizationContexts', 'hasEnclaveAccess', true),
+  contextsWithEnclaveAccess: Ember.computed.filterBy('organizationContexts', 'userHasEnclaveAccess', true),
   hasAnyEnclaveAccess: Ember.computed.gt('contextsWithEnclaveAccess.length', 0),
 
   contextsWithEnclaveProduct: Ember.computed.filterBy('organizationContexts', 'organizationHasEnclaveProduct', true),

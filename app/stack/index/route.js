@@ -8,10 +8,8 @@ export default Ember.Route.extend({
       return this.transitionTo('stack.activate');
     }
 
-    return this.get('session.currentUser').can('read', stack).then((permitted) => {
-      if(permitted) {
-        this.transitionTo('apps');
-      }
-    });
+    if(this.get('authorization').checkAbility('read', stack)) {
+      this.transitionTo('apps');
+    }
   }
 });
