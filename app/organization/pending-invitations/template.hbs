@@ -21,7 +21,7 @@
           <th>Role</th>
           <th>Invited By</th>
           <th>Invited On</th>
-          {{#aptible-ability scope="manage" permittable=role as |hasAbility|}}
+          {{#aptible-ability scope="manage" permittable=organization as |hasAbility|}}
             {{#if hasAbility}}
               <th class="aptable__actions">Actions</th>
             {{/if}}
@@ -31,7 +31,12 @@
 
       <tbody>
         {{#each sortedInvites as |invitation|}}
-          {{partial 'organization/invited-user-table-row'}}
+          {{invited-user-row
+            permittable=organization
+            invitation=invitation
+            requiredScope='manage'
+            resendInvitation="resendInvitation"
+            destroyInvitation="destroyInvitation"}}
         {{else}}
           <tr>
             <td colspan="5" class="empty-row">No Pending Invitations</td>
