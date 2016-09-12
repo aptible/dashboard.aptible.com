@@ -12,14 +12,16 @@
   {{/dashboard-dropdown-item}}
 {{/if}}
 
-{{#if authorizationContext.organizationHasGridironProduct}}
-  {{#dashboard-dropdown-item}}
-    {{link-to 'My Gridiron Status' 'gridiron-user' authorizationContext.organization.id class="gridiron-user"}}
-  {{/dashboard-dropdown-item}}
-
-  {{#if authorizationContext.userIsGridironOrOrganizationAdmin}}
+{{#if showSheriff}}
+  {{#if authorizationContext.organizationHasGridironProduct}}
     {{#dashboard-dropdown-item}}
-      {{link-to 'Gridiron Admin' 'gridiron-admin' authorizationContext.organization.id class="gridiron-admin"}}
+      {{link-to 'My Gridiron Status' 'gridiron-user' authorizationContext.organization.id class="gridiron-user"}}
     {{/dashboard-dropdown-item}}
+
+    {{#if authorizationContext.userIsGridironOrOrganizationAdmin}}
+      {{#dashboard-dropdown-item}}
+        {{link-to 'Gridiron Admin' 'gridiron-admin' authorizationContext.organization.id class="gridiron-admin"}}
+      {{/dashboard-dropdown-item}}
+    {{/if}}
   {{/if}}
 {{/if}}

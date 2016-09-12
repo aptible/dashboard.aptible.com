@@ -13,7 +13,7 @@ export default Ember.Component.extend({
     return userName;
   }),
 
-  init: function(){
+  init(){
     this._super();
     this.eventName = 'click.'+Ember.guidFor(this);
     this.body = Ember.$(document.body);
