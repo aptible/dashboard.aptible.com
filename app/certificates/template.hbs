@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-xs-8 col-xs-offset-2">
         <h2><strong>{{stack.handle}}</strong> has no certificates yet.</h2>
-        {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
+        {{#aptible-ability scope="manage" permittable=stack as |hasAbility|}}
           {{#if hasAbility}}
             {{#if session.currentUser.verified}}
               <div class="call-to-action">
@@ -38,7 +38,7 @@
 
 {{#unless hasNoCertificates}}
   <div class="resource-actions">
-    {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
+    {{#aptible-ability scope="manage" permittable=stack as |hasAbility|}}
       {{#if hasAbility}}
         {{#if session.currentUser.verified}}
           <a {{action 'openCreateCertificateModal'}} class="btn btn-primary open-certificate-modal">

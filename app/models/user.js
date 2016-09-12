@@ -1,5 +1,4 @@
 import DS from 'ember-data';
-import can from "../utils/can";
 import Ember from 'ember';
 
 export default DS.Model.extend({
@@ -26,12 +25,6 @@ export default DS.Model.extend({
   otpConfigurations: DS.hasMany('otp-configuration', { async: true }),
 
   currentOtpConfiguration: DS.belongsTo('otp-configuration', { async: true }),
-
-  // check ability, returns a promise
-  // e.g.: user.can('manage', stack).then(function(boolean){ ... });
-  can(scope, stack){
-    return can(this, scope, stack);
-  },
 
   isRoleType(types, roles, organization) {
     Ember.assert('You must pass types to check against', !!types);

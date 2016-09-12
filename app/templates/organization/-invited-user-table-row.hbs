@@ -4,7 +4,7 @@
   <td>{{invitation.inviterName}}</td>
   <td>{{format-date invitation.createdAt}}</td>
   <!-- Actions -->
-  {{#aptible-ability scope="manage" user=session.currentUser role=invitation.role permittable=authorizationContext.organization as |hasAbility|}}
+  {{#aptible-ability scope="invite" permittable=role as |hasAbility|}}
     {{#if hasAbility}}
       <td class="aptable__actions aptable__actions--skinny">
         <a class="btn btn-default btn-xs btn--link" {{action 'destroyInvitation' invitation}} href="#">

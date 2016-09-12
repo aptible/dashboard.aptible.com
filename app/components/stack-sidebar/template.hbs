@@ -9,9 +9,11 @@
   </li>
 
   {{#each sortedStacks as |stack|}}
-    {{#link-to 'stack' stack tagName="li" class="sidebar-stack-item"}}
-      {{link-to stack.handle 'stack' stack bubbles=false}}
-    {{/link-to}}
+
+        {{#link-to 'stack' stack.id tagName="li" class="sidebar-stack-item"}}
+          {{link-to stack.handle 'stack' stack.id bubbles=false}}
+        {{/link-to}}
+
   {{/each}}
 
   {{#if authorizationContext.hasNoBillingDetail}}

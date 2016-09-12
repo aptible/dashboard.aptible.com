@@ -5,7 +5,7 @@ export default Ember.Route.extend({
     let authorization = this.get('authorization');
     let context = authorization.get('organizationContexts.firstObject');
 
-    if(context.get('organizationHasEnclaveProduct') && context.get('hasEnclaveAccess')) {
+    if(context.get('organizationHasEnclaveProduct') && context.get('userHasEnclaveAccess')) {
       return this.transitionTo('enclave');
     }
 

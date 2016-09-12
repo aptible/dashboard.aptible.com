@@ -1,44 +1,46 @@
-{{#if canManageMemberships}}
-  <div class="row invite-new-members-to-role">
-    <div class="col-xs-12 flex-row">
-      <form class="flex-row-item role__add-user">
-        <h3 class="heading--caps heading--sm">Add Existing User</h3>
-        <div class="invite-user">
-          <button class="btn btn-primary" {{action "addMember" invitedUser}} type="submit">
-            Add
-          </button>
-          <div class="user-select-container">
-            {{ultimate-select
-                class="user-select"
-                name="invited-user"
-                prompt="Select..."
-                items=nonmembers
-                itemKey="id"
-                itemValue="name"
-                update=(action (mut invitedUser))
-                selected=invitedUser}}
+{{#aptible-ability scope="invite" permittable=role as |hasAbility|}}
+  {{#if hasAbility}}
+    <div class="row invite-new-members-to-role">
+      <div class="col-xs-12 flex-row">
+        <form class="flex-row-item role__add-user">
+          <h3 class="heading--caps heading--sm">Add Existing User</h3>
+          <div class="invite-user">
+            <button class="btn btn-primary" {{action "addMember" invitedUser}} type="submit">
+              Add
+            </button>
+            <div class="user-select-container">
+              {{ultimate-select
+                  class="user-select"
+                  name="invited-user"
+                  prompt="Select..."
+                  items=nonmembers
+                  itemKey="id"
+                  itemValue="name"
+                  update=(action (mut invitedUser))
+                  selected=invitedUser}}
+            </div>
+
           </div>
+        </form>
 
-        </div>
-      </form>
+        <h3 class="flex-row-item heading--caps heading--sm">OR</h3>
 
-      <h3 class="flex-row-item heading--caps heading--sm">OR</h3>
-
-      <form class="role__invite-user flex-row-item" role='form' {{action "inviteByEmail" inviteByEmail on="submit"}}>
-        {{server-validation-errors model=invitation}}
-        <h3 class="heading--caps heading--sm">Invite By Email</h3>
-        <div class="invite-user">
-          <button class="btn btn-primary" {{action "inviteByEmail" invitedEmail}} type="submit">Send Invite</button>
-          <div class="invite-user-container">
-            {{input name='invite-by-email' value=invitedEmail classNames="form-control" placeholder="Email Address"}}
+        <form class="role__invite-user flex-row-item" role='form' {{action "inviteByEmail" inviteByEmail on="submit"}}>
+          {{server-validation-errors model=invitation}}
+          <h3 class="heading--caps heading--sm">Invite By Email</h3>
+          <div class="invite-user">
+            <button class="btn btn-primary" {{action "inviteByEmail" invitedEmail}} type="submit">Send Invite</button>
+            <div class="invite-user-container">
+              {{input name='invite-by-email' value=invitedEmail classNames="form-control" placeholder="Email Address"}}
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
-  </div>
 
-  <hr>
-{{/if}}
+    <hr>
+  {{/if}}
+{{/aptible-ability}}
 
 <div class="row">
   <div class="col-xs-12">
@@ -51,30 +53,35 @@
           <th>Email</th>
           <th>Date Added</th>
           <th>Owner</th>
-          <th>
-            Role Admins
-            {{#bs-tooltip placement="bottom" bs-container=false
-                title="Owners and Role Admins can manage members."}}
-              <i class='fa fa-question-circle icon--highlight'></i>
-            {{/bs-tooltip}}
-          </th>
+          {{#unless role.isOwner}}
+            <th>
+              Role Admins
+              {{#bs-tooltip placement="bottom" bs-container=false
+                  title="Owners and Role Admins can manage members."}}
+                <i class='fa fa-question-circle icon--highlight'></i>
+              {{/bs-tooltip}}
+            </th>
+          {{/unless}}
           <th>Actions</th>
         </tr>
       </thead>
 
       <tbody>
-        {{#each memberships as |membership|}}
-          {{membership-table-row
-              membership=membership
-              authorizationContext=authorizationContext
-              role=role
-              completedAction='completedAction'
-              failedAction='failedAction'}}
-        {{else}}
-          <td class="empty-row" colspan="6">
-            {{role.name}} currently has no members.
-          </td>
-        {{/each}}
+        {{#aptible-ability scope="invite" permittable=role as |hasAbility|}}
+          {{#each memberships as |membership|}}
+            {{membership-table-row
+                membership=membership
+                authorizationContext=authorizationContext
+                currentUserIsPrivileged=hasAbility
+                role=role
+                completedAction='completedAction'
+                failedAction='failedAction'}}
+          {{else}}
+            <td class="empty-row" colspan="6">
+              {{role.name}} currently has no members.
+            </td>
+          {{/each}}
+        {{/aptible-ability}}
       </tbody>
     </table>
   </div>
@@ -92,7 +99,11 @@
             <th>Role</th>
             <th>Invited By</th>
             <th>Invited On</th>
-            <th>Actions</th>
+            {{#aptible-ability scope="invite" permittable=role as |hasAbility|}}
+              {{#if hasAbility}}
+                <th>Actions</th>
+              {{/if}}
+            {{/aptible-ability}}
           </tr>
         </thead>
 

@@ -137,7 +137,8 @@ module.exports = function(environment) {
     // keep test console output quieter
     ENV.APP.LOG_ACTIVE_GENERATION = false;
     ENV.APP.LOG_VIEW_LOOKUPS = false;
-
+    ENV.APP.LOG_TRANSITIONS = false;
+    ENV.APP.LOG_TRANSITIONS_INTERNAL = false;
     ENV.APP.rootElement = '#ember-testing';
     ENV.replaceLocation = false;
     ENV.replaceTitle = false;

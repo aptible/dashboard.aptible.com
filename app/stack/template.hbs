@@ -1,8 +1,22 @@
 {{partial "stack/header"}}
-<div class="layout-container">
-  {{#if model.activated}}
-    {{partial "stack/nav"}}
-  {{/if}}
 
-  {{liquid-outlet}}
+<div class="layout-container">
+  {{#aptible-ability scope="read" permittable=model as |hasAbility|}}
+    {{#if hasAbility}}
+      {{#if model.activated}}
+        {{partial "stack/nav"}}
+      {{/if}}
+      {{liquid-outlet}}
+    {{else}}
+
+     <div class="activate-notice activate-notice--micro">
+      <div class="row">
+        <div class="col-xs-8 col-xs-offset-2">
+          <h2>You do not have permission to view <strong>{{model.handle}}</strong> resources.</h2>
+        </div>
+      </div>
+    </div>
+
+    {{/if}}
+  {{/aptible-ability}}
 </div>

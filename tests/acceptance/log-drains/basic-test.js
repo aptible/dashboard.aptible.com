@@ -8,7 +8,7 @@ let App;
 let stackHandle = 'my-stack-handle',
     stackId = 'my-stack-id',
     orgName = 'my org',
-    orgId = 'org-1',
+    orgId = '1',
     url = `stacks/${stackId}/logging`;
 
 module('Acceptance: Log Drains', {

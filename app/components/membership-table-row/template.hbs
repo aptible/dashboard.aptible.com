@@ -13,18 +13,29 @@
   {{/if}}
 </td>
 
-<td class="aptable__actions aptable__actions--checkbox">
-  {{x-toggle
-    value=isToggled
-    onToggle=(action 'togglePrivileged')
-    showLabels=false
-    onLabel=true
-    offLabel=false
-    disabled=isToggleDisabled
-    size='medium'}}
-</td>
+{{#unless role.isOwner}}
+  <td class="aptable__actions aptable__actions--checkbox">
+    {{#if currentUserIsPrivileged}}
+      {{x-toggle
+        value=isPrivilegedMember
+        onToggle=(action 'togglePrivileged')
+        showLabels=false
+        onLabel=true
+        offLabel=false
+        disabled=isToggleDisabled
+        size='medium'}}
+    {{else}}
+      {{#if isPrivilegedMember}}
+        <i class="fa fa-check success"></i>
+      {{/if}}
+    {{/if}}
+  </td>
+{{/unless}}
 
 <td class="aptable__actions aptable__actions--skinny">
+
+
+{{#if currentUserIsPrivileged}}
   {{#if isOnlyRole}}
     {{#if linkToEditMember}}
       {{#link-to 'organization.members.edit' organization membership.user classNames='btn btn-default btn-xs'}}
@@ -45,4 +56,8 @@
       <i class="fa fa-times"></i> Remove
     </button>
   {{/if}}
+{{/if}}
+
+
+
 </td>

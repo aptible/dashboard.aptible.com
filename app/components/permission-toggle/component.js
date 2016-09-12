@@ -19,8 +19,8 @@ export default Ember.Component.extend({
   ownerTooltipTitle: Ember.computed('role.name', 'stack.handle', function() {
     return `${this.get('role.name')} is granted all permissions for ${this.get('stack.handle')}`;
   }),
-  userIsAuthorized: Ember.computed.equal('authorizationContext.userIsEnclaveOrOrganizationAdmin'),
-  userIsUnauthorized: Ember.computed.not('userIsUnauthorized'),
+  userIsAuthorized: Ember.computed.reads('authorizationContext.userIsEnclaveOrOrganizationAdmin'),
+  userIsUnauthorized: Ember.computed.not('userIsAuthorized'),
 
   actions: {
     onToggle(valueOptions) {

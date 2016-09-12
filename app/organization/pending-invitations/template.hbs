@@ -21,7 +21,11 @@
           <th>Role</th>
           <th>Invited By</th>
           <th>Invited On</th>
-          <th class="aptable__actions">Actions</th>
+          {{#aptible-ability scope="manage" permittable=role as |hasAbility|}}
+            {{#if hasAbility}}
+              <th class="aptable__actions">Actions</th>
+            {{/if}}
+          {{/aptible-ability}}
         </tr>
       </thead>
 

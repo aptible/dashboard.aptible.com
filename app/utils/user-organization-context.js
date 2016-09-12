@@ -70,6 +70,7 @@ export default Ember.Object.extend({
   hasBillingDetail: Ember.computed.not('hasNoBillingDetail'),
 
   // Computeds related to user's roles in organization
+  hasVerifiedEmail: Ember.computed.reads('currentUser.verified'),
   userPlatformUserRoles: Ember.computed.filterBy('currentUserRoles', 'type', 'platform_user'),
   userPlatformAdminRoles: Ember.computed.filterBy('currentUserRoles', 'type', 'platform_owner'),
   userGridironUserRoles: Ember.computed.filterBy('currentUserRoles', 'type', 'compliance_user'),
@@ -82,38 +83,65 @@ export default Ember.Object.extend({
 
   userIsEnclaveOrOrganizationAdmin: Ember.computed.or('userIsEnclaveAdmin', 'userIsOrganizationAdmin'),
   userIsGridironOrOrganizationAdmin: Ember.computed.or('userIsGridironAdmin', 'userIsOrganizationAdmin'),
+  userHasEnclaveAccess: Ember.computed.or('userIsEnclaveAdmin', 'userIsEnclaveUser', 'userIsOrganizationAdmin'),
 
-  userHasEnclaveAccess: Ember.computed.or('userIsEnclaveAdmin', 'userIsEnclaveUser'),
-  hasEnclaveAccess: Ember.computed.or('userHasEnclaveAccess', 'userIsOrganizationAdmin'),
+  doesUserHavePrivilegedMembershipForRole(role) {
+    // This method is dumb and counts on memberhsips being loaded on the role
+    // FIXME: Load memberships from users and cache them in this context
+    let privilegedMemberships = role.get('memberships').filterBy('privileged', true);
+    return !!privilegedMemberships.findBy('user.id', this.get('currentUser.id'));
+  },
 
-  canUserManageRolePermissions(role) {
+  hasStackScope(scope, stack) {
+    // Scopes: read, manage
+    if(scope === 'manage' && !this.get('hasVerifiedEmail')) {
+      return false;
+    }
+
+    return this.get('currentUserRoles').any((role) => {
+      return stack.permitsRole(role, scope);
+    });
+  },
+
+  hasOrganizationScope(scope) {
+    // Scopes: read, manage
+    if(scope === 'read') {
+      return true;
+    }
+
+    if(scope === 'manage' && !this.get('hasVerifiedEmail')) {
+      return false;
+    }
+
+    return this.get('userIsOrganizationAdmin');
+  },
+
+  hasRoleScope(scope, role) {
+    // Scopes: read, manage, invite
+    if(scope === 'read') {
+      return true;
+    }
+
+    if(scope === 'manage' && !this.get('hasVerifiedEmail')) {
+      return false;
+    }
+
     if(this.get('userIsOrganizationAdmin')) {
       return true;
     }
 
-    if(role.get('type').match(/platform/) && this.get('userIsEnclaveAdmin')) {
+    if(role.get('isPlatform') && this.get('userIsEnclaveAdmin')) {
       return true;
     }
 
-    if(role.get('type').match(/compliance/) && this.get('userIsGridironAdmin')) {
+    if(role.get('isComplianceRole') && this.get('userIsGridironAdmin')) {
+      return true;
+    }
+
+    if(scope === 'invite' && this.doesUserHavePrivilegedMembershipForRole(role)) {
       return true;
     }
 
     return false;
-  },
-
-  canUserInviteIntoRole(role) {
-    if(this.doesUserHavePrivilegedMembershipForRole(role)) {
-      return true;
-    }
-
-    return this.canUserManageRolePermissions(role);
-  },
-
-  doesUserHavePrivilegedMembershipForRole(role) {
-    let roleHref = role.get('data.links.self');
-    let roleMembership = this.get('currentUserMemberships').findBy('data.links.role', roleHref);
-
-    return !!roleMembership && roleMembership.get('privileged');
   }
 });
