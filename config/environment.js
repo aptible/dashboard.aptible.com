@@ -116,7 +116,7 @@ module.exports = function(environment) {
       'price-estimator': true,
       'notifications': false,
       'organization-billing-settings': true,
-      'sheriff': true,
+      'sheriff': true
     }
 
   };
@@ -159,7 +159,7 @@ module.exports = function(environment) {
     ENV.segmentioKey = '6jZlAcweTojgXShBvn4B9Tvwr1IlqkEE';
 
     ENV.featureFlags['price-estimator'] = true;
-    ENV.featureFlags['sheriff'] = false;
+    ENV.featureFlags['sheriff'] = true;
 
     ENV.sentry.whitelistUrls = ['dashboard.aptible-staging.com'];
     ENV.sentry.development = false;
