@@ -16,7 +16,7 @@
       {{link-to "Roles" "organization.roles" organization.id bubbles=false class="role-index" bubbles=false}}
     {{/link-to}}
 
-    {{#aptible-ability scope="manage" user=session.currentUser permittable=organization as |hasAbility|}}
+    {{#aptible-ability scope="manage" permittable=organization as |hasAbility|}}
       {{#if hasAbility}}
 
         {{#link-to 'organization.admin.environments' organization.id tagName="li"}}

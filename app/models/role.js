@@ -9,6 +9,9 @@ let Role = DS.Model.extend({
   invitations: DS.hasMany('invitations', {async:true}),
   users: DS.hasMany('users', {async:true}),
 
+  isComplianceRole: Ember.computed.match('type', /compliance/),
+  isPlatformRole: Ember.computed.match('type', /platform/),
+
   isAccountOwner: Ember.computed.equal('type', 'owner'),
   isComplianceOwner: Ember.computed.equal('type', 'compliance_owner'),
   isPlatformOwner: Ember.computed.equal('type', 'platform_owner'),

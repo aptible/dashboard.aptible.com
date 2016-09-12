@@ -1,6 +1,7 @@
 {{partial "stack/header"}}
+
 <div class="layout-container">
-  {{#aptible-ability scope="read" user=session.currentUser permittable=model as |hasAbility|}}
+  {{#aptible-ability scope="read" permittable=model as |hasAbility|}}
     {{#if hasAbility}}
       {{#if model.activated}}
         {{partial "stack/nav"}}

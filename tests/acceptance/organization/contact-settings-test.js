@@ -8,9 +8,7 @@ import { stubRequest } from '../../helpers/fake-server';
 
 let application;
 
-// FIXME this is hardcoded to match the value for signIn in
-// aptible-helpers
-const organizationId = 'o1';
+const organizationId = '1';
 const contactSettingsUrl = `/organizations/${organizationId}/admin/contact-settings`;
 const url = contactSettingsUrl;
 const organizationApiUrl = `/organizations/${organizationId}`;

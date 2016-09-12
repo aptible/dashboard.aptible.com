@@ -1,14 +1,19 @@
 {{#if roleIsOwner}}
   {{#bs-tooltip title=ownerTooltipTitle}}
-  <i class="fa fa-check success"></i>
+    <i class="fa fa-check success"></i>
   {{/bs-tooltip}}
 {{else}}
-  {{x-toggle
-    disabled=userIsUnauthorizedß
-    value=isChecked
-    onToggle=(action 'onToggle')
-    onLabel=true
-    offLabel=false
-    showLabels=false
-    size='medium'}}
+  {{#if userIsAuthorized}}
+    {{x-toggle
+      value=isChecked
+      onToggle=(action 'onToggle')
+      onLabel=true
+      offLabel=false
+      showLabels=false
+      size='medium'}}
+  {{else}}
+    {{#if isChecked}}
+      <i class="fa fa-check success"></i>
+    {{/if}}
+  {{/if}}
 {{/if}}

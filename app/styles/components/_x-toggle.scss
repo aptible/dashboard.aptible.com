@@ -16,6 +16,7 @@
 
 .x-toggle-container-disabled {
   opacity: 0.4;
+  pointer-events: none;
 }
 
 .x-toggle-component {

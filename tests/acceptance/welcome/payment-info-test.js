@@ -176,7 +176,11 @@ test('payment info should be submitted to stripe to create stripeToken', functio
       id: stackHandle,
       handle: stackHandle,
       type: 'development',
-      activated: true
+      activated: true,
+      _links: {
+        self: { href: `/accounts/${stackHandle}` },
+        organization: { href: '/organizations/1' }
+      }
     });
   });
 
@@ -240,6 +244,10 @@ test('submitting valid payment info for development plan should create dev stack
     var params = this.json(request);
     stackAssertions[params.handle](params);
     params.activated = true;
+    params._links = {
+      self: { href: `/accounts/${params.handle}` },
+      organization: { href: '/organizations/1' }
+    };
     return this.success(Ember.merge({id:params.handle }, params));
   });
 
@@ -263,6 +271,10 @@ test('submitting valid payment info on organization with existing stripe info sh
   stubRequest('post', '/accounts', function(request) {
     var params = this.json(request);
     params.activated = true;
+    params._links = {
+      self: { href: `/accounts/${params.handle}` },
+      organization: { href: '/organizations/1' }
+    };
     return this.success(Ember.merge({id:params.handle }, params));
   });
 
@@ -325,6 +337,10 @@ test('submitting valid payment info should create app', function(assert) {
   stubRequest('post', '/accounts', function(request){
     var params = this.json(request);
     params.activated = true;
+    params._links = {
+      self: { href: `/accounts/${params.handle}` },
+      organization: { href: '/organizations/1' }
+    };
     return this.success(Ember.merge({id:params.handle}, params));
   });
 
@@ -385,6 +401,10 @@ test('submitting valid payment info should create db', function(assert) {
   stubRequest('post', '/accounts', function(request){
     var params = this.json(request);
     params.activated = true;
+    params._links = {
+      self: { href: `/accounts/${params.handle}` },
+      organization: { href: '/organizations/1' }
+    };
     return this.success(Ember.merge({id:params.handle}, params));
   });
 
@@ -437,6 +457,10 @@ test('submitting valid payment info when user is verified should provision db', 
   stubRequest('post', '/accounts', function(request){
     let params = this.json(request);
     params.activated = true;
+    params._links = {
+      self: { href: `/accounts/${params.handle}` },
+      organization: { href: '/organizations/1' }
+    };
     return this.success(Ember.merge({id:params.handle},params));
   });
 

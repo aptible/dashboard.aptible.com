@@ -151,7 +151,7 @@ module('Acceptance: User Settings: Account', {
     App = startApp();
     showedOtpUri = false;
     stubStacks();
-    stubOrganization({ id: 'o1'});
+    stubOrganization({ id: '1'});
   },
   afterEach: function() {
     Ember.run(App, 'destroy');

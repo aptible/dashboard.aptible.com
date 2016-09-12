@@ -1,5 +1,8 @@
 import Ember from 'ember';
 import UserOrganizationContext from 'diesel/utils/user-organization-context';
+import Stack from 'diesel/models/stack';
+import Organization from 'diesel/models/organization';
+import Role from 'diesel/models/role';
 
 // Use this service to consolidate logical functions that require several models
 // in order to make a decision.  A good example of this is permission and role
@@ -15,22 +18,27 @@ export default Ember.Service.extend({
 
     return new Ember.RSVP.Promise((resolve, reject) => {
       // Load basics
+      // TODO:  We should load the current users memberships here too, however
+      // that requires an auth change.  There is curretnly no link to memberships from a user
+      // Even better, we should embed memberships for roles and users.
       Ember.RSVP.hash({
         stacks: store.find('stack'),
         organizations: store.find('organization'),
         currentUserRoles: session.get('currentUser.roles'),
-        currentUserMemberships: session.get('currentUser.memberships'),
         currentUser: session.get('currentUser')
       })
       .then((initialParams) => {
         this.setProperties(initialParams);
 
         //For each organization, eagerly load their entire context
-        let { organizations, stacks, currentUserRoles, currentUserMemberships } = initialParams;
+        let { organizations, stacks, currentUserRoles } = initialParams;
 
         let contextPromises = organizations.map((organization) => {
+          // Filter roles to current organization for each context
+          currentUserRoles = currentUserRoles.filterBy('data.links.organization', organization.get('data.links.self'));
+
           return UserOrganizationContext.create({
-            organization, currentUserRoles, stacks, currentUser, currentUserMemberships
+            organization, currentUserRoles, stacks, currentUser
           }).load();
         });
 
@@ -50,6 +58,25 @@ export default Ember.Service.extend({
 
   getContextByHref(organizationHref) {
     return this.get('organizationContexts').findBy('organization.data.links.self', organizationHref);
+  },
+
+  checkAbility(scope, permittable) {
+    let context;
+
+    if (permittable instanceof Stack) {
+      context = this.getContextByHref(permittable.get('data.links.organization'));
+      return context.hasStackScope(scope, permittable);
+    }
+
+    if(permittable instanceof Organization) {
+      context = this.getContext(permittable.get('id'));
+      return context.hasOrganizationScope(scope);
+    }
+
+    if(permittable instanceof Role) {
+      context = this.getContextByHref(permittable.get('data.links.organization'));
+      return context.hasRoleScope(scope, permittable);
+    }
   },
 
   hasSingleOrganization: Ember.computed.equal('organizationContexts.length', 1),

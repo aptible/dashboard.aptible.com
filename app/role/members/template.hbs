@@ -51,13 +51,15 @@
           <th>Email</th>
           <th>Date Added</th>
           <th>Owner</th>
-          <th>
-            Role Admins
-            {{#bs-tooltip placement="bottom" bs-container=false
-                title="Owners and Role Admins can manage members."}}
-              <i class='fa fa-question-circle icon--highlight'></i>
-            {{/bs-tooltip}}
-          </th>
+          {{#unless role.isOwner}}
+            <th>
+              Role Admins
+              {{#bs-tooltip placement="bottom" bs-container=false
+                  title="Owners and Role Admins can manage members."}}
+                <i class='fa fa-question-circle icon--highlight'></i>
+              {{/bs-tooltip}}
+            </th>
+          {{/unless}}
           <th>Actions</th>
         </tr>
       </thead>
@@ -67,6 +69,7 @@
           {{membership-table-row
               membership=membership
               authorizationContext=authorizationContext
+              currentUserIsPrivileged=canManageMemberships
               role=role
               completedAction='completedAction'
               failedAction='failedAction'}}
@@ -92,7 +95,11 @@
             <th>Role</th>
             <th>Invited By</th>
             <th>Invited On</th>
-            <th>Actions</th>
+            {{#aptible-ability scope="manage" role=role as |hasAbility|}}
+              {{#if hasAbility}}
+                <th>Actions</th>
+              {{/if}}
+            {{/aptible-ability}}
           </tr>
         </thead>
 

@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col-xs-8 col-xs-offset-2">
           <h2><strong>{{stack.handle}}</strong> has no databases yet.</h2>
-          {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
+          {{#aptible-ability scope="manage" permittable=stack as |hasAbility|}}
             {{#if hasAbility}}
               {{#if session.currentUser.verified}}
                 <div class="call-to-action">
@@ -110,7 +110,7 @@
 
   {{#unless hasNoDatabases}}
     <div class="resource-list-actions">
-      {{#aptible-ability scope="manage" user=session.currentUser permittable=stack as |hasAbility|}}
+      {{#aptible-ability scope="manage" permittable=stack as |hasAbility|}}
         {{#if hasAbility}}
           {{#if session.currentUser.verified}}
             <a {{action 'openCreateDbModal'}} class="btn btn-primary open-db-modal">

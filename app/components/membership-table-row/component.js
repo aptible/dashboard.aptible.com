@@ -10,6 +10,8 @@ export default Ember.Component.extend({
   organization: Ember.computed.reads('authorizationContext.organization'),
   billingDetail: Ember.computed.reads('authorizationContext.billingDetail'),
 
+  privilegedMemberships: Ember.computed.filterBy('role.memberships', 'privileged', true),
+
   isOnlyRole: Ember.computed('membership.user', 'memberUserRoles.[]', function() {
     return this.get('memberUserRoles.length') === 1;
   }),
@@ -32,9 +34,9 @@ export default Ember.Component.extend({
 
   // Account | Platform | Compliance Owners effectively have admin privileges,
   // so it gets toggled and disabled.
-  isToggled: Ember.computed('membership.privileged', 'memberUserRoles.[]', function() {
-    return this.isRoleOwner(this.get('membership.user'), this.get('memberUserRoles')) ||
-      this.get('membership.privileged');
+  isPrivilegedMember: Ember.computed('membership.privileged', 'memberUserRoles.[]', function() {
+    //return this.isRoleOwner(this.get('membership.user'), this.get('memberUserRoles')) ||
+    return this.get('membership.privileged');
   }),
 
   isToggleDisabled: Ember.computed('memberUserRoles.[]', 'authorizationContext.currentUserRoles.[]', function() {

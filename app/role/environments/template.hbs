@@ -44,6 +44,7 @@
                   <td class="aptable__actions aptable__actions--skinny">
                     {{permission-toggle
                         authorizationContext=authorizationContext
+                        currentUserCanManagePermissions=canManagePermissions
                         role=model
                         scope="read"
                         stack=stack}}
@@ -54,6 +55,7 @@
                   <td class="aptable__actions">
                     {{permission-toggle
                         authorizationContext=authorizationContext
+                        currentUserCanManagePermissions=canManagePermissions
                         role=model
                         scope="manage"
                         stack=stack}}
