@@ -109,7 +109,12 @@
 
         <tbody>
           {{#each pendingInvitations as |invitation|}}
-            {{partial 'organization/invited-user-table-row'}}
+            {{invited-user-row
+              permittable=role
+              invitation=invitation
+              requiredScope='invite'
+              resendInvitation="resendInvitation"
+              destroyInvitation="destroyInvitation"}}
           {{/each}}
         </tbody>
       </table>
