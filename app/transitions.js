@@ -20,7 +20,6 @@ export default function() {
 
   this.transition(
     this.fromRoute(coreRoutes),
-    //this.fromRoute((r) => console.log("FROM: " + r)),
     this.use('fade')
   );
 

@@ -34,11 +34,10 @@ export default Ember.Service.extend({
         let { organizations, stacks, currentUserRoles } = initialParams;
 
         let contextPromises = organizations.map((organization) => {
-          // Filter roles to current organization for each context
-          currentUserRoles = currentUserRoles.filterBy('data.links.organization', organization.get('data.links.self'));
+          let userContextRoles = currentUserRoles.filterBy('data.links.organization', organization.get('data.links.self'));
 
           return UserOrganizationContext.create({
-            organization, currentUserRoles, stacks, currentUser
+            organization, stacks, currentUser, currentUserRoles: userContextRoles
           }).load();
         });
 
