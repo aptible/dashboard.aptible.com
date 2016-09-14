@@ -21,7 +21,8 @@ let roles = [{
   id: 'r2',
   name: 'external',
   _links: {
-    memberships: { href: `/roles/r2/memberships` }
+    memberships: { href: `/roles/r2/memberships` },
+    organization: { href: `/organizations/${orgId}` }
   }
 }];
 let userId = 'user-25';
@@ -46,8 +47,7 @@ let user = {
   _links: {
     roles: { href: apiUserRolesUrl },
     self: { href: apiUserUrl }
-  },
-  _embedded: { roles: [roles[0]] }
+  }
 };
 
 let organization = {
@@ -60,7 +60,7 @@ let organization = {
   }
 };
 
-module('Acceptance: Organization Members: Member', {
+module('Acceptance: Organization Members: Edit', {
   beforeEach: function() {
     application = startApp();
     stubStacks();
@@ -81,11 +81,6 @@ module('Acceptance: Organization Members: Member', {
     stubRequest('get', apiRolesUrl, function(){
       return this.success({ _embedded: { roles } });
     });
-
-    // this user's roles
-    stubRequest('get', apiUserRolesUrl, function(){
-      return this.success({ _embedded: { roles: userRoles } });
-    });
   },
 
   afterEach: function() {
@@ -94,11 +89,19 @@ module('Acceptance: Organization Members: Member', {
 });
 
 test(`visiting ${url} requires authentication`, function() {
+  stubRequest('get', apiUserRolesUrl, function(){
+    return this.success({ _embedded: { roles: userRoles } });
+  });
+
   expectRequiresAuthentication(url);
 });
 
 test(`visiting ${url} shows users info and all roles with checkboxes`, function(assert) {
   assert.expect(4 + 3*roles.length);
+
+  stubRequest('get', apiUserRolesUrl, function(){
+    return this.success({ _embedded: { roles: userRoles } });
+  });
 
   signInAndVisit(url);
 
@@ -130,7 +133,50 @@ test(`visiting ${url} shows users info and all roles with checkboxes`, function(
   });
 });
 
+test(`visiting ${url} and unchecking a role will delete membership`, function(assert) {
+  assert.expect(4);
+
+  stubRequest('get', apiUserRolesUrl, function() {
+    return this.success({ _embedded: { roles }});
+  });
+
+  stubRequest('delete', `/memberships/r2-membership`, function() {
+    assert.ok(true, `deletes membership id r2-membership`);
+    return this.noContent();
+  });
+
+  roles.forEach((role) => {
+    let _links = { user: { href: apiUserUrl }, role: { href: `/roles/${role.id}`} };
+    let memberships = [ { id: `${role.id}-membership`, _links } ];
+
+    stubRequest('get', `/roles/${role.id}/memberships`, function(){
+      assert.ok(true, 'gets role memberships');
+      return this.success({ _embedded: { memberships } });
+    });
+  });
+
+  signInAndVisit(url);
+
+  andThen(() => {
+    assert.equal(currentPath(), 'requires-authorization.organization.members.edit', 'on membership edit path');
+    let toggle = findWithAssert('li.role:eq(1) input[type="checkbox"]');
+    toggle.click();
+  });
+
+  andThen(() => {
+    clickButton('Save');
+  });
+
+  andThen(() => {
+    assert.equal(currentPath(), 'requires-authorization.organization.members.index', 'moved to memberhsip index');
+  });
+});
+
 test(`visiting ${url} does not show "Remove user" button if the user is looking at their own page`, function() {
+  stubRequest('get', apiUserRolesUrl, function() {
+    return this.success({ _embedded: { roles: userRoles }});
+  });
+
   signInAndVisit(url, user);
 
   andThen(function() {
@@ -140,6 +186,10 @@ test(`visiting ${url} does not show "Remove user" button if the user is looking 
 
 test(`visiting ${url} allows changing users roles`, function(assert){
   assert.expect(4);
+
+  stubRequest('get', apiUserRolesUrl, function() {
+    return this.success({ _embedded: { roles: userRoles }});
+  });
 
   stubRequest('post', `/roles/${roles[1].id}/memberships`, function(request){
     assert.ok(true, 'posts to correct url');
@@ -179,6 +229,10 @@ test(`visiting ${url} with only 1 role checked is disabled`, function(assert){
 
   let firstRole, secondRole, firstInput, secondInput;
 
+  stubRequest('get', apiUserRolesUrl, function() {
+    return this.success({ _embedded: { roles: userRoles }});
+  });
+
   signInAndVisit(url);
   andThen(() => {
     firstRole = findWithAssert(`.role:eq(0)`);
@@ -204,7 +258,16 @@ test(`visiting ${url} with only 1 role checked is disabled`, function(assert){
 });
 
 test(`visit ${url} allows removing user from organization`, function(assert){
-  assert.expect(2);
+  assert.expect(3);
+
+  window.confirm = function() {
+    assert.ok('shows confirmation message');
+    return true;
+  };
+
+  stubRequest('get', apiUserRolesUrl, function() {
+    return this.success({ _embedded: { roles: userRoles }});
+  });
 
   stubRequest('delete', `/organizations/${orgId}/users/${userId}`, function(){
     assert.ok(true, 'deletes to correct url');
