@@ -29,7 +29,7 @@ module.exports = function(environment) {
     aptibleHosts: {
       compliance: complianceBaseUri,
       dashboard: dashboardBaseUri,
-      support: 'https://support.aptible.com',
+      support: 'https://www.aptible.com/support',
       contact: 'http://contact.aptible.com'
     },
 
@@ -50,7 +50,7 @@ module.exports = function(environment) {
     segmentioKey: 'Jp74HTqG03zhS4cAJK4pueo2FL1Z6bM3',
 
     externalUrls: {
-      gettingStartedDocs: 'https://support.aptible.com/quickstart'
+      gettingStartedDocs: 'https://www.aptible.com/support/quickstart'
     },
 
     flashMessageDefaults: {
