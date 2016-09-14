@@ -3,7 +3,7 @@
 
     <div class="panel">
       <div class="panel-heading">
-        <h3>Edit {{model.name}} roles at {{context.organization.name}}</h3>
+        <h3>Edit {{model.name}} roles at {{authorizationContext.organization.name}}</h3>
       </div>
 
       <div class="panel-body">
@@ -12,7 +12,7 @@
             <label>Roles</label>
             <div class="form-container">
               <ul>
-                {{#each context.roles as |role|}}
+                {{#each authorizationContext.roles as |role|}}
                   <li class="role">
                     {{organization-membership-checkbox
                       user=model
@@ -27,7 +27,7 @@
             {{#unless (eq session.currentUser model)}}
               <div class="member-edit__remove">
                 <label>
-                  Remove {{model.name}} from {{context.organization.name}}
+                  Remove {{model.name}} from {{authorizationContext.organization.name}}
                   {{#if disableRemoveMessage}}
                     {{#bs-tooltip title=disableRemoveMessage placement="bottom" bs-contaner=false}}
                       <i class="fa fa-exclamation-triangle"></i>
@@ -36,11 +36,11 @@
                 </label>
                 {{#if disableRemoveMessage}}
                     <button class='btn btn-danger btn-block' disabled>
-                      Remove from {{context.organization.name}}
+                      Remove from {{authorizationContext.organization.name}}
                     </button>
                 {{else}}
                   <button {{action 'remove' model}} class='btn btn-danger btn-block'>
-                    Remove from {{context.organization.name}}
+                    Remove from {{authorizationContext.organization.name}}
                   </button>
                 {{/if}}
               </div>

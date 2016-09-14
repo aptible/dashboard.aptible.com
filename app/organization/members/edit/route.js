@@ -7,10 +7,14 @@ export default Ember.Route.extend({
     return context.get('users').findBy('id', params.user_id);
   },
 
+  afterModel(user) {
+    return user.get('roles');
+  },
+
   setupController(controller, model){
     let context = this.modelFor('organization');
     controller.set('model', model);
-    controller.set('context', context);
+    controller.set('authorizationContext', context);
 
     let changeset = Changeset.create({
       key(keyData) {
@@ -33,6 +37,12 @@ export default Ember.Route.extend({
     remove(user){
       let context = this.modelFor('organization');
       let { organization, billingDetail } = context.getProperties('organization', 'billingDetail');
+      let confirmMessage = `You are about to remove ${user.get('name')} from ${organization.get('name')}. Are you sure?`;
+
+      if(!window.confirm(confirmMessage)) {
+        return;
+      }
+
       let message = `${user.get('name')} removed from ${organization.get('name')}`;
 
       if (user.get('id') === organization.get('securityOfficer.id')) {
@@ -78,7 +88,7 @@ export default Ember.Route.extend({
           });
         } else {
           promise = role.get('memberships').then((memberships) => {
-            let userMembership = memberships.findBy('data.links.user', userLink);
+            let userMembership = memberships.findBy('user', user);
             Ember.assert(`A user membership could not be found for user id "${user.get('id')}"
                           and role name ${role.get('name')}`,
                          !!userMembership);
