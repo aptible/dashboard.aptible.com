@@ -6,23 +6,20 @@ var centsToDollars = function(cents) {
 };
 
 export default Ember.Component.extend({
-  updateVisibility: function() {
-    this.set('isVisible', this.features.isEnabled('price-estimator'));
-  }.on('didInsertElement'),
-  rateInDollars: function() {
+  rateInDollars: Ember.computed('stack.appContainerCentsPerHour', function() {
     return centsToDollars(this.get('stack.appContainerCentsPerHour'));
-  }.property('stack.appContainerCentsPerHour'),
+  }),
 
-  unitOfMeasure: function() {
+  unitOfMeasure: Ember.computed('stack.type', 'count', function() {
     if(!this.get('stack.type')) { return ''; }
 
     var p = this.get('count') === 1 ? '' : 's';
     return this.get('stack.type').capitalize() + ' App Container' + p;
-  }.property('stack.type', 'count'),
+  }),
 
-  total: function() {
+  total: Ember.computed('stack.appContainerCentsPerHour', 'count', 'size', function() {
     return centsToDollars(
       hoursPerMonth * (this.get('count') * (this.get('size') / 1024)) * this.get('stack.appContainerCentsPerHour')
     );
-  }.property('stack.appContainerCentsPerHour', 'count', 'size')
+  })
 });

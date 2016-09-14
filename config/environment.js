@@ -112,11 +112,8 @@ module.exports = function(environment) {
     },
 
     featureFlags: {
-      'organization-settings': true,
-      'price-estimator': true,
-      'notifications': false,
-      'organization-billing-settings': true,
-      'sheriff': true
+      'sheriff': true,
+      'spd': false
     }
 
   };
@@ -158,8 +155,8 @@ module.exports = function(environment) {
   if (environment === 'staging') {
     ENV.segmentioKey = '6jZlAcweTojgXShBvn4B9Tvwr1IlqkEE';
 
-    ENV.featureFlags['price-estimator'] = true;
     ENV.featureFlags['sheriff'] = true;
+    ENV.featureFlags['spd'] = false;
 
     ENV.sentry.whitelistUrls = ['dashboard.aptible-staging.com'];
     ENV.sentry.development = false;
@@ -172,12 +169,8 @@ module.exports = function(environment) {
   if (environment === 'production') {
     ENV.stripePublishableKey = 'pk_live_ujeTeUIMpUcvNsWwu7R9b3Zy';
     ENV.segmentioKey = '5aOlxMYapu6bQCQYFbDz7rhNvVV7B1A5';
-
-    ENV.featureFlags['organization-settings'] = true;
-    ENV.featureFlags['price-estimator'] = true;
-    ENV.featureFlags['notifications'] = true;
-    ENV.featureFlags['organization-billing-settings'] = true;
     ENV.featureFlags['sheriff'] = false;
+    ENV.featureFlags['spd'] = false;
 
     ENV.sentry.whitelistUrls = ['dashboard.aptible.com'];
     ENV.sentry.development = false;
