@@ -1,7 +1,9 @@
 import Ember from 'ember';
 import UserOrganizationContext from 'diesel/utils/user-organization-context';
+import config from 'diesel/config/environment';
 import Stack from 'diesel/models/stack';
 import Organization from 'diesel/models/organization';
+import OrganizationProfile from 'diesel/models/organization-profile';
 import Role from 'diesel/models/role';
 
 // Use this service to consolidate logical functions that require several models
@@ -11,6 +13,7 @@ import Role from 'diesel/models/role';
 export default Ember.Service.extend({
   store: Ember.inject.service(),
   session: Ember.inject.service(),
+  features: config.featureFlags,
 
   load() {
     let { session, store } = this.getProperties('session', 'store');
@@ -62,19 +65,23 @@ export default Ember.Service.extend({
   checkAbility(scope, permittable) {
     let context;
 
-    if (permittable instanceof Stack) {
-      context = this.getContextByHref(permittable.get('data.links.organization'));
-      return context.hasStackScope(scope, permittable);
-    }
-
     if(permittable instanceof Organization) {
       context = this.getContext(permittable.get('id'));
       return context.hasOrganizationScope(scope);
     }
 
+    context = this.getContextByHref(permittable.get('data.links.organization'));
+
+    if (permittable instanceof Stack) {
+      return context.hasStackScope(scope, permittable);
+    }
+
     if(permittable instanceof Role) {
-      context = this.getContextByHref(permittable.get('data.links.organization'));
       return context.hasRoleScope(scope, permittable);
+    }
+
+    if(permittable instanceof OrganizationProfile) {
+      return context.hasGridironScope(scope);
     }
   },
 

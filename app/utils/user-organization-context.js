@@ -109,11 +109,29 @@ export default Ember.Object.extend({
       return true;
     }
 
-    if(scope === 'manage' && !this.get('hasVerifiedEmail')) {
+    if(!this.get('hasVerifiedEmail')) {
       return false;
     }
 
     return this.get('userIsOrganizationAdmin');
+  },
+
+  hasGridironScope(scope) {
+    // Scopes: read, manage
+    // Eventually will have scope for each gridiron product
+    if(scope === 'read') {
+      return true;
+    }
+
+    if(!this.get('hasVerifiedEmail')) {
+      return false;
+    }
+
+    if(scope === 'manage' && this.get('userIsGridironOrOrganizationAdmin')) {
+      return true;
+    }
+
+    return false;
   },
 
   hasRoleScope(scope, role) {
@@ -122,7 +140,7 @@ export default Ember.Object.extend({
       return true;
     }
 
-    if(scope === 'manage' && !this.get('hasVerifiedEmail')) {
+    if(!this.get('hasVerifiedEmail')) {
       return false;
     }
 

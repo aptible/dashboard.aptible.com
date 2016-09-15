@@ -56,11 +56,3 @@ test('is visible with priceEstimator feature flag', function(assert) {
 
   assert.ok(component.get('isVisible'), 'it is visible');
 });
-
-test('is not visible with priceEstimator feature flag disabled', function(assert) {
-  var component = this.subject({ features: mockFeaturesService(false) });
-
-  this.render();
-
-  assert.ok(!component.get('isVisible'), 'it is not visible');
-});

@@ -5,15 +5,19 @@
         <h2 class="sub-title">Compliance Engines</h2>
         <h1 class="title">Workforce Training</h1>
       </div>
-      <div class="header-right">
-        <ul class="header-actions">
-          <li>
-            {{#link-to 'gridiron-settings.team' classNames='btn btn-default'}}
-        Manage Workforce
-      {{/link-to}}
-          </li>
-        </ul>
-      </div>
+      {{#aptible-ability permittable=model.organizationProfile scope='manage'}}
+        <div class="header-right">
+          <ul class="header-actions">
+            {{#if authorization.features.spd}}
+              <li>
+                {{#link-to 'gridiron-settings.team' classNames='btn btn-default'}}
+                  Manage Workforce
+                {{/link-to}}
+              </li>
+            {{/if}}
+          </ul>
+        </div>
+      {{/aptible-ability}}
     </div>
   </header>
 

@@ -4,37 +4,89 @@
 
 <ul class="nav sidebar-nav">
   <li class="title">Engines</li>
-  {{#each complianceEngines as |engine| }}
-    {{#if engine.app}}
-      <li>
-        {{#link-to-aptible app=engine.app path=engine.path}}
-          {{engine.name}}
-        {{/link-to-aptible}}
-      </li>
-    {{else}}
-      {{#link-to engine.path tagName='li'}}
-        {{#link-to engine.path organization}}{{engine.name}}{{/link-to}}
-      {{/link-to}}
-    {{/if}}
-  {{/each}}
+  {{#if authorization.features.engines.risk}}
+    {{#link-to 'risk-assessments' tagName="li"}}
+      {{link-to 'Risk Assessment' 'risk-assessments' bubbles=false}}
+    {{/link-to}}
+  {{else}}
+    <li>
+      {{#link-to-aptible app="compliance" path="risk"}}
+        Risk Assessment
+      {{/link-to-aptible}}
+    </li>
+  {{/if}}
+
+  {{#if authorization.features.engines.policy}}
+    {{#link-to 'policy-manuals' tagName="li"}}
+      {{link-to 'Policies & Procedures' 'policy-manuals' bubbles=false}}
+    {{/link-to}}
+  {{else}}
+    <li>
+      {{#link-to-aptible app="compliance" path="policy"}}
+        Policies &amp; Procedures
+      {{/link-to-aptible}}
+    </li>
+  {{/if}}
+
+  {{#if authorization.features.engines.security}}
+    {{#link-to 'application-security' tagName="li"}}
+      {{link-to 'Application Security' 'application-security' bubbles=false}}
+    {{/link-to}}
+  {{else}}
+    <li>
+      {{#link-to-aptible app="compliance" path="security"}}
+        Application Security
+      {{/link-to-aptible}}
+    </li>
+  {{/if}}
+
+  {{#if authorization.features.engines.training}}
+    {{#link-to 'training' tagName="li"}}
+      {{link-to 'Workforce Training' 'training' bubbles=false}}
+    {{/link-to}}
+  {{else}}
+    <li>
+      {{#link-to-aptible app="compliance" path="training"}}
+        Workforce Training
+      {{/link-to-aptible}}
+    </li>
+  {{/if}}
 </ul>
 
 <ul class="nav sidebar-nav">
   <li class="title">Tools</li>
-  {{#each complianceTools as |tool| }}
+  {{#if authorization.features.tools.incidents}}
+    {{#link-to 'incidents' tagName="li"}}
+      {{link-to 'Incident Response' 'incidents' bubbles=false}}
+    {{/link-to}}
+  {{else}}
     <li>
-      {{#link-to-aptible app='compliance' path=tool.path}}
-        {{tool.name}}
+      {{#link-to-aptible app="compliance" path="incident_response"}}
+        Incident Response
       {{/link-to-aptible}}
     </li>
-  {{/each}}
+  {{/if}}
+
+  {{#if authorization.features.tools.contracts}}
+    {{#link-to 'contracts' tagName="li"}}
+      {{link-to 'Contract Management' 'contracts' bubbles=false}}
+    {{/link-to}}
+  {{else}}
+    <li>
+      {{#link-to-aptible app="compliance" path="contracts"}}
+        Contract Management
+      {{/link-to-aptible}}
+    </li>
+  {{/if}}
 </ul>
 
-<ul class="nav sidebar-nav">
-  <li class="title">Security Program</li>
-  {{#each securityProgramSteps as |step|}}
-    <li class="{{if step.current 'active'}}">
-      {{link-to step.name step.path}}
-    </li>
-  {{/each}}
-</ul>
+{{#if authorization.features.spd}}
+  <ul class="nav sidebar-nav">
+    <li class="title">Security Program</li>
+    {{#each securityProgramSteps as |step|}}
+      <li class="{{if step.current 'active'}}">
+        {{link-to step.name step.path}}
+      </li>
+    {{/each}}
+  </ul>
+{{/if}}

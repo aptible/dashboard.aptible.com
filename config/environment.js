@@ -32,18 +32,6 @@ module.exports = function(environment) {
       contact: 'http://contact.aptible.com'
     },
 
-    complianceEngines: [
-      { name: 'Risk Assessment', path: 'risk', app: 'compliance' },
-      { name: 'Policies & Procedures', path: 'policy', app: 'compliance' },
-      { name: 'Application Security', path: 'security', app: 'compliance' },
-      { name: 'Workforce Training', path: 'training' }
-    ],
-
-    complianceTools: [
-      { name: 'Incident Response', description: 'Manage and respond to incidents', path: 'incidents', app: 'compliance' },
-      { name: 'Contract Management', description: 'Store contracts and BAAs in one central location', path: 'contracts', app: 'compliance' }
-    ],
-
     'ember-cli-toggle': {
       includedThemes: ['light', 'default', 'flip', 'ios'],
       excludedThemes: ['flip'],
@@ -112,8 +100,20 @@ module.exports = function(environment) {
     },
 
     featureFlags: {
-      'sheriff': true,
-      'spd': false
+      sheriff: true,
+      spd: true,
+
+      engines: {
+        training: true,
+        risk: true,
+        policy: false,
+        security: false
+      },
+
+      tools: {
+        incidents: false,
+        contracts: false
+      }
     }
 
   };
