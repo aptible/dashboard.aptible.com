@@ -116,6 +116,7 @@ Ember.Test.registerHelper('stubProfile', function(_app, profileData) {
       hasCompletedSetup: true,
       _links: {
         risk_assessments: { href: `/organization_profiles/${orgId}/risk-assessments` },
+        organization: { href: `/organizations/${orgId}`},
         self: { href: `/organization_profiles/${orgId}` }
       }
     };

@@ -1,9 +1,16 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  complianceStatus: Ember.inject.service(),
   model() {
     return this.modelFor('gridiron-settings');
   },
+
+  setupController(controller, model) {
+    controller.set('model', model);
+    controller.set('organization', this.get('complianceStatus.organization'));
+  },
+
   actions: {
     save() {
       this.currentModel.save().then(() => {

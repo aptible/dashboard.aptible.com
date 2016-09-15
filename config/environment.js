@@ -32,18 +32,6 @@ module.exports = function(environment) {
       contact: 'http://contact.aptible.com'
     },
 
-    complianceEngines: [
-      { name: 'Risk Assessment', path: 'risk', app: 'compliance' },
-      { name: 'Policies & Procedures', path: 'policy', app: 'compliance' },
-      { name: 'Application Security', path: 'security', app: 'compliance' },
-      { name: 'Workforce Training', path: 'training' }
-    ],
-
-    complianceTools: [
-      { name: 'Incident Response', description: 'Manage and respond to incidents', path: 'incidents', app: 'compliance' },
-      { name: 'Contract Management', description: 'Store contracts and BAAs in one central location', path: 'contracts', app: 'compliance' }
-    ],
-
     'ember-cli-toggle': {
       includedThemes: ['light', 'default', 'flip', 'ios'],
       excludedThemes: ['flip'],
@@ -112,11 +100,20 @@ module.exports = function(environment) {
     },
 
     featureFlags: {
-      'organization-settings': true,
-      'price-estimator': true,
-      'notifications': false,
-      'organization-billing-settings': true,
-      'sheriff': true
+      sheriff: true,
+      spd: true,
+
+      engines: {
+        training: true,
+        risk: true,
+        policy: false,
+        security: false
+      },
+
+      tools: {
+        incidents: false,
+        contracts: false
+      }
     }
 
   };
@@ -158,8 +155,8 @@ module.exports = function(environment) {
   if (environment === 'staging') {
     ENV.segmentioKey = '6jZlAcweTojgXShBvn4B9Tvwr1IlqkEE';
 
-    ENV.featureFlags['price-estimator'] = true;
     ENV.featureFlags['sheriff'] = true;
+    ENV.featureFlags['spd'] = false;
 
     ENV.sentry.whitelistUrls = ['dashboard.aptible-staging.com'];
     ENV.sentry.development = false;
@@ -172,12 +169,8 @@ module.exports = function(environment) {
   if (environment === 'production') {
     ENV.stripePublishableKey = 'pk_live_ujeTeUIMpUcvNsWwu7R9b3Zy';
     ENV.segmentioKey = '5aOlxMYapu6bQCQYFbDz7rhNvVV7B1A5';
-
-    ENV.featureFlags['organization-settings'] = true;
-    ENV.featureFlags['price-estimator'] = true;
-    ENV.featureFlags['notifications'] = true;
-    ENV.featureFlags['organization-billing-settings'] = true;
     ENV.featureFlags['sheriff'] = false;
+    ENV.featureFlags['spd'] = false;
 
     ENV.sentry.whitelistUrls = ['dashboard.aptible.com'];
     ENV.sentry.development = false;

@@ -6,26 +6,26 @@ export default Ember.Route.extend({
     return this.get('complianceStatus.organizationProfile');
   },
 
-  afterModel(model) {
-    if (!model.get('hasCompletedSetup')) {
-      this.transitionTo('setup');
-    }
-  },
-
   setupController(controller) {
     let organization = this.get('complianceStatus.organization');
     controller.set('organizations', this.modelFor('gridiron').get('organization'));
     controller.set('organization', organization);
   },
 
-  redirect() {
-    let context = this.get('complianceStatus.authorizationContext');
+  redirect(model) {
+    let isComplianceAdmin = this.get('authorization').checkAbility('manage', model);
 
-    if (!context.get('userIsGridironOrOrganizationAdmin')) {
+    // Redirect to gridiron user for users without manage scope
+    if(!isComplianceAdmin) {
       let message = `Access Denied: You must be a Gridiron Owner in order to view this page`;
       Ember.get(this, 'flashMessages').danger(message);
 
       this.transitionTo('gridiron-user');
+    }
+
+    // Redirect to SPD if feature is enabled and is incomplete
+    if(this.get('authorization.features.spd') && this.get('complianceStatus.requiresSPD')) {
+      this.transitionTo('setup');
     }
   }
 });

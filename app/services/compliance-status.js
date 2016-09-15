@@ -8,6 +8,8 @@ import CriterionAlertsMixin from 'diesel/mixins/services/criterion-alerts';
 export default Ember.Service.extend(CriterionAlertsMixin, {
   store: Ember.inject.service(),
 
+  requiresSPD: Ember.computed.not('organizationProfile.hasCompletedSetup'),
+
   loadOrganizationStatus(authorizationContext) {
     Ember.assert('An authorizationContext is requried in order to load compliance status', authorizationContext);
     let organization = authorizationContext.get('organization');

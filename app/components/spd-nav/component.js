@@ -11,7 +11,7 @@ export const STEPS = [
 
 export function getStepIndex(currentPath) {
   let prefix = /^gridiron\.gridiron\-organization/ig;
-  let i;
+  let i = -1;
 
   if (!currentPath) {
     Ember.warn("`getStepIndex` called without a valid path");
