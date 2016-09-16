@@ -4,7 +4,7 @@ export default Ember.Route.extend({
   complianceStatus: Ember.inject.service(),
 
   redirect() {
-    if(this.get('complianceStatus.authorizationContext.userIsGridironAdmin')) {
+    if(this.get('complianceStatus.authorizationContext.userIsGridironOrOrganizationAdmin')) {
       this.transitionTo('gridiron-admin');
     } else {
       this.transitionTo('gridiron-user');
