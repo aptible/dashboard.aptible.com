@@ -6,7 +6,7 @@ export default Ember.Route.extend({
     let context = authorization.get('contextsWithGridironProduct.firstObject');
     let organization = context.get('organization');
 
-    if (context.get('userIsGridironAdmin')) {
+    if (context.get('userIsGridironOrOrganizationAdmin')) {
       this.transitionTo('gridiron-admin', organization.get('id'));
     } else {
       this.transitionTo('gridiron-user', organization.get('id'));
