@@ -155,7 +155,6 @@ module.exports = function(environment) {
   if (environment === 'staging') {
     ENV.segmentioKey = '6jZlAcweTojgXShBvn4B9Tvwr1IlqkEE';
 
-    ENV.featureFlags['sheriff'] = true;
     ENV.featureFlags['spd'] = false;
 
     ENV.sentry.whitelistUrls = ['dashboard.aptible-staging.com'];
@@ -169,7 +168,7 @@ module.exports = function(environment) {
   if (environment === 'production') {
     ENV.stripePublishableKey = 'pk_live_ujeTeUIMpUcvNsWwu7R9b3Zy';
     ENV.segmentioKey = '5aOlxMYapu6bQCQYFbDz7rhNvVV7B1A5';
-    ENV.featureFlags['sheriff'] = false;
+    ENV.featureFlags['sheriff'] = true;
     ENV.featureFlags['spd'] = false;
 
     ENV.sentry.whitelistUrls = ['dashboard.aptible.com'];
