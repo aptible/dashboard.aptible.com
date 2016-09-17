@@ -33,7 +33,8 @@ export default DS.Model.extend(ProvisionableMixin, {
   supportsClustering: Ember.computed.equal('type', 'mongodb'),
 
   serviceUsage: Ember.computed.mapBy('service', 'usage'),
-  usage: Ember.computed.sum('serviceUsage')
+  usage: Ember.computed.sum('serviceUsage'),
+  isProvisioningOrPending: Ember.computed.or('isPending', 'isProvisioning')
 });
 
 export function provisionDatabases(user, store){
