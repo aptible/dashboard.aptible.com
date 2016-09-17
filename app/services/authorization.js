@@ -70,6 +70,11 @@ export default Ember.Service.extend({
       return context.hasOrganizationScope(scope);
     }
 
+    if(permittable instanceof OrganizationProfile) {
+      context = this.getContext(permittable.get('id'));
+      return context.hasGridironScope(scope);
+    }
+
     context = this.getContextByHref(permittable.get('data.links.organization'));
 
     if (permittable instanceof Stack) {
@@ -78,10 +83,6 @@ export default Ember.Service.extend({
 
     if(permittable instanceof Role) {
       return context.hasRoleScope(scope, permittable);
-    }
-
-    if(permittable instanceof OrganizationProfile) {
-      return context.hasGridironScope(scope);
     }
   },
 

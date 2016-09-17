@@ -8,7 +8,7 @@ export default Ember.Controller.extend({
   persistedDatabases: Ember.computed.filterBy('model', 'isNew', false),
   hasNoDatabases: Ember.computed.equal('persistedDatabases.length', 0),
   deployedDatabases: Ember.computed.filterBy('persistedDatabases', 'isProvisioned'),
-  pendingDatabases: Ember.computed.filterBy('persistedDatabases', 'isProvisioning'),
+  pendingDatabases: Ember.computed.filterBy('persistedDatabases', 'isProvisioningOrPending'),
   deprovisioningDatabases: Ember.computed.filterBy('persistedDatabases', 'isDeprovisioning'),
 
   deprovisionedDatabases: Ember.computed.filterBy('persistedDatabases', 'isDeprovisioned'),

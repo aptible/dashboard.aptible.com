@@ -170,7 +170,7 @@ module.exports = function(environment) {
     ENV.segmentioKey = '5aOlxMYapu6bQCQYFbDz7rhNvVV7B1A5';
     ENV.featureFlags['sheriff'] = true;
     ENV.featureFlags['spd'] = false;
-
+    ENV.featureFlags.engines.risk = false;
     ENV.sentry.whitelistUrls = ['dashboard.aptible.com'];
     ENV.sentry.development = false;
     ENV.sentry.dsn = 'https://2dc5b29fd35e408cbadf581f9a167074@app.getsentry.com/22629';
