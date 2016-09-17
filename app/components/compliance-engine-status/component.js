@@ -5,7 +5,10 @@ export default Ember.Component.extend({
   criterion: null,
   documents: null,
   title: Ember.computed.reads('status.criterion.name'),
-  latestDocumentDownload: Ember.computed('status.recentActivityDocuments.[]', function() {
-    return this.get('status.recentActivityDocuments.firstObject.printVersionUrl');
+  showDownload: Ember.computed.match('status.criterion.handle', /risk|policy/),
+  latestDocumentDownload: Ember.computed('showDownload', 'status.recentActivityDocuments.[]', function() {
+    if(this.get('showDownload')) {
+      return this.get('status.recentActivityDocuments.firstObject.printVersionUrl');
+    }
   })
 });
