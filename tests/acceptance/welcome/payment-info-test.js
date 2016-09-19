@@ -376,13 +376,15 @@ test('submitting valid payment info should create db', function(assert) {
       dockerRepo: 'quay.io/aptible/redis:3.0',
       description: 'redis 3.0',
       type: 'redis',
-      default: true
+      default: true,
+      visible: true
     },
     {
       id: 2,
       dockerRepo: 'quay.io/aptible/redis:2.8',
       description: 'redis 2.8',
       type: 'redis',
+      visible: true,
       default: false
   }]);
 
