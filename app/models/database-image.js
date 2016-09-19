@@ -6,4 +6,5 @@ export default DS.Model.extend({
   description: DS.attr('string'),
   type: DS.attr('string'), // postgresql, redis, etc.
   default: DS.attr('boolean'),
+  visible: DS.attr('boolean')
 });

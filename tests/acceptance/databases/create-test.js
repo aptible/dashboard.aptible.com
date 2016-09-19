@@ -109,7 +109,8 @@ test(`visit ${url} and create`, function(assert) {
     dockerRepo: 'quay.io/aptible/redis:3.0',
     description: 'redis 3.0',
     type: 'redis',
-    default: true
+    default: true,
+    visible: true
   }]);
 
   // Just needed to stub /stack/my-stack-1/databases
