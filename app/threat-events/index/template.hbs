@@ -1,17 +1,9 @@
-<div class="risk-assessment-container">
-  <div class="risk-assessment__index">
+<div class="risk-assessment__index">
+  <div class="risk-assessment__filters">
+    {{threat-event-filters filters=filters}}
+  </div>
 
-    <div class="risk-assessment__filters">
-      <div class="pull-right">
-        <label class="risk-assessment__filters__label">&nbsp;</label>
-        <button type="submit" class="btn btn-primary btn-sm">Create Threat Event</button>
-      </div>
-
-      {{threat-event-filters filters=filters}}
-    </div>
-
-    <div class="aptable">
-      {{threat-event-list filters=filters threatEvents=model}}
-    </div>
+  <div class="aptable">
+    {{threat-event-list filters=filters threatEvents=model}}
   </div>
 </div>

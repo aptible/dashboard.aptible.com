@@ -6,7 +6,7 @@ export const SETUP_STEPS = ['start', 'organization', 'locations', 'team',
 
 let OrganizationProfile = DS.Model.extend({
   currentStep: DS.attr('string', { defaultValue: SETUP_STEPS[0] }),
-  hasCompletedSetup: DS.attr('boolean'),
+  hasCompletedSetup: DS.attr('boolean', { defaultValue: false }),
   aboutOrganization: DS.attr('string'),
   aboutProduct: DS.attr('string'),
   aboutArchitecture: DS.attr('string'),

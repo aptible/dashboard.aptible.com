@@ -7,7 +7,7 @@
       <div class="row">
         <div class="col-xs-8">
           <div class='risk-assessment-header__title-info'>
-            {{link-to '← All Risk Assessments' 'risk-assessments' model.organizationProfile class="risk-assessment-header__back-to-index"}}
+            {{link-to '← All Risk Assessments' 'risk-assessments' model.organizationProfile.id class="risk-assessment-header__back-to-index"}}
             <h2 class="risk-assessment-header__sub-title">Started on {{format-utc-timestamp model.createdAt}}</h2>
             <h1 class="risk-assessment-header__title">{{capitalize-string model.status}} Risk Assessment</h1>
           </div>
@@ -71,6 +71,8 @@
       </div>
     </div>
 
-    {{outlet}}
+    <div class="risk-assessment-container">
+      {{liquid-outlet}}
+    </div>
   </div>
 </main>

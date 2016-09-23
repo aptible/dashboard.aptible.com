@@ -10,6 +10,7 @@ let application;
 let userId = 'basic-user1';
 let basicRoleId = 'basic-role-1';
 let riskAssessmentsUrl = `/gridiron/${orgId}/admin/risk_assessments`;
+let riskAssessmentPath = 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.risk-assessments';
 
 let riskAssessments = [
   { id: 'ra1', status: 'draft', _embedded: baselineRiskGraph },
@@ -32,7 +33,7 @@ let users = [
 let roles = [
   {
     id: basicRoleId,
-    type: 'platform_user',
+    type: 'compliance_owner',
     name: 'Basic Role',
     _links: {
       self: { href: `/roles/${basicRoleId}` },
@@ -51,16 +52,29 @@ module('Acceptance: Risk Assessment Index', {
   }
 });
 
+test(`visiting ${riskAssessmentsUrl}: with incomplete SPD`, function(assert) {
+  stubProfile({ hasCompletedSetup: false });
+  stubRequests();
+  signInAndVisit(riskAssessmentsUrl);
+
+  andThen(() => {
+    assert.equal(currentPath(), riskAssessmentPath, 'remains on risk assessment url');
+    assert.equal(find('h1:contains(Security Program Setup Required)').length, 1, 'shows message to complete SPD');
+    assert.equal(find('a:contains(Complete Security Program)').length, 1, 'shows button to complete SPD');
+  });
+});
+
 test(`visiting ${riskAssessmentsUrl}: basic UI`, function(assert) {
+  stubProfile({ hasCompletedSetup: true });
   stubRequests();
   signInAndVisit(riskAssessmentsUrl);
 
   andThen(function() {
-    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.risk-assessments', 'on risk assessment url');
+    assert.equal(currentPath(), riskAssessmentPath, 'on risk assessment url');
 
-    assert.equal(find('.ra__status-header--draft').length, 1, 'has one draft risk assessment');
-    assert.equal(find('.ra__status-header--current').length, 1, 'has one active risk assessment');
-    assert.equal(find('.ra__status-header--archived').length, 2, 'has 2 archived risk assessments');
+    assert.equal(find('.draft-risk-assessments .ra-list-item').length, 1, 'has one draft risk assessment');
+    assert.equal(find('.active-risk-assessments .ra-list-item').length, 1, 'has one active risk assessment');
+    assert.equal(find('.archived-risk-assessments .ra-list-item').length, 2, 'has 2 archived risk assessments');
 
     let resumeButton = findWithAssert('.ra-list-item a:contains(Resume)');
     resumeButton.click();
@@ -73,17 +87,12 @@ test(`visiting ${riskAssessmentsUrl}: basic UI`, function(assert) {
 
 function stubRequests() {
   stubValidOrganization();
-  stubProfile({ hasCompletedSetup: true });
   stubCriterionDocuments({});
   stubStacks();
   stubCriteria();
 
   stubRequest('get', `/organization_profiles/${orgId}/risk-assessments`, function() {
     return this.success({ _embedded: { risk_assessments: riskAssessments  } });
-  });
-
-  stubRequest('get', usersHref, function() {
-    return this.success({ _embedded: { users }});
   });
 
   stubRequest('get', securityOfficerHref, function() {

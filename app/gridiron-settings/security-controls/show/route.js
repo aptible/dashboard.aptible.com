@@ -13,6 +13,7 @@ export default Ember.Route.extend({
 
     let { schemaDocument, attestation } = this.currentModel;
     let documentClone = Ember.$.extend(true, {}, schemaDocument.dump({ excludeInvalid: true }));
+    let organizationProfile = this.modelFor('gridiron-settings');
 
     attestation.set('document', documentClone);
     attestation.setUser(this.session.get('currentUser'));

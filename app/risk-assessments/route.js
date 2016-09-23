@@ -12,8 +12,18 @@ export default Ember.Route.extend({
     let organizationProfile = this.modelFor('gridiron-admin');
     let riskAssessments =  organizationProfile.get('riskAssessments');
 
+    debugger;
+    if(riskAssessments.get('isFulfilled')) {
+      riskAssessments = riskAssessments.reload();
+    }
+
     return Ember.RSVP.hash({
       organization, organizationProfile, riskAssessments
     });
+  },
+
+  renderTemplate() {
+    this._super.apply(this, arguments);
+    this.render('sidebars/engine-sidebar', { into: 'risk-assessments', outlet: 'sidebar' });
   }
 });

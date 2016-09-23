@@ -101,7 +101,7 @@ module.exports = function(environment) {
 
     featureFlags: {
       sheriff: true,
-      spd: false,
+      spd: true,
 
       engines: {
         training: true,
