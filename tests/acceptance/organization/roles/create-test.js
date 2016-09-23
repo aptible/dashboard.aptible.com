@@ -106,7 +106,7 @@ test(`visiting ${url} and creating new platform_user role`, (assert) => {
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'requires-authorization.enclave.role.members');
+    assert.equal(currentPath(), 'requires-authorization.organization.role.members');
   });
 });
 
@@ -130,7 +130,7 @@ test(`visiting ${url} and creating new compliance_user role`, (assert) => {
     clickButton('Save');
   });
   andThen(function() {
-    assert.equal(currentPath(), 'requires-authorization.enclave.role.members');
+    assert.equal(currentPath(), 'requires-authorization.organization.role.members');
   });
 });
 

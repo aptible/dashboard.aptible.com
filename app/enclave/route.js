@@ -36,10 +36,13 @@ export default Ember.Route.extend({
   handleComplianceOnlyUsers() {
     // If no organization context has any enclave access, get out of here
     if (!this.get('authorization.hasAnyEnclaveAccess')) {
-      let message = `You do not have access to view Enclave resources. If this
-                     is a mistake, please contact either your account owner or
-                     support@aptible.com`;
-      Ember.get(this, 'flashMessages').danger(message);
+      // REVIEW:  Don't warn until we update to have a more intelligent default
+      // route
+      // let message = `You do not have access to view Enclave resources. If this
+      //                is a mistake, please contact either your account owner or
+      //                support@aptible.com`;
+
+      // Ember.get(this, 'flashMessages').danger(message);
       let context = this.get('authorization.organizationContexts.firstObject');
       let organization = context.get('organization.id');
 
