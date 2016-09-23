@@ -11,7 +11,7 @@ let orgId = '1';
 let roleId = 'r1';
 let roleMembersUrl = `/roles/${roleId}/memberships`;
 let orgUsersUrl = `/organizations/${orgId}/users`;
-let pageUrl = `/roles/${roleId}/members`;
+let pageUrl = `/organizations/${orgId}/roles/${roleId}/members`;
 
 const ownerRole = {
   id: roleId,
@@ -242,7 +242,7 @@ test(`role members can be made role admins`, (assert) => {
   });
 
   signIn(memberUser, ownerRole);
-  visit(`/roles/${nonOwnerRole.id}/members`);
+  visit(`/organizations/${orgId}/roles/${nonOwnerRole.id}/members`);
 
   andThen(() => {
     assert.equal(member1.privileged, false, 'member is not privileged');
@@ -277,11 +277,11 @@ test(`visiting ${pageUrl} as an unauthorized user to roles does not redirect, bu
   });
 
   signIn(cannotDeleteThis, nonOwnerRole);
-  visit(`/roles/${nonOwnerRole.id}/members`);
+  visit(`/organizations/${orgId}/roles/${nonOwnerRole.id}/members`);
   andThen(() => {
     assert.equal(
       currentPath(),
-      'requires-authorization.enclave.role.members',
+      'requires-authorization.organization.role.members',
       'remains on current path'
     );
 

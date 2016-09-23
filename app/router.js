@@ -70,6 +70,11 @@ Router.map(function() {
         this.route("edit", {path: ":user_id/edit"});
       });
       this.route('pending-invitations');
+      this.route("role", { resetNamespace: true, path: "/roles/:role_id" }, function() {
+        this.route('members');
+        this.route('environments');
+        this.route('settings');
+      });
       this.route("roles", {}, function() {
         this.route("type", { path: ':type' });
         this.modal('modal-create-role', {
@@ -186,15 +191,6 @@ Router.map(function() {
       });
 
       this.route("stacks", { resetNamespace: true });
-
-      this.route("role", {
-        resetNamespace: true,
-        path: "roles/:role_id"
-      }, function() {
-        this.route('members');
-        this.route('environments');
-        this.route('settings');
-      });
     });
 
     this.route('gridiron', { path: 'gridiron', resetNamespace: true }, function() {

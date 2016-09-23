@@ -134,6 +134,6 @@ test(`visit ${url} and click to show`, (assert) => {
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'requires-authorization.enclave.role.members');
+    assert.equal(currentPath(), 'requires-authorization.organization.role.members');
   });
 });
