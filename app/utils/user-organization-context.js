@@ -64,7 +64,9 @@ export default Ember.Object.extend({
   organizationHasGridironProduct: Ember.computed.match('billingDetail.plan', /pilot|production/),
 
   // TODO: This will have to be a plan match once Enclave is separate from gridiron
-  organizationHasEnclaveProduct: true,
+  // This is set to read has billing detail to prevent visiting enclave without
+  // billing detail
+  organizationHasEnclaveProduct: Ember.computed.reads('hasBillingDetail'),
 
   hasNoBillingDetail: Ember.computed.equal('billingDetail.', undefined),
   hasBillingDetail: Ember.computed.not('hasNoBillingDetail'),

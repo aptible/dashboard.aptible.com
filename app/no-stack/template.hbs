@@ -1,11 +1,12 @@
-{{#error-page
-  title="Your account doesn't have access to any environments!"
-  message="This is likely because of an error during your account's initial setup.  Please contact support using the link below."
-  actionName="Logout"
-  actionDestination="settings.logout"}}
+<div class="layout-container">
 
-  <p>
-    Note: you're still logged in as {{session.currentUser.name}};
-    if you are on a shared computer, log out now:
-  </p>
-{{/error-page}}
+  <div class="activate-notice activate-notice--micro">
+    <div class="row">
+      <div class="col-xs-8 col-xs-offset-2">
+        <h1>Your account doesn't have access to any environments</h1>
+        <h2>This is likely because of an error during your account's initial setup.  Please contact support using the link below.</h2>
+      </div>
+    </div>
+  </div>
+
+</div>

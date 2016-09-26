@@ -55,6 +55,9 @@ export default Ember.Route.extend({
   },
 
   handleNoStacks() {
+    // Incomplete organization: should be able to link to setup payment method
+    // Complete organization, should be able to view compliance dashboard
+
     if(this.get('authorization.hasNoStacks')) {
       return this.transitionTo('no-stack');
     }

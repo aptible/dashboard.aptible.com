@@ -133,6 +133,8 @@ Router.map(function() {
         this.route("deprovision");
       });
 
+      this.route("no-stack", { resetNamespace: true });
+      this.route("stacks", { resetNamespace: true });
       this.route("stack", { resetNamespace: true, path: "stacks/:stack_id" }, function() {
         this.route("activate", { path: 'activate'});
 
@@ -189,8 +191,6 @@ Router.map(function() {
           });
         });
       });
-
-      this.route("stacks", { resetNamespace: true });
     });
 
     this.route('gridiron', { path: 'gridiron', resetNamespace: true }, function() {
@@ -224,7 +224,6 @@ Router.map(function() {
 
   this.authenticatedRoute("elevate", { resetNamespace: true });
   this.authenticatedRoute("no-organization", { resetNamespace: true });
-  this.authenticatedRoute("no-stack", { resetNamespace: true });
 
   this.route("login");
   this.route("signup", {}, function(){
