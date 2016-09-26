@@ -12,7 +12,6 @@ export default Ember.Route.extend({
     let organizationProfile = this.modelFor('gridiron-admin');
     let riskAssessments =  organizationProfile.get('riskAssessments');
 
-    debugger;
     if(riskAssessments.get('isFulfilled')) {
       riskAssessments = riskAssessments.reload();
     }
