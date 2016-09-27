@@ -13,7 +13,13 @@ export default Ember.Route.extend({
     openCreateRoleModal() {
       let authorizationContext = this.modelFor('organization');
       let { organization } = authorizationContext;
-      let role = this.store.createRecord('role', { organization });
+      let type = 'platform_user';
+
+      if (authorizationContext.get('userIsGridironAdmin') && authorizationContext.get('organizationHasGridironProduct')) {
+        type = 'compliance_user';
+      }
+
+      let role = this.store.createRecord('role', { organization, type });
 
       this.controller.set('newRole', role);
     },
