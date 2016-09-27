@@ -22,10 +22,12 @@
             </div>
         </div>
 
-        {{#if authorizationContext.organizationHasGridironProduct}}
-          <div class="form-group">
-            {{role-type-options role=newRole}}
-          </div>
+        {{#if authorizationContext.userIsOrganizationAdmin}}
+          {{#if authorizationContext.organizationHasGridironProduct}}
+            <div class="form-group">
+              {{role-type-options role=newRole}}
+            </div>
+          {{/if}}
         {{/if}}
 
         <button class="btn btn-primary create-role" type="submit" {{action "createRole"}} disabled={{disableSave}}>

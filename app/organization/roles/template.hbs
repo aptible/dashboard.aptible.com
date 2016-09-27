@@ -3,13 +3,11 @@
     <div class="resource-title">
       <h1>{{authorizationContext.organization.name}} Roles</h1>
       <div class="resource-actions pull-right">
-        {{#aptible-ability scope="manage" permittable=authorizationContext.organization as |hasAbility|}}
-          {{#if hasAbility}}
-            <a {{action "openCreateRoleModal"}} class="btn btn-primary open-role-modal">
-              Create Role
-            </a>
-          {{/if}}
-        {{/aptible-ability}}
+        {{#if authorizationContext.userCanCreateNewRoles}}
+          <a {{action "openCreateRoleModal"}} class="btn btn-primary open-role-modal">
+            Create Role
+          </a>
+        {{/if}}
       </div>
     </div>
   </div>

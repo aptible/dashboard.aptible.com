@@ -81,6 +81,8 @@ export default Ember.Object.extend({
   userIsGridironAdmin: Ember.computed.gt('userGridironAdminRoles.length', 0),
   userIsOrganizationAdmin: Ember.computed.gt('userOrganizationAdminRoles.length', 0),
 
+  userCanCreateNewRoles: Ember.computed.or('userIsOrganizationAdmin', 'userIsGridironAdmin', 'userIsEnclaveAdmin'),
+
   userIsEnclaveOrOrganizationAdmin: Ember.computed.or('userIsEnclaveAdmin', 'userIsOrganizationAdmin'),
   userIsGridironOrOrganizationAdmin: Ember.computed.or('userIsGridironAdmin', 'userIsOrganizationAdmin'),
   userHasEnclaveAccess: Ember.computed.or('userIsEnclaveAdmin', 'userIsEnclaveUser', 'userIsOrganizationAdmin'),
