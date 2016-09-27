@@ -1,9 +1,9 @@
 import Ember from 'ember';
 import { module, test, skip } from 'qunit';
-import startApp from '../helpers/start-app';
+import startApp from '../../helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
 import { orgId, rolesHref, usersHref, invitationsHref,
-         securityOfficerHref } from '../helpers/organization-stub';
+         securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
 let userId = 'user1';
@@ -23,7 +23,7 @@ let users = [
   }
 ];
 
-module('Acceptance: Authorization Checks', {
+module('Acceptance: Product Authorization Checks', {
   beforeEach() {
     application = startApp();
     stubProfile({ hasCompletedSetup: true });
