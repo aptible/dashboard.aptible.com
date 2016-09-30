@@ -164,6 +164,33 @@ test(`visit ${appVhostsUrl}: failed endpoints should have warning message`, func
   });
 });
 
+test(`visit ${appVhostsUrl}: failed default endpoints should have warning message`, function(assert) {
+  var vhosts = [{
+    id: 1,
+    virtual_domain: 'www.health1.io',
+    default: true,
+    status: 'provision_failed'
+  }];
+
+  stubApp({
+    id: appId,
+    _embedded: { services: [] },
+    _links: { vhosts: { href: appVhostsApiUrl } }
+  });
+
+  stubRequest('get', appVhostsApiUrl, function(){
+    return this.success({ _embedded: { vhosts: vhosts } });
+  });
+
+  signInAndVisit(appVhostsUrl);
+  andThen(() => {
+    let vhosts = find('.vhost');
+    assert.equal(vhosts.length, 1, 'shows the failed vhost');
+    let vhost = vhosts.eq(0);
+    assert.equal(vhost.find('.failed-warning-message:contains(failed to provision)').length, 1, 'has failed warning message');
+  });
+});
+
 test(`visit ${appVhostsUrl} lists endpoints with action required with tips`, function(assert) {
   assert.expect(15);
 
