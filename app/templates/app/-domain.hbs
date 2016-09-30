@@ -46,38 +46,38 @@
       {{#if vhost.hasActionRequired}}
         {{vhost-action-required vhost=vhost}}
       {{else}}
-        {{#if vhost.displayHost}}
-          <h5 class="resource-metadata-title">
-            {{#if vhost.internal}}
-              Internal
-            {{else}}
-              External
-            {{/if}}
-
-            Hostname
-          </h5>
+        {{#if vhost.failedToProvision}}
           <h3 class="resource-metadata-value">
-            <div class="external-host">
-              {{vhost.displayHost}}
-              {{click-to-copy text=vhost.displayHost}}
-            </div>
+            <span class="danger failed-warning-message">
+              {{vhost.commonName}} failed to provision,
+              please{{#link-to-aptible app="support" path="topics/cli/how-to-restart-app"}}restart your app via the CLI{{/link-to-aptible}}
+                to access debugging output.
+            </span>
           </h3>
         {{else}}
-          {{#if vhost.failedToProvision}}
+          {{#if vhost.displayHost}}
+            <h5 class="resource-metadata-title">
+              {{#if vhost.internal}}
+                Internal
+              {{else}}
+                External
+              {{/if}}
+
+              Hostname
+            </h5>
             <h3 class="resource-metadata-value">
-              <span class="danger failed-warning-message">
-                {{vhost.commonName}} failed to provision,
-                please{{#link-to-aptible app="support" path="topics/cli/how-to-restart-app"}}restart your app via the CLI{{/link-to-aptible}}
-                to access debugging output.
-              </span>
+              <div class="external-host">
+                {{vhost.displayHost}}
+                {{click-to-copy text=vhost.displayHost}}
+              </div>
             </h3>
           {{else}}
-          <h3 class="resource-metadata-value">
-            {{vhost.commonName}} is {{vhost.status}}...
-          </h3>
+            <h3 class="resource-metadata-value">
+              {{vhost.commonName}} is {{vhost.status}}...
+            </h3>
           {{/if}}
         {{/if}}
       {{/if}}
     </div>
   </div>
-</div>
+ </div>
