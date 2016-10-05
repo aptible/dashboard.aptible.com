@@ -7,7 +7,9 @@ export default Ember.Route.extend({
     let authorizationContext = this.get('authorization').getContextByHref(contextHref);
     let canManageRole = authorizationContext.hasRoleScope('manage', role);
 
-    if (!canManageRole) {
+    // Don't allow settings on owner-type roles or roles that the current user
+    // can't manage
+    if (role.get('isOwner') || !canManageRole) {
       this.transitionTo('role.members');
     }
   },

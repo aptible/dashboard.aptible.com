@@ -27,11 +27,9 @@ test("visiting / redirects to no stacks page", function(assert) {
   signInAndVisit("/");
 
   andThen(function() {
-    assert.equal(currentPath(), "no-stack");
+    assert.equal(currentPath(), "requires-authorization.enclave.no-stack");
+    assert.equal(find("h1:contains(Your account doesn't have access to any environments)").length, 1, 'shows message');
     expectLink("support.aptible.com");
     expectLink("status.aptible.com");
-    expectLink("twitter.com/aptiblestatus");
-    assert.ok(find(`a[href="/settings/logout"]`).length,
-              "Has link to /settings/logout");
   });
 });

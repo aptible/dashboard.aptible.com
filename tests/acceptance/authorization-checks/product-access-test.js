@@ -2,7 +2,7 @@ import Ember from 'ember';
 import { module, test, skip } from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
-import { orgId, rolesHref, usersHref, invitationsHref,
+import { orgId, usersHref, invitationsHref,
          securityOfficerHref } from '../../helpers/organization-stub';
 
 let application;
@@ -214,7 +214,7 @@ test('Users in any role on org without Gridiron plan', function(assert) {
 
   andThen(() => {
     assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index', 'redirected to enclave');
-  })
+  });
 });
 
 skip ('Users in any role without enclave plan', function() {

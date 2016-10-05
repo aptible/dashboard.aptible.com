@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   busy: false,
+  className: 'stack-permission-toggle',
   hasPermissions: Ember.computed.gt('permissions.length', 0),
   permission: null,
   store: Ember.inject.service(),
@@ -15,7 +16,7 @@ export default Ember.Component.extend({
     return this.get('stack').hasRoleScope(this.get('role'), this.get('scope'));
   }),
 
-  roleIsOwner: Ember.computed.or('role.isAccountOwner', 'role.isPLatformOwner'),
+  roleIsOwner: Ember.computed.or('role.isAccountOwner', 'role.isPlatformOwner'),
   ownerTooltipTitle: Ember.computed('role.name', 'stack.handle', function() {
     return `${this.get('role.name')} is granted all permissions for ${this.get('stack.handle')}`;
   }),

@@ -15,7 +15,7 @@
 
   {{else}}
 
-    {{#if authorizationContext.userIsEnclaveUser}}
+    {{#if authorizationContext.userHasEnclaveAccess}}
       {{#each sortedStacks as |stack|}}
         {{#link-to 'stack' stack.id tagName="li" class="sidebar-stack-item"}}
           {{link-to stack.handle 'stack' stack.id bubbles=false}}
