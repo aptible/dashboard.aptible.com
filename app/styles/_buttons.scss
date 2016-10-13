@@ -30,14 +30,14 @@ a:hover {
 }
 
 a.btn, button.btn {
-  padding: 8px 12px 6px;
+  padding: 8px 12px;
 
   &.btn-sm {
     padding: 5px 8px;
   }
 
   &.btn-xs {
-    padding: 5px 8px 3px;
+    padding: 5px 8px;
     height: auto;
   }
 
@@ -52,7 +52,7 @@ a.btn, button.btn {
   border: 0;
   border-radius: 3px;
   font-weight: $weight-semibold;
-  transition-duration: .25s;
+  transition-duration: .5s;
 
   &.btn-link {
     color: $color-bright-blue;
@@ -83,7 +83,8 @@ a.btn, button.btn {
     border: 1px solid $color-bright-blue;
 
     &:hover {
-      background: $color-bright-blue;
+      background: $color-dark-blue;
+      border: 1px solid $color-dark-blue;
       text-shadow: 1px 1px 2px rgba(#000, .25);
     }
   }

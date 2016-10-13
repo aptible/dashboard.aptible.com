@@ -2,10 +2,13 @@ import Ember from 'ember';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  status: DS.attr('string'),
+  status: DS.attr('string', { defaultvalue: 'draft' }),
   approvingAuthorityUserName: DS.attr('string'),
   approvingAuthorityUserEmail:DS.attr('string'),
   approvingAuthorityUrl: DS.attr('string'),
+  createdByUserName: DS.attr('string'),
+  createdByUserEmail:DS.attr('string'),
+  createdByUrl: DS.attr('string'),
   vulnerabilities: DS.hasMany('vulnerability', {embedded: true}),
   threatEvents: DS.hasMany('threat-event', {embedded: true}),
   predisposingConditions: DS.hasMany('predisposing-condition', {embedded: true}),

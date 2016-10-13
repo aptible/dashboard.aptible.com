@@ -3,34 +3,14 @@
 
   <div class="ra-list-item__body">
     <div class="ra-list-item__hgroup">
-      <h1 class="ra-list-item__title">v{{index}} {{riskAssessment.status}} Risk Assessment</h1>
-      <h2 class="ra-list-item__sub-title">Created on {{riskAssessment.created}} by ---</h2>
+      <h1 class="ra-list-item__title">
+        {{riskAssessment.status}} Risk Assessment
+      </h1>
+      <h2 class="ra-list-item__sub-title">
+        {{riskAssessment.createdByUserName}} created on {{format-date riskAssessment.createdAt}}
+      </h2>
     </div>
 
-    <div class="ra-list-item__indexes">
-      <img style="height: 14px;" src="/assets/images/risk-assessment-placeholders/risk-indexes-tmp.png">
-    </div>
-  </div>
-
-  <footer class="ra-list-item__footer">
-    <div class="ra-list-item__contributors">
-      <h3 class="user-gravatars__title">Contributors</h3>
-      <div class="user-gravatars">
-
-        <!-- TODO: uncomment when contributors are part of the model data -->
-        {{!-- user-gravatars users=riskAssessment.contributors size=24 count=5 placeholder='--' --}}
-
-      </div>
-    </div>
-    {{#unless (eq riskAssessment.status 'draft')}}
-      <div class="ra-list-item__contributors">
-        <h3 class="user-gravatars__title">Approved by</h3>
-        <div class="user-gravatars">
-          <!-- TODO: uncomment when who approved this risk assessment is part of the model data -->
-          {{!-- user-gravatars users=riskAssessment.approved_by size=24 count=5 placeholder='--' --}}
-        </div>
-      </div>
-    {{/unless}}
     <div class="ra-list-item__actions">
       {{#if (eq riskAssessment.status 'draft')}}
         {{link-to 'Resume' 'risk-assessment' riskAssessment.id class="btn btn-primary"}}
@@ -39,5 +19,5 @@
         {{link-to 'View' 'risk-assessment' riskAssessment.id class="btn btn-primary"}}
       {{/if}}
     </div>
-  </footer>
+  </div>
 </div>

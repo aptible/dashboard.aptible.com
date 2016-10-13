@@ -7,11 +7,15 @@ button > i.fa-spinner {
   margin: 0 4px 0 0;
 }
 
+.application-wrapper {
+  background: $color-bg-blue;
+}
+
 .main-wrapper .layout-content {
   min-width: 970px;
   -webkit-flex: 1;
   flex: 1;
-  background: #fafafa;
+  background: $color-bg-blue;
 }
 
 header.resource-header {

@@ -24,8 +24,11 @@ export default Ember.Route.extend({
     }
 
     // Redirect to SPD if feature is enabled and is incomplete
-    if(this.get('authorization.features.spd') && this.get('complianceStatus.requiresSPD')) {
-      this.transitionTo('setup');
-    }
+    // TODO: Instead of this, we should add an alert to gridiron admin
+    // dashboard
+    //
+    // if(this.get('authorization.features.spd') && this.get('complianceStatus.requiresSPD')) {
+    //   this.transitionTo('setup');
+    // }
   }
 });

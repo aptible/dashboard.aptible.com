@@ -7,7 +7,8 @@ export default function() {
                     'organization.admin', 'organization.roles', 'settings.profile',
                     'organization.pending-invitations',
                     'settings.ssh', 'settings.impersonate', 'organization.admin.environments',
-                    'organization.admin.contact-settings', 'organization.admin.billing'];
+                    'organization.admin.contact-settings', 'organization.admin.billing',
+                    'threat-sources', 'threat-events', 'vulnerabilities', 'predisposing-conditions', 'security-controls'];
   this.transition(
     this.hasClass('click-to-reveal'),
     this.use('crossFade')
@@ -20,16 +21,21 @@ export default function() {
 
   this.transition(
     this.fromRoute(coreRoutes),
-    this.use('fade')
+    this.use('crossFade')
+  );
+
+  this.transition(
+    this.withinRoute('risk-assessment'),
+    this.use('crossFade')
   );
 
   this.transition(
     this.inHelper('liquid-modal'),
-    this.use('fade', { duration: DEFAULT_DURATION, easing: DEFAULT_EASING })
+    this.use('crossFade', { duration: DEFAULT_DURATION, easing: DEFAULT_EASING })
   );
 
   this.transition(
     this.hasClass('fadeIn'),
-    this.use('fade', { duration: DEFAULT_DURATION, easing: DEFAULT_EASING })
+    this.use('crossFade', { duration: DEFAULT_DURATION, easing: DEFAULT_EASING })
   );
 }

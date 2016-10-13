@@ -229,25 +229,6 @@ header.resource-header {
    animation: yellow-fade 1s ease-in 1;
 }
 
-// Flex box header row option to keep columns from wrapping
-header.resource-header .resource-metadata--flex {
-  align-items: baseline;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  width: 100%;
-  .resource-metadata-item {
-    min-width: 0;
-    float: none;
-    &:last-of-type {
-      margin-right: 0;
-    }
-  }
-  .resource-metadata-title {
-    white-space: nowrap;
-  }
-}
-
 .panel-body {
   .resource-metadata-item {
   }

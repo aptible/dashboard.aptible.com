@@ -10,7 +10,7 @@ export const STEPS = [
 
 
 export function getStepIndex(currentPath) {
-  let prefix = /^gridiron\.gridiron\-organization/ig;
+  let prefix = /^requires-authorization.gridiron\.gridiron\-organization\./ig;
   let i = -1;
 
   if (!currentPath) {
