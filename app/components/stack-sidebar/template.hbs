@@ -8,17 +8,31 @@
     {{authorizationContext.organization.name}} Environments
   </li>
 
-  {{#each sortedStacks as |stack|}}
-
-        {{#link-to 'stack' stack.id tagName="li" class="sidebar-stack-item"}}
-          {{link-to stack.handle 'stack' stack.id bubbles=false}}
-        {{/link-to}}
-
-  {{/each}}
-
   {{#if authorizationContext.hasNoBillingDetail}}
     <li>
       {{link-to 'Requires payment method →' 'welcome.payment-info' organization.id classNames="requires-payment-link danger"}}
     </li>
+
+  {{else}}
+
+    {{#if authorizationContext.userHasEnclaveAccess}}
+      {{#each sortedStacks as |stack|}}
+        {{#link-to 'stack' stack.id tagName="li" class="sidebar-stack-item"}}
+          {{link-to stack.handle 'stack' stack.id bubbles=false}}
+        {{/link-to}}
+      {{/each}}
+    {{else}}
+
+      {{#if authorizationContext.organizationHasGridironProduct}}
+        <li>
+          {{link-to
+            'My Gridiron Status' 'gridiron-user'
+            authorizationContext.organization.id}}
+        </li>
+      {{else}}
+        <li>You do not have permission to see Enclave resources for this organization.</li>
+      {{/if}}
+    {{/if}}
+
   {{/if}}
 </ul>

@@ -17,7 +17,7 @@ export default Ember.Component.extend({
   isDisabled: Ember.computed.or('sending', 'sent'),
 
   actions: {
-    resendVerification: function(){
+    resendVerification() {
       this.setProperties({ sending: true, error: null });
 
       let reset = this.get('store').createRecord('reset', {type:'verification_code'});

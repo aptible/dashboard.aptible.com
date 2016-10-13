@@ -17,6 +17,8 @@
         {{outlet 'sidebar'}}
       </nav>
 
+      <main class="layout-content">
+
       {{#if model.hasNoBillingDetail}}
         <div style="margin: 30px 30px 0;">
           {{#bs-alert alert="warning" as |component|}}
@@ -27,7 +29,6 @@
         </div>
       {{/if}}
 
-      <main class="layout-content">
         {{liquid-outlet}}
       </main>
 

@@ -3,7 +3,7 @@
 
     <div class="stacks">
       {{#each stacks as |stack|}}
-        <div class="panel panel-default panel--bisected">
+        <div class="panel panel-default panel--bisected stack-{{stack.id}}">
           <div class="panel-heading role-details__heading">
             <div class="role-details__label">
               <h2 class="role-details__name">{{stack.handle}}</h2>
@@ -39,7 +39,7 @@
                 <th>Granted</th>
               </thead>
               <tbody>
-                <tr>
+                <tr class="read-row">
                   <td class="aptable__row-heading">Read</td>
                   <td class="aptable__actions aptable__actions--skinny">
                     {{#aptible-ability scope="manage" permittable=model as |hasAbility|}}
@@ -52,7 +52,7 @@
                     {{/aptible-ability}}
                   </td>
                 </tr>
-                <tr>
+                <tr class="manage-row">
                   <td class="aptable__row-heading">Manage</td>
                   <td class="aptable__actions">
                     {{#aptible-ability scope="manage" permittable=model as |hasAbility|}}

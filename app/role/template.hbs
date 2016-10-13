@@ -21,18 +21,27 @@
         {{link-to 'Members' 'role.members' model.id bubbles=false}}
       {{/link-to}}
 
-      {{#if model.isPlatform}}
-
+      {{#if model.isPlatformRole}}
         {{#link-to 'role.environments' model.id tagName="li"}}
           {{link-to 'Environments' 'role.environments' model.id bubbles=false}}
         {{/link-to}}
+
+        {{#if model.isUser}}
+          {{#if context.userIsEnclaveOrOrganizationAdmin}}
+            {{#link-to 'role.settings' model.id tagName="li"}}
+              {{link-to 'Settings' 'role.settings' model.id bubbles=false}}
+            {{/link-to}}
+          {{/if}}
+        {{/if}}
       {{/if}}
 
-      {{#if model.isUser}}{{!-- can only change settings on user types role --}}
-        {{#if context.userIsEnclaveOrOrganizationAdmin}}
-          {{#link-to 'role.settings' model.id tagName="li"}}
-            {{link-to 'Settings' 'role.settings' model.id bubbles=false}}
-          {{/link-to}}
+      {{#if model.isUser}}
+        {{#if model.isComplianceRole}}
+          {{#if context.userIsGridironOrOrganizationAdmin}}
+            {{#link-to 'role.settings' model.id tagName="li"}}
+              {{link-to 'Settings' 'role.settings' model.id bubbles=false}}
+            {{/link-to}}
+          {{/if}}
         {{/if}}
       {{/if}}
     </ul>

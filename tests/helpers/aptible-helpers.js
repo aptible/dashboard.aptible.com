@@ -259,6 +259,10 @@ Ember.Test.registerHelper('stubStacks', function(app, options, stacks){
     stacks[0]._embedded.log_drains = options.logDrains;
   }
 
+  if (options.permissions) {
+    stacks[0]._embedded.permissions = options.permissions;
+  }
+
   stubRequest('get', '/accounts', function(){
     return this.success({
       _links: {},

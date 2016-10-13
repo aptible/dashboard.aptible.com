@@ -2,8 +2,8 @@
   {{#bs-alert alert="warning" as |component|}}
     {{bs-alert-dismiss target=component}}
 
-    Hey {{user.name}}, you won't be able to create new apps until you confirm your
-    email address. Check your email for instructions.
+    Hey {{user.name}}, please verify your email address.
+    Check {{user.email}} for verification instructions.
 
     <button class='btn btn-default btn-xs' {{action 'resendVerification'}} disabled={{isDisabled}}>
       {{#if sending}}

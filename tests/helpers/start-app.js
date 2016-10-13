@@ -3,6 +3,7 @@ import Application from '../../app';
 import config from '../../config/environment';
 
 import './aptible-helpers';
+import './permissions-helpers';
 import './organization-stub';
 import './schemas-api-stub';
 import './set-feature';
