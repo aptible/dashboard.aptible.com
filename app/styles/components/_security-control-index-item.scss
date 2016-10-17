@@ -33,9 +33,6 @@
   }
 
   .panel {
-    padding: 30px;
-    text-align: center;
-    height: 230px;
     border: 1px solid #fff;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
     border-radius: 5px;
@@ -54,11 +51,12 @@
   }
 
   .cta {
-    display: none;
+    float: right;
+    margin: 30px;
   }
 
   .info {
-    margin: 30px 0;
+    margin: 30px;
 
     .title {
       margin: 0 0 7px;

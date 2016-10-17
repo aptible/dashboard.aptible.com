@@ -1,27 +1,40 @@
-<section class="compliance-section">
+<section class="compliance-section {{if hasCompletedSetup 'spd-complete' 'spd-incomplete'}}">
   <header>
     <span class="header-title">Compliance Tools</span>
   </header>
 
   <div class="row">
-    {{#each complianceTools as |tool| }}
-      <div class="col-xs-6">
-        {{#link-to-aptible app='compliance' path=tool.path class="panel-link"}}
-          <div class="panel panel-default compliance-tool resource-list-item">
-            <div class="panel-heading">
-              <h5>{{tool.name}}</h5>
-            </div>
-            <div class="panel-body">
-              {{tool.description}}
-            </div>
+
+    <div class="col-xs-6">
+      {{#link-to-aptible app='compliance' path="incidents" class="panel-link"}}
+        <div class="panel panel-default compliance-tool resource-list-item">
+          <div class="panel-heading">
+            <h5>Incident Response</h5>
           </div>
-        {{/link-to-aptible}}
-      </div>
-    {{/each}}
+          <div class="panel-body">
+            Manage and respond to incidents
+          </div>
+        </div>
+      {{/link-to-aptible}}
+    </div>
+
+    <div class="col-xs-6">
+      {{#link-to-aptible app='compliance' path="contracts" class="panel-link"}}
+        <div class="panel panel-default compliance-tool resource-list-item">
+          <div class="panel-heading">
+            <h5>Contract Management</h5>
+          </div>
+          <div class="panel-body">
+            Store contracts and BAAs in one central location
+          </div>
+        </div>
+      {{/link-to-aptible}}
+    </div>
+
   </div>
 </section>
 
-<section class="compliance-section">
+<section class="compliance-section {{if hasCompletedSetup 'spd-complete' 'spd-incomplete'}}">
   <header>
     <span class="header-title">Security Program</span>
   </header>

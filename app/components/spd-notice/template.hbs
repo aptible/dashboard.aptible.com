@@ -1,0 +1,23 @@
+<div class="activate-notice activate-notice--micro spd-notice">
+  <div class="row">
+    <div class="col-xs-8 col-xs-offset-2">
+      {{yield}}
+      <div class="call-to-action">
+        {{#aptible-ability scope="manage" permittable=organizationProfile as |hasAbility|}}
+          {{#if hasAbility}}
+            {{link-to 'Setup Security Program →' 'setup' class="btn btn-primary"}}
+          {{else}}
+            <div class="call-to-action">
+              <a disabled=true class="btn btn-primary disabled">
+                Setup Security Program →
+              </a>
+              {{#bs-tooltip title="You do not have permission to modify your Security Program"}}
+                <i class="fa fa-question-circle"></i>
+              {{/bs-tooltip}}
+            </div>
+          {{/if}}
+        {{/aptible-ability}}
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,8 +1,13 @@
 import DS from 'ember-data';
 import Ember from 'ember';
+import config from "diesel/config/environment";
 
-export const SETUP_STEPS = ['start', 'organization', 'locations', 'team',
-                            'data-environments', 'security-controls', 'finish'];
+export var SETUP_STEPS = ['start', 'organization', 'locations', 'team',
+                          'data-environments', 'security-controls', 'finish'];
+
+if(!config.featureFlags.dataEnvironments) {
+  SETUP_STEPS = SETUP_STEPS.removeAt(4);
+}
 
 let OrganizationProfile = DS.Model.extend({
   currentStep: DS.attr('string', { defaultValue: SETUP_STEPS[0] }),

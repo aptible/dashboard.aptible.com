@@ -2,6 +2,7 @@ import Ember from 'ember';
 import Attestation from 'diesel/models/attestation';
 import SPDRouteMixin from 'diesel/mixins/routes/spd-route';
 import buildSecurityControlGroups from 'diesel/utils/build-security-control-groups';
+import config from 'diesel/config/environment';
 
 export default Ember.Route.extend(SPDRouteMixin, {
   stepName: 'security-controls',
@@ -16,11 +17,15 @@ export default Ember.Route.extend(SPDRouteMixin, {
       Attestation
         .findOrCreate(attestationParams, this.store)
         .then((dataEnvironments) => {
-          if (dataEnvironments.get('isNew') || dataEnvironments.get('document.length') === 0) {
-            reject();
+          let dataEnvironmentSelections = {};
+
+          if(config.featureFlags.dataEnvironments) {
+            if (dataEnvironments.get('isNew') || dataEnvironments.get('document.length') === 0) {
+              reject();
+            }
+            dataEnvironmentSelections = dataEnvironments.get('document');
           }
 
-          let dataEnvironmentSelections = dataEnvironments.get('document');
           let groups = buildSecurityControlGroups(dataEnvironmentSelections,
                                                   organization, organizationProfile,
                                                   this.store);
@@ -29,7 +34,9 @@ export default Ember.Route.extend(SPDRouteMixin, {
     }).catch(() => {
       // No exisisting data environment attestation
       // Redirect to set up new data environment attestation
-      this.transitionTo('setup.data-environments');
+      if(config.featureFlags.dataEnvironments) {
+        this.transitionTo('setup.data-environments');
+      }
     });
   }
 });

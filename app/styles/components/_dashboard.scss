@@ -42,6 +42,15 @@ section.compliance-section {
       display: inline-block;
     }
   }
+
+  &.spd-incomplete {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+}
+
+.spd-notice {
+  margin: 0 0 50px;
 }
 
 .compliance-status-table-panel {

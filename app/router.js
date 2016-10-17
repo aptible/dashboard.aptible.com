@@ -45,7 +45,11 @@ function spdSteps() {
   this.route('organization');
   this.route('locations');
   this.route('team');
-  this.route('data-environments');
+
+  if(config.featureFlags.dataEnvironments) {
+    this.route('data-environments');
+  }
+
   this.route('security-controls', {}, function() {
     this.route('show', { path: ':handle' });
   });

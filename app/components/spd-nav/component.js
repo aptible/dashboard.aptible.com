@@ -1,5 +1,7 @@
 import Ember from 'ember';
-export const STEPS = [
+import config from 'diesel/config/environment';
+
+export var STEPS = [
   { key: 'organization',      name: 'Organization', description: 'Basic information about your organization' },
   { key: 'locations',         name: 'Locations', description: 'Manage your workforce locations' },
   { key: 'team',              name: 'Workforce', description: 'Configure training roles and Compliance admins'},
@@ -8,6 +10,9 @@ export const STEPS = [
   { key: 'finish',            name: 'Finish' }
 ];
 
+if (!config.featureFlags.dataEnvironments) {
+  STEPS = STEPS.removeAt(3);
+}
 
 export function getStepIndex(currentPath) {
   let prefix = /^requires-authorization.gridiron\.gridiron\-organization\./ig;

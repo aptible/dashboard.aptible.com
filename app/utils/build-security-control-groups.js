@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import loadSchema from 'diesel/utils/load-schema';
 import Attestation from 'diesel/models/attestation';
+import config from 'diesel/config/environment';
 
 export const dataEnvironmentProviderMap = {
   aptible: 'aptible',
@@ -11,10 +12,7 @@ export const dataEnvironmentProviderMap = {
   mailgun: 'mailgun'
 };
 
-export const globalSecurityControlGroups = [
-  'application_security_controls', 'email_security_controls',
-  'security_procedures_security_controls', 'workforce_security_controls',
-  'workstation_security_controls', 'software_development_lifecycle_security_controls'];
+var globalSecurityControlGroups = config.globalSecurityControlGroups;
 
 export default function(dataEnvironments, organization, organizationProfile, store) {
   let dataEnvironmentNames = Ember.keys(dataEnvironments).filter((deName) => {
@@ -39,8 +37,10 @@ export default function(dataEnvironments, organization, organizationProfile, sto
     });
   });
 
-  securityControlGroups.push({ handle: 'aptible_security_controls',
-                               provider: 'aptible', type: 'data-environment' });
+  if(config.featureFlags.dataEnvironments) {
+    securityControlGroups.push({ handle: 'aptible_security_controls',
+                                 provider: 'aptible', type: 'data-environment' });
+  }
 
   securityControlGroups = securityControlGroups.concat(globalSecurityControlGroups.map((global) => {
     return { handle: global, provider: 'organization', type: 'organization' };
@@ -85,9 +85,10 @@ function onAttestationLoad(attestation, securityControlGroup) {
   let { schema } = securityControlGroup;
   let schemaDocument = schema.buildDocument();
   let completed = !attestation.get('isNew');
+  let attestationDocument = attestation.get('document');
 
-  if(schema.id === attestation.get('schemaId')) {
-    schemaDocument.load(attestation.get('document'));
+  if(schema.id === attestation.get('schemaId') && !Ember.$.isEmptyObject(attestationDocument)) {
+    schemaDocument.load(attestationDocument);
   }
 
   attestation.set('schemaId', schema.id);

@@ -1,15 +1,28 @@
 {{#link-to showPath securityControlGroup classNames="panel-link" tabindex=securityControlGroup.step}}
+
   <div class="panel white-panel resource-list-item {{securityControlGroup.handle}} {{if securityControlGroup.completed 'completed' null}}">
+
     {{#if securityControlGroup.completed}}
       <div class="triangle-box">
         <div class="triangle"></div>
         <i class="fa fa-check"></i>
       </div>
+    {{else}}
+      <div class="cta">
+        {{link-to
+          'Start →'
+          showPath securityControlGroup
+          classNames="btn btn-default btn-sm start-security-control-group"}}
+      </div>
     {{/if}}
 
 
     {{#if isOrganizational}}
+      {{!--
+      Disabling this for now, since they are all organizational
+      TODO: Once DE-specific schemas are a thing, maybe uncomment this
       <div class="organization-name">{{securityControlGroup.organization.name}}</div>
+      --}}
     {{else}}
       <div class="provider">
         {{provider-logo size="sm" provider=securityControlGroup.provider}}
@@ -31,13 +44,5 @@
       </div>
     </div>
 
-    <div class="cta">
-      {{#unless securityControlGroup.completed}}
-        {{link-to
-          'Start'
-          showPath securityControlGroup
-          classNames="btn btn-default btn-sm start-security-control-group"}}
-      {{/unless}}
-    </div>
   </div>
 {{/link-to}}

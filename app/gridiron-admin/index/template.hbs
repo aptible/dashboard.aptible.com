@@ -7,22 +7,34 @@
 
 
   <div class="container">
-    {{#if model.allAlerts}}
-      <section class="compliance-section">
-        <header>
-          <span class="header-title">Compliance Alerts</span>
-          <span class="badge">{{model.alertCount}}</span>
-        </header>
+    {{#if model.hasCompletedSetup}}
+      {{#if model.allAlerts}}
+        <section class="compliance-section">
+          <header>
+            <span class="header-title">Compliance Alerts</span>
+            <span class="badge">{{model.alertCount}}</span>
+          </header>
 
-        <div class="row">
-          <div class="col-xs-12">
-            {{compliance-alerts}}
+          <div class="row">
+            <div class="col-xs-12">
+              {{compliance-alerts}}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      {{/if}}
+    {{else}}
+      {{#spd-notice organizationProfile=model.organizationProfile}}
+        {{#if (eq model.organizationProfile.currentStep 'start')}}
+          <h1>Start Your Security Program</h1>
+          <h2>Tell us more about your information security management program</h2>
+        {{else}}
+          <h1>Resume Setting Up Your Security Program</h1>
+          <h2>Tell us more about your information security management program</h2>
+        {{/if}}
+      {{/spd-notice}}
     {{/if}}
 
-    <section class="compliance-section">
+    <section class="compliance-section {{if model.hasCompletedSetup 'spd-complete' 'spd-incomplete'}}">
       <header>
         <span class="header-title">Compliance Engines</span>
       </header>
@@ -81,7 +93,7 @@
     </section>
 
     {{#if authorization.features.spd}}
-      {{compliance-dashboard-nav}}
+      {{compliance-dashboard-nav hasCompletedSetup=model.hasCompletedSetup}}
     {{/if}}
   </div>
 </main>

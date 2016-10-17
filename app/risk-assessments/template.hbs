@@ -11,30 +11,10 @@
   <div class="main-body container">
 
     {{#if showSPDNotice}}
-      <div class="activate-notice activate-notice--micro">
-        <div class="row">
-          <div class="col-xs-8 col-xs-offset-2">
-            <h1>Security Program Setup Required</h1>
-            <h2>We need to learn a bit about your security program before we can build your first risk assessment</h2>
-
-            <div class="call-to-action">
-              {{#aptible-ability scope="manage" permittable=model.organizationProfile as |hasAbility|}}
-                {{#if hasAbility}}
-                  {{link-to 'Complete Security Program' 'setup' class="btn btn-primary"}}
-                {{else}}
-                  <div class="call-to-action">
-                    <a disabled=true class="btn btn-primary disabled">Complete Security Program</a>
-                    {{#bs-tooltip title="You do not have permission to modify your Security Program"}}
-                      <i class="fa fa-question-circle"></i>
-                    {{/bs-tooltip}}
-                  </div>
-                {{/if}}
-              {{/aptible-ability}}
-            </div>
-          </div>
-        </div>
-      </div>
-
+      {{#spd-notice organizationProfile=model.organizationProfile}}
+        <h1>Security Program Setup Required</h1>
+        <h2>We need to learn a bit about your security program before we can build your first risk assessment</h2>
+      {{/spd-notice}}
     {{else}}
 
       {{#if draftRiskAssessments}}

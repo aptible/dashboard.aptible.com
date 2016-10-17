@@ -67,7 +67,7 @@
     min-width: 970px;
     -webkit-flex: 1;
     flex: 1;
-    background: #fafafa;
+    background: $color-bg-blue;
   }
 
   .layout-sidebar {
@@ -75,7 +75,7 @@
     order: -1;
     -webkit-flex: 0 0 225px;
     flex: 0 0 225px;
-    background: #fafafa;
+    background: $color-bg-blue;
     border-right: 1px solid #f0f0f0;
   }
 
