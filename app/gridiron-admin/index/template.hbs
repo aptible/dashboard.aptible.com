@@ -7,6 +7,17 @@
 
 
   <div class="container">
+  {{#if model.requiresSPD}}
+    {{#spd-notice organizationProfile=model.organizationProfile}}
+      {{#if (eq model.organizationProfile.currentStep 'start')}}
+        <h1>Start Your Security Program</h1>
+        <h2>Tell us more about your information security management program</h2>
+      {{else}}
+        <h1>Resume Setting Up Your Security Program</h1>
+        <h2>Tell us more about your information security management program</h2>
+      {{/if}}
+    {{/spd-notice}}
+  {{else}}
     {{#if model.allAlerts}}
       <section class="compliance-section">
         <header>
@@ -21,32 +32,33 @@
         </div>
       </section>
     {{/if}}
+  {{/if}}
 
-    <section class="compliance-section">
+    <section class="compliance-section {{if model.requiresSPD 'spd-required' 'spd-complete'}}">
       <header>
         <span class="header-title">Compliance Engines</span>
       </header>
 
       <div class="row">
         <div class="col-xs-6">
-          {{#if authorization.features.engines.risk}}
-            {{#link-to 'risk-assessments' class="panel-link"}}
+          {{#if complianceStatus.authorizationContext.enabledFeatures.risk}}
+            {{#link-to 'risk-assessments' class="panel-link risk"}}
               {{compliance-engine-status status=model.risk class="risk-engine-status"}}
             {{/link-to}}
           {{else}}
-            {{#link-to-aptible app="compliance" path="risk" class="panel-link"}}
+            {{#link-to-aptible app="compliance" path="risk" class="panel-link risk"}}
               {{compliance-engine-status status=model.risk class="risk-engine-status"}}
             {{/link-to-aptible}}
           {{/if}}
         </div>
 
         <div class="col-xs-6">
-          {{#if authorization.features.engines.policy}}
-            {{#link-to 'policy' class="panel-link"}}
+          {{#if complianceStatus.authorizationContext.enabledFeatures.policy}}
+            {{#link-to 'policy' class="panel-link policy"}}
               {{compliance-engine-status status=model.policy class="policy-engine-status"}}
             {{/link-to}}
           {{else}}
-            {{#link-to-aptible app='compliance' path='policy' class="panel-link"}}
+            {{#link-to-aptible app='compliance' path='policy' class="panel-link policy"}}
               {{compliance-engine-status status=model.policy class="policy-engine-status"}}
             {{/link-to-aptible}}
           {{/if}}
@@ -55,33 +67,25 @@
 
       <div class="row">
         <div class="col-xs-6">
-          {{#if authorization.features.engines.security}}
-            {{#link-to 'security' class="panel-link"}}
+          {{#if complianceStatus.authorizationContext.enabledFeatures.security}}
+            {{#link-to 'security' class="panel-link security"}}
               {{compliance-engine-status status=model.security class="security-engine-status"}}
             {{/link-to}}
           {{else}}
-            {{#link-to-aptible app='compliance' path='security' class="panel-link"}}
+            {{#link-to-aptible app='compliance' path='security' class="panel-link security"}}
               {{compliance-engine-status status=model.security class="security-engine-status"}}
             {{/link-to-aptible}}
           {{/if}}
         </div>
 
         <div class="col-xs-6">
-          {{#if authorization.features.engines.training}}
-            {{#link-to 'training' class="panel-link" class="panel-link"}}
-              {{compliance-engine-status status=model.training class="training-engine-status"}}
-            {{/link-to}}
-          {{else}}
-            {{#link-to-aptible app='compliance' path='training' class="panel-link"}}
-              {{compliance-engine-status status=model.training class="training-engine-status"}}
-            {{/link-to-aptible}}
-          {{/if}}
+          {{#link-to 'training' class="panel-link" class="panel-link training"}}
+            {{compliance-engine-status status=model.training class="training-engine-status"}}
+          {{/link-to}}
         </div>
       </div>
     </section>
 
-    {{#if authorization.features.spd}}
-      {{compliance-dashboard-nav}}
-    {{/if}}
+    {{compliance-dashboard-nav complianceStatus=model}}
   </div>
 </main>

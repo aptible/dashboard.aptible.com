@@ -24,28 +24,17 @@
   .multiselect-checkboxes {
     margin-top: 20px;
   }
-
-  /* x-toggle
-  .x-toggle-container-disabled {
-    opacity: .33;
-  }
-
-  .toggle-text {
-    text-transform: uppercase;
-    font-weight: $weight-semibold;
-    color: $color-light;
-
-    &.small {
-      font-size: 11px;
-      margin-top: -3px;
-    }
-  }
-  */
 }
 
 .security-control-title {
   .title {
     font-size: 18px;
+  }
+}
+
+.security-control-fields, .security-control-field {
+  &.visibility-hidden {
+    display: none;
   }
 }
 

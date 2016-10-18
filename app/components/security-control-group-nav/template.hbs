@@ -2,33 +2,33 @@
   <li>{{link-to '← All Security Controls' 'setup.security-controls'}}</li>
 </ul>
 
-<ul class='nav sidebar-nav'>
-  <li class="title">Data Environments</li>
+{{#if authorization.features.dataEnvironments}}
+  <ul class='nav sidebar-nav'>
+    <li class="title">Data Environments</li>
 
-  {{#each dataEnvironmentGroups as |securityControlGroup|}}
-    <li class="{{if (eq current.handle securityControlGroup.handle) 'active' null}}">
-      {{#link-to 'setup.security-controls.show' securityControlGroup class="step"}}
-        {{#if securityControlGroup.completed}}
-          <i class="fa fa-check success"></i>
-        {{/if}}
-        {{securityControlGroup.schema.schema.title}}
-      {{/link-to}}
-    </li>
-  {{/each}}
-</ul>
+    {{#each dataEnvironmentGroups as |securityControlGroup|}}
+      <li class="{{if (eq current.handle securityControlGroup.handle) 'active' null}}">
+        {{#link-to 'setup.security-controls.show' securityControlGroup class="step"}}
+          {{#if securityControlGroup.completed}}
+            <i class="fa fa-check success"></i>
+          {{/if}}
+          {{securityControlGroup.schema.schema.title}}
+        {{/link-to}}
+      </li>
+    {{/each}}
+  </ul>
+{{/if}}
 
 <ul class='nav sidebar-nav'>
-  <li class="title">Organizational</li>
+  <li class="title">Security Controls</li>
 
   {{#each organizationalGroups as |securityControlGroup|}}
-    <li class="{{if (eq current.handle securityControlGroup.handle) 'active' null}}">
+    <li class="{{if (eq current.handle securityControlGroup.handle) 'active' null}} {{if securityControlGroup.completed 'complete' 'incomplete'}}">
       {{#link-to 'setup.security-controls.show' securityControlGroup class="step"}}
-        {{#if securityControlGroup.completed}}
-          <i class="fa fa-check success"></i>
-        {{/if}}
-        {{securityControlGroup.schema.schema.title}}
+
+        <i class="fa fa-check success"></i>
+        <div>{{securityControlGroup.schema.schema.title}}</div>
       {{/link-to}}
     </li>
   {{/each}}
 </ul>
-

@@ -1,8 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  complianceStatus: Ember.inject.service(),
-
   model() {
     let organization = this.get('complianceStatus.organization');
     let user = this.get('session.currentUser');

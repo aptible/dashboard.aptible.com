@@ -1,0 +1,34 @@
+<div class="security-control-fields {{if property.readonly 'readonly' null}} {{if property.visible 'visible' 'visibility-hidden'}}">
+  <div class="security-control-title">
+    <div class="title">
+      {{#if property.readonly}}
+        {{#bs-tooltip title="This security control is readonly."}}
+          <i class="fa fa-lock"></i>
+        {{/bs-tooltip}}
+      {{/if}}
+      {{property.title}}
+      {{#if property.displayProperties.tooltip}}
+        {{#learn-more-tooltip tip=property.displayProperties.tooltip}}
+          <i class="fa fa-question-circle"></i>
+        {{/learn-more-tooltip}}
+      {{/if}}
+    </div>
+
+    {{#if property.description}}
+      <div class="description">{{property.description}}</div>
+    {{/if}}
+  </div>
+  {{#if options.showProperty}}
+    <div class="security-control-field animated fadeIn {{key}} {{if errors 'with-errors' null}} {{if property.readonly 'readonly' null}}">
+      <div class="schema-field-wrapper">
+        {{component (concat 'schema-field-' type)
+          key=key
+          property=property
+          document=document}}
+      </div>
+    </div>
+  {{/if}}
+</div>
+
+
+

@@ -1,5 +1,9 @@
+//
+// Skipping for now since data environments are currently removed
+// TODO: Re-enable tests once DEs have returned to SPD
+
 import Ember from 'ember';
-import { module, test } from 'qunit';
+import { module, skip } from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
 import { orgId, rolesHref, usersHref, invitationsHref,
@@ -55,7 +59,7 @@ module('Acceptance: Security Program Settings: Data Environments', {
   }
 });
 
-test('Lists all data environments', function(assert) {
+skip('Lists all data environments', function(assert) {
   stubCurrentAttestations(attestationHandle, []);
   stubProfile({ currentStep: 'data-environments' });
   stubRequests();
@@ -73,7 +77,7 @@ test('Lists all data environments', function(assert) {
 });
 
 
-test('Clicking Save saves data environment selections to attestation', function(assert) {
+skip('Clicking Save saves data environment selections to attestation', function(assert) {
   expect(3);
   stubCurrentAttestations({ selected_data_environments: { aptible: true }, team: [] });
   let expectedDataEnvironmentPayload = {
@@ -104,7 +108,7 @@ test('Clicking Save saves data environment selections to attestation', function(
   andThen(clickSaveButton);
 });
 
-test('Should load existing selections when attestation already exists', function(assert) {
+skip('Should load existing selections when attestation already exists', function(assert) {
   expect(5);
   let existingSelection = {
     amazonS3: false,
@@ -161,7 +165,7 @@ function clickSaveButton() {
 }
 
 function stubRequests() {
-  stubValidOrganization();
+  stubValidOrganization({ features: ['spd'] });
   stubSchemasAPI();
   stubCriterionDocuments({});
   stubStacks();

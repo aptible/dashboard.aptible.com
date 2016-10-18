@@ -42,38 +42,38 @@ module('Acceptance: Setup: Security Control Group', {
   }
 });
 
-let selectedDataEnvironments = { aptible: true, amazonS3: true, gmail: true };
+let selectedDataEnvironments = { };
 
 test('clicking next will save and go to next security control group', function(assert) {
   expect(4);
   stubCurrentAttestations({
     selected_data_environments: selectedDataEnvironments,
-    aws_security_controls: {},
-    amazon_s3_security_controls: {}
+    SPD_human_resources_information_security: {},
+    SPD_secure_software_development: {}
   });
   stubProfile({ currentStep: 'security-controls'});
   stubRequests();
-  signInAndVisit(`${securityControlsUrl}/amazon_s3_security_controls`);
+  signInAndVisit(`${securityControlsUrl}/SPD_secure_software_development`);
 
   stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to /attestations');
-    assert.equal(json.handle, 'amazon_s3_security_controls');
+    assert.equal(json.handle, 'SPD_secure_software_development');
 
     return this.success({ id: 1 });
   });
 
   andThen(() => {
     let title = findWithAssert('.security-control-group-title');
-    assert.ok(title.is(':contains(Amazon S3)'), 'amazon s3 control group');
+    assert.ok(title.is(':contains(Secure Software Development)'), 'SDLC title is shown');
   });
 
   andThen(clickContinueButton);
 
   andThen(() => {
     let title = findWithAssert('.security-control-group-title');
-    assert.ok(title.is(':contains(Google)'), 'on next control group');
+    assert.ok(title.is(':contains(Human Resources)'), 'on next control group');
   });
 });
 
@@ -81,27 +81,18 @@ test('clicking next will finish SPD if on last group', function(assert) {
   expect(7);
   stubCurrentAttestations({
     selected_data_environments: selectedDataEnvironments,
-    aws_security_controls: {},
-    amazon_s3_security_controls: {},
-    google_security_controls: {},
-    application_security_controls: {},
-    security_procedures_security_controls: {},
-    workforce_security_controls: {},
-    workstation_security_controls: {},
-    aptible_security_controls: {},
-    gmail_security_controls: {},
-    email_security_controls: {},
-    software_development_lifecycle_security_controls: {}
+    SPD_human_resources_information_security: {},
+    SPD_secure_software_development: {}
   });
   stubProfile({ currentStep: 'security-controls'});
   stubRequests();
-  signInAndVisit(`${securityControlsUrl}/software_development_lifecycle_security_controls`);
+  signInAndVisit(`${securityControlsUrl}/SPD_human_resources_information_security`);
 
   stubRequest('post', `/organization_profiles/${orgId}/attestations`, function(request) {
     let json = this.json(request);
 
     assert.ok(true, 'posts to /attestations');
-    assert.equal(json.handle, 'software_development_lifecycle_security_controls');
+    assert.equal(json.handle, 'SPD_human_resources_information_security');
 
     return this.success({ id: 1 });
   });
@@ -119,13 +110,13 @@ test('clicking next will finish SPD if on last group', function(assert) {
 
   andThen(() => {
     let title = findWithAssert('.security-control-group-title');
-    assert.ok(title.is(':contains(Software)'), 'sdlc control group');
+    assert.ok(title.is(':contains(Human Resources)'), 'HR control group');
   });
 
   andThen(clickContinueButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.finish');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.finish', 'on finish step');
   });
 });
 
@@ -134,23 +125,23 @@ test('clicking previous will go to previous group', function(assert) {
 
   stubCurrentAttestations({
     selected_data_environments: selectedDataEnvironments,
-    aws_security_controls: {},
-    amazon_s3_security_controls: {}
+    SPD_human_resources_information_security: {},
+    SPD_secure_software_development: {}
   });
   stubProfile({ currentStep: 'security-controls'});
   stubRequests();
-  signInAndVisit(`${securityControlsUrl}/amazon_s3_security_controls`);
+  signInAndVisit(`${securityControlsUrl}/SPD_human_resources_information_security`);
 
   andThen(() => {
     let title = findWithAssert('.security-control-group-title');
-    assert.ok(title.is(':contains(Amazon S3)'), 'amazon s3 control group');
+    assert.ok(title.is(':contains(Human Resources)'), 'on HR group');
   });
 
   andThen(clickBackButton);
 
   andThen(() => {
     let title = findWithAssert('.security-control-group-title');
-    assert.ok(title.is(':contains(Amazon Web Services)'), 'on next control group');
+    assert.ok(title.is(':contains(Secure Software Development)'), 'on previous control group');
   });
 });
 
@@ -159,16 +150,16 @@ test('clicking previous will go to index when on first group', function(assert) 
 
   stubCurrentAttestations({
     selected_data_environments: selectedDataEnvironments,
-    aws_security_controls: {},
-    amazon_s3_security_controls: {}
+    SPD_human_resources_information_security: {},
+    SPD_secure_software_development: {}
   });
   stubProfile({ currentStep: 'security-controls'});
   stubRequests();
-  signInAndVisit(`${securityControlsUrl}/aws_security_controls`);
+  signInAndVisit(`${securityControlsUrl}/SPD_secure_software_development`);
 
   andThen(() => {
     let title = findWithAssert('.security-control-group-title');
-    assert.ok(title.is(':contains(Amazon Web Services)'), 'amazon s3 control group');
+    assert.ok(title.is(':contains(Secure Software Development)'), 'on sdlc control group');
   });
 
   andThen(clickBackButton);
@@ -179,7 +170,7 @@ test('clicking previous will go to index when on first group', function(assert) 
 });
 
 function stubRequests() {
-  stubValidOrganization();
+  stubValidOrganization({ features: ['spd'] });
   stubSchemasAPI();
   stubCriterionDocuments({});
   stubStacks();

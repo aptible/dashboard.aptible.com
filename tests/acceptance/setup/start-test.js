@@ -98,7 +98,7 @@ test('Existing organization profiles should redirect to future step', function(a
 
 
 function stubRequests() {
-  stubValidOrganization();
+  stubValidOrganization({ features: ['spd'] });
   stubSchemasAPI();
   stubCriterionDocuments({});
   stubStacks();

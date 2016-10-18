@@ -1,8 +1,8 @@
 export default {
   "$schema":"http://json-schema.org/draft-04/schema#",
-  "id": "workforce_security_controls/1",
+  "id": "SPD_human_resources_information_security/1",
   "type":"object",
-  "title":"Workforce Security Controls",
+  "title":"Human Resources Information Security",
   "description": "Workforce security controls",
   "properties":{
     "security_controls": {

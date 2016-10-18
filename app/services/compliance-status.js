@@ -5,10 +5,10 @@ import AppCriterionStatus from 'diesel/utils/app-criterion-status';
 import UserCriterionStatus from 'diesel/utils/user-criterion-status';
 import CriterionAlertsMixin from 'diesel/mixins/services/criterion-alerts';
 
+
 export default Ember.Service.extend(CriterionAlertsMixin, {
   store: Ember.inject.service(),
-
-  requiresSPD: Ember.computed.not('organizationProfile.hasCompletedSetup'),
+  status: 'pending',
 
   loadOrganizationStatus(authorizationContext) {
     Ember.assert('An authorizationContext is requried in order to load compliance status', authorizationContext);
@@ -22,6 +22,8 @@ export default Ember.Service.extend(CriterionAlertsMixin, {
     let complianceStatus = this;
 
     var model;
+
+    this.set('status', 'loading');
 
     return new Ember.RSVP.Promise((resolve) => {
       // Load data:
@@ -99,9 +101,27 @@ export default Ember.Service.extend(CriterionAlertsMixin, {
         this.setProperties(model);
 
         resolve(this);
+      })
+      .then(() => {
+        this.set('status', 'loaded');
       });
     });
-  }
+  },
+
+  reloadStatus() {
+    let authorizationContext = this.get('authorizationContext');
+    this.loadOrganizationStatus(authorizationContext);
+  },
+
+  hasCompletedSetup: Ember.computed.equal('organizationProfile.hasCompletedSetup'),
+  requiresSPD: Ember.computed('organizationProfile.hasCompletedSetup', 'authorizationContext.enabledFeatures.spd', function() {
+    // If the organization doesn't even have the feature, return false
+    if(!this.get('authorizationContext.enabledFeatures.spd')) {
+      return false;
+    }
+
+    return !this.get('organizationProfile.hasCompletedSetup');
+  }),
 });
 
 

@@ -67,12 +67,22 @@
       margin-bottom: 4px;
     }
 
+    li div {
+      padding-left: 18px;
+    }
+
     .active {
       > .step {
         font-weight: $weight-semibold;
         color: $color-primary;
         background: $color-border-gray;
         border-radius: 0 5px 5px 0;
+      }
+    }
+
+    .complete {
+      .fa.success {
+        display: block;
       }
     }
 
@@ -84,7 +94,9 @@
       padding-left: 20px;
 
       i.success {
-        margin-right: 8px;
+        margin: 2px 0 0 0;
+        position: absolute;
+        display: none;
       }
     }
   }

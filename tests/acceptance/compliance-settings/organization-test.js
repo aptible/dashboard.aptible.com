@@ -99,7 +99,7 @@ function clickSaveButton() {
 }
 
 function stubRequests() {
-  stubValidOrganization();
+  stubValidOrganization({ features: ['spd'] });
   stubSchemasAPI();
   stubProfile({ hasCompletedSetup: true });
   stubCriterionDocuments({});

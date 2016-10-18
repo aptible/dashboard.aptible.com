@@ -4,7 +4,7 @@
 
 <ul class="nav sidebar-nav">
   <li class="title">Engines</li>
-  {{#if authorization.features.engines.risk}}
+  {{#if complianceStatus.authorizationContext.enabledFeatures.risk}}
     {{#link-to 'risk-assessments' tagName="li"}}
       {{link-to 'Risk Assessment' 'risk-assessments' bubbles=false}}
     {{/link-to}}
@@ -16,7 +16,7 @@
     </li>
   {{/if}}
 
-  {{#if authorization.features.engines.policy}}
+  {{#if complianceStatus.authorizationContext.enabledFeatures.policy}}
     {{#link-to 'policy-manuals' tagName="li"}}
       {{link-to 'Policies & Procedures' 'policy-manuals' bubbles=false}}
     {{/link-to}}
@@ -28,7 +28,7 @@
     </li>
   {{/if}}
 
-  {{#if authorization.features.engines.security}}
+  {{#if complianceStatus.authorizationContext.enabledFeatures.security}}
     {{#link-to 'application-security' tagName="li"}}
       {{link-to 'Application Security' 'application-security' bubbles=false}}
     {{/link-to}}
@@ -40,7 +40,7 @@
     </li>
   {{/if}}
 
-  {{#if authorization.features.engines.training}}
+  {{#if complianceStatus.authorizationContext.enabledFeatures.training}}
     {{#link-to 'training' tagName="li"}}
       {{link-to 'Workforce Training' 'training' bubbles=false}}
     {{/link-to}}
@@ -55,7 +55,7 @@
 
 <ul class="nav sidebar-nav">
   <li class="title">Tools</li>
-  {{#if authorization.features.tools.incidents}}
+  {{#if complianceStatus.authorizationContext.enabledFeatures.incidents}}
     {{#link-to 'incidents' tagName="li"}}
       {{link-to 'Incident Response' 'incidents' bubbles=false}}
     {{/link-to}}
@@ -67,7 +67,7 @@
     </li>
   {{/if}}
 
-  {{#if authorization.features.tools.contracts}}
+  {{#if complianceStatus.authorizationContext.enabledFeatures.contracts}}
     {{#link-to 'contracts' tagName="li"}}
       {{link-to 'Contract Management' 'contracts' bubbles=false}}
     {{/link-to}}
@@ -80,7 +80,7 @@
   {{/if}}
 </ul>
 
-{{#if authorization.features.spd}}
+{{#if complianceStatus.authorizationContext.enabledFeatures.spd}}
   <ul class="nav sidebar-nav">
     <li class="title">Security Program</li>
     {{#each securityProgramSteps as |step|}}

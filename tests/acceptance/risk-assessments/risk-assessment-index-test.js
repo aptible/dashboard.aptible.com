@@ -60,7 +60,7 @@ test(`visiting ${riskAssessmentsUrl}: with incomplete SPD`, function(assert) {
   andThen(() => {
     assert.equal(currentPath(), riskAssessmentPath, 'remains on risk assessment url');
     assert.equal(find('h1:contains(Security Program Setup Required)').length, 1, 'shows message to complete SPD');
-    assert.equal(find('a:contains(Complete Security Program)').length, 1, 'shows button to complete SPD');
+    assert.equal(find('a:contains(Setup Security Program)').length, 1, 'shows button to complete SPD');
   });
 });
 

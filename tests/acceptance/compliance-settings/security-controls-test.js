@@ -42,15 +42,16 @@ module('Acceptance: Security Program Settings: Security Controls Index', {
   }
 });
 
-let selectedDataEnvironments = { aptible: true, amazonS3: true, gmail: true };
-let expectedSecurityControlGroups = ['Amazon Web Services', 'Amazon S3',
-                                     'Google', 'Gmail', 'Application Security Controls',
-                                     'Security Procedures', 'Workforce Security Controls',
-                                     'Workstation Controls', 'Aptible'];
+//let selectedDataEnvironments = { aptible: true, amazonS3: true, gmail: true };
+let expectedSecurityControlGroups = ['Secure Software Development',
+                                     'Human Resources Information Security'];
 
 
 test('Basic UI', function(assert) {
-  stubCurrentAttestations({ selected_data_environments: selectedDataEnvironments });
+  stubCurrentAttestations({
+    selected_data_environments: {}
+  });
+
   stubProfile({ currentStep: 'security-controls'});
   stubRequests();
   signInAndVisit(securityControlsUrl);
@@ -60,8 +61,8 @@ test('Basic UI', function(assert) {
       assert.ok(find(`.info .title:contains(${groupName})`).length, `shows ${groupName}`);
     });
 
-    let googleStep = findWithAssert('.panel.google_security_controls');
-    let getStarted = googleStep.find('.start-security-control-group');
+    let sdlc = findWithAssert('.panel.SPD_secure_software_development');
+    let getStarted = sdlc.find('.start-security-control-group');
     assert.ok(getStarted.length, 'Has get started button');
     getStarted.click();
   });
@@ -73,30 +74,29 @@ test('Basic UI', function(assert) {
 
 test('Resuming with existing attestations', function(assert) {
   stubCurrentAttestations({
-    selected_data_environments: selectedDataEnvironments,
-    google_security_controls: { security_controls: { security: { implemented: true } } }
+    selected_data_environments: {},
+    SPD_secure_software_development: { security_controls: { security: { implemented: true } } }
   });
   stubProfile({ currentStep: 'security-controls'});
   stubRequests();
   signInAndVisit(securityControlsUrl);
 
   andThen(() => {
-    let googleStep = findWithAssert('.panel.google_security_controls');
-    assert.ok(googleStep.hasClass('completed'), 'step is completed');
-    assert.ok(googleStep.find('.fa.fa-check').length, 'has checkmark');
+    let sdlc = findWithAssert('.panel.SPD_secure_software_development');
+    assert.ok(sdlc.hasClass('completed'), 'step is completed');
+    assert.ok(sdlc.find('.fa.fa-check').length, 'has checkmark');
 
-    googleStep.click();
+    sdlc.click();
   });
 
   andThen(() => {
     assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.gridiron-settings.security-controls.show');
-
     assert.ok(find('input[name="security_controls.security.implemented"]').is(':checked'), 'Existing attestation is loaded');
   });
 });
 
 function stubRequests() {
-  stubValidOrganization();
+  stubValidOrganization({ features: ['spd'] });
   stubSchemasAPI();
   stubCriterionDocuments({});
   stubStacks();

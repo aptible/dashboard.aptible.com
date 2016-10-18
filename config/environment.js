@@ -16,6 +16,7 @@ module.exports = function(environment) {
     environment: environment,
     baseURL: '/',
     locationType: 'auto',
+    transitionDuration: 250,
 
     metricsBaseUri: metricsBaseUri,
     complianceBaseUri: complianceBaseUri,
@@ -99,23 +100,23 @@ module.exports = function(environment) {
       'object-src': "http://localhost:4200"
     },
 
+    complianceTools: [
+      { name: 'Incident Response', description: 'Manage and respond to incidents', path: 'incidents', app: 'compliance' },
+      { name: 'Contract Management', description: 'Store contracts and BAAs in one central location', path: 'contracts', app: 'compliance' }
+    ],
+
     featureFlags: {
       sheriff: true,
       spd: true,
+      dataEnvironments: false
+    },
 
-      engines: {
-        training: true,
-        risk: true,
-        policy: false,
-        security: false
-      },
-
-      tools: {
-        incidents: false,
-        contracts: false
-      }
-    }
-
+    // List of schema handles to load from Gridiron and display in SPD
+    globalSecurityControlGroups: [
+      'SPD_access_control_authentication_and_audit_logging', 'SPD_remote_access',
+      'SPD_encryption_and_key_management', 'SPD_secure_software_development',
+      'SPD_human_resources_information_security', 'SPD_mobile_device_security'
+    ]
   };
 
   if (environment === 'development') {
@@ -128,6 +129,11 @@ module.exports = function(environment) {
 
   if (environment === 'test') {
     // Testem prefers this...
+    ENV.globalSecurityControlGroups = [
+      'SPD_secure_software_development',
+      'SPD_human_resources_information_security'
+    ];
+    ENV.transitionDuration = 250;
     ENV.baseURL = '/';
     ENV.locationType = 'none';
 

@@ -50,14 +50,27 @@
 
     <div class="security-controls-list">
       {{#each-property properties=schema.properties.security_controls.properties document=document recursive=false as |key property type options|}}
-        {{security-control-input
-          key=(concat 'security_controls.' key)
-          property=property
-          type=type
-          provider=securityControlGroup.provider
-          document=document
-          attestation=attestation
-        }}
+        {{#if options.showProperty}}
+          {{#if property.properties}}
+            {{security-control-property-wrapper
+              key=(concat 'security_controls.' key)
+              property=property
+              type=type
+              provider=securityControlGroup.provider
+              document=document
+              attestation=attestation
+              options=options
+            }}
+          {{else}}
+            {{security-control-childless-property
+              key=(concat 'security_controls.' key)
+              options=options
+              property=property
+              type=type
+              document=document
+              attestation=attestation}}
+          {{/if}}
+        {{/if}}
       {{/each-property}}
     </div>
 
