@@ -35,7 +35,7 @@ test("visiting / redirects to no organization page", function(assert) {
 
   andThen(function() {
     assert.equal(currentPath(), "no-organization");
-    expectLink("support.aptible.com");
+    expectLink("aptible.com/support");
     expectLink("status.aptible.com");
     expectLink("twitter.com/aptiblestatus");
     assert.ok(find(`a[href="/settings/logout"]`).length,
