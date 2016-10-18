@@ -2,7 +2,6 @@ import Ember from 'ember';
 import SPDRouteMixin from 'diesel/mixins/routes/spd-route';
 
 export default Ember.Route.extend(SPDRouteMixin, {
-  complianceStatus: Ember.inject.service(),
   model() {
     return this.modelFor('setup');
   },

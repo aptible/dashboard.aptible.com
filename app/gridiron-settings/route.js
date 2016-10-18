@@ -2,7 +2,9 @@ import SetupRoute from 'diesel/setup/route';
 
 export default SetupRoute.extend({
   redirect() {
-    if(!this.get('authorization.features.spd')) {
+    let hasSPD = this.get('complianceStatus.authorizationContext.enabledFeatures.spd');
+
+    if(!hasSPD) {
       this.transitionTo('gridiron-admin');
     }
   },

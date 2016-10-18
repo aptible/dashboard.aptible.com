@@ -1,7 +1,14 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  complianceStatus: Ember.inject.service(),
+  redirect() {
+    let hasSPD = this.get('complianceStatus.authorizationContext.enabledFeatures.spd');
+
+    if(!hasSPD) {
+      this.transitionTo('gridiron-admin');
+    }
+  },
+
   model() {
     return this.get('complianceStatus.organizationProfile');
   },

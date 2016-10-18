@@ -9,7 +9,6 @@ import CriterionAlertsMixin from 'diesel/mixins/services/criterion-alerts';
 export default Ember.Service.extend(CriterionAlertsMixin, {
   store: Ember.inject.service(),
   status: 'pending',
-  requiresSPD: Ember.computed.not('organizationProfile.hasCompletedSetup'),
 
   loadOrganizationStatus(authorizationContext) {
     Ember.assert('An authorizationContext is requried in order to load compliance status', authorizationContext);
@@ -114,7 +113,15 @@ export default Ember.Service.extend(CriterionAlertsMixin, {
     this.loadOrganizationStatus(authorizationContext);
   },
 
-  hasCompletedSetup: Ember.computed.equal('organizationProfile.hasCompletedSetup')
+  hasCompletedSetup: Ember.computed.equal('organizationProfile.hasCompletedSetup'),
+  requiresSPD: Ember.computed('organizationProfile.hasCompletedSetup', 'authorizationContext.enabledFeatures.spd', function() {
+    // If the organization doesn't even have the feature, return false
+    if(!this.get('authorizationContext.enabledFeatures.spd')) {
+      return false;
+    }
+
+    return !this.get('organizationProfile.hasCompletedSetup');
+  }),
 });
 
 

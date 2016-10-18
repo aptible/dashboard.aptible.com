@@ -108,19 +108,7 @@ module.exports = function(environment) {
     featureFlags: {
       sheriff: true,
       spd: true,
-      dataEnvironments: false,
-
-      engines: {
-        training: true,
-        risk: true,
-        policy: false,
-        security: false
-      },
-
-      tools: {
-        incidents: false,
-        contracts: false
-      }
+      dataEnvironments: false
     },
 
     // List of schema handles to load from Gridiron and display in SPD

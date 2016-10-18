@@ -97,7 +97,7 @@ skip('Loading compliance with completed SPD does not redirect you', function(ass
 });
 
 function stubRequests() {
-  stubValidOrganization();
+  stubValidOrganization({ features: ['spd'] });
   stubSchemasAPI();
   stubCurrentAttestations({ workforce_roles: [
     { email: users[0].email, isDeveloper: false, isSecurityOfficer: false, isRobot: false, hasAptibleAccount: true }

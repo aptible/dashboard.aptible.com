@@ -96,7 +96,7 @@ test('Resuming with existing attestations', function(assert) {
 });
 
 function stubRequests() {
-  stubValidOrganization();
+  stubValidOrganization({ features: ['spd'] });
   stubSchemasAPI();
   stubCriterionDocuments({});
   stubStacks();

@@ -14,9 +14,12 @@ import Ember from 'ember';
 
 export default Ember.Object.extend({
   store: Ember.inject.service(),
-
+  enabledFeatures: {},
   load() {
     let { organization } = this.getProperties('organization');
+
+    this.loadOrganizationFeatures();
+
     return new Ember.RSVP.Promise((resolve, reject) => {
       Ember.RSVP.hash({
         users: organization.get('users'),
@@ -53,6 +56,21 @@ export default Ember.Object.extend({
       })
       .catch((e) => reject(e));
     });
+  },
+
+  loadOrganizationFeatures() {
+    let organization = this.get('organization');
+    if (!Array.isArray(organization.get('features'))) {
+      return;
+    }
+
+    let enabledFeatures = this.get('enabledFeatures');
+
+    organization.get('features').forEach((feature) => {
+      enabledFeatures[feature] = true;
+    });
+
+    this.set('enabledFeatures', enabledFeatures);
   },
 
   // Computed related to organization's roles

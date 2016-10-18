@@ -157,7 +157,7 @@ skip('With no data environments configured it redirects back to data environment
 });
 
 function stubRequests() {
-  stubValidOrganization();
+  stubValidOrganization({ features: ['spd'] });
   stubSchemasAPI();
   stubCriterionDocuments({});
   stubStacks();

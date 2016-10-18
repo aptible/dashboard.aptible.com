@@ -8,7 +8,7 @@
       {{#aptible-ability permittable=model.organizationProfile scope='manage'}}
         <div class="header-right">
           <ul class="header-actions">
-            {{#if authorization.features.spd}}
+            {{#if model.authorizationContext.enabledFeatures.spd}}
               <li>
                 {{#link-to 'gridiron-settings.team' classNames='btn btn-default'}}
                   Manage Workforce

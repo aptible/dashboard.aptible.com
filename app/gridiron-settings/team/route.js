@@ -16,7 +16,6 @@ const ADMIN_ROLE_DESCRIPTION = `Users in this role can add/delete compliance
                                 and security controls.`;
 
 export default Ember.Route.extend({
-  complianceStatus: Ember.inject.service(),
   model() {
     let complianceStatus = this.get('complianceStatus');
     let { organization, invitations, users, roles } = complianceStatus.getProperties('organization', 'invitations', 'users', 'roles');

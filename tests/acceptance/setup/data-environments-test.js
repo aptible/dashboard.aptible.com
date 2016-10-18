@@ -260,7 +260,7 @@ function toggleDataEnvironment(environment) {
 }
 
 function stubRequests() {
-  stubValidOrganization();
+  stubValidOrganization({ features: ['spd'] });
   stubSchemasAPI();
   stubCriterionDocuments({});
   stubStacks();

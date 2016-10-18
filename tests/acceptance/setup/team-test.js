@@ -155,8 +155,8 @@ test('Clicking back should return you to previous step', function(assert) {
   });
 });
 
-function stubRequests(options) {
-  stubValidOrganization(options);
+function stubRequests() {
+  stubValidOrganization({ features: ['spd'] });
   stubSchemasAPI();
   stubCriterionDocuments({});
   stubStacks();

@@ -195,7 +195,7 @@ function selectState(state) {
 }
 
 function stubRequests() {
-  stubValidOrganization();
+  stubValidOrganization({ features: ['spd'] });
   stubSchemasAPI();
   stubProfile({ hasCompletedSetup: true });
   stubCriterionDocuments({});

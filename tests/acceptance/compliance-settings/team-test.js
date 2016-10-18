@@ -446,6 +446,7 @@ function stubRequests(options = {}) {
   if(options.invitations) {
     invitations = options.invitations;
   }
+  options.features = ['spd'];
   stubValidOrganization(options);
   stubSchemasAPI();
   stubCurrentAttestations({ workforce_locations: [] });

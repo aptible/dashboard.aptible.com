@@ -20,6 +20,7 @@ export default DS.Model.extend({
   plan: DS.attr('string'),
   opsAlertEmail: DS.attr('string'),
   securityAlertEmail: DS.attr('string'),
+  features: DS.attr(),
   users: DS.hasMany('user', {async:true}),
   invitations: DS.hasMany('invitation', {async:true}),
   roles: DS.hasMany('role', {async:true}),

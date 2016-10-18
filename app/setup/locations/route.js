@@ -5,7 +5,6 @@ import Attestation from 'diesel/models/attestation';
 import loadSchema from 'diesel/utils/load-schema';
 
 export default Ember.Route.extend(SPDRouteMixin, {
-  complianceStatus: Ember.inject.service(),
   model() {
     let organizationProfile = this.modelFor('setup');
     let handle = 'workforce_locations';

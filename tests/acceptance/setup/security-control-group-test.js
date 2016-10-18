@@ -170,7 +170,7 @@ test('clicking previous will go to index when on first group', function(assert) 
 });
 
 function stubRequests() {
-  stubValidOrganization();
+  stubValidOrganization({ features: ['spd'] });
   stubSchemasAPI();
   stubCriterionDocuments({});
   stubStacks();

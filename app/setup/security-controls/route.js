@@ -6,7 +6,6 @@ import config from 'diesel/config/environment';
 
 export default Ember.Route.extend(SPDRouteMixin, {
   stepName: 'security-controls',
-  complianceStatus: Ember.inject.service(),
   model() {
     let handle = 'selected_data_environments';
     let organization = this.get('complianceStatus.organization');
