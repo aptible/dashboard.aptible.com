@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import Location from "diesel/utils/location";
 
 export default Ember.Route.extend({
   model(params){
@@ -38,7 +39,7 @@ export default Ember.Route.extend({
       });
 
       verification.save().then( () => {
-        this.replaceWith('enclave.index');
+        return Location.replaceAndWait('/');
       }, () => {
         this.controllerFor('claim').set('error', `
           There was an error accepting this invitation. Perhaps

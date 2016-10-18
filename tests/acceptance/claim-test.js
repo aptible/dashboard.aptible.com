@@ -105,7 +105,7 @@ test(`visiting ${url} as unauthenticated revisits after log in`, function(assert
   clickButton('Accept invitation');
 
   andThen(function(){
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
+    expectReplacedLocation('/');
   });
 });
 
@@ -147,7 +147,7 @@ test(`visiting ${url} as authenticated creates verification`, function(assert) {
   signInAndVisit(url);
   clickButton('Accept invitation');
   andThen(function(){
-    assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
+    expectReplacedLocation('/');
   });
 });
 
