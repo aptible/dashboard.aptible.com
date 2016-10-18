@@ -16,6 +16,7 @@ module.exports = function(environment) {
     environment: environment,
     baseURL: '/',
     locationType: 'auto',
+    transitionDuration: 250,
 
     metricsBaseUri: metricsBaseUri,
     complianceBaseUri: complianceBaseUri,
@@ -140,6 +141,11 @@ module.exports = function(environment) {
 
   if (environment === 'test') {
     // Testem prefers this...
+    ENV.globalSecurityControlGroups = [
+      'SPD_secure_software_development',
+      'SPD_human_resources_information_security'
+    ];
+    ENV.transitionDuration = 250;
     ENV.baseURL = '/';
     ENV.locationType = 'none';
 

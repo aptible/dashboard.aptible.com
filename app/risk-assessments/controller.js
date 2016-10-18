@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   showSPDNotice: Ember.computed.or('hasNoRiskAssessments', 'hasNotCompletedSetup'),
 
-  hasNotCompletedSetup: Ember.computed.equal('model.hasCompletedSetup', false),
+  hasNotCompletedSetup: Ember.computed.equal('model.organizationProfile.hasCompletedSetup', false),
   persistedRiskAssessments: Ember.computed.filterBy('model.riskAssessments', 'isNew', false),
 
   hasNoRiskAssessments: Ember.computed.equal('persistedRiskAssessments.length', 0),

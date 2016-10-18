@@ -3,7 +3,6 @@ export default {
   "id": "google_security_controls/1",
   "type":"object",
   "title":"Google",
-  "description": "Google security controls",
   "properties":{
     "security_controls": {
       "type": "object",

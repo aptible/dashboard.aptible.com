@@ -1,5 +1,8 @@
+//
+// Skipping for now since data environments are currently removed
+// TODO: Re-enable tests once DEs have returned to SPD
 import Ember from 'ember';
-import { module, test } from 'qunit';
+import { module, skip } from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from 'ember-cli-fake-server';
 import { orgId, rolesHref, usersHref, invitationsHref,
@@ -55,7 +58,7 @@ module('Acceptance: Setup: Data Environments', {
   }
 });
 
-test('Lists all data environments', function(assert) {
+skip('Lists all data environments', function(assert) {
   stubCurrentAttestations(attestationHandle, []);
   stubProfile({ currentStep: 'data-environments' });
   stubRequests();
@@ -72,7 +75,7 @@ test('Lists all data environments', function(assert) {
   });
 });
 
-test('Clicking back should return you to previous step', function(assert) {
+skip('Clicking back should return you to previous step', function(assert) {
   stubCurrentAttestations({ selected_data_environments: {}, workforce_roles: [] });
   stubProfile({ currentStep: 'data-environments' });
   stubRequests();
@@ -93,7 +96,7 @@ test('Clicking back should return you to previous step', function(assert) {
   });
 });
 
-test('Clicking continue saves data environment selections to organization profile', function(assert) {
+skip('Clicking continue saves data environment selections to organization profile', function(assert) {
   expect(6);
   stubCurrentAttestations({selected_data_environments: { aptible: true }, team: [] });
   let expectedDataEnvironmentPayload = {
@@ -138,7 +141,7 @@ test('Clicking continue saves data environment selections to organization profil
   });
 });
 
-test('Should load existing selections when attestation already exists', function(assert) {
+skip('Should load existing selections when attestation already exists', function(assert) {
   expect(8);
   let existingSelection = {
     amazonS3: false,
@@ -199,7 +202,7 @@ test('Should load existing selections when attestation already exists', function
   });
 });
 
-test('Save progress', function(assert) {
+skip('Save progress', function(assert) {
   expect(5);
   let existingSelection = {
     amazonS3: false,

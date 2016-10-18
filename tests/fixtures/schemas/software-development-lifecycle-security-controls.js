@@ -1,20 +1,19 @@
 export default {
   "$schema":"http://json-schema.org/draft-04/schema#",
-  "id": "software_development_lifecycle_security_controls/1",
+  "id": "SPD_secure_software_development/1",
   "type":"object",
-  "title":"Software Development Lifecycle",
+  "title":"Secure Software Development",
   "properties":{
     "security_controls": {
       "type": "object",
       "properties": {
-        "secureProcedure0":{
+        "security":{
           "type": "object",
-          "required": ["implemented"],
           "title":"Do you secure?",
           "properties": {
             "implemented": {
               "type":"boolean",
-              "description":"??",
+              "description":"Wow",
               "displayProperties":{
                 "useToggle":true,
                 "showLabels":true,

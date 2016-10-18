@@ -9,8 +9,7 @@
   </header>
 
   <div class="main-body container">
-
-    {{#if showSPDNotice}}
+    {{#if hasNotCompletedSetup}}
       {{#spd-notice organizationProfile=model.organizationProfile}}
         <h1>Security Program Setup Required</h1>
         <h2>We need to learn a bit about your security program before we can build your first risk assessment</h2>

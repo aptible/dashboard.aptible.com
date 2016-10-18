@@ -57,7 +57,7 @@
     "ember-export-application-global": "^1.0.4",
     "ember-feature-flags": "^1.0.0",
     "ember-json-schema-document": "0.1.6",
-    "ember-json-schema-views": "0.0.20",
+    "ember-json-schema-views": "0.0.21",
     "ember-multiselect-checkboxes": "0.8.0",
     "ember-one-way-input": "0.1.1",
     "ember-qrcode": "0.0.4",

@@ -1,4 +1,4 @@
-const DEFAULT_DURATION = 250;
+import config from 'diesel/config/environment';
 const DEFAULT_EASING = 'easeInOut';
 
 export default function() {
@@ -16,7 +16,7 @@ export default function() {
 
   this.transition(
     this.outletName('sidebar'),
-    this.use('toLeft', { duration: DEFAULT_DURATION, easing: DEFAULT_EASING })
+    this.use('toLeft', { duration: config.transitionDuration, easing: DEFAULT_EASING })
   );
 
   this.transition(
@@ -31,11 +31,11 @@ export default function() {
 
   this.transition(
     this.inHelper('liquid-modal'),
-    this.use('crossFade', { duration: DEFAULT_DURATION, easing: DEFAULT_EASING })
+    this.use('crossFade', { duration: config.transitionDuration, easing: DEFAULT_EASING })
   );
 
   this.transition(
     this.hasClass('fadeIn'),
-    this.use('crossFade', { duration: DEFAULT_DURATION, easing: DEFAULT_EASING })
+    this.use('crossFade', { duration: config.transitionDuration, easing: DEFAULT_EASING })
   );
 }

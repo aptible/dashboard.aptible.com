@@ -10,6 +10,7 @@ let userId = 'basic-user-1';
 let basicRoleId = 'basic-role-1';
 let developerRoleId = 'developer-role-2';
 let trainingUrl = `/gridiron/${orgId}/admin/training`;
+let gridironAdminUrl = `/gridiron/${orgId}/admin`;
 let users = [
   {
     id: userId,
@@ -51,6 +52,28 @@ module('Acceptance: Security Program Design: Required', {
   afterEach() {
     Ember.run(application, 'destroy');
   }
+});
+
+test('Loading compliance without starting SPD shows message to start', function(assert) {
+  stubProfile({ hasCompletedSetup: false });
+  stubRequests();
+  signInAndVisit(gridironAdminUrl);
+
+  andThen(() => {
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.index', 'remain on gridiron admin page');
+    assert.equal(find('.activate-notice:contains(Start Your Security Program)').length, 1, 'shows message to start SPD');
+  });
+});
+
+test('Loading compliance without completing SPD shows message to resume', function(assert) {
+  stubProfile({ hasCompletedSetup: false, currentStep: 'team' });
+  stubRequests();
+  signInAndVisit(gridironAdminUrl);
+
+  andThen(() => {
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.index', 'remain on gridiron admin page');
+    assert.equal(find('.activate-notice:contains(Resume Setting Up)').length, 1, 'shows message to start SPD');
+  });
 });
 
 skip('Loading compliance without completing SPD redirects you to start SPD', function(assert) {
