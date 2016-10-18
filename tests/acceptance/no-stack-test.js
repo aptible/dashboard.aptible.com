@@ -29,7 +29,7 @@ test("visiting / redirects to no stacks page", function(assert) {
   andThen(function() {
     assert.equal(currentPath(), "requires-authorization.enclave.no-stack");
     assert.equal(find("h1:contains(Your account doesn't have access to any environments)").length, 1, 'shows message');
-    expectLink("support.aptible.com");
+    expectLink("aptible.com/support");
     expectLink("status.aptible.com");
   });
 });
