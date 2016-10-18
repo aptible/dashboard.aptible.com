@@ -105,7 +105,7 @@ export default Ember.Service.extend(CriterionAlertsMixin, {
       })
       .then(() => {
         this.set('status', 'loaded');
-      })
+      });
     });
   },
 

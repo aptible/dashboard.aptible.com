@@ -13,15 +13,15 @@
       <div class="description">{{property.description}}</div>
     {{/if}}
   </div>
-  {{#each-property properties=property.properties document=document as |fieldKey field fieldType fieldOptions|}}
-    {{security-control-field
-      attestation=attestation
-      parentKey=key
-      key=fieldKey
-      property=field
-      type=fieldType
-      document=document
-      options=fieldOptions}}
-  {{/each-property}}
+    {{#each-property properties=property.properties document=document as |fieldKey field fieldType fieldOptions|}}
+      {{security-control-property
+        attestation=attestation
+        parentKey=key
+        key=fieldKey
+        property=field
+        type=fieldType
+        document=document
+        options=fieldOptions}}
+    {{/each-property}}
 </div>
 

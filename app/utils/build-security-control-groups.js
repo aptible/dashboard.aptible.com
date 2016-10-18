@@ -63,7 +63,7 @@ function loadSchemaAndAttestation(securityControlGroup, organizationProfile, sto
     securityControlGroup.schema.then((schema) => {
       Ember.set(securityControlGroup, 'schema', schema);
       let attestationParams = { handle: securityControlGroup.handle,
-                              schemaId: schema.id, organizationProfile, document: {} };
+                              schemaId: schema.id, organizationProfile, document: { security_controls: {} } };
       let loadAttestation =  Attestation
                                .findOrCreate(attestationParams, store)
                                .then((attestation) => {
