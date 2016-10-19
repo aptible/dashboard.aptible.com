@@ -1,13 +1,13 @@
 {{#if authorization.hasAnyOrganizationsWithEnclaveProduct}}
   {{#link-to 'enclave' tagName="li"}}
-    {{link-to 'Apps and Databases' 'enclave' class="enclave-nav" bubbles=false}}
+    {{link-to 'Enclave' 'enclave' class="enclave-nav" bubbles=false}}
   {{/link-to}}
 {{/if}}
 
 {{#if authorization.hasAnyOrganizationsWithGridironProduct}}
   {{#if showSheriff}}
     {{#link-to 'gridiron' tagName="li"}}
-      {{link-to 'Compliance Tools' 'gridiron' class="gridiron-nav" bubbles=false}}
+      {{link-to 'Gridiron' 'gridiron' class="gridiron-nav" bubbles=false}}
     {{/link-to}}
   {{else}}
     <li>
@@ -18,7 +18,7 @@
 
 {{#each authorization.organizations as |organization|}}
   {{#link-to 'organization' organization.id tagName="li"}}
-    {{link-to organization.name 'organization' organization.id class="organization-nav" bubbles=false}}
+    {{link-to (concat organization.name ' Settings')  'organization' organization.id class="organization-nav" bubbles=false}}
   {{/link-to}}
 {{/each}}
 
