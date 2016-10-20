@@ -15,7 +15,7 @@
       {{#if (eq riskAssessment.status 'draft')}}
         {{link-to 'Resume' 'risk-assessment' riskAssessment.id class="btn btn-primary"}}
       {{else}}
-        {{link-to 'Download PDF' 'risk-assessment' riskAssessment.id class="btn btn-default"}}
+        {{link-to 'Download PDF' 'print-risk-assessment' riskAssessment.id class="btn btn-default" target="_blank"}}
         {{link-to 'View' 'risk-assessment' riskAssessment.id class="btn btn-primary"}}
       {{/if}}
     </div>
