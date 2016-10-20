@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import Attestation from 'diesel/models/attestation';
 import buildSecurityControlGroups from 'diesel/utils/build-security-control-groups';
+import config from 'diesel/config/environment';
 
 export default Ember.Route.extend({
   model() {
@@ -13,11 +14,15 @@ export default Ember.Route.extend({
       Attestation
         .findOrCreate(attestationParams, this.store)
         .then((dataEnvironments) => {
-          if (dataEnvironments.get('isNew') || dataEnvironments.get('document.length') === 0) {
-            reject();
+          let dataEnvironmentSelections = {};
+
+          if(config.featureFlags.dataEnvironments) {
+            if (dataEnvironments.get('isNew') || dataEnvironments.get('document.length') === 0) {
+              reject();
+            }
+            dataEnvironmentSelections = dataEnvironments.get('document');
           }
 
-          let dataEnvironmentSelections = dataEnvironments.get('document');
           let groups = buildSecurityControlGroups(dataEnvironmentSelections,
                                                   organization, organizationProfile,
                                                   this.store);

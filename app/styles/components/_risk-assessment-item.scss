@@ -37,6 +37,10 @@
   background-color: #2ecc71;
   color: white;
   text-shadow: 0px 1px 1px rgba(0,0,0,0.22);
+
+  .ra__label {
+    color: #fff;
+  }
 }
 .ra__status-header--draft {
   background-color: #445464;
@@ -68,12 +72,6 @@
   color: #4a4a4a;
   font-size: 16px;
   margin: 0 0 10px 0;
-  // Weird, but the the status comes lowercase from the API,
-  // so we capitalize it, but we want a lowercase "v" for version: v1
-  text-transform: capitalize;
-  &:first-letter {
-    text-transform: lowercase;
-  }
 }
 
 .ra-list-item__sub-title {
