@@ -61,7 +61,7 @@ test('Loading compliance without starting SPD shows message to start', function(
 
   andThen(() => {
     assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.index', 'remain on gridiron admin page');
-    assert.equal(find('.activate-notice:contains(Start Your Security Program)').length, 1, 'shows message to start SPD');
+    assert.equal(find('.activate-notice:contains(Configure Your Security Program)').length, 1, 'shows message to start SPD');
   });
 });
 
@@ -72,7 +72,7 @@ test('Loading compliance without completing SPD shows message to resume', functi
 
   andThen(() => {
     assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.index', 'remain on gridiron admin page');
-    assert.equal(find('.activate-notice:contains(Resume Setting Up)').length, 1, 'shows message to start SPD');
+    assert.equal(find('.activate-notice:contains(Resume Security Program Configuration)').length, 1, 'shows message to start SPD');
   });
 });
 

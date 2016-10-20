@@ -122,7 +122,7 @@ test('Compliance owners should be able to create compliance roles, but not platf
   });
 });
 
-test('Compliance Owners should be able to manage compliance roles settings', function(assert) {
+test('Gridiron Owners should be able to manage compliance roles settings', function(assert) {
   let newRoleName = 'renamed training only';
 
   assert.expect(8);
