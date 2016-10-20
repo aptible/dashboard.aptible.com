@@ -62,7 +62,7 @@ test('Organizations with SPD feature, SPD incomplete', function(assert) {
   signInAndVisit(gridironAdminUrl);
   andThen(() => {
     assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.index', 'remain on admin index');
-    assert.equal(find('.activate-notice:contains(Start Your Security Program)').length, 1, 'shows message to start SPD');
+    assert.equal(find('.activate-notice:contains(Configure Your Security Program)').length, 1, 'shows message to start SPD');
   });
 });
 
