@@ -32,7 +32,7 @@ export default Ember.Component.extend({
     return this.get('isOnlyRole') && this.get('authorizationContext.userIsOrganizationAdmin');
   }),
 
-  // Account | Platform | Compliance Owners effectively have admin privileges,
+  // Account | Enclave | Gridiron Owners effectively have admin privileges,
   // so it gets toggled and disabled.
   isPrivilegedMember: Ember.computed('membership.privileged', 'memberUserRoles.[]', function() {
     //return this.isRoleOwner(this.get('membership.user'), this.get('memberUserRoles')) ||

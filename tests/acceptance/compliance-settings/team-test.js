@@ -106,7 +106,7 @@ let roles = [
   {
     id: complianceOwnerId,
     type: 'compliance_owner',
-    name: 'Compliance Owners',
+    name: 'Gridiron Owners',
     _links: {
       self: { href: `/roles/${complianceOwnerId}` },
       users: { href: `/roles/${complianceOwnerId}/users`},
@@ -254,9 +254,9 @@ test('Setup Inviting users if a role doesn\'t exist will create role', function(
 
 function testBasicUI(assert) {
   andThen(() => {
-    // Shows 2 role panels: Training Only, Compliance Owners
+    // Shows 2 role panels: Training Only, Gridiron Owners
     let trainingPanel = findWithAssert('.workforce-role:contains(Training-Only Users)');
-    let adminPanel = findWithAssert('.workforce-role:contains(Compliance Owners)');
+    let adminPanel = findWithAssert('.workforce-role:contains(Gridiron Owners)');
 
     assert.equal(trainingPanel.length, 1, 'shows training only role');
     assert.equal(adminPanel.length, 1, 'shows compliance admin role');

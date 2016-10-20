@@ -3,7 +3,7 @@ import Role from 'diesel/models/role';
 
 export const DEFAULT_TRAINING_ROLE_NAME = 'Training-Only Users';
 export const DEFAULT_DEVELOPER_ROLE_NAME = 'Developers';
-export const DEFAULT_ADMIN_ROLE_NAME = 'Compliance Owners';
+export const DEFAULT_ADMIN_ROLE_NAME = 'Gridiron Owners';
 
 const TRAINING_ROLE_DESCRIPTION = `Users in this role have no Aptible 
                                    permissions. Use it for workforce members
