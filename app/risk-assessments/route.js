@@ -10,10 +10,7 @@ export default Ember.Route.extend({
     let organization = this.get('complianceStatus.organization');
     let organizationProfile = this.modelFor('gridiron-admin');
     let riskAssessments =  organizationProfile.get('riskAssessments');
-
-    if(riskAssessments.get('isFulfilled')) {
-      riskAssessments = riskAssessments.reload();
-    }
+    riskAssessments = riskAssessments.reload();
 
     return Ember.RSVP.hash({
       organization, organizationProfile, riskAssessments
