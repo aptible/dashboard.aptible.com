@@ -19,6 +19,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
     attestation.setUser(this.session.get('currentUser'));
     return attestation.save().then(() => {
       Ember.set(this.currentModel, 'completed', true);
+      Ember.get(this, 'flashMessages').success('Security controls saved!');
     });
   },
 
