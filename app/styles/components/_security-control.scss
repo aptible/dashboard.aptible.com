@@ -2,10 +2,6 @@
   border-bottom: 1px solid $color-border-gray;
   padding: 30px;
 
-  &:last-child {
-    border: 0;
-  }
-
   .title {
     font-size: 15px;
     font-weight: $weight-semibold;
@@ -35,6 +31,14 @@
 .security-control-fields, .security-control-field {
   &.visibility-hidden {
     display: none;
+  }
+}
+
+.property-visibility-wrapper {
+  display: none;
+
+  &.visible {
+    display: block;
   }
 }
 
