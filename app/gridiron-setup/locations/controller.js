@@ -1,13 +1,13 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  setup: Ember.inject.controller(),
+  gridironSetup: Ember.inject.controller(),
   remoteOnly: false,
   addNewLocation() {
     let { schemaDocument, schema, locationProperty } = this.getProperties('schemaDocument', 'schema', 'locationProperty');
     let newLocation = schemaDocument.addItem();
 
-    this.get('setup').setProperties({ newLocation, schema, schemaDocument,
+    this.get('gridironSetup').setProperties({ newLocation, schema, schemaDocument,
                                       locationProperty });
   },
 

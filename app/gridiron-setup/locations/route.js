@@ -6,7 +6,7 @@ import loadSchema from 'diesel/utils/load-schema';
 
 export default Ember.Route.extend(SPDRouteMixin, {
   model() {
-    let organizationProfile = this.modelFor('setup');
+    let organizationProfile = this.modelFor('gridiron-setup');
     let handle = 'workforce_locations';
 
     return loadSchema(handle).then((schema) => {
@@ -31,14 +31,14 @@ export default Ember.Route.extend(SPDRouteMixin, {
   actions: {
     onNext() {
       let { schemaDocument, attestation } = this.currentModel;
-      let profile = this.modelFor('setup');
+      let profile = this.modelFor('gridiron-setup');
 
       attestation.set('document', schemaDocument.dump({ excludeInvalid: true }) || []);
       attestation.setUser(this.session.get('currentUser'));
       attestation.save().then(() => {
         profile.next(this.get('stepName'));
         return profile.save().then(() => {
-          this.transitionTo(`setup.${profile.get('currentStep')}`);
+          this.transitionTo(`gridiron-setup.${profile.get('currentStep')}`);
         });
       }).catch((e) => {
         let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');
