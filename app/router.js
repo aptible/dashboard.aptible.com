@@ -45,7 +45,7 @@ function spdSteps() {
   this.route('organization');
   this.route('locations');
   this.route('team');
-
+  this.route('predisposing-conditions');
   if(config.featureFlags.dataEnvironments) {
     this.route('data-environments');
   }
@@ -208,7 +208,7 @@ Router.map(function() {
           this.route('contracts');
           this.route('incidents');
           this.route('gridiron-settings', { path: 'settings', resetNamespace: true }, spdSteps);
-          this.route('setup', { path: 'setup', resetNamespace: true}, function() {
+          this.route('gridiron-setup', { path: 'setup', resetNamespace: true}, function() {
             this.route('start');
             this.route('finish');
             spdSteps.call(this);

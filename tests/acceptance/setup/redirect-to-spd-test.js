@@ -82,7 +82,7 @@ skip('Loading compliance without completing SPD redirects you to start SPD', fun
   signInAndVisit(trainingUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.start', 'redirected to start SPD');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.gridiron-setup.start', 'redirected to start SPD');
   });
 });
 

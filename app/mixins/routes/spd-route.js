@@ -6,11 +6,11 @@ export default Ember.Mixin.create({
   }),
 
   beforeModel() {
-    let profile = this.modelFor('setup');
+    let profile = this.modelFor('gridiron-setup');
     let currentStep = profile.get('currentStep') || 'start';
 
     if(!profile.isReadyForStep(this.get('stepName'))) {
-      return this.transitionTo(`setup.${currentStep}`);
+      return this.transitionTo(`gridiron-setup.${currentStep}`);
     }
   },
 
@@ -19,11 +19,11 @@ export default Ember.Mixin.create({
       model.schemaDocument.load(model.attestation.get('document'));
     }
 
-    this.modelFor('setup').set('loading', false);
+    this.modelFor('gridiron-setup').set('loading', false);
   },
 
   next() {
-    let profile = this.modelFor('setup');
+    let profile = this.modelFor('gridiron-setup');
 
     profile.next(this.get('stepName'));
     profile.save().catch((e) => {
@@ -31,11 +31,11 @@ export default Ember.Mixin.create({
       Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
     });
 
-    this.transitionTo(`setup.${profile.get('currentStep')}`);
+    this.transitionTo(`gridiron-setup.${profile.get('currentStep')}`);
   },
 
   previous() {
-    let profile = this.modelFor('setup');
+    let profile = this.modelFor('gridiron-setup');
 
     profile.previous(this.get('stepName'));
     profile.save().catch((e) => {
@@ -43,11 +43,11 @@ export default Ember.Mixin.create({
       Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
     });
 
-    this.transitionTo(`setup.${profile.get('currentStep')}`);
+    this.transitionTo(`gridiron-setup.${profile.get('currentStep')}`);
   },
 
   finish() {
-    let profile = this.modelFor('setup');
+    let profile = this.modelFor('gridiron-setup');
     profile.setProperties({ hasCompletedSetup: true, currentStep: 'finish' });
 
     profile.save().catch((e) => {
@@ -55,7 +55,7 @@ export default Ember.Mixin.create({
       Ember.get(this, 'flashMessages').danger(`Save Failed! ${message}`);
     });
 
-    this.transitionTo('setup.finish');
+    this.transitionTo('gridiron-setup.finish');
   },
 
   save() {

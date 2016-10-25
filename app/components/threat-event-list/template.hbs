@@ -13,19 +13,29 @@
       {{/if}}
 
       {{#if columnConfig.description}}
-        <td>{{threatEvent.description}}</td>
+        <td>
+          {{#if threatEvent.briefDescription}}
+            {{threatEvent.briefDescription}}<span class="expand">{{#bs-tooltip title=threatEvent.description}}<i class="fa fa-plus"></i>{{/bs-tooltip}}</span>
+          {{else}}
+            {{threatEvent.description}}
+          {{/if}}
+        </td>
       {{/if}}
 
-      {{#if columnConfig.appliedRiskIndex}}
-        <td>{{threatEvent.appliedRiskIndex}}</td>
+      {{#if columnConfig.riskLevel}}
+        <td>{{six-point-scale-badge value=threatEvent.riskLevel}}</td>
       {{/if}}
 
-      {{#if columnConfig.relevanceText}}
-        <td>{{threatEvent.relevanceText}}</td>
+      {{#if columnConfig.relevance}}
+        <td>{{six-point-scale-badge value=threatEvent.relevance}}</td>
       {{/if}}
 
-      {{#if columnConfig.impactText}}
-        <td>{{threatEvent.impactText}}</td>
+      {{#if columnConfig.overallLikelihood}}
+        <td>{{six-point-scale-badge value=threatEvent.overallLikelihood}}</td>
+      {{/if}}
+
+      {{#if columnConfig.impact}}
+        <td>{{six-point-scale-badge value=threatEvent.impact}}</td>
       {{/if}}
 
       {{#if columnConfig.actions}}

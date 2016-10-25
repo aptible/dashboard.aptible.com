@@ -113,3 +113,13 @@
     margin-left: 10px;
   }
 }
+
+.risk-assessment__index {
+  .aptable td {
+    padding: 10px 14px;
+  }
+
+  td.aptable__row-header {
+    font-weight: $weight-semibold;
+  }
+}

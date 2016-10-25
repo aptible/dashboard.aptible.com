@@ -23,6 +23,6 @@ export default Ember.Route.extend({
       this.transitionTo('login');
     },
 
-    error: onError
+    //error: onError
   }
 });

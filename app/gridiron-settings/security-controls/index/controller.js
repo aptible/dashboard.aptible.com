@@ -1,1 +1,1 @@
-export { default } from 'diesel/setup/security-controls/index/controller';
+export { default } from 'diesel/gridiron-setup/security-controls/index/controller';
