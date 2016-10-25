@@ -3,7 +3,7 @@ import Ember from 'ember';
 import config from "diesel/config/environment";
 
 export var SETUP_STEPS = ['start', 'organization', 'locations', 'team',
-                          'data-environments', 'security-controls', 'finish'];
+                          'predisposing-conditions', 'security-controls', 'finish'];
 
 if(!config.featureFlags.dataEnvironments) {
   SETUP_STEPS = SETUP_STEPS.removeAt(4);

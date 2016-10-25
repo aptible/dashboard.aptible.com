@@ -15,6 +15,10 @@ export default function filterComponents(components, filters = {}) {
     components = components.filterBy('relevance', filters.relevance);
   }
 
+  if(filters.riskLevel || filters.riskLevel === 0) {
+    components = components.filterBy('riskLevel', filters.riskLevel);
+  }
+
   if(filters.impact || filters.impact === 0) {
     components = components.filterBy('impact', filters.impact);
   }
@@ -24,7 +28,7 @@ export default function filterComponents(components, filters = {}) {
   }
 
   if(filters.severity || filters.severity === 0) {
-    components = components.filterBy('scaledSeverity', filters.severity);
+    components = components.filterBy('severity', filters.severity);
   }
 
   if(searchTerms) {

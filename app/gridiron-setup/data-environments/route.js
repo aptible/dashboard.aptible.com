@@ -6,7 +6,7 @@ import loadSchema from 'diesel/utils/load-schema';
 export default Ember.Route.extend(SPDRouteMixin, {
   model() {
     let handle = 'selected_data_environments';
-    let organizationProfile = this.modelFor('setup');
+    let organizationProfile = this.modelFor('gridiron-setup');
 
     return loadSchema(handle).then((schema) => {
       let attestationParams = { handle, schemaId: schema.id, organizationProfile,
@@ -29,7 +29,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
   actions: {
     onNext() {
       let { attestation, schemaDocument } = this.currentModel;
-      let profile = this.modelFor('setup');
+      let profile = this.modelFor('gridiron-setup');
       let selectedDataEnvironments = schemaDocument.dump({ excludeInvalid: true });
 
       attestation.set('document', selectedDataEnvironments);
@@ -37,7 +37,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
       attestation.save().then(() => {
         profile.next(this.get('stepName'));
         return profile.save().then(() => {
-          this.transitionTo(`setup.${profile.get('currentStep')}.index`);
+          this.transitionTo(`gridiron-setup.${profile.get('currentStep')}.index`);
         });
       }).catch((e) => {
         let message = Ember.getWithDefault(e, 'responseJSON.message', 'An error occured');

@@ -2,6 +2,7 @@
   background-color: white;
   box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.11);
   min-height: 100vh;
+  width: 1300px;
 }
 
 .risk-assessment-header {
@@ -67,6 +68,25 @@
     margin: 0;
     padding: 0;
   }
+}
+
+span.expand {
+  background: $color-bg-blue;
+  cursor: pointer;
+  color: $color-subdued;
+  font-weight: $weight-semibold;
+  display: inline-block;
+  margin: 0;
+  border-radius: 4px;
+
+  &:hover {
+    color: $color-bright-blue;
+  }
+}
+
+span.expand .fa {
+  font-size: 9px;
+  padding: 4px;
 }
 
 .risk-assessment-header__component_micro-stats__item {

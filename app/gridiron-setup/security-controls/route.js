@@ -9,7 +9,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
   model() {
     let handle = 'selected_data_environments';
     let organization = this.get('complianceStatus.organization');
-    let organizationProfile = this.modelFor('setup');
+    let organizationProfile = this.modelFor('gridiron-setup');
     let attestationParams = { handle, organizationProfile, document: [] };
 
     return new Ember.RSVP.Promise((resolve, reject) => {
@@ -34,7 +34,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
       // No exisisting data environment attestation
       // Redirect to set up new data environment attestation
       if(config.featureFlags.dataEnvironments) {
-        this.transitionTo('setup.data-environments');
+        this.transitionTo('gridiron-setup.data-environments');
       }
     });
   }

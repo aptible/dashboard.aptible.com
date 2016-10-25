@@ -64,7 +64,7 @@ export default Ember.Component.extend({
       Ember.setProperties(step, {
         current: (stepIndex === currentStepIndex),
         completed: (stepIndex < currentStepIndex),
-        path:`setup.${step.key}`
+        path:`gridiron-setup.${step.key}`
       });
 
       return step;

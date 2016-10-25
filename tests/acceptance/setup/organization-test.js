@@ -48,7 +48,7 @@ test('Organization settings page basic UI', function(assert) {
   signInAndVisit(organizationUrl);
 
   andThen(() => {
-    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.organization', 'on organization setup page');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.gridiron-setup.organization', 'on organization setup page');
     assert.ok(find('textarea[name="aboutOrganization"]'), 'has about organization');
     assert.ok(find('textarea[name="aboutProduct"]'), 'has about product');
     assert.ok(find('textarea[name="aboutArchitecture"]'), 'has about architecture');
@@ -80,7 +80,7 @@ test('Clicking continue saves organization profile and moves to next step', func
   });
 
   andThen(() => {
-    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.organization', 'on organization setup page');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.gridiron-setup.organization', 'on organization setup page');
     fillIn('textarea[name="aboutOrganization"]', expectedAboutOrganization);
     fillIn('textarea[name="aboutProduct"]', expectedAboutProduct);
   });
@@ -88,7 +88,7 @@ test('Clicking continue saves organization profile and moves to next step', func
   andThen(clickContinueButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.organization', 'remain on current step when form is incomplete');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.gridiron-setup.organization', 'remain on current step when form is incomplete');
     fillIn('textarea[name="aboutArchitecture"]', 'Test');
     fillIn('textarea[name="aboutBusinessModel"]', 'Test');
     fillIn('textarea[name="aboutTeam"]', 'Test');
@@ -97,7 +97,7 @@ test('Clicking continue saves organization profile and moves to next step', func
 
   andThen(clickContinueButton);
   andThen(() => {
-    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.locations', 'moved to next step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.gridiron-setup.locations', 'moved to next step');
   });
 });
 

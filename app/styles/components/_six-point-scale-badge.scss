@@ -1,0 +1,32 @@
+.six-point-scale-badge {
+  width: 70px;
+  text-align: center;
+  display: block;
+  background: $color-subdued;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: $weight-semibold;
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 11px;
+
+  &.very-low {
+    background: #94d436;
+  }
+
+  &.low {
+    background: #FFDE25;
+  }
+
+  &.moderate {
+    background: #ffaf1e;
+  }
+
+  &.high {
+    background: #ff5e10;
+  }
+
+  &.very-high {
+    background: #ff0100;
+  }
+}

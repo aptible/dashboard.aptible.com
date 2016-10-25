@@ -1,5 +1,5 @@
 <ul class="nav sidebar-nav">
-  <li>{{link-to '← All Security Controls' 'setup.security-controls'}}</li>
+  <li>{{link-to '← All Security Controls' 'gridiron-setup.security-controls'}}</li>
 </ul>
 
 {{#if authorization.features.dataEnvironments}}
@@ -8,7 +8,7 @@
 
     {{#each dataEnvironmentGroups as |securityControlGroup|}}
       <li class="{{if (eq current.handle securityControlGroup.handle) 'active' null}}">
-        {{#link-to 'setup.security-controls.show' securityControlGroup class="step"}}
+        {{#link-to 'gridiron-setup.security-controls.show' securityControlGroup class="step"}}
           {{#if securityControlGroup.completed}}
             <i class="fa fa-check success"></i>
           {{/if}}
@@ -24,7 +24,7 @@
 
   {{#each organizationalGroups as |securityControlGroup|}}
     <li class="{{if (eq current.handle securityControlGroup.handle) 'active' null}} {{if securityControlGroup.completed 'complete' 'incomplete'}}">
-      {{#link-to 'setup.security-controls.show' securityControlGroup class="step"}}
+      {{#link-to 'gridiron-setup.security-controls.show' securityControlGroup class="step"}}
 
         <i class="fa fa-check success"></i>
         <div>{{securityControlGroup.schema.schema.title}}</div>

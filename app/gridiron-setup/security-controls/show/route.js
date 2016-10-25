@@ -5,7 +5,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
   stepName: 'security-controls',
 
   model(params) {
-    let securityControlGroups = this.modelFor('setup.security-controls');
+    let securityControlGroups = this.modelFor('gridiron-setup.security-controls');
     return securityControlGroups.findBy('handle', params.handle);
   },
 
@@ -24,7 +24,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
   },
 
   setupController(controller, model) {
-    let securityControlGroups = this.modelFor('setup.security-controls');
+    let securityControlGroups = this.modelFor('gridiron-setup.security-controls');
 
     controller.set('model', model);
     controller.set('securityControlGroups', securityControlGroups);
@@ -32,20 +32,20 @@ export default Ember.Route.extend(SPDRouteMixin, {
 
   transitionToNextGroup() {
     let handle = this.currentModel.handle;
-    let securityControlGroups = this.modelFor('setup.security-controls');
+    let securityControlGroups = this.modelFor('gridiron-setup.security-controls');
     let transition;
 
     securityControlGroups.forEach((group, index) => {
       let next = securityControlGroups[index + 1];
       if (group.handle === handle && next) {
-        transition = this.transitionTo('setup.security-controls.show', next);
+        transition = this.transitionTo('gridiron-setup.security-controls.show', next);
       }
     });
 
     // If we are at the end, but there are unfinished security-control groups
     // we should redirect back to the index;
     if (!transition && securityControlGroups.filterBy('completed', false).length > 1) {
-      transition = this.transitionTo('setup.security-controls');
+      transition = this.transitionTo('gridiron-setup.security-controls');
     }
 
     if (!transition) {
@@ -56,19 +56,19 @@ export default Ember.Route.extend(SPDRouteMixin, {
 
   transitionToPreviousGroup() {
     let handle = this.currentModel.handle;
-    let securityControlGroups = this.modelFor('setup.security-controls');
+    let securityControlGroups = this.modelFor('gridiron-setup.security-controls');
     let transition;
 
     securityControlGroups.forEach((group, index) => {
       let previous = securityControlGroups[index - 1];
 
       if (group.handle === handle && previous) {
-        transition = this.transitionTo('setup.security-controls.show', previous);
+        transition = this.transitionTo('gridiron-setup.security-controls.show', previous);
       }
     });
 
     if (!transition) {
-      this.transitionTo('setup.security-controls');
+      this.transitionTo('gridiron-setup.security-controls');
     }
   },
 

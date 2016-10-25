@@ -1,15 +1,15 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  settings: Ember.inject.controller('gridiron-settings'),
+  gridironSettings: Ember.inject.controller(),
 
   showInviteModal() {
-    this.get('settings').set('showInviteModal', true);
+    this.get('gridironSettings').set('showInviteModal', true);
   },
 
   actions: {
     openInviteModal(role) {
-      this.get('settings').set('addUsersToRole', role);
+      this.get('gridironSettings').set('addUsersToRole', role);
     }
   }
 });

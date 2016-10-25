@@ -4,11 +4,11 @@ import SPDRouteMixin from 'diesel/mixins/routes/spd-route';
 
 export default Ember.Route.extend(SPDRouteMixin, {
   redirect() {
-    let profile = this.modelFor('setup');
+    let profile = this.modelFor('gridiron-setup');
     let currentStep = profile.get('currentStep');
 
     if(currentStep) {
-      return this.transitionTo(`setup.${currentStep}`);
+      return this.transitionTo(`gridiron-setup.${currentStep}`);
     }
   },
 

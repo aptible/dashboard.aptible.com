@@ -1,4 +1,4 @@
-import SetupRoute from 'diesel/setup/route';
+import SetupRoute from 'diesel/gridiron-setup/route';
 
 export default SetupRoute.extend({
   redirect() {

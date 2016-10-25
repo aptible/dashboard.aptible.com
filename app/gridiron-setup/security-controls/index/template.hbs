@@ -6,7 +6,7 @@
         {{#each dataEnvironmentGroups as |securityControlGroup|}}
           <div class="col-xs-4">
             {{security-control-index-item
-              showPath="setup.security-controls.show"
+              showPath="gridiron-setup.security-controls.show"
               securityControlGroup=securityControlGroup}}
           </div>
         {{/each}}
@@ -18,7 +18,7 @@
     <h5 class="sort-header">Organizational Security Controls</h5>
     {{#each organizationalGroups as |securityControlGroup|}}
       {{security-control-index-item
-        showPath="setup.security-controls.show"
+        showPath="gridiron-setup.security-controls.show"
         securityControlGroup=securityControlGroup}}
     {{/each}}
   </div>

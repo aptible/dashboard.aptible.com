@@ -116,7 +116,7 @@ test('clicking next will finish SPD if on last group', function(assert) {
   andThen(clickContinueButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.finish', 'on finish step');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.gridiron-setup.finish', 'on finish step');
   });
 });
 
@@ -165,7 +165,7 @@ test('clicking previous will go to index when on first group', function(assert) 
   andThen(clickBackButton);
 
   andThen(() => {
-    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.setup.security-controls.index', 'on security control index page');
+    assert.equal(currentPath(), 'requires-authorization.gridiron.gridiron-organization.gridiron-admin.gridiron-setup.security-controls.index', 'on security control index page');
   });
 });
 

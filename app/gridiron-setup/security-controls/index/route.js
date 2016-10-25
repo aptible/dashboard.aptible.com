@@ -4,7 +4,7 @@ import SPDRouteMixin from 'diesel/mixins/routes/spd-route';
 export default Ember.Route.extend(SPDRouteMixin, {
   stepName: 'security-controls',
   model() {
-    return this.modelFor('setup.security-controls');
+    return this.modelFor('gridiron-setup.security-controls');
   },
 
   setupController(controller, model) {
@@ -20,7 +20,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
 
       this.currentModel.forEach((securityControlGroup) => {
         if (!securityControlGroup.completed && !transition) {
-          transition = this.transitionTo('setup.security-controls.show', securityControlGroup);
+          transition = this.transitionTo('gridiron-setup.security-controls.show', securityControlGroup);
         }
       });
 

@@ -3,7 +3,7 @@ import SPDRouteMixin from 'diesel/mixins/routes/spd-route';
 
 export default Ember.Route.extend(SPDRouteMixin, {
   model() {
-    return this.modelFor('setup');
+    return this.modelFor('gridiron-setup');
   },
 
   setupController(controller, model) {
@@ -14,7 +14,7 @@ export default Ember.Route.extend(SPDRouteMixin, {
 
   actions: {
     onSave() {
-      var organizationProfile = this.modelFor('setup');
+      var organizationProfile = this.modelFor('gridiron-setup');
       // We could validate the controller here, but I'm choosing not to.  By
       // not validating the controller, we allow the user to save progress
       // even though they may not have completed the entirety of the interview.

@@ -27,7 +27,7 @@ export default Ember.Route.extend({
     // dashboard
     //
     // if(this.get('authorization.features.spd') && this.get('complianceStatus.requiresSPD')) {
-    //   this.transitionTo('setup');
+    //   this.transitionTo('gridiron-setup');
     // }
   }
 });
