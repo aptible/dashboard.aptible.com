@@ -75,11 +75,11 @@ test(`visit ${url} shows form with certificates`, function(assert) {
           { id: 'cert-1', certificate_body: 'cert_body',
             private_key: 'private_key', common_name: '*.health.io',
             issuer_organization: 'DigiCert', not_before: '2014-10-29T00:00:00.000Z',
-            not_after: '2017-01-21T12:00:00.000Z' },
+            not_after: '2017-01-21T12:00:00.000Z', sha256_fingerprint: '1234567890' },
           { id: 'cert-2', certificate_body: 'cert_body2',
             private_key: 'private_key2', common_name: 'health.io',
             issuer_organization: 'DigiCert', not_before: '2014-10-29T00:00:00.000Z',
-            not_after: '2017-01-21T12:00:00.000Z' }
+            not_after: '2017-01-21T12:00:00.000Z', sha256_fingerprint: 'abcdefabcdef' }
         ]
       }
     });
@@ -103,7 +103,7 @@ test(`visit ${url} shows form with certificates`, function(assert) {
 
     let certificateInput = findInput('certificate');
     assert.ok(certificateInput.length, 'has certificate input');
-    assert.equal(certificateInput.find('option:first').text(), '*.health.io - Valid: October 29, 2014-January 21, 2017 - Issued by: DigiCert');
+    assert.equal(certificateInput.find('option:first').text(), '*.health.io - Valid: October 29, 2014 - January 21, 2017 - DigiCert - 1234567');
     assert.equal(certificateInput.find('option:first').val(), 'cert-1');
 
     assert.ok(!findInput('certificate-body').length, 'has no certificate body field');
