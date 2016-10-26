@@ -7,15 +7,15 @@
           {{#if hasAbility}}
             {{#if session.currentUser.verified}}
               <div class="call-to-action">
-                <a {{action 'openCreateCertificateModal'}} class="btn btn-primary open-certificate-modal">
-                  Create Certificate
+                <a {{action 'openUploadCertificateModal'}} class="btn btn-primary open-certificate-modal">
+                  Upload Certificate
                 </a>
               </div>
             {{/if}}
           {{else}}
             <div class="call-to-action">
-              <a disabled=true class="btn btn-primary disabled">Create Certificate</a>
-              {{#bs-tooltip title="You do not have permission to create certificates for this environment"}}
+              <a disabled=true class="btn btn-primary disabled">Upload Certificate</a>
+              {{#bs-tooltip title="You do not have permission to upload certificates for this environment"}}
                 <i class="fa fa-question-circle"></i>
               {{/bs-tooltip}}
             </div>
@@ -41,13 +41,13 @@
     {{#aptible-ability scope="manage" permittable=stack as |hasAbility|}}
       {{#if hasAbility}}
         {{#if session.currentUser.verified}}
-          <a {{action 'openCreateCertificateModal'}} class="btn btn-primary open-certificate-modal">
-            Create Certificate
+          <a {{action 'openUploadCertificateModal'}} class="btn btn-primary open-certificate-modal">
+            Upload Certificate
           </a>
         {{/if}}
       {{else}}
-        <a disabled=true class="btn btn-primary">Create Certificate</a>
-        {{#bs-tooltip title="You do not have permission to create certificates for this environment"}}
+        <a disabled=true class="btn btn-primary">Upload Certificate</a>
+        {{#bs-tooltip title="You do not have permission to upload certificates for this environment"}}
           <i class="fa fa-question-circle"></i>
         {{/bs-tooltip}}
       {{/if}}

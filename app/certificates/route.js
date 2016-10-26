@@ -17,7 +17,7 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    openCreateCertificateModal() {
+    openUploadCertificateModal() {
       let stack = this.modelFor('stack');
       this.controller.set('newCertificate', this.store.createRecord('certificate', { stack }));
     },
