@@ -100,12 +100,14 @@ test(`visit ${appVhostsUrl} lists active endpoints`, function(assert) {
     id: 1,
     virtual_domain: 'www.health1.io',
     external_host: 'www.host1.com',
-    status: 'provisioned'
+    status: 'provisioned',
+    platform: 'alb'
   },{
     id: 2,
     virtual_domain: 'www.health2.io',
     external_host: 'www.host2.com',
-    status: 'provisioned'
+    status: 'provisioned',
+    platform: 'elb'
   }];
 
   stubApp({
@@ -130,6 +132,9 @@ test(`visit ${appVhostsUrl} lists active endpoints`, function(assert) {
 
       assert.ok(vhostEl.find(`:contains(${vhost.external_host})`).length,
          `has external host "${vhost.external_host}"`);
+
+      assert.ok(vhostEl.find(`:contains(${vhost.platform})`).length,
+         `has platform "${vhost.platform}"`);
 
       expectButton('Edit', {context:vhostEl});
       expectButton('Delete', {context:vhostEl});

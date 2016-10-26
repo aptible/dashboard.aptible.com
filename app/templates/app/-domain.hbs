@@ -41,8 +41,8 @@
     </div>
   </div>
 
-  <div class="panel-body">
-    <div class="resource-metadata-item">
+  <div class="panel-body resource-list-item">
+    <ul class="resource-metadata">
       {{#if vhost.hasActionRequired}}
         {{vhost-action-required vhost=vhost}}
       {{else}}
@@ -55,6 +55,7 @@
             </span>
           </h3>
         {{else}}
+          <li class="resource-metadata-item">
           {{#if vhost.displayHost}}
             <h5 class="resource-metadata-title">
               {{#if vhost.internal}}
@@ -76,8 +77,28 @@
               {{vhost.commonName}} is {{vhost.status}}...
             </h3>
           {{/if}}
+          </li>
+
+          <li class="resource-metadata-item">
+            <h5 class="resource-metadata-title">
+              Platform
+              {{more-info-icon title="Endpoint Platform" bs-html=true
+              body="
+                    The Endpoint Platform is the underlying AWS resource
+                    Aptible uses to expose your Endpoint.
+                    <br><br>
+                    ALB Endpoints provide better guarantees that your App will
+                    remain available if something goes wrong with a deployment,
+                    whereas ELB Endpoints can occasionally cause downtime.
+                    <br><br>
+                    ALBs are the default for new Endpoints. To upgrade an ELB
+                    Endpoint to ALB, please contact support.
+              "}}
+            </h5>
+            <h3 class="resource-metadata-value endpoint-platform">{{ vhost.platform }}</h3>
+          </li>
         {{/if}}
       {{/if}}
-    </div>
+    </ul>
   </div>
  </div>
