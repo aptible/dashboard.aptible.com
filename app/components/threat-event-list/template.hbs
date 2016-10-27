@@ -1,7 +1,7 @@
 <thead>
   <tr>
     {{#each columnHeaders as |header|}}
-      <th>{{header}}</th>
+      <th style="min-width:110px;">{{header}}</th>
     {{/each}}
   </tr>
 </thead>
@@ -9,7 +9,9 @@
   {{#each filteredThreatEvents as |threatEvent|}}
     <tr>
       {{#if columnConfig.title}}
-        <td class='aptable__row-header'>{{threatEvent.title}}</td>
+        <td class='aptable__row-header'>
+          {{link-to threatEvent.title 'threat-event' threatEvent.id class="view-threat-event"}}
+        </td>
       {{/if}}
 
       {{#if columnConfig.description}}
@@ -36,12 +38,6 @@
 
       {{#if columnConfig.impact}}
         <td>{{six-point-scale-badge value=threatEvent.impact}}</td>
-      {{/if}}
-
-      {{#if columnConfig.actions}}
-        <td class="base-table__actions">
-          {{link-to 'View' 'threat-event' threatEvent.id class="btn btn-link view-threat-event"}}
-        </td>
       {{/if}}
     </tr>
   {{/each}}

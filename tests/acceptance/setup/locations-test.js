@@ -368,7 +368,7 @@ function selectState(state) {
 }
 
 function stubRequests() {
-  stubValidOrganization();
+  stubValidOrganization({ features: ['spd'] });
   stubSchemasAPI();
   stubCriterionDocuments({});
   stubStacks();

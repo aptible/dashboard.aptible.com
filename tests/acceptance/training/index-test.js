@@ -139,7 +139,7 @@ test(`visiting ${overviewUrl}: training documents`, function(assert) {
 });
 
 function stubRequests() {
-  stubValidOrganization();
+  stubValidOrganization({ features: ['spd', 'training'] });
   stubStacks();
   stubProfile({ hasCompletedSetup: true });
   stubCriteria(criteria);
