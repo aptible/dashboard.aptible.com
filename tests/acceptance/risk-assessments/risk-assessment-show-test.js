@@ -81,7 +81,7 @@ test(`visiting ${riskAssessmentUrl}: basic UI`, function(assert) {
 });
 
 function stubRequests() {
-  stubValidOrganization();
+  stubValidOrganization({ features: ['spd', 'risk'] });
   stubProfile({ hasCompletedSetup: true });
   stubCriterionDocuments({});
   stubStacks();

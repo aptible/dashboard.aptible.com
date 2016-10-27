@@ -14,7 +14,6 @@ import Ember from 'ember';
 
 export default Ember.Object.extend({
   store: Ember.inject.service(),
-  enabledFeatures: {},
   load() {
     let { organization } = this.getProperties('organization');
 
@@ -64,13 +63,11 @@ export default Ember.Object.extend({
       return;
     }
 
-    let enabledFeatures = this.get('enabledFeatures');
+    this.set('enabledFeatures', {});
 
     organization.get('features').forEach((feature) => {
-      enabledFeatures[feature] = true;
+      this.set(`enabledFeatures.${feature}`, true);
     });
-
-    this.set('enabledFeatures', enabledFeatures);
   },
 
   // Computed related to organization's roles
