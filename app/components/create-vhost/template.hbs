@@ -151,6 +151,29 @@
           {{#if model.useCertificate}}
             {{select-or-create-certificate certificates=certificates vhost=model}}
           {{/if}}
+
+          <div class="form-group">
+            <label class="block">
+              Endpoint Platform:
+              {{more-info-icon-endpoint-platform title="Choosing an Endpoint Platform"}}
+            </label>
+            ALB is strongly recommended,
+            {{#link-to-aptible app="support" path="topics/paas/upgrading-to-alb-endpoints"}}
+              visit Aptible support for more information.
+            {{/link-to-aptible}}
+            <div class="radio">
+              <div>
+                {{#radio-button value='alb' groupValue=model.platform name="vhost-platform"}}
+                  ALB
+                {{/radio-button}}
+              </div>
+              <div>
+                {{#radio-button value='elb' groupValue=model.platform name="vhost-platform" }}
+                  ELB <span class="text-muted">deprecated</span>
+                {{/radio-button}}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

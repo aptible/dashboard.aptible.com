@@ -723,3 +723,170 @@ test(`visit ${appVhostsUrl} allows renewing an unitialized ACME cert (renewal do
               "Failure notification is shown");
   });
 });
+
+test(`visit ${appVhostsUrl} allows upgrading an ELB VHOST`, function(assert) {
+  assert.expect(4);
+
+  const vhost = {
+    id: 1,
+    platform: "elb",
+    status: "provisioned",
+    external_host: "foo.com"
+  };
+
+  stubApp({
+    id: appId,
+    _embedded: { services: [] },
+    _links: { vhosts: { href: appVhostsApiUrl } }
+  });
+
+  stubRequest("get", appVhostsApiUrl, function(){
+    return this.success({ _embedded: { vhosts: [vhost] } });
+  });
+
+  stubRequest("get", `/vhosts/${vhost.id}`, function(){
+    return this.success(vhost);
+  });
+
+  stubRequest("put", `/vhosts/${vhost.id}`, function(request){
+    const json = this.json(request);
+    assert.equal(json.platform, "alb", "updates status to ALB");
+    vhost.platform = "alb";
+    return this.success(vhost);
+  });
+
+  stubRequest("post", `/vhosts/${vhost.id}/operations`, function(request){
+    const json = this.json(request);
+    assert.equal(json.type, "provision", "creates provision operation");
+    return this.success({ id: 1, status: "queued" });
+  });
+
+  stubRequest("get", "/operations/1", function() {
+    return this.success({ id: 1, status: "succeeded" });
+  });
+
+  signInAndVisit(appVhostsUrl);
+
+  andThen(() => {
+    click(findWithAssert(".endpoint-platform:contains(elb) > a"));
+  });
+
+  andThen(() => {
+    assert.ok(find("li:contains(CNAMEs use the name)").length, "CNAME tip is shown");
+    click(findWithAssert("button:contains(Upgrade this Endpoint)"));
+  });
+
+  andThen(() => {
+    assert.ok(find("div:contains(upgraded to ALB)").length,
+              "Success notification is shown");
+  });
+});
+
+test(`visit ${appVhostsUrl} notifies if upgrading an ELB fails`, function(assert) {
+  assert.expect(1);
+
+  const vhost = {
+    id: 1,
+    platform: "elb",
+    status: "provisioned",
+    external_host: "foo.com"
+  };
+
+  stubApp({
+    id: appId,
+    _embedded: { services: [] },
+    _links: { vhosts: { href: appVhostsApiUrl } }
+  });
+
+  stubRequest("get", appVhostsApiUrl, function(){
+    return this.success({ _embedded: { vhosts: [vhost] } });
+  });
+
+  stubRequest("get", `/vhosts/${vhost.id}`, function(){
+    return this.success(vhost);
+  });
+
+  stubRequest("put", `/vhosts/${vhost.id}`, function(){
+    return this.error(401, {});
+  });
+
+  signInAndVisit(appVhostsUrl);
+
+  andThen(() => {
+    click(findWithAssert(".endpoint-platform:contains(elb) > a"));
+  });
+
+  andThen(() => {
+    click(findWithAssert("button:contains(Upgrade this Endpoint)"));
+  });
+
+  andThen(() => {
+    assert.ok(find("div:contains(Failed to upgrade)").length,
+              "Failure notification is shown");
+  });
+});
+
+test(`visit ${appVhostsUrl} does not show upgrade for ALB VHOST`, function(assert) {
+  assert.expect(1);
+
+  const vhost = {
+    id: 1,
+    platform: "alb",
+    status: "provisioned"
+  };
+
+  stubApp({
+    id: appId,
+    _embedded: { services: [] },
+    _links: { vhosts: { href: appVhostsApiUrl } }
+  });
+
+  stubRequest("get", appVhostsApiUrl, function(){
+    return this.success({ _embedded: { vhosts: [vhost] } });
+  });
+
+  stubRequest("get", `/vhosts/${vhost.id}`, function(){
+    return this.success(vhost);
+  });
+
+  signInAndVisit(appVhostsUrl);
+
+  andThen(() => {
+    assert.equal(find(".endpoint-platform > a").length, 0, "Upgrade button is not shown");
+  });
+});
+
+test(`visit ${appVhostsUrl} does not show CNAME tip for ALB Upgrade for Default VHOST`, function(assert) {
+  assert.expect(1);
+
+  const vhost = {
+    id: 1,
+    platform: "elb",
+    default: true,
+    status: "provisioned"
+  };
+
+  stubApp({
+    id: appId,
+    _embedded: { services: [] },
+    _links: { vhosts: { href: appVhostsApiUrl } }
+  });
+
+  stubRequest("get", appVhostsApiUrl, function(){
+    return this.success({ _embedded: { vhosts: [vhost] } });
+  });
+
+  stubRequest("get", `/vhosts/${vhost.id}`, function(){
+    return this.success(vhost);
+  });
+
+  signInAndVisit(appVhostsUrl);
+
+  andThen(() => {
+    click(findWithAssert(".endpoint-platform:contains(elb) > a"));
+  });
+
+  andThen(() => {
+    assert.equal(find("li:contains(CNAMEs use the name)").length, 0, "CNAME tip is not shown");
+  });
+});

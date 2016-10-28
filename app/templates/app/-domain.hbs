@@ -82,20 +82,15 @@
           <li class="resource-metadata-item">
             <h5 class="resource-metadata-title">
               Platform
-              {{more-info-icon title="Endpoint Platform" bs-html=true
-              body="
-                    The Endpoint Platform is the underlying AWS resource
-                    Aptible uses to expose your Endpoint.
-                    <br><br>
-                    ALB Endpoints provide better guarantees that your App will
-                    remain available if something goes wrong with a deployment,
-                    whereas ELB Endpoints can occasionally cause downtime.
-                    <br><br>
-                    ALBs are the default for new Endpoints. To upgrade an ELB
-                    Endpoint to ALB, please contact support.
-              "}}
+              {{more-info-icon-endpoint-platform}}
             </h5>
-            <h3 class="resource-metadata-value endpoint-platform">{{ vhost.platform }}</h3>
+            <h3 class="resource-metadata-value endpoint-platform">
+              {{ vhost.platform }}
+
+              {{#if vhost.isElb}}
+                - <a href="#" {{action "openUpgradeVhostModal" vhost}}>Upgrade</a>
+              {{/if}}
+            </h3>
           </li>
         {{/if}}
       {{/if}}

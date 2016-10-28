@@ -14,7 +14,7 @@ export default DS.Model.extend(ProvisionableMixin, {
   userDomain: DS.attr('string'),
   isAcme: DS.attr('boolean', { defaultValue: false }),
   acmeStatus: DS.attr('string'),
-  platform: DS.attr('string'),
+  platform: DS.attr('string', { defaultValue: 'alb' }),
 
   certificate: DS.belongsTo('certificate', { async: true }),
   service: DS.belongsTo('service', {async:true}),
@@ -55,5 +55,8 @@ export default DS.Model.extend(ProvisionableMixin, {
   }),
 
   hasActionRequired: Ember.computed.gt('actionsRequired.length', 0),
-  failedToProvision: Ember.computed.equal('status', 'provision_failed')
+  failedToProvision: Ember.computed.equal('status', 'provision_failed'),
+
+  isElb: Ember.computed.equal("platform", "elb"),
+  isAlb: Ember.computed.equal("platform", "alb")
 });

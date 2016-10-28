@@ -132,6 +132,7 @@ test(`visit ${appVhostsNewUrl} shows creation form`, function(assert) {
     expectInput('service', {input:'select'});
     expectFocusedInput('service', {input:'select'});
     expectInput('domain-type', {input:'radio'});
+    expectInput('vhost-platform', {input:'radio'});
     expectButton('Save Endpoint');
     expectButton('Cancel');
     expectTitle(`Add an endpoint - ${appHandle} - ${stackHandle}`);
@@ -298,7 +299,7 @@ test(`visit ${appVhostsNewUrl} shows creation form for app on v1 stack`, functio
 });
 
 test(`visit ${appVhostsNewUrl} and create vhost with existing certificates`, function(assert) {
-  assert.expect(5);
+  assert.expect(6);
 
   const vhostId = 'new-vhost-id';
 
@@ -318,6 +319,7 @@ test(`visit ${appVhostsNewUrl} and create vhost with existing certificates`, fun
     assert.equal(json.certificate_body, null);
     assert.equal(json.private_key, null);
     assert.equal(json.type, 'http_proxy_protocol');
+    assert.equal(json.platform, 'alb');
 
     return this.success({id: vhostId});
   });
@@ -544,5 +546,44 @@ test(`visit ${appVhostsNewUrl} and create a new transitonal managed endpoint`, f
   andThen(function(){
     fillInput("domain-type", true);
     clickButton("Save Endpoint");
+  });
+});
+
+test(`visit ${appVhostsNewUrl} and create ELB Endpoint`, function(assert) {
+  assert.expect(2);
+
+  const vhostId = 'new-vhost-id';
+
+  setupStubs({ withCertificates: true });
+  signInAndVisit(appVhostsNewUrl);
+
+  // Sometimes the id is 1 and other times its 'the-service-id'
+  stubRequest('post', `/services/:service-id/vhosts`, function(request){
+    let json = this.json(request);
+    assert.equal(json.platform, 'elb');
+
+    return this.success({id: vhostId});
+  });
+
+  stubRequest('post', `/vhosts/${vhostId}/operations`, function(request){
+    let json = this.json(request);
+    assert.equal(json.type, 'provision', 'posts provision operation');
+    return this.success({id: 'new-op-id'});
+  });
+
+  signInAndVisit(appVhostsNewUrl);
+
+  andThen(() => {
+    click(findWithAssert('label:contains(ELB)'));
+    click(findWithAssert('label:contains(custom certificate)'));
+  });
+
+  stubRequest('get', `/operations/new-op-id`, function(){
+    return this.success({id: 'new-op-id', status: 'succeeded'});
+  });
+
+  visit(appVhostsNewUrl);
+  andThen(function(){
+    clickButton('Save Endpoint');
   });
 });
