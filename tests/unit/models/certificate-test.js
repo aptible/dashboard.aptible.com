@@ -86,3 +86,100 @@ test('creating POSTs to correct url', function(assert) {
     }).finally(done);
   });
 });
+
+test("shortDisplayFingerprint truncates the fingerprint", function(assert) {
+  assert.expect(1);
+
+  let store = this.store();
+  let certificate = Ember.run(store, "push", "certificate", {
+    id: 1, sha256Fingerprint: "01d259fa5742122d74ac7b6e48be32ef17ce2cc23abfb62bf02144959e52307f"
+  });
+
+  assert.equal(certificate.get("shortDisplayFingerprint"), "01d259f");
+});
+
+test("shortDisplayFingerprint does not crash if the fingerprint is missing", function(assert) {
+  assert.expect(1);
+
+  let store = this.store();
+  let certificate = Ember.run(store, "push", "certificate", { id: 1 });
+
+  assert.equal(certificate.get("shortDisplayFingerprint"), certificate.get("sha256Fingerprint"));
+});
+
+test("issuerDisplayName defaults to the issuer organization", function(assert) {
+  assert.expect(1);
+
+  let store = this.store();
+  let certificate = Ember.run(store, "push", "certificate", {
+    id: 1, issuerOrganization: "Foo Org", issuerCommonName: "Foo"
+  });
+
+  assert.equal(certificate.get("issuerDisplayName"), "Foo Org");
+});
+
+test("issuerDisplayName falls back to the issuer common name", function(assert) {
+  assert.expect(1);
+
+  let store = this.store();
+  let certificate = Ember.run(store, "push", "certificate", {
+    id: 1, issuerCommonName: "Foo"
+  });
+
+  assert.equal(certificate.get("issuerDisplayName"), "Foo");
+});
+
+test("name shows the Common Name", function(assert) {
+  assert.expect(1);
+
+  let store = this.store();
+  let certificate = Ember.run(store, "push", "certificate", {
+    id: 1, commonName: "foo.com"
+  });
+
+  assert.equal(certificate.get("name"), "foo.com");
+});
+
+test("name shows notBefore and notAfter", function(assert) {
+  assert.expect(1);
+
+  let store = this.store();
+  let certificate = Ember.run(store, "push", "certificate", {
+    id: 1, commonName: "foo.com",
+    notBefore: new Date(Date.UTC(2016, 0, 1)),
+    notAfter: new Date(Date.UTC(2017, 1, 2))
+  });
+
+  assert.equal(certificate.get("name"), "foo.com - Valid: January 1, 2016 - February 2, 2017");
+});
+
+test("name shows issuerDisplayName", function(assert) {
+  assert.expect(1);
+
+  let store = this.store();
+  let certificate = Ember.run(store, "push", "certificate", {
+    id: 1, commonName: "foo.com",
+    notBefore: new Date(Date.UTC(2016, 0, 1)),
+    notAfter: new Date(Date.UTC(2017, 1, 2)),
+    issuerOrganization: "Foo Org"
+  });
+
+  assert.equal(certificate.get("name"),
+    "foo.com - Valid: January 1, 2016 - February 2, 2017 - Foo Org");
+});
+
+test("name shows sha256Fingerprint", function(assert) {
+  assert.expect(1);
+
+  let store = this.store();
+  let certificate = Ember.run(store, "push", "certificate", {
+    id: 1, commonName: "foo.com",
+    notBefore: new Date(Date.UTC(2016, 0, 1)),
+    notAfter: new Date(Date.UTC(2017, 1, 2)),
+    issuerOrganization: "Foo Org",
+    sha256Fingerprint: "1234567890"
+  });
+
+  assert.equal(certificate.get("name"),
+    "foo.com - Valid: January 1, 2016 - February 2, 2017 - Foo Org - 1234567");
+});

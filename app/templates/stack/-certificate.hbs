@@ -38,7 +38,7 @@
         </h3>
       </li>
 
-      <li class="resource-metadata-item vhosts-count">
+      <li class="resource-metadata-item">
         <h5 class="resource-metadata-title">
           Valid
         </h5>
@@ -48,17 +48,31 @@
         </h3>
       </li>
 
-      <li class="resource-metadata-item vhosts-count">
+      <li class="resource-metadata-item">
         <h5 class="resource-metadata-title">
           Issuer
         </h5>
 
         <h3 class="resource-metadata-value">
-          {{#if certificate.issuerWebsite}}
-            <a href="//{{certificate.issuerWebsite}}">{{certificate.issuerOrganization}}</a>
+          {{#if certificate.issuerDisplayName}}
+            {{#if certificate.issuerWebsite}}
+              <a href="//{{certificate.issuerWebsite}}">{{certificate.issuerDisplayName}}</a>
+            {{else}}
+              {{certificate.issuerDisplayName}}
+            {{/if}}
           {{else}}
-            {{certificate.issuerOrganization}}
+            Self-signed certificate
           {{/if}}
+        </h3>
+      </li>
+
+      <li class="resource-metadata-item">
+        <h5 class="resource-metadata-title">
+          Fingerprint
+        </h5>
+
+        <h3 class="resource-metadata-value">
+          {{ certificate.shortDisplayFingerprint }}
         </h3>
       </li>
     </ul>
