@@ -45,6 +45,9 @@ export default Ember.Component.extend({
     },
     completeDeletion() {
       this.sendAction('completeDeletion');
+    },
+    openUpgradeVhostModal(vhost) {
+      this.sendAction('openUpgradeVhostModal', vhost);
     }
   }
 });

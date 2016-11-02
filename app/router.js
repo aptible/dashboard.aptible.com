@@ -119,6 +119,14 @@ Router.map(function() {
           this.route('edit', {
             path: ':vhost_id/edit'
           });
+          this.modal('modal-upgrade-to-alb', {
+            withParams: ['vhostToUpgrade'],
+            otherParams: [],
+            dismissWithOutsideClick: false,
+            actions: {
+              upgradeVhost: 'upgradeVhost'
+            }
+          });
         });
         this.route("activity");
         this.route("deprovision");

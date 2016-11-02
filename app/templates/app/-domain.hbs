@@ -41,8 +41,8 @@
     </div>
   </div>
 
-  <div class="panel-body">
-    <div class="resource-metadata-item">
+  <div class="panel-body resource-list-item">
+    <ul class="resource-metadata">
       {{#if vhost.hasActionRequired}}
         {{vhost-action-required vhost=vhost}}
       {{else}}
@@ -55,6 +55,7 @@
             </span>
           </h3>
         {{else}}
+          <li class="resource-metadata-item">
           {{#if vhost.displayHost}}
             <h5 class="resource-metadata-title">
               {{#if vhost.internal}}
@@ -76,8 +77,23 @@
               {{vhost.commonName}} is {{vhost.status}}...
             </h3>
           {{/if}}
+          </li>
+
+          <li class="resource-metadata-item">
+            <h5 class="resource-metadata-title">
+              Platform
+              {{more-info-icon-endpoint-platform}}
+            </h5>
+            <h3 class="resource-metadata-value endpoint-platform">
+              {{ vhost.platform }}
+
+              {{#if vhost.isElb}}
+                - <a href="#" {{action "openUpgradeVhostModal" vhost}}>Upgrade</a>
+              {{/if}}
+            </h3>
+          </li>
         {{/if}}
       {{/if}}
-    </div>
+    </ul>
   </div>
  </div>
