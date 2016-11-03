@@ -52,6 +52,8 @@ export default DS.Model.extend({
   appUsage: Ember.computed.mapBy('apps', 'usage'),
   databaseUsage: Ember.computed.mapBy('databases', 'usage'),
   containerUsage: Ember.computed.sum('appUsage', 'databaseUsage'),
+  isV1: Ember.computed.equal('sweetnessStackVersion', 'v1'),
+  isV2: Ember.computed.equal('sweetnessStackVersion', 'v2'),
 
   getUsageByResourceType(type) {
     let usageAttr = { container: 'containerCount', disk: 'totalDiskSize',

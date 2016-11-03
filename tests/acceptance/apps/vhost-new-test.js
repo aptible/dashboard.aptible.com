@@ -287,6 +287,7 @@ test(`visit ${appVhostsNewUrl} shows creation form for app on v1 stack`, functio
       'has header');
 
     findWithAssert('label:contains(Managed HTTPS unavailable)');
+    findWithAssert('div:contains(Only ELB Endpoints are available)');
     expectInput('service', {input:'select'});
     expectFocusedInput('service', {input:'select'});
     expectInput('domain-type', {input:'radio'});
@@ -583,6 +584,41 @@ test(`visit ${appVhostsNewUrl} and create ELB Endpoint`, function(assert) {
   });
 
   visit(appVhostsNewUrl);
+  andThen(function(){
+    clickButton('Save Endpoint');
+  });
+});
+
+test(`visit ${appVhostsNewUrl} and create Endpoint on v1 defaults to ELB`, function(assert) {
+  assert.expect(2);
+
+  const vhostId = 'new-vhost-id';
+
+  setupStubs({ withCertificates: true, sweetnessStackVersion: 'v1' });
+  signInAndVisit(appVhostsNewUrl);
+
+  stubRequest('post', `/services/:service-id/vhosts`, function(request){
+    let json = this.json(request);
+    assert.equal(json.platform, 'elb');
+    return this.success({id: vhostId});
+  });
+
+  stubRequest('post', `/vhosts/${vhostId}/operations`, function(request){
+    let json = this.json(request);
+    assert.equal(json.type, 'provision', 'posts provision operation');
+    return this.success({id: 'new-op-id'});
+  });
+
+  stubRequest('get', `/operations/new-op-id`, function(){
+    return this.success({id: 'new-op-id', status: 'succeeded'});
+  });
+
+  signInAndVisit(appVhostsNewUrl);
+
+  andThen(() => {
+    click(findWithAssert('label:contains(custom certificate)'));
+  });
+
   andThen(function(){
     clickButton('Save Endpoint');
   });
