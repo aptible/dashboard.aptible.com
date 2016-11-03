@@ -18,6 +18,10 @@ export default Ember.Component.extend({
       }
     },
 
+    onDismiss() {
+      this.sendAction('dismiss');
+    },
+
     outsideClick: Ember.K
   }
 });
