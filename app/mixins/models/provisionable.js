@@ -61,7 +61,8 @@ export const ProvisionableBaseMixin = Ember.Mixin.create({
   hasFailedDeprovision: computed.equal('status', STATUSES.DEPROVISION_FAILED),
   isPending: computed.equal('status', STATUSES.PENDING),
   hasBeenDeprovisioned: computed.or('isDeprovisioned', 'isDeprovisioning'),
-  hasBeenDeployed: computed.not('isPending')
+  hasBeenDeployed: computed.not('isPending'),
+  isSettled: computed.or("isDeprovisioned", "isProvisioned", "hasFailedProvision", "hasFailedDeprovision"),
 });
 
 export default Ember.Mixin.create({

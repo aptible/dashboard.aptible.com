@@ -349,8 +349,8 @@ test(`visit ${appVhostsUrl} lists deprovisioned`, function(assert) {
       assert.ok(vhostEl.find(`:contains(${vhost.external_host})`).length,
          `has external host "${vhost.external_host}"`);
 
-      expectNoButton('Edit', {context:vhostEl});
-      expectNoButton('Delete', {context:vhostEl});
+      expectButton('Edit', {context:vhostEl});
+      expectButton('Delete', {context:vhostEl});
     });
   });
 });
