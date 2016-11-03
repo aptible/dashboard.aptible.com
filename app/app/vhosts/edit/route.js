@@ -41,6 +41,13 @@ export default Ember.Route.extend({
       let stack = this.currentModel.stack;
       let certificatePromise;
 
+      // We only issue a provision operation if the VHOST is already
+      // provisioned. This ensures that if a customer is e.g. updating their
+      // cert on a running VHOST, the change will apply, but if that they're
+      // just trying to use a new certificate and get their ALB to provision,
+      // we send them to aptible restart.
+      const willProvision = vhost.get("isProvisioned");
+
       if(vhost.get('certificateBody')) {
         let certificateBody = vhost.get('certificateBody');
         let privateKey = vhost.get('privateKey');
@@ -58,18 +65,21 @@ export default Ember.Route.extend({
         vhost.setProperties({ certificate, certificateBody: null, privateKey: null });
         return vhost.save();
       }).then(() => {
+        if (!willProvision) {
+          return vhost.reload();
+        }
+
         let op = this.store.createRecord('operation', {
           type: 'provision',
           vhost
         });
 
-        return op.save();
-      }).then( () => {
-        let message = `Endpoint ${vhost.get('virtualDomain')} updated.`;
-        Ember.get(this, 'flashMessages').success(message);
-
-        return vhost.reload();
-      }).then( () => {
+        return op.save().then(() => {
+          let message = `Endpoint ${vhost.get('virtualDomain')} updated.`;
+          Ember.get(this, 'flashMessages').success(message);
+          return vhost.reload();
+        });
+      }).then(() => {
         this.transitionTo('app.vhosts.index');
       }).catch( (e) => {
         let message = Ember.get(e, 'responseJSON.message') ||

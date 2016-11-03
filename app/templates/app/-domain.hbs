@@ -20,7 +20,7 @@
 
     <div class="panel-heading-actions">
       {{#if vhost.isGeneric}}
-        {{#if vhost.isProvisioned}}
+        {{#if vhost.isSettled}}
           {{link-to 'Edit' 'app.vhosts.edit' vhost.id class="btn btn-default btn-xs"}}
         {{/if}}
       {{/if}}
@@ -33,7 +33,7 @@
         <span class="label label-success">Managed HTTPS</span>
       {{/if}}
 
-      {{#if vhost.isProvisioned}}
+      {{#if vhost.isSettled}}
         {{delete-vhost vhost=vhost startDeletion="startDeletion"
                                    failDeletion="failDeletion"
                                    completeDeletion="completeDeletion"}}
@@ -49,9 +49,9 @@
         {{#if vhost.failedToProvision}}
           <h3 class="resource-metadata-value">
             <span class="danger failed-warning-message">
-              {{vhost.commonName}} failed to provision,
-              please{{#link-to-aptible app="support" path="topics/cli/how-to-restart-app"}}restart your app via the CLI{{/link-to-aptible}}
-                to access debugging output.
+              {{vhost.commonName}} failed to provision, please
+              {{#link-to-aptible app="support" path="topics/cli/how-to-restart-app"}}restart your app via the CLI{{/link-to-aptible}}
+              to access debugging output.
             </span>
           </h3>
         {{else}}

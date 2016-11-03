@@ -29,27 +29,9 @@ module('Acceptance: App Endpoint Edit', {
       _links: { vhosts: { href: vhostsUrl } }
     });
 
-    let vhostData = {
-      id: vhostId,
-      status: 'provisioned',
-      virtual_domain: virtualDomain,
-      _links: {
-        service: { href: serviceUrl },
-        certificate: { href: '/certificates/my-cert-1' }
-      }
-    };
-
     stubRequest('get', '/certificates/my-cert-1', function() {
       return this.success({ id: 'my-cert-1', 'common_name': virtualDomain,
                             certificate_body: 'my cert', private_key: 'private key'});
-    });
-
-    stubRequest('get', vhostsUrl, function(){
-      return this.success({
-        _embedded: {
-          vhosts: [vhostData]
-        }
-      });
     });
 
     stubRequest('get', serviceUrl, function(){
@@ -64,7 +46,34 @@ module('Acceptance: App Endpoint Edit', {
   }
 });
 
+function setupStubVhost(options) {
+  options = options || {};
+
+  if (options.vhostStatus === undefined) {
+    options.vhostStatus = 'provisioned';
+  }
+
+  let vhostData = {
+    id: vhostId,
+    status: options.vhostStatus,
+    virtual_domain: virtualDomain,
+    _links: {
+      service: { href: serviceUrl },
+      certificate: { href: '/certificates/my-cert-1' }
+    }
+  };
+
+  stubRequest('get', vhostsUrl, function(){
+    return this.success({
+      _embedded: {
+        vhosts: [vhostData]
+      }
+    });
+  });
+}
+
 test(`visit ${url} shows form with certificates`, function(assert) {
+  setupStubVhost();
   let stackId = 'stubbed-stack';
 
   stubRequest('get', `/accounts/${stackId}/certificates`, function(){
@@ -115,6 +124,7 @@ test(`visit ${url} shows form with certificates`, function(assert) {
 });
 
 test(`visit ${url} shows form without certificates`, function(assert) {
+  setupStubVhost();
   let stackId = 'stubbed-stack';
 
   stubRequest('get', `/accounts/${stackId}/certificates`, function(){
@@ -154,8 +164,9 @@ test(`visit ${url} shows form without certificates`, function(assert) {
 });
 
 test(`visit ${url} click save`, function(assert) {
+  setupStubVhost();
   stubStack({id: 'stubbed-stack'});
-  assert.expect(10);
+  assert.expect(11);
 
   let newCert = 'abc-new-cert';
   let newPk = 'abc-new-pk';
@@ -199,6 +210,8 @@ test(`visit ${url} click save`, function(assert) {
 
   signInAndVisit(url);
   andThen( () => {
+    assert.ok(!find("div.alert.alert-info").length,
+              "does not indicates that changes will not be applied");
     fillIn(findInput('certificate-body'), newCert);
     fillIn(findInput('private-key'), newPk);
 
@@ -214,6 +227,7 @@ test(`visit ${url} click save`, function(assert) {
 });
 
 test(`visit ${url} click save and error`, function(assert) {
+  setupStubVhost();
   let stackId = 'stubbed-stack';
   let errorMsg = 'There was an error with this endpoint';
 
@@ -252,6 +266,7 @@ test(`visit ${url} click save and error`, function(assert) {
 });
 
 test(`visit ${url} and click cancel`, function(assert) {
+  setupStubVhost();
   let stackId = 'stubbed-stack';
   let newVirtualDomain = 'aptible.com';
   let cert = { id: 'cert-1', certificate_body: 'cert_body',
@@ -281,6 +296,7 @@ test(`visit ${url} and click cancel`, function(assert) {
 });
 
 test(`visit ${url} and transition away`, function(assert) {
+  setupStubVhost();
   stubStack({id: 'stubbed-stack'});
   let newVirtualDomain = 'new-virt.domain.com';
 
@@ -297,5 +313,59 @@ test(`visit ${url} and transition away`, function(assert) {
        `does not show new virtual domain: "${newVirtualDomain}"`);
     assert.ok(find(`.vhost .vhost-virtualdomain:contains(${virtualDomain})`).length,
        `does show old virtual domain "${virtualDomain}"`);
+  });
+});
+
+test(`visit ${url} and update a provision_failed VHOST does not trigger a provision`, function(assert) {
+  setupStubVhost({ vhostStatus: 'provision_failed' });
+  stubStack({id: 'stubbed-stack'});
+  assert.expect(7);
+
+  let newCert = 'abc-new-cert';
+  let newPk = 'abc-new-pk';
+  let certificateId = 'my-cert-1;';
+  let certificateHref = `/certificates/${certificateId}`;
+
+  stubRequest('post', '/accounts/stubbed-stack/certificates', function() {
+    assert.ok(true, 'creates a new certificate');
+    return this.success({ id: certificateId, common_name: 'health.io',
+                          _links: { self: { href: certificateHref }}});
+  });
+
+  stubRequest('put', `/vhosts/${vhostId}`, function(request){
+    assert.ok(true, 'posts to create endpoint');
+    let json = this.json(request);
+    assert.equal(json.certificate, certificateHref);
+
+    return this.success(Ember.merge(json, {id:vhostId, status: 'provisioned' }));
+  });
+
+  stubRequest('get', `/vhosts/${vhostId}`, function(request){
+    assert.ok(true, 'reloads the updated endpoint');
+    let json = this.json(request);
+    return this.success(Ember.merge(json, {id:vhostId, status: 'provisioned' }));
+  });
+
+
+  stubRequest('post', `/vhosts/${vhostId}/operations`, function(){
+    assert.ok(false, 'no provision operation should have been created');
+    return this.success({});
+  });
+
+  signInAndVisit(url);
+  andThen( () => {
+    assert.ok(find("div.alert.alert-info:contains('not be applied')").length,
+              "indicates that changes will not be applied");
+    fillIn(findInput('certificate-body'), newCert);
+    fillIn(findInput('private-key'), newPk);
+
+    click(findButton('Save Endpoint'));
+  });
+
+  andThen( () => {
+    assert.equal(currentPath(), 'requires-authorization.enclave.app.vhosts.index');
+
+    assert.ok( find(`.vhost .vhost-virtualdomain:contains(health.io)`).length,
+        'shows new endpoint health.io');
   });
 });

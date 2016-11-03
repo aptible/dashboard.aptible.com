@@ -6,6 +6,17 @@
       </div>
       <div class="panel-body">
         <form role="form">
+          {{#unless model.isProvisioned}}
+            {{#bs-alert alert="info"}}
+              <p>
+                This Endpoint is not yet provisioned, <strong>your changes will
+                not be applied automatically</strong>.
+              </p>
+              <p>
+                Use aptible restart after saving to do so manually.
+              </p>
+            {{/bs-alert}}
+          {{/unless}}
           {{#unless model.isValid}}
             {{#bs-alert alert="warning" as |component|}}
              {{#bs-alert-dismiss target=component}}
