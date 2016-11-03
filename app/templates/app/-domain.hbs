@@ -87,8 +87,10 @@
             <h3 class="resource-metadata-value endpoint-platform">
               {{ vhost.platform }}
 
-              {{#if vhost.isElb}}
-                - <a href="#" {{action "openUpgradeVhostModal" vhost}}>Upgrade</a>
+              {{#if vhost.service.app.stack.isV2}}
+                {{#if vhost.isElb}}
+                  - <a href="#" {{action "openUpgradeVhostModal" vhost}}>Upgrade</a>
+                {{/if}}
               {{/if}}
             </h3>
           </li>

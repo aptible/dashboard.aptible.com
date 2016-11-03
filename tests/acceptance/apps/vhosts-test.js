@@ -15,9 +15,10 @@ var appVhostsNewUrl = '/apps/' + appId + '/vhosts/new';
 module('Acceptance: App Endpoints', {
   beforeEach: function() {
     App = startApp();
-    stubStacks();
+
     stubOrganization();
-    stubStack({ id: 'stubbed-stack' });
+    stubStacks();
+
     stubRequest('get', '/users/user1/ssh_keys', function(){
       return this.success({
         _embedded: {
@@ -36,6 +37,8 @@ test(`${appVhostsUrl} requires authentication`, function() {
 });
 
 test(`app show page includes link to ${appVhostsUrl}`, function() {
+  stubStack({ id: 'stubbed-stack' });
+
   stubApp({
     id: appId,
     status: 'provisioned'
@@ -61,6 +64,8 @@ test(`visit ${appVhostsUrl} has link to ${appVhostsNewUrl}`, function() {
     virtual_domain: 'www.health2.io',
     external_host: 'www.host2.com'
   }];
+
+  stubStack({ id: 'stubbed-stack' });
 
   stubApp({
     id: appId,
@@ -110,6 +115,8 @@ test(`visit ${appVhostsUrl} lists active endpoints`, function(assert) {
     platform: 'elb'
   }];
 
+  stubStack({ id: 'stubbed-stack' });
+
   stubApp({
     id: appId,
     _embedded: { services: [] },
@@ -150,6 +157,8 @@ test(`visit ${appVhostsUrl}: failed endpoints should have warning message`, func
     status: 'provision_failed'
   }];
 
+  stubStack({ id: 'stubbed-stack' });
+
   stubApp({
     id: appId,
     _embedded: { services: [] },
@@ -176,6 +185,8 @@ test(`visit ${appVhostsUrl}: failed default endpoints should have warning messag
     default: true,
     status: 'provision_failed'
   }];
+
+  stubStack({ id: 'stubbed-stack' });
 
   stubApp({
     id: appId,
@@ -216,6 +227,8 @@ test(`visit ${appVhostsUrl} lists endpoints with action required with tips`, fun
     external_host: 'www.host2.com',
     status: 'provisioned'
   }];
+
+  stubStack({ id: 'stubbed-stack' });
 
   stubApp({
     id: appId,
@@ -274,6 +287,8 @@ test(`visit ${appVhostsUrl} lists pending vhosts`, function(assert) {
     status: 'provisioning'
   }];
 
+  stubStack({ id: 'stubbed-stack' });
+
   stubApp({
     id: appId,
     _embedded: { services: [] },
@@ -320,6 +335,8 @@ test(`visit ${appVhostsUrl} lists deprovisioned`, function(assert) {
     status: 'deprovisioned'
   }];
 
+  stubStack({ id: 'stubbed-stack' });
+
   stubApp({
     id: appId,
     _embedded: { services: [] },
@@ -362,6 +379,8 @@ test(`visit ${appVhostsUrl} lists deprovisioning`, function(assert) {
     external_host: 'www.host2.com',
     status: 'deprovisioning'
   }];
+
+  stubStack({ id: 'stubbed-stack' });
 
   stubApp({
     id: appId,
@@ -409,6 +428,8 @@ test(`attempting to delete an endpoint should confirm`, function(assert) {
   let vhostId = 'vhost-1';
   var vhosts = [{id: vhostId, status: 'provisioned'}];
 
+  stubStack({ id: 'stubbed-stack' });
+
   stubApp({
     id: appId,
     _embedded: { services: [] },
@@ -439,6 +460,8 @@ test(`visit ${appVhostsUrl} allows deleting endpoint`, function(assert) {
 
   let vhostId = 'vhost-1';
   var vhosts = [{id: vhostId, status: 'provisioned'}];
+
+  stubStack({ id: 'stubbed-stack' });
 
   stubApp({
     id: appId,
@@ -562,6 +585,8 @@ function setupAcmeStubs(assert, options) {
   const completeProvision = () => {
     provisionOperation.status = provisionFinalStatus;
   };
+
+  stubStack({ id: 'stubbed-stack' });
 
   stubApp({
     id: appId,
@@ -724,20 +749,46 @@ test(`visit ${appVhostsUrl} allows renewing an unitialized ACME cert (renewal do
   });
 });
 
-test(`visit ${appVhostsUrl} allows upgrading an ELB VHOST`, function(assert) {
-  assert.expect(4);
+function setupAlbStubs(options) {
+  if (options.sweetnessStackVersion === undefined) {
+    options.sweetnessStackVersion = "v2";
+  }
+
+  if (options.vhostPlatform === undefined) {
+    options.vhostPlatform = "alb";
+  }
+
+  if (options.vhostIsDefault === undefined) {
+    options.vhostIsDefault = false;
+  }
+
+  const service = {
+    id: 1,
+    _links: {
+      app: { href: `/apps/${appId}` }
+    }
+  };
 
   const vhost = {
     id: 1,
-    platform: "elb",
+    platform: options.vhostPlatform,
+    default: options.vhostIsDefault,
     status: "provisioned",
-    external_host: "foo.com"
+    external_host: "foo.com",
+    _links: {
+      service: { href: `/services/${service.id}` }
+    }
   };
+
+  stubStack({ id: 'stubbed-stack', sweetness_stack_version: options.sweetnessStackVersion });
 
   stubApp({
     id: appId,
-    _embedded: { services: [] },
     _links: { vhosts: { href: appVhostsApiUrl } }
+  });
+
+  stubRequest("get", `/services/${service.id}`, function() {
+    return this.success(service);
   });
 
   stubRequest("get", appVhostsApiUrl, function(){
@@ -747,6 +798,14 @@ test(`visit ${appVhostsUrl} allows upgrading an ELB VHOST`, function(assert) {
   stubRequest("get", `/vhosts/${vhost.id}`, function(){
     return this.success(vhost);
   });
+
+  return vhost;
+}
+
+test(`visit ${appVhostsUrl} allows upgrading an ELB VHOST on v2`, function(assert) {
+  assert.expect(4);
+
+  const vhost = setupAlbStubs({ vhostPlatform: "elb" });
 
   stubRequest("put", `/vhosts/${vhost.id}`, function(request){
     const json = this.json(request);
@@ -782,29 +841,10 @@ test(`visit ${appVhostsUrl} allows upgrading an ELB VHOST`, function(assert) {
   });
 });
 
-test(`visit ${appVhostsUrl} notifies if upgrading an ELB fails`, function(assert) {
+test(`visit ${appVhostsUrl} notifies if upgrading an ELB on v2 fails`, function(assert) {
   assert.expect(1);
 
-  const vhost = {
-    id: 1,
-    platform: "elb",
-    status: "provisioned",
-    external_host: "foo.com"
-  };
-
-  stubApp({
-    id: appId,
-    _embedded: { services: [] },
-    _links: { vhosts: { href: appVhostsApiUrl } }
-  });
-
-  stubRequest("get", appVhostsApiUrl, function(){
-    return this.success({ _embedded: { vhosts: [vhost] } });
-  });
-
-  stubRequest("get", `/vhosts/${vhost.id}`, function(){
-    return this.success(vhost);
-  });
+  const vhost = setupAlbStubs({ vhostPlatform: "elb" });
 
   stubRequest("put", `/vhosts/${vhost.id}`, function(){
     return this.error(401, {});
@@ -826,28 +866,22 @@ test(`visit ${appVhostsUrl} notifies if upgrading an ELB fails`, function(assert
   });
 });
 
-test(`visit ${appVhostsUrl} does not show upgrade for ALB VHOST`, function(assert) {
+test(`visit ${appVhostsUrl} does not show upgrade for ALB VHOST on v2`, function(assert) {
   assert.expect(1);
 
-  const vhost = {
-    id: 1,
-    platform: "alb",
-    status: "provisioned"
-  };
+  setupAlbStubs({});
 
-  stubApp({
-    id: appId,
-    _embedded: { services: [] },
-    _links: { vhosts: { href: appVhostsApiUrl } }
-  });
+  signInAndVisit(appVhostsUrl);
 
-  stubRequest("get", appVhostsApiUrl, function(){
-    return this.success({ _embedded: { vhosts: [vhost] } });
+  andThen(() => {
+    assert.equal(find(".endpoint-platform > a").length, 0, "Upgrade button is not shown");
   });
+});
 
-  stubRequest("get", `/vhosts/${vhost.id}`, function(){
-    return this.success(vhost);
-  });
+test(`visit ${appVhostsUrl} does not show upgrade for ELB VHOST on v1`, function(assert) {
+  assert.expect(1);
+
+  setupAlbStubs({ vhostPlatform: "elb", sweetnessStackVersion: "v1" });
 
   signInAndVisit(appVhostsUrl);
 
@@ -859,26 +893,7 @@ test(`visit ${appVhostsUrl} does not show upgrade for ALB VHOST`, function(asser
 test(`visit ${appVhostsUrl} does not show CNAME tip for ALB Upgrade for Default VHOST`, function(assert) {
   assert.expect(1);
 
-  const vhost = {
-    id: 1,
-    platform: "elb",
-    default: true,
-    status: "provisioned"
-  };
-
-  stubApp({
-    id: appId,
-    _embedded: { services: [] },
-    _links: { vhosts: { href: appVhostsApiUrl } }
-  });
-
-  stubRequest("get", appVhostsApiUrl, function(){
-    return this.success({ _embedded: { vhosts: [vhost] } });
-  });
-
-  stubRequest("get", `/vhosts/${vhost.id}`, function(){
-    return this.success(vhost);
-  });
+  setupAlbStubs({ vhostPlatform: "elb", vhostIsDefault: true });
 
   signInAndVisit(appVhostsUrl);
 

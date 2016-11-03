@@ -65,6 +65,11 @@ export default Ember.Component.extend({
     if (this.get("defaultVhostAllowed")) { defaultVhostType = VHOST_TYPE_DEFAULT; }
     this.set('vhostType', defaultVhostType);
 
+    // Prefer ALBs
+    let defaultVhostPlatform = "elb";
+    if (this.get("albVhostAllowed")) { defaultVhostPlatform = "alb"; }
+    this.set("model.platform", defaultVhostPlatform);
+
     // The observer won't run automatically, so we force it now.
     this.vhostTypeObserver();
   },
@@ -82,7 +87,8 @@ export default Ember.Component.extend({
     }));
   }),
 
-  acmeVhostAllowed: Ember.computed.equal('vhostService.stack.sweetnessStackVersion', 'v2'),
+  acmeVhostAllowed: Ember.computed.alias('vhostService.stack.isV2'),
+  albVhostAllowed: Ember.computed.alias('vhostService.stack.isV2'),
 
   formValid: Ember.computed("vhostType", "userDomainValid", function() {
     if (this.get("isAcme")) {

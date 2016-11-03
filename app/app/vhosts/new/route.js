@@ -7,8 +7,8 @@ export default Ember.Route.extend({
   },
 
   model() {
-    var app = this.modelFor('app');
-    var stack = app.get('stack');
+    const app = this.modelFor('app');
+    const stack = app.get('stack');
 
     return Ember.RSVP.hash({
       vhost: this.store.createRecord('vhost', { app }),

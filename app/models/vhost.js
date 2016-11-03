@@ -14,7 +14,7 @@ export default DS.Model.extend(ProvisionableMixin, {
   userDomain: DS.attr('string'),
   isAcme: DS.attr('boolean', { defaultValue: false }),
   acmeStatus: DS.attr('string'),
-  platform: DS.attr('string', { defaultValue: 'alb' }),
+  platform: DS.attr('string'),
 
   certificate: DS.belongsTo('certificate', { async: true }),
   service: DS.belongsTo('service', {async:true}),
