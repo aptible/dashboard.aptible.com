@@ -10,7 +10,7 @@ function padLeft(str, len=2, filler="0"){
   return str;
 }
 
-export function formatUtcTimestamp(date, excludeTime = false) {
+export function formatUtcTimestamp([date, excludeTime = false]) {
   if (!date) { return; }
 
   Ember.assert('format-utc-timestamp must be given an instanceof Date',
@@ -37,4 +37,4 @@ export function formatUtcTimestamp(date, excludeTime = false) {
   return formatted;
 }
 
-export default Ember.Handlebars.makeBoundHelper(formatUtcTimestamp);
+export default Ember.Helper.helper(formatUtcTimestamp);

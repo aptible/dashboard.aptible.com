@@ -5,4 +5,4 @@ export function userHasRole(params/*, hash*/) {
   return user.get('roles').contains(role);
 }
 
-export default Ember.HTMLBars.makeBoundHelper(userHasRole);
+export default Ember.Helper.helper(userHasRole);

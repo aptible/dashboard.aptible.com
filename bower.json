@@ -1,7 +1,7 @@
 {
   "name": "diesel",
   "dependencies": {
-    "ember": "1.13.11",
+    "ember": "1.13.13",
     "ember-cli-shims": "0.0.6",
     "ember-cli-test-loader": "0.2.1",
     "ember-data": "1.0.0-beta.19.2",

@@ -7,4 +7,4 @@ export function formatList(params) {
   return list.map(i => Ember.get(i, property)).join(separator || ', ');
 }
 
-export default Ember.HTMLBars.makeBoundHelper(formatList);
+export default Ember.Helper.helper(formatList);

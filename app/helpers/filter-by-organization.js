@@ -5,4 +5,4 @@ export function filterByOrganization(params) {
   return params[0].filterBy('data.links.organization', organizationUrl);
 }
 
-export default Ember.HTMLBars.makeBoundHelper(filterByOrganization);
+export default Ember.Helper.helper(filterByOrganization);

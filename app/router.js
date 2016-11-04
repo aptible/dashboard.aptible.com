@@ -10,6 +10,7 @@ let inflector = new Ember.Inflector(Ember.Inflector.defaultRules);
 const Router = Ember.Router.extend({
   analytics: Ember.inject.service(),
   elevation: Ember.inject.service(),
+  flashMessages: Ember.inject.service(),
   location: config.locationType,
 
   onBeforeTransition: Ember.on('willTransition', function(transition) {

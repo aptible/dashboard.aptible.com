@@ -57,7 +57,7 @@ module.exports = function(environment) {
       // https://github.com/poteto/ember-cli-flash#service-defaults
       timeout: 6500,
       showProgress: true,
-      injectionFactories : ['route', 'router', 'controller', 'view']
+      injectionFactories : []
     },
 
     prefetch: ['use.typekit.net', 'www.gravatar.com', 'js.stripe.com',

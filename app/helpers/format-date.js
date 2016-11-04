@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { monthNames } from '../utils/dates';
 
-export function formatDate(date) {
+export function formatDate([date]) {
   if (!date) { return; }
 
   Ember.assert('format-date must be called with an instanceof Date',
@@ -11,4 +11,4 @@ export function formatDate(date) {
   return `${monthName} ${date.getDate()}, ${date.getFullYear()}`;
 }
 
-export default Ember.Handlebars.makeBoundHelper(formatDate);
+export default Ember.Helper.helper(formatDate);

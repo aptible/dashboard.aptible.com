@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 let terabyteInGbs = Math.pow(2,10);
 
-export function formatDiskSize(input) {
+export function formatDiskSize([input]) {
   if (!input) { return '0GB'; }
 
   if (input > terabyteInGbs) {
@@ -13,4 +13,4 @@ export function formatDiskSize(input) {
   }
 }
 
-export default Ember.Handlebars.makeBoundHelper(formatDiskSize);
+export default Ember.Helper.helper(formatDiskSize);
