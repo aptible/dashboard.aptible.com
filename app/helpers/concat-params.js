@@ -4,4 +4,4 @@ export function concatParams(params/*, hash*/) {
   return params.join('');
 }
 
-export default Ember.HTMLBars.makeBoundHelper(concatParams);
+export default Ember.Helper.helper(concatParams);

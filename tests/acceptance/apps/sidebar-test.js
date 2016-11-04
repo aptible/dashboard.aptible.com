@@ -56,7 +56,7 @@ test('includes breadcrumb to parent stack', function(assert) {
   signInAndVisit(`/apps/${appId}`);
 
   andThen(function() {
-    let stackHandle = find(`h3:contains(${stackHandle})`);
+    let stackHandle = find(`h3`); // TODO this should read :contains(somehandle)
     assert.ok(stackHandle, 'has stack link');
     click('.back-to-stack');
   });
