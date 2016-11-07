@@ -12,8 +12,11 @@ import MockTitle from './helpers/mock-title';
 import './helpers/authentication';
 import Cookies from 'diesel/utils/cookies';
 import { AFTER_AUTH_COOKIE } from '../app';
+import assertHasElement from './helpers/assert-has-element';
 
 setResolver(resolver);
+
+QUnit.extend(QUnit.assert, {hasElement: assertHasElement});
 
 QUnit.testStart(function(){
   storage.remove(config.authTokenKey);
