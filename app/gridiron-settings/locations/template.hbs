@@ -22,5 +22,9 @@
       <button class="btn btn-default add-location-button" {{action "onAddLocation"}}><i class="fa fa-plus"></i> Location</button>
     </div>
   </div>
-  {{location-index locations=validLocations}}
+
+  {{location-index
+    locations=validLocations
+    removeLocation="onRemoveLocation"
+    onAddLocation="onAddLocation"}}
 </div>

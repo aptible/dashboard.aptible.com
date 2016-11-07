@@ -3,6 +3,8 @@ import Property from 'ember-json-schema-document/models/property';
 import Attestation from 'diesel/models/attestation';
 import loadSchema from 'diesel/utils/load-schema';
 
+// TODO: Add acceptance test coverage here, it exists for setup/locations only
+
 export default Ember.Route.extend({
   model() {
     let handle = 'workforce_locations';
@@ -49,6 +51,19 @@ export default Ember.Route.extend({
   actions: {
     save() {
       this.saveState();
+    },
+
+    onRemoveLocation(location) {
+      let { schemaDocument } = this.currentModel;
+      schemaDocument.removeObject(location);
+    },
+
+    onCreateLocation() {
+      let { schemaDocument, attestation } = this.currentModel;
+
+      attestation.set('document', schemaDocument.dump({ excludeInvalid: true }));
+      attestation.setUser(this.session.get('currentUser'));
+      attestation.save();
     },
 
     onAddLocation() {
