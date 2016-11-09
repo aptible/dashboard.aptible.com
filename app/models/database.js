@@ -51,7 +51,13 @@ export function provisionDatabases(user, store){
         diskSize: database.get('initialDiskSize') || '10',
         database: database
       });
-      return op.save();
+      return op.save().then((op) => {
+        // NOTE: We don't actually return this promise, because the UI should
+        // not block on the provisioning.
+        op.reloadUntilStatusChanged(1000 * 60 * 15 /* minutes */).then(() => {
+          return database.reload();
+        });
+      });
     });
 
     return Ember.RSVP.all(promises);

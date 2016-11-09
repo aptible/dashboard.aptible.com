@@ -436,8 +436,8 @@ test('submitting valid payment info should create db', function(assert) {
   });
 });
 
-test('submitting valid payment info when user is verified should provision db', function(assert) {
-  assert.expect(4);
+test('submitting valid payment info when user is verified should provision db and poll', function(assert) {
+  assert.expect(6);
 
   stubStacks({}, []);
   stubDatabaseImages();
@@ -455,6 +455,9 @@ test('submitting valid payment info when user is verified should provision db', 
 
   let databaseParams = {};
   let operationsParams = {};
+
+  let hasReloadedDatabase = false;
+  let operationPolls = 0;
 
   stubRequest('post', '/accounts', function(request){
     let params = this.json(request);
@@ -474,13 +477,20 @@ test('submitting valid payment info when user is verified should provision db', 
   // provisionDatabases must GET all dbs to provision them
   stubDatabases([{id:dbId}]);
 
+  stubRequest('get', `/databases/${dbId}`, function() {
+    hasReloadedDatabase = true;
+    return this.success({id:dbId});
+  });
+
   stubRequest('post', `/databases/${dbId}/operations`, function(request){
     operationsParams = this.json(request);
     return this.success(201, {id: 'op-id'});
   });
 
   stubRequest('get', `/operations/op-id`, function(){
-    return this.success(201, {id: 'op-id', status: 'succeeded'});
+    operationPolls ++;
+    const status = (operationPolls >= 2) ? 'succeeded' : 'running';
+    return this.success(201, {id: 'op-id', status: status});
   });
 
   mockSuccessfulPayment();
@@ -503,5 +513,10 @@ test('submitting valid payment info when user is verified should provision db', 
           'db params has type');
     assert.equal(operationsParams.type, opType,
           'op params has type');
+  });
+
+  andThen(() => {
+    assert.ok(hasReloadedDatabase, 'Has reloaded the DB');
+    assert.equal(operationPolls, 2, 'Has reloaded the operation twice');
   });
 });

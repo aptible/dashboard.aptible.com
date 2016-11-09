@@ -40,8 +40,8 @@ test('visiting /verify/some-code creates verification', function(assert) {
   });
 });
 
-test('after verification, pending databases are provisioned', function(assert) {
-  assert.expect(5);
+test('after verification, pending databases are provisioned and waited on', function(assert) {
+  assert.expect(7);
   stubStacks(); // For loading index
   stubOrganization();
   var verificationCode = 'some-code';
@@ -51,6 +51,9 @@ test('after verification, pending databases are provisioned', function(assert) {
   let dbData = [{id: dbId, initialDiskSize: diskSize}];
   stubDatabases(dbData);
 
+  let hasReloadedDatabase = false;
+  let operationPolls = 0;
+
   stubRequest('post', '/verifications', function(request){
     var params = this.json(request);
     assert.equal(params.verification_code, verificationCode, 'correct code is passed');
@@ -58,6 +61,11 @@ test('after verification, pending databases are provisioned', function(assert) {
       id: 'this-id',
       verification_code: verificationCode
     });
+  });
+
+  stubRequest('get', `/databases/${dbId}`, function() {
+    hasReloadedDatabase = true;
+    return this.success(dbData[0]);
   });
 
   stubUser({id:'user-id', verified:true});
@@ -75,12 +83,20 @@ test('after verification, pending databases are provisioned', function(assert) {
   });
 
   stubRequest('get', `/operations/op-id`, function(){
-    return this.success(201, {id: 'op-id', status: 'succeeded'});
+    operationPolls ++;
+    const status = (operationPolls >= 2) ? 'succeeded' : 'running';
+    return this.success(201, {id: 'op-id', status: status});
   });
 
-  signInAndVisit('/verify/'+verificationCode);
+  signInAndVisit(`/verify/${verificationCode}`);
+
   andThen(function(){
     assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
+  });
+
+  andThen(() => {
+    assert.ok(hasReloadedDatabase, 'Has reloaded the DB');
+    assert.equal(operationPolls, 2, 'Has reloaded the operation twice');
   });
 });
 
