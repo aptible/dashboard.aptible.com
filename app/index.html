@@ -8,20 +8,20 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    {{content-for 'head'}}
+    {{content-for "head"}}
 
-    <link rel="stylesheet" href="assets/vendor.css">
-    <link rel="stylesheet" href="assets/diesel.css">
+    <link rel="stylesheet" href="{{rootURL}}assets/vendor.css">
+    <link rel="stylesheet" href="{{rootURL}}assets/diesel.css">
 
-    {{content-for 'head-footer'}}
+    {{content-for "head-footer"}}
   </head>
   <body>
-    {{content-for 'body'}}
+    {{content-for "body"}}
 
-    <script src="assets/vendor.js"></script>
-    <script src="assets/diesel.js"></script>
+    <script src="{{rootURL}}assets/vendor.js"></script>
+    <script src="{{rootURL}}assets/diesel.js"></script>
 
-    {{content-for 'body-footer'}}
+    {{content-for "body-footer"}}
 
     <div class="initial-loading-indicator loading-wrapper">
       <div class="sk-cube-grid">

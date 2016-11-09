@@ -52,6 +52,7 @@ module.exports = function(defaults) {
 
   // Shim to load c3
   app.import('vendor/shims/c3.js');
+  app.import('vendor/shims/ember-data.js');
   // Use `app.import` to add additional libraries to the generated
   // output files.
   //

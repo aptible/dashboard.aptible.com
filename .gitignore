@@ -1,6 +1,8 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 .DS_Store
+*.swp
+.idea
 
 # compiled output
 /dist
@@ -15,7 +17,5 @@
 /connect.lock
 /coverage/*
 /libpeerconnection.log
-npm-debug.log
+npm-debug.log*
 testem.log
-*.swp
-.idea

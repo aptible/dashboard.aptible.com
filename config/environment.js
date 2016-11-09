@@ -14,8 +14,9 @@ module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'diesel',
     environment: environment,
-    baseURL: '/',
+    rootURL: '/',
     locationType: 'auto',
+
     transitionDuration: 250,
 
     metricsBaseUri: metricsBaseUri,
@@ -72,18 +73,6 @@ module.exports = function(environment) {
       development: true
     },
 
-    EmberENV: {
-      FEATURES: {
-        // Here you can enable experimental features on an ember canary build
-        // e.g. 'with-controller': true
-      }
-    },
-
-    APP: {
-      // Here you can pass flags/options to your application instance
-      // when it is created
-    },
-
     torii: {
       sessionServiceName: 'session'
     },
@@ -116,25 +105,42 @@ module.exports = function(environment) {
       'SPD_access_control_authentication_and_audit_logging', 'SPD_remote_access',
       'SPD_encryption_and_key_management', 'SPD_secure_software_development',
       'SPD_human_resources_information_security', 'SPD_mobile_device_security'
-    ]
+    ],
+
+    EmberENV: {
+      FEATURES: {
+        // Here you can enable experimental features on an ember canary build
+        // e.g. 'with-controller': true
+      },
+      EXTEND_PROTOTYPES: {
+        // Prevent Ember Data from overriding Date.parse.
+        Date: false,
+        Array: true
+      }
+    },
+
+    APP: {
+      // Here you can pass flags/options to your application instance
+      // when it is created
+    }
   };
 
   if (environment === 'development') {
-    ENV.APP.LOG_RESOLVER = false;
-    ENV.APP.LOG_ACTIVE_GENERATION = false;
-    ENV.APP.LOG_TRANSITIONS = true;
-    ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
-    ENV.APP.LOG_VIEW_LOOKUPS = false;
+    // ENV.APP.LOG_RESOLVER = true;
+    // ENV.APP.LOG_ACTIVE_GENERATION = true;
+    // ENV.APP.LOG_TRANSITIONS = true;
+    // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
+    // ENV.APP.LOG_VIEW_LOOKUPS = true;
   }
 
   if (environment === 'test') {
-    // Testem prefers this...
     ENV.globalSecurityControlGroups = [
       'SPD_secure_software_development',
       'SPD_human_resources_information_security'
     ];
     ENV.transitionDuration = 250;
-    ENV.baseURL = '/';
+
+    // Testem prefers this...
     ENV.locationType = 'none';
 
     // keep test console output quieter
@@ -142,7 +148,6 @@ module.exports = function(environment) {
     ENV.APP.LOG_VIEW_LOOKUPS = false;
     ENV.APP.LOG_TRANSITIONS = false;
     ENV.APP.LOG_TRANSITIONS_INTERNAL = false;
-    ENV.APP.rootElement = '#ember-testing';
     ENV.replaceLocation = false;
     ENV.replaceTitle = false;
 
@@ -156,6 +161,8 @@ module.exports = function(environment) {
     // duration.  Forcing flashes to be sticky will allow them to be detectable
     ENV.flashMessageDefaults.sticky = true;
     ENV.sentry.development = true;
+
+    ENV.APP.rootElement = '#ember-testing';
   }
 
   if (environment === 'staging') {

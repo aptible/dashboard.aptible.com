@@ -1,13 +1,15 @@
 import Ember from "ember";
+import Inflector from 'ember-inflector';
 import config from "./config/environment";
 
 const RISK_ASSESSMENT_COMPONENTS = ["threat_events", "predisposing_conditions",
                                     "security_controls", "threat_sources",
                                     "vulnerabilities"];
 
-let inflector = new Ember.Inflector(Ember.Inflector.defaultRules);
+let inflector = new Inflector(Inflector.defaultRules);
 
 const Router = Ember.Router.extend({
+  rootURL: config.rootURL,
   analytics: Ember.inject.service(),
   elevation: Ember.inject.service(),
   flashMessages: Ember.inject.service(),

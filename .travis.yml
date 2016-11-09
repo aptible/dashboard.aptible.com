@@ -1,32 +1,31 @@
+---
 language: node_js
 node_js:
-- '0.12'
+  - "4"
+
 sudo: false
-cache:
-  directories:
-  - node_modules
 
 cache:
   directories:
-    - "travis_phantomjs"
     - node_modules
+
 before_install:
-  - "export PHANTOMJS_VERSION=2.1.1"
-  - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then rm -rf $PWD/travis_phantomjs; mkdir -p $PWD/travis_phantomjs; fi"
-  - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then wget https://github.com/Medium/phantomjs/releases/download/v$PHANTOMJS_VERSION/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -O $PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2; fi"
-  - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then tar -xvf $PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -C $PWD/travis_phantomjs; fi"
-  - "export PATH=$PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64/bin:$PATH"
-  - "phantomjs --version"
   - npm config set spin false
-  - npm install -g npm@^2
+  - npm install -g bower
+  - bower --version
+  - npm install phantomjs-prebuilt
+  - node_modules/phantomjs-prebuilt/bin/phantomjs --version
+
 install:
-- npm install -g bower
-- npm install
-- bower install
+  - npm install
+  - bower install
+
 script:
-- npm test
-- script/travis-deploy.sh
+  - npm test
+  - script/travis-deploy.sh
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+
 env: # IAM: travis-s3
   secure: RdzCMUHB2dtmCc0IHEdIAvqItRhT45HLcr0C5s+lHIoImsNXatjjuHgOeCKlzn9Ewkx7Jkxt5q5ZBeOrQLEh8JTorGqrlpf40BQ46qd5tIScqwvQ4f2c6y06HGOzC2mbl1PK6w/7k76JfWcH0SNDG6exuCYViXkWhHb1oGxlJfA=
