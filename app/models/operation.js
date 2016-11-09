@@ -1,6 +1,28 @@
 import DS from 'ember-data';
 import Ember from 'ember';
 
+function makeOperationPollSchedule(baseInterval, backoffFactor, timeout) {
+  Ember.assert('baseInterval must be > 0', baseInterval > 0);
+  Ember.assert('backoffFactor must be >= 1', backoffFactor >= 1);
+  Ember.assert('timeout must be > 0', timeout > 0);
+
+  const schedule = [];
+  let total = 0;
+
+  function pushInterval(interval) {
+    total += interval;
+    schedule.push(interval);
+  }
+
+  let nextInterval = baseInterval;
+  while(total < timeout) {
+    pushInterval(nextInterval);
+    nextInterval = Math.floor(nextInterval * backoffFactor);
+  }
+
+  return schedule;
+}
+
 export default DS.Model.extend({
   type: DS.attr('string'),
   status: DS.attr('string', {defaultValue: 'queued'}),
@@ -29,37 +51,43 @@ export default DS.Model.extend({
   logDrain: null,
   service: null,
 
-  reloadUntilStatusChanged: function(maximumTimeout) {
-    let reloadUntilOperationStatusChanged = (operation, maximumTimeout, timeout) => {
-      return operation.reload().then((o) => {
-        return new Ember.RSVP.Promise((resolve, reject) => {
-          if(timeout > maximumTimeout) {
-            return reject(new Error('Operation timed out.'));
-          }
+  reloadUntilStatusChanged: function(timeout) {
+    const operation = this;
+    const schedule = makeOperationPollSchedule(4000, 1.2, timeout);
 
-          let status = o.get('status');
-          if(status === 'succeeded') {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      const scheduleNextPoll = () => {
+        operation.reload().then((o) => {
+          const operationStatus = o.get("status");
+
+          if (operationStatus === "succeeded") {
             return resolve(o);
-          } else if(status === 'failed') {
-            const err = new Error('Operation failed.');
-            err.operation = o;
-            return reject(err);
           }
 
-          Ember.run.later(o, () => {
-            return resolve(reloadUntilOperationStatusChanged(o, maximumTimeout, timeout * 2));
-          }, timeout);
-        });
-      }).catch((err) => {
-        // Catch error caused by the operation not existing if its associated resource
-        // has been removed in the backend.
-        if(err.status !== 404) {
-          throw err;
-        }
-      });
-    };
+          if (operationStatus === "failed") {
+            throw new Error('Operation failed');
+          }
 
-    return reloadUntilOperationStatusChanged(this, maximumTimeout, 1000);
+          const nextInterval = schedule.shift();
+
+          if (nextInterval === undefined) {
+            throw new Error('Operation timed out.');
+          }
+
+          Ember.run.later(operation, scheduleNextPoll, nextInterval);
+        }, (e) => {
+          if(e.status !== 404) {
+            throw e;
+          }
+          resolve();
+        }).catch((e) => {
+          e.operation = operation;
+          reject(e);
+        });
+      };
+
+      scheduleNextPoll();
+    });
   },
 
   isDone: Ember.computed("status", function() {
