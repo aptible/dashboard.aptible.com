@@ -1,10 +1,12 @@
-// TODO(PasswordResetChallenge): remove
 import Ember from 'ember';
 import {module, test} from 'qunit';
 import startApp from '../../helpers/start-app';
 import { stubRequest } from '../../helpers/fake-server';
 
-module('Acceptance: PasswordNew', {
+const challengeId = 'the-user-id';
+const verificationCode = 'the-reset-code';
+
+module('Acceptance: Password Reset Completion (PasswordResetChallenge workflow)', {
   beforeEach: function() {
     this.application = startApp();
   },
@@ -13,87 +15,76 @@ module('Acceptance: PasswordNew', {
   }
 });
 
-test('visiting /password/new/:reset_code/:user_id works', function(assert) {
-  var userId = 'abcUserId';
-  var resetCode = 'defResetCode';
-  visit(`/password/new/${resetCode}/${userId}`);
+test('visiting /password/update/:challenge_id/:verification_code works', function(assert) {
+  visit(`/password/update/${challengeId}/${verificationCode}`);
   andThen(function(){
-    assert.equal(currentPath(), 'password.new');
+    assert.equal(currentPath(), 'password.update');
   });
 });
 
-test('visiting /password/new/:reset_code/:user_id signed in redirects to index', function(assert) {
+test('visiting /password/update/:challenge_id/:verification_code signed in redirects to index', function(assert) {
   stubOrganization();
   stubStacks();
-  var userId = 'abcUserId';
-  var resetCode = 'defResetCode';
-  signInAndVisit(`/password/new/${resetCode}/${userId}`);
+  signInAndVisit(`/password/update/${challengeId}/${verificationCode}`);
   andThen(function(){
     assert.equal(currentPath(), 'requires-authorization.enclave.stack.apps.index');
   });
 });
 
-test('visiting /password/new/:reset_code/:user_id and submitting without password displays an error', function(assert) {
+test('visiting /password/update/:challenge_id/:verification_code and submitting without password displays an error', function(assert) {
   assert.expect(2);
-  var userId = 'abcUserId';
-  var resetCode = 'defResetCode';
-  visit(`/password/new/${resetCode}/${userId}`);
+  visit(`/password/update/${challengeId}/${verificationCode}`);
   click('button:contains(Reset my password)');
   andThen(function(){
-    assert.equal(currentPath(), 'password.new');
+    assert.equal(currentPath(), 'password.update');
     var errors = find(':contains(Password can\'t be blank)');
     assert.notEqual(errors.length, 0, 'errors are on the page');
   });
 });
 
-test('visiting /password/new/:reset_code/:user_id and submitting without password confirmation displays an error', function(assert) {
+test('visiting /password/update/:challenge_id/:verification_code and submitting without password confirmation displays an error', function(assert) {
   assert.expect(2);
-  var userId = 'abcUserId';
-  var resetCode = 'defResetCode';
   var newPassword = 'someGreatPassword1%';
-  visit(`/password/new/${resetCode}/${userId}`);
+  visit(`/password/update/${challengeId}/${verificationCode}`);
   fillIn('[name=password]', newPassword);
   click('button:contains(Reset my password)');
   andThen(function(){
-    assert.equal(currentPath(), 'password.new');
+    assert.equal(currentPath(), 'password.update');
     var errors = find(':contains(Confirmation does not match)');
     assert.notEqual(errors.length, 0, 'errors are on the page');
   });
 });
 
-test('visiting /password/new/:reset_code/:user_id and submitting a poor password displays an error', function(assert) {
+test('visiting /password/update/:challenge_id/:verification_code and submitting a poor password displays an error', function(assert) {
   assert.expect(2);
-  var userId = 'abcUserId';
-  var resetCode = 'defResetCode';
   var newPassword = 'somebadpassword';
-  visit(`/password/new/${resetCode}/${userId}`);
+  visit(`/password/update/${challengeId}/${verificationCode}`);
   fillIn('[name=password]', newPassword);
   click('button:contains(Reset my password)');
   andThen(function(){
-    assert.equal(currentPath(), 'password.new');
+    assert.equal(currentPath(), 'password.update');
     var errors = find(':contains(Password must)');
     assert.notEqual(errors.length, 0, 'errors are on the page');
   });
 });
 
-test('visiting /password/new/:reset_code/:user_id and submitting a password creates a password reset', function(assert) {
+test('visiting /password/update/:challenge_id/:verification_code and submitting a password creates a password reset', function(assert) {
   assert.expect(5);
-  var userId = 'abcUserId';
-  var resetCode = 'defResetCode';
+  var challengeId = 'defResetCode';
   var newPassword = 'someGreatPassword1%';
 
   stubRequest('post', '/verifications', function(request){
     var json = this.json(request);
-    assert.equal(json.type, 'password_reset', 'type is sent');
+    assert.equal(json.type, 'password_reset_challenge', 'type is sent');
     assert.equal(json.password, newPassword, 'password is sent');
-    assert.equal(json.reset_code, resetCode, 'reset code is sent');
-    assert.equal(json.user_id, userId, 'user id is sent');
+    assert.equal(json.challenge_id, challengeId, 'challenge id is sent');
+    assert.equal(json.verification_code, verificationCode, 'verification code is sent');
     return this.success({
       id: 'nerf'
     });
   });
 
-  visit(`/password/new/${resetCode}/${userId}`);
+  visit(`/password/update/${challengeId}/${verificationCode}`);
   fillIn('[name=password]', newPassword);
   fillIn('[name=password-confirmation]', newPassword);
   click('button:contains(Reset my password)');
@@ -102,21 +93,20 @@ test('visiting /password/new/:reset_code/:user_id and submitting a password crea
   });
 });
 
-test('visiting /password/new/:reset_code/:user_id and submitting a password handles error', function(assert) {
+test('visiting /password/update/:challenge_id/:verification_code and submitting a password handles error', function(assert) {
   assert.expect(2);
-  var userId = 'abcUserId';
-  var resetCode = 'defResetCode';
+  var challengeId = 'defResetCode';
   var newPassword = 'someGreatPassword1%';
   stubRequest('post', '/verifications', function(){
     return this.error();
   });
 
-  visit(`/password/new/${resetCode}/${userId}`);
+  visit(`/password/update/${challengeId}/${verificationCode}`);
   fillIn('[name=password]', newPassword);
   fillIn('[name=password-confirmation]', newPassword);
   click('button:contains(Reset my password)');
   andThen(function(){
-    assert.equal(currentPath(), 'password.new');
+    assert.equal(currentPath(), 'password.update');
     var errors = find(':contains(error resetting your password)');
     assert.notEqual(errors.length, 0, 'errors are on the page');
   });

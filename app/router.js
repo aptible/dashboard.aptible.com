@@ -243,10 +243,14 @@ Router.map(function() {
   });
   this.route("password", {}, function(){
     this.route('reset');
+    // TODO(PasswordResetChallenge): remove the /new/ route.
     this.route('new', {path: 'new/:reset_code/:user_id'});
+    this.route('update', {path: 'update/:challenge_id/:verification_code'});
   });
 
+  // TODO(EmailVerificationChallenge): remove the verify route, rename verify_v2 to verify.
   this.authenticatedRoute("verify", { path: "verify/:verification_code" });
+  this.authenticatedRoute("verify_v2", { path: "verify/:challenge_id/:verification_code" });
 
   this.route("claim", { path: "claim/:invitation_id/:verification_code" });
 
