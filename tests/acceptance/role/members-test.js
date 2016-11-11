@@ -136,7 +136,6 @@ test(`visiting ${pageUrl} role members can be added by account owners`, (assert)
 
     clickButton('Add');
   });
-
   andThen(() => {
     findWithAssert('.aptable__member-row');
     assert.equal(find(`.profile--inline:contains(${memberUser.name})`).length,
@@ -178,6 +177,41 @@ test(`visiting ${pageUrl} role members can be removed by account owners`, (asser
   andThen(() => {
     assert.ok(find('.empty-row').text().match(/currently has no members/));
     window.confirm = _confirm;
+  });
+});
+
+test(`visiting ${pageUrl} account owners can get to the edit view for a role members`, (assert) => {
+  memberUser._embedded = { roles: [ nonOwnerRole ] }
+
+  const member1 = {
+    id: 'role-member-1',
+    _embedded: {
+      role: nonOwnerRole,
+      user: memberUser
+    }
+  };
+
+  setUp({
+    role: nonOwnerRole,
+    roleUsers: [ memberUser ],
+    roleMembers: [ member1 ],
+    roleMembersUrl: nonOwnerRole._links.memberships.href
+  });
+
+  signIn(null, ownerRole);
+  visit(`/organizations/${orgId}/roles/${nonOwnerRole.id}/members`);
+
+  pauseTest();
+  andThen(() => {
+    clickButton('Edit');
+  });
+  andThen(() => {
+    assert.equal(find(`.panel-heading:contains(${memberUser.name})`).length,
+      1, 'Renders edit member view.');
+    assert.equal(find(`input[type=checkbox]:checked`).length,
+      1, 'Current role is checked.');
+    assert.equal(find(`label:contains(${nonOwnerRole.name})`).length,
+      1, 'Current role is displayed.');
   });
 });
 
