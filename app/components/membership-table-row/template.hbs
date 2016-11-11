@@ -38,7 +38,7 @@
 {{#if currentUserIsPrivileged}}
   {{#if isOnlyRole}}
     {{#if linkToEditMember}}
-      {{#link-to 'organization.members.edit' organization membership.user classNames='btn btn-default btn-xs'}}
+      {{#link-to 'organization.members.edit' organization.id membership.user.id classNames='btn btn-default btn-xs'}}
         {{#bs-tooltip title=removeTooltip}}
           <i class="glyphicon glyphicon-pencil"></i> Edit
         {{/bs-tooltip}}
