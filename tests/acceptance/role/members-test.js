@@ -181,7 +181,7 @@ test(`visiting ${pageUrl} role members can be removed by account owners`, (asser
 });
 
 test(`visiting ${pageUrl} account owners can get to the edit view for a role members`, (assert) => {
-  memberUser._embedded = { roles: [ nonOwnerRole ] }
+  memberUser._embedded = { roles: [ nonOwnerRole ] };
 
   const member1 = {
     id: 'role-member-1',
@@ -201,7 +201,6 @@ test(`visiting ${pageUrl} account owners can get to the edit view for a role mem
   signIn(null, ownerRole);
   visit(`/organizations/${orgId}/roles/${nonOwnerRole.id}/members`);
 
-  pauseTest();
   andThen(() => {
     clickButton('Edit');
   });
