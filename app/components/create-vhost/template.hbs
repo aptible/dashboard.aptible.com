@@ -17,7 +17,7 @@
 
             <div class="form-group">
               <label>Service</label>
-              {{ ultimate-select items=services name="service" itemKey="id" itemValue="handle" update=(action (mut vhostService)) selected=vhostService autofocus=true }}
+              {{ ultimate-select items=services name="service" itemKey="id" itemValue="name" update=(action (mut vhostService)) selected=vhostService autofocus=true }}
             </div>
 
               <div class="form-group">
