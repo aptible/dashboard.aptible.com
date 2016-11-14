@@ -25,5 +25,9 @@ export default DS.Model.extend({
 
   usage: Ember.computed('containerCount', 'containerSize', function() {
     return this.get('containerCount') * (this.get('containerSize') / 1024);
+  }),
+
+  name: Ember.computed('processType', 'command', function() {
+    return `${this.get('processType')} - ${this.get('command')}`;
   })
 });

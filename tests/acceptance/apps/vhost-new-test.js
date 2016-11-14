@@ -11,7 +11,16 @@ let appHandle = 'my-app';
 let stackId = 'my-stack-1';
 let stackHandle = 'my-stack-1';
 
-let serviceId = 'the-service-id';
+let serviceId = '1';
+let serviceHandle = 'the-hubot-service';
+let serviceProcessType = 'web';
+let serviceCommmand = 'hubot';
+
+let otherServiceId = '2';
+let otherServiceHandle = 'other';
+let otherServiceProcessType = 'worker';
+let otherServiceCommand = 'do-things';
+
 let certificateId = 'my-cert-1';
 let certificateHref = `/certificates/${certificateId}`;
 
@@ -22,7 +31,7 @@ let appVhostsNewUrl = '/apps/' + appId + '/vhosts/new';
 module('Acceptance: App Endpoint New', {
   beforeEach: function() {
     App = startApp();
-    stubStacks();
+    stubStacks({ includeApps: false });
     stubOrganization();
   },
   afterEach: function() {
@@ -63,6 +72,45 @@ function setupStubs(options) {
     sweetness_stack_version: options.sweetnessStackVersion
   });
 
+  let appStub = {
+    id: appId,
+    handle: appHandle,
+    _embedded: {
+      services: [{
+        id: serviceId,
+        handle: serviceHandle,
+        process_type: serviceProcessType,
+        command: serviceCommmand,
+        _links: {
+          app: { href: `/apps/${appId}` },
+          account: { href: `/accounts/${stackId}` }
+        },
+      },
+      {
+        id: otherServiceId,
+        handle: otherServiceHandle,
+        process_type: otherServiceProcessType,
+        command: otherServiceCommand,
+        _links: {
+          app: { href: `/apps/${appId}` },
+          account: { href: `/accounts/${stackId}` }
+        }
+      }
+      ]},
+    _links: {
+      vhosts: { href: appVhostsApiUrl },
+      account: { href: `/accounts/${stackId}` }
+    }
+  };
+
+  stubRequest('get', `/apps/${appId}`, function() {
+    return this.success(appStub);
+  });
+
+  stubRequest('get', `/accounts/${stackId}/apps`, function() {
+    return this.success({ _embedded: { apps: [ appStub ] } });
+  });
+
   const vhosts = [];
 
   if (options.withServiceDefaultVhost) {
@@ -76,7 +124,7 @@ function setupStubs(options) {
   if (options.withAppDefaultVhost) {
     vhosts.push({
       id: '2',
-      service_id: 'some-other-service',
+      service_id: otherServiceId,
       default: 'true'
     });
   }
@@ -84,26 +132,6 @@ function setupStubs(options) {
   stubRequest('get', appVhostsApiUrl, function(){
     return this.success({
       _embedded: { vhosts: vhosts }
-    });
-  });
-
-  stubRequest('get', `/apps/${appId}`, function() {
-    return this.success({
-      id: appId,
-      handle: appHandle,
-      _embedded: {
-        services: [{ // Must have at least 1 service so that there is a service selected in the dropdown
-          id: serviceId,
-          handle: 'the-hubot-service',
-          _links: {
-            account: { href: `/accounts/${stackId}` }
-          }
-        }]
-      },
-      _links: {
-        vhosts: { href: appVhostsApiUrl },
-        account: { href: `/accounts/${stackId}` }
-      }
     });
   });
 }
@@ -300,7 +328,7 @@ test(`visit ${appVhostsNewUrl} shows creation form for app on v1 stack`, functio
 });
 
 test(`visit ${appVhostsNewUrl} and create vhost with existing certificates`, function(assert) {
-  assert.expect(6);
+  assert.expect(7);
 
   const vhostId = 'new-vhost-id';
 
@@ -313,9 +341,9 @@ test(`visit ${appVhostsNewUrl} and create vhost with existing certificates`, fun
     assert.ok(false, 'should not create a new certificate');
   });
 
-  // Sometimes the id is 1 and other times its 'the-service-id'
   stubRequest('post', `/services/:service-id/vhosts`, function(request){
     let json = this.json(request);
+    assert.equal(json.service_id, serviceId);
     assert.equal(json.certificate, certificateHref);
     assert.equal(json.certificate_body, null);
     assert.equal(json.private_key, null);
@@ -405,7 +433,7 @@ test(`visit ${appVhostsNewUrl} and create vhost with new certificate`, function(
 });
 
 test(`visit ${appVhostsNewUrl} and create default endpoint`, function(assert) {
-  assert.expect(6);
+  assert.expect(7);
 
   const vhostId = 'new-vhost-id';
 
@@ -414,6 +442,7 @@ test(`visit ${appVhostsNewUrl} and create default endpoint`, function(assert) {
 
   stubRequest('post', `/services/${serviceId}/vhosts`, function(request){
     let json = this.json(request);
+    assert.equal(json.service_id, serviceId);
     assert.equal(json.default, true, "Type is default");
     assert.equal(json.certificate, null);
     assert.equal(json.certificate_body, null);
@@ -447,7 +476,7 @@ test(`visit ${appVhostsNewUrl} and create default endpoint`, function(assert) {
 });
 
 test(`visit ${appVhostsNewUrl} and create managed endpoint`, function(assert) {
-  assert.expect(10);
+  assert.expect(11);
 
   const userDomainInputSelector = "input[type=text]";
   const userDomain = "some.domain.com";
@@ -458,6 +487,7 @@ test(`visit ${appVhostsNewUrl} and create managed endpoint`, function(assert) {
 
   stubRequest("post", `/services/${serviceId}/vhosts`, function(request){
     let json = this.json(request);
+    assert.equal(json.service_id, serviceId);
     assert.equal(json.default, false, "Default is not set");
     assert.equal(json.certificate, null, "Certificate is NULL");
     assert.equal(json.certificate_body, null, "Certificate body is NULL");
@@ -501,7 +531,7 @@ test(`visit ${appVhostsNewUrl} and create managed endpoint`, function(assert) {
 });
 
 test(`visit ${appVhostsNewUrl} and create a new transitonal managed endpoint`, function(assert) {
-  assert.expect(8);
+  assert.expect(9);
 
   const userDomainInputSelector = "input[type=text]";
   const userDomain = "some.domain.com";
@@ -516,6 +546,7 @@ test(`visit ${appVhostsNewUrl} and create a new transitonal managed endpoint`, f
 
   stubRequest("post", `/services/${serviceId}/vhosts`, function(request){
     let json = this.json(request);
+    assert.equal(json.service_id, serviceId);
     assert.equal(json.default, false, "Default is not set");
     assert.equal(json.certificate, certificateHref, "Certificate is provided");
     assert.equal(json.certificate_body, null, "Certificate body is NULL");
@@ -616,6 +647,42 @@ test(`visit ${appVhostsNewUrl} and create Endpoint on v1 defaults to ELB`, funct
   signInAndVisit(appVhostsNewUrl);
 
   andThen(() => {
+    click(findWithAssert('label:contains(custom certificate)'));
+  });
+
+  andThen(function(){
+    clickButton('Save Endpoint');
+  });
+});
+
+test(`visit ${appVhostsNewUrl} and select another service`, function(assert) {
+  assert.expect(2);
+
+  const vhostId = 'new-vhost-id';
+
+  setupStubs({ withCertificates: true});
+  signInAndVisit(appVhostsNewUrl);
+
+  stubRequest('post', `/services/:service-id/vhosts`, function(request){
+    let json = this.json(request);
+    assert.equal(json.service_id, otherServiceId);
+    return this.success({id: vhostId});
+  });
+
+  stubRequest('post', `/vhosts/${vhostId}/operations`, function(request){
+    let json = this.json(request);
+    assert.equal(json.type, 'provision', 'posts provision operation');
+    return this.success({id: 'new-op-id'});
+  });
+
+  stubRequest('get', `/operations/new-op-id`, function(){
+    return this.success({id: 'new-op-id', status: 'succeeded'});
+  });
+
+  signInAndVisit(appVhostsNewUrl);
+
+  andThen(() => {
+    fillIn(findWithAssert('select[name="service"]'), otherServiceId);
     click(findWithAssert('label:contains(custom certificate)'));
   });
 
