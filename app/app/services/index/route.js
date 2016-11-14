@@ -27,7 +27,7 @@ export default Ember.Route.extend({
         containerCount: containerCount,
         service: service
       }).save()
-        .then((operation) => operation.reloadUntilStatusChanged(operation, 1000 * 60 * 15 /* minutes */))
+        .then((operation) => operation.reloadUntilStatusChanged(1000 * 60 * 15 /* minutes */))
         .then(() => service.reload())
         .then(deferred.resolve, deferred.reject);
     }
