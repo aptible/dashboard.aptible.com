@@ -31,6 +31,7 @@ export default [
   'model:otp-configuration',
   'model:otp-recovery-code',
   'model:backup',
+  'model:email-verification-challenge',
   'adapter:application',
   'serializer:application',
   'transform:iso-8601-timestamp'

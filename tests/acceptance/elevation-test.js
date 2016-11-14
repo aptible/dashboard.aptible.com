@@ -24,7 +24,7 @@ test("Visiting an URL requiring elevation with an elevated token does not redire
 
   andThen(() => { visit("/settings/protected/admin"); });
   andThen(() => {
-    assert.equal(currentPath(), "requires-authorization.settings.requires-elevation.admin");
+    assert.equal(currentPath(), "requires-authorization.settings.requires-elevation.admin.index");
   });
 });
 

@@ -61,7 +61,16 @@ Router.map(function() {
       this.route('requires-elevation', { path: 'protected' }, function() {
         // REVIEW: We *need* to have a path for this, otherwise the index
         // redirect to profile won't work. Is /protected/ the "right" path?
-        this.route('admin');
+        this.route('admin', function() {
+          this.modal('modal-email-verification-challenges', {
+            withParams: ['emailVerificationChallenges'],
+            otherParams: ['model'],
+            dismissWithOutsideClick: false,
+            actions: {
+              revokeEmailVerificationChallenge: 'revokeEmailVerificationChallenge'
+            }
+          });
+        });
       });
       this.route('profile');
       this.route('ssh');

@@ -1,0 +1,30 @@
+{{#modal-wrapper title=title description=description onDismiss="onDismiss"}}
+  <div class="panel panel-default white-panel">
+    <div class="panel-body">
+      {{!-- Use an invisible input to capture focus, thanks Skylar --}}
+      <input type="text" style="height:0;width:0;opacity:0;" />
+
+      {{#if emailVerificationChallenges}}
+        <p>
+          You have {{emailVerificationChallenges.length}} pending email
+          {{plural-string "verification" emailVerificationChallenges.length}}:
+        </p>
+        <ul>
+          {{#each challenge in emailVerificationChallenges}}
+            <li>
+              <strong>{{challenge.email}}</strong>,
+              expires {{format-utc-timestamp challenge.expiresAt}} -
+              <a href="#" {{action "revokeEmailVerificationChallenge" challenge}}>
+                revoke
+              </a>
+            </li>
+          {{/each}}
+        </ul>
+      {{else}}
+        <p>
+        You have no pending email verifications.
+        </p>
+      {{/if}}
+    </div>
+  </div>
+{{/modal-wrapper}}

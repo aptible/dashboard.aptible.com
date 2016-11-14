@@ -15,7 +15,8 @@ const OTP_STATE_PENDING = 2;
 const OTP_STATE_ENABLED = 3;
 
 export default Ember.Controller.extend({
-  isSaving: Ember.computed.bool('session.currentUser.isSaving'),
+  userIsSaving: Ember.computed.bool('model.user.isSaving'),
+  emailIsSaving: false,
 
   otpState: Ember.computed("model.user.otpEnabled", "model.workingOtpConfiguration.otpUri", function() {
     let otpEnabled = this.get("model.user.otpEnabled");

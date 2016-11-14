@@ -120,7 +120,34 @@ test('failed verification directs to error page', function(assert) {
   });
 });
 
-// TODO(EmailVerificationChallenge): Grab the 'visiting / when not verified
-// shows verification message with resend button' test from the legacy workflow
-// once we update that to use the
-// new workflow and create an EmailVerificationChallenge.
+test('visiting / when not verified shows verification message with resend button', function(assert) {
+  assert.expect(4);
+
+  stubStacks();
+  stubOrganization();
+  const userId = '123';
+  const userEmail = 'foo@bar.com';
+  const userData = {
+    id: userId,
+    email: userEmail,
+    verified: false
+  };
+
+  stubRequest('post', `/users/${userId}/email_verification_challenges`, function(request) {
+    const json = this.json(request);
+    assert.ok(json.user_id, userId);
+    assert.ok(json.email, userEmail);
+    return this.success(201, {});
+  });
+
+  signInAndVisit('/', userData);
+
+  andThen(function(){
+    let banner = find(':contains(please verify your email address.)');
+    assert.ok(banner.length, 'shows not-activated message');
+
+    let resendMessage = 'Resend verification email';
+    expectButton(resendMessage);
+    click(findButton(resendMessage));
+  });
+});

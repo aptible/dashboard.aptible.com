@@ -101,33 +101,6 @@ test('after verification, pending databases are provisioned and waited on', func
   });
 });
 
-test('visiting / when not verified shows verification message with resend button', function(assert) {
-  assert.expect(3);
-  let userData = {
-    id: 'user-id',
-    verified: false
-  };
-
-  stubStacks();
-  stubOrganization();
-
-  stubRequest('post', '/resets', function(request){
-    let json = this.json(request);
-    assert.equal(json.type, 'verification_code', 'posts verification code');
-    return this.success(204, {});
-  });
-
-  signInAndVisit('/', userData);
-  andThen(function(){
-    let banner = find(':contains(please verify your email address.)');
-    assert.ok(banner.length, 'shows not-activated message');
-
-    let resendMessage = 'Resend verification email';
-    expectButton(resendMessage);
-    click(findButton(resendMessage));
-  });
-});
-
 test('failed verification directs to error page', function(assert) {
   var verificationCode = 'some-code';
 

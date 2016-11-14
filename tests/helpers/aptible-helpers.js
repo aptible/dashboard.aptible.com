@@ -14,6 +14,7 @@ Ember.Test.registerHelper('createStubUser', function(app, userData) {
       ssh_keys: { href: `/users/${userData.id}/ssh_keys` },
       roles:  { href: `/users/${userData.id}/roles` },
       otp_configurations:  { href: `/users/${userData.id}/otp_configurations` },
+      email_verification_challenges:  { href: `/users/${userData.id}/email_verification_challenges` },
       current_otp_configuration: { },  // None by default
       self: { href: `/users/${userData.id}` }
     }
