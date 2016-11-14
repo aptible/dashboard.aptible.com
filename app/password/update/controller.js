@@ -1,4 +1,3 @@
-// TODO(PasswordResetChallenge): remove
 import Ember from "ember";
 import EmberValidations from "ember-validations";
 
