@@ -31,12 +31,28 @@ let createStubUserUpdateEndpoint = function(assert, options) {
   };
   options = Ember.$.extend(true, defaultOptions, options);
 
-  stubRequest('put', `/users/${userId}`, function(request){
-    let params = this.json(request);
+  stubRequest('post', `/users/${userId}/email_verification_challenges`, function(request) {
+    if (options.returnError) {
+      return this.error(401, {
+        code: 401,
+        error: 'some_error',
+        message: options.errorMessage || 'Invalid credentials'
+      });
+    }
+
+    const params = this.json(request);
 
     if (options.expectEmail !== undefined) {
-      assert.equal(params.email, options.expectEmail, 'correct email is passed');
+      assert.equal(params.email, options.expectEmail);
+    } else {
+      assert.ok(false, "Created email verification challenge, but none was expected");
     }
+
+    return this.success(201, {});
+  });
+
+  stubRequest('put', `/users/${userId}`, function(request){
+    let params = this.json(request);
 
     if (options.expectPassword !== undefined) {
       assert.equal(params.password, options.expectPassword, 'correct password is passed');
@@ -245,7 +261,7 @@ test(`visit ${settingsAccountUrl} allows changing email`, function(assert) {
 
   andThen(function(){
     fillInput('email', newEmail);
-    clickButton('Change Email');
+    clickButton('Send Verification Email');
   });
 
   andThen(() => {
@@ -269,7 +285,7 @@ test(`visit ${settingsAccountUrl} change email with errors`, function(assert) {
 
   andThen(() => {
     fillInput('email', newEmail);
-    clickButton('Change Email');
+    clickButton('Send Verification Email');
   });
 
   andThen(() => {
@@ -406,11 +422,12 @@ test(`On ${settingsAccountUrl}, saving your password should not interrupt the OT
 });
 
 test(`On ${settingsAccountUrl}, saving your email should not update your password`, function(assert) {
-  assert.expect(2);
+  assert.expect(1);
 
   createStubUserUpdateEndpoint(assert, {
     expectEmail: newEmail,
-    expectPassword: null
+    expectPassword: null,
+    returnError: false
   });
 
   signInAndVisit(settingsAccountUrl, {}, {}, { scope: "elevated" });
@@ -418,30 +435,7 @@ test(`On ${settingsAccountUrl}, saving your email should not update your passwor
   andThen(() => {
     fillInput("email", newEmail);
     fillInput("password", newPassword);
-    clickButton("Change Email");
-  });
-});
-
-test(`On ${settingsAccountUrl}, updating your email prompts to reset tokens`, function(assert) {
-  assert.expect(2);
-  window.confirm = function() { return true; };
-  let revokeCalled = false;
-
-  stubRequest('post', '/tokens/revoke_all_accessible', function() {
-    revokeCalled = true;
-    return this.success({revoked: 1});
-  });
-
-  createStubUserUpdateEndpoint(assert, { expectEmail: newEmail, returnError: false });
-  signInAndVisit(settingsAccountUrl, {}, {}, { scope: "elevated" });
-
-  andThen(() => {
-    fillInput("email", newEmail);
-    clickButton("Change Email");
-  });
-
-  andThen(() => {
-    assert.ok(revokeCalled, 'Revoke should be called');
+    clickButton("Send Verification Email");
   });
 });
 
@@ -609,5 +603,45 @@ test(`${settingsAccountUrl} allows clearing all tokens`, function(assert) {
 
   andThen(() => {
     clickButton('Log Out All Other Sessions');
+  });
+});
+
+test(`${settingsAccountUrl} allows viewing and revoking pending email verifications`, function(assert) {
+  // We want to ensure we'll show two tokens, so we'll change the output of /current_token
+  // after logging.
+  assert.expect(1);
+
+  let revokedFooVerification = true;
+
+  stubRequest('get', `/users/${userId}/email_verification_challenges`, function() {
+    return this.success({
+      _embedded: {
+        email_verification_challenges: [
+          { id: '1', email: 'foo@bar.com' },
+          { id: '2', email: 'bar@qux.com' },
+        ]
+      }
+    });
+  });
+
+  stubRequest('delete', '/email_verification_challenges/1', function() {
+    revokedFooVerification = true;
+    return this.success(204, {});
+  });
+
+  signInAndVisit(settingsAccountUrl, {}, {}, { scope: 'elevated', id: 'elevated-token' });
+
+  andThen(() => {
+    clickButton('Show pending verifications');
+  });
+
+  andThen(() => {
+    const fooVerificationLi = findWithAssert('li:contains("foo@bar.com")');
+    findWithAssert('li:contains("bar@qux.com")');
+    clickButton('revoke', { context: fooVerificationLi });
+  });
+
+  andThen(() => {
+    assert.ok(revokedFooVerification);
   });
 });

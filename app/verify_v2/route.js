@@ -1,13 +1,14 @@
-// TODO(EmailVerificationChallenge): remove
 import Ember from 'ember';
 import { provisionDatabases } from '../models/database';
 
 export default Ember.Route.extend({
   model(params){
     var options = {
+      challengeId: params.challenge_id,
       verificationCode: params.verification_code,
-      type: 'email'
+      type: 'email_verification_challenge'
     };
+
     var verification = this.store.createRecord('verification', options);
 
     return verification.save().then( () => {
@@ -23,5 +24,4 @@ export default Ember.Route.extend({
   afterModel() {
     this.replaceWith('enclave');
   }
-
 });

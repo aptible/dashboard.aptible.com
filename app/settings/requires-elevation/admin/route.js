@@ -21,7 +21,7 @@ export default Ember.Route.extend({
     return Ember.Object.create({
       workingPassword: "",
       workingPasswordConfirmation: "",
-      workingEmail: user.get("email"),
+      workingEmail: "",
       workingOtpConfiguration: user.get("currentOtpConfiguration"),
       otpToken: "",
       showOtpRecoveryCodes: false,
@@ -111,12 +111,29 @@ export default Ember.Route.extend({
       let user = this.currentModel.get("user");
       let newEmail = this.currentModel.get("workingEmail");
 
-      user.set("email", newEmail).save().then(() => {
-        Ember.get(this, 'flashMessages').success(`Email updated to ${user.get('email')}`);
-      }).then(() => {
-        return this.promptForSessionLogout();
+      if (newEmail === user.get("email")) {
+        const msg = `${newEmail} is already your email address`;
+        Ember.get(this, "flashMessages").warning(msg);
+        return;
+      }
+
+      const challenge = this.store.createRecord("email-verification-challenge", {
+        user: user,
+        email: newEmail
+      });
+
+      this.controller.set("emailIsSaving", true);
+
+      challenge.save().then((emailVerificationChallenge) => {
+        const m = `A verification email has been sent to ${emailVerificationChallenge.get("email")}`;
+        Ember.get(this, 'flashMessages').success(m);
+      }, (e) => {
+        challenge.rollback();
+        throw e;
       }).catch((e) => {
         this.handleApiError(e);
+      }).finally(() => {
+        this.controller.set("emailIsSaving", false);
       });
     },
 
@@ -173,6 +190,20 @@ export default Ember.Route.extend({
       // NOTE: This action technically does not require elevation in the API,
       // but the account page is the most natural place to put it.
       return this.revokeAllAccessibleTokens();
+    },
+
+    openEmailVerificationChallengesModal() {
+      return this.currentModel.get("user.emailVerificationChallenges").then((r) => {
+        this.controller.set("emailVerificationChallenges", r);
+      });
+    },
+
+    revokeEmailVerificationChallenge(challenge) {
+      const challengeEmail = challenge.get("email");
+      challenge.destroyRecord().then(() => {
+        const m = `Revoked email verification for ${challengeEmail}`;
+        Ember.get(this, 'flashMessages').success(m);
+      });
     },
 
     willTransition() {

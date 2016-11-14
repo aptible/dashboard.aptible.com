@@ -20,12 +20,14 @@ export default Ember.Component.extend({
     resendVerification() {
       this.setProperties({ sending: true, error: null });
 
-      let reset = this.get('store').createRecord('reset', {type:'verification_code'});
-      reset.save().then( () => {
+      this.get("store").createRecord("email-verification-challenge", {
+        user: this.get("user"),
+        email: this.get("user.email")
+      }).save().then(() => {
         this.set('sent', true);
       }, (e) => {
         this.set('error', e);
-      }).finally( () => {
+      }).finally(() => {
         this.set('sending', false);
       });
     }

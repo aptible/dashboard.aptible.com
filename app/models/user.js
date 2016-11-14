@@ -23,6 +23,7 @@ export default DS.Model.extend({
   roles: DS.hasMany('role', { async: true }),
   sshKeys: DS.hasMany('ssh-key', { async: true }),
   otpConfigurations: DS.hasMany('otp-configuration', { async: true }),
+  emailVerificationChallenges: DS.hasMany('email-verification-challenges', { async: true }),
 
   currentOtpConfiguration: DS.belongsTo('otp-configuration', { async: true }),
 

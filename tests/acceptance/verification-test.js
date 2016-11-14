@@ -1,3 +1,4 @@
+// TODO(EmailVerificationChallenge): remove
 import Ember from 'ember';
 import {module, test} from 'qunit';
 import startApp from '../helpers/start-app';
@@ -5,7 +6,7 @@ import { stubRequest } from '../helpers/fake-server';
 
 var App;
 
-module('Acceptance: Verification', {
+module('Acceptance: Verification (Legacy workflow)', {
   beforeEach: function() {
     App = startApp();
   },
@@ -97,33 +98,6 @@ test('after verification, pending databases are provisioned and waited on', func
   andThen(() => {
     assert.ok(hasReloadedDatabase, 'Has reloaded the DB');
     assert.equal(operationPolls, 2, 'Has reloaded the operation twice');
-  });
-});
-
-test('visiting / when not verified shows verification message with resend button', function(assert) {
-  assert.expect(3);
-  let userData = {
-    id: 'user-id',
-    verified: false
-  };
-
-  stubStacks();
-  stubOrganization();
-
-  stubRequest('post', '/resets', function(request){
-    let json = this.json(request);
-    assert.equal(json.type, 'verification_code', 'posts verification code');
-    return this.success(204, {});
-  });
-
-  signInAndVisit('/', userData);
-  andThen(function(){
-    let banner = find(':contains(please verify your email address.)');
-    assert.ok(banner.length, 'shows not-activated message');
-
-    let resendMessage = 'Resend verification email';
-    expectButton(resendMessage);
-    click(findButton(resendMessage));
   });
 });
 

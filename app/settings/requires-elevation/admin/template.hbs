@@ -21,10 +21,10 @@
 
             <div class="">
               <button {{action 'changePassword'}}
-                disabled={{isSaving}}
+                disabled={{userIsSaving}}
                 class="btn btn-primary" type="submit">
 
-                {{#if isSaving}}
+                {{#if userIsSaving}}
                   Saving
                 {{else}}
                   Change Password
@@ -37,6 +37,13 @@
       <div class="panel panel-default">
         <div class="panel-heading"><h3>Change Your Email</h3></div>
         <div class="panel-body">
+          <p>
+            You will need to verify your new email address before it can be used.
+
+            <a href="#" {{action "openEmailVerificationChallengesModal"}}>
+              Show pending verifications.
+            </a>
+          </p>
           <form>
             <div class="form-group">
               <label for="email">Email</label>
@@ -45,11 +52,11 @@
                       value=model.workingEmail name="email"}}
             </div>
             <div class="">
-              <button {{action 'changeEmail'}} class="btn btn-primary" type="submit" disabled={{isSaving}}>
-                {{#if isSaving}}
+              <button {{action 'changeEmail'}} class="btn btn-primary" type="submit" disabled={{emailIsSaving}}>
+                {{#if emailIsSaving}}
                   Saving
                 {{else}}
-                  Change Email
+                  Send Verification Email
                 {{/if}}
               </button>
             </div>
@@ -107,7 +114,7 @@
               </div>
             {{/if}}
 
-            <button {{action otpButtonAction}} class="btn btn-primary" type="submit" disabled={{isSaving}}>
+            <button {{action otpButtonAction}} class="btn btn-primary" type="submit" disabled={{userIsSaving}}>
               {{otpButtonLabel}}
             </button>
           </form>
