@@ -30,19 +30,10 @@
         "PriceClass_100"
       ],
       "Description": "Price class for CloudFront distribution. See http://amzn.to/1Rmjv32 for details."
-    }
-  },
-  "Mappings": {
-    "DomainAWSResourceIdMap": {
-      "aptible.com": {
-        "IamCertificateId": "ASCAIIHAG2U3A2CIAFOSU"
-      },
-      "aptible-staging.com": {
-        "IamCertificateId": "ASCAIWRPADW2NPHDICMCA"
-      },
-      "aptible-sandbox.com": {
-        "IamCertificateId": "ASCAJJHNGQXFAFJ77ANTO"
-      }
+    },
+    "AcmCertificateArn": {
+      "Type": "String",
+      "Default": "arn:aws:acm:us-east-1:916150859591:certificate/77bc3323-0f5d-4635-bc1f-8cbe1c4c4e36"
     }
   },
   "Resources": {
@@ -50,19 +41,7 @@
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "Private",
-        "BucketName": {
-          "Fn::Join": [
-            ".",
-            [
-              {
-                "Ref": "Subdomain"
-              },
-              {
-                "Ref": "Domain"
-              }
-            ]
-          ]
-        },
+        "BucketName": { "Fn::Join": [ ".", [ { "Ref": "Subdomain" }, { "Ref": "Domain" } ] ] },
         "WebsiteConfiguration": {
           "IndexDocument": "index.html",
           "RoutingRules": [
@@ -71,19 +50,7 @@
                 "HttpErrorCodeReturnedEquals": "403"
               },
               "RedirectRule": {
-                "HostName": {
-                  "Fn::Join": [
-                    ".",
-                    [
-                      {
-                        "Ref": "Subdomain"
-                      },
-                      {
-                        "Ref": "Domain"
-                      }
-                    ]
-                  ]
-                },
+                "HostName": { "Fn::Join": [ ".", [ { "Ref": "Subdomain" }, { "Ref": "Domain" } ] ] },
                 "Protocol": "https",
                 "ReplaceKeyPrefixWith": "#/"
               }
@@ -97,19 +64,7 @@
       "Properties": {
         "DistributionConfig": {
           "Aliases": [
-            {
-              "Fn::Join": [
-                ".",
-                [
-                  {
-                    "Ref": "Subdomain"
-                  },
-                  {
-                    "Ref": "Domain"
-                  }
-                ]
-              ]
-            }
+            { "Fn::Join": [ ".", [ { "Ref": "Subdomain" }, { "Ref": "Domain" } ] ] }
           ],
           "DefaultCacheBehavior": {
             "ForwardedValues": {
@@ -117,40 +72,14 @@
             },
             "MinTTL": "0",
             "SmoothStreaming": false,
-            "TargetOriginId": {
-              "Fn::Join": [
-                ".",
-                [
-                  {
-                    "Ref": "Subdomain"
-                  },
-                  {
-                    "Ref": "Domain"
-                  }
-                ]
-              ]
-            },
+            "TargetOriginId": { "Fn::Join": [ ".", [ { "Ref": "Subdomain" }, { "Ref": "Domain" } ] ] },
             "ViewerProtocolPolicy": "redirect-to-https"
           },
           "Enabled": true,
           "Logging": {
-            "Bucket": {
-              "Ref": "LogBucket"
-            },
+            "Bucket": { "Ref": "LogBucket" },
             "IncludeCookies": false,
-            "Prefix": {
-              "Fn::Join": [
-                ".",
-                [
-                  {
-                    "Ref": "Subdomain"
-                  },
-                  {
-                    "Ref": "Domain"
-                  }
-                ]
-              ]
-            }
+            "Prefix": { "Fn::Join": [ ".", [ { "Ref": "Subdomain" }, { "Ref": "Domain" } ] ] }
           },
           "Origins": [
             {
@@ -159,52 +88,13 @@
                 "HTTPSPort": "443",
                 "OriginProtocolPolicy": "http-only"
               },
-              "DomainName": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Ref": "Subdomain"
-                    },
-                    ".",
-                    {
-                      "Ref": "Domain"
-                    },
-                    ".",
-                    "s3-website-",
-                    {
-                      "Ref": "AWS::Region"
-                    },
-                    ".amazonaws.com"
-                  ]
-                ]
-              },
-              "Id": {
-                "Fn::Join": [
-                  ".",
-                  [
-                    {
-                      "Ref": "Subdomain"
-                    },
-                    {
-                      "Ref": "Domain"
-                    }
-                  ]
-                ]
-              }
+              "DomainName": { "Fn::Join": [ "", [ { "Ref": "Subdomain" }, ".", { "Ref": "Domain" }, ".", "s3-website-", { "Ref": "AWS::Region" }, ".amazonaws.com" ] ] },
+              "Id": { "Fn::Join": [ ".", [ { "Ref": "Subdomain" }, { "Ref": "Domain" } ] ] }
             }
           ],
-          "PriceClass": "PriceClass_100",
+          "PriceClass": { "Ref": "PriceClass" },
           "ViewerCertificate": {
-            "IamCertificateId": {
-              "Fn::FindInMap": [
-                "DomainAWSResourceIdMap",
-                {
-                  "Ref": "Domain"
-                },
-                "IamCertificateId"
-              ]
-            },
+            "AcmCertificateArn": { "Ref": "AcmCertificateArn" },
             "SslSupportMethod": "sni-only"
           }
         }
@@ -213,40 +103,10 @@
     "Route53RecordSet": {
       "Type": "AWS::Route53::RecordSet",
       "Properties": {
-        "HostedZoneName": {
-          "Fn::Join": [
-            "",
-            [
-              {
-                "Ref": "Domain"
-              },
-              "."
-            ]
-          ]
-        },
-        "Name": {
-          "Fn::Join": [
-            "",
-            [
-              {
-                "Ref": "Subdomain"
-              },
-              ".",
-              {
-                "Ref": "Domain"
-              },
-              "."
-            ]
-          ]
-
-        },
+        "HostedZoneName": { "Fn::Join": [ "", [ { "Ref": "Domain" }, "." ] ] },
+        "Name": { "Fn::Join": [ "", [ { "Ref": "Subdomain" }, ".", { "Ref": "Domain" }, "." ] ] },
         "ResourceRecords": [
-          {
-            "Fn::GetAtt": [
-              "CloudFrontDistribution",
-              "DomainName"
-            ]
-          }
+          { "Fn::GetAtt": [ "CloudFrontDistribution", "DomainName" ] }
         ],
         "TTL": "300",
         "Type": "CNAME"

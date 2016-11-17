@@ -21,19 +21,7 @@
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "Private",
-        "BucketName": {
-          "Fn::Join": [
-            ".",
-            [
-              {
-                "Ref": "Subdomain"
-              },
-              {
-                "Ref": "Domain"
-              }
-            ]
-          ]
-        },
+        "BucketName": { "Fn::Join": [ ".", [ { "Ref": "Subdomain" }, { "Ref": "Domain" } ] ] },
         "WebsiteConfiguration": {
           "IndexDocument": "index.html",
           "RoutingRules": [
@@ -42,19 +30,7 @@
                 "HttpErrorCodeReturnedEquals": "403"
               },
               "RedirectRule": {
-                "HostName": {
-                  "Fn::Join": [
-                    ".",
-                    [
-                      {
-                        "Ref": "Subdomain"
-                      },
-                      {
-                        "Ref": "Domain"
-                      }
-                    ]
-                  ]
-                },
+                "HostName": { "Fn::Join": [ ".", [ { "Ref": "Subdomain" }, { "Ref": "Domain" } ] ] },
                 "Protocol": "http",
                 "ReplaceKeyPrefixWith": "#/"
               }
@@ -66,54 +42,10 @@
     "Route53RecordSet": {
       "Type": "AWS::Route53::RecordSet",
       "Properties": {
-        "HostedZoneName": {
-          "Fn::Join": [
-            "",
-            [
-              {
-                "Ref": "Domain"
-              },
-              "."
-            ]
-          ]
-        },
-        "Name": {
-          "Fn::Join": [
-            "",
-            [
-              {
-                "Ref": "Subdomain"
-              },
-              ".",
-              {
-                "Ref": "Domain"
-              },
-              "."
-            ]
-          ]
-
-        },
+        "HostedZoneName": { "Fn::Join": [ "", [ { "Ref": "Domain" }, "." ] ] },
+        "Name": { "Fn::Join": [ "", [ { "Ref": "Subdomain" }, ".", { "Ref": "Domain" }, "." ] ] },
         "ResourceRecords": [
-          {
-            "Fn::Join": [
-              "",
-              [
-                {
-                  "Ref": "Subdomain"
-                },
-                ".",
-                {
-                  "Ref": "Domain"
-                },
-                ".",
-                "s3-website-",
-                {
-                  "Ref": "AWS::Region"
-                },
-                ".amazonaws.com"
-              ]
-            ]
-          }
+          { "Fn::Join": [ "", [ { "Ref": "Subdomain" }, ".", { "Ref": "Domain" }, ".", "s3-website-", { "Ref": "AWS::Region" }, ".amazonaws.com" ] ] }
         ],
         "TTL": "300",
         "Type": "CNAME"
