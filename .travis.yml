@@ -24,6 +24,8 @@ install:
 - npm install
 - bower install
 script:
+- npm list
+- bower list
 - npm test
 - script/travis-deploy.sh
 after_success:
